@@ -859,7 +859,7 @@ combine them to make more complicated things,
 通过组合
 means of combination?
 
-我们将看到把事物组合在一起的方法
+我们将看到把事物结合在一起的方法
 And what we'll see is that there are ways of putting things together,
 
 将原始过程放在一起构建复杂的过程
@@ -867,18 +867,146 @@ putting primitive procedures together to make more complicated procedures.
 
 
 And we'll see how to put primitive data together to make compound data.
-Then we'll say, well, having made those compounds things, how do you abstract them? How do you put those black boxes around them so you can use them as components in more complex things? And we'll see that's done by defining procedures and a technique for dealing with compound data called data abstraction.
-And then, what's maybe the most important thing, is going from just the rules to how does an expert work? How do you express common patterns of doing things, like saying, well,
-there's a general method of fixed point and square root is a particular case of that? And we're going to use-- I've already hinted at it-- something called higher-order procedures, namely procedures whose inputs and outputs are themselves procedures. And then we'll also see something very interesting. We'll see, as we go further and further on and become more abstract, there'll be very-- well, the line between what we consider to be data and what we consider to be procedures is going to blur at an incredible rate.
-Well, that's our first subject, black-box abstraction. Let's look at the second topic. I can introduce it like this. See, suppose I want to express the idea-- remember, we're talking about ideas-- suppose I want to express the idea that I can take something and multiply it by the sum of two other things. So for example, I might say, if I had 1 and 3 and multiply that by 2, I get 8. But I'm talking about the general idea of what's called linear combination, that you can add two things and multiply them by something else.
-It's very easy when I think about it for numbers, but suppose I also want to use that same idea to think about, I could add two vectors, a1 and a2, and then scale them by some factor x and get another vector. Or I might say, I want to think about a1 and a2 as being polynomials, and I might want to add those two polynomials and then multiply them by 2 to get a more complicated one.
-Or a1 and a2 might be electrical signals, and I might want to think about summing those two electrical signals and then putting the whole thing through an amplifier, multiplying it by some factor of 2 or something. The idea is I want to think about the general notion of that.
-Now, if our language is going to be good language for expressing those kind of general ideas, if I really, really can do that, I'd like to be able to say I'm going to multiply by x the sum of a1 and a2, and I'd like that to express the general idea of all different kinds of things that a1 and a2 could be. Now, if you think about that, there's a problem, because after all, the actual primitive operations that go on in the machine are obviously going to be different if I'm adding two numbers than if I'm adding two polynomials, or if I'm adding the representation of two electrical signals or wave forms.
+
+Then we'll say, well, having made those compounds things,
+
+你如何将他们抽象出来
+how do you abstract them?
+
+
+How do you put those black boxes around them
+
+
+so you can use them as components in more complex things?
+
+
+And we'll see that's done by defining procedures and
+
+
+a technique for dealing with compound data called data abstraction.
+
+
+And then, what's maybe the most important thing,
+
+is going from just the rules to how does an expert work?
+
+你如何去表达做事情更普遍的方法 就比如
+How do you express common patterns of doing things, like saying, well,
+
+找不动点的方法
+there's a general method of fixed point and
+
+而找平方根是其一特法
+square root is a particular case of that?
+
+我们将会使用
+And we're going to use--
+
+我们已经提到过的
+I've already hinted at it-- 
+
+某种叫做高阶过程得的东西
+something called higher-order procedures,
+
+亦即 他的输入输出和他本身都是过程
+namely procedures whose inputs and outputs are themselves procedures.
+
+我们将会看到一些有趣的东西
+And then we'll also see something very interesting.
+
+我们越深入 越抽象
+We'll see, as we go further and further on and become more abstract,
+
+
+there'll be very--
+
+我们认为是数据和我们认为是过程
+well, the line between what we consider to be data and
+
+之间的分界线将变得模糊到难以置信的程度
+what we consider to be procedures is going to blur at an incredible rate.
+
+这便是我们的第一个主题 黑盒抽象
+Well, that's our first subject, black-box abstraction.
+
+让我们来看看第二个主题
+Let's look at the second topic.
+
+这样说吧
+I can introduce it like this.
+
+假设我想表达某个想法
+See, suppose I want to express the idea--
+
+请注意 我们讨论的是想法
+remember, we're talking about ideas--
+
+假设我想表达某个想法 使得
+suppose I want to express the idea that
+
+我可以取用某个东西并将其与另两物之和相乘
+I can take something and multiply it by the sum of two other things.
+
+举例来说
+So for example, I might say, 
+
+我用1和3（之和）乘2 得8
+if I had 1 and 3 and multiply that by 2, I get 8.
+
+但我想说的是关于线性组合的普遍观念
+But I'm talking about the general idea of what's called linear combination,
+
+是说你可以将两物的和乘以另一物
+that you can add two things and multiply them by something else.
+
+在数集上思考这个问题是很容易的
+It's very easy when I think about it for numbers,
+
+但假设我亦想将此观念应用于
+but suppose I also want to use that same idea to think about,
+
+加和两向量a1和a2
+I could add two vectors, a1 and a2,
+
+并数乘某一因子x得另一向量
+and then scale them by some factor x and get another vector.
+
+我更可以说 我想思考若a1和a2皆为多项式
+Or I might say, I want to think about a1 and a2 as being polynomials,
+
+我想加和这两个多项式
+and I might want to add those two polynomials and
+
+让后加他们乘以2得到一个更复杂的
+then multiply them by 2 to get a more complicated one.
+
+a1或a2亦可为电信号
+Or a1 and a2 might be electrical signals,
+
+我想将此二电信号加和
+and I might want to think about summing those two electrical signals and
+
+并将所得放入一个放大器
+then putting the whole thing through an amplifier,
+
+用一个类似于2的因子乘以它们
+multiplying it by some factor of 2 or something.
+
+这种观念就是 我想用一个通用记号表示它们
+The idea is I want to think about the general notion of that.
+
+
+Now, if our language is going to be good language for expressing those kind of general ideas,
+
+if I really, really can do that, I'd like to be able to say I'm going to multiply by x the sum of a1 and a2, and I'd like that to express the general idea of all different kinds of things that a1 and a2 could be. Now, if you think about that, there's a problem, because after all, the actual primitive operations that go on in the machine are obviously going to be different if I'm adding two numbers than if I'm adding two polynomials, or if I'm adding the representation of two electrical signals or wave forms.
 Somewhere, there has to be the knowledge of the kinds of various things that you can add and the ways of adding them. Now, to construct such a system, the question is, where do I put that knowledge? How do I think about the different kinds of choices I have? And if tomorrow George comes up with a new kind of object that might be added and multiplied, how do I add George's new object to the system without screwing up everything that was already there?
 Well, that's going to be the second big topic, the way of controlling that kind of complexity. And the way you do that is by establishing conventional interfaces, agreed upon ways of plugging things together. Just like in electrical engineering, people have standard impedances for connectors, and then you know if you build something with one of those standard impedances, you can plug it together with something else.
+
+
 So that's going to be our second large topic, conventional interfaces. What we're going to see is, first, we're going to talk about the problem of generic operations, which is the one I alluded to, things like "plus" that have to work with all different kinds of data. So we talk about generic operations. Then we're going to talk about really large-scale structures. How do you put together very large programs that model the kinds of complex systems in the real world that you'd like to model?
 And what we're going to see is that there are two very important metaphors for putting together such systems. One is called object-oriented programming, where you sort of think of your system as a kind of society full of little things that interact by sending information between them. And then the second one is operations on aggregates, called streams, where you think of a large system put together kind of like a signal processing engineer puts together a large electrical system.
 That's going to be our second topic. Now, the third thing we're going to come to, the third basic technique for controlling complexity, is making new languages. Because sometimes, when you're sort of overwhelmed by the complexity of a design, the way that you control that complexity is to pick a new design language. And the purpose of the new design language will be to highlight different aspects of the system. It will suppress some kinds of details and emphasize other kinds of details.
+-- 今天翻译到这里吧 --
 This is going to be the most magical part of the course. We're going to start out by actually looking at the technology for building new computer languages. The first thing we're going to do is actually build in Lisp. We're going to express in Lisp the process of interpreting Lisp itself. And that's going to be a very sort of self-circular thing. There's a little mystical symbol that has to do with that. The process of interpreting Lisp is sort of a giant wheel of two processes, apply and eval, which sort of constantly reduce expressions to each other.
 Then we're going to see all sorts of other magical things. Here's another magical symbol. This is sort of the Y operator, which is, in some sense, the expression of infinity inside our procedural language. We'll take a look at that. In any case, this section of the course is
 called Metalinguistic Abstraction, abstracting by talking about how you construct new languages.
