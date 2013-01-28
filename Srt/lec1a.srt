@@ -1,9 +1,8 @@
 哈尔滨工业大学 IBM技术中心
 
-字幕：邓雄飞（Dysprosium)
-校对：吴　晋（Cliff Woo）
 
-时间轴：邓雄飞（Dysprosium)
+字幕 && 时间轴：邓雄飞（Dysprosium)
+校对：吴　晋（Cliff Woo）
 
 
 欢迎你们来上这节计算机科学课
@@ -1245,25 +1244,394 @@ Now, let's take a break now and then we'll get started.
 音乐
 [MUSIC PLAYING]
 
-Let's actually start in learning Lisp now. Actually, we'll start out by learning something much more important, maybe the very most important thing in this course, which is not Lisp, in particular, of course, but rather a general framework for thinking about languages that I already alluded to. When somebody tells you they're going to show you a language, what you should say is, what I'd like you to tell me is what are the primitive elements? What does the language come with?
-Then, what are the ways you put those together? What are the means of combination? What are the things that allow you to take these primitive elements and build bigger things out of them? What are the ways of putting things together?
-And then, what are the means of abstraction? How do we take those complicated things and draw those boxes around them? How do we name them so that we can now use them as if they were primitive elements in making still more complex things? And so on, and so on, and so on. So when someone says to you, gee, I have a great new computer language, you don't say, how many characters does it take to invert a matrix? It's irrelevant.
-What you say is, if the language did not come with matrices built in or with something else built in, how could I then build that thing? What are the means of combination which would allow me to do that? And then, what are the means of abstraction which allow me then to use those as elements in making more complicated things yet?
-Well, we're going to see that Lisp has some primitive data and some primitive procedures. In fact, let's really start. And here's a piece of primitive data in Lisp, number 3. Actually, if I'm being very pedantic, that's not the number 3. That's some symbol that represents Plato's concept of the number 3. And here's another. Here's some more primitive data in Lisp, 17.4. Or actually, some representation of 17.4.
-And here's another one, 5. Here's another primitive object that's built in Lisp, addition. Actually, to use the same kind of pedantic-- this is a name for the primitive method of adding things. Just like this is a name for Plato's number 3, this is a name for Plato's concept of how you add things. So those are some primitive elements. I can put them together. I can say, gee, what's the sum of 3 and 17.4 and 5?
+项目地址：https://github.com/ChingfanTsou/Learning-SICP.git
 
 
-And the way I do that is to say, let's apply the sum operator to these three numbers. And I should get, what? 8, 17. 25.4. So I should be able to ask Lisp what the value of this is, and it will return 25.4. Let's introduce some names. This thing that I typed is called a combination. And a combination consists, in general, of applying an operator-- so this is an operator-- to some operands. These are the operands.
-And of course, I can make more complex things. The reason I can get complexity out of this is because the operands themselves, in general, can be combinations. So for instance, I could say, what is the sum of 3 and the product of 5 and 6 and 8 and 2? And I should get-- let's see-- 30, 40, 43. So Lisp should tell me that that's 43.
-Forming combinations is the basic needs of combination that we'll be looking at. And then, well, you see some syntax here. Lisp uses what's called prefix notation, which means that the operator is written to the left of the operands. It's just a convention. And notice, it's fully parenthesized. And the parentheses make it completely unambiguous. So by looking at this, I can see that there's the operator, and there are 1, 2, 3, 4 operands.
-And I can see that the second operand here is itself some combination that has one operator and two operands. Parentheses in Lisp are a little bit, or are very unlike parentheses in conventional mathematics. In mathematics, we sort of use them to mean
-grouping, and it sort of doesn't hurt if sometimes you leave out parentheses if people understand that that's a group. And in general, it doesn't hurt if you put in extra parentheses, because that maybe makes the grouping more distinct.
-Lisp is not like that. In Lisp, you cannot leave out parentheses, and you cannot put in extra parentheses, because putting in parentheses always means, exactly and precisely, this is a combination which has meaning, applying operators to operands. And if I left this out, if I left those parentheses out, it would mean something else.
-In fact, the way to think about this, is really what I'm doing when I write something like this is writing a tree. So this combination is a tree that has a plus and then a 3 and then a something else and an 8 and a 2. And then this something else here is itself a little subtree that has a star and a 5 and a 6.
-And the way to think of that is, really, what's going on are we're writing these trees, and parentheses are just a way to write this two-dimensional structure as a linear character string. Because at least when Lisp first started and people had teletypes or punch cards or whatever, this was more convenient. Maybe if Lisp started today, the syntax of Lisp would look like that.
-Well, let's look at what that actually looks like on the computer. Here I have a Lisp interaction set up. There's a editor. And on the top, I'm going to type some values and ask Lisp what they are. So for instance, I can say to Lisp, what's the value of that symbol? That's 3. And I ask Lisp to evaluate it. And there you see Lisp has returned on the bottom, and said, oh yeah, that's 3.
-Or I can say, what's the sum of 3 and 4 and 8? What's that combination? And ask Lisp to evaluate it. That's 15. Or I can type in something more complicated. I can say, what's the sum of the product of 3 and the sum of 7 and 19.5? And you'll notice here that Lisp has something built in that helps me keep track of all these parentheses. Watch as I type the next closed parentheses, which is going to close the combination starting with the star. The opening one will flash.
-Here, I'll rub those out and do it again. Type close, and you see that closes the plus. Close again, that closes the star. Now I'm back to the sum, and maybe I'm going to add that all to 4. That closes the plus. Now I have a complete combination, and I can ask Lisp for the value of that.
+现在让我们正式开始学习Lisp
+Let's actually start in learning Lisp now.
+
+事实上 我们将开始学习一些更重要的事
+Actually, we'll start out by learning something much more important,
+
+或许将是本科中最重要的 而不是Lisp本身
+maybe the very most important thing in this course, which is not Lisp, 
+
+
+in particular, of course, but rather a general framework
+
+for thinking about languages that I already alluded to.
+
+当有人要想你展示一门新语言
+When somebody tells you they're going to show you a language,
+
+你应该问他
+what you should say is,
+
+（你语言）所用的初等元素是什么
+what I'd like you to tell me is what are the primitive elements?
+
+这门语言又配备了什么
+What does the language come with?
+
+你又如何将它们整合在一起
+Then, what are the ways you put those together?
+
+怎么组合的
+What are the means of combination?
+
+允许你将这些初等元素整合在一起
+What are the things that allow you to take these primitive elements
+
+以构建更大的对象的又是什么
+and build bigger things out of them?
+
+
+What are the ways of putting things together?
+
+以及 抽象的方法是什么
+And then, what are the means of abstraction?
+
+
+How do we take those complicated things and draw those boxes around them?
+
+How do we name them so that we can now use them
+
+as if they were primitive elements in making still more complex things?
+
+等等 等等 等等
+And so on, and so on, and so on.
+
+因此 当有人告诉你
+So when someone says to you, gee,
+
+嘿 我发明了一种新的计算机语言
+I have a great new computer language,
+
+你不应该问 用你的语言编写矩阵转置需要多少代码
+you don't say, how many characters does it take to invert a matrix?
+
+这是风马牛不相及的
+It's irrelevant.
+
+如果该语言内建了矩阵或者类似的东西
+What you say is, if the language did not come with matrices built in
+
+那你就应该问他
+or with something else built in,
+
+我应该如何构建这些东西？？ -- 待议
+how could I then build that thing?
+
+
+What are the means of combination which would allow me to do that?
+
+
+And then, what are the means of abstraction
+
+
+which allow me then to use those as elements
+
+in making more complicated things yet?
+
+我们将看到Lisp有一些原始数据和原始过程
+Well, we're going to see that Lisp has some primitive data and some primitive procedures.
+
+好吧 这次是真的开始了（译者：笑）
+In fact, let's really start.
+
+这里有一个Lisp的原始数据 数字3
+And here's a piece of primitive data in Lisp, number 3.
+
+事实上 如果打破沙锅问到底的话 这不是数字3
+Actually, if I'm being very pedantic, that's not the number 3.
+
+这只是一个符号 用以代表Plato观念下的数字3的
+That's some symbol that represents Plato's concept of the number 3.
+
+这又是另一个
+And here's another.
+
+这个是Lisp中又一个原始数据 17.4
+Here's some more primitive data in Lisp, 17.4.
+
+又或者说 代表17.4
+Or actually, some representation of 17.4.
+
+这儿还有一个 5
+And here's another one, 5.
+
+然后这儿又有一个内建于Lisp的原始对象 加和
+Here's another primitive object that's built in Lisp, addition.
+
+如果又要打破砂锅问到底的话
+Actually, to use the same kind of pedantic--
+
+这只是一个名字 代表加和事物的原始方法而已
+this is a name for the primitive method of adding things.
+
+就像这个是Plato式的3
+Just like this is a name for Plato's number 3,
+
+
+this is a name for Plato's concept of how you add things.
+
+这些都是初等元素
+So those are some primitive elements.
+
+我可以将它们放在一起
+I can put them together.
+
+我可以说 3加17.4加5的和是多少
+I can say, gee, what's the sum of 3 and 17.4 and 5?
+
+这等同于说
+And the way I do that is to say,
+
+让我们把求和运算符应用于这三个数
+let's apply the sum operator to these three numbers.
+
+我可以得到什么呢 是8 是17 还是25.4
+And I should get, what? 8, 17. 25.4.
+
+因此 我可以问Lisp这个的值是多少
+So I should be able to ask Lisp what the value of this is,
+
+（表达式）返回25.4
+and it will return 25.4.
+
+介绍一些名字吧
+Let's introduce some names.
+
+我所写的这些东西就叫做组合
+This thing that I typed is called a combination.
+
+
+And a combination consists, in general, of applying an operator--
+
+
+so this is an operator--
+
+to some operands.
+
+这些是操作数
+These are the operands.
+
+当然 我可以完成更复杂的事
+And of course, I can make more complex things.
+
+我可以使之更复杂是因为 这些操作数
+The reason I can get complexity out of this is because the operands themselves,
+
+通常来说 也可以是组合
+in general, can be combinations.
+
+比如 3加上5乘以6乘以8乘以2的积的和是多少
+So for instance, I could say, what is the sum of 3 and the product of 5 and 6 and 8 and 2?
+
+而我应该得到 我算一下 30 40 43
+And I should get-- let's see-- 30, 40, 43.
+
+因此Lisp应该给我说这个表达式的值是43
+So Lisp should tell me that that's 43.
+
+
+形成组合是我们
+Forming combinations is the basic needs of combination that we'll be looking at.
+
+你所看到的这些语法
+And then, well, you see some syntax here.
+
+就是Lisp用的所谓的前缀表示法
+Lisp uses what's called prefix notation,
+
+意即操作符在操作数的左端
+which means that the operator is written to the left of the operands.
+
+这只是个约定
+It's just a convention.
+
+
+And notice, it's fully parenthesized.
+
+这些括号使得他们完全一致
+And the parentheses make it completely unambiguous.
+
+因此只要看看这个 我就可以知道这个是操作符
+So by looking at this, I can see that there's the operator,
+
+以及这些是1个 2个 3个 4个操作数
+and there are 1, 2, 3, 4 operands.
+
+而且我也可以发现第二个操作数是个组合
+And I can see that the second operand here is itself some combination
+
+该组合有一个操作符和两个操作数
+that has one operator and two operands.
+
+Lisp中的括号 有点或者非常不同于
+Parentheses in Lisp are a little bit,
+
+数学中的括号
+or are very unlike parentheses in conventional mathematics.
+
+数学中 我们常将其用于分组
+In mathematics, we sort of use them to mean grouping,
+
+如果有时你忘了闭合括号 但其他人能理解你的意图
+and it sort of doesn't hurt if sometimes you leave out parentheses
+
+这也无关竟要
+if people understand that that's a group.
+
+通常的 你多加了括号也无所谓
+And in general, it doesn't hurt if you put in extra parentheses,
+
+因为这样只会使得分组更加明确
+because that maybe makes the grouping more distinct.
+
+Lisp可不像这样
+Lisp is not like that.
+
+Lisp中你既不能不闭合括号
+In Lisp, you cannot leave out parentheses,
+
+亦不能添加多余的括号
+and you cannot put in extra parentheses,
+
+因为加括号总是意味着
+because putting in parentheses always means,
+
+确切的来说 所括之物是一个组合
+exactly and precisely, this is a combination which has meaning,
+
+表示将操作符应用于操作数
+applying operators to operands.
+
+如果我不闭合这个括号
+And if I left this out, if I left those parentheses out,
+
+这个就变成其他的意思了
+it would mean something else.
+
+事实上
+In fact, the way to think about this,
+
+
+is really what I'm doing when I write something like this is writing a tree.
+
+这个组合实际上是一个树 树具有一个“+”
+So this combination is a tree that has a plus and
+
+以及 一个3和一些其他的东西和一个8 还有一个2
+then a 3 and then a something else and an 8 and a 2.
+
+而这里的其他的东西
+And then this something else here is 
+
+它本身是一个有一个“*”一个5和一个6的子树
+itself a little subtree that has a star and a 5 and a 6.
+
+
+And the way to think of that is, really,
+
+what's going on are we're writing these trees,
+
+括号只是将这种二维结构写作线性字符串
+and parentheses are just a way to write this two-dimensional structure
+
+的一种方法罢了
+as a linear character string.
+
+因为至少在Lisp发明时 人们还在用电传打字机或者打孔卡
+Because at least when Lisp first started and people had teletypes or punch cards or whatever,
+
+这种记法方便多了
+this was more convenient.
+
+如果Lisp发明在当今 语法可能会像树那样
+Maybe if Lisp started today, the syntax of Lisp would look like that.
+
+那么 让我们看看在计算机里面它究竟是什么样
+Well, let's look at what that actually looks like on the computer.
+
+这里有个Lisp解释套件
+Here I have a Lisp interaction set up.
+
+这是个编辑器
+There's a editor.
+
+我将要在上方写一些表达式并让Lisp对其求值
+And on the top, I'm going to type some values and ask Lisp what they are.
+
+比如 我可以问Lisp
+So for instance, I can say to Lisp,
+
+这个符号的值是多少
+what's the value of that symbol?
+
+我键入3
+That's 3.
+
+然后叫Lisp对其求值
+And I ask Lisp to evaluate it.
+
+然后你就会看到Lisp在下面返回了一些信息
+And there you see Lisp has returned on the bottom,
+
+这个值就是3
+and said, oh yeah, that's 3.
+
+我也可以问 3加上4加上8的和是多少
+Or I can say, what's the sum of 3 and 4 and 8?
+
+键入这个组合
+What's that combination?
+
+让Lisp对其求值
+And ask Lisp to evaluate it.
+
+返回15
+That's 15.
+
+我可以键入一些更复杂的东西
+Or I can type in something more complicated.
+
+将3乘以7加19.5的和的乘积求和得多少
+I can say, what's the sum of the product of 3 and the sum of 7 and 19.5?
+
+你会发现Lisp内建了一些功能
+And you'll notice here that Lisp has something built in
+
+帮你跟踪这些括号
+that helps me keep track of all these parentheses.
+
+看我键入下一个闭合圆括号
+Watch as I type the next closed parentheses,
+
+用于闭合以星号开头的那个组合
+which is going to close the combination starting with the star.
+
+开合的那个圆括号会闪一下
+The opening one will flash.
+
+我把这些括号擦去 再示范一次
+Here, I'll rub those out and do it again.
+
+键入闭合括号 闭合了加号组合
+Type close, and you see that closes the plus.
+
+再键入闭合括号 闭合了星号组合
+Close again, that closes the star.
+
+现在我又回到了加 我将他们与4相加
+Now I'm back to the sum, and maybe I'm going to add that all to 4.
+
+闭合了加号组合
+That closes the plus.
+
+现在我补全了组合 然后我问Lisp他们的值是多少
+Now I have a complete combination, and I can ask Lisp for the value of that.
+
 That kind of paren balancing is something that's built into a lot of Lisp systems to help you keep track, because it is kind of hard just by hand doing all these parentheses. There's another kind of convention for keeping track of parentheses. Let me write another complicated combination. Let's take the sum of the product of 3 and 5 and add that to something.
 And now what I'm going to do is I'm going to indent so that the operands are written vertically. Which the sum of that and the product of 47 and-- let's say the product of 47 with a difference of 20 and 6.8. That means subtract 6.8 from 20. And then you see the parentheses close. Close the minus. Close the star.
 And now let's get another operator. You see the Lisp editor here is indenting to the right position automatically to help me keep track. I'll do that again. I'll close that last parentheses again. You see it balances the plus. Now I can say, what's the value of that?
@@ -1331,6 +1699,7 @@ PROFESSOR: If I wrote this, if I wrote that, what I would be doing is defining a
 AUDIENCE: Right. I mean, you come up with the same thing, except for you really got a different--
 PROFESSOR: Right. And the difference would be, in the old one-- Let me be a little bit clearer here. Let's call this A, like here. And pretend here, just for contrast, I wrote, define D to be the product of 5 and 5. And the difference between those, let's think about interactions with the Lisp interpreter. I could type in A and Lisp would return 25. I could type in D, if I just typed in D, Lisp would return compound procedure D, because that's what it is. It's a procedure.
 I could run D. I could say, what's the value of running D? Here is a combination with no operands. I see there are no operands. I didn't put any after D. And it would say, oh, that's 25. Or I could say, just for completeness, if I typed in, what's the value of running A? I get an error. The error would be the same one as over there. It'd be the error would say, sorry, 25, which is the value of A, is not an operator that I can apply to something.
+
 MIT OpenCourseWare
 http://ocw.mit.edu
 6.001 Structure and Interpretation of Computer Programs, Spring 2005
