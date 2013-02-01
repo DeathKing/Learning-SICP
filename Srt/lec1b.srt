@@ -1,0 +1,2559 @@
+大家好
+Hi
+
+大家都已经知道程序员的工作就是设计能够达成特定目标的程序
+You've seen that the job of a programmer is to design processes that accomplish particular goals
+
+比如求出一个数的平方根或者其它随便一些你想要做的事
+such as finding the square roots of numbers or other sorts of things you might want to do
+
+目前为止我们还没介绍别的什么东西
+We haven't introduced anything else yet
+
+当然了
+Of course
+
+程序员完成工作的方式就是构建“咒语”
+the way in which a programmer does this is by constructing spells
+
+通过过程和表达式构建出来的“咒语”
+which are constructed out of procedures and expressions
+
+这些“咒语”一定程度上指明了程序员想要达成目标的方式
+And that these spells are somehow direct a process to accomplish the goal that was intended by the programmer
+
+程序员为了使整个过程变得高效
+In order for the programmer to do this effectively
+
+都必须理解它们之间的联系
+he has to understand the relationship between the particular things
+
+他写下的这些“咒语”
+that he writes these particular spells
+
+和他试图控制的程序执行过程的行为之间的联系
+and the behavior of the process that he's attempting to control
+
+所以我们在这门课中要做的就是试图以尽可能清晰的方式建立这样的联系
+So what we're doing this lecture is attempt to establish that connection in as clear a way as possible
+
+特别地，我们要理解特定模式的过程和表达式将会怎样导致特定模式的行为
+What we will particularly do is understand how particular patterns of procedures and expressions cause particular patterns of execution
+
+也即程序执行过程产生的特定的行为
+particular behaviors from the processes
+
+让我们开始吧
+Let's get down to that
+
+我将会从一个非常简单的程序开始
+I'm going to start with a very simple program
+
+这是一个计算两个数的平方和的程序
+This is a program to compute the sum of the squares of two numbers
+
+我们将x和y的平方和定义为
+And we'll define the sum of the squares of x and y to be
+
+x的平方——我这么写——和y的平方的和
+the sum of the square of x-- I'm going to write it that way-- and the square of y
+
+x的平方是指x和x的乘积
+where the square of x is the product of x and x
+
+现在我们这么说
+Now,supposing I were to say something to this,like
+
+在这个程序这么定义好之后
+to the system after having defined these things,of the form
+
+求3和4的平方和
+the sum of the squares of 3 and 4
+
+我希望得到25
+I am hoping that I will get out a 25
+
+因为3的平方是9
+Because the square of 3 is 9
+
+4的平方是16
+and the square of 4 is 16
+
+它们的和是25
+and 25 is the sum of those
+
+但这都是怎么回事呢
+But how does that happen
+
+如果我们要理解程序执行过程以及我们如何控制整个过程
+If we're going to understand processes and how we control them
+
+那么我们就得把整个过程的机制与过程执行时所产生的行为对应起来  --process
+then we have to have a mapping from the mechanisms of this procedure into the way in which these processes behave
+
+我们将要得到的是一个正式的
+What we're going to have is a formal
+
+或者说半正式的机械的模型
+or semi-formal mechanical model
+
+你要理解计算机如何事实上，大体上实现这个机制
+whereby you understand how a machine could,in fact,in principle,do this
+
+不论实际的计算机究竟是怎么实现的
+Whether or not the actual machine really does
+
+我此刻要告诉你们的都与实际的实现完全没有关系
+what I'm about to tell you is completely irrelevant at this moment
+
+实际上，这是一个工程模型
+In fact,this is an engineering model
+
+就好像电子寄存器
+in the same way that electrical resistor
+
+我们写出一个模型V=IR
+we write down a model v equals i r
+
+这基本上是正确的
+it's approximately true
+
+但不是完全正确的
+It's not really true
+
+如果我让电流流过寄存器那它就毁坏了
+If I put up current through the resistor it goes boom
+
+所以电压并不总与电流成线性关系
+So the voltage is not always proportional to the current
+
+但是对于有的情况来说这个模型是适用的
+but for some purposes the model is appropriate
+
+比如我们将要介绍的这个模型
+In particular,the model we're going to describe right now
+
+我把这个模型称作代换模型
+which I call the substitution model
+
+这是我们能接触到的最简单的
+is the simplest model that we have
+
+使我们能理解过程和程序如何起作用
+for understanding how procedures work and how processes work
+
+以及过程如何组成程序的模型
+How procedures yield processes
+
+代换模型对接下来几天我们将要接触到的东西都是适用的
+And that substitution model will be accurate for most of the things we'll be dealing with in the next few days
+
+但最终，认为计算机实际就是这么工作（代换模型）的幻想总会破灭
+But eventually,it will become impossible to sustain the illusion that that's the way the machine works
+
+并且我们将要学习其它的更特殊的模型
+and we'll go to other more specific and particular models
+
+这些模型会展现出更多细节
+that will show more detail
+
+好了，接下来，我们考虑
+OK,well,the first thing,of course,is we say
+
+黑板上已经有了哪些东西
+what are the things we have here
+
+已经有了一些神秘的符号
+We have some cryptic symbols
+
+这些神秘的符号是由几块组成的
+And these cryptic symbols are made out of pieces
+
+还有几种表达式
+There are kinds of expressions
+
+现在我们看一看都有哪些类型的表达式
+So let's write down here the kinds of expressions there are
+
+有数字
+And we have-- and so far I see things like numbers
+
+有像那样的符号
+I see things like symbols like that
+
+我们之前见过Lambda表达式
+We have seen things before like lambda expressions
+
+当然了没出现在黑板上
+but they're not here
+
+先撇开不谈
+I'm going to leave them out
+
+Lambda表达式
+Lambda expressions
+
+稍后再讨论
+we'll worry about them later
+
+还有定义语句
+Things like definitions.
+
+还有条件语句
+Things like conditionals
+
+最后还有组合式
+And finally,things like combinations
+
+这些表达式是特殊形式 我们稍后再讨论 
+These kinds of expressions are-- I'll worry about later-- these are special forms
+
+它们有一些专门的规则
+There are particular rules for each of these
+
+然而我要告诉你们的是 
+I'm going to tell you,however
+
+处理通常情况的规则
+the rules for doing a general case
+
+通常是怎样对一个组合式求值的
+How does one evaluate a combination
+
+因为 实际上 在黑板的那边 
+Because,in fact,over here
+
+全都是一些组合式以及一些符号和数字
+all I really have are combinations and some symbols and numbers
+
+而简单的 比如一个数
+And the simple things like a number,well
+
+求值的结果就是这个数本身
+it will evaluate to itself
+
+在我将要介绍的模型中
+In the model I will have for you
+
+符号的概念将不会出现
+the symbols will disappear
+
+
+They won't be there at the time when you need them
+
+when you need to get at them
+
+所以我只需要像你们解释
+So the only thing I really have to explain to you is
+
+如何对组合式求值
+how do we evaluate combinations
+
+好吧 继续
+OK,let's see
+
+先给出第一张幻灯片
+So first I want to get the first slide
+
+这是对一个表达式求值的规则
+Here is the rule for evaluating an application
+
+我们看到这条规则指出
+What we have is a rule that says
+
+要对一个组合式求值
+to evaluate a combination
+
+有三个主要的部分
+there are two parts,three parts to the rule
+
+组合式有几个部分
+The combination has several parts
+
+有运算符和操作数
+It has operators and it has operands
+
+运算符返回一个过程
+The operator returns into a procedure
+
+也就是说如果我们对运算符求值
+If we evaluate the operator
+
+结果是一个过程
+we will get a procedure
+
+比如你们也看到了
+And you saw,for example
+
+我向计算机输入一个“+”然后产生了一些复合过程以及其它的一些东西
+how I'll type “+” at the machine and out came compound procedure something or other
+
+而操作数求值就会得到参数
+And the operands produce arguments
+
+一旦我们完成了对运算符的求值得到了一个过程
+Once we've gotten the operator evaluated to get a procedure
+
+并且对操作数也完成求值得到了参数
+and the argument is evaluated to get argument
+
+也就是操作数作为参数的值
+the operand's value to get arguments
+
+我们通过复制过程体
+we apply the procedure to these arguments
+
+来将其应用到这些参数上
+by copying the body of the procedure
+
+用术语来说 过程体指的就是定义这个过程的表达式
+which is the expression that the procedure is defined in terms of
+
+接下来要做的是
+What is it supposed to do
+
+用求得的实际参数代换过程的形式参数
+Substituting the argument supplied for the formal parameters of the procedure
+
+形式参数就是过程定义的变量名
+the formal parameters being the names defined by the declaration of the procedure
+
+然后我们对产生的新过程体求值
+Then we evaluate the resulting new body
+
+这个新过程体是由将代换模型应用到之前的过程体而产生的
+the body resulting from copying the old body with the substitutions made
+
+这个规则非常简单
+It's a very simple rule
+
+并且我们会非常形式化地应用这个规则一段时间
+and we're going to do it very formally for a little while
+
+因为接下来几节课
+Because for the next few lectures
+
+我想让各位做的是
+what I want you to do is to say
+
+如果有什么不能理解的
+if I don't understand something,if I don't understand something
+
+就直接机械化地应用这个规则
+be very mechanical and do this
+
+接下来
+So let's see
+
+考虑这么一个求值过程
+Let's consider a particular evaluation
+
+之前讨论过的
+the one we were talking about before
+
+3和4的平方和
+The sum of the squares of 3 and 4
+
+这是什么意思呢
+What does that mean
+
+已经知道求平方的过程是怎样的
+It says,take,well,I could find out what's on the square
+
+是某个过程
+it's some procedure
+
+但我并不关心这个过程的具体表述
+and I'm not going to worry about the representation
+
+并且我也不会在黑板上写出来
+and I'm not going to write it on the blackboard for you
+
+还有3 代表某个数字
+And I have that 3,represents some number
+
+但如果要我复述这个数字
+but if I have to repeat that number
+
+我并不知道这个数字是什么
+I can't tell you the number
+
+这个数字本身是抽象的
+The number itself is some abstract thing
+
+只知道有个数字能代表它
+There's a numeral which represents it
+
+我把这个数字叫作3
+which I'll call 3
+
+并且会在代换中用到它
+and I'll use that in my substitution
+
+4也是个数字
+And 4 is also a number
+
+我在这个过程体中用3代换x 用4代换y
+I'm going to substitute 3 for x and 4 for y in the body of this procedure
+
+看黑板这里
+that you see over here
+
+这是过程体
+Here's the body of the procedure
+
+它与这个组合式关联
+It corresponds to this combination
+
+这个组合式是个求和过程
+which is an addition
+
+而那就归纳成这样一个过程
+So what that reduces to
+
+简而言之
+as a reduction step
+
+称为
+we call it
+
+3和4的平方和
+is the sum of the square of 3 and the square of 4
+
+接下来我要做的是
+Now,what's the next step I have to do here
+
+对它求值
+I say,well,I have to evaluate this
+
+根据之前给出的求值规则
+According to my rule
+
+就是各位刚刚在幻灯片上看到的
+which you just saw on that overhead or slide
+
+我们要对操作数求值
+what we had was that we have to evaluate the operands
+
+就是这些操作数
+and here are the operands
+
+这是第一个操作数 这是第二个操作数
+here's one and here's the next operand
+
+我们还得对运算符求值
+and how we have to evaluate procedure
+
+对它们求值的顺序无关紧要
+The order doesn't matter
+
+然后我们要应用这个过程
+And then we're going to apply the procedure
+
+即求和过程
+which is plus
+
+然后很神奇的 不知怎么回事就能得到答案
+and magically somehow that's going to produce the answer
+
+我不会深究求和过程的实现
+I'm not to open up plus and look inside of it
+
+然而 为了对操作数求值
+However,in order to evaluate the operand
+
+我们采用任意一种顺序来求值
+let's pick some arbitrary order and do them
+
+我会从右到左求值
+I'm going to go from right to left
+
+好了 为了对这个操作数求值
+Well,in order to evaluate this operand
+
+我得用同样的规则对这操作数的每个部分求值
+I have to evaluate the parts of it by the same rule
+
+首先需要弄清出求平方是什么
+And the parts are I have to find out what square is
+
+是某个过程
+it's some procedure
+
+有个形式参数x
+which has a formal parameter x
+
+然后还有个操作数是4
+And also,I have an operand which is 4
+
+用4代换求平方过程的形式参数x
+which I have to substitute for x in the body of square
+
+接下来基本上可以这么说
+So the next step is basically to say that
+
+这就变成了求3的平方以及4与4乘积的和
+this is the sum of the square of 3 and the product of 4 and 4
+
+当然了 还可以接着深入分析乘法
+Of course,I could open up asterisk if I liked
+
+这个求乘积的操作
+the multiplication operation
+
+但现在这个不重要
+but I'm not going to do that
+
+先把乘法过程看作是内建的
+I'm going to consider that primitive
+
+其实 如果你深究计算机的抽象层次
+And,of course,at any level of detail,if you look inside this machine
+
+你会发现无论在具体哪一个层次
+you're going to find that
+
+在其下都还有若干个你不清楚的抽象层次
+there's multiple levels below that that you don't know about
+
+但我们必须明白要学会忽略细节
+But one of the things we have to learn how to do is ignore details
+
+理解复杂事物的关键是避免不必要的观察 计算和思考
+The key to understanding complicated things is to know what not to look at and what not compute and what not to think
+
+所以对这个乘法过程的细节我们不深入研究
+So we're going to stop this one here and say
+
+就直接看作两个数的乘积
+oh,yes,this is the product of two things
+
+现在把两个4乘起来
+We're going to do it now
+
+于是就有3的平方与16的和
+So this is nothing more than the sum of the square of 3 and 16
+
+还有一个求平方的表达式要求值
+And now I have another thing I have to evaluate
+
+注意这是3的平方
+but that square of 3
+
+这与之前求4的平方是一个过程
+well,it's the same thing
+
+于是整个表达式就变成了求3和3乘积与16的和
+That's the sum of the product of 3 and 3 and 16
+
+也就是求9和16的和 结果是25
+which is the sum of 9 and 16,which is 25
+
+大家现在看到了应用代换模型的基本方法
+So now you see the basic method of doing substitutions
+
+但我提醒大家 
+And I warn you that
+
+代换模型并不能准确描述计算机实际的运行方式
+this is not a perfect description of what the computer does
+
+但这个模型对于接下来几节课我们要讨论的问题
+But it's a good enough description
+
+已经能描述得足够清楚
+for the problems that we're going to have in the next few lectures
+
+你可以先认为这是正确的
+that you should think about this religiously
+
+认为计算机就是这么运行的
+And this is how the machine works for now
+
+之后我们的讨论会变得更加严谨
+Later we'll get more detailed
+
+好了 现在可以看到
+Now,of course
+
+我在这个例子中采用了从右到左的求值顺序
+I made a specific choice of the order of evaluation here
+
+当然还有别的选择
+There are other possibilities
+
+如果我们回过头来再看幻灯片
+If we go back to the telestrator here
+
+上所写的代换模型应用规则
+and look at the substitution rule
+
+可以发现刚才我对运算符求值得到了一个过程
+we see that I evaluated the operator to get the procedures
+
+对运算对象求值得到了過程的实际参数
+and I evaluated the operands to get the arguments
+
+然后才将参数应用到过程
+first before I do the application
+
+这样做是完全可行的
+It's entirely possible
+
+还有别的求值模型比如正则序求值
+and there are alternate rules called normal order evaluation
+
+应用正则序你可以先用表达式去代换
+whereby you can do the substitution of the expressions
+
+作为过程的形式参数的运算对象 然后再求值
+which are the operands for the formal parameters inside the body first
+
+这么做会得到同样的答案
+And you'll get also the same answer
+
+但是现在 考虑到实际情况
+But right now,for concreteness
+
+因为计算机实际是这么运行的
+and because this is the way our machine really does it
+
+我还是会给出在黑板上演示的方式
+I'm going to give you this rule
+
+这种方式给出了明确的顺序
+which has a particular order
+
+当然了这些顺序一定程度上也是灵活可变的
+But that order is to some extent arbitrary,too
+
+长远来看
+In the long run
+
+你采用哪种求值顺序来理解都有各自的理由
+there are some reasons why you might pick one order or another
+
+以后我们会继续讨论这个问题
+and we'll get to that later in the subject
+
+好了 为了让大家理解这都是怎么回事
+OK,well now the only other thing I have to tell you
+
+还需要给大家介绍一个东西
+about just to understand what's going on is
+
+来看幻灯片上对条件表达式的解释
+let's look at the rule for conditionals
+
+条件表达式很简单
+Conditionals are very simple
+
+我给大家详细解释一下
+and I'd like to examine this
+
+条件表达式就是if
+A conditional is something that is if
+
+当然还有cond
+there's also cond of course
+
+我会把条件表达式各部分的名称都写下来
+but I'm going to give names to the parts of the expression
+
+首先有一个predicate表达式
+There's a predicate
+
+这是个求值结果为真或假的表达式
+which is a thing that is either true or false
+
+然后有一个consequent表达式
+And there's a consequent
+
+当predicate表达式的结果为真就对这个表达式求值
+which is the thing you do if the predicate is true
+
+还有个alternative表达式
+And there's an alternative
+
+当predicate表达式结果为假就对这个表达式求值
+which is the thing you do if the predicate is false
+
+顺便提一句
+It's important,by the way
+
+知道事物各部分的名称
+to get names for,to get names for
+
+或者表达式各部分的名称
+the parts of things
+
+很重要
+or the parts of expressions
+
+每个“魔法师”一定会告诉你的是
+One of the things that every sorcerer will tell you is
+
+如果你能叫出一个精灵的名字
+if you have the name of a spirit
+
+你就有控制它的能力
+you have power over it
+
+所以你得掌握这些名称
+So you have to learn these names
+
+以便之后的讨论
+so that we can discuss these things
+
+现在我们有了一个predicate表达式
+So here we have a predicate
+
+一个consequent表达式
+a consequent
+
+还有个alternative表达式
+and an alternative
+
+用这些名称 我们发现一个if表达式
+And,using such words,we see that an if expression
+
+
+the problems you evaluate to the predicate expression
+
+如果结果为真
+if that yields true
+
+就对consequent表达式求值
+then you then go on to evaluate the consequent
+
+否则
+Otherwise
+
+就对alternative表达式求值
+you evaluate the alternative expression
+
+我想通过一个具体的程序来进一步说明
+So I'd like to illustrate that now in the context of a particular little program
+
+就写一个我们会经常遇到的程序吧
+Going to write down a program which we're going to see many times
+
+这是由皮亚诺算术定义的求x和y之和的过程
+This is the sum of x and y done by what's called Peano arithmetic
+
+其实就是增加和减少
+which is all we're doing is incrementing and decrementing
+
+来看看这个
+And we're going to see this for a little bit
+
+这是个非常重要的程序
+It's a very important program
+
+如果x等于0
+If x equals 0
+
+那么结果就是y
+then the result is y
+
+否则
+Otherwise
+
+结果就是x减1与y加1的和
+this is the sum of the decrement of x and the increment of y
+
+以后我们会继续研究这个加法过程
+We're going to look at this a lot more in the future
+
+现在看前方
+Let's look at the overhead
+
+现在有了这么个过程
+So here we have this procedure
+
+我们看看怎么应用代换模型
+and we're going to look at how we do the substitutions
+
+以及代换的顺序
+the sequence of substitutions
+
+我现在想要求3和4的和
+Well,I'm going to try and add together 3 and 4
+
+根据我演示给大家步骤
+Well,using the first rule that I showed you
+
+第一步 在过程体中
+we substitute 3 for x and 4 four y
+
+用3代换x 用4代换y
+in the body of this procedure
+
+过程体
+The body of the procedure is the thing
+
+由if表达式开始 在这儿结束
+that begins with if and finishes over here
+
+于是我们就有了
+So what we get is
+
+如果3是0
+of course,if 3 is 0
+
+那么结果就是4
+then the result is 4
+
+否则
+Otherwise
+
+结果就是3减1
+it's the sum of the decrement of 3
+
+与4加1的和
+and the increment of 4
+
+但这部份我不会去管它
+But I'm not going to worry about these yet
+
+因为3不等于0
+because 3 is not 0
+
+于是答案不是4
+So the answer is not 4
+
+因此
+Therefore
+
+于是整个if表达式就可以简化成
+this if reduces to
+
+对这个表达式的求值
+an evaluation of the expression
+
+求3减1
+the sum to the decrement of 3
+
+与4加1的和
+and the increment of 4
+
+继续求值
+Continuing with my evaluation
+
+先认为加1的过程是内建过程
+the increment I presume to be primitive
+
+然后就有了5
+and so I get a 5 there
+
+同样把减1也认为是内建的
+OK,and then the decrement is also primitive
+
+然后就有了2
+and I get a 2
+
+于是我把问题化简了
+And so I change the problem into a simpler problem
+
+不是3加4的问题了
+Instead of adding 3 to 4
+
+而是2加5的问题了
+I'm adding 2 to 5
+
+为什么这样就变简单了呢
+The reason why this is a simpler problem
+
+因为我在减小x
+is because I'm counting down on x
+
+最终x会变为0
+and eventually,then,x will be 0
+
+这就是代换模型了
+So,so much for the substitution rule
+
+通常来讲
+In general
+
+在对if表达式使用代换模型的时候
+I'm not going to write down intermediate steps
+
+我不会写下所有中间步骤
+when using substitutions having to do with ifs
+
+因为这么做只能把事情复杂化
+because they just expand things to become complicated
+
+我们要做的是
+What we will be doing is saying
+
+把求3和4的和
+oh,yes,the sum of 3 and 4
+
+变成求2和5的和
+results in the sum of 2 and 5
+
+在那之后
+and reduces to the sum of 2 and 5
+
+接着变为求1和6的和
+which,in fact,reduces to the sum of 1 and 6
+
+最后变成求0和7的和
+which reduces to the sum of 0 and 7
+
+看这儿
+over here
+
+最后结果就是7
+which reduces to a 7
+
+这就是我们想要的结果
+That's what we're going to be seeing
+
+现在 各位对第一部分的内容有疑问么
+Are there any questions for the first segment yet
+
+请
+Yes
+
+学生 你用了1+过程和-1+过程
+STUDENT: You're using 1 plus and minus 1 plus
+
+它们都是内建过程么
+Are those primitive operations
+
+教授 是的
+PROFESSOR: Yes
+
+你们在这门课中要明白的一件事是
+One of the things you're going to be seeing in this subject
+
+我不会考虑
+is I'm going to without thinking about it
+
+给大家介绍越来越多的内建过程
+introduce more and more primitive operations
+
+可以假定
+There's presumably some large library
+
+有一些庞大的内建过程的程序库
+of primitive operations somewhere
+
+不用过分追究这些内建过程
+But it doesn't matter that they're primitive
+
+可能有一些手册有这些内建过程的索引便于我们查找
+there may be some manual that lists them all
+
+如果我像大家解释内建过程的具体细节
+If I tell you what they do you say
+
+不要怀疑 我确实知道
+oh,yes,I know what they do
+
+比如 这个减1的过程
+So one of them is the decrementor
+
+-1+
+minus 1 plus
+
+另一个加1的过程
+and the other operation is increment
+
+1+
+which is 1 plus
+
+谢谢大家
+Thank you
+
+第一部分结束
+That's the end of the first segment [MUSIC PLAYING BY J S BACH]
+
+教授 现在我们有了一个合理的 机械的方式
+PROFESSOR: Now that we have a reasonably mechanical way
+
+去理解一个由过程和表达式组成的程序是如何演化成流程的 --process
+of understanding how a program made out of procedures and expressions evolves a process
+
+我想要大家培养出一些直觉
+I'd like to develop some intuition
+
+有关程序如何演化成流程的直觉 --process
+about how particular programs evolve particular processes
+
+有关程序到底是什么样子的直觉
+what the shapes of programs have to be
+
+这样才能得到特定需求的流程 --process
+in order to get particular shaped processes
+
+这就不得不提到预览了 --pre-visualizing
+This is a question about really pre-visualizing
+
+这是个与摄影有关的词汇
+That's a word from photography
+
+我曾经对摄影十分着迷
+I used to be interested in photography a lot
+
+你会发现
+and one of the things you discover
+
+初学摄影的时候
+when you start trying to learn about photography
+
+你很想成为一名有创意的摄影师
+is that you say gee,I'd like to be a creative photographer
+
+我知道怎么做 按按钮
+Now,I know the rules,I push buttons
+
+调整光圈什么的
+and I adjust the aperture and things like that
+
+但要想有创意
+But the key to being a creative person,partly
+
+一定程度上靠的是能在一定层次上进行分析
+is to be able to do analysis at some level
+
+比如 在按下快门前
+To say,how do I know what it is
+
+我怎么知道交卷上最终是怎样的画面呢
+that I'm going to get on the film before I push the button
+
+我能在心中
+Can I imagine in my mind
+
+非常准确清晰地刻画出拍好的照片么
+the resulting image very precisely and clearly
+
+那精心地取景
+as a consequence of the particular framing
+
+认真地调整光圈
+of the aperture I choose
+
+仔细地对焦
+of the focus
+
+而拍出来的照片
+and things like that
+
+一定程度来说 这就是摄影的艺术
+That's part of the art of doing this sort of thing
+
+而要掌握摄影的艺术牵涉到许多方面
+And learning a lot of that
+
+比如曝光试验片
+involves things like test strips
+
+比如拍摄非常几张简单的画面
+You take very simple images
+
+每张都有不同的摄影密度
+that have varying degrees of density in them for example
+
+然后把它们打印在一张纸上
+and examine what those look like on a piece of paper
+
+观察它们都有什么不同
+when you print them out
+
+你能发现实际可见的对比度
+You find out what is the range of contrasts
+
+都是在怎样的范围内
+that you can actually see
+
+还能发现 从实际角度来讲
+And what in a real scene
+
+都是哪些因素与同一张照片中不同层次
+would correspond to the various levels
+
+不同区块的摄影密度的产生有关
+and zones that you have of density in an image
+
+今天这节课我就想让大家看一些特别的“曝光试验片”
+Well,today I want to look at some very particular test strips
+
+下面通过幻灯片来看第一张
+and I suppose one of them I see here is up on the telestrator
+
+请看
+so we should switch to that
+
+有两个非常非常重要的程序
+There's a very important,very important pair of programs
+
+用来理解在程序执行的过程中 --process
+for understanding what's going on in the evolution of a process
+
+进程演化都是怎样的
+by the execution of a program
+
+大家看到的是两个几乎相同的过程
+What we have here are two procedures that are almost identical
+
+基本上没有区别
+Almost no difference between them at all
+
+只有几个字符不同
+It's a few characters that distinguish them
+
+这两个过程表示的是两种不同的求两数之和的方法
+These are two ways of adding numbers together
+
+第一个
+The first one
+
+看这里
+which you see here
+
+是求两数之和
+the first one is the sum of two numbers
+
+和我们上节课讲到的一样
+just what we did before
+
+如果第一个参数是0
+is if the first one is 0
+
+第二个参数就是答案
+it's the answer of the second one
+
+否则
+Otherwise
+
+就是第一个参数减1
+it's the sum of the decrement of the first
+
+和第二个参数加1的和
+and the increment of the second
+
+你可以这么考虑 有两堆弹珠
+And you may think of that as having two piles
+
+把这两堆加在一块儿形成新的一堆的办法就是
+And the way I'm adding these numbers together to make a third pile is by
+
+把弹珠从一堆挪到另一堆去
+moving marbles from one to the other
+
+仅此而已
+Nothing more than that
+
+最终 有一堆会被搬空
+And eventually when I run out of one
+
+另一堆就是加和的结果了
+then the other is the sum
+
+然而 第二个过程不是这样做的
+However,the second procedure here doesn't do it that way
+
+而是 如果第一个参数是0
+It says if the first number is 0
+
+答案就是第二个
+then the answer is the second
+
+否则 
+Otherwise
+
+答案就是 第一个参数减1
+it's the increment of the sum
+
+和第二个参数的和
+of the decrement of the first number
+
+然后再加1
+and the second
+
+这种方式就是
+So what this says is
+
+把第一个参数减1和第二个数加起来
+add together the decrement of the first number and the second
+
+毫无疑问 简化了问题
+a simpler problem,no doubt
+
+然后把这个和再加1
+and then change that result to increment it
+
+这就意味着如果你用两堆弹珠的方式来思考
+And so this means that if you think about this in terms of piles
+
+就是说 我左手右手各有一堆弹珠
+it means I'm holding in my hand the things to be added later
+
+然后我要把它们加在一起
+And then I'm going to add them in
+
+然后我慢慢地把其中一堆搬空
+As I slowly decrease one pile to 0
+
+然后把这些拿出来的弹珠
+I've got what's left here
+
+再放回另一堆弹珠中
+and then I'm going to add them back
+
+两种不同的加法
+Two different ways of adding
+
+关于这两个程序 有趣的是
+The nice thing about these two programs
+
+它们几乎一样
+is that they're almost identical
+
+唯一的区别是把加1这个过程放哪儿
+The only thing is where I put the increment
+
+把几个字符挪挪地方
+A couple of characters moved around
+
+现在我想弄明白
+Now I want to understand the kind of behavior
+
+我们会从这两个程序中看到怎样的行为
+we're going to get from each of these programs
+
+加深大家对这个问题的印象
+Just to get them firmly in your mind
+
+我通常不想这么谨慎
+I usually don't want to be this careful
+
+但是还是要加深大家的印象
+but just to get them firmly in your mind
+
+我在黑板上把程序再写一遍
+I'm going to write the programs again on the blackboard
+
+然后我演化一个过程 --process
+and then I'm going to evolve a process
+
+大家都注意观察 看看是怎么回事
+And you're going to see what happens
+
+
+We're going to look at the shape of the process
+
+as a consequence of the program
+
+我们从这个程序开始
+So the program we started with is this
+
+求x与y的和
+the sum of x and y says
+
+如果x等于0
+if x is 0
+
+那么答案就是y
+then the result is y
+
+否则 
+Otherwise
+
+答案就是x减1和y加1的和
+it's the sum of the decrement of x and the increment of y
+
+现在 假设我们要求3与4的和
+Now,supposing we wish to do this addition of 3 and 4
+
+3与4的和
+the sum of 3 and 4
+
+接下来呢
+well,what is that
+
+我要代换这两个参数
+It says that I have to substitute the arguments
+
+代换过程定义中的形式参数
+for the formal parameters in the body
+
+我在脑海中想像这个过程
+I'm doing that in my mind
+
+我说 啊 这样
+And I say,oh,yes
+
+3代换了x
+3 is substituted for x
+
+但3不是0
+but 3 is not 0
+
+于是直接进入这一部分
+so I'm going to go directly to this part
+
+然后只用关心这一部分就行
+and write down the simplified consequent here
+
+因为我只关心加法过程的行为
+Because I'm really interested in the behavior of addition
+
+好了 接下来
+Well,what is that
+
+就变成了求2和5的过程
+That therefore turns into the sum of 2 and 5
+
+换句话说
+In other words
+
+我缩减这个问题化简成这个问题
+I've reduced this problem to this problem
+
+然后我又把这个问题化简成求1和6的和
+Then I reduce this problem to the sum of 1 and 6
+
+再接着简化
+and then,going around again once
+
+就有了0和7的和
+I get the sum of 0 and 7
+
+于是x就等于0了
+And that's one where x equals 0
+
+答案是y
+so the result is y
+
+也就是7
+and so I write down here a 7
+
+这就是这个程序把3和4相加 --process
+So this is the behavior of the process evolved
+
+而产生的程序运行过程的行为
+by trying to add together 3 and 4 with this program
+
+另一个程序
+For the other program
+
+写在这边
+which is over here
+
+如此定义x与y的和
+I will define the sum of x and y
+
+即如果x等于0
+And what is it If x is 0
+
+答案就是y
+then the result is y
+
+这和上一个程序一样
+almost the same
+
+否则就是x减1与y的和
+otherwise the increment of the sum
+
+再加上1
+of the decrement of x and y
+
+错了 黑板不能自动匹配括号
+No,I don't have my balancer in front of me
+
+好了 接下来
+OK,well,let's do it now
+
+求3与4的和
+The sum of 3 and 4
+
+其实这样更有趣 来看
+Well,this is actually a little more interesting
+
+3当然不等于0 和之前一样
+Of course,3 is not 0 as before
+
+于是答案就是 x减1与y的和再加1
+so that results in the increment of the sum of the decrement of x
+
+也就是2与4的和
+which is 2 and 4
+
+接着变成 1与
+which is the increment of the sum of 1 and
+
+噢 弄错了 加1再加1
+whoops: the increment of the increment
+
+现在要做的是计算这一部分
+What I have to do now is compute what this means
+
+我要对这一部分求值
+I have to evaluate this
+
+也就是
+Or what that is the result of
+
+用2和4代换x和y
+substituting 2 and 4 for x and y here
+
+变成了1与4的和再加1
+But that is the increment of the sum of 1 and 4
+
+现在我得展开这部份
+which is,well,now I have to expand this
+
+啊 然后就变成了0与4的和加1加1
+Ah,but that's the increment of the increment
+
+再加1
+of the increment of the sum of 0 and 4
+
+
+Ah,but now I'm beginning to find things I can do
+
+ The increment of the increment of the increment of-- well
+
+ the sum of 0 and 4 is 4
+
+ The increment of 4 is 5
+
+ So this is the increment of the increment of 5
+
+ which is the increment of 6
+
+ which is 7
+
+ Two different ways of computing sums Now
+
+ let's see
+
+ These processes have very different shapes
+
+ I want you to feel these shapes It's the feeling for the shapes that matters
+
+ What's some things we can see about this
+
+ Well somehow this is sort of straight
+
+ It goes this way-- straight
+
+ This right edge doesn't vary particularly in size Whereas this one
+
+ I see that this thing gets bigger and then it gets smaller
+
+ So I don't know what that means yet
+
+ but what are we seeing
+
+ We're seeing here that somehow these increments are expanding out and then contracting back
+
+ I'm building up a bunch of them to do later
+
+ I can't do them now
+
+ There's things to be deferred Well
+
+ let's see
+
+ I can imagine an abstract machine
+
+ There's some physical machine
+
+ perhaps that could be built to do it
+
+ which
+
+ in fact
+
+ executes these programs exactly as I tell you substituting character strings in like this
+
+ Such a machine
+
+ the number of such steps is an approximation of the amount of time it takes
+
+ So this way is time
+
+ And the width of the thing is how much I have to remember in order to continue the process
+
+ And this much is space
+
+ And what we see here is a process that takes a time which is proportional to the argument x
+
+ Because if I made x larger by 1
+
+ then I'd had an extra line So this is a process which is space-- sorry-- time
+
+ The time of this process is what we say order of x
+
+ That means it is proportional to x by some constant of proportionality
+
+ and I'm not particularly interested in what the constant is
+
+ The other thing we see here is that the amount of space this takes up is constant
+
+ it's proportional to 1
+
+ So the space complexity of this is order of 1 We have a name for such a process
+
+ Such a process is called an iteration
+
+ And what matters here is not that some particular machine I designed here and talked to you about and called a substitution machine or whatever-- substitution model-- managed to do this in constant space
+
+ What really matters is this tells us a bound
+
+ Any machine could do this in constant space
+
+ This algorithm represented by this procedure is executable in constant space Now
+
+ of course
+
+ the model is ignoring some things
+
+ standard sorts of things
+
+ Like numbers that are bigger take up more space and so on
+
+ But that's a level of abstraction at which I'm cutting off
+
+ How do you represent numbers
+
+ I'm considering every number to be the same size
+
+ And numbers grow slowly for the amount of space they take up and their size Now
+
+ this algorithm is different in its complexity
+
+ As we can see here
+
+ this algorithm has a time complexity which is also proportional to the input argument x
+
+ That's because if I were to add 1 to 3
+
+ if I made a larger problem
+
+ which is larger by 1 here
+
+ then I'd add a line at the top and I'd add a line at the bottom
+
+ And the fact that it's a constant amount
+
+ like this is twice as many lines as that
+
+ is not interesting at the level of detail I'm talking about right now So this is a time complexity order of the input argument x
+
+ And space complexity
+
+ well
+
+ this is more interesting
+
+ I happen to have some overhead
+
+ which you see over here
+
+ which is constant approximately
+
+ Constant overhead
+
+ But then I have something which increases and decreases and is proportional to the input argument x
+
+ The input argument x is 3
+
+ That's why there are three deferred increments sitting around here
+
+ See
+
+ So the space complexity here is also order x And this kind of process
+
+ named for the kind of process
+
+ this is a recursion
+
+ A linear recursion
+
+ I will call it
+
+ because of the fact that it's proportional to the input argument in both time and space
+
+ This could have been a linear iteration So then what's the essence of this matter
+
+ This matter isn't so obvious
+
+ Maybe there are other models by which we can describe the differences between iterative and recursive processes
+
+ Because this is hard now
+
+ Remember
+
+ we have-- those are both recursive definitions
+
+ What we're seeing there are both recursive definitions
+
+ definitions that refer to the thing being defined in the definition
+
+ But they lead to different shape processes
+
+ There's nothing special about the fact that the definition is recursive that leads to a recursive process OK
+
+ Let's think of another model
+
+ I'm going to talk to you about bureaucracy
+
+ Bureaucracy is sort of interesting
+
+ Here we see on a slide an iteration
+
+ An iteration is sort of a fun kind of process Imagine that there's a fellow called GJS-- that stands for me-- and he's got a problem: he wants to add together 3 and 4
+
+ This fella here wants to add together 3 and 4
+
+ Well
+
+ the way he's going to do it-- he's lazy-- is he's going to find somebody else to help him do it
+
+ They way he finds someone else to-- he finds someone else to help him do it and says
+
+ well
+
+ give me the answer to 3 and 4 and return the result to me
+
+ He makes a little piece of paper and says
+
+ here
+
+ here's a piece of paper-- you go ahead and solve this problem and give the result back to me And this guy
+
+ of course
+
+ is lazy
+
+ too
+
+ He doesn't want to see this piece of paper again
+
+ He says
+
+ oh
+
+ yes
+
+ produce a new problem
+
+ which is the sum of 2 ad 5
+
+ and return the result back to GJS
+
+ I don't want to see it again
+
+ This guy does not want to see this piece of paper And then this fellow makes a new problem
+
+ which is the addition of the sum of 1 and 6
+
+ and he give it to this fella and says
+
+ produce that answer and returned it to GJS
+
+ And that produces a problem
+
+ which is to add together 0 and 7
+
+ and give the result to GJS
+
+ This fella finally just says
+
+ oh
+
+ yeah
+
+ the answer is 7
+
+ and sends it back to GJS
+
+ That's what an iteration is By contrast
+
+ a recursion is a slightly different kind of process
+
+ This one involves more bureaucracy
+
+ It keeps more people busy
+
+ It keeps more people employed
+
+ Perhaps it's better for that reason But here it is: I want the answer to the problem 3 and 4
+
+ So I make a piece of paper that says
+
+ give the result back to me
+
+ Give it to this fella
+
+ This fellow says
+
+ oh
+
+ yes
+
+ I will remember that I have to add later
+
+ and I want to get the answer the problem 2 plus 4
+
+ give that one to Harry
+
+ and have the results sent back to me-- I'm Joe
+
+ When the answer comes back from Harry
+
+ which is a 6
+
+ I will then do the increment and give that 7 back to GJS
+
+ So there are more pieces of paper outstanding in the recursive process than the iteration There's another way to think about what an iteration is and the difference between an iteration and a recursion
+
+ You see
+
+ the question is
+
+ how much stuff is under the table
+
+ If I were to stop-- supposing I were to kill this computer right now
+
+ OK
+
+ And at this point I lose the state of affairs
+
+ well
+
+ I could continue the computation from this point but everything I need to continue the computation is in the valuables that were defined in the procedure that the programmer wrote for me
+
+ An iteration is a system that has all of its state in explicit variables Whereas the recursion is not quite the same
+
+ If I were to lose this pile of junk over here and all I was left with was the sum of 1 and 4
+
+ that's not enough information to continue the process of computing out the 7 from the original problem of adding together 3 of 4
+
+ Besides the information that's in the variables of the formal parameters of the program
+
+ there is also information under the table belonging to the computer
+
+ which is what things have been deferred for later And
+
+ of course
+
+ there's a physical analogy to this
+
+ which is in differential equations
+
+ for example
+
+ when we talk about something like drawing a circle
+
+ Try to draw a circle
+
+ you make that out of a differential equation which says the change in my state as a function of my current state
+
+ So if my current state corresponds to particular values of y and x
+
+ then I can compute from them a derivative which says how the state must change And
+
+ in fact
+
+ you can see this was a circle because if I happen to be
+
+ say
+
+ at this place over here
+
+ at 1
+
+ 0
+
+ for example
+
+ on this graph
+
+ then it means that the derivative of y is x
+
+ which we see over here
+
+ That's 1
+
+ so I'm going up
+
+ And the derivative of x is minus y
+
+ which means I'm going backwards
+
+ I'm actually doing nothing at this point
+
+ then I start going backwards as y increases So that's how you make a circle
+
+ And the interesting thing to see is a little program that will draw a circle by this method
+
+ Actually
+
+ this won't draw a circle because it's a forward oil or integrator and will eventually spiral out and all that
+
+ But it'll draw a circle for a while before it starts spiraling However
+
+ what we see here is two state variables
+
+ x and y
+
+ And there's an iteration that says
+
+ in order to circle
+
+ given an x and y
+
+ what I want is to circle with the next values of x and y being the old value of x decrement by y times dt where dt is the time step and the old value of y being implemented by x times dt
+
+ giving me the new values of x and y So now you have a feeling for at least two different kinds of processes that can be evolved by almost the same program
+
+ And with a little bit of perturbation analysis like this
+
+ how you change a program a little bit and see how the process changes
+
+ that's how we get some intuition
+
+ Pretty soon we're going to use that intuition to build big
+
+ hairy
+
+ complicated systems Thank you [MUSIC PLAYING BY J
+
+S
+
+ BACH] PROFESSOR: Well
+
+ you've just seen a simple perturbational analysis of some programs
+
+ I took a program that was very similar to another program and looked at them both and saw how they evolved processes
+
+ I want to show you some variety by showing you some other processes and shapes they may have
+
+ Again
+
+ we're going to take very simple things programs that you wouldn't want to ever write
+
+ They would be probably the worst way of computing some of the things we're going to compute
+
+ But I'm just going to show you these things for the purpose of feeling out how to program represents itself as the rule for the evolution of a process So let's consider a fun thing
+
+ the Fibonacci numbers
+
+ You probably know about the Fibonacci numbers
+
+ Somebody
+
+ I can't remember who
+
+ was interested in the growth of piles of rabbits
+
+ And for some reason or other
+
+ the piles of rabbits tend to grow exponentially
+
+ as we know And we have a nice model for this process
+
+ is that we start with two numbers
+
+ 0 and 1
+
+ And then every number after this is the sum of the two previous
+
+ So we have here a 1
+
+ Then the sum of these two is 2
+
+ The sum of those two is 3
+
+ The sum of those two is 5
+
+ The sum of those two is 8
+
+ The sum of those two is 13
+
+ This is 21
+
+ 34
+
+ 55
+
+ Et cetera If we start numbering these numbers
+
+ say this is the zeroth one
+
+ the first one
+
+ the second one
+
+ the third one
+
+ the fourth one
+
+ et cetera
+
+ This is the 10th one
+
+ the 10th Fibonacci number
+
+ These numbers grow very fast
+
+ Just like rabbits
+
+ Why rabbits grow this way I'm not going to hazard a guess Now
+
+ I'm going to try to write for you the very simplest program that computes Fibonacci numbers
+
+ What I want is a program that
+
+ given an n
+
+ will produce for me Fibonacci event OK
+
+ I'll write it right here
+
+ I want the Fibonacci of n
+
+ which means the-- this is the n
+
+ and this is Fibonacci of n
+
+ And here's the story
+
+ If n is less than 2
+
+ then the result is n
+
+ Because that's what these are
+
+ That's how you start it up
+
+ Otherwise
+
+ the result is the sum of Fib of n minus 1 and the Fibonacci number
+
+ n minus 2 So this is a very simple
+
+ direct specification of the description of Fibonacci numbers that I gave you when I introduced those numbers
+
+ It represents the recurrence relation in the simplest possible way Now
+
+ how do we use such a thing
+
+ Let's draw this process
+
+ Let's figure out what this does Let's consider something very simple by computing Fibonacci of 4
+
+ To compute Fibonacci of 4
+
+ what do I do Well
+
+ it says I have-- it's not less than 2
+
+ Therefore it's the sum of two things
+
+ Well
+
+ in order to compute that I have to compute
+
+ then
+
+ Fibonacci of 3 and Fibonacci of 2
+
+ In order to compute Fibonacci of 3
+
+ I have to compute Fibonacci of 2 and Fibonacci of 1
+
+ In order to compute Fibonacci of 2
+
+ I have to compute Fibonacci of 1 and Fibonacci of 0
+
+ In order to compute Fibonacci of 1
+
+ well
+
+ the answer is 1
+
+ That's from the base case of this recursion And in order to compute Fibonacci of 0
+
+ well
+
+ that answer is 0
+
+ from the same base
+
+ And here is a 1
+
+ And Fibonacci of 2 is really the sum of Fibonacci of 1
+
+ And Fib of 0
+
+ in order to compute that
+
+ I get a 1
+
+ and here I've got a 0 I've built a tree
+
+ Now
+
+ we can observe some things about this tree
+
+ We can see why this is an extremely bad way to compute Fibonacci numbers
+
+ Because in order to compute Fibonacci of 4
+
+ I had to compute Fibonacci of 2's sub-tree twice In fact
+
+ in order way to add one more
+
+ supposing I want to do Fibonacci of 5
+
+ what I really have to do then is compute Fibonacci of 4 plus Fibonacci of 3
+
+ But Fibonacci of 3's sub-tree has already been built
+
+ This is a prescription for a process that's exponential in time
+
+ To add 1
+
+ I have to multiply by something because I take a proportion of the existing thing and add it to itself to add one more step
+
+ So this is a thing whose time complexity is order of-- actually
+
+ it turns out to be Fibonacci-- of n There's a thing that grows exactly at Fibonacci numbers
+
+ It's a horrible thing
+
+ You wouldn't want to do it
+
+ The reason why the time has to grow that way is because we're presuming in the model-- the substitution model that I gave you
+
+ which I'm not doing formally here
+
+ I sort of now spit it out in a simple way-- but presuming that everything is done sequentially That every one of these nodes in this tree has to be examined
+
+ And so since the number of nodes in this tree grows exponentially
+
+ because I add a proportion of the existing nodes to the nodes I already have to add 1
+
+ then I know I've got an exponential explosion here Now
+
+ let's see if we can think of how much space this takes up
+
+ Well
+
+ it's not so bad
+
+ It depends on how much we have to remember in order to continue this thing running
+
+ Well that's not so hard
+
+ It says
+
+ gee
+
+ in order to know where I am in this tree
+
+ I have to have a path back to the root
+
+ In other words
+
+ in order to-- let's consider the path I would have to execute this I'd say
+
+ oh
+
+ yes
+
+ I'm going to go down here
+
+ I don't care which direction I go
+
+ I have to do this
+
+ I have to then do this
+
+ I have to traverse this tree in a sort of funny way
+
+ I'm going to walk this nice little path
+
+ I come back to here
+
+ Well
+
+ I've got to remember where I'm going to be next
+
+ I've got to keep that in mind
+
+ So I have to know what I've done
+
+ I have to know what's left
+
+ In order to compute Fibonacci of 4
+
+ at some point I'm going to have to be down here
+
+ And I have to remember that I have to go back and then go back to here to do an addition
+
+ And then go back to here to do an addition to something I haven't touched yet The amount of space that takes up is the path
+
+ the longest path
+
+ How long it is
+
+ And that grows as n
+
+ So the space-- because that's the length of the deepest line through the tree-- the space is order of n
+
+ It's a pretty bad process Now
+
+ one thing I want to see from this is a feeling of what's going on here
+
+ Why are there-- how is this program related to this process
+
+ Well
+
+ what are we seeing here
+
+ There really are only two sorts of things this program does
+
+ This program consists of two rules
+
+ if you will One rule that says Fibonacci of n is this sum that you see over here
+
+ which is a node that's shaped like this
+
+ It says that I break up something into two parts
+
+ Under some condition over here that n is greater than 2
+
+ then the node breaks up into two parts
+
+ Less than 2
+
+ No Greater than 2
+
+ Yes The other possibility is that I have a reduction that looks like this
+
+ And that's this case
+
+ If it's less than 2
+
+ the answer is n itself So what we're seeing here is that the process that got built locally at every place is an instance of this rule
+
+ Here's one instance of the rule
+
+ Here is another instance of the rule And the reason why people think of programming as being hard
+
+ of course
+
+ is because you're writing down a general rule
+
+ which is going to be used for lots of instances
+
+ that a particular instance-- it's going to control each particular instance for you
+
+ You've got to write down something that's a general in terms of variables
+
+ and you have to think of all the things that could possibly fit in those variables
+
+ and all those have to lead to the process you want to work
+
+ Locally
+
+ you have to break up your process into things that can be represented in terms of these very specific local rules Well
+
+ let's see
+
+ Fibonaccis are
+
+ of course
+
+ not much fun
+
+ Yes
+
+ they are
+
+ You get something called the golden ratio
+
+ and we may even see a lot of that some time Well
+
+ let's talk about another thing
+
+ There's a famous game called the Towers of Hanoi because I want to teach you how to think about these recursively The problem is this one: I have a bunch of disks
+
+ I have a bunch of spikes
+
+ and it's rumored that somewhere in the Orient there is a 64-high tower
+
+ and the job of various monks or something is to move these spikes in some complicated pattern so eventually-- these disks- - so eventually I moved all of the disks from one spike to the other
+
+ And if it's 64 high
+
+ and it's going to take 2 to the 64th moves
+
+ then it's a long time
+
+ They claim that the universe ends when this is done Well
+
+ let's see
+
+ The way in which you would construct a recursive process is by wishful thinking
+
+ You have to believe So
+
+ the idea
+
+ Supposing I want to move this pile from here to here
+
+ from spike one to spike two
+
+ well
+
+ that's not so hard
+
+ See
+
+ supposing somehow
+
+ by some magic-- because I've got a simpler problem-- I move a three-high pile to here-- I can only move one disk at a time
+
+ so identifying how I did it
+
+ But supposing I could do that
+
+ well
+
+ then I could just pick up this disk and move it here
+
+ And now I have a simple problem
+
+ I have to move a three-high tower to here
+
+ which is no problem
+
+ So by two moves of a three high tower plus one move of a single object
+
+ I can move the tower from here to here Now
+
+ whether or not-- this is not obvious in any deep way that this works
+
+ And why
+
+ Now why is it the case that I can presume
+
+ maybe
+
+ that I can move the three-high tower
+
+ Well the answer is because I'm always counting down
+
+ and eventually I get down to zero-high tower
+
+ and a zero-high tower requires no moves So let's write the algorithm for that
+
+ Very easy
+
+ I'm going to label these towers with numbers
+
+ but it doesn't matter what they're labelled with
+
+ And the problem is to move an n- high tower from a spike called From to a spike called To with a particular spike called Spare That's what we're going to do Using the algorithm I informally described to you
+
+ move of a n-high tower from From to To with a Spare
+
+ Well
+
+ I've got two cases
+
+ and this is a case analysis
+
+ just like it is in all the other things we've done If n is 0
+
+ then-- I'm going to put out some answers-- Done
+
+ we'll say
+
+ I don't know what that means
+
+ Because we'll never use that answer for anything
+
+ We're going to do these moves
+
+ Else
+
+ I'm going to do a move
+
+ Move a tower of height less than n
+
+ the decrement of n height
+
+ Now
+
+ I'm going to move it to the Spare tower
+
+ The whole idea now is to move this from here to here
+
+ to the Spare tower-- so from From to Spare-- using To as a spare tower Later
+
+ somewhere later
+
+ I'm going to move that same n-high tower
+
+ after I've done this Going to move that same n minus one-high tower from the Spare tower to the To tower using the From tower as my spare
+
+ So the Spare tower to the To tower using the From as the spare All I have to do now is when I've gotten it in this condition
+
+ between these two moves of a whole tower-- I've got it into that condition-- now I just have to move one disk
+
+ So I'm going to say that some things are printing a move and I don't care how it works
+
+ From the To Now
+
+ you see the reason why I'm bringing this up at this moment is this is an almost identical program to this one in some sense
+
+ It's not computing the same mathematical quantity
+
+ it's not exactly the same tree
+
+ but it's going to produce a tree
+
+ The general way of making these moves is going to lead to an exponential tree Well
+
+ let's do this four-high
+
+ I have my little crib sheet here otherwise I get confused
+
+ Well what I'm going to put in is the question of move a tower of height four from one to spike two using spike three as a spare
+
+ That's all I'm really going to do
+
+ You know
+
+ let's just do it I'm not going to worry about writing out the traits of this
+
+ You can do that yourself because it's very simple I'm going to move disk one to disk three
+
+ And how do I get to move disk one to disk three How do I know that
+
+ Well
+
+ I suppose I have to look at the trace a little bit
+
+ What am I doing here
+
+ Well
+
+ and this is not-- n is not zero
+
+ So I'm going to look down here
+
+ This is going to require doing two moves
+
+ I'm only going to look at the first one
+
+ It's going to require moving-- why do I have move tower
+
+ It makes it harder for me to move
+
+ I'm going to move a three-high tower from the from place
+
+ which is four
+
+ to the spare
+
+ which is two
+
+ using three as my-- no
+
+ using from-- STUDENT: [INAUDIBLE PHRASE] PROFESSOR: Yes
+
+ I'm sorry From two-- from one to three using two as my spare
+
+ That's right
+
+ And then there's another move over here afterwards
+
+ So now I say
+
+ oh
+
+ yes
+
+ that requires me moving a two-high tower from one to two using three as a spare
+
+ And so
+
+ are the same
+
+ and that's going to require me moving and one-high tower from one to three using two as a spare
+
+ Well
+
+ and then there's lots of other things to be done So I move my one-high tower from one to three using two as a spare
+
+ which I didn't do anything with
+
+ Well
+
+ this thing just proceeds very simply
+
+ I move this from one to two
+
+ And I move this disk from three to two
+
+ And I don't really want to do it
+
+ but I move from one to three
+
+ Then I move two to one
+
+ Then I move two to three
+
+ Then one to three
+
+ One to two Three to two
+
+ Three to one
+
+ This all got worked out beforehand
+
+ of course
+
+ Two to one Three to two
+
+ One to three STUDENT: [INAUDIBLE PHRASE] PROFESSOR: Oh
+
+ one to three
+
+ Excuse me
+
+ Thank you One to two
+
+ And then three to two
+
+ Whew Now what I'd like you to think about
+
+ you just saw a recursive algorithm for doing this
+
+ and it takes exponential time
+
+ of course
+
+ Now
+
+ I don't know if there's any algorithm that doesn't take exponential time-- it has to
+
+ As I'm doing one operation-- I can only move one thing at a time-- there's no algorithm that's not going to take exponential time But can you write an iterative algorithm rather than a recursive algorithm for doing this One of the sort of little things I like to think about
+
+ Can you write one that
+
+ in fact
+
+ doesn't break this problem into two sub-problems the way I described
+
+ but rather proceeds a step at a time using a more local rule
+
+ That might be fun Thank you so much for the third segment Are there questions STUDENT: [INAUDIBLE] a way to reduce a tree or recursion problem
+
+ how do you save the immediate work you have done in computing the Fibonacci number PROFESSOR: Oh
+
+ well
+
+ in fact
+
+ one of the ways to do is what you just said
+
+ You said
+
+ I save the intermediate work
+
+ OK
+
+ Well
+
+ let me tell you-- this
+
+ again
+
+ we'll see later-- but suppose it's the case that anytime I compute anything
+
+ any one of these Fibonacci numbers
+
+ I remember the table that takes only linear time to look up the answer
+
+ Then if I ever see it again
+
+ instead of doing the expansional tree
+
+ I look it up
+
+ I've just transformed my problem into a problem that's much simpler Now
+
+ of course
+
+ there are the way to do this
+
+ as well
+
+ That one's called memoization
+
+ and you'll see it sometime later in this term
+
+ But I suppose there's a very simple linear time and
+
+ in fact
+
+ iterative model for computing Fibonaccis
+
+ and that's another thing you should sit down and work out
+
+ That's important
+
+ It's important to see how to do this
+
+ I want you to practice MIT OpenCourseWare http://ocw
+
+mit
+
+edu 6
+
+001 Structure and Interpretation of Computer Programs
+
+ Spring 2005
+
+Please use the following citation format: Eric Grimson
+
+ Peter Szolovits
+
+ and Trevor Darrell
+
+ 6
+
+001 Structure and Interpretation of Computer Programs
+
+ Spring 2005
+
+ (Massachusetts Institute of Technology: MIT OpenCourseWare)
+
+ http://ocw
+
+mit
+
+edu (accessed MM DD YYYY)
+
+ License: Creative Commons Attribution-Noncommercial-Share Alike Note: Please use the actual date you accessed this material in your citation For more information about citing these materials or our Terms of Use
+
+ visit: http://ocw
+
+mit
+
+edu/terms 
