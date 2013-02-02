@@ -2365,7 +2365,7 @@ define open paren something or other,
 而有时我这样写时却没加左括号
 and sometimes when I write this, I don't put an open paren?
 
-是因为你所见的用以定义表达式的
+是因为你所见的用与表达式的
 The answer is, this particular form of "define",
 
 “define”这种形式
@@ -2374,15 +2374,23 @@ where you say define some expression,
 对于定义过程来说非常特殊
 is this very special thing for defining procedures.
 
-再次强调 这实际上是说我定义这个叫square的符号
+再次强调 这实际上是说我定义这个叫square的符号为这个
 But again, what it really means is I'm defining this symbol, square, to be that.
 
-
+你所知道的则是 你先写一个“define”
 So the way you should think about it is what "define" does is you write "define",
 
+然后你再写一个符号 没有左括号
 and the second thing you write is the symbol here-- no open paren--
 
-the symbol you're defining and what you're defining it to be. That's like here and like here.
+这是你将要定义的符号
+the symbol you're defining
+
+这又是你要将其定义为什么
+and what you're defining it to be.
+
+就像这儿和这儿
+That's like here and like here.
 
 这是“define”的基本使用方法
 That's sort of the basic way you use "define."
@@ -2396,17 +2404,20 @@ which allows you to define procedures that look like this.
 因此区别就在于你是否定义了一个过程
 So the difference is, it's whether or not you're defining a procedure.
 
-音乐
-[MUSIC PLAYING]
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
 
 信不信由你 你们已经学了足够多的Lisp了
 Well, believe it or not, you actually now know enough Lisp
 
-基本上足以编写你可以在FORTRAN、Basic或者其他语言上
+基本上足以编写
 to write essentially any numerical procedure
 
+你可以在FORTRAN、Basic或者其他语言上
+that you'd write in a language like FORTRAN or Basic or whatever,
+
 编写的任何数值过程
-that you'd write in a language like FORTRAN or Basic or whatever, or, essentially, any other language.
+or, essentially, any other language.
 
 或许你会说 这不可能
 And you're probably saying, that's not believable,
@@ -2441,10 +2452,10 @@ It said, to find an approximation to the square root of X,
 你做出猜测
 you make a guess,
 
-然后通过取猜测值和X除以猜测值的平均数来改进猜测
+然后通过取guess和X/guess的平均数来改进猜测
 you improve that guess by averaging the guess and X over the guess.
 
-你不断改进猜测 知道这个猜测足够好
+你不断改进猜测 直到这个猜测足够好
 You keep improving that until the guess is good enough.
 
 我已经提到过这种思想
@@ -2507,13 +2518,13 @@ you'll eventually get as close as you want.
 另外一个事实则是
 And then there's another fact,
 
-你总可以使用1作为一个初始猜测来开始这个过程
+你总可以使用1作为一个初始猜测来开始这个步骤
 that you can always start out this process by using 1 as an initial guess.
 
 它总是朝X的平方根聚拢
 And it'll always converge to the square root of X.
 
-这就是亚历山大的Heron的不断求均法
+这就是亚历山大的Heron的连续求平均值法
 So that's this method of successive averaging due to Heron of Alexandria.
 
 让我们在Lisp中实现
@@ -2522,13 +2533,13 @@ Let's write it in Lisp.
 中心思想是
 Well, the central idea is,
 
-为了求X的平方根而做出一个猜想是什么意思
+尝试将guess作为X的平方根的一个猜想意味着什么
 what does it mean to try a guess for the square root of X?
 
 我来编码
 Let's write that.
 
-定义尝试将guess作为X的平方根的一个猜测
+定义（try guess x）
 So we'll say, define to try a guess for the square root of X,
 
 我们该如何做 我们会说
@@ -2546,7 +2557,7 @@ Otherwise, we will try the improved guess.
 我们将通过改进这个猜测来作为X的平方根
 We'll improve that guess for the square root of X,
 
-并尝试是否是X平方根的一个猜测
+并尝试是否为X平方根
 and we'll try that as a guess for the square root of X.
 
 闭合try 闭合if 闭合define
@@ -2585,7 +2596,7 @@ The algorithm to improve a guess for the square root of X,
 取平均数
 we average-- that was the algorithm--
 
-我们取guess和X处以guess的商的平均数
+我们取guess和X/guess的平均数
 we average the guess with the quotient of dividing X by the guess.
 
 这就是我们如何改进一个猜测
@@ -2624,7 +2635,7 @@ So there's a complete procedure for how to compute the square root of X.
 我们再来深入观察一下这个结构
 Let's look at the structure of that a little bit.
 
-
+我搞定了整件事
 I have the whole thing.
 
 我有一个用于计算X的平方根的记号
@@ -2645,7 +2656,7 @@ It's defined in terms of how to try a guess for the square root of X.
 检查某数是否足够好以及如何去改进该数
 telling whether something is good enough and telling how to improve something.
 
-good-enough亦如此
+而good-enough
 So good enough.
 
 try的定义依赖于good-enough和improve
@@ -2654,7 +2665,7 @@ try的定义依赖于good-enough和improve
 让我们来看看我填入了些什么
 And let's see what else I fill in.
 
-
+如果我向下拓展这棵树
 Well, I'll go down this tree.
 
 good-enough的定义依赖于abs和square
@@ -2696,13 +2707,13 @@ But that's false.
 有时候用一个东西自己来定义自己运行得非常完美
 Sometimes it makes perfect sense to define things in terms of themselves.
 
-本例中 
+我们来看看这个例子
 And this is the case. And we can look at that.
 
-
+假设我问Lisp 2的平方根是多少
 We could write down what this means, and say,
 
-
+我们可以写出它究竟是什么意思
 suppose I asked Lisp what the square root of 2 is.
 
 2的平方根是什么意思
@@ -2741,61 +2752,61 @@ means I average 1 and 2 divided by 1.
 因此我们将取平均数
 So this is going to be average.
 
-这段代码将会取1和2除以1的商的平均数
+这段代码将会取1和2/1的平均数
 This piece here will be the average of 1 and the quotient of 2 by 1.
 
-
+那么这段代码
 That's this piece here.
 
-结果是1.5
-And this is 1.5.
+我算算 结果是1.5
+And I'm gonna try... And this is 1.5.
 
-
+因此这个(sqrt 2)还原到(try 1 2)
 So this square root of 2 reduces to trying 1 for the square root of 2,
 
-
+然后还原到(try 1.5 2)
 which reduces to trying 1.5 as a guess for the square root of 2.
 
-这行得通
+因此这行得通
 So that makes sense.
 
 让我们看下剩下的步骤
 Let's look at the rest of the process.
 
-如果我尝试1.5 则会发现
+如果我尝试1.5 则会还原到
 If I try 1.5, that reduces.
 
 1.5作为2的平方根的猜测 并不是足够好
 1.5 turns out to be not good enough as a guess for the square root of 2.
 
+然后又还原到
+So that reduces to trying the average of
 
-So that reduces to trying the average of 1.5 and 2 divided by 1.5
-
-
-as a guess for the square root of 2.
+(try (average 1.5 (/ 2 1.5)))
+1.5 and 2 divided by 1.5 as a guess for the square root of 2.
 
 平均值是1.333
 That average turns out to be 1.333.
 
-
+然后整个事又还原到(try 1.3333 2)
 So this whole thing reduces to trying 1.333 as a guess for the square root of 2.
 
-
+如此进行下去
 And then so on.
 
-
+然后又还原到good-enough 1.4或者其它的
 That reduces to another called a "good enough", 1.4 something or other.
 
-然后这个（过程）会持续进行到
+然后这个（步骤）会持续进行到
 And then it keeps going until the process finally stops
 
-
+good-enough认为足够好了才停止
 with something that "good enough" thinks is good enough, which,
 
-
+本例中 是1.4242或者其它的东西
 in this case, is 1.4142 something or other.
 
-
+因此这个这个步骤运行得非常完美
 So the process makes perfect sense.
 
 这种 通过这种方法定义叫做“递归定义”
@@ -2804,7 +2815,7 @@ This, by the way, is called a recursive definition.
 构建递归定义的能力来自于不可思议力量
 And the ability to make recursive definitions is a source of incredible power.
 
-
+正如你所见 我已提到过
 And as you can already see I've hinted at,
 
 
@@ -2816,71 +2827,103 @@ that go on until something is true,
 
 without having any other constricts other than the ability to call a procedure.
 
-
+还有一件事
 Well, let's see, there's one more thing.
 
+我再在这里给你们展示一个关于平方根的不同定义
 Let me show you a variant of this definition of square root here on the slide.
 
+这是一种相同的东西
 Here's sort of the same thing.
 
+在这儿 我把“improve”、“good-enough”、“try”的定义
 What I've done here is packaged the definitions of
 
+全都封装在了“sqrt”里面
 "improve" and "good enough" and "try" inside "square root".
 
+因此实际上 我们构建了一个平方根箱子
 So, in effect, what I've done is I've built a square root box.
 
+我构建了一个其他人可以使用的平方根箱子
 So I've built a box that's the square root procedure that someone can use.
 
+他们输入36 然后（箱子）输出6
 They might put in 36 and get out 6.
 
+但是 箱子里面的那些小包
 And then, packaged inside this box
 
+就是“try”、“good-enough”和“improve”的定义
 are the definitions of "try" and "good enough" and "improve."
 
+它们都隐藏在箱子里面
 So they're hidden inside this box.
 
+这样做的原因则是
 And the reason for doing that is that,
 
+如果有人正在使用这个平方根
 if someone's using this square root,
 
+如果George正在使用这个平方根
 if George is using this square root,
 
+George并不会关心
 George probably doesn't care very much that,
 
+当我在实现平方根时
 when I implemented square root,
 
+我定义了箱子内的那些“try”、“good-enough”和“improve”过程
 I had things inside there called "try" and "good enough" and "improve".
 
+事实上 Harry可能会实现一个也具有
 And in fact, Harry might have a cube root procedure
 
+“try”、“good-enough”和“improve”的立方根箱子
 that has "try" and "good enough" and "improve".
 
+因此 为了不让整个系统变得混乱
 And in order to not get the whole system confused,
 
+Harry把这些内部过程封装在他的立方根过程为好
 it'd be good for Harry to package his internal procedures inside his cube root procedure.
 
+这个叫做块结构
 Well, this is called block structure,
 
+这是把东西打包到定义内部的一种方法
 this particular way of packaging internals inside of a definition.
 
+让我们回过头来再看看
 And let's go back and look at the slide again.
 
+这种过程的读法这是 为了定义平方根
 The way to read this kind of procedure is to say, to define "square root",
 
+那么 在其内部
 well, inside that definition,
 
+我们已有“improve”的定义
 I'll have the definition of an "improve" and
 
+我们已有“good-enough”和“try”的定义
 the definition of "good enough" and the definition of "try."
 
+以及这些定义的实体
 And then, subject to those definitions,
 
+我求平方根的定义实体是从1开始尝试
 the way I do square root is to try 1.
 
+注意这里 我不必将X当做参数传递
 And notice here, I don't have to say 1 as a guess for the square root of X,
 
+因为它们都在平方根内部
 because since it's all inside the square root,
 
+它相当于已知这个X了
 it sort of has this X known.
 
 我来总结下
@@ -2895,48 +2938,58 @@ what we're going to be doing is expressing imperative knowledge.
 事实上 如果从Lisp这边总结的话
 And in fact, here's a slide that summarizes the way we looked at Lisp.
 
-我们从基本元素如加和乘开始
+我们从初等元素如“+”和“*”开始
 We started out by looking at some primitive elements in addition and multiplication,
 
 一些用于测试某物小于或等于的谓词
 some predicates for testing whether something is less-than or something's equal.
 
-
+但事实上 藏匿在系统下的我们所用的这些东西的真正面目
 And in fact, we saw really sneakily in the system we're actually using,
 
+并不是初等元素 但这无所谓
 these aren't actually primitives, but it doesn't matter.
 
+重要的是我们会把它们当作是初等元素
 What matters is we're going to use them as if they're primitives.
 
+我们不会看系统内部
 We're not going to look inside.
 
+我们也有一些初等数据和一些数
 We also have some primitive data and some numbers.
 
+我们学习了合成的手段 组合的手段
 We saw some means of composition, means of combination,
 
+用运算符和运算对象合成函数和构建组合式
 the basic one being composing functions and
 
+的基本方法
 building combinations with operators and operands.
 
+还有一些像是“COND”、“if”和“define”的东西
 And there were some other things, like COND and "if" and "define".
 
-具体来说 关于define的重点则是
+具体来说 关于“define”的重点则是
 But the main thing about "define," in particular,
 
-它是一种抽象的方法
+它是一种抽象的手段
 was that it was the means of abstraction.
 
 它是我们为某物命名的方法
 It was the way that we name things.
 
-
+我们但可以从之前的 也可以从这里看出
 You can also see from this slide not only where we've been,
 
 有时候 我们需要讨论如何组合初等出具以得到复合数据
 At some point, we'll have to talk about how you combine primitive data to get compound data,
 
+以及你如何抽象数据 使得你可以在一个更大的环境中
 and how you abstract data so you can use large globs of data
 
+把这个当作初等数据使用
 as if they were primitive.
 
 这也是我们的目的所在
