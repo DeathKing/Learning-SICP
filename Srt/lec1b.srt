@@ -1758,7 +1758,7 @@ that the definition is recursive
 这没什么特别的
 that leads to a recursive process.
 
-好了 考虑另一种模型
+好了 考虑另一种计算过程
 OK.Let's think of another model.
 
 我会和大家谈谈官僚主义
@@ -2040,185 +2040,322 @@ So if my current state corresponds to particular values of y and x
 那么我就能求出一个导数 表征状态如何改变
 then I can compute from them a derivative which says how the state must change.
 
+并且 实际上
 And,in fact
 
- you can see this was a circle because if I happen to be
+大家可以看出这是一个圆
+you can see this was a circle
 
- say
+因为如果碰巧
+because if I happen to be,
 
- at this place over here
+在这个点
+say,at this place over here,
 
- at 1
+比如在(1,0)这个点
+at (1,0),for example
 
- 0
+在这个图像上
+on this graph,
 
- for example
+那就是说y的导数是x
+then it means that the derivative of y is x,
 
- on this graph
+我们也看见了
+which we see over here.
 
- then it means that the derivative of y is x
+是1
+That's 1,
 
- which we see over here
+接着向上走
+so I'm going up.
 
- That's 1
+x的导数是-y
+And the derivative of x is minus y,
 
- so I'm going up
+意味着要走回来
+which means I'm going backwards.
 
- And the derivative of x is minus y
+实际在这点什么也没做
+I'm actually doing nothing at this point,
 
- which means I'm going backwards
+然后开始走回来使y增加
+then I start going backwards as y increases.
 
- I'm actually doing nothing at this point
+这样就画出了一个圆
+So that's how you make a circle.
 
- then I start going backwards as y increases So that's how you make a circle
+有趣的是
+And the interesting thing to see is
 
- And the interesting thing to see is a little program that will draw a circle by this method
+这儿有一个程序能用这种方法画出一个圆
+a little program that will draw a circle by this method.
 
- Actually
+实际上 不会画一出一个圆
+Actually,this won't draw a circle
 
- this won't draw a circle because it's a forward oil or integrator and will eventually spiral out and all that
+而是一个前导涂料或者说积分器 --forward oil integrator
+because it's a forward oil or integrator
 
- But it'll draw a circle for a while before it starts spiraling However
+并且最终会失去控制 --sprial out
+and will eventually spiral out and all that.
 
- what we see here is two state variables
+但失去控制前还是能画出一个圆的
+But it'll draw a circle for a while before it starts spiraling.
 
- x and y
+然而 我们在这儿看到的是两个表征状态的变量
+However,what we see here is two state variables,
 
- And there's an iteration that says
+x和y
+x and y.
 
- in order to circle
+还有个迭代计算过程表明
+And there's an iteration that says,
 
- given an x and y
+要画一个圆
+in order to circle,
 
- what I want is to circle with the next values of x and y being the old value of x decrement by y times dt where dt is the time step and the old value of y being implemented by x times dt
+已经有了x和y
+given an x and y,
 
- giving me the new values of x and y So now you have a feeling for at least two different kinds of processes that can be evolved by almost the same program
+我想要的是x和y的下一组取值以用来画圆
+what I want is to circle with the next values of x and y
 
- And with a little bit of perturbation analysis like this
+也就是x原有的值减去y和dt的乘积
+being the old value of x decrement by y times dt
 
- how you change a program a little bit and see how the process changes
+dt就是时间变化
+where dt is the time step
 
- that's how we get some intuition
+还有y原有的值加上x的dt的乘积
+and the old value of y being implemented by x times dt,
 
- Pretty soon we're going to use that intuition to build big
+然后就得到了x和y的新的取值
+giving me the new values of x and y.
 
- hairy
+好了 现在大家应该都有了一个直观的感觉
+So now you have a feeling
 
- complicated systems Thank you [MUSIC PLAYING BY J
+对于两种不同的计算过程的感觉
+for at least two different kinds of processes
 
-S
+而这两种计算过程却可能是由几乎相同的程序产生的
+that can be evolved by almost the same program.
 
- BACH] PROFESSOR: Well
+像这样做了一点扰动分析之后 --perturbation analysis
+And with a little bit of perturbation analysis like this,
 
- you've just seen a simple perturbational analysis of some programs
+如何小小地修改一下程序观察计算过程是怎样变化的
+how you change a program a little bit and see how the process changes,
 
- I took a program that was very similar to another program and looked at them both and saw how they evolved processes
+这样才能有直观的感受
+that's how we get some intuition.
 
- I want to show you some variety by showing you some other processes and shapes they may have
+之后我们就会用到这样的直观感受
+Pretty soon we're going to use that intuition
 
- Again
+来构建大型的 恼人的 复杂的系统
+to build big,hairy,complicated systems.
 
- we're going to take very simple things programs that you wouldn't want to ever write
+谢谢
+Thank you.
 
- They would be probably the worst way of computing some of the things we're going to compute
+[音乐]
+[MUSIC PLAYING BY J.S.BACH]
 
- But I'm just going to show you these things for the purpose of feeling out how to program represents itself as the rule for the evolution of a process So let's consider a fun thing
+教授 好了
+PROFESSOR: Well
 
- the Fibonacci numbers
+各位之前已经见过一个对若干程序的简单的扰动分析 --perturbational
+you've just seen a simple perturbational analysis of some programs.
 
- You probably know about the Fibonacci numbers
+我拿一个程序与另一个很相似的程序进行比较
+I took a program that was very similar to another program
 
- Somebody
+观察他们如何演化出计算过程
+and looked at them both and saw how they evolved processes.
 
- I can't remember who
+我想再给大家介绍点不同的东西
+I want to show you some variety
 
- was interested in the growth of piles of rabbits
+向大家展示程序可能具有的别的一些计算过程和“形状”
+by showing you some other processes and shapes they may have.
 
- And for some reason or other
+再一次地 我们将要举例非常简单的程序
+Again,we're going to take very simple things,
 
- the piles of rabbits tend to grow exponentially
+简单到你都不想写的程序
+programs that you wouldn't want to ever write.
 
- as we know And we have a nice model for this process
+那可能是最糟糕的方式
+They would be probably the worst way
 
- is that we start with two numbers
+去进行一些计算过程
+of computing some of the things we're going to compute.
 
- 0 and 1
+但我还是要展示给大家
+But I'm just going to show you these things
 
- And then every number after this is the sum of the two previous
+是想要试探出
+for the purpose of feeling out
 
- So we have here a 1
+一个程序如何
+how a program represents itself
 
- Then the sum of these two is 2
+在计算过程的求值中表现出自己的相应规则 --process
+as the rule for the evolution of a process.
 
- The sum of those two is 3
+考虑一个有趣的问题
+So let's consider a fun thing,
 
- The sum of those two is 5
+斐波那契数列
+the Fibonacci numbers.
 
- The sum of those two is 8
+大家可能已经知道斐波那契数列了
+You probably know about the Fibonacci numbers.
 
- The sum of those two is 13
+我记不清是谁了
+Somebody,I can't remember who,
 
- This is 21
+有一个人对兔群的繁殖问题很感兴趣
+was interested in the growth of piles of rabbits.
 
- 34
+出于一些原因
+And for some reason or other,
 
- 55
+我们都知道兔群趋向于指数式增长
+the piles of rabbits tend to grow exponentially,as we know.
 
- Et cetera If we start numbering these numbers
+对于这个过程我们有个不错的模型来解释
+And we have a nice model for this process,
 
- say this is the zeroth one
+由两个数开始算起
+is that we start with two numbers,
 
- the first one
+0和1
+0 and 1.
 
- the second one
+之后的每个数都是前两个数之和
+And then every number after this is the sum of the two previous.
 
- the third one
+于是接下来就是1
+So we have here a 1.
 
- the fourth one
+然后这两数之和就是2
+Then the sum of these two is 2.
 
- et cetera
+那两数之和是3
+The sum of those two is 3.
 
- This is the 10th one
+那两数之和是5
+The sum of those two is 5.
 
- the 10th Fibonacci number
+那两数之和是8
+The sum of those two is 8.
 
- These numbers grow very fast
+那两数之和是13
+The sum of those two is 13.
 
- Just like rabbits
+这是21
+This is 21.
 
- Why rabbits grow this way I'm not going to hazard a guess Now
+34 55
+34.55.
 
- I'm going to try to write for you the very simplest program that computes Fibonacci numbers
+等等
+Et cetera.
 
- What I want is a program that
+如果给这些数字标上序号
+If we start numbering these numbers,
 
- given an n
+第0个
+say this is the zeroth one,
 
- will produce for me Fibonacci event OK
+第1个
+the first one,
 
- I'll write it right here
+第2个
+the second one,
 
- I want the Fibonacci of n
+第3个
+the third one,
 
- which means the-- this is the n
+第4个
+the fourth one,
 
- and this is Fibonacci of n
+等等
+et cetera.
 
- And here's the story
+这是第10个
+This is the 10th one,
 
- If n is less than 2
+第10个斐波那契数
+the 10th Fibonacci number.
 
- then the result is n
+这些数字增长很快
+These numbers grow very fast
 
- Because that's what these are
+就像兔子们一样
+Just like rabbits.
 
- That's how you start it up
+为什么兔群是这样增长的呢
+Why rabbits grow this way
 
- Otherwise
+我不会瞎猜
+I'm not going to hazard a guess.
 
- the result is the sum of Fib of n minus 1 and the Fibonacci number
+接下来我要为大家展示
+Now,I'm going to try to write for you
 
- n minus 2 So this is a very simple
+写一个极简单的程序来计算斐波那契数
+the very simplest program that computes Fibonacci numbers.
+
+我想要的是一个程序
+What I want is a program that,
+
+输入一个n
+given an n,
+
+就能输出第n个斐波那契数
+will produce for me Fibonacci event.
+
+我就写在这儿了
+OK?I'll write it right here.
+
+想要得到第n个斐波那契数
+I want the Fibonacci of n,
+
+也就是说 这是那个n
+which means the-- this is the n,
+
+这是第n个斐波那契数
+and this is Fibonacci of n.
+
+我这么写
+And here's the story.
+
+如果n小于2
+If n is less than 2,
+
+那么答案就是n
+then the result is n.
+
+因为此时斐波那契数和序号相等
+Because that's what these are.
+
+这是最开始的规定
+That's how you start it up.
+
+否则
+Otherwise,
+
+答案就是第n-1个斐波那契数
+the result is the sum of Fib of n minus 1
+
+和第n-2个斐波那契数的和
+and the Fibonacci number,n minus 2.
+
+So this is a very simple
 
  direct specification of the description of Fibonacci numbers that I gave you when I introduced those numbers
 
