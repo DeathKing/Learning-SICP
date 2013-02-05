@@ -2355,181 +2355,333 @@ the result is the sum of Fib of n minus 1
 和第n-2个斐波那契数的和
 and the Fibonacci number,n minus 2.
 
-So this is a very simple
+这是个很简单的
+So this is a very simple,
 
- direct specification of the description of Fibonacci numbers that I gave you when I introduced those numbers
+很直接的
+direct specification
 
- It represents the recurrence relation in the simplest possible way Now
+求斐波那契数的实现
+of the description of Fibonacci numbers
 
- how do we use such a thing
+就是根据斐波那契数的定义直接写出这个过程
+that I gave you when I introduced those numbers.
 
- Let's draw this process
+用最简单可行的方式直接描述了定义中的递归关系
+It represents the recurrence relation in the simplest possible way.
 
- Let's figure out what this does Let's consider something very simple by computing Fibonacci of 4
+现在 我们又如何解释这个过程呢
+Now,how do we use such a thing?
 
- To compute Fibonacci of 4
+我们来分析一下这个过程所演化出的计算过程
+Let's draw this process.
 
- what do I do Well
+让我们来看看这个过程都做了些什么
+Let's figure out what this does.
 
- it says I have-- it's not less than 2
+举一个简单的例子 求第4个斐波那契数
+Let's consider something very simple by computing Fibonacci of 4.
 
- Therefore it's the sum of two things
+要求第4个斐波那契数
+To compute Fibonacci of 4,
 
- Well
+我应该怎么做呢
+what do I do?
 
- in order to compute that I have to compute
+根据过程的定义 4并不比2小
+Well,it says I have-- it's not less than 2.
 
- then
+因此答案就是两个数之和
+Therefore it's the sum of two things
 
- Fibonacci of 3 and Fibonacci of 2
+然后 我又要求出
+Well,in order to compute that I have to compute,then,
 
- In order to compute Fibonacci of 3
+第3个和第2个斐波那契数
+Fibonacci of 3 and Fibonacci of 2
 
- I have to compute Fibonacci of 2 and Fibonacci of 1
+要求出第3个斐波那契数
+In order to compute Fibonacci of 3,
 
- In order to compute Fibonacci of 2
+我就得求出第2个斐波那契数和第1个斐波那契数
+I have to compute Fibonacci of 2 and Fibonacci of 1.
 
- I have to compute Fibonacci of 1 and Fibonacci of 0
+而为了求出第二个斐波那契数
+In order to compute Fibonacci of 2,
 
- In order to compute Fibonacci of 1
+就得求出第1个和第0个斐波那契数
+I have to compute Fibonacci of 1 and Fibonacci of 0.
 
- well
+要求第1个斐波那契数
+In order to compute Fibonacci of 1,
 
- the answer is 1
+答案就是1
+well,the answer is 1.
 
- That's from the base case of this recursion And in order to compute Fibonacci of 0
+这是递归的边界
+That's from the base case of this recursion.
 
- well
+而第0个斐波那契数
+And in order to compute Fibonacci of 0,
 
- that answer is 0
+是0
+well,that answer is 0,
 
- from the same base
+同样的道理
+from the same base.
 
- And here is a 1
+然后这儿有个1
+And here is a 1.
 
- And Fibonacci of 2 is really the sum of Fibonacci of 1
+第2个斐波那契数就是第1个斐波那契数
+And Fibonacci of 2 is really the sum of Fibonacci of 1.
 
- And Fib of 0
+和第0个斐波那契数的和
+And Fib of 0,
 
- in order to compute that
+分别求出它们
+in order to compute that,
 
- I get a 1
+就有了一个1
+I get a 1,
 
- and here I've got a 0 I've built a tree
+和一个0
+and here I've got a 0.
 
- Now
+我画出了一棵树
+I've built a tree.
 
- we can observe some things about this tree
+通过这棵树我们能看出一些结果
+Now,we can observe some things about this tree.
 
- We can see why this is an extremely bad way to compute Fibonacci numbers
+我们能发现为何
+We can see why
 
- Because in order to compute Fibonacci of 4
+这是个非常糟糕的
+this is an extremely bad way
 
- I had to compute Fibonacci of 2's sub-tree twice In fact
+求斐波那契数的办法
+to compute Fibonacci numbers.
 
- in order way to add one more
+因为 为了求第4个斐波那契数
+Because in order to compute Fibonacci of 4,
 
- supposing I want to do Fibonacci of 5
+就得求两次第2个斐波那契数
+I had to compute Fibonacci of 2's sub-tree twice.
 
- what I really have to do then is compute Fibonacci of 4 plus Fibonacci of 3
+实际上 如果再多求一个斐波那契数
+In fact,in order to add one more,
 
- But Fibonacci of 3's sub-tree has already been built
+假设我想要求第5个斐波那契数
+supposing I want to do Fibonacci of 5,
 
- This is a prescription for a process that's exponential in time
+那我要做的就是
+what I really have to do then
 
- To add 1
+求第4个斐波那契数和第3个斐波那契数的和
+is compute Fibonacci of 4 plus Fibonacci of 3.
 
- I have to multiply by something because I take a proportion of the existing thing and add it to itself to add one more step
+但第3个斐波那契数已经求过一遍了
+But Fibonacci of 3's sub-tree has already been built.
 
- So this is a thing whose time complexity is order of-- actually
+整个递归树描述了一个指数时间复杂度的递归计算过程
+This is a prescription for a process that's exponential in time.
 
- it turns out to be Fibonacci-- of n There's a thing that grows exactly at Fibonacci numbers
+只要多求一个斐波那契数
+To add 1,
 
- It's a horrible thing
+时间复杂度就得乘上一个数
+I have to multiply by something
 
- You wouldn't want to do it
+因为多求一个斐波那契数 需要把已经计算过的过程
+because I take a proportion
 
- The reason why the time has to grow that way is because we're presuming in the model-- the substitution model that I gave you
+再计算一次
+of the existing thing
 
- which I'm not doing formally here
+时间复杂度就急剧增长 --proportion
+and add it to itself to add one more step.
 
- I sort of now spit it out in a simple way-- but presuming that everything is done sequentially That every one of these nodes in this tree has to be examined
+于是这个过程的时间复杂度就是
+So this is a thing whose time complexity is order of
 
- And so since the number of nodes in this tree grows exponentially
+实际上就是O(Fib (n))
+-- actually,it turns out to be Fibonacci-- of n.
 
- because I add a proportion of the existing nodes to the nodes I already have to add 1
+这个过程的时间复杂度就是按斐波那契数列增长
+There's a thing that grows exactly at Fibonacci numbers.
 
- then I know I've got an exponential explosion here Now
+这很恐怖
+It's a horrible thing.
 
- let's see if we can think of how much space this takes up
+你都不想这么求斐波那契数
+You wouldn't want to do it.
 
- Well
+时间复杂度这么增长
+The reason why the time has to grow that way
 
- it's not so bad
+是因为在这个模型中
+is because we're presuming in the model
 
- It depends on how much we have to remember in order to continue this thing running
+之前给出的代换模型
+--the substitution model that I gave you,
 
- Well that's not so hard
+我没在这儿形式化地应用代换模型
+which I'm not doing formally here,
 
- It says
+只是简单地表示了一下
+I sort of now spit it out in a simple way--
 
- gee
+我们假设所有事情都是按顺序完成的 --sequentially
+but presuming that everything is done sequentially.
 
- in order to know where I am in this tree
+即这个递归树中每个节点都会被检查
+That every one of these nodes in this tree has to be examined.
 
- I have to have a path back to the root
+于是 由于树的节点数
+And so since the number of nodes
 
- In other words
+是按指数增长的
+in this tree grows exponentially,
 
- in order to-- let's consider the path I would have to execute this I'd say
 
- oh
+because I add a proportion of the existing nodes
 
- yes
 
- I'm going to go down here
+to the nodes I already have to add 1,
 
- I don't care which direction I go
+然后就发现时间复杂度呈爆炸式的指数增长
+then I know I've got an exponential explosion here.
 
- I have to do this
+现在 再来考虑
+Now,let's see if we can think of
 
- I have to then do this
+这个过程的空间复杂度
+how much space this takes up.
 
- I have to traverse this tree in a sort of funny way
+空间复杂度不算太高
+Well,it's not so bad.
 
- I'm going to walk this nice little path
 
- I come back to here
+它主要取决于我们要记录多少信息
+It depends on how much we have to remember
 
- Well
+才能使整个计算过程得以持续进行
+in order to continue this thing running.
 
- I've got to remember where I'm going to be next
+这个并不难
+Well,that's not so hard.
 
- I've got to keep that in mind
+从这里看出
+It says,gee,
 
- So I have to know what I've done
+想要知道我现在处于树中的什么位置
+in order to know where I am in this tree,
 
- I have to know what's left
+就要记录一条回到根节点的路径
+I have to have a path back to the root.
 
- In order to compute Fibonacci of 4
+也就是说
+In other words,
 
- at some point I'm going to have to be down here
+为了
+in order to--
 
- And I have to remember that I have to go back and then go back to here to do an addition
+考虑一下路径
+let's consider the path.
 
- And then go back to here to do an addition to something I haven't touched yet The amount of space that takes up is the path
+我要把这个过程执行一遍
+I would have to execute this.
 
- the longest path
+我说 啊 好吧
+I'd say,oh,yes
 
- How long it is
+我向下走到这儿
+I'm going to go down here.
 
- And that grows as n
+不用管方向
+I don't care which direction I go.
 
- So the space-- because that's the length of the deepest line through the tree-- the space is order of n
+我这么走
+I have to do this.
 
- It's a pretty bad process Now
+这么走
+I have to then do this.
 
- one thing I want to see from this is a feeling of what's going on here
+用一种有趣的方式遍历这棵树
+I have to traverse this tree in a sort of funny way.
+
+又接着走这条有趣的小路
+I'm going to walk this nice little path.
+
+回到了这里
+I come back to here.
+
+好了我已经记住接下来要去哪儿了
+Well,I've got to remember where I'm going to be next.
+
+我记在心里了
+I've got to keep that in mind.
+
+于是我得知道已经遍历过的节点
+So I have to know what I've done.
+
+还得知道未遍历的节点
+I have to know what's left.
+
+为了计算出第4个斐波那契数
+In order to compute Fibonacci of 4,
+
+某一时刻我会向下走到这儿
+at some point I'm going to have to be down here.
+
+我还要记得
+And I have to remember
+
+要回到这儿
+that I have to go back to here
+
+又回到这儿做一次加法
+and then go back to here to do an addition.
+
+然后又走到这儿做一次加法
+And then go back to here to do an addition
+
+之前还需要检查这个尚未检查的节点
+to something I haven't touched yet.
+
+消耗的空间就是路径的长度
+The amount of space that takes up is the path,
+
+最长路径的长度
+the longest path.
+
+它有多长
+How long it is.
+
+长度就是n
+And that grows as n.
+
+于是消耗的空间
+So the space
+
+因为那是树的最长下降深度
+-- because that's the length of the deepest line through the tree--
+
+空间复杂度就是O(n)
+the space is order of n.
+
+可以看出这个过程时空效率都很低
+It's a pretty bad process.
+
+我想让各位获得的是
+Now,one thing I want to see from this
+
+一种直观的感觉
+is a feeling
+
+关于整个计算过程的直观感觉
+of what's going on here.
 
  Why are there-- how is this program related to this process
 
