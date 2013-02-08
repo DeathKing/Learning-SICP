@@ -1,5 +1,4 @@
-# SICP学习计划
-#《计算机程序的结构与解释》
+# 《计算机程序的结构与解释》学习计划
 =============
 
 ----------------------
@@ -19,9 +18,9 @@
 
 ## 声明与致谢
 
-http://ocw.mit.edu
-License: Creative Commons Attribution-Noncommercial-Share Alike.
-Eric Grimson, Peter Szolovits, and Trevor Darrell, 6.001 Structure and Interpretation of Computer Programs, Spring 2005. (Massachusetts Institute of Technology: MIT OpenCourseWare).
+> http://ocw.mit.edu  
+> License: Creative Commons Attribution-Noncommercial-Share Alike.  
+> `Eric Grimson`, `Peter Szolovits`, and `Trevor Darrell`, 6.001 Structure and Interpretation of Computer Programs, Spring 2005. (Massachusetts Institute of Technology: MIT OpenCourseWare).
 
 ## 字幕约定
 
