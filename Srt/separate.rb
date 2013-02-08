@@ -7,14 +7,22 @@ if ARGV.empty?
     exit
 end
 
+newline = case RUBY_PLATFORM
+when /linux|bsd|solaris/
+    "\n"
+when /darwin|mac os/
+    "\r"
+when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+    "\r\n"
+end
+
 eng = []
 chn = []
 cont = []
 
 open(ARGV[0]).each_line { |line|
     puts line.inspect
-    if line == "\r\n"
-        puts  "i am a block"
+    if line == newline
         # a block is full
         eng << cont[0] << cont[1]
         chn << cont[0] << cont[1]
@@ -22,20 +30,17 @@ open(ARGV[0]).each_line { |line|
             for i in 2...cont.size
                 chn << cont[i]
             end
-            chn << "\r\n"
-            eng << "-- Remain to be recheck  --\r\n"
+            chn << "newline"
+            eng << "-- Remain to be recheck  -- #{newline}"
         else
-            chn << cont[2] << "\r\n";
-            eng << cont[3] << "\r\n";
+            chn << cont[2] << newline;
+            eng << cont[3] << newline;
         end
         cont.clear
     else
         cont << line
     end
 }
-
-puts eng
-puts "hi~"
 
 filename = ARGV[0].split(".")[0]
 eng_file = "#{filename}-eng.srt"
