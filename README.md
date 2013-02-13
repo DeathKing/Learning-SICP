@@ -20,18 +20,12 @@
 
 > http://ocw.mit.edu  
 > License: Creative Commons Attribution-Noncommercial-Share Alike.  
-> `Eric Grimson`, `Peter Szolovits`, and `Trevor Darrell`, 6.001 Structure and Interpretation of Computer Programs, Spring 2005. (Massachusetts Institute of Technology: MIT OpenCourseWare).
+> `Eric Grimson`, `Peter Szolovits`, and `Trevor Darrell`,   
+> 6.001 Structure and Interpretation of Computer Programs, Spring 2005.  
+> (Massachusetts Institute of Technology: MIT OpenCourseWare).  
 
-## 字幕约定
+## 加入我们
 
-+ 编码: UTF-8
-+ 格式: Dos
-+ 致谢: true
-+ 类型: srt
-
-一切术语以及译法向`裘宗燕`的中文译版本靠拢。
-
-## 截止日期及负责人
-
-+ lec1a: DeathKing (2013-2-10)
-+ lec1b: ChingfanTsou (2013-2-10)
++ `fork`
++ [项目Wiki](https://github.com/FoOTOo/Learning-SICP/wiki)
++ [项目状态](https://github.com/FoOTOo/Learning-SICP/wiki/%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81)
