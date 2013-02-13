@@ -19,7 +19,7 @@ end
 FileUtils.cp ARGV[0], ARGV[0] + ".backup"
 open(ARGV[0]).each_line do |line|
     if line == newline and !flag
-        cont << sprintf(template, counter) << block << newline
+        cont << sprintf(template, counter) << block.clone << newline
         flag = true
         counter += 1
         block.clear
