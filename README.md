@@ -3,6 +3,12 @@
 
 ----------------------
 
+# 视频地址
+
+[优酷](http://i.youku.com/footoosub)
+
+Youtube 版本即将上传
+
 # SICP教科书
 ![计算机程序的结构与解释教科书](http://www.hacdc.org/wp-content/uploads/2012/05/sicp.gif "计算机程序的结构与解释")
 
