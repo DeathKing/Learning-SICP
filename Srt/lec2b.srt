@@ -114,95 +114,444 @@ from the task of implementing the parts.
 当然 在一个大型系统中
 And in a large system, of course,
 
-we have abstraction barriers like this at lots, and lots, and lots of levels.
+我们有像这样的抽象屏障
+we have abstraction barriers like this
 
-And that's the idea that we've been using so far over and over in implementing procedures.
-Well, now what we're going to do is look at the same issues for data. We're going to see
-that the system has primitive data. In fact, we've already seen that. We've talked about
-numbers as primitive data. And then we're going to see their means of combination for
-data. There's glue that allows you to put primitive data together to make more complicated,
-kind of compound data. And then we're going to see a methodology for abstraction that's a
-very good thing to use when you start building up data in terms of simpler data.
-And again, the key idea is that you're going to build the system in layers and set up
-abstraction barriers that isolate the details at the lower layers from the thing that's going on
-at the upper layers. The details at the lower layers, the ideas, they won't matter. They're
-going to be George's concern because he signed this contract with us for how the stuff that
-he implements behaves, and how he implements the thing is his problem.
-All right, well let's look at an example. And the example I'm going to talk about is a system
-that does arithmetic on rational numbers. And what I have in mind is that we should have
-something in the computer that allows us to ask it, like, what's the sum of 1/2 and 1/4, and
-somehow the system should say, yeah, that's 3/4. Or we should be able to say what's 3/4
-times 2/3, and the system should be able to say, yeah, that's 1/2. Right? And you know
-what I have in mind. And you also know how to do this from, I don't know, fifth grade or
-sixth grade.
-There are these formulas that say if I have some fraction which is a numerator over a
-denominator, and I want to add that to some other fraction which is another numerator
-over another denominator, then the answer is the numerator of the first times the
-denominator of the second, plus the numerator of the second times the denominator of the
-first. That's the numerator of the answer, and the denominator is the product of the two
-denominators.
-Right? So there's something from fifth or sixth grade fraction arithmetic. And then similarly,
-if I want to multiply two things, n1 over d1 multiplied by n2 over d2 is the product of the
-numerators over the product of the denominators.
-So it's no problem at all, but it's absolutely no problem to think about what computation you
-want to make in adding and multiplying these fractions. But as soon as we go to implement
-it, we run up across something. We don't have what a rational number is. So we said that
-the system gives us individual numbers, so we can have 5 and 3, but somehow we don't
-have a way of saying there's a thing that has both a 3 and a 4 in it, or both a 2 and a 3. It's
-almost as if we'd like to imagine that somehow there are these clouds, and a cloud
-somehow has both a numerator and a denominator in it, and that's what we'd like to work
-in terms of.
-Well, how are we going to solve that problem? We're going to solve that problem by using
-this incredibly powerful design strategy that you've already seen us use over and over. And
-that's the strategy of wishful thinking. Just like before when we didn't have a procedure, we
-said, well, let's imagine that that procedure already exists. We'll say, well, let's imagine that
-we have these clouds.
-Now more precisely what I mean is let's imagine that we have three procedures, one called
-make-RAT. make-RAT is going to take as arguments two numbers, so I'll call them
-numerator and denominator, and it'll return for us a cloud-- one of these clouds. I don't
-really know what a cloud is. It's whatever make-RAT returns, that's its business.
-And then we're going to say, suppose we've got one of these clouds, we have a procedure
-called numer, which takes in a cloud that has an n and a d in it, whatever a cloud is, and I
-don't know what it is, and returns for us the numerator part. And then we'll assume we
-have a procedure denom, which again takes in a cloud, whatever a cloud is, and returns for
-us the denominator [? required. ?]
-This is just like before, when if we're building a square root, we assume that we have good
-enough. Right? And what we'll say is, we'll go find George, and we'll say to George, well, it's
-your business to make us these procedures. And how you choose to implement these
-clouds, that's your problem. We don't want to know.
-Well, having pushed this task off onto George, then it's pretty easy to do the other part.
-Once we've got the clouds, it's pretty easy to write the thing that does say addition of
-rational numbers. You can just say define, well, let's say +RAT. Define +RAT, which will
-take in two rational numbers, x and y. x and y are each these clouds.
-And what does it do? Well, it's going to return for us a rational number. What rational
-number is it? Well, we've got the formulas there. The numerator of it is the sum of the
-product of the numerator of x and the denominator of y. It's one thing in the sum. And the
-other thing in the numerator is the product of the numerator of y and the denominator of x.
+在很高很高很高层次上的抽象屏障
+at lots, and lots, and lots of levels.
+
+这也是我们到目前为止一直在使用的思想
+And that's the idea that we've been using so far
+
+贯彻到每次编写过程之中
+over and over in implementing procedures.
+
+书归正传 我们将要在数据中看到同样的问题
+Well, now what we're going to do is look at the same issues for data.
+
+我们将看到系统中有基本数据
+We're going to see that the system has primitive data.
+
+实际上我们已经看到了
+In fact, we've already seen that.
+
+我们已经看到了作为基本对象的数字
+We've talked about numbers as primitive data.
+
+我们将看到适用于数据的组合方法
+And then we're going to see their means of combination for data.
+
+有种“胶水” 让你把基本数据粘合在一起
+There's glue that allows you to put primitive data together
+
+来构建一种更复杂的符合数据
+to make more complicated, kind of compound data.
+
+然后我们将看到一种用于抽象的方法
+And then we're going to see a methodology for abstraction
+
+这种方法十分好用 尤其是
+that's a very good thing to use
+
+当你开始用简易的数据构建复杂数据时
+when you start building up data in terms of simpler data.
+
+再次强调 中心思想是要建立层次化的系统
+And again, the key idea is that you're going to build the system in layers
+
+建立抽象屏障将细节隔离在低层
+and set up abstraction barriers that isolate the details at the lower layers
+
+将细节与你要做的事所在的高层隔离开  # TBD
+from the thing that's going on at the upper layers.
+
+低层的细节 低层的思想 都不重要
+The details at the lower layers, the ideas, they won't matter.
+
+那是George该操心的
+They're going to be George's concern
+
+因为他跟我们“签了合同”
+because he signed this contract with us
+
+他负责实现这些行为
+for how the stuff that he implements behaves,
+
+怎么实现都是他的事
+and how he implements the thing is his problem.
+
+好了 来看一个实例吧
+All right, well let's look at an example.
+
+我们将会讨论一个系统
+And the example I'm going to talk about is a system 
+
+一个在有理数域上做算术运算的系统
+that does arithmetic on rational numbers.
+
+我现在所想到的是
+And what I have in mind
+
+计算机中应该有某种东西
+is that we should have something in the computer
+
+使得我们可以查询
+that allows us to ask it,
+
+比如说1/2加上1/4的和是多少
+like, what's the sum of 1/2 and 1/4,
+
+系统就会说 是3/4
+and somehow the system should say, yeah, that's 3/4.
+
+我们也可以查询3/4乘以2/3的积
+Or we should be able to say what's 3/4 times 2/3,
+
+系统因该能够回答 结果是1/2
+and the system should be able to say, yeah, that's 1/2.
+
+对吧？ 你知道我想表达的 #TBD
+Right? And you know what I have in mind.
+
+我不太确定你们是多久掌握这些运算的
+And you also know how to do this from, I don't know,
+
+五年级或者六年级吧？
+fifth grade or sixth grade.
+
+这有一些公式说
+There are these formulas that say
+
+一个分数是分子除以分母 # TBD
+if I have some fraction which is a numerator over a denominator,
+
+而如果我要将这个分数与另一个分数相加的话
+and I want to add that to some other fraction
+
+当然 这个分数也是分子除以分母
+which is another numerator over another denominator,
+
+那么结果将会是 第一个分数的分子
+then the answer is the numerator of the first
+
+乘以第二个分数的分母
+times the denominator of the second,
+
+加上第二个分数的分子乘以第一个分数的分母
+plus the numerator of the second times the denominator of the first.
+
+当然 这只是答案的分子
+That's the numerator of the answer,
+
+答案的分母是两个分数的分母之积
+and the denominator is the product of the two denominators.
+
+对吧？ 这大概就是五、六年级教授的分数算术
+Right? So there's something from fifth or sixth grade fraction arithmetic.
+
+与之相似的 如果我想要将两个数乘起来
+And then similarly, if I want to multiply two things,
+
+n1除以d1的商 乘以 n2除以d2的商
+n1 over d1 multiplied by n2 over d2
+
+就是两个分数的分子之积除以两个分母之积的商
+is the product of the numerators over the product of the denominators.
+
+所以这些都不构成问题
+So it's no problem at all,
+
+
+but it's absolutely no problem to
+
+think about what computation you want to make
+
+in adding and multiplying these fractions.
+
+但是当我们实现这个功能的时候 我们似乎错过了什么 # TBD
+But as soon as we go to implement it, we run up across something.
+
+我们连有理数都没有
+We don't have what a rational number is.
+
+系统只给了我们单个的数字
+So we said that the system gives us individual numbers,
+
+比如5和3
+so we can have 5 and 3,
+
+但我们没有去表达一个
+but somehow we don't have a way of saying
+
+同时具有一个3和一个4的东西
+there's a thing that has both a 3 and a 4 in it,
+
+或者一个2和一个3的东西
+or both a 2 and a 3. 
+
+但只要我们去想象
+It's almost as if we'd like to imagine
+
+我们就会看到一些云彩
+that somehow there are these clouds,
+
+某个云彩不知咋的同时具有分子和分母
+and a cloud somehow has both a numerator and a denominator in it,
+
+这就是我们想有的语言形式 #TBD
+and that's what we'd like to work in terms of.
+
+那么 我们要怎么解决这个问题呢？
+Well, how are we going to solve that problem?
+
+我们将使用一种强大的设计测略来解决这个问题
+We're going to solve that problem by using this incredibly powerful design strategy
+
+这种策略我们已经反复使用过了
+that you've already seen us use over and over.
+
+
+And that's the strategy of wishful thinking.
+
+就像我们之前并没有任何过程一样
+Just like before when we didn't have a procedure,
+
+我们就想象确实存在着过程这个东西
+we said, well, let's imagine that that procedure already exists.
+
+那么 我们就来想象我们有了（有理数）这些云彩吧
+We'll say, well, let's imagine that we have these clouds.
+
+更准确一点来说
+Now more precisely what I mean is
+
+让我们假设我们有了三个过程
+let's imagine that we have three procedures，
+
+其一为MAKE-RAT
+one called MAKE-RAT.
+
+MAKE-RAT有两个参数
+MAKE-RAT is going to take as arguments two numbers,
+
+我们分别把它们叫作分子和分母
+so I'll call them numerator and denominator,
+
+它给我们返回一朵云彩——我们需要的云彩
+and it'll return for us a cloud-- one of these clouds.
+
+我并不知道云彩是什么
+I don't really know what a cloud is.
+
+无论MAKE-RAT返回什么 那都是它的事
+It's whatever MAKE-RAT returns, that's its business.
+
+并且我们将会说
+And then we're going to say,
+
+假设我们有了一个这种云彩
+suppose we've got one of these clouds,
+
+我们有个叫NUMBER的过程
+we have a procedure called NUMBER,
+
+这个过程需要我们传递有n和a的云彩
+which takes in a cloud that has an n and a d in it,
+
+不管这个云彩是什么 我不知道这个云彩是什么
+whatever a cloud is, and I don't know what it is,
+
+但NUMBER过程会返回（云彩的）分子部分
+and returns for us the numerator part.
+
+我们也会假设我们有个叫DENOM的过程
+And then we'll assume we have a procedure DENOM,
+
+该过程需要我们传递一个云彩 不管云彩是什么
+which again takes in a cloud, whatever a cloud is,
+
+并返回（云彩的）分母部分
+and returns for us the denominator part.
+
+就像先前我们构建平方根过程一样
+This is just like before, when if we're building a square root,
+
+我们假设我们有GOOD-ENOUGH过程
+we assume that we have good-enough.
+
+对吧？ 我们会找到George 对他说
+Right? And what we'll say is, we'll go find George, and we'll say to George,
+
+好吧 你的任务就是实现这三个过程
+well, it's your business to make us these procedures.
+
+你选择如何实现这些云彩 就是你的事了
+And how you choose to implement these clouds, that's your problem.
+
+我们不想知道
+We don't want to know.
+
+那么 把这些杂事都推给George后
+Well, having pushed this task off onto George,
+
+完成其它部分就相当容易了
+then it's pretty easy to do the other part.
+
+一旦我们有了这些云彩后 编写那些
+Once we've got the clouds, it's pretty easy to write the thing
+
+把有理数加起来的程序就变得容易多了
+that does say addition of rational numbers.
+
+你可以定义 这么说吧 定义+RAT
+You can just say define, well, let's say +RAT.
+
+定义+RAT过程 该过程需要两个有理数参数 x和y
+Define +RAT, which will take in two rational numbers, x and y.
+
+x和y就是这些云彩
+x and y are each these clouds.
+
+这个过程干些啥呢？
+And what does it do?
+
+它将返回给我们一个有理数
+Well, it's going to return for us a rational number.
+
+这个有理数是怎么得来的呢？
+What rational number is it?
+
+依据我们这里的公式
+Well, we've got the formulas there.
+
+结果的分子的一部分为
+The numerator of it is the sum of
+
+x的分子与y的分母之积
+the product of the numerator of x and the denominator of y.
+
+这只是结果的分子的一部分
+It's one thing in the sum.
+
+结果的分子剩下的一部分是
+And the other thing in the numerator is
+
+y的分子与x的分母之积
+the product of the numerator of y and the denominator of x.
+
+闭合* 闭合+
 The star, close the plus.
-Right, that's the first argument to make-RAT, which is the numerator of the thing I'm
-constructing. And then the rest of the thing goes into make-RAT is the denominator of the
-answer, which is the product of the denominator of x and the denominator of y. Like that.
-OK? So there is the analog of doing rational number addition. And it's no problem at all,
-assuming that we have these clouds.
-And of course, we can do multiplication in the same way. Define how to get the product of
-two rational numbers, call it *RAT. Takes in two of these clouds, x and y, it returns a
-rational number, make-RAT, whose numerator is the product of the numerators-- numerator
-of x times the numerator of y. And the denominator of the thing it's going to return is the
-product of the denominators.
-Well, except that I haven't told you what these clouds are, that's all there is to it. See, what
-did I do? I assumed by wishful thinking that I had a new kind of data object. And in
-particular, I assumed I had ways of creating these data objects. Make-RAT creates one of
-these things. This is called a constructor. All right, I have a thing that constructs such data
-objects. And then I assume I have things that, having made these things, I have ways of
-getting the parts out. Those are called selectors.
-And so formally, what I said is I assumed I had procedures that are constructors and
-selectors for these data objects, and then I went off and used them. That's no different in
-kind from saying I assume I have a procedure good-enough, and I go use it to implement
-square root.
-OK, well before we go on, let's ask the question of why do we want to do this in the first
-place? See, why do we want a procedure like +RAT that takes in two rational numbers and
-returns a rational number? See, another way to think about this is, well, here's this formula.
+
+好了 这是MAKE-RAT的第一个参数
+Right, that's the first argument to MAKE-RAT,
+
+这是我将要构造的云彩的分子
+which is the numerator of the thing I'm constructing.
+
+而MAKE-RAT剩下的参数
+And then the rest of the thing goes into MAKE-RAT is
+
+则是结果的分母
+the denominator of the answer,
+
+也就是x的分母乘以y的分母
+which is the product of the denominator of x and the denominator of y.
+
+像这样
+Like that.
+
+好 这就是对有理数加法的一个模拟
+OK? So there is the analog of doing rational number addition.
+
+在假设我们有了这些云彩后 就变得完全没有问题
+And it's no problem at all, assuming that we have these clouds.
+
+当然 我们可以用同样的方法把它们乘起来
+And of course, we can do multiplication in the same way.
+
+我们把将两个有理数乘起来定义为*RAT
+Define how to get the product of two rational numbers, call it *RAT.
+
+该过程需要两朵云彩 x和y
+Takes in two of these clouds, x and y,
+
+返回一个用MAKE-RAT构建的有理数
+it returns a rational number, MAKE-RAT,
+
+这个有理数的分子是
+whose numerator is the product of the numerators--
+
+x的分子与y的分子之积
+numerator of x times the numerator of y.
+
+而这个有理数的分母则是
+And the denominator of the thing it's going to return
+
+x的分母与y的分母之积
+is the product of the denominators.
+
+
+Well, except that I haven't told you what these clouds are,
+
+that's all there is to it. See, what did I do?
+
+我按照我的期许假设我有一种新的数据类型
+I assumed by wishful thinking that I had a new kind of data object.
+
+特别的 我假设我有创建这些数据类型的能力
+And in particular, I assumed I had ways of creating these data objects.
+
+这里的MAKE-RAT就创建了一个新的数据类型
+MAKE-RAT creates one of these things.
+
+这叫作“构造函数”
+This is called a constructor.
+
+我现在有了可以构造这些数据类型的东西了
+All right, I have a thing that constructs such data objects.
+
+然后我假设我有某些东西 有了这些东西后
+And then I assume I have things that, having made these things,
+
+我就可以从中抽取部分信息的方法了
+I have ways of getting the parts out.
+
+这些叫作“选择函数”
+Those are called selectors.
+
+把之前我所说的更加正式化一点 就是说
+And so formally, what I said is I assumed
+
+我假设我有了用于处理这些数据类型的构造函数和选择函数
+I had procedures that are constructors and selectors for these data objects,
+
+那我就可以使用它们 # TBD - Went off
+and then I went off and used them.
+
+这就和我说我假设我有GOOD-ENOUGH?过程
+That's no different in kind from saying I assume I have a procedure GOOD-ENOUGH?,
+
+并用它来实现平方根这种做法没有区别
+and I go use it to implement square root.
+
+好 在我们继续之前
+OK, well before we go on,
+
+让我们来想想 为什么我们首先就在这个地方实现了这些东西？
+let's ask the question of why do we want to do this in the first place?
+
+为什么我们需要一个像+RAT一样的过程
+See, why do we want a procedure like +RAT
+
+一个需要两个有理数作为参数并返回一个有理数的过程
+that takes in two rational numbers and returns a rational number?
+
+换一种想法就是 我们实现的是这里的这个公式
+See, another way to think about this is, well, here's this formula.
+
+
 And I've also got to implement something that adds rational numbers.
+
 One other way to think about is, well, there's this thing, and I type in four numbers, an n1,
 and a d1, and an n2, and a d2. And it sets some registers in the machine to this numerator
 and this denominator. So I might say, well, why don't I just add rational numbers by I type
