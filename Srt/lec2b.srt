@@ -549,39 +549,144 @@ that takes in two rational numbers and returns a rational number?
 换一种想法就是 我们实现的是这里的这个公式
 See, another way to think about this is, well, here's this formula.
 
-
+这里我也实现了用于加和两个有理数的东西
 And I've also got to implement something that adds rational numbers.
 
-One other way to think about is, well, there's this thing, and I type in four numbers, an n1,
-and a d1, and an n2, and a d2. And it sets some registers in the machine to this numerator
-and this denominator. So I might say, well, why don't I just add rational numbers by I type
-in four numbers, numerators and denominators, and get out two numbers, which is a
-numerator and a denominator.
-Why are we worrying about building things like this anyway? Well, the answer is, suppose
-you want to think about expressing something like this, suppose I'd like to express the idea
-of taking two rational numbers, x plus y, say, and multiplying that by the sum of two other
-rational numbers. Well, the way I do it, having things like +RAT and *RAT, is I'd say, oh
-yeah, what that is is just the product. That's *RAT of the sum of x and y and the sum of s
-and t.
-So except for syntax, I get an expression that looks like the way I want to think about it
-mathematically. I want to say there are two numbers. There's a thing which is the sum of
-them, and there's a thing which is the sum of these two. That's this and this. And then I
-multiply them. So I get an expression that matches this expression.
-If I did the other thing, if I said, well, the way I want to think about this is I type into my
-machine four numbers, which are the numerators and the denominators of x and y, and
-then four more numbers, which are the numerators and denominators of s and t. And then
-what I'd be sitting with is, well, what would I do? I'd add these, and somehow I'd have to
-have two temporary variables, which are the numerators and denominators of this sum, and
-I'd go off and store them someplace.
-And then I'd go over here, I'd type in four more numbers, I'd get two more temporary
-variables, which are the numerators and denominators of s and t. And then finally, I put
-those together by multiplying them. You see, what's starting to happen, there are all these
-temporary variables, which are sort of the guts of the internals of these rational numbers
+再换一种想法就是 这有这么一个东西
+One other way to think about is, well, there's this thing,
+
+可以让我输入四个数 n1 d1 n2 d2
+and I type in four numbers, an n1, and a d1, and an n2, and a d2.
+
+然后这个东西就修改机器里的寄存器
+And it sets some registers in the machine
+
+来代表分子和分母
+to this numerator and this denominator.
+
+所以你大概会问
+So I might say, well,
+
+你为什么不用四个分别代表分子和分母的数
+why don't I just add rational numbers by I type in four numbers,
+
+来做有理数加法
+numerators and denominators,
+
+这个加法返回两个数 分别代表分子和分母
+and get out two numbers, which is a numerator and a denominator.
+
+我们为什么要关心像这样构建东西？ #TBD
+Why are we worrying about building things like this anyway?
+
+呃 那是因为
+Well, the answer is,
+
+假设你想表达像这样的东西
+suppose you want to think about expressing something like this,
+
+假设我想表达“采用”两个有理数的思想
+suppose I'd like to express the idea of taking two rational numbers,
+
+x加y的和乘以s加上t的和
+x plus y, say, and multiplying that by the sum of two other rational numbers.
+
+然而 当我有了像+RAT和*RAT这样的东西后
+Well, the way I do it, having things like +RAT and *RAT,
+
+我就会将其考虑为乘积
+is I'd say, oh yeah, what that is is just the product.
+
+就是将*RAT应用于x和y的和以及s和t的和上
+That's *RAT of the sum of x and y and the sum of s and t.
+
+除了语法 我还能得到一个表达式 # TBD
+So except for syntax, I get an expression
+
+这个表达式看起来像是按照数学思想表达的
+that looks like the way I want to think about it mathematically.
+
+我说这有两个数
+I want to say there are two numbers.
+
+这个东西代表了这两个数的和
+There's a thing which is the sum of them,
+
+然而这个东西又代表了另两个数的和
+and there's a thing which is the sum of these two.
+
+就是这个和这个
+That's this and this.
+
+然后我把它们乘起来
+And then I multiply them.
+
+所以我有了一个和这里的表达式相匹配的表达式
+So I get an expression that matches this expression.
+
+而如果我用其它的方式去表达
+If I did the other thing, if I said, well,
+
+我表达为 我传递向机器传递四个数
+the way I want to think about this is I type into my machine four numbers,
+
+四个分别代表x和y的分子、分母的数
+which are the numerators and the denominators of x and y,
+
+然后又是四个分别代表s和t的分子、分母的数
+and then four more numbers, which are the numerators and denominators of s and t.
+
+
+And then what I'd be sitting with is, well, what would I do?
+
+我把这些加起来 不知咋的我们就得到了两个临时变量
+I'd add these, and somehow I'd have to have two temporary variables,
+
+分别代表了和的分子、分母
+which are the numerators and denominators of this sum,
+
+我又得去找个地方把它们存储起来
+and I'd go off and store them someplace.
+
+然后到了这里 我又传入了四个数
+And then I'd go over here, I'd type in four more numbers,
+
+我又有了两个临时变量
+I'd get two more temporary variables,
+
+分别代表了s和t之和的分子和分母
+which are the numerators and denominators of s and t.
+
+最后 我通过把它们乘起来来将其结合在一起
+And then finally, I put those together by multiplying them.
+
+如你所见 麻烦出来了
+You see, what's starting to happen,
+
+这里满是临时变量
+there are all these temporary variables,
+
+这些应该是这些有理数内部的“内脏”吧
+which are sort of the guts of the internals of these rational numbers
+
+但却显露在我们的系统中
 that start hanging out all over the system.
-And of course, if I had more and more complicated expressions, there'd be more and more
-guts hanging out that confuse my programming. And those of you who sort of programmed
-things like that, where you're just adding numbers in assembly language, you sort of see
-you have to suddenly be concerned with these temporary variables.
+
+当然 随着表达式变得越来越复杂
+And of course, if I had more and more complicated expressions,
+
+这些“内脏”就会显露得越来越多 使我编程时感到困惑
+there'd be more and more guts hanging out that confuse my programming.
+
+像这样写程序的人
+And those of you who sort of programmed things like that,
+
+你只是在用汇编语言的思想来加和两数
+where you're just adding numbers in assembly language,
+
+you sort of see you have to suddenly be concerned with these temporary variables.
+
+
 But more importantly than confusing my programming, they're going to confuse my mind.
 Because the whole name of this game is that we'd like the programming language to
 express the concepts that we have in our heads, like rational numbers are things that you
