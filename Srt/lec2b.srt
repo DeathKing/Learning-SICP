@@ -21,7 +21,7 @@ We mentioned some means of combination
 这些方法用来组合基本元素
 by which you take the primitive things
 
-使你能够构建更复杂的东西
+使你能够构造更复杂的东西
 and you make more complicated things.
 
 然后我们讨论了抽象的方法
@@ -54,7 +54,7 @@ just by combining these means of abstraction.
 而这些的中心观点则是
 And the crucial idea in all of this is the one
 
-我们要构建一个层次系统 # TBD
+我们要构造一个层次系统 # TBD
 hat we build a layered system.
 
 譬如说
@@ -102,10 +102,10 @@ and we don't much care about that
 甚至可能还不知道有Harry这个人
 or even know that, maybe, Harry exists.
 
-关键点是当我们在构建东西时
+关键点是当我们在构造东西时
 So the crucial idea is that when we're building things,
 
-我们将构建整体的任务划分为了
+我们将构造整体的任务划分为了
 we divorce the task of building things 
 
 实现部件的任务
@@ -144,7 +144,7 @@ And then we're going to see their means of combination for data.
 有种“胶水” 让你把基本数据粘合在一起
 There's glue that allows you to put primitive data together
 
-来构建一种更复杂的符合数据
+来构造一种更复杂的符合数据
 to make more complicated, kind of compound data.
 
 然后我们将看到一种用于抽象的方法
@@ -153,7 +153,7 @@ And then we're going to see a methodology for abstraction
 这种方法十分好用 尤其是
 that's a very good thing to use
 
-当你开始用简易的数据构建复杂数据时
+当你开始用简易的数据构造复杂数据时
 when you start building up data in terms of simpler data.
 
 再次强调 中心思想是要建立层次化的系统
@@ -373,7 +373,7 @@ which again takes in a cloud, whatever a cloud is,
 并返回（云彩的）分母部分
 and returns for us the denominator part.
 
-就像先前我们构建平方根过程一样
+就像先前我们构造平方根过程一样
 This is just like before, when if we're building a square root,
 
 我们假设我们有GOOD-ENOUGH过程
@@ -475,7 +475,7 @@ Define how to get the product of two rational numbers, call it *RAT.
 该过程需要两朵云彩 x和y
 Takes in two of these clouds, x and y,
 
-返回一个用MAKE-RAT构建的有理数
+返回一个用MAKE-RAT构造的有理数
 it returns a rational number, MAKE-RAT,
 
 这个有理数的分子是
@@ -576,7 +576,7 @@ numerators and denominators,
 这个加法返回两个数 分别代表分子和分母
 and get out two numbers, which is a numerator and a denominator.
 
-我们为什么要关心像这样构建东西？ #TBD
+我们为什么要关心像这样构造东西？ #TBD
 Why are we worrying about building things like this anyway?
 
 呃 那是因为
@@ -720,7 +720,7 @@ AUDIENCE: I don't quite see the need-
 既然我们有MAKE-RAT过程了
 when we had MAKE-RAT with the numerator and denominator,
 
-我们将传递两个参数作为分子和分母来构建一朵云彩
+我们将传递两个参数作为分子和分母来构造一朵云彩
 we had to have the numerator and denominator to pass as parameters to create the cloud,
 
 但最后我们又从中将这些东西给抽取出来
@@ -729,7 +729,7 @@ and then we extracted to get back what we had to have originally.
 教授：非常正确
 PROFESSOR: That's right.
 
-我们的问题是 既然我们是用分子和分母构建云彩
+我们的问题是 既然我们是用分子和分母构造云彩
 So the question is, I sort of have the numerator and the denominator,
 
 但我为什么又想从云彩里面把它们取出来呢？
@@ -802,70 +802,240 @@ Let's break, let's just stretch and get somebody-- [INAUDIBLE]
 好吧 回到我们的有理数算术系统来
 OK, well, we've been working on this rational number arithmetic system,
 
-
+而我们所做的 最重要的则是
 and then what we did, the important thing about what we did,
 
+我们我们把这个问题分解为了两部分
 is we thought about the problem by breaking it into two pieces.
 
+我们假设我们跟George“签了合同”
 We said, assume there is this contract with George,
 
+George已经给出了如何去构造这些云彩
 and George has figured out the way to how to construct these clouds,
 
+他给我们提供了一个作为构造函数的MAKE-RAT过程
 provided us procedures MAKE-RAT, which was a constructor,
 
+相应的 用于提取分子和分母的选择函数
 and selectors, which are numerator and denominator.
 
+然后 我们用这些东西
 And then in terms of that,
 
+我们实现了有理数的加法和乘法
 we went off and implemented addition and multiplication of rational numbers.
 
+好了 我们来看看George面临的问题吧
 Well, now let's go look at George's problem.
 
-How can we go and package together a numerator and a denominator and actually make one of these clouds?
+我们如何来把分子和分母给封装起来
+How can we go and package together a numerator and a denominator
 
-See, what we need is
-a kind of glue, a glue for data objects that allows us to put things together. And Lisp
-provides such a glue, and that glue is called list structure. List structure is a way of gluing
-things together, and more precisely, Lisp provides a way of constructing things called pairs.
-There's a primitive operator in Lisp called cons. We can take a look at it. There's a thing
-called cons. Cons is an operator which takes in two arguments called x and y, and it returns
-for us a thing called a pair. All right, so a thing called a pair that has a first part a second
-part.
-So cons takes two objects. There's a thing called a pair. The first part of the cons is x, and
-the second part of the cons is y. And that's what it builds. And then we also assume we
-have ways of getting things out. If you're given a pair, there's a thing called car, and car of
-a pair, p, gives you out the first part of the pair, p. And there's a thing called cdr, and cdr of
-the pair, p, gives you the second part of the pair, p. OK, so that's how we construct things.
-There's also a conventional way of drawing pictures of these things. Just like we write down
-that as the conventional way of writing Plato's idea of two, the way we could draw a
-diagram to represent cons of two and three is like this. We draw a little box. And so here's
-the box we're talking about, and this box has two arrows coming out of it. And say the first
-part of this pair is 2, and the second part of this pair is 3. And this notation has a name, it's
-called box and pointer notation.
-By the way, let me say right now that a lot of people get confused that there's some
-significance to the geometric way I drew these pointers, the directions. Like some people
-think it'd be different if I took this pointer and turned it up here, and put the 3 out here.
-That has no significance. All right? It's merely you have a bunch of arrows, these pointers,
-and the boxes. The only issue is how they're connected, not the geometric arrangement of
-whether I write the pointer across, or up, or down.
-Now it's completely un-obvious, probably, why that's called list structure. We're not actually
-going to talk about that today. We'll see that next time.
-So those are pairs, there's cons that constructs them. And what I'm going to know about
-cons, and car, and cdr, is precisely that if I have any x and y, all right, if I have any things x
-and y, and I use cons to construct a pair, then the car of that pair is going to be x, the thing
-I put in, and the cdr of that pair is going to be y. That's the behavior of these operators,
-cons, car, and cdr.
+并把它们放在“云彩”里
+and actually make one of these clouds?
+
+我们需要的是一种胶水
+See, what we need is a kind of glue,
+
+一种可以让我们把数据结合在一起的胶水
+a glue for data objects that allows us to put things together.
+
+Lisp提供了这样的胶水
+And Lisp provides such a glue,
+
+我们把它叫作“表结构”
+and that glue is called list structure.
+
+表结构是一种将数据粘合在一起的工具
+List structure is a way of gluing things together,
+
+说得更准确一点
+and more precisely,
+
+就是Lisp提供了一种叫序对的构造方法 #TBD
+Lisp provides a way of constructing things called pairs.
+
+Lisp里面有一个叫CONS的基本过程
+There's a primitive operator in Lisp called CONS.
+
+让我们来看一下
+We can take a look at it.
+
+这个就是CONS
+There's a thing called CONS.
+
+CONS是一个运算符 它需要两个参数X和Y
+Cons is an operator which takes in two arguments called x and y,
+
+它返回给我们一个叫作“序对”的东西
+and it returns for us a thing called a pair.
+
+而所谓的“序对” 就是指它有“首部分”和“次部分” #TBD
+All right, so a thing called a pair that has a first part a second part.
+
+这也解释了为什么CONS需要两个参数
+So CONS takes two objects.
+
+如果我们有一个序对的话
+There's a thing called a pair.
+
+X就是首部分 而Y就是次部分
+The first part of the cons is X, and the second part of the cons is Y.
+
+这就是它的构造方式        
+And that's what it builds.
+
+我们同样也有把东西取出来的方法
+And then we also assume we have ways of getting things out.
+
+给定一个序对 我们有一个叫CAR的东西
+If you're given a pair, there's a thing called CAR,
+
+使得 序对P的CAR就是序对P的首部分
+and car of a pair, P, gives you out the first part of the pair, P.
+
+也有一个叫CDR的东西
+And there's a thing called CDR,
+
+而序对P的CDR 就返回序对P的次部分
+and CDR of the pair, P, gives you the second part of the pair, p.
+
+这些就是我们构造数据的方法
+OK, so that's how we construct things.
+
+在将这些数据用图画表示时 我们也有一种俗成的方法
+There's also a conventional way of drawing pictures of these things.
+
+Just like we write down that as the conventional way of writing Plato's idea of two, the way we could draw a diagram to represent cons of two and three is like this.
+
+先画个小盒子
+We draw a little box.
+
+这个就是我们讨论的（序对）
+And so here's the box we're talking about,
+
+它用两个从中放出的箭头 #TBD
+and this box has two arrows coming out of it.
+
+我们说 这个序对的首部分是2
+And say the first part of this pair is 2,
+
+而这个序对的次部分是3
+and the second part of this pair is 3.
+
+这种记法叫作“盒子—指针”记法
+And this notation has a name, it's called box and pointer notation.
+
+顺带一提 我现在就来说说
+By the way, let me say right now
+
+that a lot of people get confused
+
+that there's some significance to the geometric way I drew these pointers, the directions.
+
+一些人可能会认为 如果我这样画箭头
+Like some people think it'd be different if I took this pointer 
+
+并把3放在这里 结果会不一样
+and turned it up here, and put the 3 out here.
+
+这实际上是没区别的 能理解吗？
+That has no significance. All right?
+
+It's merely you have a bunch of arrows, these pointers, and the boxes.
+
+唯一的区别就在于它们是如何链接的
+The only issue is how they're connected,
+
+而不是我把它们怎么放置 譬如向上放 向下放 或者交叉放
+not the geometric arrangement of whether I write the pointer across, or up, or down.
+
+
+Now it's completely un-obvious,
+
+
+probably, why that's called list structure.
+
+我们今天不会讨论这个问题
+We're not actually going to talk about that today.
+
+我们下次再讨论吧
+We'll see that next time.
+ 
+所以 我们可以用CONS构造序对
+So those are pairs, there's CONS that constructs them.
+
+
+And what I'm going to know about CONS, and CAR, and CDR,
+
+
+is precisely that if I have any X and Y, all right,
+
+对任意的X和Y
+if I have any things X and Y,
+
+我可以用CONS来构造一个序对
+and I use CONS to construct a pair,
+
+那么该序对的CAR就是X 就是我的构造时的一个输入
+then the CAR of that pair is going to be X, the thing I put in,
+
+而该序对的CDR就是Y
+and the CDR of that pair is going to be Y.
+
+这就是CONS、CAR、CDR这些运算符的行为
+That's the behavior of these operators, CONS, CAR, and CDR.
+
+有了这些东西 George构造有理数就明了多了
 Given them, it's pretty clear how George can go off and construct his rational numbers.
-After all, all he has to do-- remember George's problem was to implement make-RAT,
-numerator, and denom. So all George has to do is say define make-RAT of some n and a d--
-so all I have to do is cons them. That's cons of n and d.
-And then if I want to get the numerator out, I would say define the numerator, numer, of
-some rational number, x. If the rational number's implemented as a pair, then all I have to
-do is get out the car of x. And then similarly, define the denom is going to be the cdr, the
-other thing I put into the pair.
-Well, now we're in business. That's a complete implementation of rational numbers. Let's
-use it. Suppose I want to say, so I want to think about how to add 1/2 plus 1/4 and watch
-the system work. Well, the way I'd use that is I'd say, well, maybe define a. I have to make
+
+言归正传 
+After all, all he has to do--
+
+记得吗 George的任务是实现MAKE-RAT、NUMER、DENOM过程
+remember George's problem was to implement MAKE-RAT, numerator, and denom.
+
+George这样编写代码 定义用N和D来MAKE-RAT
+So all George has to do is say define MAKE-RAT of some N and a D--
+
+就是将CONS应用于这二者
+so all I have to do is CONS them.
+
+也就是(CONS N D)
+That's CONS of N and D.
+
+而如果我想取出分子
+And then if I want to get the numerator out,
+
+代码我这样写 定义有理数X的NUMER
+I would say define the numerator, numer, of some rational number, X.
+
+如果我们是用序对来实现有理数的话
+If the rational number's implemented as a pair,
+
+我只需要用CAR来获得X的首部分
+then all I have to do is get out the CAR of X.
+
+类似的 DENOM就是用CDR运算符了
+And then similarly, define the denom is going to be the cdr,
+
+也就是我用于构造序对的另一个数据
+the other thing I put into the pair.
+
+
+Well, now we're in business.
+
+这就是有理数的一种实现
+That's a complete implementation of rational numbers.
+
+我们来实践一下
+Let's use it.
+
+
+Suppose I want to say, so I want to think about
+
+how to add 1/2 plus 1/4 and watch the system work. Well, the way I'd use that is I'd say, well, maybe define a. I have to make
 a 1/2. Well, that's a rational number with numerator 1 and denominator 2, so a will be
 make-RAT of 1 and 2.
 And then I'll construct the 1/4. I'll say define d to be make-RAT of 1 and 4. And if I'd like to
