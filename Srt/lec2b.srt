@@ -1128,32 +1128,79 @@ and that's why you get 6/8.
 那么 我们的+RAT实现有什么问题呢？
 So what was wrong with our implementation of +RAT?
 
-我们在此之前所做的算术运算又有什么错误呢？
+我们在此之前所做的有理数算术又有什么错误呢？
 What's wrong with that rational number arithmetic stuff that we did before the break?
 
-
+当然 从一方面来看 这一点都没有错
 Well, the answer is one way to look at it is absolutely nothing's wrong. 
 
+这其实是一个相当好的实现
 That's perfectly good implementation.
 
+这个实现完完全全遵守了分数加法法则
 It follows the sixth grade, fifth grade mathematic for adding fractions.
 
+我们可以这样说 这就是George的问题了
 One thing we can say is, well, that's George's problem.
 
-Like, boy, wasn't George dumb to say that he can make a rational number simply by sticking together the numerator and the denominator?
 
+Like, boy, wasn't George dumb to say that he can make a rational number 
+
+
+simply by sticking together the numerator and the denominator?
+
+在构造有理数时 如果George把这些东西化到最简
 Wouldn't it be better for George, when he made a rational number,
 
+难道不是会跟好一点吗？
 to reduce the stuff to lowest terms?
 
-And what I mean is, wouldn't it be better for George, instead of using this version of MAKE-RAT, to use this one on the slide?
+我想说的是 对George来说
+And what I mean is, wouldn't it be better for George,
 
-Or instead of just saying cons together n and d, what you do is compute the greatest common divisor of n and d, and gcd is the procedure which, well, for all we care is a primitive, which computes the greatest common divisor of two numbers.
+用这个版本的MAKE-RAT 难道会比幻灯片上的这个好么？
+instead of using this version of MAKE-RAT, to use this one on the slide?
 
-So the way I can construct a rational number is get the greatest common divisor of the two numbers, and I'm going to call that g, and then instead of consing together n and d, I'll divide them through. I'll cons together the quotient of n by the the gcd and the quotient of
-d by the gcd. And that will reduce the rational number to lowest terms. So when I do this
-addition, when +RAT calls make-RAT-- and for the definition of +RAT it had a make-RAT in
-there-- just by the fact that it's constructing that, the thing will get reduced to lowest terms
+不是简单的通过CONS 把N和D结合起来
+Or instead of just saying CONS together N and D,
+
+我们先寻找N和D的最大公约数
+what you do is compute the greatest common divisor of N and D,
+
+我们用GCD过程来找
+and GCD is the procedure which,
+
+我们只需知道GCD是一个基本过程
+well, for all we care is a primitive,
+
+它返回的是两个数的最大公约数
+which computes the greatest common divisor of two numbers.
+
+因此 这种构造有理数的方法就是
+So the way I can construct a rational number is
+
+先找到两数的最大公约数
+get the greatest common divisor of the two numbers,
+
+先用G来表示吧
+and I'm going to call that G,
+
+不是简单通过CONS结合N、D 而是先让它们除以G 
+and then instead of consing together N and D, I'll divide them through.
+
+然后我再用CONS结合N/G和D/G的商
+I'll CONS together the quotient of N by the the GCD and the quotient of
+D by the GCD.
+
+这样就把我们的有理数化到了最简
+And that will reduce the rational number to lowest terms.
+
+因此 当我在做加法时 当+RAT调用MAKE-RAT过程时
+So when I do this addition, when +RAT calls MAKE-RAT--
+
+and for the definition of +RAT it had a make-RAT in there--
+
+just by the fact that it's constructing that, the thing will get reduced to lowest terms
 automatically.
 OK, that is a complete system. For rational number arithmetic, let's look at what we've
 done. All right, we said we want to build rational number arithmetic, and we had a thing
