@@ -1032,40 +1032,125 @@ That's a complete implementation of rational numbers.
 我们来实践一下
 Let's use it.
 
+假设我想要
+Suppose I want to say,
 
-Suppose I want to say, so I want to think about
+我想要求取1/2加上1/4 并观察系统是怎么运作的
+so I want to think about how to add 1/2 plus 1/4 and watch the system work.
 
-how to add 1/2 plus 1/4 and watch the system work. Well, the way I'd use that is I'd say, well, maybe define a. I have to make
-a 1/2. Well, that's a rational number with numerator 1 and denominator 2, so a will be
-make-RAT of 1 and 2.
-And then I'll construct the 1/4. I'll say define d to be make-RAT of 1 and 4. And if I'd like to
-look at the answer-- well, assuming I don't have a special thing that prints rational
-numbers, or I could make one-- I could say, for instance, define the answer to be +RAT of a
-and b, and now I can say, what's the answer? What are the numerators and denominators
-of the answer?
-So if I'm adding 1/2 and 1/4, I'll say, what is the numerator of the answer? And the system
-is going to type out, well, 6. Bad news. And if I say what's the denominator of the answer,
-the system's going to type out 8. So instead of what I would really like, which is for it to say
-that 1/2 and 1/4 is 3/4, this foolish machine is going to say, no, it's 6/8.
-Well, that's sort of bad news. Where's the bug? Why does it do that, after all? Well, it's the
-way that we just had +RAT. +RAT just took the-- it said you add the numerator times the
-denominator, you add that to the numerator times the denominator, and put that over the
-product of the two denominators, and that's why you get 6/8.
-So what was wrong with our implementation of +RAT? What's wrong with that rational
-number arithmetic stuff that we did before the break? Well, the answer is one way to look at
-it is absolutely nothing's wrong. That's perfectly good implementation. It follows the sixth
-grade, fifth grade mathematic for adding fractions.
-One thing we can say is, well, that's George's problem. Like, boy, wasn't George dumb to
-say that he can make a rational number simply by sticking together the numerator and the
-denominator? Wouldn't it be better for George, when he made a rational number, to reduce
-the stuff to lowest terms? And what I mean is, wouldn't it be better for George, instead of
-using this version of make-RAT, to use this one on the slide? Or instead of just saying cons
-together n and d, what you do is compute the greatest common divisor of n and d, and gcd
-is the procedure which, well, for all we care is a primitive, which computes the greatest
-common divisor of two numbers.
-So the way I can construct a rational number is get the greatest common divisor of the two
-numbers, and I'm going to call that g, and then instead of consing together n and d, I'll
-divide them through. I'll cons together the quotient of n by the the gcd and the quotient of
+那么 我或许会定义一个A
+Well, the way I'd use that is I'd say, well, maybe define A.
+
+我需要构造一个1/2
+I have to make a 1/2.
+
+也就是一个分子为1 分母为2的有理数
+Well, that's a rational number with numerator 1 and denominator 2,
+
+也就是 A为(MAKE-RAT 1 2)
+so a will be MAKE-RAT of 1 and 2.
+
+然后我来构造1/4
+And then I'll construct the 1/4.
+
+我定义B为(MAKE-RAT 1 4)
+I'll say define B to be MAKE-RAT of 1 and 4.
+
+如果我想解得答案的话
+And if I'd like to look at the answer--
+
+先假设我们没有一个专门用于打印有理数的东西
+well, assuming I don't have a special thing that prints rational numbers,
+
+我可以自己编写一个
+or I could make one--
+
+比如说 我可以这样写
+I could say, for instance,
+
+定义答案为(+RAT A B)
+define the answer to be +RAT of A and B,
+
+那么我就可以问 答案是多少？
+and now I can say, what's the answer?
+
+答案的分子和分母分别是多少？
+What are the numerators and denominators of the answer?
+
+因此 我把1/2和1/4加起来后 我会问 答案的分子是多少？
+So if I'm adding 1/2 and 1/4, I'll say, what is the numerator of the answer? 
+
+这个系统就应该打印出 6
+And the system is going to type out, well, 6. 
+
+糟糕了
+Bad news.
+
+而如果我问答案的分母是多少
+And if I say what's the denominator of the answer,
+
+系统就应该打印出8
+the system's going to type out 8.
+
+我们本来希望能得到
+So instead of what I would really like,
+
+1/2加1/4是3/4
+which is for it to say that 1/2 and 1/4 is 3/4,
+
+但这台愚蠢的机器却说 不 应该是6/8
+this foolish machine is going to say, no, it's 6/8.
+
+恩 这的确有点糟糕
+Well, that's sort of bad news.
+
+问题在哪里呢？
+Where's the bug?
+
+是什么导致的呢？
+Why does it do that, after all?
+
+问题出在+RAT上
+Well, it's the way that we just had +RAT.
+
++RAT只是把A的分子和B分母之积与
++RAT just took the-- it said you add the numerator times the denominator,
+
+B的分子和A的分母之积加在一起
+you add that to the numerator times the denominator,
+
+并把它们除以两分母之积
+and put that over the product of the two denominators,
+
+这就是为什么得到6/8的原因
+and that's why you get 6/8.
+
+那么 我们的+RAT实现有什么问题呢？
+So what was wrong with our implementation of +RAT?
+
+我们在此之前所做的算术运算又有什么错误呢？
+What's wrong with that rational number arithmetic stuff that we did before the break?
+
+
+Well, the answer is one way to look at it is absolutely nothing's wrong. 
+
+That's perfectly good implementation.
+
+It follows the sixth grade, fifth grade mathematic for adding fractions.
+
+One thing we can say is, well, that's George's problem.
+
+Like, boy, wasn't George dumb to say that he can make a rational number simply by sticking together the numerator and the denominator?
+
+Wouldn't it be better for George, when he made a rational number,
+
+to reduce the stuff to lowest terms?
+
+And what I mean is, wouldn't it be better for George, instead of using this version of MAKE-RAT, to use this one on the slide?
+
+Or instead of just saying cons together n and d, what you do is compute the greatest common divisor of n and d, and gcd is the procedure which, well, for all we care is a primitive, which computes the greatest common divisor of two numbers.
+
+So the way I can construct a rational number is get the greatest common divisor of the two numbers, and I'm going to call that g, and then instead of consing together n and d, I'll divide them through. I'll cons together the quotient of n by the the gcd and the quotient of
 d by the gcd. And that will reduce the rational number to lowest terms. So when I do this
 addition, when +RAT calls make-RAT-- and for the definition of +RAT it had a make-RAT in
 there-- just by the fact that it's constructing that, the thing will get reduced to lowest terms
