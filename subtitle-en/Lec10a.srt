@@ -1,0 +1,3992 @@
+0
+00:00:00,000 --> 00:00:05,580
+
+
+1
+00:00:05,580 --> 00:00:20,180
+[MUSIC PLAYING]
+
+2
+00:00:20,180 --> 00:00:23,920
+PROFESSOR: Last time, we took a
+look at an explicit control
+
+3
+00:00:23,920 --> 00:00:27,280
+evaluator for Lisp, and that
+bridged the gap between all
+
+4
+00:00:27,280 --> 00:00:30,460
+these high-level languages
+like Lisp and the query
+
+5
+00:00:30,460 --> 00:00:33,330
+language and all of that stuff,
+bridged the gap between
+
+6
+00:00:33,330 --> 00:00:36,640
+that and a conventional
+register machine.
+
+7
+00:00:36,640 --> 00:00:40,140
+And in fact, you can think of
+the explicit control evaluator
+
+8
+00:00:40,140 --> 00:00:44,650
+either as, say, the code for a
+Lisp interpreter if you wanted
+
+9
+00:00:44,650 --> 00:00:47,680
+to implement it in the assembly
+language of some
+
+10
+00:00:47,680 --> 00:00:50,120
+conventional register transfer
+machine, or, if you like, you
+
+11
+00:00:50,120 --> 00:00:52,770
+can think of it as the microcode
+of some machine
+
+12
+00:00:52,770 --> 00:00:55,340
+that's going to be specially
+designed to run Lisp.
+
+13
+00:00:55,340 --> 00:00:58,160
+In either case, what we're
+doing is we're taking a
+
+14
+00:00:58,160 --> 00:01:01,790
+machine that speaks some
+low-level language, and we're
+
+15
+00:01:01,790 --> 00:01:05,250
+raising the machine to a
+high-level language like Lisp
+
+16
+00:01:05,250 --> 00:01:08,230
+by writing an interpreter.
+
+17
+00:01:08,230 --> 00:01:21,160
+So for instance, here,
+conceptually, is a special
+
+18
+00:01:21,160 --> 00:01:23,910
+purpose machine for computing
+factorials.
+
+19
+00:01:23,910 --> 00:01:29,000
+It takes in five and
+puts out 120.
+
+20
+00:01:29,000 --> 00:01:32,060
+And what this special purpose
+machine is is actually a Lisp
+
+21
+00:01:32,060 --> 00:01:38,410
+interpreter that's configured
+itself to run factorials,
+
+22
+00:01:38,410 --> 00:01:39,880
+because you fit into
+it a description of
+
+23
+00:01:39,880 --> 00:01:42,410
+the factorial machine.
+
+24
+00:01:42,410 --> 00:01:43,610
+So that's what an
+interpreter is.
+
+25
+00:01:43,610 --> 00:01:47,320
+It configures itself to emulate
+a machine whose
+
+26
+00:01:47,320 --> 00:01:50,120
+description you read in.
+
+27
+00:01:50,120 --> 00:01:52,110
+Now, inside the Lisp
+interpreter, what's that?
+
+28
+00:01:52,110 --> 00:01:54,860
+Well, that might be your general
+register language
+
+29
+00:01:54,860 --> 00:01:59,500
+interpreter that configures
+itself to behave like a Lisp
+
+30
+00:01:59,500 --> 00:02:01,360
+interpreter, because you
+put in a whole bunch of
+
+31
+00:02:01,360 --> 00:02:03,410
+instructions in register
+language.
+
+32
+00:02:03,410 --> 00:02:07,070
+This is the explicit
+control evaluator.
+
+33
+00:02:07,070 --> 00:02:09,300
+And then it also has some sort
+of library, a library of
+
+34
+00:02:09,300 --> 00:02:11,620
+primitive operators and Lisp
+operations and all sorts of
+
+35
+00:02:11,620 --> 00:02:12,780
+things like that.
+
+36
+00:02:12,780 --> 00:02:17,350
+That's the general strategy
+of interpretation.
+
+37
+00:02:17,350 --> 00:02:19,420
+And the point is, what we're
+doing is we're writing an
+
+38
+00:02:19,420 --> 00:02:24,060
+interpreter to raise the machine
+to the level of the
+
+39
+00:02:24,060 --> 00:02:25,430
+programs that we
+want to write.
+
+40
+00:02:25,430 --> 00:02:27,850
+Well, there's another strategy,
+a different one,
+
+41
+00:02:27,850 --> 00:02:29,030
+which is compilation.
+
+42
+00:02:29,030 --> 00:02:31,090
+Compilation's a little
+bit different.
+
+43
+00:02:31,090 --> 00:02:37,720
+Here--here we might have
+produced a special purpose
+
+44
+00:02:37,720 --> 00:02:44,430
+machine for, for computing
+factorials, starting with some
+
+45
+00:02:44,430 --> 00:02:46,450
+sort of machine that speaks
+register language, except
+
+46
+00:02:46,450 --> 00:02:47,870
+we're going to do a different
+strategy.
+
+47
+00:02:47,870 --> 00:02:51,680
+We take our factorial program.
+
+48
+00:02:51,680 --> 00:02:53,780
+We use that as the source
+code into a compiler.
+
+49
+00:02:53,780 --> 00:02:57,090
+What the compiler will do is
+translate that factorial
+
+50
+00:02:57,090 --> 00:02:59,926
+program into some register
+machine language.
+
+51
+00:02:59,926 --> 00:03:03,110
+And this will now be not the
+explicit control evaluator for
+
+52
+00:03:03,110 --> 00:03:04,990
+Lisp, this will be some
+register language for
+
+53
+00:03:04,990 --> 00:03:06,760
+computing factorials.
+
+54
+00:03:06,760 --> 00:03:10,460
+So this is the translation
+of that.
+
+55
+00:03:10,460 --> 00:03:14,690
+That will go into some sort of
+loader which will combine this
+
+56
+00:03:14,690 --> 00:03:17,520
+code with code selected from the
+library to do things like
+
+57
+00:03:17,520 --> 00:03:19,970
+primitive multiplication.
+
+58
+00:03:19,970 --> 00:03:23,190
+And then we'll produce a load
+module which configures the
+
+59
+00:03:23,190 --> 00:03:25,760
+register language machine
+to be a special
+
+60
+00:03:25,760 --> 00:03:28,320
+purpose factorial machine.
+
+61
+00:03:28,320 --> 00:03:29,905
+So that's a, that's a
+different strategy.
+
+62
+00:03:29,905 --> 00:03:33,740
+In interpretation, we're raising
+the machine to the
+
+63
+00:03:33,740 --> 00:03:35,360
+level of our language,
+like Lisp.
+
+64
+00:03:35,360 --> 00:03:38,580
+In compilation, we're taking our
+program and lowering it to
+
+65
+00:03:38,580 --> 00:03:42,040
+the language that's spoken
+by the machine.
+
+66
+00:03:42,040 --> 00:03:44,280
+Well, how do these two
+strategies compare?
+
+67
+00:03:44,280 --> 00:03:48,890
+The compiler can produce code
+that will execute more
+
+68
+00:03:48,890 --> 00:03:50,140
+efficiently.
+
+69
+00:03:50,140 --> 00:03:52,490
+
+
+70
+00:03:52,490 --> 00:03:56,820
+The essential reason for that is
+that if you think about the
+
+71
+00:03:56,820 --> 00:04:02,870
+register operations that are
+running, the interpreter has
+
+72
+00:04:02,870 --> 00:04:05,880
+to produce register operations
+which, in principle, are going
+
+73
+00:04:05,880 --> 00:04:10,260
+to be general enough to execute
+any Lisp procedure.
+
+74
+00:04:10,260 --> 00:04:12,680
+Whereas the compiler only has
+to worry about producing a
+
+75
+00:04:12,680 --> 00:04:16,029
+special bunch of register
+operations for, for doing the
+
+76
+00:04:16,029 --> 00:04:20,209
+particular Lisp procedure
+that you've compiled.
+
+77
+00:04:20,209 --> 00:04:23,340
+Or another way to say that is
+that the interpreter is a
+
+78
+00:04:23,340 --> 00:04:26,940
+general purpose simulator, that
+when you read in a Lisp
+
+79
+00:04:26,940 --> 00:04:29,820
+procedure, then those can
+simulate the program described
+
+80
+00:04:29,820 --> 00:04:31,160
+by that, by that procedure.
+
+81
+00:04:31,160 --> 00:04:33,290
+So the interpreter is worrying
+about making a general purpose
+
+82
+00:04:33,290 --> 00:04:36,170
+simulator, whereas the compiler,
+in effect, is
+
+83
+00:04:36,170 --> 00:04:37,930
+configuring the thing to
+be the machine that the
+
+84
+00:04:37,930 --> 00:04:40,000
+interpreter would have
+been simulating.
+
+85
+00:04:40,000 --> 00:04:41,340
+So the compiler can be faster.
+
+86
+00:04:41,340 --> 00:04:52,830
+
+
+87
+00:04:52,830 --> 00:04:57,100
+On the other hand, the
+interpreter is a nicer
+
+88
+00:04:57,100 --> 00:04:59,340
+environment for debugging.
+
+89
+00:04:59,340 --> 00:05:02,200
+And the reason for that is that
+we've got the source code
+
+90
+00:05:02,200 --> 00:05:02,960
+actually there.
+
+91
+00:05:02,960 --> 00:05:03,740
+We're interpreting it.
+
+92
+00:05:03,740 --> 00:05:06,010
+That's what we're
+working with.
+
+93
+00:05:06,010 --> 00:05:07,880
+And we also have the
+library around.
+
+94
+00:05:07,880 --> 00:05:10,150
+See, the interpreter--the
+library sitting there is part
+
+95
+00:05:10,150 --> 00:05:11,140
+of the interpreter.
+
+96
+00:05:11,140 --> 00:05:13,660
+The compiler only pulls out from
+the library what it needs
+
+97
+00:05:13,660 --> 00:05:14,830
+to run the program.
+
+98
+00:05:14,830 --> 00:05:18,710
+So if you're in the middle of
+debugging, and you might like
+
+99
+00:05:18,710 --> 00:05:21,730
+to write a little extra program
+to examine some run
+
+100
+00:05:21,730 --> 00:05:24,450
+time data structure or to
+produce some computation that
+
+101
+00:05:24,450 --> 00:05:25,990
+you didn't think of when you
+wrote the program, the
+
+102
+00:05:25,990 --> 00:05:28,390
+interpreter can do that
+perfectly well, whereas the
+
+103
+00:05:28,390 --> 00:05:29,670
+compiler can't.
+
+104
+00:05:29,670 --> 00:05:31,850
+So there are sort of dual,
+dual advantages.
+
+105
+00:05:31,850 --> 00:05:34,720
+The compiler will produce code
+that executes faster.
+
+106
+00:05:34,720 --> 00:05:39,030
+The interpreter is a better
+environment for debugging.
+
+107
+00:05:39,030 --> 00:05:43,520
+And most Lisp systems end up
+having both, end up being
+
+108
+00:05:43,520 --> 00:05:45,860
+configured so you have an
+interpreter that you use when
+
+109
+00:05:45,860 --> 00:05:46,930
+you're developing your code.
+
+110
+00:05:46,930 --> 00:05:49,060
+Then you can speed it
+up by compiling.
+
+111
+00:05:49,060 --> 00:05:51,720
+And very often, you can arrange
+that compiled code and
+
+112
+00:05:51,720 --> 00:05:54,810
+interpreted code can
+call each other.
+
+113
+00:05:54,810 --> 00:05:55,700
+We'll see how to do that.
+
+114
+00:05:55,700 --> 00:05:56,950
+That's not hard.
+
+115
+00:05:56,950 --> 00:06:01,040
+
+
+116
+00:06:01,040 --> 00:06:02,290
+In fact, the way we'll--
+
+117
+00:06:02,290 --> 00:06:04,390
+
+
+118
+00:06:04,390 --> 00:06:06,580
+in the compiler we're going to
+make, the way we'll arrange
+
+119
+00:06:06,580 --> 00:06:08,952
+for compiled coding and
+interpreted code to call, to
+
+120
+00:06:08,952 --> 00:06:12,220
+call each other, is that we'll
+have the compiler use exactly
+
+121
+00:06:12,220 --> 00:06:14,320
+the same register conventions
+as the interpreter.
+
+122
+00:06:14,320 --> 00:06:18,680
+
+
+123
+00:06:18,680 --> 00:06:23,900
+Well, the idea of a compiler is
+very much like the idea of
+
+124
+00:06:23,900 --> 00:06:25,490
+an interpreter or evaluator.
+
+125
+00:06:25,490 --> 00:06:27,070
+It's the same thing.
+
+126
+00:06:27,070 --> 00:06:31,460
+See, the evaluator walks over
+the code and performs some
+
+127
+00:06:31,460 --> 00:06:33,840
+register operations.
+
+128
+00:06:33,840 --> 00:06:37,040
+That's what we did yesterday.
+
+129
+00:06:37,040 --> 00:06:39,700
+Well, the compiler essentially
+would like to walk over the
+
+130
+00:06:39,700 --> 00:06:44,000
+code and produce the register
+operations that the evaluator
+
+131
+00:06:44,000 --> 00:06:48,890
+would have done were it
+evaluating the thing.
+
+132
+00:06:48,890 --> 00:06:52,000
+And that gives us a model
+for how to implement a
+
+133
+00:06:52,000 --> 00:06:57,150
+zeroth-order compiler, a
+very bad compiler but
+
+134
+00:06:57,150 --> 00:06:58,330
+essentially a compiler.
+
+135
+00:06:58,330 --> 00:07:00,900
+A model for doing that is you
+just take the evaluator, you
+
+136
+00:07:00,900 --> 00:07:04,970
+run it over the code, but
+instead of executing the
+
+137
+00:07:04,970 --> 00:07:07,550
+actual operations, you
+just save them away.
+
+138
+00:07:07,550 --> 00:07:08,820
+And that's your compiled code.
+
+139
+00:07:08,820 --> 00:07:10,140
+So let me give you an
+example of that.
+
+140
+00:07:10,140 --> 00:07:15,130
+
+
+141
+00:07:15,130 --> 00:07:15,770
+Suppose we're going to
+compile--suppose we want to
+
+142
+00:07:15,770 --> 00:07:18,010
+compile the expression f of x.
+
+143
+00:07:18,010 --> 00:07:25,100
+
+
+144
+00:07:25,100 --> 00:07:28,175
+So let's assume that we've got
+f of x in the x register and
+
+145
+00:07:28,175 --> 00:07:30,170
+something in the environment
+register.
+
+146
+00:07:30,170 --> 00:07:31,745
+And now imagine starting
+up the evaluator.
+
+147
+00:07:31,745 --> 00:07:34,560
+
+
+148
+00:07:34,560 --> 00:07:36,370
+Well, it looks at the expression
+and it sees that
+
+149
+00:07:36,370 --> 00:07:38,000
+it's an application.
+
+150
+00:07:38,000 --> 00:07:43,730
+And it branches to a place in
+the evaluator code we saw
+
+151
+00:07:43,730 --> 00:07:44,980
+called ev-application.
+
+152
+00:07:44,980 --> 00:07:47,230
+
+
+153
+00:07:47,230 --> 00:07:48,190
+And then it begins.
+
+154
+00:07:48,190 --> 00:07:50,560
+It stores away the operands and
+unev, and then it's going
+
+155
+00:07:50,560 --> 00:07:53,030
+to put the operator in exp,
+and it's going to go
+
+156
+00:07:53,030 --> 00:07:54,410
+recursively evaluate it.
+
+157
+00:07:54,410 --> 00:07:56,385
+That's the process that
+we walk through.
+
+158
+00:07:56,385 --> 00:07:58,360
+And if you start looking at
+the code, you start seeing
+
+159
+00:07:58,360 --> 00:08:00,200
+some register operations.
+
+160
+00:08:00,200 --> 00:08:03,370
+You see assign to unev the
+operands, assign to exp the
+
+161
+00:08:03,370 --> 00:08:05,520
+operator, save the environment,
+generate
+
+162
+00:08:05,520 --> 00:08:06,770
+that, and so on.
+
+163
+00:08:06,770 --> 00:08:10,310
+
+
+164
+00:08:10,310 --> 00:08:16,220
+Well, if we look on the overhead
+here, we can see, we
+
+165
+00:08:16,220 --> 00:08:20,860
+can see those operations
+starting to be produced.
+
+166
+00:08:20,860 --> 00:08:24,130
+Here's sort of the first real
+operation that the evaluator
+
+167
+00:08:24,130 --> 00:08:24,910
+would have done.
+
+168
+00:08:24,910 --> 00:08:27,980
+It pulls the operands out of the
+exp register and assigns
+
+169
+00:08:27,980 --> 00:08:31,340
+it to unev. And then it assigns
+something to the
+
+170
+00:08:31,340 --> 00:08:34,240
+expression register, and it
+saves continue, and it saves
+
+171
+00:08:34,240 --> 00:08:34,740
+env.
+
+172
+00:08:34,740 --> 00:08:38,049
+And all I'm doing here is
+writing down the register
+
+173
+00:08:38,049 --> 00:08:41,130
+assignments that the evaluator
+would have done in
+
+174
+00:08:41,130 --> 00:08:42,010
+executing that code.
+
+175
+00:08:42,010 --> 00:08:44,280
+And can zoom out a little bit.
+
+176
+00:08:44,280 --> 00:08:49,430
+Altogether, there are about
+19 operations there.
+
+177
+00:08:49,430 --> 00:08:52,650
+And this is the--this will be
+the piece of code up until the
+
+178
+00:08:52,650 --> 00:08:56,230
+point where the evaluator
+branches off to
+
+179
+00:08:56,230 --> 00:08:57,940
+apply-dispatch.
+
+180
+00:08:57,940 --> 00:09:00,110
+And in fact, in this compiler,
+we're not going to worry about
+
+181
+00:09:00,110 --> 00:09:01,450
+apply-dispatch at all.
+
+182
+00:09:01,450 --> 00:09:02,672
+We're going to have
+everything--we're going to
+
+183
+00:09:02,672 --> 00:09:06,160
+have both interpreted code
+and compiled code.
+
+184
+00:09:06,160 --> 00:09:08,670
+Always evaluate procedures,
+always apply procedures by
+
+185
+00:09:08,670 --> 00:09:10,240
+going to apply-dispatch.
+
+186
+00:09:10,240 --> 00:09:12,720
+That will easily allow
+interpreted code and compiled
+
+187
+00:09:12,720 --> 00:09:13,970
+code to call each other.
+
+188
+00:09:13,970 --> 00:09:18,330
+
+
+189
+00:09:18,330 --> 00:09:21,220
+Well, in principle, that's
+all we need to do.
+
+190
+00:09:21,220 --> 00:09:22,620
+You just run the evaluator.
+
+191
+00:09:22,620 --> 00:09:24,320
+So the compiler's a lot
+like the evaluator.
+
+192
+00:09:24,320 --> 00:09:26,890
+You run it, except it stashes
+away these operations instead
+
+193
+00:09:26,890 --> 00:09:29,480
+of actually executing them.
+
+194
+00:09:29,480 --> 00:09:32,680
+Well, that's not, that's
+not quite true.
+
+195
+00:09:32,680 --> 00:09:36,370
+There's only one little
+lie in that.
+
+196
+00:09:36,370 --> 00:09:40,480
+What you have to worry about is
+if you have a, a predicate.
+
+197
+00:09:40,480 --> 00:09:44,200
+If you have some kind of test
+you want to do, obviously, at
+
+198
+00:09:44,200 --> 00:09:47,000
+the point when you're compiling
+it, you don't know
+
+199
+00:09:47,000 --> 00:09:49,490
+which branch of these--of a
+conditional like this you're
+
+200
+00:09:49,490 --> 00:09:51,400
+going to do.
+
+201
+00:09:51,400 --> 00:09:55,010
+So you can't say which one the
+evaluator would have done.
+
+202
+00:09:55,010 --> 00:09:57,190
+So all you do there
+is very simple.
+
+203
+00:09:57,190 --> 00:09:58,985
+You compile both branches.
+
+204
+00:09:58,985 --> 00:10:02,050
+So you compile a structure
+that looks like this.
+
+205
+00:10:02,050 --> 00:10:08,430
+That'll compile into something
+that says, the code, the code
+
+206
+00:10:08,430 --> 00:10:18,140
+for P. And it puts its results
+in, say, the val register.
+
+207
+00:10:18,140 --> 00:10:21,680
+So you walk the interpreter over
+the predicate and make
+
+208
+00:10:21,680 --> 00:10:24,770
+sure that the result would
+go into the val register.
+
+209
+00:10:24,770 --> 00:10:30,790
+And then you compile an
+instruction that says, branch
+
+210
+00:10:30,790 --> 00:10:38,670
+if, if val is true, to a place
+we'll call label one.
+
+211
+00:10:38,670 --> 00:10:44,950
+
+
+212
+00:10:44,950 --> 00:10:49,792
+Then we, we will put the
+code for B to walk the
+
+213
+00:10:49,792 --> 00:10:54,040
+interpreter--walk the
+interpreter over B. And then
+
+214
+00:10:54,040 --> 00:10:58,070
+go to put in an instruction
+that says, go to the next
+
+215
+00:10:58,070 --> 00:11:03,820
+thing, whatever, whatever was
+supposed to happen after this
+
+216
+00:11:03,820 --> 00:11:04,920
+thing was done.
+
+217
+00:11:04,920 --> 00:11:06,900
+You put in that instruction.
+
+218
+00:11:06,900 --> 00:11:08,280
+And here you put label one.
+
+219
+00:11:08,280 --> 00:11:11,521
+
+
+220
+00:11:11,521 --> 00:11:19,860
+And here you put the
+code for A. And you
+
+221
+00:11:19,860 --> 00:11:25,870
+put go to next thing.
+
+222
+00:11:25,870 --> 00:11:31,420
+
+
+223
+00:11:31,420 --> 00:11:33,090
+So that's how you treat
+a conditional.
+
+224
+00:11:33,090 --> 00:11:35,890
+You generate a little
+block like that.
+
+225
+00:11:35,890 --> 00:11:40,550
+And other than that, this
+zeroth-order compiler is the
+
+226
+00:11:40,550 --> 00:11:42,310
+same as the evaluator.
+
+227
+00:11:42,310 --> 00:11:44,380
+It's just stashing away the
+instructions instead of
+
+228
+00:11:44,380 --> 00:11:46,380
+executing them.
+
+229
+00:11:46,380 --> 00:11:48,140
+That seems pretty simple,
+but we've gained
+
+230
+00:11:48,140 --> 00:11:50,120
+something by that.
+
+231
+00:11:50,120 --> 00:11:51,360
+See, already that's
+going to be more
+
+232
+00:11:51,360 --> 00:11:53,630
+efficient than the evaluator.
+
+233
+00:11:53,630 --> 00:11:58,030
+Because, if you watch the
+evaluator run, it's not only
+
+234
+00:11:58,030 --> 00:12:01,410
+generating the register
+operations we wrote down, it's
+
+235
+00:12:01,410 --> 00:12:04,740
+also doing things to decide
+which ones to generate.
+
+236
+00:12:04,740 --> 00:12:08,480
+So the very first thing it does,
+say, here for instance,
+
+237
+00:12:08,480 --> 00:12:13,470
+is go do some tests and decide
+that this is an application,
+
+238
+00:12:13,470 --> 00:12:15,930
+and then branch off to the
+place that, that handles
+
+239
+00:12:15,930 --> 00:12:16,780
+applications.
+
+240
+00:12:16,780 --> 00:12:18,870
+In other words, what the
+evaluator's doing is
+
+241
+00:12:18,870 --> 00:12:23,720
+simultaneously analyzing the
+code to see what to do, and
+
+242
+00:12:23,720 --> 00:12:25,580
+running these operations.
+
+243
+00:12:25,580 --> 00:12:25,960
+And when you--
+
+244
+00:12:25,960 --> 00:12:28,960
+if you run the evaluator a
+million times, that analysis
+
+245
+00:12:28,960 --> 00:12:31,870
+phase happens a million times,
+whereas in the compiler, it's
+
+246
+00:12:31,870 --> 00:12:33,650
+happened once, and then you
+just have the register
+
+247
+00:12:33,650 --> 00:12:34,900
+operations themselves.
+
+248
+00:12:34,900 --> 00:12:39,730
+
+
+249
+00:12:39,730 --> 00:12:42,310
+Ok, that's a, a zeroth-order
+compiler, but it is a
+
+250
+00:12:42,310 --> 00:12:44,550
+wretched, wretched compiler.
+
+251
+00:12:44,550 --> 00:12:47,200
+It's really dumb.
+
+252
+00:12:47,200 --> 00:12:52,040
+Let's--let's go back and, and
+look at this overhead.
+
+253
+00:12:52,040 --> 00:12:54,170
+So look at look at some
+of the operations
+
+254
+00:12:54,170 --> 00:12:56,020
+this thing is doing.
+
+255
+00:12:56,020 --> 00:13:01,030
+We're supposedly looking
+at the operations and
+
+256
+00:13:01,030 --> 00:13:03,710
+interpreting f of x.
+
+257
+00:13:03,710 --> 00:13:05,220
+Now, look here what
+it's doing.
+
+258
+00:13:05,220 --> 00:13:10,360
+For example, here it
+assigns to exp the
+
+259
+00:13:10,360 --> 00:13:13,850
+operator in fetch of exp.
+
+260
+00:13:13,850 --> 00:13:16,290
+But see, there's no reason to
+do that, because this is--
+
+261
+00:13:16,290 --> 00:13:21,290
+the compiler knows that the
+operator, fetch of exp, is f
+
+262
+00:13:21,290 --> 00:13:23,310
+right here.
+
+263
+00:13:23,310 --> 00:13:25,850
+So there's no reason why this
+instruction should say that.
+
+264
+00:13:25,850 --> 00:13:29,580
+It should say, we'll
+assign to exp, f.
+
+265
+00:13:29,580 --> 00:13:32,000
+Or in fact, you don't
+need exp at all.
+
+266
+00:13:32,000 --> 00:13:33,670
+There's no reason it should
+have exp at all.
+
+267
+00:13:33,670 --> 00:13:35,170
+What, what did exp
+get used for?
+
+268
+00:13:35,170 --> 00:13:43,190
+Well, if we come down here,
+we're going to assign to val,
+
+269
+00:13:43,190 --> 00:13:48,620
+look up the stuff in exp
+in the environment.
+
+270
+00:13:48,620 --> 00:13:50,800
+So what we really should do is
+get rid of the exp register
+
+271
+00:13:50,800 --> 00:13:53,290
+altogether, and just change
+this instruction to say,
+
+272
+00:13:53,290 --> 00:13:57,600
+assign to val, look up the
+variable value of the symbol f
+
+273
+00:13:57,600 --> 00:13:58,850
+in the environment.
+
+274
+00:13:58,850 --> 00:14:01,100
+
+
+275
+00:14:01,100 --> 00:14:04,800
+Similarly, back up here, we
+don't need unev at all,
+
+276
+00:14:04,800 --> 00:14:08,260
+because we know what the
+operands of fetch of exp are
+
+277
+00:14:08,260 --> 00:14:09,150
+for this piece of code.
+
+278
+00:14:09,150 --> 00:14:10,630
+It's the, it's the list x.
+
+279
+00:14:10,630 --> 00:14:13,270
+
+
+280
+00:14:13,270 --> 00:14:19,660
+So in some sense, you don't
+want unev and exp at all.
+
+281
+00:14:19,660 --> 00:14:22,690
+See, what they really are in
+some sense, those aren't
+
+282
+00:14:22,690 --> 00:14:24,330
+registers of the actual machine
+
+283
+00:14:24,330 --> 00:14:25,230
+that's supposed to run.
+
+284
+00:14:25,230 --> 00:14:28,180
+Those are registers that have to
+do with arranging the thing
+
+285
+00:14:28,180 --> 00:14:30,760
+that can simulate
+that machine.
+
+286
+00:14:30,760 --> 00:14:34,890
+So they're always going to hold
+expressions which, from
+
+287
+00:14:34,890 --> 00:14:37,330
+the compiler's point of view,
+are just constants, so can be
+
+288
+00:14:37,330 --> 00:14:39,510
+put right into the code.
+
+289
+00:14:39,510 --> 00:14:41,850
+So you can forget about all the
+operations worrying about
+
+290
+00:14:41,850 --> 00:14:44,000
+exp and unev and just
+use those constants.
+
+291
+00:14:44,000 --> 00:14:48,200
+Similarly, again, if we go, go
+back and look here, there are
+
+292
+00:14:48,200 --> 00:14:50,510
+things like assign to
+continue eval-args.
+
+293
+00:14:50,510 --> 00:14:53,890
+
+
+294
+00:14:53,890 --> 00:14:55,440
+Now, that has nothing
+to do with anything.
+
+295
+00:14:55,440 --> 00:14:59,280
+That was just the evaluator
+keeping track of where it
+
+296
+00:14:59,280 --> 00:15:05,150
+should go next, to evaluate the
+arguments in some, in some
+
+297
+00:15:05,150 --> 00:15:06,920
+application.
+
+298
+00:15:06,920 --> 00:15:08,690
+But of course, that's irrelevant
+to the compiler,
+
+299
+00:15:08,690 --> 00:15:09,940
+because you--
+
+300
+00:15:09,940 --> 00:15:11,470
+
+
+301
+00:15:11,470 --> 00:15:15,220
+the analysis phase will have
+already done that.
+
+302
+00:15:15,220 --> 00:15:17,680
+So this is completely
+irrelevant.
+
+303
+00:15:17,680 --> 00:15:20,170
+So a lot of these, these
+assignments to continue have
+
+304
+00:15:20,170 --> 00:15:24,070
+not to do where the running
+machine is supposed to
+
+305
+00:15:24,070 --> 00:15:26,120
+continue in keeping track
+of its state.
+
+306
+00:15:26,120 --> 00:15:28,380
+It has to, to do with where the
+evaluator analysis should
+
+307
+00:15:28,380 --> 00:15:30,080
+continue, and those are
+completely irrelevant.
+
+308
+00:15:30,080 --> 00:15:31,330
+So we can get rid of them.
+
+309
+00:15:31,330 --> 00:15:44,330
+
+
+310
+00:15:44,330 --> 00:15:46,990
+Ok, well, if we, if we simply
+do that, make those kinds of
+
+311
+00:15:46,990 --> 00:15:51,380
+optimizations, get rid, get rid
+of worrying about exp and
+
+312
+00:15:51,380 --> 00:15:55,030
+unev, and get rid of these
+irrelevant register
+
+313
+00:15:55,030 --> 00:16:01,400
+assignments to continue, then we
+can take this literal code,
+
+314
+00:16:01,400 --> 00:16:05,370
+these sort of 19 instructions
+that the, that the evaluator
+
+315
+00:16:05,370 --> 00:16:08,540
+would have done, and
+then replace them.
+
+316
+00:16:08,540 --> 00:16:09,865
+Let's look at the,
+at the slide.
+
+317
+00:16:09,865 --> 00:16:13,490
+
+
+318
+00:16:13,490 --> 00:16:15,180
+Replace them by--we get rid
+of about half of them.
+
+319
+00:16:15,180 --> 00:16:18,370
+
+
+320
+00:16:18,370 --> 00:16:21,470
+And again, this is just sort
+of filtering what the
+
+321
+00:16:21,470 --> 00:16:23,410
+evaluator would have done
+by getting rid of
+
+322
+00:16:23,410 --> 00:16:25,200
+the irrelevant stuff.
+
+323
+00:16:25,200 --> 00:16:29,450
+And you see, for instance, here
+the--where the evaluator
+
+324
+00:16:29,450 --> 00:16:32,570
+said, assign val, look up
+variable value, fetch of exp,
+
+325
+00:16:32,570 --> 00:16:35,470
+here we have put in
+the constant f.
+
+326
+00:16:35,470 --> 00:16:37,020
+Here we've put in
+the constant x.
+
+327
+00:16:37,020 --> 00:16:39,770
+
+
+328
+00:16:39,770 --> 00:16:43,860
+So there's a, there's a little
+better compiler.
+
+329
+00:16:43,860 --> 00:16:47,930
+It's still pretty dumb.
+
+330
+00:16:47,930 --> 00:16:50,560
+It's still doing a lot
+of dumb things.
+
+331
+00:16:50,560 --> 00:16:53,290
+Again, if we go look at the
+slide again, look at the very
+
+332
+00:16:53,290 --> 00:17:00,150
+beginning here, we see a save
+the environment, assign
+
+333
+00:17:00,150 --> 00:17:03,430
+something to the val register,
+and restore the environment.
+
+334
+00:17:03,430 --> 00:17:05,030
+Where'd that come from?
+
+335
+00:17:05,030 --> 00:17:08,200
+That came from the evaluator
+back here saying, oh, I'm in
+
+336
+00:17:08,200 --> 00:17:11,160
+the middle of evaluating
+an application.
+
+337
+00:17:11,160 --> 00:17:15,940
+So I'm going to recursively
+call eval dispatch.
+
+338
+00:17:15,940 --> 00:17:18,170
+So I'd better save the thing I'm
+going to need later, which
+
+339
+00:17:18,170 --> 00:17:19,849
+is the environment.
+
+340
+00:17:19,849 --> 00:17:21,609
+This was the result
+of recursively
+
+341
+00:17:21,609 --> 00:17:23,520
+calling eval dispatch.
+
+342
+00:17:23,520 --> 00:17:26,540
+It was evaluating the symbol
+f in that case.
+
+343
+00:17:26,540 --> 00:17:28,900
+Then it came back from eval
+dispatch, restored the
+
+344
+00:17:28,900 --> 00:17:31,380
+environment.
+
+345
+00:17:31,380 --> 00:17:35,290
+But in fact, the actual thing
+it ended up doing in the
+
+346
+00:17:35,290 --> 00:17:38,740
+evaluation is not going to hurt
+the environment at all.
+
+347
+00:17:38,740 --> 00:17:40,890
+So there's no reason to be
+saving the environment and
+
+348
+00:17:40,890 --> 00:17:42,170
+restoring the environment
+here.
+
+349
+00:17:42,170 --> 00:17:46,020
+
+
+350
+00:17:46,020 --> 00:17:53,690
+Similarly, here I'm saving the
+argument list. That's a piece
+
+351
+00:17:53,690 --> 00:17:56,560
+of the argument evaluation
+loop, saving the argument
+
+352
+00:17:56,560 --> 00:17:58,090
+list, and here you restore it.
+
+353
+00:17:58,090 --> 00:18:01,510
+But the actual thing that you
+ended up doing didn't trash
+
+354
+00:18:01,510 --> 00:18:04,090
+the argument list. So there
+was no reason to save it.
+
+355
+00:18:04,090 --> 00:18:08,690
+
+
+356
+00:18:08,690 --> 00:18:14,415
+So another way to say, another
+way to say that is that the,
+
+357
+00:18:14,415 --> 00:18:19,923
+the evaluator has to be
+maximally pessimistic, because
+
+358
+00:18:19,923 --> 00:18:22,050
+as far from its point of view
+it's just going off to
+
+359
+00:18:22,050 --> 00:18:23,180
+evaluate something.
+
+360
+00:18:23,180 --> 00:18:26,200
+So it better save what it's
+going to need later.
+
+361
+00:18:26,200 --> 00:18:28,700
+But once you've done the
+analysis, the compiler is in a
+
+362
+00:18:28,700 --> 00:18:32,140
+position to say, well, what
+actually did I need to save?
+
+363
+00:18:32,140 --> 00:18:35,410
+And doesn't need to do any--
+it doesn't need to be as
+
+364
+00:18:35,410 --> 00:18:38,060
+careful as the evaluator,
+because it knows what it
+
+365
+00:18:38,060 --> 00:18:39,950
+actually needs.
+
+366
+00:18:39,950 --> 00:18:44,240
+Well, in any case, if we do that
+and eliminate all those
+
+367
+00:18:44,240 --> 00:18:48,110
+redundant saves and restores,
+then we can
+
+368
+00:18:48,110 --> 00:18:49,400
+get it down to this.
+
+369
+00:18:49,400 --> 00:18:52,810
+And you see there are actually
+only three instructions that
+
+370
+00:18:52,810 --> 00:18:56,230
+we actually need, down from the
+initial 11 or so, or the
+
+371
+00:18:56,230 --> 00:19:00,070
+initial 20 or so in
+the original one.
+
+372
+00:19:00,070 --> 00:19:03,260
+And that's just saying, of those
+register operations,
+
+373
+00:19:03,260 --> 00:19:04,870
+which ones did we
+actually need?
+
+374
+00:19:04,870 --> 00:19:09,490
+
+
+375
+00:19:09,490 --> 00:19:11,950
+Let me just sort of summarize
+that in another way, just to
+
+376
+00:19:11,950 --> 00:19:13,450
+show you in a little
+better picture.
+
+377
+00:19:13,450 --> 00:19:16,010
+
+
+378
+00:19:16,010 --> 00:19:18,690
+Here's a picture of starting--
+
+379
+00:19:18,690 --> 00:19:20,530
+This is looking at all the
+saves and restores.
+
+380
+00:19:20,530 --> 00:19:23,770
+
+
+381
+00:19:23,770 --> 00:19:26,300
+So here's the expression, f
+of x, and then this traces
+
+382
+00:19:26,300 --> 00:19:30,940
+through, on the bottom here,
+the various places in the
+
+383
+00:19:30,940 --> 00:19:38,160
+evaluator that were passed when
+the evaluation happened.
+
+384
+00:19:38,160 --> 00:19:40,250
+And then here, here
+you see arrows.
+
+385
+00:19:40,250 --> 00:19:42,320
+Arrow down means
+register saved.
+
+386
+00:19:42,320 --> 00:19:43,690
+So the first thing that
+happened is the
+
+387
+00:19:43,690 --> 00:19:46,860
+environment got saved.
+
+388
+00:19:46,860 --> 00:19:48,305
+And over here, the environment
+got restored.
+
+389
+00:19:48,305 --> 00:19:52,380
+
+
+390
+00:19:52,380 --> 00:19:56,220
+And these-- so there are all the
+pairs of stack operations.
+
+391
+00:19:56,220 --> 00:19:59,462
+Now, if you go ahead and say,
+well, let's remember that we
+
+392
+00:19:59,462 --> 00:20:02,070
+don't--that unev, for instance,
+is a completely
+
+393
+00:20:02,070 --> 00:20:03,320
+useless register.
+
+394
+00:20:03,320 --> 00:20:07,550
+
+
+395
+00:20:07,550 --> 00:20:09,820
+And if we use the constant
+structure of the code, well,
+
+396
+00:20:09,820 --> 00:20:11,770
+we don't need, we don't need
+to save unev. We don't need
+
+397
+00:20:11,770 --> 00:20:13,020
+unev at all.
+
+398
+00:20:13,020 --> 00:20:16,220
+
+
+399
+00:20:16,220 --> 00:20:18,790
+And then, depending on how we
+set up the discipline of
+
+400
+00:20:18,790 --> 00:20:22,610
+the--of calling other things
+that apply, we may or may not
+
+401
+00:20:22,610 --> 00:20:23,860
+need to save continue.
+
+402
+00:20:23,860 --> 00:20:27,360
+
+
+403
+00:20:27,360 --> 00:20:28,800
+That's the first step I did.
+
+404
+00:20:28,800 --> 00:20:30,116
+And then we can look and see
+what's actually, what's
+
+405
+00:20:30,116 --> 00:20:32,960
+actually needed.
+
+406
+00:20:32,960 --> 00:20:36,300
+See, we don't-- didn't really
+need to save env or
+
+407
+00:20:36,300 --> 00:20:38,536
+cross-evaluating f, because
+it wouldn't, it
+
+408
+00:20:38,536 --> 00:20:40,040
+wouldn't trash it.
+
+409
+00:20:40,040 --> 00:20:46,720
+So if we take advantage of that,
+and see the evaluation
+
+410
+00:20:46,720 --> 00:20:52,280
+of f here, doesn't really need
+to worry about, about hurting
+
+411
+00:20:52,280 --> 00:20:57,560
+env. And similarly, the
+evaluation of x here, when the
+
+412
+00:20:57,560 --> 00:21:00,140
+evaluator did that it said, oh,
+I'd better preserve the
+
+413
+00:21:00,140 --> 00:21:03,320
+function register around that,
+because I might need it later.
+
+414
+00:21:03,320 --> 00:21:07,140
+And I better preserve
+the argument list.
+
+415
+00:21:07,140 --> 00:21:09,280
+Whereas the compiler is now in
+a position to know, well, we
+
+416
+00:21:09,280 --> 00:21:10,690
+didn't really need
+to save-- to do
+
+417
+00:21:10,690 --> 00:21:12,730
+those saves and restores.
+
+418
+00:21:12,730 --> 00:21:15,520
+So in fact, all of the stack
+operations done by the
+
+419
+00:21:15,520 --> 00:21:18,900
+evaluator turned out to be
+unnecessary or overly
+
+420
+00:21:18,900 --> 00:21:19,670
+pessimistic.
+
+421
+00:21:19,670 --> 00:21:21,390
+And the compiler is in a
+position to know that.
+
+422
+00:21:21,390 --> 00:21:27,470
+
+
+423
+00:21:27,470 --> 00:21:29,980
+Well that's the basic idea.
+
+424
+00:21:29,980 --> 00:21:32,600
+We take the evaluator, we
+eliminate the things that you
+
+425
+00:21:32,600 --> 00:21:34,450
+don't need, that in some sense
+have nothing to do with the
+
+426
+00:21:34,450 --> 00:21:38,480
+compiler at all, just the
+evaluator, and then you see
+
+427
+00:21:38,480 --> 00:21:40,460
+which stack operations
+are unnecessary.
+
+428
+00:21:40,460 --> 00:21:44,490
+That's the basic structure of
+the compiler that's described
+
+429
+00:21:44,490 --> 00:21:45,130
+in the book.
+
+430
+00:21:45,130 --> 00:21:48,620
+Let me just show you
+how that examples a
+
+431
+00:21:48,620 --> 00:21:51,280
+little bit too simple.
+
+432
+00:21:51,280 --> 00:21:53,500
+To see how you, how you actually
+save a lot, let's
+
+433
+00:21:53,500 --> 00:21:55,765
+look at a little bit more
+complicated expression.
+
+434
+00:21:55,765 --> 00:21:58,330
+
+
+435
+00:21:58,330 --> 00:22:03,542
+F of G of X and 1.
+
+436
+00:22:03,542 --> 00:22:06,410
+And I'm not going to go
+through all the code.
+
+437
+00:22:06,410 --> 00:22:09,830
+There's a, there's a
+fair pile of it.
+
+438
+00:22:09,830 --> 00:22:13,410
+I think there are, there are
+something like 16 pairs of
+
+439
+00:22:13,410 --> 00:22:15,440
+register saves and restores
+as the evaluator
+
+440
+00:22:15,440 --> 00:22:17,270
+walks through that.
+
+441
+00:22:17,270 --> 00:22:20,680
+Here's a diagram of them.
+
+442
+00:22:20,680 --> 00:22:21,060
+Let's see.
+
+443
+00:22:21,060 --> 00:22:24,210
+You see what's going on.
+
+444
+00:22:24,210 --> 00:22:25,530
+You start out by--the evaluator
+says, oh, I'm about
+
+445
+00:22:25,530 --> 00:22:26,480
+to do an application.
+
+446
+00:22:26,480 --> 00:22:28,010
+I'll preserve the environment.
+
+447
+00:22:28,010 --> 00:22:30,261
+I'll restore it here.
+
+448
+00:22:30,261 --> 00:22:33,900
+Then I'm about to do
+the first operand.
+
+449
+00:22:33,900 --> 00:22:36,790
+
+
+450
+00:22:36,790 --> 00:22:38,970
+Here it recursively goes
+to the evaluator.
+
+451
+00:22:38,970 --> 00:22:41,370
+The evaluator says, oh, this is
+an application, I'll save
+
+452
+00:22:41,370 --> 00:22:44,090
+the environment, do the operator
+of that combination,
+
+453
+00:22:44,090 --> 00:22:46,740
+restore it here.
+
+454
+00:22:46,740 --> 00:22:51,720
+This save--this restore matches
+that save. And so on.
+
+455
+00:22:51,720 --> 00:22:53,740
+There's unev here, which turns
+out to be completely
+
+456
+00:22:53,740 --> 00:22:57,240
+unnecessary, continues getting
+bumped around here.
+
+457
+00:22:57,240 --> 00:23:01,040
+The function register is
+getting, getting saved across
+
+458
+00:23:01,040 --> 00:23:05,330
+the first operands, across
+the operands.
+
+459
+00:23:05,330 --> 00:23:06,680
+All sorts of things
+are going on.
+
+460
+00:23:06,680 --> 00:23:09,090
+But if you say, well, what of
+those really were the business
+
+461
+00:23:09,090 --> 00:23:12,770
+of the compiler as opposed to
+the evaluator, you get rid of
+
+462
+00:23:12,770 --> 00:23:14,320
+a whole bunch.
+
+463
+00:23:14,320 --> 00:23:19,500
+And then on top of that, if
+you say things like, the
+
+464
+00:23:19,500 --> 00:23:24,520
+evaluation of F doesn't hurt the
+environment register, or
+
+465
+00:23:24,520 --> 00:23:30,500
+simply looking up the symbol X,
+you don't have to protect
+
+466
+00:23:30,500 --> 00:23:34,570
+the function register
+against that.
+
+467
+00:23:34,570 --> 00:23:36,044
+So you come down to just
+a couple of, a
+
+468
+00:23:36,044 --> 00:23:37,530
+couple of pairs here.
+
+469
+00:23:37,530 --> 00:23:40,280
+
+
+470
+00:23:40,280 --> 00:23:42,160
+And still, you can do
+a little better.
+
+471
+00:23:42,160 --> 00:23:44,962
+Look what's going on here with
+the environment register.
+
+472
+00:23:44,962 --> 00:23:51,350
+The environment register comes
+along and says, oh, here's a
+
+473
+00:23:51,350 --> 00:23:52,600
+combination.
+
+474
+00:23:52,600 --> 00:23:54,280
+
+
+475
+00:23:54,280 --> 00:23:58,580
+This evaluator, by the way,
+doesn't know anything about G.
+
+476
+00:23:58,580 --> 00:24:02,330
+So here it says, so it says,
+I'd better save the
+
+477
+00:24:02,330 --> 00:24:05,610
+environment register, because
+evaluating G might be some
+
+478
+00:24:05,610 --> 00:24:07,960
+arbitrary piece of code that
+would trash it, and I'm going
+
+479
+00:24:07,960 --> 00:24:12,360
+to need it later, after
+this argument, for
+
+480
+00:24:12,360 --> 00:24:15,540
+doing the second argument.
+
+481
+00:24:15,540 --> 00:24:20,580
+So that's why this one didn't go
+away, because the compiler
+
+482
+00:24:20,580 --> 00:24:22,550
+made no assumptions about
+what G would do.
+
+483
+00:24:22,550 --> 00:24:26,170
+On the other hand, if you look
+at what the second argument
+
+484
+00:24:26,170 --> 00:24:27,710
+is, that's just looking
+up one.
+
+485
+00:24:27,710 --> 00:24:30,810
+That doesn't need this
+environment register.
+
+486
+00:24:30,810 --> 00:24:32,070
+So there's no reason
+to save it.
+
+487
+00:24:32,070 --> 00:24:35,020
+So in fact, you can get
+rid of that one, too.
+
+488
+00:24:35,020 --> 00:24:38,290
+And from this whole pile of, of
+register operations, if you
+
+489
+00:24:38,290 --> 00:24:40,840
+simply do a little bit of
+reasoning like that, you get
+
+490
+00:24:40,840 --> 00:24:45,170
+down to, I think, just two pairs
+of saves and restores.
+
+491
+00:24:45,170 --> 00:24:47,870
+And those, in fact, could go
+away further if you, if you
+
+492
+00:24:47,870 --> 00:24:56,650
+knew something about G.
+
+493
+00:24:56,650 --> 00:24:59,250
+So again, the general idea is
+that the reason the compiler
+
+494
+00:24:59,250 --> 00:25:01,430
+can be better is that the
+interpreter doesn't know what
+
+495
+00:25:01,430 --> 00:25:03,310
+it's about to encounter.
+
+496
+00:25:03,310 --> 00:25:05,740
+It has to be maximally
+pessimistic in saving things
+
+497
+00:25:05,740 --> 00:25:07,750
+to protect itself.
+
+498
+00:25:07,750 --> 00:25:10,820
+The compiler only has
+to deal with what
+
+499
+00:25:10,820 --> 00:25:13,410
+actually had to be saved.
+
+500
+00:25:13,410 --> 00:25:15,620
+And there are two reasons
+that something might
+
+501
+00:25:15,620 --> 00:25:17,920
+not have to be saved.
+
+502
+00:25:17,920 --> 00:25:20,100
+One is that what you're
+protecting it against, in
+
+503
+00:25:20,100 --> 00:25:22,700
+fact, didn't trash the register,
+like it was just a
+
+504
+00:25:22,700 --> 00:25:24,210
+variable look-up.
+
+505
+00:25:24,210 --> 00:25:26,730
+And the other one is, that the
+thing that you were saving it
+
+506
+00:25:26,730 --> 00:25:30,800
+for might turn out not
+to actually need it.
+
+507
+00:25:30,800 --> 00:25:34,370
+So those are the two basic
+pieces of knowledge that the
+
+508
+00:25:34,370 --> 00:25:37,010
+compiler can take advantage
+of in making
+
+509
+00:25:37,010 --> 00:25:38,260
+the code more efficient.
+
+510
+00:25:38,260 --> 00:25:44,570
+
+
+511
+00:25:44,570 --> 00:25:45,820
+Let's break for questions.
+
+512
+00:25:45,820 --> 00:25:51,280
+
+
+513
+00:25:51,280 --> 00:25:54,410
+AUDIENCE: You kept saying that
+the uneval register, unev
+
+514
+00:25:54,410 --> 00:25:56,350
+register didn't need
+to be used at all.
+
+515
+00:25:56,350 --> 00:25:57,660
+Does that mean that you
+could just map a
+
+516
+00:25:57,660 --> 00:25:58,590
+six-register machine?
+
+517
+00:25:58,590 --> 00:26:00,220
+Or is that, in this particular
+example, it
+
+518
+00:26:00,220 --> 00:26:01,860
+didn't need to be used?
+
+519
+00:26:01,860 --> 00:26:05,480
+PROFESSOR: For the compiler,
+you could generate code for
+
+520
+00:26:05,480 --> 00:26:07,580
+the six-register, five, right?
+
+521
+00:26:07,580 --> 00:26:08,930
+Because that exp
+goes away also.
+
+522
+00:26:08,930 --> 00:26:11,750
+
+
+523
+00:26:11,750 --> 00:26:14,700
+Assuming--yeah, you can get
+rid of both exp and unev,
+
+524
+00:26:14,700 --> 00:26:17,380
+because, see, those are data
+structures of the evaluator.
+
+525
+00:26:17,380 --> 00:26:19,600
+Those are all things that would
+be constants from the
+
+526
+00:26:19,600 --> 00:26:21,410
+point of view of the compiler.
+
+527
+00:26:21,410 --> 00:26:24,730
+The only thing is this
+particular compiler is set up
+
+528
+00:26:24,730 --> 00:26:29,330
+so that interpreted code and
+compiled code can coexist.
+
+529
+00:26:29,330 --> 00:26:34,330
+So the way to think about it is,
+is maybe you build a chip
+
+530
+00:26:34,330 --> 00:26:37,420
+which is the evaluator, and what
+the compiler might do is
+
+531
+00:26:37,420 --> 00:26:39,920
+generate code for that chip.
+
+532
+00:26:39,920 --> 00:26:41,550
+It just wouldn't use two
+of the registers.
+
+533
+00:26:41,550 --> 00:26:51,158
+
+
+534
+00:26:51,158 --> 00:26:53,326
+All right, let's take a break.
+
+535
+00:26:53,326 --> 00:27:28,576
+[MUSIC PLAYING]
+
+536
+00:27:28,576 --> 00:27:32,900
+We just looked at what the
+compiler is supposed to do.
+
+537
+00:27:32,900 --> 00:27:36,700
+Now let's very briefly look
+at how, how this gets
+
+538
+00:27:36,700 --> 00:27:38,120
+accomplished.
+
+539
+00:27:38,120 --> 00:27:39,600
+And I'm going to give
+no details.
+
+540
+00:27:39,600 --> 00:27:42,580
+There's, there's a giant pile of
+code in the book that gives
+
+541
+00:27:42,580 --> 00:27:43,440
+all the details.
+
+542
+00:27:43,440 --> 00:27:46,150
+But what I want to do is
+just show you the, the
+
+543
+00:27:46,150 --> 00:27:49,590
+essential idea here.
+
+544
+00:27:49,590 --> 00:27:51,450
+Worry about the details
+some other time.
+
+545
+00:27:51,450 --> 00:27:55,420
+Let's imagine that we're
+compiling an expression that
+
+546
+00:27:55,420 --> 00:27:57,650
+looks like there's some
+operator, and
+
+547
+00:27:57,650 --> 00:27:58,900
+there are two arguments.
+
+548
+00:27:58,900 --> 00:28:03,660
+
+
+549
+00:28:03,660 --> 00:28:06,310
+Now, the--
+
+550
+00:28:06,310 --> 00:28:08,940
+what's the code that the
+compiler should generate?
+
+551
+00:28:08,940 --> 00:28:12,630
+Well, first of all, it should
+recursively go off and compile
+
+552
+00:28:12,630 --> 00:28:14,192
+the operator.
+
+553
+00:28:14,192 --> 00:28:18,650
+So it says, I'll compile
+the operator.
+
+554
+00:28:18,650 --> 00:28:21,250
+
+
+555
+00:28:21,250 --> 00:28:26,600
+And where I'm going to need that
+is to be in the function
+
+556
+00:28:26,600 --> 00:28:28,400
+register, eventually.
+
+557
+00:28:28,400 --> 00:28:30,830
+So I'll compile some
+instructions that will compile
+
+558
+00:28:30,830 --> 00:28:37,640
+the operator and end up
+with the result in
+
+559
+00:28:37,640 --> 00:28:38,890
+the function register.
+
+560
+00:28:38,890 --> 00:28:45,420
+
+
+561
+00:28:45,420 --> 00:28:49,770
+The next thing it's going to do,
+another piece is to say,
+
+562
+00:28:49,770 --> 00:28:55,140
+well, I have to compile
+the first argument.
+
+563
+00:28:55,140 --> 00:28:58,100
+So it calls itself
+recursively.
+
+564
+00:28:58,100 --> 00:29:03,010
+And let's say the result
+will go into val.
+
+565
+00:29:03,010 --> 00:29:09,150
+
+
+566
+00:29:09,150 --> 00:29:11,460
+And then what it's going to need
+to do is start setting up
+
+567
+00:29:11,460 --> 00:29:25,060
+the argument list. So it'll say,
+assign to argl cons of
+
+568
+00:29:25,060 --> 00:29:27,160
+fetch-- so it generates this
+literal instruction--
+
+569
+00:29:27,160 --> 00:29:35,430
+fetch of val onto empty list.
+
+570
+00:29:35,430 --> 00:29:36,680
+However, it might
+have to work--
+
+571
+00:29:36,680 --> 00:29:39,590
+
+
+572
+00:29:39,590 --> 00:29:43,950
+when it gets here, it's going
+to need the environment.
+
+573
+00:29:43,950 --> 00:29:45,650
+It's going to need whatever
+environment was here in order
+
+574
+00:29:45,650 --> 00:29:49,030
+to do this evaluation of
+the first argument.
+
+575
+00:29:49,030 --> 00:29:54,990
+So it has to ensure that the
+compilation of this operand,
+
+576
+00:29:54,990 --> 00:29:58,610
+or it has to protect the
+function register against
+
+577
+00:29:58,610 --> 00:30:01,220
+whatever might happen in the
+compilation of this operand.
+
+578
+00:30:01,220 --> 00:30:04,820
+So it puts a note here and says,
+oh, this piece should be
+
+579
+00:30:04,820 --> 00:30:12,650
+done preserving the environment
+register.
+
+580
+00:30:12,650 --> 00:30:17,350
+
+
+581
+00:30:17,350 --> 00:30:22,630
+Similarly, here, after it gets
+done compiling the first
+
+582
+00:30:22,630 --> 00:30:25,110
+operand, it's going to say,
+I better compile--
+
+583
+00:30:25,110 --> 00:30:26,740
+I'm going to need to know
+the environment
+
+584
+00:30:26,740 --> 00:30:27,930
+for the second operand.
+
+585
+00:30:27,930 --> 00:30:30,870
+So it puts a little note here,
+saying, yeah, this is also
+
+586
+00:30:30,870 --> 00:30:41,510
+done preserving env. Now it goes
+on and says, well, the
+
+587
+00:30:41,510 --> 00:30:48,880
+next chunk of code is the one
+that's going to compile the
+
+588
+00:30:48,880 --> 00:30:50,760
+second argument.
+
+589
+00:30:50,760 --> 00:30:57,840
+And let's say it'll compile
+it with a targeted to
+
+590
+00:30:57,840 --> 00:30:59,360
+val, as they say.
+
+591
+00:30:59,360 --> 00:31:03,940
+
+
+592
+00:31:03,940 --> 00:31:08,360
+And then it'll generate the
+literal instruction, building
+
+593
+00:31:08,360 --> 00:31:20,860
+up the argument list. So it'll
+say, assign to argl cons of
+
+594
+00:31:20,860 --> 00:31:34,060
+the new value it just got onto
+the old argument list.
+
+595
+00:31:34,060 --> 00:31:37,610
+However, in order to have the
+old argument list, it better
+
+596
+00:31:37,610 --> 00:31:40,440
+have arranged that the argument
+list didn't get
+
+597
+00:31:40,440 --> 00:31:43,510
+trashed by whatever
+happened in here.
+
+598
+00:31:43,510 --> 00:31:46,200
+So it puts a little note here
+and says, oh, this has to be
+
+599
+00:31:46,200 --> 00:31:51,400
+done preserving argl.
+
+600
+00:31:51,400 --> 00:31:54,380
+
+
+601
+00:31:54,380 --> 00:31:58,090
+Now it's got the argument
+list set up.
+
+602
+00:31:58,090 --> 00:32:02,520
+And it's all ready to go
+to apply dispatch.
+
+603
+00:32:02,520 --> 00:32:06,450
+
+
+604
+00:32:06,450 --> 00:32:10,440
+It generates this literal
+instruction.
+
+605
+00:32:10,440 --> 00:32:14,990
+
+
+606
+00:32:14,990 --> 00:32:19,310
+Because now it's got the
+arguments in argl and the
+
+607
+00:32:19,310 --> 00:32:22,360
+operator in fun, but wait, it's
+only got the operator in
+
+608
+00:32:22,360 --> 00:32:27,520
+fun if it had ensured that
+this block of code didn't
+
+609
+00:32:27,520 --> 00:32:29,600
+trash what was in the
+function register.
+
+610
+00:32:29,600 --> 00:32:32,090
+So it puts a little note here
+and says, oh, yes, all this
+
+611
+00:32:32,090 --> 00:32:39,460
+stuff here had better
+be done preserving
+
+612
+00:32:39,460 --> 00:32:40,710
+the function register.
+
+613
+00:32:40,710 --> 00:32:46,110
+
+
+614
+00:32:46,110 --> 00:32:46,210
+So that's the little--so when
+it starts ticking--so
+
+615
+00:32:46,210 --> 00:32:51,510
+basically, what the compiler
+does is append a whole bunch
+
+616
+00:32:51,510 --> 00:32:53,432
+of code sequences.
+
+617
+00:32:53,432 --> 00:32:58,580
+See, what it's got in it is
+little primitive pieces of
+
+618
+00:32:58,580 --> 00:33:01,940
+things, like how to look up
+a symbol, how to do a
+
+619
+00:33:01,940 --> 00:33:02,560
+conditional.
+
+620
+00:33:02,560 --> 00:33:05,530
+Those are all little
+pieces of things.
+
+621
+00:33:05,530 --> 00:33:07,340
+And then it appends them
+together in this sort of
+
+622
+00:33:07,340 --> 00:33:08,810
+discipline.
+
+623
+00:33:08,810 --> 00:33:11,890
+So the basic means of combining
+things is to append
+
+624
+00:33:11,890 --> 00:33:13,140
+two code sequences.
+
+625
+00:33:13,140 --> 00:33:21,610
+
+
+626
+00:33:21,610 --> 00:33:22,860
+That's what's going on here.
+
+627
+00:33:22,860 --> 00:33:25,690
+
+
+628
+00:33:25,690 --> 00:33:27,590
+And it's a little bit tricky.
+
+629
+00:33:27,590 --> 00:33:32,020
+The idea is that it appends
+two code sequences, taking
+
+630
+00:33:32,020 --> 00:33:35,670
+care to preserve a register.
+
+631
+00:33:35,670 --> 00:33:39,250
+So the actual append operation
+looks like this.
+
+632
+00:33:39,250 --> 00:33:41,230
+What it wants to
+do is say, if--
+
+633
+00:33:41,230 --> 00:33:44,450
+here's what it means to append
+two code sequences.
+
+634
+00:33:44,450 --> 00:33:53,685
+So if sequence one
+needs register--
+
+635
+00:33:53,685 --> 00:33:54,720
+I should change this.
+
+636
+00:33:54,720 --> 00:33:57,200
+Append sequence one
+to sequence two,
+
+637
+00:33:57,200 --> 00:34:03,815
+preserving some register.
+
+638
+00:34:03,815 --> 00:34:08,370
+
+
+639
+00:34:08,370 --> 00:34:11,080
+Let me say, and.
+
+640
+00:34:11,080 --> 00:34:13,719
+So it's clear that sequence
+one comes first.
+
+641
+00:34:13,719 --> 00:34:26,449
+So if sequence two needs the
+register and sequence one
+
+642
+00:34:26,449 --> 00:34:35,230
+modifies the register, then
+the instructions that the
+
+643
+00:34:35,230 --> 00:34:43,380
+compiler spits out are,
+save the register.
+
+644
+00:34:43,380 --> 00:34:44,440
+Here's the code.
+
+645
+00:34:44,440 --> 00:34:45,280
+You generate this code.
+
+646
+00:34:45,280 --> 00:34:50,860
+Save the register, and then you
+put out the recursively
+
+647
+00:34:50,860 --> 00:34:53,389
+compiled stuff for
+sequence one.
+
+648
+00:34:53,389 --> 00:34:54,639
+And then you restore
+the register.
+
+649
+00:34:54,639 --> 00:35:00,440
+
+
+650
+00:35:00,440 --> 00:35:04,610
+And then you put out the
+recursively compiled stuff for
+
+651
+00:35:04,610 --> 00:35:07,330
+sequence two.
+
+652
+00:35:07,330 --> 00:35:09,610
+That's in the case where
+you need to do it.
+
+653
+00:35:09,610 --> 00:35:12,700
+Sequence two actually needs the
+register, and sequence one
+
+654
+00:35:12,700 --> 00:35:15,430
+actually clobbers it.
+
+655
+00:35:15,430 --> 00:35:16,320
+So that's sort of if.
+
+656
+00:35:16,320 --> 00:35:25,820
+Otherwise, all you spit out is
+sequence one followed by
+
+657
+00:35:25,820 --> 00:35:28,240
+sequence two.
+
+658
+00:35:28,240 --> 00:35:31,720
+So that's the basic operation
+for sticking together these
+
+659
+00:35:31,720 --> 00:35:34,490
+bits of code fragments,
+these bits of
+
+660
+00:35:34,490 --> 00:35:36,960
+instructions into a sequence.
+
+661
+00:35:36,960 --> 00:35:42,840
+And you see, from this point
+of view, the difference
+
+662
+00:35:42,840 --> 00:35:46,840
+between the interpreter and the
+compiler, in some sense,
+
+663
+00:35:46,840 --> 00:35:50,220
+is that where the compiler has
+these preserving notes, and
+
+664
+00:35:50,220 --> 00:35:52,910
+says, maybe I'll actually
+generate the saves and
+
+665
+00:35:52,910 --> 00:35:56,220
+restores and maybe I won't,
+the interpreter being
+
+666
+00:35:56,220 --> 00:35:59,550
+maximally pessimistic always has
+a save and restore here.
+
+667
+00:35:59,550 --> 00:36:04,140
+That's the essential
+difference.
+
+668
+00:36:04,140 --> 00:36:07,620
+Well, in order to do this, of
+course, the compiler needs
+
+669
+00:36:07,620 --> 00:36:10,775
+some theory of what code
+sequences need
+
+670
+00:36:10,775 --> 00:36:12,025
+and modifier registers.
+
+671
+00:36:12,025 --> 00:36:14,330
+
+
+672
+00:36:14,330 --> 00:36:17,670
+So the tiny little fragments
+that you put in, like the
+
+673
+00:36:17,670 --> 00:36:23,340
+basic primitive code fragments,
+say, what are the
+
+674
+00:36:23,340 --> 00:36:27,120
+operations that you do when
+you look up a variable?
+
+675
+00:36:27,120 --> 00:36:29,630
+What are the sequence of things
+that you do when you
+
+676
+00:36:29,630 --> 00:36:32,900
+compile a constant or
+apply a function?
+
+677
+00:36:32,900 --> 00:36:35,600
+Those have little notations in
+there about what they need and
+
+678
+00:36:35,600 --> 00:36:36,850
+what they modify.
+
+679
+00:36:36,850 --> 00:36:38,760
+
+
+680
+00:36:38,760 --> 00:36:42,750
+So the bottom-level
+data structures--
+
+681
+00:36:42,750 --> 00:36:44,330
+Well, I'll say this.
+
+682
+00:36:44,330 --> 00:36:48,070
+A code sequence to the compiler
+looks like this.
+
+683
+00:36:48,070 --> 00:36:50,945
+It has the actual sequence
+of instructions.
+
+684
+00:36:50,945 --> 00:36:55,780
+
+
+685
+00:36:55,780 --> 00:37:00,370
+And then, along with
+it, there's the set
+
+686
+00:37:00,370 --> 00:37:02,195
+of registers modified.
+
+687
+00:37:02,195 --> 00:37:10,630
+
+
+688
+00:37:10,630 --> 00:37:12,335
+And then there's the set
+of registers needed.
+
+689
+00:37:12,335 --> 00:37:19,910
+
+
+690
+00:37:19,910 --> 00:37:24,310
+So that's the information the
+compiler has that it draws on
+
+691
+00:37:24,310 --> 00:37:25,965
+in order to be able to
+do this operation.
+
+692
+00:37:25,965 --> 00:37:29,420
+
+
+693
+00:37:29,420 --> 00:37:30,650
+And where do those come from?
+
+694
+00:37:30,650 --> 00:37:34,920
+Well, those come from, you might
+expect, for the very
+
+695
+00:37:34,920 --> 00:37:37,230
+primitive ones, we're going
+to put them in by hand.
+
+696
+00:37:37,230 --> 00:37:39,890
+And then, when we combine two
+sequences, we'll figure out
+
+697
+00:37:39,890 --> 00:37:42,080
+what these things should be.
+
+698
+00:37:42,080 --> 00:37:48,460
+So for example, a very primitive
+one, let's see.
+
+699
+00:37:48,460 --> 00:37:51,790
+How about doing a register
+assignment.
+
+700
+00:37:51,790 --> 00:37:56,040
+So a primitive sequence might
+say, oh, it's code fragment.
+
+701
+00:37:56,040 --> 00:38:03,050
+Its code instruction is assigned
+to R1, fetch of R2.
+
+702
+00:38:03,050 --> 00:38:05,000
+So this is an example.
+
+703
+00:38:05,000 --> 00:38:08,510
+That might be an example of a
+sequence of instructions.
+
+704
+00:38:08,510 --> 00:38:13,110
+And along with that, it'll
+say, oh, what I need to
+
+705
+00:38:13,110 --> 00:38:20,670
+remember is that that modifies
+R1, and then it needs R2.
+
+706
+00:38:20,670 --> 00:38:24,630
+
+
+707
+00:38:24,630 --> 00:38:27,640
+So when you're first building
+this compiler, you put in
+
+708
+00:38:27,640 --> 00:38:31,030
+little fragments of
+stuff like that.
+
+709
+00:38:31,030 --> 00:38:37,320
+And now, when it combines two
+sequences, if I'm going to
+
+710
+00:38:37,320 --> 00:38:45,990
+combine, let's say, sequence
+one, that modifies a bunch of
+
+711
+00:38:45,990 --> 00:38:50,950
+registers M1, and needs a
+bunch of registers N1.
+
+712
+00:38:50,950 --> 00:38:54,940
+
+
+713
+00:38:54,940 --> 00:39:00,800
+And I'm going to combine
+that with sequence two.
+
+714
+00:39:00,800 --> 00:39:07,780
+That modifies a bunch of
+registers M2, and needs a
+
+715
+00:39:07,780 --> 00:39:09,570
+bunch of registers N2.
+
+716
+00:39:09,570 --> 00:39:12,590
+
+
+717
+00:39:12,590 --> 00:39:15,035
+Then, well, we can
+reason it out.
+
+718
+00:39:15,035 --> 00:39:20,230
+The new code fragment,
+sequence one, and--
+
+719
+00:39:20,230 --> 00:39:25,270
+followed by sequence two, well,
+
+720
+00:39:25,270 --> 00:39:27,760
+what's it going to modify?
+
+721
+00:39:27,760 --> 00:39:29,380
+The things that it will modify
+are the things that are
+
+722
+00:39:29,380 --> 00:39:33,990
+modified either by sequence
+one or sequence two.
+
+723
+00:39:33,990 --> 00:39:38,380
+So the union of these
+two sets are what
+
+724
+00:39:38,380 --> 00:39:40,530
+the new thing modifies.
+
+725
+00:39:40,530 --> 00:39:45,620
+And then you say, well, what is
+this--what registers is it
+
+726
+00:39:45,620 --> 00:39:47,870
+going to need?
+
+727
+00:39:47,870 --> 00:39:50,770
+It's going to need the things
+that are, first of all, needed
+
+728
+00:39:50,770 --> 00:39:52,790
+by sequence one.
+
+729
+00:39:52,790 --> 00:39:55,250
+So what it needs is
+sequence one.
+
+730
+00:39:55,250 --> 00:39:58,820
+And then, well, not quite all of
+the ones that are needed by
+
+731
+00:39:58,820 --> 00:39:59,760
+sequence one.
+
+732
+00:39:59,760 --> 00:40:02,910
+What it needs are the ones that
+are needed by sequence
+
+733
+00:40:02,910 --> 00:40:08,070
+two that have not been set
+up by sequence one.
+
+734
+00:40:08,070 --> 00:40:12,880
+So it's sort of the union of the
+things that sequence two
+
+735
+00:40:12,880 --> 00:40:19,370
+needs minus the ones that
+sequence one modifies.
+
+736
+00:40:19,370 --> 00:40:20,910
+Because it worries about
+setting them up.
+
+737
+00:40:20,910 --> 00:40:24,230
+
+
+738
+00:40:24,230 --> 00:40:26,740
+So there's the basic structure
+of the compiler.
+
+739
+00:40:26,740 --> 00:40:30,520
+The way you do register
+optimizations is you have some
+
+740
+00:40:30,520 --> 00:40:34,010
+strategies for what needs
+to be preserved.
+
+741
+00:40:34,010 --> 00:40:35,450
+That depends on a
+data structure.
+
+742
+00:40:35,450 --> 00:40:37,600
+Well, it depends on the
+operation of what it means to
+
+743
+00:40:37,600 --> 00:40:39,080
+put things together.
+
+744
+00:40:39,080 --> 00:40:44,710
+Preserving something, that
+depends on knowing what
+
+745
+00:40:44,710 --> 00:40:46,200
+registers are needed
+and modified
+
+746
+00:40:46,200 --> 00:40:48,900
+by these code fragments.
+
+747
+00:40:48,900 --> 00:40:52,820
+That depends on having little
+data structures, which say, a
+
+748
+00:40:52,820 --> 00:40:56,450
+code sequence is the actual
+instructions, what they modify
+
+749
+00:40:56,450 --> 00:40:57,350
+and what they need.
+
+750
+00:40:57,350 --> 00:40:58,750
+That comes from, at
+the primitive
+
+751
+00:40:58,750 --> 00:41:00,240
+level, building it in.
+
+752
+00:41:00,240 --> 00:41:02,800
+At the primitive level, it's
+going to be completely obvious
+
+753
+00:41:02,800 --> 00:41:04,850
+what something needs
+and modifies.
+
+754
+00:41:04,850 --> 00:41:08,160
+Plus, this particular way that
+says, when I build up bigger
+
+755
+00:41:08,160 --> 00:41:11,130
+ones, here's how I generate
+the new set of registers
+
+756
+00:41:11,130 --> 00:41:15,010
+modified and the new set
+of registers needed.
+
+757
+00:41:15,010 --> 00:41:16,120
+And that's the whole--
+
+758
+00:41:16,120 --> 00:41:17,810
+well, I shouldn't say that's
+the whole thing.
+
+759
+00:41:17,810 --> 00:41:21,320
+That's the whole thing except
+for about 30 pages of details
+
+760
+00:41:21,320 --> 00:41:21,860
+in the book.
+
+761
+00:41:21,860 --> 00:41:28,880
+But it is a perfectly usable
+rudimentary compiler.
+
+762
+00:41:28,880 --> 00:41:31,390
+Let me kind of show
+you what it does.
+
+763
+00:41:31,390 --> 00:41:36,330
+Suppose we start out with
+recursive factorial.
+
+764
+00:41:36,330 --> 00:41:38,590
+And these slides are going to
+be much too small to read.
+
+765
+00:41:38,590 --> 00:41:40,370
+I just want to flash through
+the code and show you about
+
+766
+00:41:40,370 --> 00:41:41,620
+how much it is.
+
+767
+00:41:41,620 --> 00:41:44,460
+
+
+768
+00:41:44,460 --> 00:41:46,220
+That starts out with--here's a
+first block of it, where it
+
+769
+00:41:46,220 --> 00:41:48,740
+compiles a procedure entry and
+does a bunch of assignments.
+
+770
+00:41:48,740 --> 00:41:53,000
+And this thing is basically up
+through the part where it sets
+
+771
+00:41:53,000 --> 00:41:55,500
+up to do the predicate
+and test whether
+
+772
+00:41:55,500 --> 00:41:56,830
+the predicate's true.
+
+773
+00:41:56,830 --> 00:41:59,530
+The second part is what
+results from--
+
+774
+00:41:59,530 --> 00:42:04,210
+in the recursive call to
+fact of n minus one.
+
+775
+00:42:04,210 --> 00:42:08,750
+And this last part is coming
+back from that and then taking
+
+776
+00:42:08,750 --> 00:42:09,890
+care of the constant case.
+
+777
+00:42:09,890 --> 00:42:12,010
+So that's about how
+much code it
+
+778
+00:42:12,010 --> 00:42:13,760
+would produce for factorial.
+
+779
+00:42:13,760 --> 00:42:18,380
+We could make this compiler
+much, much better, of course.
+
+780
+00:42:18,380 --> 00:42:21,870
+The main way we could make
+it better is to allow the
+
+781
+00:42:21,870 --> 00:42:24,720
+compiler to make any assumptions
+at all about what
+
+782
+00:42:24,720 --> 00:42:26,990
+happens when you call
+a procedure.
+
+783
+00:42:26,990 --> 00:42:30,810
+So this compiler, for instance,
+doesn't even know,
+
+784
+00:42:30,810 --> 00:42:35,030
+say, that multiplication
+is something that
+
+785
+00:42:35,030 --> 00:42:36,030
+could be coded in line.
+
+786
+00:42:36,030 --> 00:42:37,670
+Instead, it sets up this
+whole mechanism.
+
+787
+00:42:37,670 --> 00:42:38,920
+It goes to apply-dispatch.
+
+788
+00:42:38,920 --> 00:42:41,430
+
+
+789
+00:42:41,430 --> 00:42:43,900
+That's a tremendous waste,
+because what you do every time
+
+790
+00:42:43,900 --> 00:42:46,060
+you go to apply-dispatch is
+you have to concept this
+
+791
+00:42:46,060 --> 00:42:48,640
+argument list, because it's
+a very general thing
+
+792
+00:42:48,640 --> 00:42:49,170
+you're going to.
+
+793
+00:42:49,170 --> 00:42:51,510
+In any real compiler, of course,
+you're going to have
+
+794
+00:42:51,510 --> 00:42:53,830
+registers for holding
+arguments.
+
+795
+00:42:53,830 --> 00:42:57,060
+And you're going to start
+preserving and saving the way
+
+796
+00:42:57,060 --> 00:43:00,510
+you use those registers
+similar to the
+
+797
+00:43:00,510 --> 00:43:02,442
+same strategy here.
+
+798
+00:43:02,442 --> 00:43:06,700
+So that's probably the very main
+way that this particular
+
+799
+00:43:06,700 --> 00:43:08,940
+compiler in the book
+could be fixed.
+
+800
+00:43:08,940 --> 00:43:12,010
+There are other things like
+looking up variable values and
+
+801
+00:43:12,010 --> 00:43:14,010
+making more efficient primitive
+operations and all
+
+802
+00:43:14,010 --> 00:43:14,490
+sorts of things.
+
+803
+00:43:14,490 --> 00:43:17,260
+Essentially, a good Lisp
+compiler can absorb an
+
+804
+00:43:17,260 --> 00:43:19,780
+arbitrary amount of effort.
+
+805
+00:43:19,780 --> 00:43:23,820
+And probably one of the reasons
+that Lisp is slow with
+
+806
+00:43:23,820 --> 00:43:27,470
+compared to languages like
+FORTRAN is that, if you look
+
+807
+00:43:27,470 --> 00:43:29,860
+over history at the amount of
+effort that's gone into
+
+808
+00:43:29,860 --> 00:43:32,110
+building Lisp compilers, it's
+nowhere near the amount of
+
+809
+00:43:32,110 --> 00:43:34,520
+effort that's gone into
+FORTRAN compilers.
+
+810
+00:43:34,520 --> 00:43:36,910
+And maybe that's something that
+will change over the next
+
+811
+00:43:36,910 --> 00:43:38,250
+couple of years.
+
+812
+00:43:38,250 --> 00:43:39,500
+OK, let's break.
+
+813
+00:43:39,500 --> 00:43:43,950
+
+
+814
+00:43:43,950 --> 00:43:45,200
+Questions?
+
+815
+00:43:45,200 --> 00:43:48,370
+
+
+816
+00:43:48,370 --> 00:43:49,590
+AUDIENCE: One of the very
+first classes--
+
+817
+00:43:49,590 --> 00:43:52,180
+I don't know if it was during
+class or after class- you
+
+818
+00:43:52,180 --> 00:43:57,040
+showed me the, say, addition has
+a primitive that we don't
+
+819
+00:43:57,040 --> 00:44:00,720
+see, and-percent add or
+something like that.
+
+820
+00:44:00,720 --> 00:44:03,070
+Is that because, if you're doing
+inline code you'd want
+
+821
+00:44:03,070 --> 00:44:08,540
+to just do it for two
+operators, operands?
+
+822
+00:44:08,540 --> 00:44:10,552
+But if you had more operands,
+you'd want to
+
+823
+00:44:10,552 --> 00:44:12,800
+do something special?
+
+824
+00:44:12,800 --> 00:44:15,290
+PROFESSOR: Yeah, you're looking
+in the actual scheme
+
+825
+00:44:15,290 --> 00:44:15,980
+implementation.
+
+826
+00:44:15,980 --> 00:44:17,880
+There's a plus, and a plus
+is some operator.
+
+827
+00:44:17,880 --> 00:44:20,630
+And then if you go look inside
+the code for plus, you see
+
+828
+00:44:20,630 --> 00:44:21,440
+something called--
+
+829
+00:44:21,440 --> 00:44:24,640
+I forget-- and-percent plus
+or something like that.
+
+830
+00:44:24,640 --> 00:44:27,190
+And what's going on there is
+that particular kind of
+
+831
+00:44:27,190 --> 00:44:28,540
+optimization.
+
+832
+00:44:28,540 --> 00:44:30,520
+Because, see, general
+plus takes an
+
+833
+00:44:30,520 --> 00:44:31,770
+arbitrary number of arguments.
+
+834
+00:44:31,770 --> 00:44:34,750
+
+
+835
+00:44:34,750 --> 00:44:38,020
+So the most general plus says,
+oh, if I have an argument
+
+836
+00:44:38,020 --> 00:44:42,400
+list, I'd better cons it up in
+some list and then figure out
+
+837
+00:44:42,400 --> 00:44:44,880
+how many there were or
+something like that.
+
+838
+00:44:44,880 --> 00:44:47,820
+That's terribly inefficient,
+especially since most of the
+
+839
+00:44:47,820 --> 00:44:49,200
+time you're probably
+adding two numbers.
+
+840
+00:44:49,200 --> 00:44:52,200
+You don't want to really have to
+cons this argument list. So
+
+841
+00:44:52,200 --> 00:44:57,050
+what you'd like to do is build
+the code for plus with a bunch
+
+842
+00:44:57,050 --> 00:44:58,170
+of entries.
+
+843
+00:44:58,170 --> 00:45:00,170
+So most of what it's
+doing is the same.
+
+844
+00:45:00,170 --> 00:45:02,630
+However, there might be a
+special entry that you'd go to
+
+845
+00:45:02,630 --> 00:45:04,640
+if you knew there were
+only two arguments.
+
+846
+00:45:04,640 --> 00:45:05,910
+And those you'll put
+in registers.
+
+847
+00:45:05,910 --> 00:45:07,590
+They won't be in an argument
+list and you won't have to
+
+848
+00:45:07,590 --> 00:45:09,080
+[UNINTELLIGIBLE].
+
+849
+00:45:09,080 --> 00:45:12,570
+That's how a lot of
+these things work.
+
+850
+00:45:12,570 --> 00:45:13,948
+OK, let's take a break.
+
+851
+00:45:13,948 --> 00:45:15,696
+[MUSIC PLAYING]
+
+852
+00:45:15,696 --> 00:45:42,911
+

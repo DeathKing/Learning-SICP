@@ -1,0 +1,5939 @@
+0
+00:00:00,000 --> 00:00:02,190
+
+
+1
+00:00:02,190 --> 00:00:02,550
+[MUSIC PLAYING - "JESU, JOY OF
+MAN'S DESIRING" BY JOHANN
+
+2
+00:00:02,550 --> 00:00:03,800
+SEBASTIAN BACH]
+
+3
+00:00:03,800 --> 00:00:17,260
+
+
+4
+00:00:17,260 --> 00:00:20,520
+PROFESSOR: Well, up 'til now, I
+suppose, we've been learning
+
+5
+00:00:20,520 --> 00:00:26,690
+about a lot of techniques for
+organizing big programs,
+
+6
+00:00:26,690 --> 00:00:33,180
+symbolic manipulation a bit,
+some of the technology that
+
+7
+00:00:33,180 --> 00:00:36,250
+you use for establishing
+languages, one in terms of
+
+8
+00:00:36,250 --> 00:00:39,340
+another, which is used for
+organizing very large
+
+9
+00:00:39,340 --> 00:00:43,160
+programs. In fact, the nicest
+programs I know look more like
+
+10
+00:00:43,160 --> 00:00:47,310
+a pile of languages than like
+a decomposition of a problem
+
+11
+00:00:47,310 --> 00:00:49,900
+into parts.
+
+12
+00:00:49,900 --> 00:00:52,880
+Well, I suppose at this point,
+there are still, however, a
+
+13
+00:00:52,880 --> 00:00:56,260
+few mysteries about how this
+sort of stuff works.
+
+14
+00:00:56,260 --> 00:01:02,410
+And so what we'd like to do now
+is diverge from the plan
+
+15
+00:01:02,410 --> 00:01:06,060
+of telling you how to organize
+big programs, and rather tell
+
+16
+00:01:06,060 --> 00:01:09,870
+you something about the
+mechanisms by which these
+
+17
+00:01:09,870 --> 00:01:12,196
+things can be made to work.
+
+18
+00:01:12,196 --> 00:01:18,652
+The main reason for this is
+demystification, if you will,
+
+19
+00:01:18,652 --> 00:01:21,930
+that we have a lot of mysteries
+left, like exactly
+
+20
+00:01:21,930 --> 00:01:27,260
+how it is the case that a
+program is controlled, how a
+
+21
+00:01:27,260 --> 00:01:30,760
+computer knows what the next
+thing to do is, or
+
+22
+00:01:30,760 --> 00:01:32,430
+something like that.
+
+23
+00:01:32,430 --> 00:01:36,410
+And what I'd like to do now is
+make that clear to you, that
+
+24
+00:01:36,410 --> 00:01:38,580
+even if you've never played
+with a physical computer
+
+25
+00:01:38,580 --> 00:01:44,660
+before, the mechanism is really
+very simple, and that
+
+26
+00:01:44,660 --> 00:01:47,650
+you can understand it completely
+with no trouble.
+
+27
+00:01:47,650 --> 00:01:51,390
+So I'd like to start by
+imagining that we--
+
+28
+00:01:51,390 --> 00:01:53,190
+well, the way we're going to do
+this, by the way, is we're
+
+29
+00:01:53,190 --> 00:01:57,320
+going to take some very simple
+Lisp programs, very simple
+
+30
+00:01:57,320 --> 00:02:02,160
+Lisp programs, and transform
+them into hardware.
+
+31
+00:02:02,160 --> 00:02:05,260
+I'm not going to worry about
+some intermediate step of
+
+32
+00:02:05,260 --> 00:02:07,560
+going through some existing
+computer machine language and
+
+33
+00:02:07,560 --> 00:02:10,960
+then showing you how that
+computer works, because that's
+
+34
+00:02:10,960 --> 00:02:12,750
+not as illuminating.
+
+35
+00:02:12,750 --> 00:02:16,310
+So what I'm really going to
+show you is how a piece of
+
+36
+00:02:16,310 --> 00:02:21,130
+machinery can be built to do a
+job that you have written down
+
+37
+00:02:21,130 --> 00:02:22,040
+as a program.
+
+38
+00:02:22,040 --> 00:02:25,760
+That program is, in fact, a
+description of a machine.
+
+39
+00:02:25,760 --> 00:02:28,600
+We're going to start with a very
+simple program, proceed
+
+40
+00:02:28,600 --> 00:02:32,250
+to show you some simple
+mechanisms, proceed to a few
+
+41
+00:02:32,250 --> 00:02:36,660
+more complicated programs, and
+then later show you a not very
+
+42
+00:02:36,660 --> 00:02:40,360
+complicated program, how the
+evaluator transforms into a
+
+43
+00:02:40,360 --> 00:02:41,230
+piece of hardware.
+
+44
+00:02:41,230 --> 00:02:43,390
+And of course at that point,
+you have made the universal
+
+45
+00:02:43,390 --> 00:02:47,510
+transition and can execute any
+program imaginable with a
+
+46
+00:02:47,510 --> 00:02:48,800
+piece of well-defined
+hardware.
+
+47
+00:02:48,800 --> 00:02:51,392
+
+
+48
+00:02:51,392 --> 00:02:54,320
+Well, let's start up now, give
+you a real concrete feeling
+
+49
+00:02:54,320 --> 00:02:55,440
+for this sort of thing.
+
+50
+00:02:55,440 --> 00:02:59,600
+Let's start with a very
+simple program.
+
+51
+00:02:59,600 --> 00:03:00,850
+Here's Euclid's algorithm.
+
+52
+00:03:00,850 --> 00:03:03,880
+
+
+53
+00:03:03,880 --> 00:03:06,140
+It's actually a little
+bit more modern
+
+54
+00:03:06,140 --> 00:03:06,770
+than Euclid's algorithm.
+
+55
+00:03:06,770 --> 00:03:09,010
+Euclid's algorithm for computing
+the greatest common
+
+56
+00:03:09,010 --> 00:03:14,300
+divisor of two numbers was
+invented 350 BC, I think.
+
+57
+00:03:14,300 --> 00:03:15,550
+It's the oldest known
+algorithm.
+
+58
+00:03:15,550 --> 00:03:19,320
+
+
+59
+00:03:19,320 --> 00:03:23,440
+But here we're going to talk
+about GCD of A and B, the
+
+60
+00:03:23,440 --> 00:03:27,380
+Greatest Common Divisor or two
+numbers, A and B. And the
+
+61
+00:03:27,380 --> 00:03:29,500
+algorithm is extremely simple.
+
+62
+00:03:29,500 --> 00:03:38,170
+If B is 0, then the result is
+going to be A. Otherwise, the
+
+63
+00:03:38,170 --> 00:03:52,990
+result is the GCD of B and the
+remainder when A is divided by
+
+64
+00:03:52,990 --> 00:03:58,530
+B.
+
+65
+00:03:58,530 --> 00:04:02,030
+So this we have here is a very
+simple iterative process.
+
+66
+00:04:02,030 --> 00:04:05,550
+This a simple recursive
+procedure, recursively defined
+
+67
+00:04:05,550 --> 00:04:08,340
+procedure, recursive definition,
+which yields an
+
+68
+00:04:08,340 --> 00:04:09,990
+iterative process.
+
+69
+00:04:09,990 --> 00:04:13,840
+And the way it works is that
+every step, it determines
+
+70
+00:04:13,840 --> 00:04:15,996
+whether B was zero.
+
+71
+00:04:15,996 --> 00:04:21,660
+And if B is 0, we got the answer
+in A. Otherwise, we
+
+72
+00:04:21,660 --> 00:04:25,060
+make another step where A is
+the old B, and B is the
+
+73
+00:04:25,060 --> 00:04:31,110
+remainder of the old A divided
+by the old B. Very simple.
+
+74
+00:04:31,110 --> 00:04:33,900
+Now this, I've already told you
+some of the mechanism by
+
+75
+00:04:33,900 --> 00:04:34,860
+just saying it that way.
+
+76
+00:04:34,860 --> 00:04:36,360
+I set it in time.
+
+77
+00:04:36,360 --> 00:04:39,710
+I said there are certain steps,
+and that, in fact, one
+
+78
+00:04:39,710 --> 00:04:42,510
+of the things you can see here
+is that one of the reasons why
+
+79
+00:04:42,510 --> 00:04:46,960
+this is iterative is nothing is
+needed of the last step to
+
+80
+00:04:46,960 --> 00:04:49,490
+get the answer.
+
+81
+00:04:49,490 --> 00:04:54,230
+All of the information that's
+needed to run this algorithm
+
+82
+00:04:54,230 --> 00:04:57,540
+is in A and B. It has two
+well-defined state variables.
+
+83
+00:04:57,540 --> 00:05:00,470
+
+
+84
+00:05:00,470 --> 00:05:04,370
+So I'm going to define a machine
+for you that can
+
+85
+00:05:04,370 --> 00:05:06,560
+compute you GCDs.
+
+86
+00:05:06,560 --> 00:05:07,120
+Now let's see.
+
+87
+00:05:07,120 --> 00:05:10,010
+Every computer that's ever
+been made that's a
+
+88
+00:05:10,010 --> 00:05:13,490
+single-process computer, as
+opposed to a multiprocessor of
+
+89
+00:05:13,490 --> 00:05:17,840
+some sort, is made according
+to the same plan.
+
+90
+00:05:17,840 --> 00:05:21,630
+The plan is the computer has two
+parts, a part called the
+
+91
+00:05:21,630 --> 00:05:25,910
+datapaths, and a part called
+the controller.
+
+92
+00:05:25,910 --> 00:05:28,960
+The datapaths correspond to a
+calculator that you might
+
+93
+00:05:28,960 --> 00:05:31,580
+have. It contains certain
+registers that remember
+
+94
+00:05:31,580 --> 00:05:33,560
+things, and you've all
+used calculators.
+
+95
+00:05:33,560 --> 00:05:37,030
+It has some buttons on
+it and some lights.
+
+96
+00:05:37,030 --> 00:05:39,010
+And so by pushing the various
+buttons, you can cause
+
+97
+00:05:39,010 --> 00:05:42,080
+operations to happen inside
+there among the registers, and
+
+98
+00:05:42,080 --> 00:05:45,160
+some of the results
+to be displayed.
+
+99
+00:05:45,160 --> 00:05:46,250
+That's completely mechanical.
+
+100
+00:05:46,250 --> 00:05:50,900
+You could imagine that box has
+no intelligence in it.
+
+101
+00:05:50,900 --> 00:05:52,400
+Now it might be very impressive
+that it can produce
+
+102
+00:05:52,400 --> 00:05:57,670
+the sine of a number, but that
+at least is apparently
+
+103
+00:05:57,670 --> 00:05:58,970
+possibly mechanical.
+
+104
+00:05:58,970 --> 00:06:00,685
+At least, I could open that
+up in the same way I'm
+
+105
+00:06:00,685 --> 00:06:02,690
+about to open GCD.
+
+106
+00:06:02,690 --> 00:06:04,830
+So this may have a whole
+computer inside of it, but
+
+107
+00:06:04,830 --> 00:06:05,940
+that's not interesting.
+
+108
+00:06:05,940 --> 00:06:08,200
+Addition is certainly simple.
+
+109
+00:06:08,200 --> 00:06:10,890
+That can be done without
+any further mechanism.
+
+110
+00:06:10,890 --> 00:06:15,080
+Now also, if we were to look
+at the other half, the
+
+111
+00:06:15,080 --> 00:06:18,190
+controller, that's a part
+that's dumb, too.
+
+112
+00:06:18,190 --> 00:06:20,350
+It pushes the buttons.
+
+113
+00:06:20,350 --> 00:06:21,920
+It pushes them according to the
+sequence, which is written
+
+114
+00:06:21,920 --> 00:06:26,290
+down on a piece of paper,
+and observes the lights.
+
+115
+00:06:26,290 --> 00:06:29,210
+And every so often, it comes to
+a place in a sequence that
+
+116
+00:06:29,210 --> 00:06:32,370
+says, if light A is on,
+do this sequence.
+
+117
+00:06:32,370 --> 00:06:34,620
+Otherwise, do that sequence.
+
+118
+00:06:34,620 --> 00:06:37,950
+And thereby, there's no
+complexity there either.
+
+119
+00:06:37,950 --> 00:06:42,510
+Well, let's just draw that and
+see what we feel about that.
+
+120
+00:06:42,510 --> 00:06:48,270
+So for computing GCDs, what I
+want you to think about is
+
+121
+00:06:48,270 --> 00:06:50,310
+that there are these
+registers.
+
+122
+00:06:50,310 --> 00:06:53,240
+A register is a place where I
+store a number, in this case.
+
+123
+00:06:53,240 --> 00:06:56,810
+And this one's called a.
+
+124
+00:06:56,810 --> 00:06:58,700
+And then there's another
+one for storing b.
+
+125
+00:06:58,700 --> 00:07:03,170
+
+
+126
+00:07:03,170 --> 00:07:04,820
+Now we have to see what things
+we can do with these
+
+127
+00:07:04,820 --> 00:07:08,150
+registers, and they're not
+entirely obvious what you can
+
+128
+00:07:08,150 --> 00:07:09,840
+do with them.
+
+129
+00:07:09,840 --> 00:07:10,940
+Well, we have to see
+what things we
+
+130
+00:07:10,940 --> 00:07:11,890
+need to do with them.
+
+131
+00:07:11,890 --> 00:07:14,030
+We're looking at the problem
+we're trying to solve.
+
+132
+00:07:14,030 --> 00:07:17,100
+One of the important things
+for designing a computer,
+
+133
+00:07:17,100 --> 00:07:20,810
+which I think most designers
+don't do, is you study the
+
+134
+00:07:20,810 --> 00:07:23,910
+problem you want to solve and
+then use what you learn from
+
+135
+00:07:23,910 --> 00:07:25,970
+studying the problem you want
+to solve to put in the
+
+136
+00:07:25,970 --> 00:07:28,260
+mechanisms needed to solve
+it in the computer you're
+
+137
+00:07:28,260 --> 00:07:32,140
+building, no more no less.
+
+138
+00:07:32,140 --> 00:07:34,440
+Now it may be that the problem
+you're trying to solve is
+
+139
+00:07:34,440 --> 00:07:37,200
+everybody's problem, in which
+case you have to build in a
+
+140
+00:07:37,200 --> 00:07:40,190
+universal interpreter
+of some language.
+
+141
+00:07:40,190 --> 00:07:42,580
+But you shouldn't put any more
+in than required to build the
+
+142
+00:07:42,580 --> 00:07:44,540
+universal interpreter
+of some language.
+
+143
+00:07:44,540 --> 00:07:47,025
+We'll worry about that
+in a second.
+
+144
+00:07:47,025 --> 00:07:49,930
+OK, going back to
+here, let's see.
+
+145
+00:07:49,930 --> 00:07:51,640
+What do we have to
+be able to do?
+
+146
+00:07:51,640 --> 00:07:56,580
+Well, somehow, we have to be
+able to get B into A. We have
+
+147
+00:07:56,580 --> 00:07:59,260
+to be able to get the old value
+of B into the value of
+
+148
+00:07:59,260 --> 00:08:03,340
+A. So we have to have some path
+by which stuff can flow,
+
+149
+00:08:03,340 --> 00:08:07,390
+whatever this information
+is, from b to a.
+
+150
+00:08:07,390 --> 00:08:10,520
+I'm going to draw that with by
+an arrow saying that it is
+
+151
+00:08:10,520 --> 00:08:13,640
+possible to move the contents
+of b into a, replacing the
+
+152
+00:08:13,640 --> 00:08:15,120
+value of a.
+
+153
+00:08:15,120 --> 00:08:17,660
+And there's a little button
+here which you push which
+
+154
+00:08:17,660 --> 00:08:19,710
+allows that to happen.
+
+155
+00:08:19,710 --> 00:08:23,070
+That's what the little
+x is here.
+
+156
+00:08:23,070 --> 00:08:25,110
+Now it's also the case that I
+have to be able to compute the
+
+157
+00:08:25,110 --> 00:08:27,000
+remainder of a and b.
+
+158
+00:08:27,000 --> 00:08:28,860
+Now that may be a complicated
+mess.
+
+159
+00:08:28,860 --> 00:08:31,960
+On the other hand, I'm going
+to make it a small box.
+
+160
+00:08:31,960 --> 00:08:34,890
+If we have to, we may open up
+that box and look inside and
+
+161
+00:08:34,890 --> 00:08:37,740
+see what it is.
+
+162
+00:08:37,740 --> 00:08:39,580
+So here, I'm going to have a
+little box, which I'm going to
+
+163
+00:08:39,580 --> 00:08:46,440
+draw this way, which we'll
+call the remainder.
+
+164
+00:08:46,440 --> 00:08:48,265
+And it's going to take in a.
+
+165
+00:08:48,265 --> 00:08:50,910
+
+
+166
+00:08:50,910 --> 00:08:54,370
+That's going to take in b.
+
+167
+00:08:54,370 --> 00:08:59,660
+And it's going to put out
+something, the remainder of a
+
+168
+00:08:59,660 --> 00:09:02,290
+divided by b.
+
+169
+00:09:02,290 --> 00:09:04,050
+Another thing we have to see
+here is that we have to be
+
+170
+00:09:04,050 --> 00:09:08,000
+able to test whether
+b is equal to 0.
+
+171
+00:09:08,000 --> 00:09:10,020
+Well, that means somebody's
+got to be looking at--
+
+172
+00:09:10,020 --> 00:09:13,390
+a thing that's looking
+at the value of b.
+
+173
+00:09:13,390 --> 00:09:17,390
+I have a light bulb here which
+lights up if b equals 0.
+
+174
+00:09:17,390 --> 00:09:21,110
+
+
+175
+00:09:21,110 --> 00:09:24,030
+That's its job.
+
+176
+00:09:24,030 --> 00:09:27,250
+And finally, I suppose, because
+of the fact that we
+
+177
+00:09:27,250 --> 00:09:30,640
+want the new value of a to be
+the old value of b, and
+
+178
+00:09:30,640 --> 00:09:33,820
+simultaneously the new value of
+b to be something I've done
+
+179
+00:09:33,820 --> 00:09:38,160
+with a, and if I plan to make
+my machine such that
+
+180
+00:09:38,160 --> 00:09:41,620
+everything happens one at a
+time, one motion at a time,
+
+181
+00:09:41,620 --> 00:09:44,526
+and I can't put two numbers in
+a register, then I have to
+
+182
+00:09:44,526 --> 00:09:46,300
+have another place to put one
+while I'm interchanging.
+
+183
+00:09:46,300 --> 00:09:49,534
+
+
+184
+00:09:49,534 --> 00:09:50,000
+OK?
+
+185
+00:09:50,000 --> 00:09:52,490
+I can't interchange the two
+things in my hands, unless I
+
+186
+00:09:52,490 --> 00:09:54,730
+either put two in one hand and
+then pull it back the other
+
+187
+00:09:54,730 --> 00:09:57,960
+way, or unless I put one down,
+pick it up, and put the other
+
+188
+00:09:57,960 --> 00:10:02,930
+one, like that, unless I'm a
+juggler, which I'm not, as you
+
+189
+00:10:02,930 --> 00:10:06,200
+can see, in which case I have a
+
+190
+00:10:06,200 --> 00:10:08,850
+possibility of timing errors.
+
+191
+00:10:08,850 --> 00:10:11,500
+In fact, much of the type of
+computer design people do
+
+192
+00:10:11,500 --> 00:10:15,260
+involves timing errors, of some
+potential timing errors,
+
+193
+00:10:15,260 --> 00:10:17,840
+which I don't much like.
+
+194
+00:10:17,840 --> 00:10:22,500
+So for that reason, I have to
+have a place to put the second
+
+195
+00:10:22,500 --> 00:10:23,410
+one of them down.
+
+196
+00:10:23,410 --> 00:10:25,820
+So I have a place called t,
+which is a register just for
+
+197
+00:10:25,820 --> 00:10:30,470
+temporary, t, with
+a button on it.
+
+198
+00:10:30,470 --> 00:10:32,450
+And then I'll take the result of
+that, since I have to take
+
+199
+00:10:32,450 --> 00:10:35,640
+that and put into b, over here,
+we'll take the result of
+
+200
+00:10:35,640 --> 00:10:39,300
+that and go like this,
+and a button here.
+
+201
+00:10:39,300 --> 00:10:42,430
+
+
+202
+00:10:42,430 --> 00:10:47,600
+So that's the datapaths
+of a GCD machine.
+
+203
+00:10:47,600 --> 00:10:49,740
+Now what's the controller?
+
+204
+00:10:49,740 --> 00:10:52,280
+Controller's a very
+simple thing, too.
+
+205
+00:10:52,280 --> 00:10:53,710
+The machine has a state.
+
+206
+00:10:53,710 --> 00:10:59,010
+The way I like to visualize that
+is that I've got a maze.
+
+207
+00:10:59,010 --> 00:11:01,680
+And the maze has a
+bunch of places
+
+208
+00:11:01,680 --> 00:11:04,430
+connected by directed arrows.
+
+209
+00:11:04,430 --> 00:11:08,430
+And what I have is a marble,
+which represents the state of
+
+210
+00:11:08,430 --> 00:11:10,740
+the controller.
+
+211
+00:11:10,740 --> 00:11:13,256
+The marble rolls around
+in the maze.
+
+212
+00:11:13,256 --> 00:11:17,150
+Of course, this analogy breaks
+down for energy reasons.
+
+213
+00:11:17,150 --> 00:11:19,310
+I sometimes have to pump the
+marble up to the top, because
+
+214
+00:11:19,310 --> 00:11:22,000
+it's going to otherwise be a
+perpetual motion machine.
+
+215
+00:11:22,000 --> 00:11:24,270
+But not worrying about
+that, this is
+
+216
+00:11:24,270 --> 00:11:26,080
+not a physical analogy.
+
+217
+00:11:26,080 --> 00:11:27,680
+This marble rolls around.
+
+218
+00:11:27,680 --> 00:11:30,180
+And every time it rolls around
+certain bumpers, like in a
+
+219
+00:11:30,180 --> 00:11:34,830
+pinball machine, it pushes
+one of these buttons.
+
+220
+00:11:34,830 --> 00:11:36,810
+And every so often, it comes
+to a place, which is a
+
+221
+00:11:36,810 --> 00:11:40,250
+division, where it has
+to make a choice.
+
+222
+00:11:40,250 --> 00:11:42,360
+And there's a flap, which
+is controlled by this.
+
+223
+00:11:42,360 --> 00:11:46,000
+
+
+224
+00:11:46,000 --> 00:11:48,820
+So that's a really mechanical
+way of thinking about it.
+
+225
+00:11:48,820 --> 00:11:50,980
+Of course, controllers these
+days, are not built that way
+
+226
+00:11:50,980 --> 00:11:51,840
+in real computers.
+
+227
+00:11:51,840 --> 00:11:54,090
+They're built with
+a little bit of
+
+228
+00:11:54,090 --> 00:11:56,610
+ROM and a state register.
+
+229
+00:11:56,610 --> 00:11:59,726
+But there was a time, like the
+DEC PDP-6, where that's how
+
+230
+00:11:59,726 --> 00:12:01,400
+you built the controller
+of a machine.
+
+231
+00:12:01,400 --> 00:12:06,800
+There was a bit that ran around
+the delay line, and it
+
+232
+00:12:06,800 --> 00:12:08,580
+triggered things
+as it went by.
+
+233
+00:12:08,580 --> 00:12:09,860
+And it would come back
+to the beginning and
+
+234
+00:12:09,860 --> 00:12:11,990
+get fed round again.
+
+235
+00:12:11,990 --> 00:12:13,630
+And of course, there were all
+sorts of great bugs you could
+
+236
+00:12:13,630 --> 00:12:17,670
+have like two bits going
+around, two marbles.
+
+237
+00:12:17,670 --> 00:12:19,260
+And then the machine has
+lost its marbles.
+
+238
+00:12:19,260 --> 00:12:20,980
+That happens, too.
+
+239
+00:12:20,980 --> 00:12:21,935
+Oh, well.
+
+240
+00:12:21,935 --> 00:12:24,570
+So anyway, for this machine,
+what I have
+
+241
+00:12:24,570 --> 00:12:25,940
+to do is the following.
+
+242
+00:12:25,940 --> 00:12:27,690
+I'm going to start
+my maze here.
+
+243
+00:12:27,690 --> 00:12:30,520
+
+
+244
+00:12:30,520 --> 00:12:35,460
+And the first thing I've got
+to do, in a notation which
+
+245
+00:12:35,460 --> 00:12:41,540
+many of you are familiar with,
+is b equal to zero, a test.
+
+246
+00:12:41,540 --> 00:12:44,540
+And there's a possibility,
+either yes, in
+
+247
+00:12:44,540 --> 00:12:45,790
+which case I'm done.
+
+248
+00:12:45,790 --> 00:12:49,790
+
+
+249
+00:12:49,790 --> 00:12:53,220
+Otherwise, if no, then
+I'm going have to
+
+250
+00:12:53,220 --> 00:12:54,725
+roll over some bumpers.
+
+251
+00:12:54,725 --> 00:12:57,420
+I'm going to do it in
+the following order.
+
+252
+00:12:57,420 --> 00:13:04,050
+I want to do this interchange
+game.
+
+253
+00:13:04,050 --> 00:13:07,360
+Now first, since I need both a
+and b, but then the first--
+
+254
+00:13:07,360 --> 00:13:08,670
+and this is not necessary--
+
+255
+00:13:08,670 --> 00:13:11,070
+I want to collect this.
+
+256
+00:13:11,070 --> 00:13:13,240
+This is the thing that's
+going to go into b.
+
+257
+00:13:13,240 --> 00:13:15,680
+So I'm going to say, take this,
+which depends upon both
+
+258
+00:13:15,680 --> 00:13:19,150
+a and b, and put the remainder
+into here.
+
+259
+00:13:19,150 --> 00:13:22,940
+So I'm going to push this button
+first. Then, I'm going
+
+260
+00:13:22,940 --> 00:13:26,460
+to transfer b to a, push that
+button, and then I transfer
+
+261
+00:13:26,460 --> 00:13:32,030
+the temporary into b,
+push that button.
+
+262
+00:13:32,030 --> 00:13:37,750
+So a very sequential machine,
+it's very inefficient.
+
+263
+00:13:37,750 --> 00:13:39,810
+But that's fine right now.
+
+264
+00:13:39,810 --> 00:13:42,305
+We're going to name the buttons,
+t gets remainder.
+
+265
+00:13:42,305 --> 00:13:46,750
+
+
+266
+00:13:46,750 --> 00:13:50,036
+a gets b.
+
+267
+00:13:50,036 --> 00:13:55,470
+And b gets t.
+
+268
+00:13:55,470 --> 00:13:59,150
+And then I'm going to go around
+here and it's to go
+
+269
+00:13:59,150 --> 00:14:01,620
+back to start.
+
+270
+00:14:01,620 --> 00:14:03,870
+And if you look, what
+are we seeing here?
+
+271
+00:14:03,870 --> 00:14:05,080
+We're seeing the various--
+
+272
+00:14:05,080 --> 00:14:07,400
+what I really have is some sort
+of mechanical connection,
+
+273
+00:14:07,400 --> 00:14:13,620
+where t gets r controls
+this thing.
+
+274
+00:14:13,620 --> 00:14:16,830
+
+
+275
+00:14:16,830 --> 00:14:20,910
+And I have here that a gets b
+controls this fellow over
+
+276
+00:14:20,910 --> 00:14:28,120
+here, and this fellow
+over here.
+
+277
+00:14:28,120 --> 00:14:31,090
+Boy, that's absolutely
+pessimal,
+
+278
+00:14:31,090 --> 00:14:32,630
+the inverse of optimal.
+
+279
+00:14:32,630 --> 00:14:34,590
+Every line heads across every
+other line the way I drew it.
+
+280
+00:14:34,590 --> 00:14:38,540
+
+
+281
+00:14:38,540 --> 00:14:41,150
+I suppose this goes
+here, b gets t.
+
+282
+00:14:41,150 --> 00:14:45,690
+
+
+283
+00:14:45,690 --> 00:14:48,040
+Now I'd like to run
+this machine.
+
+284
+00:14:48,040 --> 00:14:50,260
+But before I run the machine,
+I want to write down a
+
+285
+00:14:50,260 --> 00:14:52,243
+description of this controller,
+just so you can
+
+286
+00:14:52,243 --> 00:14:54,160
+see that these things, of
+course, as usual, can be
+
+287
+00:14:54,160 --> 00:14:56,560
+written down in some nice
+language, so that we don't
+
+288
+00:14:56,560 --> 00:14:59,010
+have to always draw these
+diagrams. One of the problems
+
+289
+00:14:59,010 --> 00:15:00,710
+with diagrams is that they
+take up a lot of space.
+
+290
+00:15:00,710 --> 00:15:03,220
+And for a machine this small,
+it takes two blackboards.
+
+291
+00:15:03,220 --> 00:15:05,690
+For a machine that's the
+evaluator machine, I have
+
+292
+00:15:05,690 --> 00:15:08,320
+trouble putting it into
+this room, even though
+
+293
+00:15:08,320 --> 00:15:09,900
+it isn't very big.
+
+294
+00:15:09,900 --> 00:15:11,550
+So I'm going to make a little
+language for this that's just
+
+295
+00:15:11,550 --> 00:15:17,530
+a description of that,
+saying define a
+
+296
+00:15:17,530 --> 00:15:24,420
+machine we'll call GCD.
+
+297
+00:15:24,420 --> 00:15:25,970
+Of course, once we have
+something like this, we have a
+
+298
+00:15:25,970 --> 00:15:27,220
+simulator for it.
+
+299
+00:15:27,220 --> 00:15:29,630
+And the reason why we want to
+build a language in this form,
+
+300
+00:15:29,630 --> 00:15:31,500
+is because all of a sudden
+we can manipulate these
+
+301
+00:15:31,500 --> 00:15:33,210
+expressions that I'm
+writing down.
+
+302
+00:15:33,210 --> 00:15:35,970
+And then of course I can write
+things that can algebraically
+
+303
+00:15:35,970 --> 00:15:38,730
+manipulate these things,
+simulate them, all that sort
+
+304
+00:15:38,730 --> 00:15:41,255
+of things that I might want to
+do, perhaps transform them as
+
+305
+00:15:41,255 --> 00:15:43,630
+a layout, who knows.
+
+306
+00:15:43,630 --> 00:15:48,185
+Once I have a nice
+representation of registers,
+
+307
+00:15:48,185 --> 00:15:56,326
+it has certain registers, which
+we can call A, B, and T.
+
+308
+00:15:56,326 --> 00:15:57,576
+And there's a controller.
+
+309
+00:15:57,576 --> 00:16:02,190
+
+
+310
+00:16:02,190 --> 00:16:04,910
+Actually, a better language,
+which would be more explicit,
+
+311
+00:16:04,910 --> 00:16:09,440
+would be one which named
+every button also and
+
+312
+00:16:09,440 --> 00:16:10,420
+said what it did.
+
+313
+00:16:10,420 --> 00:16:13,390
+Like, this button causes the
+contents of T to go to the
+
+314
+00:16:13,390 --> 00:16:16,310
+contents of B. Well I don't want
+to do that, because it's
+
+315
+00:16:16,310 --> 00:16:18,410
+actually harder to read
+to do that, and it
+
+316
+00:16:18,410 --> 00:16:19,510
+takes up more space.
+
+317
+00:16:19,510 --> 00:16:21,710
+So I'm going to have that in
+the instructions written in
+
+318
+00:16:21,710 --> 00:16:23,290
+the controller.
+
+319
+00:16:23,290 --> 00:16:26,460
+It's going to be implicit
+what the operations are.
+
+320
+00:16:26,460 --> 00:16:29,990
+They can be deduced by reading
+these and collecting together
+
+321
+00:16:29,990 --> 00:16:33,500
+all the different things
+that can be done.
+
+322
+00:16:33,500 --> 00:16:35,482
+Well, let's just look at
+what these things are.
+
+323
+00:16:35,482 --> 00:16:42,550
+There's a little loop that we
+go around which says branch,
+
+324
+00:16:42,550 --> 00:16:47,430
+this is the representation of
+the little flap that decides
+
+325
+00:16:47,430 --> 00:16:58,010
+which way you go here, if 0
+fetch of B, the contents of B,
+
+326
+00:16:58,010 --> 00:17:00,790
+and if the contents of
+B is 0, then go to a
+
+327
+00:17:00,790 --> 00:17:03,640
+place called done.
+
+328
+00:17:03,640 --> 00:17:06,030
+Now, one thing you're seeing
+here, this looks very much
+
+329
+00:17:06,030 --> 00:17:08,170
+like a traditional computer
+language.
+
+330
+00:17:08,170 --> 00:17:13,099
+And what you're seeing here
+is things like labels that
+
+331
+00:17:13,099 --> 00:17:17,609
+represent places in a sequence
+written down as a sequence.
+
+332
+00:17:17,609 --> 00:17:21,700
+The reason why they're needed
+is because over here, I've
+
+333
+00:17:21,700 --> 00:17:23,329
+written something with loops.
+
+334
+00:17:23,329 --> 00:17:26,569
+But if I'm writing English text,
+or something like that,
+
+335
+00:17:26,569 --> 00:17:28,580
+it's hard to refer to a place.
+
+336
+00:17:28,580 --> 00:17:31,440
+I don't have arrows.
+
+337
+00:17:31,440 --> 00:17:33,450
+Arrows are represented by giving
+names to the places
+
+338
+00:17:33,450 --> 00:17:35,680
+where the arrows terminate, and
+then referring to them by
+
+339
+00:17:35,680 --> 00:17:37,620
+those names.
+
+340
+00:17:37,620 --> 00:17:39,860
+Now this is just an encoding.
+
+341
+00:17:39,860 --> 00:17:43,150
+There's nothing magical about
+things like that.
+
+342
+00:17:43,150 --> 00:17:45,310
+Next thing we're going to do is
+we're going to say, how do
+
+343
+00:17:45,310 --> 00:17:46,840
+we do T gets R?
+
+344
+00:17:46,840 --> 00:17:49,030
+Oh, that's easy enough,
+assign.
+
+345
+00:17:49,030 --> 00:17:51,930
+
+
+346
+00:17:51,930 --> 00:17:56,400
+We assign to T the remainder.
+
+347
+00:17:56,400 --> 00:18:01,470
+Assign is the name
+of the button.
+
+348
+00:18:01,470 --> 00:18:03,140
+That's the button-pusher.
+
+349
+00:18:03,140 --> 00:18:05,910
+Assign to T the remainder, and
+here's the representation of
+
+350
+00:18:05,910 --> 00:18:17,550
+the operation, when we divide
+the fetch of A by the fetch of
+
+351
+00:18:17,550 --> 00:18:23,478
+B.
+
+352
+00:18:23,478 --> 00:18:35,560
+And we're also going to assign
+to A the fetch of B, assign to
+
+353
+00:18:35,560 --> 00:18:50,140
+B the result of getting the
+contents of T. And now I have
+
+354
+00:18:50,140 --> 00:18:53,280
+to refer to the beginning
+here.
+
+355
+00:18:53,280 --> 00:18:55,760
+I see, why don't I call that
+loop like I have here?
+
+356
+00:18:55,760 --> 00:19:05,390
+
+
+357
+00:19:05,390 --> 00:19:07,610
+So that's that reference
+to that arrow.
+
+358
+00:19:07,610 --> 00:19:08,950
+And when we're done,
+we're done.
+
+359
+00:19:08,950 --> 00:19:14,340
+We go to here, which is
+the end of the thing.
+
+360
+00:19:14,340 --> 00:19:18,090
+So here's just a written
+representation of this
+
+361
+00:19:18,090 --> 00:19:21,660
+fragment of machinery that
+we've drawn here.
+
+362
+00:19:21,660 --> 00:19:25,490
+Now the next thing I'd like
+to do is run this.
+
+363
+00:19:25,490 --> 00:19:27,620
+I want us to feel it running.
+
+364
+00:19:27,620 --> 00:19:31,010
+Never done this before,
+you got to do it once.
+
+365
+00:19:31,010 --> 00:19:33,100
+So let's take a particular
+problem.
+
+366
+00:19:33,100 --> 00:19:38,580
+Suppose we want to compute
+the GCD of a equals 30
+
+367
+00:19:38,580 --> 00:19:42,210
+and b equals 42.
+
+368
+00:19:42,210 --> 00:19:45,860
+I have no idea what
+that is right now.
+
+369
+00:19:45,860 --> 00:19:50,530
+But a 30 and b is 42.
+
+370
+00:19:50,530 --> 00:19:52,410
+So that's how I start
+this thing up.
+
+371
+00:19:52,410 --> 00:19:54,240
+Well, what's the first
+thing I do?
+
+372
+00:19:54,240 --> 00:19:57,590
+I say is B equal to 0, no.
+
+373
+00:19:57,590 --> 00:20:01,500
+Then assign to T the remainder
+of the fetch of A and the
+
+374
+00:20:01,500 --> 00:20:05,640
+fetch of B. Well the remainder
+of 30 when divided by
+
+375
+00:20:05,640 --> 00:20:11,130
+42 is itself 30.
+
+376
+00:20:11,130 --> 00:20:12,920
+Push that button.
+
+377
+00:20:12,920 --> 00:20:17,100
+Now the marble has
+rolled to here.
+
+378
+00:20:17,100 --> 00:20:21,220
+A gets B. That pushes
+this button.
+
+379
+00:20:21,220 --> 00:20:26,360
+So 42 moves into here.
+
+380
+00:20:26,360 --> 00:20:29,870
+B gets C. Push that button.
+
+381
+00:20:29,870 --> 00:20:32,225
+The 30 goes here.
+
+382
+00:20:32,225 --> 00:20:34,660
+Let met just interchange them.
+
+383
+00:20:34,660 --> 00:20:38,280
+Now let's see, go back
+to the beginning.
+
+384
+00:20:38,280 --> 00:20:40,200
+B 0, no.
+
+385
+00:20:40,200 --> 00:20:43,230
+T gets the remainder.
+
+386
+00:20:43,230 --> 00:20:47,240
+I suppose the remainder when
+dividing 42 by 30 is 12.
+
+387
+00:20:47,240 --> 00:20:48,530
+I push that one.
+
+388
+00:20:48,530 --> 00:20:54,360
+Next thing I do is allow the
+30 to go to here, push this
+
+389
+00:20:54,360 --> 00:20:55,950
+one, allow the 12
+to go to here.
+
+390
+00:20:55,950 --> 00:20:59,550
+
+
+391
+00:20:59,550 --> 00:21:00,380
+Go around this thing.
+
+392
+00:21:00,380 --> 00:21:01,530
+Is that done?
+
+393
+00:21:01,530 --> 00:21:02,360
+No.
+
+394
+00:21:02,360 --> 00:21:05,080
+How about--
+
+395
+00:21:05,080 --> 00:21:08,850
+so now I have to find out the
+remainder of 30 divided by 12.
+
+396
+00:21:08,850 --> 00:21:12,420
+And I believe that's 6.
+
+397
+00:21:12,420 --> 00:21:15,916
+So 6 goes here on this
+button push.
+
+398
+00:21:15,916 --> 00:21:18,550
+Then the next thing I push
+is this one, which the
+
+399
+00:21:18,550 --> 00:21:23,730
+12 goes into here.
+
+400
+00:21:23,730 --> 00:21:25,090
+Then I push this button.
+
+401
+00:21:25,090 --> 00:21:26,340
+The 6 gets into here.
+
+402
+00:21:26,340 --> 00:21:29,850
+
+
+403
+00:21:29,850 --> 00:21:32,100
+Is 6 equal to 0?
+
+404
+00:21:32,100 --> 00:21:33,420
+No.
+
+405
+00:21:33,420 --> 00:21:34,380
+OK.
+
+406
+00:21:34,380 --> 00:21:38,380
+So then at that point, the next
+thing to do is divide it.
+
+407
+00:21:38,380 --> 00:21:40,660
+Ooh, this has got a
+remainder of 0.
+
+408
+00:21:40,660 --> 00:21:42,360
+Looks like we're almost done.
+
+409
+00:21:42,360 --> 00:21:44,360
+Move the 6 over here next.
+
+410
+00:21:44,360 --> 00:21:47,230
+
+
+411
+00:21:47,230 --> 00:21:49,090
+0 over here.
+
+412
+00:21:49,090 --> 00:21:50,200
+Is the answer 0?
+
+413
+00:21:50,200 --> 00:21:51,340
+Yes.
+
+414
+00:21:51,340 --> 00:21:54,470
+B is 0, therefore the
+answer is in A.
+
+415
+00:21:54,470 --> 00:21:56,610
+The answer is 6.
+
+416
+00:21:56,610 --> 00:21:58,400
+And indeed that's right, because
+if we look at the
+
+417
+00:21:58,400 --> 00:22:07,060
+original problem, what we have
+is 30 is 2 times 3 times 5,
+
+418
+00:22:07,060 --> 00:22:11,670
+and 42 is 2 times 3 times 7.
+
+419
+00:22:11,670 --> 00:22:15,090
+So the greatest common divisor
+is 2 times 3, which is 6.
+
+420
+00:22:15,090 --> 00:22:18,380
+
+
+421
+00:22:18,380 --> 00:22:20,780
+Now normally, we write one other
+little line here, just
+
+422
+00:22:20,780 --> 00:22:23,770
+to make it a little bit clearer,
+which is that we
+
+423
+00:22:23,770 --> 00:22:29,760
+leave in a connection saying
+that this light is the guy
+
+424
+00:22:29,760 --> 00:22:31,010
+that that flap looks at.
+
+425
+00:22:31,010 --> 00:22:34,050
+
+
+426
+00:22:34,050 --> 00:22:38,440
+Of course, any real machine
+has a lot more complicated
+
+427
+00:22:38,440 --> 00:22:41,350
+things in it than what
+I've just shown you.
+
+428
+00:22:41,350 --> 00:22:47,980
+Let's look for a second at
+the first still store.
+
+429
+00:22:47,980 --> 00:22:50,190
+Wow.
+
+430
+00:22:50,190 --> 00:22:52,850
+Well you see, for example, one
+thing we might want to do is
+
+431
+00:22:52,850 --> 00:22:56,840
+worry about the operations
+that are of IO form.
+
+432
+00:22:56,840 --> 00:23:01,980
+And we may have to collect
+something from the outside.
+
+433
+00:23:01,980 --> 00:23:06,310
+So a state machine that we might
+have, the controller may
+
+434
+00:23:06,310 --> 00:23:11,190
+have to, for example, get a
+value from something and put
+
+435
+00:23:11,190 --> 00:23:13,490
+register a to load it up.
+
+436
+00:23:13,490 --> 00:23:17,070
+I have to master load up
+register b with another value.
+
+437
+00:23:17,070 --> 00:23:19,900
+And then later, when I'm done,
+I might want to print the
+
+438
+00:23:19,900 --> 00:23:20,970
+answer out.
+
+439
+00:23:20,970 --> 00:23:26,250
+And of course, that might be
+either simple or complicated.
+
+440
+00:23:26,250 --> 00:23:28,320
+I'm writing, assuming print
+is very simple, and
+
+441
+00:23:28,320 --> 00:23:29,880
+read is very simple.
+
+442
+00:23:29,880 --> 00:23:31,700
+But in fact, in the real
+world, those are very
+
+443
+00:23:31,700 --> 00:23:34,930
+complicated operations, usually
+much, much larger and
+
+444
+00:23:34,930 --> 00:23:37,080
+more complicated than the thing
+you're doing as your
+
+445
+00:23:37,080 --> 00:23:38,330
+problem you're trying
+to solve.
+
+446
+00:23:38,330 --> 00:23:41,670
+
+
+447
+00:23:41,670 --> 00:23:45,060
+On the other hand, I can
+remember a time when, I
+
+448
+00:23:45,060 --> 00:23:49,320
+remember using IBM 7090 computer
+of sorts, where
+
+449
+00:23:49,320 --> 00:23:53,600
+things like read and write of
+a single object, a single
+
+450
+00:23:53,600 --> 00:23:58,040
+number, a number, is a primitive
+operation of the IO
+
+451
+00:23:58,040 --> 00:23:59,065
+controller.
+
+452
+00:23:59,065 --> 00:24:00,400
+OK?
+
+453
+00:24:00,400 --> 00:24:02,330
+And so we have that kind
+of thing in there.
+
+454
+00:24:02,330 --> 00:24:08,360
+And in such a machine, well,
+what are we really doing?
+
+455
+00:24:08,360 --> 00:24:11,110
+We're just saying that there's
+a source over here called
+
+456
+00:24:11,110 --> 00:24:14,660
+"read," which is an operation
+which always has a value.
+
+457
+00:24:14,660 --> 00:24:17,480
+We have to think about this as
+always having a value which
+
+458
+00:24:17,480 --> 00:24:21,660
+can be gated into either
+register a or b.
+
+459
+00:24:21,660 --> 00:24:24,290
+And print is some sort of thing
+which when you gate it
+
+460
+00:24:24,290 --> 00:24:27,410
+appropriately, when you push the
+button on it, will cause a
+
+461
+00:24:27,410 --> 00:24:31,660
+print of the value that's
+currently in register a.
+
+462
+00:24:31,660 --> 00:24:33,050
+Nothing very exciting.
+
+463
+00:24:33,050 --> 00:24:36,110
+So that's one sort of thing you
+might want to have. But
+
+464
+00:24:36,110 --> 00:24:37,260
+these are also other
+things that are
+
+465
+00:24:37,260 --> 00:24:38,320
+a little bit worrisome.
+
+466
+00:24:38,320 --> 00:24:41,050
+Like I've used here some
+complicated mechanisms.
+
+467
+00:24:41,050 --> 00:24:43,850
+What you see here
+is remainder.
+
+468
+00:24:43,850 --> 00:24:44,690
+What is that?
+
+469
+00:24:44,690 --> 00:24:46,920
+That may not be so obvious
+how to compute.
+
+470
+00:24:46,920 --> 00:24:49,860
+It may be something which when
+you open it up, you get a
+
+471
+00:24:49,860 --> 00:24:51,880
+whole machine.
+
+472
+00:24:51,880 --> 00:24:52,720
+OK?
+
+473
+00:24:52,720 --> 00:24:54,540
+In fact, that's true.
+
+474
+00:24:54,540 --> 00:24:59,570
+For example, if I write down the
+program for remainder, the
+
+475
+00:24:59,570 --> 00:25:04,480
+simplest program for it is
+by repeated subtraction.
+
+476
+00:25:04,480 --> 00:25:06,380
+Because of course, division
+can be done by repeated
+
+477
+00:25:06,380 --> 00:25:09,800
+subtraction of numbers,
+of integers.
+
+478
+00:25:09,800 --> 00:25:30,270
+So the remainder of N divided by
+D is nothing more than if N
+
+479
+00:25:30,270 --> 00:25:34,920
+is less than D, then the result
+is N. Otherwise, it's
+
+480
+00:25:34,920 --> 00:25:48,350
+the remainder when we subtract
+D from N with respect to D,
+
+481
+00:25:48,350 --> 00:25:52,160
+when divided by D. Gee,
+this looks just
+
+482
+00:25:52,160 --> 00:25:56,890
+like the GCD program.
+
+483
+00:25:56,890 --> 00:25:59,750
+Of course, it's not a very nice
+way to do remainders.
+
+484
+00:25:59,750 --> 00:26:01,525
+You'd really want to use
+something like binary notation
+
+485
+00:26:01,525 --> 00:26:05,550
+and shift and things like that
+in a practical computer.
+
+486
+00:26:05,550 --> 00:26:09,060
+But the point of that is that
+if I open this thing up, I
+
+487
+00:26:09,060 --> 00:26:11,880
+might find inside of
+it a computer.
+
+488
+00:26:11,880 --> 00:26:13,510
+Oh, we know how to do that.
+
+489
+00:26:13,510 --> 00:26:15,640
+We just made one.
+
+490
+00:26:15,640 --> 00:26:17,400
+And it could be another
+thing just like this.
+
+491
+00:26:17,400 --> 00:26:20,030
+On the other hand, we might want
+to make a more efficient
+
+492
+00:26:20,030 --> 00:26:22,810
+or better-structured machine,
+or maybe make use of some of
+
+493
+00:26:22,810 --> 00:26:25,340
+the registers more than once,
+or some horrible mess like
+
+494
+00:26:25,340 --> 00:26:27,550
+that that hardware designers
+like to do, and
+
+495
+00:26:27,550 --> 00:26:29,250
+for very good reasons.
+
+496
+00:26:29,250 --> 00:26:32,990
+So for example, here's a machine
+that you see, which
+
+497
+00:26:32,990 --> 00:26:35,050
+you're not supposed to
+be able to read.
+
+498
+00:26:35,050 --> 00:26:37,520
+It's a little bit complicated.
+
+499
+00:26:37,520 --> 00:26:41,830
+But what it is is the
+integration of the remainder
+
+500
+00:26:41,830 --> 00:26:44,210
+into the GCD machine.
+
+501
+00:26:44,210 --> 00:26:46,020
+And it takes, in fact,
+no more registers.
+
+502
+00:26:46,020 --> 00:26:48,360
+There are three registers
+in the datapaths.
+
+503
+00:26:48,360 --> 00:26:49,050
+OK?
+
+504
+00:26:49,050 --> 00:26:51,550
+But now there's a subtractor.
+
+505
+00:26:51,550 --> 00:26:53,020
+There are two things
+that are tested.
+
+506
+00:26:53,020 --> 00:26:57,250
+Is b equal to 0, or
+is t less than b?
+
+507
+00:26:57,250 --> 00:27:00,800
+And then the controller, which
+you see over here, is not much
+
+508
+00:27:00,800 --> 00:27:01,850
+more complicated.
+
+509
+00:27:01,850 --> 00:27:07,040
+But it has two loops in it, one
+of which is the main one
+
+510
+00:27:07,040 --> 00:27:10,370
+for doing the GCD, and one of
+which is the subtraction loop
+
+511
+00:27:10,370 --> 00:27:14,030
+for doing the remainder
+sub-operation.
+
+512
+00:27:14,030 --> 00:27:17,190
+And there are ways, of course,
+of, if you think about it,
+
+513
+00:27:17,190 --> 00:27:19,920
+taking the remainder program.
+
+514
+00:27:19,920 --> 00:27:22,270
+If I take remainder, as you see
+over there, as a lambda
+
+515
+00:27:22,270 --> 00:27:25,920
+expression, substitute it in for
+remainder over here in the
+
+516
+00:27:25,920 --> 00:27:30,910
+GCD program, then do some
+simplification by substituting
+
+517
+00:27:30,910 --> 00:27:34,670
+a and b for remainder
+in there, then I
+
+518
+00:27:34,670 --> 00:27:36,630
+can unwind this loop.
+
+519
+00:27:36,630 --> 00:27:41,660
+And I can get this piece of
+machinery by basically, a
+
+520
+00:27:41,660 --> 00:27:44,700
+little bit of algebraic
+simplification on the lambda
+
+521
+00:27:44,700 --> 00:27:45,950
+expressions.
+
+522
+00:27:45,950 --> 00:27:48,550
+
+
+523
+00:27:48,550 --> 00:27:50,140
+So I suppose you've seen
+your first very
+
+524
+00:27:50,140 --> 00:27:52,280
+simple machines now.
+
+525
+00:27:52,280 --> 00:27:53,530
+Are there any questions?
+
+526
+00:27:53,530 --> 00:28:02,700
+
+
+527
+00:28:02,700 --> 00:28:05,360
+Good.
+
+528
+00:28:05,360 --> 00:28:06,610
+This looks easy, doesn't it?
+
+529
+00:28:06,610 --> 00:28:10,200
+
+
+530
+00:28:10,200 --> 00:28:10,550
+Thank you.
+
+531
+00:28:10,550 --> 00:28:11,350
+I suppose, take a break.
+
+532
+00:28:11,350 --> 00:28:11,760
+[MUSIC PLAYING - "JESU, JOY OF
+MAN'S DESIRING" BY JOHANN
+
+533
+00:28:11,760 --> 00:28:13,010
+SEBASTIAN BACH]
+
+534
+00:28:13,010 --> 00:28:47,310
+
+
+535
+00:28:47,310 --> 00:28:49,480
+PROFESSOR: Well, let's see.
+
+536
+00:28:49,480 --> 00:28:52,750
+Now you know how to make an
+iterative procedure, or a
+
+537
+00:28:52,750 --> 00:28:53,930
+procedure that yields
+an iterative
+
+538
+00:28:53,930 --> 00:28:57,770
+process, turn into a machine.
+
+539
+00:28:57,770 --> 00:28:59,750
+I suppose the next thing we
+want to do is worry about
+
+540
+00:28:59,750 --> 00:29:02,690
+things that reveal recursive
+processes.
+
+541
+00:29:02,690 --> 00:29:04,695
+So let's play with a simple
+factorial procedure.
+
+542
+00:29:04,695 --> 00:29:10,894
+
+
+543
+00:29:10,894 --> 00:29:24,690
+We define factorial of N to be
+if n is 1, the result is 1,
+
+544
+00:29:24,690 --> 00:29:26,830
+using 1 right now to decrease
+the amount of work I have to
+
+545
+00:29:26,830 --> 00:29:33,940
+do to simulate it, else it's
+times N factorial N minus 1.
+
+546
+00:29:33,940 --> 00:29:42,520
+
+
+547
+00:29:42,520 --> 00:29:47,440
+And what's different with this
+program, as you know, is that
+
+548
+00:29:47,440 --> 00:29:51,050
+after I've computed factorial
+of N minus 1 here, I have to
+
+549
+00:29:51,050 --> 00:29:52,260
+do something to the result.
+
+550
+00:29:52,260 --> 00:29:56,000
+I have to multiply it by N.
+
+551
+00:29:56,000 --> 00:30:00,160
+So the only way I can visualize
+what this machine is
+
+552
+00:30:00,160 --> 00:30:02,360
+doing, because of the fact--
+
+553
+00:30:02,360 --> 00:30:05,320
+think of it this way, that I
+have a machine out here which
+
+554
+00:30:05,320 --> 00:30:07,530
+somehow needs a factorial
+machine in order to compute
+
+555
+00:30:07,530 --> 00:30:09,320
+its answer.
+
+556
+00:30:09,320 --> 00:30:12,550
+But this machine, the outer
+machine, has to exist before
+
+557
+00:30:12,550 --> 00:30:16,800
+and after the factorial machine,
+which is inside.
+
+558
+00:30:16,800 --> 00:30:20,080
+Whereas in the iterative case,
+the outer machine doesn't need
+
+559
+00:30:20,080 --> 00:30:25,170
+to exist after the inner machine
+is running, because
+
+560
+00:30:25,170 --> 00:30:26,580
+you never need to go
+back to the outer
+
+561
+00:30:26,580 --> 00:30:28,640
+machine to do anything.
+
+562
+00:30:28,640 --> 00:30:31,200
+So here we have a problem where
+we have a machine which
+
+563
+00:30:31,200 --> 00:30:34,090
+has the same machine
+inside of it, an
+
+564
+00:30:34,090 --> 00:30:35,340
+infinitely large machine.
+
+565
+00:30:35,340 --> 00:30:40,390
+
+
+566
+00:30:40,390 --> 00:30:42,310
+And it's got other things
+inside of it, like a
+
+567
+00:30:42,310 --> 00:30:47,240
+multiplier, which takes some
+inputs, and there's a minus 1
+
+568
+00:30:47,240 --> 00:30:50,690
+box, and things like that.
+
+569
+00:30:50,690 --> 00:30:54,370
+You can imagine that's
+what it looks like.
+
+570
+00:30:54,370 --> 00:30:57,340
+But the important thing is that
+here I have something
+
+571
+00:30:57,340 --> 00:31:00,360
+that happens before and after,
+in the outer machine, the
+
+572
+00:31:00,360 --> 00:31:02,540
+execution of the
+inner machine.
+
+573
+00:31:02,540 --> 00:31:05,570
+So this machine has
+to have a life.
+
+574
+00:31:05,570 --> 00:31:13,490
+It has to exist on both times
+sides of this machine.
+
+575
+00:31:13,490 --> 00:31:16,770
+So somehow, I have to have a
+place to store the things that
+
+576
+00:31:16,770 --> 00:31:20,030
+this thing needs to run.
+
+577
+00:31:20,030 --> 00:31:24,140
+Infinite objects don't exist
+in the real world.
+
+578
+00:31:24,140 --> 00:31:27,020
+What we have to do is arrange
+an illusion that we have an
+
+579
+00:31:27,020 --> 00:31:28,540
+infinite object, we
+have an infinite
+
+580
+00:31:28,540 --> 00:31:31,830
+amount of hardware somewhere.
+
+581
+00:31:31,830 --> 00:31:36,280
+Now of course, illusion's
+all that really matters.
+
+582
+00:31:36,280 --> 00:31:39,370
+If we can arrange that every
+time you look at some infinite
+
+583
+00:31:39,370 --> 00:31:44,800
+object, the part of it that
+you look at is there, then
+
+584
+00:31:44,800 --> 00:31:47,390
+it's as infinite as
+you need it to be.
+
+585
+00:31:47,390 --> 00:31:49,830
+And of course, one of the things
+we might want to do,
+
+586
+00:31:49,830 --> 00:31:53,890
+just look at this thing over
+here, is the organization that
+
+587
+00:31:53,890 --> 00:32:01,390
+we've had so far involves having
+a part of the machine,
+
+588
+00:32:01,390 --> 00:32:05,140
+which is the controller, which
+sits right over here, which is
+
+589
+00:32:05,140 --> 00:32:09,170
+perfectly finite and
+very simple.
+
+590
+00:32:09,170 --> 00:32:11,070
+We have some datapaths,
+which consist of
+
+591
+00:32:11,070 --> 00:32:13,080
+registers and operators.
+
+592
+00:32:13,080 --> 00:32:16,190
+And what I propose to do here is
+decompose the machine into
+
+593
+00:32:16,190 --> 00:32:19,260
+two parts, such that there is a
+part which is fundamentally
+
+594
+00:32:19,260 --> 00:32:22,770
+finite, and some part where a
+certain amount of infinite
+
+595
+00:32:22,770 --> 00:32:24,230
+stuff can be kept.
+
+596
+00:32:24,230 --> 00:32:27,050
+On the other hand this is very
+simple and really isn't
+
+597
+00:32:27,050 --> 00:32:29,430
+infinite, but it's
+just very large.
+
+598
+00:32:29,430 --> 00:32:31,840
+But it's so simple that it could
+be cheaply reproduced in
+
+599
+00:32:31,840 --> 00:32:37,550
+such large amounts, we call it
+memory, that we can make a
+
+600
+00:32:37,550 --> 00:32:40,710
+structure called a stack out of
+it which will allow us to,
+
+601
+00:32:40,710 --> 00:32:43,280
+in fact, simulate the existence
+of an infinite
+
+602
+00:32:43,280 --> 00:32:44,650
+machine which is made
+out of a recursive
+
+603
+00:32:44,650 --> 00:32:48,340
+nest of many machines.
+
+604
+00:32:48,340 --> 00:32:51,760
+And the way it's going to work
+is that we're going to store
+
+605
+00:32:51,760 --> 00:32:56,290
+in this place called the stack
+the information required after
+
+606
+00:32:56,290 --> 00:33:00,400
+the inner machine runs to resume
+the operation of the
+
+607
+00:33:00,400 --> 00:33:01,650
+outer machine.
+
+608
+00:33:01,650 --> 00:33:03,840
+
+
+609
+00:33:03,840 --> 00:33:06,760
+So it will remember the
+important things about the
+
+610
+00:33:06,760 --> 00:33:09,510
+life of the outer machine that
+will be needed for this
+
+611
+00:33:09,510 --> 00:33:11,390
+computation.
+
+612
+00:33:11,390 --> 00:33:15,380
+Since, of course, these machines
+are nested in a
+
+613
+00:33:15,380 --> 00:33:20,320
+recursive manner, then in fact
+the stack will only be
+
+614
+00:33:20,320 --> 00:33:25,330
+accessed in a manner which is
+the last thing that goes in is
+
+615
+00:33:25,330 --> 00:33:26,580
+the first thing that
+comes out.
+
+616
+00:33:26,580 --> 00:33:29,330
+
+
+617
+00:33:29,330 --> 00:33:31,510
+So we'll only need to access
+some little part
+
+618
+00:33:31,510 --> 00:33:34,930
+of this stack memory.
+
+619
+00:33:34,930 --> 00:33:36,810
+OK, well, let's do it.
+
+620
+00:33:36,810 --> 00:33:38,750
+I'm going to build you a
+datapath now, and I'm going to
+
+621
+00:33:38,750 --> 00:33:40,370
+write the controller.
+
+622
+00:33:40,370 --> 00:33:42,090
+And then we're going
+to execute this to
+
+623
+00:33:42,090 --> 00:33:43,510
+see how you do it.
+
+624
+00:33:43,510 --> 00:33:47,900
+So the factorial machine
+isn't so bad.
+
+625
+00:33:47,900 --> 00:33:52,660
+It's going to have a register
+called the value, where the
+
+626
+00:33:52,660 --> 00:33:59,890
+answer is going to be stored,
+and a registered called N,
+
+627
+00:33:59,890 --> 00:34:02,330
+which is where the number I'm
+taking factorial will be
+
+628
+00:34:02,330 --> 00:34:04,165
+stored, factorial of.
+
+629
+00:34:04,165 --> 00:34:09,780
+And it will be necessary in some
+instances to connect VAL
+
+630
+00:34:09,780 --> 00:34:11,760
+to N.
+
+631
+00:34:11,760 --> 00:34:16,389
+In fact, one nice case of this
+is if I just said over here,
+
+632
+00:34:16,389 --> 00:34:19,139
+N, because that would be
+right for N equal 1N.
+
+633
+00:34:19,139 --> 00:34:21,389
+And I could just move
+the answer over
+
+634
+00:34:21,389 --> 00:34:23,909
+there if that's important.
+
+635
+00:34:23,909 --> 00:34:26,980
+I'm not worried about
+that right now.
+
+636
+00:34:26,980 --> 00:34:29,060
+And there are things I have
+to be able to do.
+
+637
+00:34:29,060 --> 00:34:32,650
+Like I have to be able to, as
+we see here, multiply N by
+
+638
+00:34:32,650 --> 00:34:36,350
+something in VAL, because
+VAL is the result
+
+639
+00:34:36,350 --> 00:34:38,290
+of computing factorial.
+
+640
+00:34:38,290 --> 00:34:41,429
+And I have to put the result
+back into VAL.
+
+641
+00:34:41,429 --> 00:34:45,639
+So here we can see that the
+result of computing a
+
+642
+00:34:45,639 --> 00:34:48,070
+factorial is N times the result
+
+643
+00:34:48,070 --> 00:34:50,690
+of computing a factorial.
+
+644
+00:34:50,690 --> 00:34:52,770
+VAL will be the representation
+of the answer
+
+645
+00:34:52,770 --> 00:34:55,199
+of the inner factorial.
+
+646
+00:34:55,199 --> 00:35:02,525
+And so I'm going to have to have
+a multiplier here, which
+
+647
+00:35:02,525 --> 00:35:09,350
+is going to sample the value of
+N and the value of VAL and
+
+648
+00:35:09,350 --> 00:35:17,170
+put the result back into
+VAL like that.
+
+649
+00:35:17,170 --> 00:35:20,618
+I'm also going to have to be
+able to see if N is 1.
+
+650
+00:35:20,618 --> 00:35:22,230
+So I need a light bulb.
+
+651
+00:35:22,230 --> 00:35:28,200
+
+
+652
+00:35:28,200 --> 00:35:31,270
+And I suppose the other thing
+I'm going to need to have is a
+
+653
+00:35:31,270 --> 00:35:38,260
+way of decrementing N. So I'm
+going to have a decrementer,
+
+654
+00:35:38,260 --> 00:35:46,620
+which takes N and is going to
+put back the result into N.
+
+655
+00:35:46,620 --> 00:35:49,550
+That's pretty much what
+I need in my machine.
+
+656
+00:35:49,550 --> 00:35:51,985
+Now, there's a little
+bit else I need.
+
+657
+00:35:51,985 --> 00:35:55,620
+It's a little bit more
+complicated, because I'm also
+
+658
+00:35:55,620 --> 00:35:58,925
+going to need a way to store, to
+save away, the things that
+
+659
+00:35:58,925 --> 00:36:02,600
+are going to be needed for
+resuming the computation of a
+
+660
+00:36:02,600 --> 00:36:06,250
+factorial after I've done
+a sub-factorial.
+
+661
+00:36:06,250 --> 00:36:07,230
+What's that?
+
+662
+00:36:07,230 --> 00:36:09,850
+One thing I need is N.
+
+663
+00:36:09,850 --> 00:36:11,870
+So I'm going to build here
+a thing called a stack.
+
+664
+00:36:11,870 --> 00:36:14,700
+
+
+665
+00:36:14,700 --> 00:36:24,130
+The stack is a bunch of stuff
+that I'm going to write in
+
+666
+00:36:24,130 --> 00:36:25,380
+sequentially.
+
+667
+00:36:25,380 --> 00:36:27,410
+
+
+668
+00:36:27,410 --> 00:36:28,916
+I don't how long it is.
+
+669
+00:36:28,916 --> 00:36:32,890
+The longer it is, the better
+my illusion of infinity.
+
+670
+00:36:32,890 --> 00:36:36,036
+And I'm going to have to have a
+way of getting stuff out of
+
+671
+00:36:36,036 --> 00:36:39,515
+N and into the stack
+and vice versa.
+
+672
+00:36:39,515 --> 00:36:44,740
+So I'm going to need a
+connection like this, which is
+
+673
+00:36:44,740 --> 00:36:52,500
+two-way, whereby I can save
+the value of N and then
+
+674
+00:36:52,500 --> 00:36:55,820
+restore it some other time
+through that connection.
+
+675
+00:36:55,820 --> 00:36:58,100
+This is the stack.
+
+676
+00:36:58,100 --> 00:37:02,790
+I also need a way of remembering
+where I was in the
+
+677
+00:37:02,790 --> 00:37:08,530
+computation of factorial
+in the outer program.
+
+678
+00:37:08,530 --> 00:37:11,090
+Now in the case of
+this machine, it
+
+679
+00:37:11,090 --> 00:37:14,090
+isn't very much a problem.
+
+680
+00:37:14,090 --> 00:37:18,020
+Factorial always returns, has to
+go back to the place where
+
+681
+00:37:18,020 --> 00:37:21,650
+we multiply by N, except for the
+last time, when it has to
+
+682
+00:37:21,650 --> 00:37:23,110
+return to whatever needs
+the factorial or
+
+683
+00:37:23,110 --> 00:37:25,660
+go to done or stop.
+
+684
+00:37:25,660 --> 00:37:28,245
+However, in general, I'm going
+to have to remember where I
+
+685
+00:37:28,245 --> 00:37:30,570
+have been, because I might have
+computed factorial from
+
+686
+00:37:30,570 --> 00:37:31,770
+somewhere else.
+
+687
+00:37:31,770 --> 00:37:36,070
+I have to go back to that place
+and continue there.
+
+688
+00:37:36,070 --> 00:37:37,990
+So I'm going to have to have
+some way of taking the place
+
+689
+00:37:37,990 --> 00:37:41,500
+where the marble is in the
+finite state controller, the
+
+690
+00:37:41,500 --> 00:37:45,390
+state of the controller,
+and storing that in
+
+691
+00:37:45,390 --> 00:37:47,400
+the stack as well.
+
+692
+00:37:47,400 --> 00:37:49,840
+And I'm going to have to have
+ways of restoring that back to
+
+693
+00:37:49,840 --> 00:37:51,870
+the state of the-- the marble.
+
+694
+00:37:51,870 --> 00:37:53,570
+So I have to have something that
+moves the marble to the
+
+695
+00:37:53,570 --> 00:37:54,310
+right place.
+
+696
+00:37:54,310 --> 00:37:57,462
+Well, we're going to have a
+place which is the marble now.
+
+697
+00:37:57,462 --> 00:38:09,220
+And it's called the continue
+register, called continue,
+
+698
+00:38:09,220 --> 00:38:11,480
+which is the place to
+put the marble next
+
+699
+00:38:11,480 --> 00:38:14,260
+time I go to continue.
+
+700
+00:38:14,260 --> 00:38:16,140
+That's what that's for.
+
+701
+00:38:16,140 --> 00:38:17,990
+And so there's got to be some
+path from that into the
+
+702
+00:38:17,990 --> 00:38:19,240
+controller.
+
+703
+00:38:19,240 --> 00:38:22,910
+
+
+704
+00:38:22,910 --> 00:38:29,074
+I also have to have some way of
+saving that on the stack.
+
+705
+00:38:29,074 --> 00:38:32,120
+And I have to have some way
+of setting that up to have
+
+706
+00:38:32,120 --> 00:38:36,860
+various constants, a certain
+fixed number of constants.
+
+707
+00:38:36,860 --> 00:38:38,840
+And that's very easy
+to arrange.
+
+708
+00:38:38,840 --> 00:38:40,180
+So let's have some
+constants here.
+
+709
+00:38:40,180 --> 00:38:41,430
+We'll call this one
+after-fact.
+
+710
+00:38:41,430 --> 00:38:47,430
+
+
+711
+00:38:47,430 --> 00:38:50,890
+And that's a constant which
+we'll get into the continue
+
+712
+00:38:50,890 --> 00:38:54,010
+register, and also another
+one called fact-done.
+
+713
+00:38:54,010 --> 00:39:05,210
+
+
+714
+00:39:05,210 --> 00:39:08,130
+So this is the machine
+I want to build.
+
+715
+00:39:08,130 --> 00:39:10,810
+That's its datapaths, at least.
+And it mixes a little
+
+716
+00:39:10,810 --> 00:39:12,790
+with the controller here,
+because of the fact that I
+
+717
+00:39:12,790 --> 00:39:15,220
+have to remember where
+I was and restore
+
+718
+00:39:15,220 --> 00:39:17,300
+myself to that place.
+
+719
+00:39:17,300 --> 00:39:19,310
+But let's write the program
+now which represents the
+
+720
+00:39:19,310 --> 00:39:20,390
+controller.
+
+721
+00:39:20,390 --> 00:39:22,760
+I'm not going to write the
+define machine thing and the
+
+722
+00:39:22,760 --> 00:39:24,890
+register list, because that's
+not very interesting.
+
+723
+00:39:24,890 --> 00:39:28,020
+I'm just going to write down the
+sequence of instructions
+
+724
+00:39:28,020 --> 00:39:30,920
+that constitute the
+controller.
+
+725
+00:39:30,920 --> 00:39:41,510
+So we have assign, to set
+up, continue to done.
+
+726
+00:39:41,510 --> 00:39:44,476
+
+
+727
+00:39:44,476 --> 00:40:01,150
+We have a loop which says branch
+if equal 1 fetch N, if
+
+728
+00:40:01,150 --> 00:40:06,300
+N is 1, then go to the base
+step of the induction, the
+
+729
+00:40:06,300 --> 00:40:08,050
+simple case.
+
+730
+00:40:08,050 --> 00:40:10,740
+Otherwise, I have to remember
+the things that are necessary
+
+731
+00:40:10,740 --> 00:40:14,265
+to perform a sub-factorial.
+
+732
+00:40:14,265 --> 00:40:16,280
+I'm going to go over here,
+and I have to perform a
+
+733
+00:40:16,280 --> 00:40:17,570
+sub-factorial.
+
+734
+00:40:17,570 --> 00:40:21,750
+So I have to remember what's
+needed after I will
+
+735
+00:40:21,750 --> 00:40:24,000
+be done with that.
+
+736
+00:40:24,000 --> 00:40:25,510
+See, I'm about to do
+something terrible.
+
+737
+00:40:25,510 --> 00:40:29,430
+I'm about to change the value of
+N. But this guy has to know
+
+738
+00:40:29,430 --> 00:40:32,780
+the old value of N. But
+in order to make the
+
+739
+00:40:32,780 --> 00:40:35,790
+sub-factorial work, I have to
+change the value of N. So I
+
+740
+00:40:35,790 --> 00:40:38,000
+have to remember
+the old value.
+
+741
+00:40:38,000 --> 00:40:40,850
+And I also have to remember
+where I've been.
+
+742
+00:40:40,850 --> 00:40:42,100
+So I save up continue.
+
+743
+00:40:42,100 --> 00:40:47,705
+
+
+744
+00:40:47,705 --> 00:40:50,260
+And this is an instruction
+that says, put
+
+745
+00:40:50,260 --> 00:40:53,580
+something in the stack.
+
+746
+00:40:53,580 --> 00:40:56,760
+Save the contents of the
+continuation register, which
+
+747
+00:40:56,760 --> 00:40:59,830
+in this case is done, because
+later I'm going to change
+
+748
+00:40:59,830 --> 00:41:00,970
+that, too, because I
+need to go back to
+
+749
+00:41:00,970 --> 00:41:03,550
+after-fact, as well.
+
+750
+00:41:03,550 --> 00:41:05,040
+We'll see that.
+
+751
+00:41:05,040 --> 00:41:10,380
+We save N, because I'm going
+to need that for later.
+
+752
+00:41:10,380 --> 00:41:31,422
+Assign to N the decrement of
+fetch N. Assign continue,
+
+753
+00:41:31,422 --> 00:41:37,690
+we're going to look at this now,
+to after, we'll call it.
+
+754
+00:41:37,690 --> 00:41:39,890
+That's a good name for this, a
+little bit easier and shorter,
+
+755
+00:41:39,890 --> 00:41:41,140
+and fits in here.
+
+756
+00:41:41,140 --> 00:41:52,772
+
+
+757
+00:41:52,772 --> 00:41:55,330
+Now look what I'm doing here.
+
+758
+00:41:55,330 --> 00:42:00,065
+I'm saying, if the answer
+is 1, I'm done.
+
+759
+00:42:00,065 --> 00:42:02,150
+I'm going to have to just
+get the answer.
+
+760
+00:42:02,150 --> 00:42:06,160
+Otherwise, I'm going to save the
+continuation, save N, make
+
+761
+00:42:06,160 --> 00:42:08,940
+N one less than N, remember
+I'm going to come back to
+
+762
+00:42:08,940 --> 00:42:10,530
+someplace else, and
+go back and start
+
+763
+00:42:10,530 --> 00:42:11,780
+doing another factorial.
+
+764
+00:42:11,780 --> 00:42:13,980
+
+
+765
+00:42:13,980 --> 00:42:16,050
+However, I've got a different
+machine [? in me ?] now.
+
+766
+00:42:16,050 --> 00:42:18,380
+N is 1, and continue
+is something else.
+
+767
+00:42:18,380 --> 00:42:22,160
+
+
+768
+00:42:22,160 --> 00:42:23,590
+N is N minus 1.
+
+769
+00:42:23,590 --> 00:42:28,660
+Now after I'm done with
+that, I can go there.
+
+770
+00:42:28,660 --> 00:42:34,130
+I will restore the old value of
+N, which is the opposite of
+
+771
+00:42:34,130 --> 00:42:38,360
+this save over here.
+
+772
+00:42:38,360 --> 00:42:39,610
+I will restore the
+continuation.
+
+773
+00:42:39,610 --> 00:42:49,660
+
+
+774
+00:42:49,660 --> 00:42:54,320
+I will then go to here.
+
+775
+00:42:54,320 --> 00:43:03,310
+I will assign to the VAL
+register the product
+
+776
+00:43:03,310 --> 00:43:08,130
+of N and fetch VAL.
+
+777
+00:43:08,130 --> 00:43:13,520
+
+
+778
+00:43:13,520 --> 00:43:19,790
+VAL fetch product assign.
+
+779
+00:43:19,790 --> 00:43:21,440
+And then I will be done.
+
+780
+00:43:21,440 --> 00:43:26,570
+I will have my answer to the
+sub-factorial in VAL.
+
+781
+00:43:26,570 --> 00:43:30,140
+At that point, I'm going to
+return by going to the place
+
+782
+00:43:30,140 --> 00:43:33,640
+where the continuation
+is pointing.
+
+783
+00:43:33,640 --> 00:43:35,300
+That says, go to
+fetch continue.
+
+784
+00:43:35,300 --> 00:43:45,870
+
+
+785
+00:43:45,870 --> 00:43:49,470
+And then I have finally
+a base step, which is
+
+786
+00:43:49,470 --> 00:43:50,730
+the immediate answer.
+
+787
+00:43:50,730 --> 00:44:02,570
+Assign to VAL fetch N, and
+go to fetch continue.
+
+788
+00:44:02,570 --> 00:44:12,670
+
+
+789
+00:44:12,670 --> 00:44:13,920
+And then I'm done.
+
+790
+00:44:13,920 --> 00:44:18,640
+
+
+791
+00:44:18,640 --> 00:44:20,820
+Now let's see how this executes
+on a very simple
+
+792
+00:44:20,820 --> 00:44:25,570
+case, because then we'll see
+the use of this stack to do
+
+793
+00:44:25,570 --> 00:44:26,890
+the job we need.
+
+794
+00:44:26,890 --> 00:44:28,820
+This is statically what it's
+doing, but we have look
+
+795
+00:44:28,820 --> 00:44:31,340
+dynamically at this.
+
+796
+00:44:31,340 --> 00:44:32,300
+So let's see.
+
+797
+00:44:32,300 --> 00:44:36,730
+First thing we do is
+continue gets done.
+
+798
+00:44:36,730 --> 00:44:38,300
+The way that happened
+is I pushed this.
+
+799
+00:44:38,300 --> 00:44:40,122
+Let's call that done
+the way I have it.
+
+800
+00:44:40,122 --> 00:44:46,390
+
+
+801
+00:44:46,390 --> 00:44:47,030
+I push that button.
+
+802
+00:44:47,030 --> 00:44:48,950
+Done goes into there.
+
+803
+00:44:48,950 --> 00:44:52,550
+Now I also have to set
+this thing up to
+
+804
+00:44:52,550 --> 00:44:53,850
+have an initial value.
+
+805
+00:44:53,850 --> 00:45:00,192
+Let's consider a factorial
+of three, a simple case.
+
+806
+00:45:00,192 --> 00:45:03,010
+And we're going to start
+out with our stack
+
+807
+00:45:03,010 --> 00:45:05,900
+growing over here.
+
+808
+00:45:05,900 --> 00:45:08,520
+Stacks have their own little
+internal state saying where
+
+809
+00:45:08,520 --> 00:45:12,770
+they are, where the next place
+I'm going to write is.
+
+810
+00:45:12,770 --> 00:45:14,590
+So now we say, is N 1?
+
+811
+00:45:14,590 --> 00:45:16,110
+The answer is no.
+
+812
+00:45:16,110 --> 00:45:19,066
+So now I'm going to save
+continue, bang.
+
+813
+00:45:19,066 --> 00:45:22,080
+Now that done goes in here.
+
+814
+00:45:22,080 --> 00:45:26,660
+And this moves to here, the next
+place I'm going to write.
+
+815
+00:45:26,660 --> 00:45:29,950
+Save N 3.
+
+816
+00:45:29,950 --> 00:45:30,750
+OK?
+
+817
+00:45:30,750 --> 00:45:34,240
+Assign to N the decrement
+of N. That means
+
+818
+00:45:34,240 --> 00:45:35,940
+I've pushed this button.
+
+819
+00:45:35,940 --> 00:45:37,320
+This becomes 2.
+
+820
+00:45:37,320 --> 00:45:40,400
+
+
+821
+00:45:40,400 --> 00:45:42,580
+Assign to continue aft.
+
+822
+00:45:42,580 --> 00:45:43,610
+So I've pushed that button.
+
+823
+00:45:43,610 --> 00:45:44,860
+Aft goes in here.
+
+824
+00:45:44,860 --> 00:45:49,140
+
+
+825
+00:45:49,140 --> 00:45:54,830
+OK, now go to loop, bang,
+so up to here.
+
+826
+00:45:54,830 --> 00:45:56,570
+Is N 1?
+
+827
+00:45:56,570 --> 00:45:57,780
+No.
+
+828
+00:45:57,780 --> 00:45:59,490
+So I have to save continue.
+
+829
+00:45:59,490 --> 00:46:00,600
+What's continue?
+
+830
+00:46:00,600 --> 00:46:01,530
+Continue is aft.
+
+831
+00:46:01,530 --> 00:46:02,780
+Push this button.
+
+832
+00:46:02,780 --> 00:46:04,030
+So this moves to here.
+
+833
+00:46:04,030 --> 00:46:08,490
+
+
+834
+00:46:08,490 --> 00:46:11,460
+I have to save N.
+N is over here.
+
+835
+00:46:11,460 --> 00:46:12,280
+I got to 2.
+
+836
+00:46:12,280 --> 00:46:13,655
+Push that button.
+
+837
+00:46:13,655 --> 00:46:16,050
+So a 2 gets written there.
+
+838
+00:46:16,050 --> 00:46:20,060
+And then this thing
+moves down here.
+
+839
+00:46:20,060 --> 00:46:24,214
+OK, save N. Assign N to
+the decrement of N.
+
+840
+00:46:24,214 --> 00:46:25,464
+This becomes a 1.
+
+841
+00:46:25,464 --> 00:46:29,240
+
+
+842
+00:46:29,240 --> 00:46:31,370
+Assign continue to aft.
+
+843
+00:46:31,370 --> 00:46:34,960
+A-F-T gets written
+there again.
+
+844
+00:46:34,960 --> 00:46:36,520
+Go to loop.
+
+845
+00:46:36,520 --> 00:46:37,930
+Is N equal to 1?
+
+846
+00:46:37,930 --> 00:46:41,160
+Oh, yes, the answer is 1.
+
+847
+00:46:41,160 --> 00:46:44,160
+OK, go to base step.
+
+848
+00:46:44,160 --> 00:46:51,100
+Assign to VAL fetch of N. Bang,
+1 gets put in there.
+
+849
+00:46:51,100 --> 00:46:52,200
+Go to fetch continue.
+
+850
+00:46:52,200 --> 00:46:53,680
+So we look in continue.
+
+851
+00:46:53,680 --> 00:46:55,350
+Basically, I'm pushing a button
+over here that goes to
+
+852
+00:46:55,350 --> 00:46:57,130
+the controller.
+
+853
+00:46:57,130 --> 00:46:59,580
+The continue becomes aft, and
+all of a sudden, the program's
+
+854
+00:46:59,580 --> 00:47:02,640
+running here.
+
+855
+00:47:02,640 --> 00:47:06,650
+I now have to restore the outer
+version of factorial.
+
+856
+00:47:06,650 --> 00:47:07,550
+So we go here.
+
+857
+00:47:07,550 --> 00:47:12,410
+We say, restore N. So restore
+N means take the contents
+
+858
+00:47:12,410 --> 00:47:13,940
+that's here.
+
+859
+00:47:13,940 --> 00:47:19,190
+Push this button, and it goes
+into here, 2, and the
+
+860
+00:47:19,190 --> 00:47:22,230
+pointer moves up.
+
+861
+00:47:22,230 --> 00:47:24,810
+Restore continue, pretty easy.
+
+862
+00:47:24,810 --> 00:47:27,020
+Go push this button.
+
+863
+00:47:27,020 --> 00:47:31,280
+And then aft gets written
+in here again.
+
+864
+00:47:31,280 --> 00:47:32,640
+That means this thing
+moves up.
+
+865
+00:47:32,640 --> 00:47:35,190
+I've gotten rid of something
+else on my stack.
+
+866
+00:47:35,190 --> 00:47:42,240
+
+
+867
+00:47:42,240 --> 00:47:45,930
+Right, then I go to here, which
+says, assign to VAL the
+
+868
+00:47:45,930 --> 00:47:47,850
+product of N an VAL.
+
+869
+00:47:47,850 --> 00:47:50,970
+So I push this button
+over here, bang.
+
+870
+00:47:50,970 --> 00:47:55,920
+2 times 1 gives me a 2,
+get written there.
+
+871
+00:47:55,920 --> 00:47:57,540
+Go to fetch continue.
+
+872
+00:47:57,540 --> 00:47:59,190
+Continue is aft.
+
+873
+00:47:59,190 --> 00:48:01,290
+I go to aft.
+
+874
+00:48:01,290 --> 00:48:06,640
+Aft says restore N. Do your
+restore N, means I take the
+
+875
+00:48:06,640 --> 00:48:11,030
+value over here, which is 3,
+push this up to here, and move
+
+876
+00:48:11,030 --> 00:48:17,715
+it into here, N. Now it's
+pushing that button.
+
+877
+00:48:17,715 --> 00:48:20,200
+The next thing I do is
+restore continue.
+
+878
+00:48:20,200 --> 00:48:22,830
+Continue is now going
+to become done.
+
+879
+00:48:22,830 --> 00:48:27,260
+So this moves up here when
+I push this button.
+
+880
+00:48:27,260 --> 00:48:30,470
+Done may or may be there
+anymore, I'm not interested,
+
+881
+00:48:30,470 --> 00:48:31,720
+but it certainly is here.
+
+882
+00:48:31,720 --> 00:48:35,800
+
+
+883
+00:48:35,800 --> 00:48:39,590
+Next thing I do is assign to VAL
+the product of the fetch
+
+884
+00:48:39,590 --> 00:48:41,440
+of N and the fetch of VAL.
+
+885
+00:48:41,440 --> 00:48:44,300
+That's pushing this button
+over here, bang.
+
+886
+00:48:44,300 --> 00:48:46,520
+2 times 3 is 6.
+
+887
+00:48:46,520 --> 00:48:47,870
+So I get a 6 over here.
+
+888
+00:48:47,870 --> 00:48:52,020
+
+
+889
+00:48:52,020 --> 00:48:54,140
+And go to fetch continue,
+whoops, I go to
+
+890
+00:48:54,140 --> 00:48:55,020
+done, and I'm done.
+
+891
+00:48:55,020 --> 00:48:58,950
+And my answer is 6, as you can
+see in the VAL register.
+
+892
+00:48:58,950 --> 00:49:02,380
+And in fact, the stack
+is in the state it
+
+893
+00:49:02,380 --> 00:49:03,630
+originally was in.
+
+894
+00:49:03,630 --> 00:49:07,735
+
+
+895
+00:49:07,735 --> 00:49:09,850
+Now there's a bit of discipline
+in using these
+
+896
+00:49:09,850 --> 00:49:13,620
+things like stacks that we
+have to be careful of.
+
+897
+00:49:13,620 --> 00:49:16,260
+And we'll see that in
+the next segment.
+
+898
+00:49:16,260 --> 00:49:17,340
+But first I want to ask
+if there are any
+
+899
+00:49:17,340 --> 00:49:18,590
+questions for this.
+
+900
+00:49:18,590 --> 00:49:28,560
+
+
+901
+00:49:28,560 --> 00:49:30,170
+Are there any questions?
+
+902
+00:49:30,170 --> 00:49:30,630
+Yes, Ron.
+
+903
+00:49:30,630 --> 00:49:32,780
+AUDIENCE: What happens when you
+roll off the end of the
+
+904
+00:49:32,780 --> 00:49:33,640
+stack with--
+
+905
+00:49:33,640 --> 00:49:35,030
+PROFESSOR: What do you
+mean, roll off of?
+
+906
+00:49:35,030 --> 00:49:36,090
+AUDIENCE: Well, the
+largest number--
+
+907
+00:49:36,090 --> 00:49:38,860
+a larger starting point of N
+requires more memory, correct?
+
+908
+00:49:38,860 --> 00:49:39,440
+PROFESSOR: Oh, yes.
+
+909
+00:49:39,440 --> 00:49:41,530
+Well, I need to have a
+long enough stack.
+
+910
+00:49:41,530 --> 00:49:43,843
+You say, what if I violate
+my illusion?
+
+911
+00:49:43,843 --> 00:49:44,550
+AUDIENCE: Yes.
+
+912
+00:49:44,550 --> 00:49:48,210
+PROFESSOR: Well, then the
+magic doesn't work.
+
+913
+00:49:48,210 --> 00:49:51,640
+The truth of the matter is that
+every machine is finite.
+
+914
+00:49:51,640 --> 00:49:56,480
+And for a procedure like this,
+there's a limit to the number
+
+915
+00:49:56,480 --> 00:49:59,950
+of sub-factorials
+I could have.
+
+916
+00:49:59,950 --> 00:50:02,970
+Remember when we were doing the
+y-operator a while ago, we
+
+917
+00:50:02,970 --> 00:50:05,750
+pointed out that there was a
+sequence of exponentiation
+
+918
+00:50:05,750 --> 00:50:07,390
+procedures, each of which was
+a little better than the
+
+919
+00:50:07,390 --> 00:50:08,350
+previous one.
+
+920
+00:50:08,350 --> 00:50:10,530
+Well, we're now seeing
+how we implement that
+
+921
+00:50:10,530 --> 00:50:13,090
+mathematical idea.
+
+922
+00:50:13,090 --> 00:50:15,620
+The limiting process is only
+so good as as far as
+
+923
+00:50:15,620 --> 00:50:17,990
+you take the limit.
+
+924
+00:50:17,990 --> 00:50:19,420
+If you think about it,
+what am I using here?
+
+925
+00:50:19,420 --> 00:50:26,340
+I'm using about two pieces of
+memory for every recursion of
+
+926
+00:50:26,340 --> 00:50:29,100
+this process.
+
+927
+00:50:29,100 --> 00:50:31,920
+If we try to compute factorial
+of 10,000, that's
+
+928
+00:50:31,920 --> 00:50:33,180
+not a lot of memory.
+
+929
+00:50:33,180 --> 00:50:36,080
+On the other hand, it's
+an awful big number.
+
+930
+00:50:36,080 --> 00:50:39,180
+So the question is, is that a
+valuable thing in this case.
+
+931
+00:50:39,180 --> 00:50:42,480
+But it really turns out not to
+be a terrible limit, because
+
+932
+00:50:42,480 --> 00:50:45,085
+memory is el cheapo, and people
+are pretty expensive.
+
+933
+00:50:45,085 --> 00:50:48,130
+
+
+934
+00:50:48,130 --> 00:50:51,050
+OK, thank you, let's
+take a break.
+
+935
+00:50:51,050 --> 00:50:51,410
+[MUSIC PLAYING - "JESU, JOY OF
+MAN'S DESIRING" BY JOHANN
+
+936
+00:50:51,410 --> 00:50:52,660
+SEBASTIAN BACH]
+
+937
+00:50:52,660 --> 00:51:55,176
+
+
+938
+00:51:55,176 --> 00:51:58,351
+PROFESSOR: Well, let's see.
+
+939
+00:51:58,351 --> 00:52:02,770
+What I've shown you now is how
+to do a simple iterative
+
+940
+00:52:02,770 --> 00:52:05,640
+process and a simple
+recursive process.
+
+941
+00:52:05,640 --> 00:52:09,760
+I just want to summarize the
+design of simple machines for
+
+942
+00:52:09,760 --> 00:52:12,470
+specific applications by showing
+you a little bit more
+
+943
+00:52:12,470 --> 00:52:15,870
+complicated design, that of
+a thing that does doubly
+
+944
+00:52:15,870 --> 00:52:19,015
+recursive Fibonacci, because
+it will indicate to us, and
+
+945
+00:52:19,015 --> 00:52:22,870
+we'll understand, a bit about
+the conventions required for
+
+946
+00:52:22,870 --> 00:52:26,400
+making stacks operate
+correctly.
+
+947
+00:52:26,400 --> 00:52:27,110
+So let's see.
+
+948
+00:52:27,110 --> 00:52:28,830
+I'm just going to write down,
+first of all, the program I'm
+
+949
+00:52:28,830 --> 00:52:30,080
+going to translate.
+
+950
+00:52:30,080 --> 00:52:34,150
+
+
+951
+00:52:34,150 --> 00:52:41,190
+I need a Fibonacci procedure,
+it's very simple, which says,
+
+952
+00:52:41,190 --> 00:52:50,390
+if N is less than 2, the result
+is N, otherwise it's
+
+953
+00:52:50,390 --> 00:52:59,965
+the sum of Fib of N minus
+1 and Fib of N minus 2.
+
+954
+00:52:59,965 --> 00:53:07,240
+
+
+955
+00:53:07,240 --> 00:53:09,290
+That's the plan I have here.
+
+956
+00:53:09,290 --> 00:53:11,180
+And we're just going
+to write down the
+
+957
+00:53:11,180 --> 00:53:13,070
+controller for such a machine.
+
+958
+00:53:13,070 --> 00:53:16,240
+We're going to assume that there
+are registers, N, which
+
+959
+00:53:16,240 --> 00:53:20,510
+holds the number we're taking
+Fibonacci of, VAL, which is
+
+960
+00:53:20,510 --> 00:53:23,630
+where the answer is going to get
+put, and continue, which
+
+961
+00:53:23,630 --> 00:53:26,810
+is the thing that's linked to
+the controller, like before.
+
+962
+00:53:26,810 --> 00:53:31,740
+But I'm not going to draw
+another physical datapath,
+
+963
+00:53:31,740 --> 00:53:32,995
+because it's pretty much
+the same as the
+
+964
+00:53:32,995 --> 00:53:34,360
+last one you've seen.
+
+965
+00:53:34,360 --> 00:53:37,070
+And of course, one of the most
+amazing things about
+
+966
+00:53:37,070 --> 00:53:40,700
+computation is that after a
+while, you build up a little
+
+967
+00:53:40,700 --> 00:53:42,126
+more features and a few more
+features, and all of the
+
+968
+00:53:42,126 --> 00:53:44,860
+sudden, you've got everything
+you need.
+
+969
+00:53:44,860 --> 00:53:48,290
+So it's remarkable that it just
+gets there so fast. I
+
+970
+00:53:48,290 --> 00:53:51,810
+don't need much more to make
+a universal computer.
+
+971
+00:53:51,810 --> 00:53:53,630
+But in any case, let's look
+at the controller for the
+
+972
+00:53:53,630 --> 00:53:55,060
+Fibonacci thing.
+
+973
+00:53:55,060 --> 00:54:01,680
+First thing I want to do is
+start the thing up by assign
+
+974
+00:54:01,680 --> 00:54:10,230
+to continue a place called done,
+called Fib-done here.
+
+975
+00:54:10,230 --> 00:54:13,709
+
+
+976
+00:54:13,709 --> 00:54:16,630
+So that means that somewhere
+over here, I'm going to have a
+
+977
+00:54:16,630 --> 00:54:21,610
+label, Fib-done, which is the
+place where I go when I want
+
+978
+00:54:21,610 --> 00:54:24,120
+the machine to stop.
+
+979
+00:54:24,120 --> 00:54:25,395
+That's what that is.
+
+980
+00:54:25,395 --> 00:54:26,795
+And I'm going to
+make up a loop.
+
+981
+00:54:26,795 --> 00:54:31,110
+
+
+982
+00:54:31,110 --> 00:54:33,490
+It's a place I'm going to go
+to in order to start up
+
+983
+00:54:33,490 --> 00:54:35,470
+computing a Fib.
+
+984
+00:54:35,470 --> 00:54:38,210
+Whatever is in N at this point,
+Fibonacci will be
+
+985
+00:54:38,210 --> 00:54:41,320
+computed of, and we will return
+to the place specified
+
+986
+00:54:41,320 --> 00:54:42,570
+by continue.
+
+987
+00:54:42,570 --> 00:54:46,070
+
+
+988
+00:54:46,070 --> 00:54:48,640
+So what you're going to see
+here at this place, what I
+
+989
+00:54:48,640 --> 00:54:52,650
+want here is the contract that
+says, I'm going to write this
+
+990
+00:54:52,650 --> 00:55:00,230
+with a comment syntax, the
+contract is N contains arg,
+
+991
+00:55:00,230 --> 00:55:02,100
+the argument.
+
+992
+00:55:02,100 --> 00:55:09,325
+Continue is the recipient.
+
+993
+00:55:09,325 --> 00:55:12,812
+
+
+994
+00:55:12,812 --> 00:55:14,290
+And that's where it is.
+
+995
+00:55:14,290 --> 00:55:17,370
+
+
+996
+00:55:17,370 --> 00:55:20,430
+At this point, if I ever go to
+this place, I'm expecting this
+
+997
+00:55:20,430 --> 00:55:24,820
+to be true, the argument for
+computing the Fibonacci.
+
+998
+00:55:24,820 --> 00:55:26,450
+Now the next thing I want
+to do is to branch.
+
+999
+00:55:26,450 --> 00:55:30,220
+
+
+1000
+00:55:30,220 --> 00:55:32,070
+And if N is less than 2--
+
+1001
+00:55:32,070 --> 00:55:34,930
+
+
+1002
+00:55:34,930 --> 00:55:38,730
+by the way, I'm using what
+looks like Lisp syntax.
+
+1003
+00:55:38,730 --> 00:55:41,310
+This is not Lisp.
+
+1004
+00:55:41,310 --> 00:55:42,750
+This does not run.
+
+1005
+00:55:42,750 --> 00:55:46,120
+What I'm writing here does not
+run as a simple Lisp program.
+
+1006
+00:55:46,120 --> 00:55:49,710
+This is a representation
+of another language.
+
+1007
+00:55:49,710 --> 00:55:52,030
+The reason I'm using the syntax
+of parentheses and so
+
+1008
+00:55:52,030 --> 00:55:56,100
+on is because I tend to use
+a Lisp system to write an
+
+1009
+00:55:56,100 --> 00:55:59,380
+interpreter for this which
+allows me to simulate the
+
+1010
+00:55:59,380 --> 00:56:03,380
+machine I'm trying to build.
+
+1011
+00:56:03,380 --> 00:56:05,170
+I don't want to confuse
+this to think that
+
+1012
+00:56:05,170 --> 00:56:06,940
+this is Lisp code.
+
+1013
+00:56:06,940 --> 00:56:09,510
+It's just I'm using a lot
+of the pieces of Lisp.
+
+1014
+00:56:09,510 --> 00:56:12,880
+I'm embedding a language in
+Lisp, using Lisp as pieces to
+
+1015
+00:56:12,880 --> 00:56:16,620
+make my process of making
+my simulator easy.
+
+1016
+00:56:16,620 --> 00:56:18,900
+So I'm inheriting from Lisp
+all of its properties.
+
+1017
+00:56:18,900 --> 00:56:22,700
+Fetch of N 2, I want
+to go to a place
+
+1018
+00:56:22,700 --> 00:56:25,985
+called immediate answer.
+
+1019
+00:56:25,985 --> 00:56:27,235
+It's the base step.
+
+1020
+00:56:27,235 --> 00:56:33,150
+
+
+1021
+00:56:33,150 --> 00:56:37,750
+Now, that's somewhere over
+here, just above done.
+
+1022
+00:56:37,750 --> 00:56:39,330
+And we'll see it later.
+
+1023
+00:56:39,330 --> 00:56:41,480
+Now, in the general case, which
+is the part I'm going to
+
+1024
+00:56:41,480 --> 00:56:44,860
+write down now, let's
+just do it.
+
+1025
+00:56:44,860 --> 00:56:46,370
+Well, first of all, I'm
+going to have to
+
+1026
+00:56:46,370 --> 00:56:49,420
+call Fibonacci twice.
+
+1027
+00:56:49,420 --> 00:56:51,300
+In each case--
+
+1028
+00:56:51,300 --> 00:56:53,640
+well, in one case at least, I'm
+going to have to know what
+
+1029
+00:56:53,640 --> 00:56:56,310
+to do to come back and
+do the next one.
+
+1030
+00:56:56,310 --> 00:57:01,600
+I have to remember, have I done
+the first Fib, or have I
+
+1031
+00:57:01,600 --> 00:57:04,500
+done the second one?
+
+1032
+00:57:04,500 --> 00:57:06,630
+Do I have to come back to the
+place where I do the second
+
+1033
+00:57:06,630 --> 00:57:08,240
+Fib, or do I have to come
+back to the place
+
+1034
+00:57:08,240 --> 00:57:09,490
+where I do the add?
+
+1035
+00:57:09,490 --> 00:57:12,140
+
+
+1036
+00:57:12,140 --> 00:57:14,810
+In the first case, over the
+first Fibonacci, I'm going to
+
+1037
+00:57:14,810 --> 00:57:16,980
+need the value of N for
+computing for the second one.
+
+1038
+00:57:16,980 --> 00:57:20,010
+
+
+1039
+00:57:20,010 --> 00:57:22,996
+So I have to store some
+of these things up.
+
+1040
+00:57:22,996 --> 00:57:25,820
+So first I'm going
+to save continue.
+
+1041
+00:57:25,820 --> 00:57:27,265
+That's who needs the answer.
+
+1042
+00:57:27,265 --> 00:57:31,320
+
+
+1043
+00:57:31,320 --> 00:57:33,560
+And the reason I'm doing that is
+because I'm about to assign
+
+1044
+00:57:33,560 --> 00:57:42,870
+continue to the place
+which is the place I
+
+1045
+00:57:42,870 --> 00:57:44,130
+want to go to after.
+
+1046
+00:57:44,130 --> 00:57:46,870
+
+
+1047
+00:57:46,870 --> 00:57:52,510
+Let's call it Fib-N-minus-1,
+big long name,
+
+1048
+00:57:52,510 --> 00:57:53,760
+classic Lisp name.
+
+1049
+00:57:53,760 --> 00:57:57,700
+
+
+1050
+00:57:57,700 --> 00:58:00,900
+Because I'm going to compute
+the first Fib of N minus 1,
+
+1051
+00:58:00,900 --> 00:58:02,440
+and then after that, I
+want to come back and
+
+1052
+00:58:02,440 --> 00:58:03,960
+do something else.
+
+1053
+00:58:03,960 --> 00:58:08,050
+That's the place I want to go
+to after I've done the first
+
+1054
+00:58:08,050 --> 00:58:11,106
+Fibonacci calculation.
+
+1055
+00:58:11,106 --> 00:58:15,030
+And I want to do a save of N,
+because I'm going to need it
+
+1056
+00:58:15,030 --> 00:58:19,130
+later, after that.
+
+1057
+00:58:19,130 --> 00:58:21,480
+Now I'm going to, at this point,
+get ready to do the
+
+1058
+00:58:21,480 --> 00:58:23,230
+Fibonacci of N minus 1.
+
+1059
+00:58:23,230 --> 00:58:33,950
+So assign to N the difference
+of the fetch of N and 1.
+
+1060
+00:58:33,950 --> 00:58:38,110
+
+
+1061
+00:58:38,110 --> 00:58:40,270
+Now I'm ready to go back
+to doing the Fib loop.
+
+1062
+00:58:40,270 --> 00:58:47,630
+
+
+1063
+00:58:47,630 --> 00:58:50,195
+Have I satisfied my contract?
+
+1064
+00:58:50,195 --> 00:58:51,770
+And the answer is yes.
+
+1065
+00:58:51,770 --> 00:58:57,210
+N contains N minus 1, which
+is what I need.
+
+1066
+00:58:57,210 --> 00:59:01,370
+Continue contains a place I want
+to go to when I'm done
+
+1067
+00:59:01,370 --> 00:59:04,100
+with calculating N minus 1.
+
+1068
+00:59:04,100 --> 00:59:05,440
+So I've satisfied
+the contract.
+
+1069
+00:59:05,440 --> 00:59:11,580
+And therefore, I can write
+down here a label,
+
+1070
+00:59:11,580 --> 00:59:12,830
+after-Fib-N-minus-1.
+
+1071
+00:59:12,830 --> 00:59:20,490
+
+
+1072
+00:59:20,490 --> 00:59:22,690
+Now what am I going
+to do here?
+
+1073
+00:59:22,690 --> 00:59:25,660
+Here's a place where I now
+have to get ready to do
+
+1074
+00:59:25,660 --> 00:59:26,910
+Fib of N minus 2.
+
+1075
+00:59:26,910 --> 00:59:29,270
+
+
+1076
+00:59:29,270 --> 00:59:31,780
+But in order to do a Fib of N
+minus 2, look, I don't know.
+
+1077
+00:59:31,780 --> 00:59:33,810
+I've clobbered my N over here.
+
+1078
+00:59:33,810 --> 00:59:36,610
+And presumably my N is counted
+down all the way to 1 or 0 or
+
+1079
+00:59:36,610 --> 00:59:39,780
+something at this point.
+
+1080
+00:59:39,780 --> 00:59:43,030
+So I don't know what the value
+of N in the N register is.
+
+1081
+00:59:43,030 --> 00:59:45,640
+I want the value of N that was
+on the stack that I saved over
+
+1082
+00:59:45,640 --> 00:59:49,520
+here so that could restore
+it over here.
+
+1083
+00:59:49,520 --> 00:59:53,880
+I saved up the value of N, which
+is this value of N at
+
+1084
+00:59:53,880 --> 00:59:56,340
+this point, so that I could
+restore it after computing Fib
+
+1085
+00:59:56,340 --> 00:59:59,360
+of N minus 1, so that I could
+count that down to N minus 2
+
+1086
+00:59:59,360 --> 01:00:01,810
+and then compute Fib
+of N minus 2.
+
+1087
+01:00:01,810 --> 01:00:03,060
+So let's restore that.
+
+1088
+01:00:03,060 --> 01:00:08,830
+
+
+1089
+01:00:08,830 --> 01:00:11,130
+Restore of N.
+
+1090
+01:00:11,130 --> 01:00:16,200
+Now I'm about to do something
+which is superstitious, and we
+
+1091
+01:00:16,200 --> 01:00:18,520
+will remove it shortly.
+
+1092
+01:00:18,520 --> 01:00:22,390
+I am about to finish the
+sequence of doing the
+
+1093
+01:00:22,390 --> 01:00:24,800
+subroutine call, if you will.
+
+1094
+01:00:24,800 --> 01:00:28,510
+I'm going to say, well, I also
+saved up the continuation,
+
+1095
+01:00:28,510 --> 01:00:31,600
+since I'm going to
+restore it now.
+
+1096
+01:00:31,600 --> 01:00:32,970
+But actually, I don't have
+to, because I'm not
+
+1097
+01:00:32,970 --> 01:00:34,610
+going to need it.
+
+1098
+01:00:34,610 --> 01:00:36,260
+We'll fix that in a second.
+
+1099
+01:00:36,260 --> 01:00:46,590
+So we'll do a restore of
+continue, which is what I
+
+1100
+01:00:46,590 --> 01:00:48,020
+would in general need to do.
+
+1101
+01:00:48,020 --> 01:00:50,240
+And we're just going to see
+what you would call in the
+
+1102
+01:00:50,240 --> 01:00:52,540
+compiler world a peephole
+optimization, which says,
+
+1103
+01:00:52,540 --> 01:00:55,420
+whoops, you didn't
+have to do that.
+
+1104
+01:00:55,420 --> 01:00:59,720
+OK, so the next thing I see
+here is that I have to get
+
+1105
+01:00:59,720 --> 01:01:02,770
+ready now to do Fibonacci
+of N minus 2.
+
+1106
+01:01:02,770 --> 01:01:05,050
+But I don't have to
+save N anymore.
+
+1107
+01:01:05,050 --> 01:01:07,140
+The reason why I don't have to
+save N anymore is because I
+
+1108
+01:01:07,140 --> 01:01:09,690
+don't need N after I've done Fib
+of N minus 2, because the
+
+1109
+01:01:09,690 --> 01:01:13,540
+next thing I do is add.
+
+1110
+01:01:13,540 --> 01:01:16,500
+So I'm just going to set
+up my N that way.
+
+1111
+01:01:16,500 --> 01:01:28,990
+Assign N minus difference
+of fetch N and 2.
+
+1112
+01:01:28,990 --> 01:01:31,850
+
+
+1113
+01:01:31,850 --> 01:01:35,440
+Now I have to finish the
+setup for calling
+
+1114
+01:01:35,440 --> 01:01:36,950
+Fibonacci of N minus 2.
+
+1115
+01:01:36,950 --> 01:01:48,330
+Well, I have to save up continue
+and assign continue,
+
+1116
+01:01:48,330 --> 01:02:03,050
+continue, to the place which is
+after Fib N 2, that place
+
+1117
+01:02:03,050 --> 01:02:05,320
+over here somewhere.
+
+1118
+01:02:05,320 --> 01:02:08,650
+However, I've got to
+be very careful.
+
+1119
+01:02:08,650 --> 01:02:12,470
+The old value, the value of Fib
+of N minus 1, I'm going to
+
+1120
+01:02:12,470 --> 01:02:15,300
+need later.
+
+1121
+01:02:15,300 --> 01:02:18,480
+The value of Fibonacci of N
+minus 1, I'm going to need.
+
+1122
+01:02:18,480 --> 01:02:21,880
+And I can't clobber it, because
+I'm going to have to
+
+1123
+01:02:21,880 --> 01:02:24,150
+add it to the value of
+Fib of N minus 2.
+
+1124
+01:02:24,150 --> 01:02:27,720
+That's in the value register,
+so I'm going to save it.
+
+1125
+01:02:27,720 --> 01:02:33,780
+So I have to save this right
+now, save up VAL.
+
+1126
+01:02:33,780 --> 01:02:39,547
+And now I can go off to my
+subroutine, go to Fib loop.
+
+1127
+01:02:39,547 --> 01:02:44,220
+
+
+1128
+01:02:44,220 --> 01:02:49,460
+Now before I go any further
+and finish this program, I
+
+1129
+01:02:49,460 --> 01:02:52,340
+just want to look at this
+segment so far and see, oh
+
+1130
+01:02:52,340 --> 01:02:55,520
+yes, there's a sequence of
+instructions here, if you
+
+1131
+01:02:55,520 --> 01:03:01,580
+will, that I can do
+something about.
+
+1132
+01:03:01,580 --> 01:03:06,010
+Here I have a restore of
+continue, a save of continue,
+
+1133
+01:03:06,010 --> 01:03:09,200
+and then an assign of continue,
+with no other
+
+1134
+01:03:09,200 --> 01:03:10,640
+references to continue
+in between.
+
+1135
+01:03:10,640 --> 01:03:13,840
+
+
+1136
+01:03:13,840 --> 01:03:15,520
+The restore followed
+by the save
+
+1137
+01:03:15,520 --> 01:03:16,770
+leaves the stack unchanged.
+
+1138
+01:03:16,770 --> 01:03:19,090
+
+
+1139
+01:03:19,090 --> 01:03:21,250
+The only difference is that I
+set the continue register to a
+
+1140
+01:03:21,250 --> 01:03:24,330
+value, which is the value
+that was on the stack.
+
+1141
+01:03:24,330 --> 01:03:27,360
+Since I now clobber that value,
+as in it was never
+
+1142
+01:03:27,360 --> 01:03:31,710
+referenced, these instructions
+are unnecessary.
+
+1143
+01:03:31,710 --> 01:03:35,390
+So we will remove these.
+
+1144
+01:03:35,390 --> 01:03:38,550
+
+
+1145
+01:03:38,550 --> 01:03:40,210
+But I couldn't have seen
+that unless I had
+
+1146
+01:03:40,210 --> 01:03:41,460
+written them down.
+
+1147
+01:03:41,460 --> 01:03:43,780
+
+
+1148
+01:03:43,780 --> 01:03:45,590
+Was that really true?
+
+1149
+01:03:45,590 --> 01:03:48,610
+Well, I don't know.
+
+1150
+01:03:48,610 --> 01:03:51,560
+OK, so we've now gone
+off to compute
+
+1151
+01:03:51,560 --> 01:03:53,660
+Fibonacci of N minus 2.
+
+1152
+01:03:53,660 --> 01:04:05,070
+So after that, what are
+we going to do?
+
+1153
+01:04:05,070 --> 01:04:07,010
+Well, I suppose the first
+thing we have to do--
+
+1154
+01:04:07,010 --> 01:04:07,960
+we've got two things.
+
+1155
+01:04:07,960 --> 01:04:09,460
+We've got a thing in
+the value register
+
+1156
+01:04:09,460 --> 01:04:10,920
+which is now valuable.
+
+1157
+01:04:10,920 --> 01:04:12,610
+We also have a thing on the
+stack that can be restored
+
+1158
+01:04:12,610 --> 01:04:14,815
+into the value register.
+
+1159
+01:04:14,815 --> 01:04:17,630
+And what I have to be careful
+with now is I want to shuffle
+
+1160
+01:04:17,630 --> 01:04:19,470
+this right so I can
+do the multiply.
+
+1161
+01:04:19,470 --> 01:04:21,600
+Now there are various
+conventions I might use, but
+
+1162
+01:04:21,600 --> 01:04:24,510
+I'm going to be very picky and
+say, I'm only going to restore
+
+1163
+01:04:24,510 --> 01:04:26,740
+into a register I've
+saved from.
+
+1164
+01:04:26,740 --> 01:04:30,020
+If that's the case, I have
+to do a shuffle here.
+
+1165
+01:04:30,020 --> 01:04:32,950
+It's the same problem with how
+many hands I have. So I'm
+
+1166
+01:04:32,950 --> 01:04:37,800
+going to assign to N, because
+I'm not going to need N
+
+1167
+01:04:37,800 --> 01:04:45,440
+anymore, N is useless, the
+current value of VAL, which
+
+1168
+01:04:45,440 --> 01:04:47,340
+was the value of Fib
+of N minus 2.
+
+1169
+01:04:47,340 --> 01:04:52,950
+
+
+1170
+01:04:52,950 --> 01:04:56,180
+And I'm going to restore
+the value register now.
+
+1171
+01:04:56,180 --> 01:05:01,850
+
+
+1172
+01:05:01,850 --> 01:05:06,290
+This restore matches this
+save. And if you're very
+
+1173
+01:05:06,290 --> 01:05:09,820
+careful and examine very
+carefully what goes on,
+
+1174
+01:05:09,820 --> 01:05:13,840
+restores and saves are
+always matched.
+
+1175
+01:05:13,840 --> 01:05:15,660
+Now there's an outstanding save,
+of course, that we have
+
+1176
+01:05:15,660 --> 01:05:19,000
+to get rid of soon.
+
+1177
+01:05:19,000 --> 01:05:20,590
+And so I restored the
+value register.
+
+1178
+01:05:20,590 --> 01:05:34,850
+Now I restore the continue one,
+which matches this one,
+
+1179
+01:05:34,850 --> 01:05:41,300
+dot, dot, dot, dot, dot, dot,
+dot, down to here, restoring
+
+1180
+01:05:41,300 --> 01:05:42,860
+that continuation.
+
+1181
+01:05:42,860 --> 01:05:46,600
+That continuation is a
+continuation of Fib of N,
+
+1182
+01:05:46,600 --> 01:05:48,330
+which is the problem I was
+trying to solve, a major
+
+1183
+01:05:48,330 --> 01:05:49,665
+problem I'm trying to solve.
+
+1184
+01:05:49,665 --> 01:05:52,670
+So that's the guy I have to go
+back to who wants Fib of N. I
+
+1185
+01:05:52,670 --> 01:05:55,470
+saved them all the way up here
+when I realized N was
+
+1186
+01:05:55,470 --> 01:05:57,360
+not less than 2.
+
+1187
+01:05:57,360 --> 01:06:00,840
+And so I had to do a complicated
+operation.
+
+1188
+01:06:00,840 --> 01:06:03,240
+Now I've got everything
+I need to do it.
+
+1189
+01:06:03,240 --> 01:06:17,470
+So I'm going to restore that,
+assign to VAL the sum of fetch
+
+1190
+01:06:17,470 --> 01:06:28,335
+VAL and fetch of N, and
+go to continue.
+
+1191
+01:06:28,335 --> 01:06:38,260
+
+
+1192
+01:06:38,260 --> 01:06:45,750
+So now I've returned from
+computing Fibonacci of N, the
+
+1193
+01:06:45,750 --> 01:06:47,110
+general case.
+
+1194
+01:06:47,110 --> 01:06:51,230
+Now what's left is we have to
+fix up a few details, like
+
+1195
+01:06:51,230 --> 01:07:03,750
+there's the base case of this
+induction, immediate answer,
+
+1196
+01:07:03,750 --> 01:07:13,710
+which is nothing more than
+assign to VAL fetch of N,
+
+1197
+01:07:13,710 --> 01:07:17,120
+because N was less than 2, and
+therefore, the answer is N in
+
+1198
+01:07:17,120 --> 01:07:26,095
+our original program, and
+return continue--
+
+1199
+01:07:26,095 --> 01:07:31,460
+
+
+1200
+01:07:31,460 --> 01:07:34,800
+bobble, bobble almost--
+
+1201
+01:07:34,800 --> 01:07:36,130
+and finally Fib done.
+
+1202
+01:07:36,130 --> 01:07:43,460
+
+
+1203
+01:07:43,460 --> 01:07:45,640
+So that's a fairly complicated
+program.
+
+1204
+01:07:45,640 --> 01:07:47,950
+And the reason I wanted you see
+to that is because I want
+
+1205
+01:07:47,950 --> 01:07:51,740
+you to see the particular
+flavors of stack discipline
+
+1206
+01:07:51,740 --> 01:07:52,965
+that I was obeying.
+
+1207
+01:07:52,965 --> 01:07:57,240
+It was first of all, I don't
+want to take anything that I'm
+
+1208
+01:07:57,240 --> 01:08:00,395
+not going to need later.
+
+1209
+01:08:00,395 --> 01:08:01,850
+I was being very careful.
+
+1210
+01:08:01,850 --> 01:08:03,940
+And it's very important.
+
+1211
+01:08:03,940 --> 01:08:07,095
+And there are all sorts of other
+disciplines people make
+
+1212
+01:08:07,095 --> 01:08:10,520
+with frames and things like that
+of some sort, where you
+
+1213
+01:08:10,520 --> 01:08:12,280
+save all sorts of junk you're
+not going to need later and
+
+1214
+01:08:12,280 --> 01:08:15,830
+restore it because, in some
+sense, it's easier to do that.
+
+1215
+01:08:15,830 --> 01:08:19,109
+That's going to lead to various
+disasters, which we'll
+
+1216
+01:08:19,109 --> 01:08:21,740
+see a little later.
+
+1217
+01:08:21,740 --> 01:08:23,560
+It's crucial to say exactly
+what you're
+
+1218
+01:08:23,560 --> 01:08:24,810
+going to need later.
+
+1219
+01:08:24,810 --> 01:08:26,899
+
+
+1220
+01:08:26,899 --> 01:08:29,859
+It's an important idea.
+
+1221
+01:08:29,859 --> 01:08:34,020
+And the responsibility of that
+is whoever saves something is
+
+1222
+01:08:34,020 --> 01:08:36,930
+the guy who restores it,
+because he needs it.
+
+1223
+01:08:36,930 --> 01:08:40,130
+And in such discipline, you
+can see what things are
+
+1224
+01:08:40,130 --> 01:08:46,940
+unnecessary, operations
+that are unimportant.
+
+1225
+01:08:46,940 --> 01:08:49,950
+Now, one other thing I want to
+tell you about that's very
+
+1226
+01:08:49,950 --> 01:08:54,120
+simple is that, of course, the
+picture you see is not the
+
+1227
+01:08:54,120 --> 01:08:55,350
+whole picture.
+
+1228
+01:08:55,350 --> 01:08:58,430
+Supposing I had systems that
+had things like other
+
+1229
+01:08:58,430 --> 01:09:06,080
+operations, CAR, CDR, cons,
+building a vector and
+
+1230
+01:09:06,080 --> 01:09:10,000
+referencing the nth element of
+it, or things like that.
+
+1231
+01:09:10,000 --> 01:09:14,229
+Well, at this level of detail,
+whatever it is, we can
+
+1232
+01:09:14,229 --> 01:09:15,520
+conceptualize those
+as primitive
+
+1233
+01:09:15,520 --> 01:09:18,299
+operations in the datapath.
+
+1234
+01:09:18,299 --> 01:09:21,020
+In other words, we could say
+that some machine that, for
+
+1235
+01:09:21,020 --> 01:09:25,460
+example, has the append machine,
+which has to do cons
+
+1236
+01:09:25,460 --> 01:09:29,870
+of the CAR of x with the append
+of the CDR of x and y,
+
+1237
+01:09:29,870 --> 01:09:31,149
+well, gee, that's exactly
+the same as
+
+1238
+01:09:31,149 --> 01:09:33,630
+the factorial structure.
+
+1239
+01:09:33,630 --> 01:09:36,133
+Well, it's got about
+the same structure.
+
+1240
+01:09:36,133 --> 01:09:37,270
+And what do we have?
+
+1241
+01:09:37,270 --> 01:09:41,590
+We have some sort of things in
+it which may be registers, x
+
+1242
+01:09:41,590 --> 01:09:45,490
+and y, and then x has to somehow
+move to y sometimes, x
+
+1243
+01:09:45,490 --> 01:09:46,939
+has to get the value of y.
+
+1244
+01:09:46,939 --> 01:09:48,000
+And then we may have
+to be able to do
+
+1245
+01:09:48,000 --> 01:09:51,700
+something which is a cons.
+
+1246
+01:09:51,700 --> 01:09:57,760
+I don't remember if I need to
+like this is in this system,
+
+1247
+01:09:57,760 --> 01:10:01,420
+but cons is sort of like
+subtract or add or something.
+
+1248
+01:10:01,420 --> 01:10:03,800
+It combines two things,
+producing a thing which is the
+
+1249
+01:10:03,800 --> 01:10:07,600
+cons, which we may then
+think goes into there.
+
+1250
+01:10:07,600 --> 01:10:14,920
+And then maybe a thing called
+the CAR, which will produce--
+
+1251
+01:10:14,920 --> 01:10:16,920
+I can get the CAR
+or something.
+
+1252
+01:10:16,920 --> 01:10:20,150
+And maybe I can get the CDR
+of something, and so on.
+
+1253
+01:10:20,150 --> 01:10:22,730
+But we shouldn't be too afraid
+of saying things this way,
+
+1254
+01:10:22,730 --> 01:10:27,330
+because the worst that could
+happen is if we open up cons,
+
+1255
+01:10:27,330 --> 01:10:31,770
+what we're going to find
+is some machine.
+
+1256
+01:10:31,770 --> 01:10:33,750
+And cons may in fact overlap
+with CAR and CDR, and it
+
+1257
+01:10:33,750 --> 01:10:38,660
+always does, in the same way
+that plus and minus overlap,
+
+1258
+01:10:38,660 --> 01:10:41,210
+and really the same business.
+
+1259
+01:10:41,210 --> 01:10:42,950
+Cons, CAR, and CDR are going to
+overlap, and we're going to
+
+1260
+01:10:42,950 --> 01:10:48,630
+find a little controller, a
+little datapath, which may
+
+1261
+01:10:48,630 --> 01:10:53,300
+have some registers in it,
+some stuff like that.
+
+1262
+01:10:53,300 --> 01:10:56,650
+And maybe inside it, there may
+also be an infinite part, a
+
+1263
+01:10:56,650 --> 01:10:59,440
+part that's semi-infinite or
+something, which is a lot of
+
+1264
+01:10:59,440 --> 01:11:02,030
+very uniform stuff, which
+we'll call memory.
+
+1265
+01:11:02,030 --> 01:11:06,570
+
+
+1266
+01:11:06,570 --> 01:11:09,330
+And I wouldn't be so horrified
+if that were the way it works.
+
+1267
+01:11:09,330 --> 01:11:13,320
+In fact, it does, and we'll
+talk about that later.
+
+1268
+01:11:13,320 --> 01:11:14,570
+So are there any questions?
+
+1269
+01:11:14,570 --> 01:11:24,340
+
+
+1270
+01:11:24,340 --> 01:11:25,665
+Gee, what an unquestioning
+audience.
+
+1271
+01:11:25,665 --> 01:11:28,670
+
+
+1272
+01:11:28,670 --> 01:11:30,330
+Suppose I tell you a horrible
+pile of lies.
+
+1273
+01:11:30,330 --> 01:11:39,690
+
+
+1274
+01:11:39,690 --> 01:11:41,990
+OK.
+
+1275
+01:11:41,990 --> 01:11:42,520
+Well, thank you.
+
+1276
+01:11:42,520 --> 01:11:44,230
+Let's take our break.
+
+1277
+01:11:44,230 --> 01:11:47,230
+[MUSIC PLAYING - "JESU, JOY OF
+MAN'S DESIRING" BY JOHANN
+
+1278
+01:11:47,230 --> 01:11:48,780
+SEBASTIAN BACH]
+
+1279
+01:11:48,780 --> 01:11:56,124
+

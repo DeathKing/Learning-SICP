@@ -1,0 +1,4559 @@
+0
+00:00:00,000 --> 00:00:00,994
+
+
+1
+00:00:00,994 --> 00:00:16,401
+[MUSIC PLAYING]
+
+2
+00:00:16,401 --> 00:00:19,520
+PROFESSOR: Well, let's see.
+
+3
+00:00:19,520 --> 00:00:21,800
+What we did so far was
+a lot of fun, was
+
+4
+00:00:21,800 --> 00:00:23,050
+it useful for anything?
+
+5
+00:00:23,050 --> 00:00:26,330
+
+
+6
+00:00:26,330 --> 00:00:29,380
+I suppose the answer
+is going to be yes.
+
+7
+00:00:29,380 --> 00:00:33,930
+If these metacircular
+interpreters are a valuable
+
+8
+00:00:33,930 --> 00:00:35,180
+thing to play with.
+
+9
+00:00:35,180 --> 00:00:38,050
+
+
+10
+00:00:38,050 --> 00:00:41,300
+Well, there have been times I
+spend 50% of my time, over a
+
+11
+00:00:41,300 --> 00:00:46,590
+year, trying various design
+alternatives by experimenting
+
+12
+00:00:46,590 --> 00:00:49,600
+with them with metacircular
+interpreters--
+
+13
+00:00:49,600 --> 00:00:52,570
+metacircular interpreters like
+the sort you just saw.
+
+14
+00:00:52,570 --> 00:00:55,910
+Metacircular is because they
+are defined in terms of
+
+15
+00:00:55,910 --> 00:00:58,830
+themselves in such a way that
+the language they interpret
+
+16
+00:00:58,830 --> 00:01:01,270
+contains itself.
+
+17
+00:01:01,270 --> 00:01:04,080
+Such interpreters are a
+convenient medium for
+
+18
+00:01:04,080 --> 00:01:06,800
+exploring language issues.
+
+19
+00:01:06,800 --> 00:01:11,010
+If you want to try adding a new
+feature, it's sort of a
+
+20
+00:01:11,010 --> 00:01:15,490
+snap, it's easy, you just do
+it and see what happens.
+
+21
+00:01:15,490 --> 00:01:17,710
+You play with that language for
+a while you say, gee, I'm
+
+22
+00:01:17,710 --> 00:01:21,090
+didn't like that, you
+throw it away.
+
+23
+00:01:21,090 --> 00:01:24,640
+Or you might want to see what
+the difference is if you'd
+
+24
+00:01:24,640 --> 00:01:30,080
+make a slight difference in the
+binding strategy, or some
+
+25
+00:01:30,080 --> 00:01:33,720
+more complicated things
+that might occur.
+
+26
+00:01:33,720 --> 00:01:36,810
+In fact, these metacircular
+interpreters are an excellent
+
+27
+00:01:36,810 --> 00:01:44,030
+medium for people exchanging
+ideas about language design,
+
+28
+00:01:44,030 --> 00:01:46,960
+because they're pretty easy to
+understand, and they're short,
+
+29
+00:01:46,960 --> 00:01:49,690
+and compact, and simple.
+
+30
+00:01:49,690 --> 00:01:54,360
+If I have some idea that I want
+somebody to criticize
+
+31
+00:01:54,360 --> 00:02:00,770
+like say, Dan Friedman at
+Indiana, I'd write a little
+
+32
+00:02:00,770 --> 00:02:04,260
+metacircular interpreter and
+send him some network mail
+
+33
+00:02:04,260 --> 00:02:05,450
+with this interpreter in it.
+
+34
+00:02:05,450 --> 00:02:07,900
+He could whip it up on his
+machine and play with it and
+
+35
+00:02:07,900 --> 00:02:11,940
+say, that's no good.
+
+36
+00:02:11,940 --> 00:02:13,706
+And then send it back to me and
+say, well, why don't you
+
+37
+00:02:13,706 --> 00:02:16,880
+try this one, it's
+a little better.
+
+38
+00:02:16,880 --> 00:02:20,160
+So I want to show you some
+of that technology.
+
+39
+00:02:20,160 --> 00:02:24,750
+See, because, really, it's the
+essential, simple technology
+
+40
+00:02:24,750 --> 00:02:27,760
+for getting started in designing
+your own languages
+
+41
+00:02:27,760 --> 00:02:30,790
+for particular purposes.
+
+42
+00:02:30,790 --> 00:02:34,210
+Let's start by adding a very
+simple feature to a Lisp.
+
+43
+00:02:34,210 --> 00:02:40,640
+
+
+44
+00:02:40,640 --> 00:02:42,800
+Now, one thing I want
+to tell you about is
+
+45
+00:02:42,800 --> 00:02:44,370
+features, before I start.
+
+46
+00:02:44,370 --> 00:02:49,560
+
+
+47
+00:02:49,560 --> 00:02:53,100
+There are many languages that
+have made a mess of themselves
+
+48
+00:02:53,100 --> 00:02:56,620
+by adding huge numbers
+of features.
+
+49
+00:02:56,620 --> 00:03:00,620
+Computer scientists have a joke
+about bugs that transform
+
+50
+00:03:00,620 --> 00:03:02,520
+it to features all the time.
+
+51
+00:03:02,520 --> 00:03:05,030
+
+
+52
+00:03:05,030 --> 00:03:10,120
+But I like to think of it is
+that many systems suffer from
+
+53
+00:03:10,120 --> 00:03:12,820
+what's called creeping
+featurism.
+
+54
+00:03:12,820 --> 00:03:17,740
+Which is that George has a pet
+feature he'd like in the
+
+55
+00:03:17,740 --> 00:03:20,170
+system, so he adds it.
+
+56
+00:03:20,170 --> 00:03:23,480
+And then Harry says, gee, this
+system is no longer what
+
+57
+00:03:23,480 --> 00:03:26,640
+exactly I like, so I'm going
+to add my favorite feature.
+
+58
+00:03:26,640 --> 00:03:30,710
+And then Jim adds his
+favorite feature.
+
+59
+00:03:30,710 --> 00:03:35,280
+And, after a while, the thing
+has a manual 500 pages long
+
+60
+00:03:35,280 --> 00:03:37,790
+that no one can understand.
+
+61
+00:03:37,790 --> 00:03:40,780
+And sometimes it's the same
+person who writes all of these
+
+62
+00:03:40,780 --> 00:03:44,830
+features and produces this
+terribly complicated thing.
+
+63
+00:03:44,830 --> 00:03:48,250
+In some cases, like editors,
+it's sort of reasonable to
+
+64
+00:03:48,250 --> 00:03:51,940
+have lots of features, because
+there are a lot of things you
+
+65
+00:03:51,940 --> 00:03:55,730
+want to be able to do and
+many of them arbitrary.
+
+66
+00:03:55,730 --> 00:04:00,440
+But in computer languages, I
+think it's a disaster to have
+
+67
+00:04:00,440 --> 00:04:01,690
+too much stuff in them.
+
+68
+00:04:01,690 --> 00:04:04,110
+
+
+69
+00:04:04,110 --> 00:04:06,860
+The other alternative you get
+into is something called
+
+70
+00:04:06,860 --> 00:04:12,300
+feeping creaturism, which is
+where you have a box which has
+
+71
+00:04:12,300 --> 00:04:17,370
+a display, a fancy display, and
+a mouse, and there is all
+
+72
+00:04:17,370 --> 00:04:21,010
+sorts of complexity associated
+with all this fancy IO.
+
+73
+00:04:21,010 --> 00:04:24,430
+And your computer language
+becomes a dismal, little, tiny
+
+74
+00:04:24,430 --> 00:04:26,430
+thing that barely works because
+of all the swapping,
+
+75
+00:04:26,430 --> 00:04:30,080
+and disk twitching, and so on,
+caused by your Windows system.
+
+76
+00:04:30,080 --> 00:04:32,650
+And every time you go near the
+computer, the mouse process
+
+77
+00:04:32,650 --> 00:04:35,910
+wakes up and says, gee do you
+have something for me to do,
+
+78
+00:04:35,910 --> 00:04:37,440
+and then it goes
+back to sleep.
+
+79
+00:04:37,440 --> 00:04:40,210
+And if you accidentally push
+mouse with you elbow, a big
+
+80
+00:04:40,210 --> 00:04:41,600
+puff of smoke comes out
+of your computer
+
+81
+00:04:41,600 --> 00:04:42,940
+and things like that.
+
+82
+00:04:42,940 --> 00:04:46,030
+So two ways to disastrously
+destroy a
+
+83
+00:04:46,030 --> 00:04:47,500
+system by adding features.
+
+84
+00:04:47,500 --> 00:04:49,730
+But try right now to add a
+little, simple feature.
+
+85
+00:04:49,730 --> 00:04:52,300
+
+
+86
+00:04:52,300 --> 00:04:54,350
+This actually is a good
+one, and in fact,
+
+87
+00:04:54,350 --> 00:04:57,250
+real Lisps have it.
+
+88
+00:04:57,250 --> 00:05:03,420
+As you've seen, there are
+procedures like plus and times
+
+89
+00:05:03,420 --> 00:05:05,430
+that take any number
+of arguments.
+
+90
+00:05:05,430 --> 00:05:09,440
+So we can write things like the
+sum of the product of a
+
+91
+00:05:09,440 --> 00:05:17,540
+and x and x, and the product
+of b and x and c.
+
+92
+00:05:17,540 --> 00:05:21,210
+As you can see here, addition
+takes three arguments or two
+
+93
+00:05:21,210 --> 00:05:24,230
+arguments, multiplication takes
+two arguments or three
+
+94
+00:05:24,230 --> 00:05:27,290
+arguments, taking numbers of
+arguments all of which are to
+
+95
+00:05:27,290 --> 00:05:30,000
+be treated in the same way.
+
+96
+00:05:30,000 --> 00:05:32,300
+This is a valuable thing,
+
+97
+00:05:32,300 --> 00:05:34,960
+indefinite numbers of arguments.
+
+98
+00:05:34,960 --> 00:05:40,460
+Yet the particular Lisp system
+that I showed you is one where
+
+99
+00:05:40,460 --> 00:05:43,600
+the numbers of arguments is
+fixed, because I had to match
+
+100
+00:05:43,600 --> 00:05:45,910
+the arguments against the
+formal parameters in the
+
+101
+00:05:45,910 --> 00:05:47,850
+binder, where there's
+a pairup.
+
+102
+00:05:47,850 --> 00:05:50,810
+
+
+103
+00:05:50,810 --> 00:05:53,460
+Well, I'd like to be able to
+define new procedures like
+
+104
+00:05:53,460 --> 00:05:58,590
+this that can have any
+number of arguments.
+
+105
+00:05:58,590 --> 00:06:01,150
+Well there's several parts
+to this problem.
+
+106
+00:06:01,150 --> 00:06:03,870
+The first part is coming
+up with the syntactic
+
+107
+00:06:03,870 --> 00:06:10,620
+specification, some way of
+notating the additional
+
+108
+00:06:10,620 --> 00:06:15,480
+arguments, of which you don't
+know how many there are.
+
+109
+00:06:15,480 --> 00:06:17,980
+And then there's the other
+thing, which is once we've
+
+110
+00:06:17,980 --> 00:06:21,940
+notated it, how are we going to
+interpret that notation so
+
+111
+00:06:21,940 --> 00:06:26,980
+as to do the right thing,
+whatever the right thing is?
+
+112
+00:06:26,980 --> 00:06:29,230
+So let's consider an example
+of a sort of thing we might
+
+113
+00:06:29,230 --> 00:06:30,480
+want to be able to do.
+
+114
+00:06:30,480 --> 00:06:33,070
+
+
+115
+00:06:33,070 --> 00:06:36,380
+So an example might be, that
+I might want to be able to
+
+116
+00:06:36,380 --> 00:06:40,490
+define a procedure which is a
+procedure of one required
+
+117
+00:06:40,490 --> 00:06:45,820
+argument x and a bunch of
+arguments, I don't know how
+
+118
+00:06:45,820 --> 00:06:49,090
+many there are, called y.
+
+119
+00:06:49,090 --> 00:07:00,725
+So x is required, and there are
+many y's, many argument--
+
+120
+00:07:00,725 --> 00:07:04,710
+
+
+121
+00:07:04,710 --> 00:07:05,990
+y will be the list of them.
+
+122
+00:07:05,990 --> 00:07:14,480
+
+
+123
+00:07:14,480 --> 00:07:17,370
+Now, with such a thing, we might
+be able to say something
+
+124
+00:07:17,370 --> 00:07:20,720
+like, map--
+
+125
+00:07:20,720 --> 00:07:22,590
+I'm going to do something
+to every one--
+
+126
+00:07:22,590 --> 00:07:30,055
+of that procedure of one
+argument u, which multiplies x
+
+127
+00:07:30,055 --> 00:07:36,890
+by u, and we'll apply
+that to y.
+
+128
+00:07:36,890 --> 00:07:41,020
+I've used a dot here to indicate
+that the thing after
+
+129
+00:07:41,020 --> 00:07:46,300
+this is a list of all the
+rest of the arguments.
+
+130
+00:07:46,300 --> 00:07:47,745
+I'm making a syntactic
+specification.
+
+131
+00:07:47,745 --> 00:07:53,320
+
+
+132
+00:07:53,320 --> 00:07:56,870
+Now, what this depends upon, the
+reason why this is sort of
+
+133
+00:07:56,870 --> 00:08:01,440
+a reasonable thing to do, is
+because this happens to be a
+
+134
+00:08:01,440 --> 00:08:04,640
+syntax that's used in
+the Lisp reader for
+
+135
+00:08:04,640 --> 00:08:08,631
+representing conses.
+
+136
+00:08:08,631 --> 00:08:11,080
+We've never introduced
+that before.
+
+137
+00:08:11,080 --> 00:08:13,680
+You may have seen when playing
+with the system that if you
+
+138
+00:08:13,680 --> 00:08:16,740
+cons two things together, you
+get the first, space, dot, the
+
+139
+00:08:16,740 --> 00:08:19,800
+second, space--
+
+140
+00:08:19,800 --> 00:08:23,880
+the first, space, dot, space,
+the second with parentheses
+
+141
+00:08:23,880 --> 00:08:26,980
+around the whole thing.
+
+142
+00:08:26,980 --> 00:08:36,350
+So that, for example, this x dot
+y corresponds to a pair,
+
+143
+00:08:36,350 --> 00:08:41,870
+which has got an x in
+it and a y in it.
+
+144
+00:08:41,870 --> 00:08:45,520
+The other notations that you've
+seen so far are things
+
+145
+00:08:45,520 --> 00:08:55,720
+like a procedure of arguments x
+and y and z which do things,
+
+146
+00:08:55,720 --> 00:08:57,590
+and that looks like--
+
+147
+00:08:57,590 --> 00:09:02,000
+
+
+148
+00:09:02,000 --> 00:09:04,910
+Just looking at the bound
+variable list, it looks like
+
+149
+00:09:04,910 --> 00:09:18,280
+this, x, y, z, and
+the empty thing.
+
+150
+00:09:18,280 --> 00:09:22,590
+If I have a list of arguments I
+wish to match this against,
+
+151
+00:09:22,590 --> 00:09:26,110
+supposing, I have a list of
+arguments one, two, three, I
+
+152
+00:09:26,110 --> 00:09:36,300
+want to match these against. So
+I might have here a list of
+
+153
+00:09:36,300 --> 00:09:46,380
+three things, one, two, three.
+
+154
+00:09:46,380 --> 00:09:48,990
+
+
+155
+00:09:48,990 --> 00:09:54,220
+And I want to match x, y, z
+against one, two, three.
+
+156
+00:09:54,220 --> 00:09:56,830
+Well, it's clear that the one
+matches the x, because I can
+
+157
+00:09:56,830 --> 00:10:00,130
+just sort of follow the
+structure, and the two matches
+
+158
+00:10:00,130 --> 00:10:05,480
+the y, and the three
+matches the z.
+
+159
+00:10:05,480 --> 00:10:09,560
+But now, supposing I were to
+compare this x dot y--
+
+160
+00:10:09,560 --> 00:10:12,460
+this is x dot y--
+
+161
+00:10:12,460 --> 00:10:16,010
+supposing I compare that with
+a list of three arguments,
+
+162
+00:10:16,010 --> 00:10:18,510
+one, two, three.
+
+163
+00:10:18,510 --> 00:10:20,000
+Let's look at that again.
+
+164
+00:10:20,000 --> 00:10:28,000
+
+
+165
+00:10:28,000 --> 00:10:30,930
+One, two, three--
+
+166
+00:10:30,930 --> 00:10:34,970
+Well, I can walk along here and
+say, oh yes, x matches the
+
+167
+00:10:34,970 --> 00:10:43,740
+one, the y matches the list,
+which is two and three.
+
+168
+00:10:43,740 --> 00:10:47,150
+So the notation I'm choosing
+here is one that's very
+
+169
+00:10:47,150 --> 00:10:50,160
+natural for Lisp system.
+
+170
+00:10:50,160 --> 00:10:52,660
+
+
+171
+00:10:52,660 --> 00:10:54,790
+But I'm going to choose this as
+a notation for representing
+
+172
+00:10:54,790 --> 00:10:56,040
+a bunch of arguments.
+
+173
+00:10:56,040 --> 00:10:58,290
+
+
+174
+00:10:58,290 --> 00:11:00,770
+Now, there's an alternative
+possibility.
+
+175
+00:11:00,770 --> 00:11:03,560
+If I don't want to take one
+special out, or two special
+
+176
+00:11:03,560 --> 00:11:07,300
+ones out or something like that,
+if I don't want to do
+
+177
+00:11:07,300 --> 00:11:11,420
+that, if I want to talk about
+just the list of all the
+
+178
+00:11:11,420 --> 00:11:16,950
+arguments like in addition, well
+then the argument list
+
+179
+00:11:16,950 --> 00:11:20,370
+I'm going to choose to be that
+procedure of all the arguments
+
+180
+00:11:20,370 --> 00:11:25,140
+x which does something with x.
+
+181
+00:11:25,140 --> 00:11:29,190
+And which, for example, if I
+take the procedure, which
+
+182
+00:11:29,190 --> 00:11:35,040
+takes all the arguments x and
+returned the list of them,
+
+183
+00:11:35,040 --> 00:11:45,850
+that's list. That's the
+procedure list.
+
+184
+00:11:45,850 --> 00:11:46,840
+How does this work?
+
+185
+00:11:46,840 --> 00:11:49,610
+Well, indeed what I had as the
+bound variable list in this
+
+186
+00:11:49,610 --> 00:11:52,450
+case, whatever it is,
+is being matched
+
+187
+00:11:52,450 --> 00:11:55,140
+against a list of arguments.
+
+188
+00:11:55,140 --> 00:11:57,145
+This symbol now is all
+of the arguments.
+
+189
+00:11:57,145 --> 00:12:01,490
+
+
+190
+00:12:01,490 --> 00:12:03,830
+And so this is the choice I'm
+making for a particular
+
+191
+00:12:03,830 --> 00:12:08,060
+syntactic specification, for the
+description of procedures
+
+192
+00:12:08,060 --> 00:12:10,285
+which take indefinite numbers
+of arguments.
+
+193
+00:12:10,285 --> 00:12:13,190
+
+
+194
+00:12:13,190 --> 00:12:18,420
+There are two cases of it,
+this one and this one.
+
+195
+00:12:18,420 --> 00:12:21,330
+When you make syntactic
+specifications, it's important
+
+196
+00:12:21,330 --> 00:12:26,410
+that it's unambiguous, that
+neither of these can be
+
+197
+00:12:26,410 --> 00:12:31,100
+confused with a representation
+we already have, this one.
+
+198
+00:12:31,100 --> 00:12:33,610
+
+
+199
+00:12:33,610 --> 00:12:38,350
+I can always tell whether
+I have a fixed number of
+
+200
+00:12:38,350 --> 00:12:41,180
+explicitly named arguments
+made by these formal
+
+201
+00:12:41,180 --> 00:12:45,470
+parameters, or a fixed number
+of named formal parameters
+
+202
+00:12:45,470 --> 00:12:49,240
+followed by a thing which picks
+up all the rest of them,
+
+203
+00:12:49,240 --> 00:12:54,620
+or a list of all the arguments
+which will be matched against
+
+204
+00:12:54,620 --> 00:12:57,170
+this particular formal parameter
+called x, because
+
+205
+00:12:57,170 --> 00:12:58,465
+these are syntactically
+distinguishable.
+
+206
+00:12:58,465 --> 00:13:02,250
+
+
+207
+00:13:02,250 --> 00:13:05,960
+Many languages make terrible
+errors in that form where
+
+208
+00:13:05,960 --> 00:13:08,340
+whole segments of interpretation
+are cut off,
+
+209
+00:13:08,340 --> 00:13:14,560
+because there are syntactic
+ambiguities in the language.
+
+210
+00:13:14,560 --> 00:13:16,330
+They are the traditional
+problems with ALGOL like
+
+211
+00:13:16,330 --> 00:13:22,810
+languages having to do with
+the nesting of ifs in the
+
+212
+00:13:22,810 --> 00:13:25,060
+predicate part.
+
+213
+00:13:25,060 --> 00:13:30,510
+In any case, now, so I've told
+you about the syntax, now,
+
+214
+00:13:30,510 --> 00:13:35,250
+what are we going to do about
+the semantics of this?
+
+215
+00:13:35,250 --> 00:13:36,590
+How do we interpret it?
+
+216
+00:13:36,590 --> 00:13:38,440
+Well this is just super easy.
+
+217
+00:13:38,440 --> 00:13:39,900
+I'm going to modify
+the metacircular
+
+218
+00:13:39,900 --> 00:13:43,396
+interpreter to do it.
+
+219
+00:13:43,396 --> 00:13:46,020
+And that's a one liner.
+
+220
+00:13:46,020 --> 00:13:47,590
+There it is.
+
+221
+00:13:47,590 --> 00:13:49,560
+I'm changing the way
+you pair things up.
+
+222
+00:13:49,560 --> 00:13:56,390
+
+
+223
+00:13:56,390 --> 00:14:06,070
+Here's the procedure that
+pairs the variables, the
+
+224
+00:14:06,070 --> 00:14:12,090
+formal parameters, with the
+arguments that were passed
+
+225
+00:14:12,090 --> 00:14:16,080
+from the last description of the
+metacircular interpreter.
+
+226
+00:14:16,080 --> 00:14:18,960
+
+
+227
+00:14:18,960 --> 00:14:20,840
+And here's some things
+that are the same
+
+228
+00:14:20,840 --> 00:14:22,670
+as they were before.
+
+229
+00:14:22,670 --> 00:14:25,880
+In other words, if the list of
+variables is empty, then if
+
+230
+00:14:25,880 --> 00:14:31,050
+the list of values is empty,
+then I have an empty list.
+
+231
+00:14:31,050 --> 00:14:36,890
+Otherwise, I have too many
+arguments, that is, if I have
+
+232
+00:14:36,890 --> 00:14:41,580
+empty variables but
+not empty values.
+
+233
+00:14:41,580 --> 00:14:47,713
+If I have empty values, but the
+variables are not empty, I
+
+234
+00:14:47,713 --> 00:14:50,090
+have too few arguments.
+
+235
+00:14:50,090 --> 00:14:51,340
+The variables are a symbol--
+
+236
+00:14:51,340 --> 00:14:55,620
+
+
+237
+00:14:55,620 --> 00:14:58,130
+interesting case--
+
+238
+00:14:58,130 --> 00:15:04,040
+then, what I should do is say,
+oh yes, this is the special
+
+239
+00:15:04,040 --> 00:15:06,255
+case that I have a
+symbolic tail.
+
+240
+00:15:06,255 --> 00:15:09,010
+
+
+241
+00:15:09,010 --> 00:15:14,900
+I have here a thing just like
+we looked over here.
+
+242
+00:15:14,900 --> 00:15:18,630
+This is a tail which
+is a symbol, y.
+
+243
+00:15:18,630 --> 00:15:20,730
+It's not a nil.
+
+244
+00:15:20,730 --> 00:15:24,290
+It's not the empty list. Here's
+a symbolic tail that is
+
+245
+00:15:24,290 --> 00:15:25,600
+just the very beginning
+of the tail.
+
+246
+00:15:25,600 --> 00:15:27,790
+There is nothing else.
+
+247
+00:15:27,790 --> 00:15:36,540
+In that case, I wish to match
+that variable with all the
+
+248
+00:15:36,540 --> 00:15:44,500
+values and add that to the
+pairing that I'm making.
+
+249
+00:15:44,500 --> 00:15:47,660
+Otherwise, I go through the
+normal arrangement of making
+
+250
+00:15:47,660 --> 00:15:48,910
+up the whole pairing.
+
+251
+00:15:48,910 --> 00:15:52,020
+
+
+252
+00:15:52,020 --> 00:15:54,510
+I suppose that's very simple.
+
+253
+00:15:54,510 --> 00:15:57,080
+And that's all there is to it.
+
+254
+00:15:57,080 --> 00:15:58,330
+And now I'll answer
+some questions.
+
+255
+00:15:58,330 --> 00:16:02,620
+
+
+256
+00:16:02,620 --> 00:16:04,220
+The first one--
+
+257
+00:16:04,220 --> 00:16:06,600
+Are there any questions?
+
+258
+00:16:06,600 --> 00:16:06,950
+Yes?
+
+259
+00:16:06,950 --> 00:16:10,450
+AUDIENCE: Could you explain
+that third form?
+
+260
+00:16:10,450 --> 00:16:12,590
+PROFESSOR: This one?
+
+261
+00:16:12,590 --> 00:16:15,280
+Well, maybe we should look
+at the thing as a
+
+262
+00:16:15,280 --> 00:16:18,570
+piece of list structure.
+
+263
+00:16:18,570 --> 00:16:22,400
+This is a procedure which
+contains a lambda.
+
+264
+00:16:22,400 --> 00:16:25,970
+
+
+265
+00:16:25,970 --> 00:16:27,110
+I'm just looking at
+the list structure
+
+266
+00:16:27,110 --> 00:16:31,090
+which represents this.
+
+267
+00:16:31,090 --> 00:16:32,730
+Here's x.
+
+268
+00:16:32,730 --> 00:16:33,980
+These are our symbols.
+
+269
+00:16:33,980 --> 00:16:37,410
+
+
+270
+00:16:37,410 --> 00:16:39,580
+And then the body is
+nothing but x.
+
+271
+00:16:39,580 --> 00:16:44,840
+
+
+272
+00:16:44,840 --> 00:16:48,040
+If I were looking for the bound
+variable list part of
+
+273
+00:16:48,040 --> 00:16:52,400
+this procedure, I would go
+looking at the CADR, and I'd
+
+274
+00:16:52,400 --> 00:16:54,010
+find a symbol.
+
+275
+00:16:54,010 --> 00:16:56,750
+So the, naturally, which is
+this pairup thing I just
+
+276
+00:16:56,750 --> 00:17:01,570
+showed you, is going to be
+matching a symbolic object
+
+277
+00:17:01,570 --> 00:17:05,760
+against a list of arguments
+that were passed.
+
+278
+00:17:05,760 --> 00:17:09,559
+And it will bind that symbol
+to the list of arguments.
+
+279
+00:17:09,559 --> 00:17:13,910
+
+
+280
+00:17:13,910 --> 00:17:18,560
+In this case, if I'm looking
+for it, the match will be
+
+281
+00:17:18,560 --> 00:17:20,920
+against this in the bound
+variable list position.
+
+282
+00:17:20,920 --> 00:17:24,140
+
+
+283
+00:17:24,140 --> 00:17:27,020
+Now, if what this does is it
+gets a list of arguments and
+
+284
+00:17:27,020 --> 00:17:31,450
+returns it, that's list. That's
+what the procedure is.
+
+285
+00:17:31,450 --> 00:17:34,510
+
+
+286
+00:17:34,510 --> 00:17:36,140
+Oh well, thank you.
+
+287
+00:17:36,140 --> 00:17:37,830
+Let's take a break.
+
+288
+00:17:37,830 --> 00:18:20,358
+[MUSIC PLAYING]
+
+289
+00:18:20,358 --> 00:18:23,260
+PROFESSOR: Well let's see.
+
+290
+00:18:23,260 --> 00:18:24,760
+Now, I'm going to tell you
+about a rather more
+
+291
+00:18:24,760 --> 00:18:32,440
+substantial variation, one
+that's a famous variation that
+
+292
+00:18:32,440 --> 00:18:38,250
+many early Lisps had.
+
+293
+00:18:38,250 --> 00:18:41,770
+It's called dynamic binding
+of variables.
+
+294
+00:18:41,770 --> 00:18:44,680
+And we'll investigate a little
+bit about that right now.
+
+295
+00:18:44,680 --> 00:18:47,620
+
+
+296
+00:18:47,620 --> 00:18:49,710
+I'm going to first introduce
+this by showing you the sort
+
+297
+00:18:49,710 --> 00:18:53,740
+of thing that would make
+someone want this idea.
+
+298
+00:18:53,740 --> 00:18:56,680
+I'm not going to tell what it is
+yet, I'm going to show you
+
+299
+00:18:56,680 --> 00:18:58,640
+why you might want it.
+
+300
+00:18:58,640 --> 00:19:02,100
+Suppose, for example, we looked
+at the sum procedure
+
+301
+00:19:02,100 --> 00:19:08,140
+again for summing up
+a bunch of things.
+
+302
+00:19:08,140 --> 00:19:15,860
+To be that procedure, of a term,
+lower bound, method of
+
+303
+00:19:15,860 --> 00:19:25,560
+computing the next index, and
+upper bound, such that, if a
+
+304
+00:19:25,560 --> 00:19:34,020
+is greater than b then the
+result is 0, otherwise, it's
+
+305
+00:19:34,020 --> 00:19:40,680
+the sum, of the term, procedure,
+applied to a and
+
+306
+00:19:40,680 --> 00:19:51,925
+the result of adding up, terms,
+with the next a being
+
+307
+00:19:51,925 --> 00:20:06,970
+the a, the next procedure passed
+along, and the upper
+
+308
+00:20:06,970 --> 00:20:08,220
+bound being passed along.
+
+309
+00:20:08,220 --> 00:20:14,510
+
+
+310
+00:20:14,510 --> 00:20:15,760
+Blink, blink, blink--
+
+311
+00:20:15,760 --> 00:20:18,900
+
+
+312
+00:20:18,900 --> 00:20:23,350
+Now, when I use this sum
+procedure, I can use it, for
+
+313
+00:20:23,350 --> 00:20:25,450
+example, like this.
+
+314
+00:20:25,450 --> 00:20:38,680
+We can define the sum of the
+powers to be, for example, sum
+
+315
+00:20:38,680 --> 00:20:43,240
+of a bunch of powers x to the
+n, to be that procedure
+
+316
+00:20:43,240 --> 00:20:45,970
+of a, b, and n--
+
+317
+00:20:45,970 --> 00:20:48,150
+lower bound, the upper
+bound, and n--
+
+318
+00:20:48,150 --> 00:20:54,530
+which is sum, of lambda of x,
+the procedure of one argument
+
+319
+00:20:54,530 --> 00:21:05,720
+x, which exponentiates x to
+the n, with the a, the
+
+320
+00:21:05,720 --> 00:21:11,440
+incrementer, and b, being
+passed along.
+
+321
+00:21:11,440 --> 00:21:16,340
+So we're adding up x
+to n, given an x.
+
+322
+00:21:16,340 --> 00:21:19,740
+x takes on values from a to
+b, incrementing by one.
+
+323
+00:21:19,740 --> 00:21:22,940
+
+
+324
+00:21:22,940 --> 00:21:24,300
+I can also write the--
+
+325
+00:21:24,300 --> 00:21:27,670
+
+
+326
+00:21:27,670 --> 00:21:29,780
+That's right.
+
+327
+00:21:29,780 --> 00:21:31,910
+Product, excuse me.
+
+328
+00:21:31,910 --> 00:21:33,220
+The product of a bunch
+of powers.
+
+329
+00:21:33,220 --> 00:21:38,080
+
+
+330
+00:21:38,080 --> 00:21:40,020
+It's a strange name.
+
+331
+00:21:40,020 --> 00:21:41,960
+I'm going to leave it there.
+
+332
+00:21:41,960 --> 00:21:43,210
+Weird--
+
+333
+00:21:43,210 --> 00:21:45,760
+
+
+334
+00:21:45,760 --> 00:21:50,890
+I write up what I have.
+I'm sure that's right.
+
+335
+00:21:50,890 --> 00:21:53,720
+And if I want the product
+of a bunch of powers--
+
+336
+00:21:53,720 --> 00:21:58,630
+
+
+337
+00:21:58,630 --> 00:22:03,400
+That was 12 brain cells,
+that double-take.
+
+338
+00:22:03,400 --> 00:22:06,890
+I can for example use the
+procedure which is like sum,
+
+339
+00:22:06,890 --> 00:22:10,080
+which is for making products,
+but it's similar to that, that
+
+340
+00:22:10,080 --> 00:22:11,450
+you've seen before.
+
+341
+00:22:11,450 --> 00:22:16,725
+There's a procedure of three
+arguments again.
+
+342
+00:22:16,725 --> 00:22:24,080
+Which is the product of terms
+that are constructed, or
+
+343
+00:22:24,080 --> 00:22:26,480
+factors in this case,
+constructed from
+
+344
+00:22:26,480 --> 00:22:35,970
+exponentiating x to the n,
+where I start with a, I
+
+345
+00:22:35,970 --> 00:22:37,850
+increment, and I go to b.
+
+346
+00:22:37,850 --> 00:22:41,530
+
+
+347
+00:22:41,530 --> 00:22:48,690
+Now, there's some sort of thing
+here that should disturb
+
+348
+00:22:48,690 --> 00:22:50,750
+you immediately.
+
+349
+00:22:50,750 --> 00:22:53,180
+These look the same.
+
+350
+00:22:53,180 --> 00:22:56,590
+Why am I writing this
+code so many times?
+
+351
+00:22:56,590 --> 00:23:01,270
+Here I am, in the same boat
+I've been in before.
+
+352
+00:23:01,270 --> 00:23:03,810
+Wouldn't it be nice to make
+an abstraction here?
+
+353
+00:23:03,810 --> 00:23:05,980
+What's an example of a good
+abstraction to make?
+
+354
+00:23:05,980 --> 00:23:08,470
+Well, I see some codes
+that's identical.
+
+355
+00:23:08,470 --> 00:23:11,080
+Here's one, and here's
+another.
+
+356
+00:23:11,080 --> 00:23:14,450
+
+
+357
+00:23:14,450 --> 00:23:17,090
+And so maybe I should be
+able to pull that out.
+
+358
+00:23:17,090 --> 00:23:21,580
+I should be able to say, oh
+yes, the sum of the powers
+
+359
+00:23:21,580 --> 00:23:23,350
+could be written in terms
+of something called
+
+360
+00:23:23,350 --> 00:23:25,710
+the nth power procedure.
+
+361
+00:23:25,710 --> 00:23:28,690
+Imagine somebody wanted to write
+a slightly different
+
+362
+00:23:28,690 --> 00:23:30,030
+procedure that looks
+like this.
+
+363
+00:23:30,030 --> 00:23:37,630
+
+
+364
+00:23:37,630 --> 00:23:49,300
+The sum powers to be a procedure
+of a, b, and n, as
+
+365
+00:23:49,300 --> 00:23:53,556
+the result of summing
+up the nth power.
+
+366
+00:23:53,556 --> 00:23:59,720
+We're going to give a name to
+that idea, for starting at a,
+
+367
+00:23:59,720 --> 00:24:02,170
+going by one, and ending at b.
+
+368
+00:24:02,170 --> 00:24:06,000
+
+
+369
+00:24:06,000 --> 00:24:12,480
+And similarly, I might want to
+write the product powers this
+
+370
+00:24:12,480 --> 00:24:16,270
+way, abstracting
+out this idea.
+
+371
+00:24:16,270 --> 00:24:17,520
+I might want this.
+
+372
+00:24:17,520 --> 00:24:22,100
+
+
+373
+00:24:22,100 --> 00:24:35,350
+Product powers, to be a
+procedure of a, b, and n,
+
+374
+00:24:35,350 --> 00:24:47,540
+which is the product of the nth
+power operation on a with
+
+375
+00:24:47,540 --> 00:24:56,380
+the incrementation and b being
+my arguments for the
+
+376
+00:24:56,380 --> 00:24:58,380
+analogous-thing product.
+
+377
+00:24:58,380 --> 00:25:02,840
+And I'd like to be able to
+define, I'd like to be able to
+
+378
+00:25:02,840 --> 00:25:04,680
+define nth power--
+
+379
+00:25:04,680 --> 00:25:05,930
+I'll put it over here.
+
+380
+00:25:05,930 --> 00:25:11,215
+
+
+381
+00:25:11,215 --> 00:25:12,990
+I'll put it at the top.
+
+382
+00:25:12,990 --> 00:25:25,410
+
+
+383
+00:25:25,410 --> 00:25:30,630
+--to be, in fact, my procedure
+of one argument x which is the
+
+384
+00:25:30,630 --> 00:25:35,390
+result of exponentiating
+x to the n.
+
+385
+00:25:35,390 --> 00:25:38,640
+But I have a problem.
+
+386
+00:25:38,640 --> 00:25:44,160
+My environment model, that is my
+means of interpretation for
+
+387
+00:25:44,160 --> 00:25:47,010
+the language that we've defined
+so far, does not give
+
+388
+00:25:47,010 --> 00:25:48,810
+me a meaning for this n.
+
+389
+00:25:48,810 --> 00:25:52,520
+
+
+390
+00:25:52,520 --> 00:26:06,410
+Because, as you know, this n
+is free in this procedure.
+
+391
+00:26:06,410 --> 00:26:09,600
+The environment model tells us
+that the meaning of a free
+
+392
+00:26:09,600 --> 00:26:13,760
+variable is determined in the
+environment in which this
+
+393
+00:26:13,760 --> 00:26:16,640
+procedure is defined.
+
+394
+00:26:16,640 --> 00:26:18,120
+In a way I have written it,
+assuming these things are
+
+395
+00:26:18,120 --> 00:26:22,830
+defined on the blackboard as
+is, this is defined in the
+
+396
+00:26:22,830 --> 00:26:25,850
+global environment, where
+there is no end.
+
+397
+00:26:25,850 --> 00:26:28,720
+Therefore, n is unbound
+variable.
+
+398
+00:26:28,720 --> 00:26:33,390
+But it's perfectly clear, to
+most of us, that we would like
+
+399
+00:26:33,390 --> 00:26:36,220
+it to be this n and this n.
+
+400
+00:26:36,220 --> 00:26:38,990
+
+
+401
+00:26:38,990 --> 00:26:42,840
+On the other hand,
+it would be nice.
+
+402
+00:26:42,840 --> 00:26:45,290
+Certainly we've got to be
+careful here of keeping this
+
+403
+00:26:45,290 --> 00:26:51,005
+to be this, and this one
+over here, wherever it
+
+404
+00:26:51,005 --> 00:26:52,900
+is to be this one.
+
+405
+00:26:52,900 --> 00:26:57,390
+
+
+406
+00:26:57,390 --> 00:27:01,360
+Well, the desire to make
+this work has led to
+
+407
+00:27:01,360 --> 00:27:04,040
+a very famous bug.
+
+408
+00:27:04,040 --> 00:27:07,310
+I'll tell you about
+the famous bug.
+
+409
+00:27:07,310 --> 00:27:10,660
+Look at this slide.
+
+410
+00:27:10,660 --> 00:27:13,990
+This is an idea called
+dynamic binding.
+
+411
+00:27:13,990 --> 00:27:17,980
+Where, instead of the free
+variable being interpreted in
+
+412
+00:27:17,980 --> 00:27:22,820
+the environment of definition
+of a procedure, the free
+
+413
+00:27:22,820 --> 00:27:25,770
+variable is interpreted as
+having its value in the
+
+414
+00:27:25,770 --> 00:27:29,125
+environment of the caller
+of the procedure.
+
+415
+00:27:29,125 --> 00:27:31,850
+
+
+416
+00:27:31,850 --> 00:27:36,680
+So what you have is a system
+where you search up the chain
+
+417
+00:27:36,680 --> 00:27:41,990
+of callers of a particular
+procedure, and, of course, in
+
+418
+00:27:41,990 --> 00:27:45,240
+this case, since nth power is
+called from inside product
+
+419
+00:27:45,240 --> 00:27:46,010
+whatever it is--
+
+420
+00:27:46,010 --> 00:27:48,140
+I had to write our own sum
+which is the analogous
+
+421
+00:27:48,140 --> 00:27:50,530
+procedure--
+
+422
+00:27:50,530 --> 00:27:55,300
+and product is presumably called
+from product powers, as
+
+423
+00:27:55,300 --> 00:27:58,490
+you see over here, then since
+product powers bind with
+
+424
+00:27:58,490 --> 00:28:03,220
+variable n , then nth powers
+n would be derived
+
+425
+00:28:03,220 --> 00:28:04,470
+through that chain.
+
+426
+00:28:04,470 --> 00:28:08,140
+
+
+427
+00:28:08,140 --> 00:28:12,600
+Similarly, this n, the nth power
+in n in this case, would
+
+428
+00:28:12,600 --> 00:28:15,800
+come through nth power here
+being called from inside sum.
+
+429
+00:28:15,800 --> 00:28:19,730
+You can see it being called
+from inside sum here.
+
+430
+00:28:19,730 --> 00:28:22,900
+It's called term here.
+
+431
+00:28:22,900 --> 00:28:28,930
+But sum was called from inside
+of sum powers, which bound n.
+
+432
+00:28:28,930 --> 00:28:35,245
+Therefore, there would be an n
+available for that n to get
+
+433
+00:28:35,245 --> 00:28:36,495
+it's value from.
+
+434
+00:28:36,495 --> 00:28:39,430
+
+
+435
+00:28:39,430 --> 00:28:43,630
+What we have below this white
+line plus over here, is what's
+
+436
+00:28:43,630 --> 00:28:46,540
+called a dynamic binding
+view of the world.
+
+437
+00:28:46,540 --> 00:28:50,850
+If that works, that's a
+dynamic binding view.
+
+438
+00:28:50,850 --> 00:28:55,310
+Now, let's take a look, for
+example, at just what it takes
+
+439
+00:28:55,310 --> 00:28:55,990
+to implement that.
+
+440
+00:28:55,990 --> 00:28:57,480
+That's real easy.
+
+441
+00:28:57,480 --> 00:29:01,400
+In fact, the very first Lisps
+that had any interpretations
+
+442
+00:29:01,400 --> 00:29:04,440
+of the free variables at all,
+had dynamic binding
+
+443
+00:29:04,440 --> 00:29:06,490
+interpretations for the
+free variables.
+
+444
+00:29:06,490 --> 00:29:09,570
+APL has dynamic binding
+interpretation for the free
+
+445
+00:29:09,570 --> 00:29:15,220
+variables, not lexical
+or static binding.
+
+446
+00:29:15,220 --> 00:29:18,790
+So, of course, the change
+is in eval.
+
+447
+00:29:18,790 --> 00:29:22,780
+And it's really in two places.
+
+448
+00:29:22,780 --> 00:29:27,760
+First of all, one thing we see,
+is that things become a
+
+449
+00:29:27,760 --> 00:29:29,010
+little simpler.
+
+450
+00:29:29,010 --> 00:29:32,460
+
+
+451
+00:29:32,460 --> 00:29:34,930
+If I don't have to have the
+environment be the environment
+
+452
+00:29:34,930 --> 00:29:38,490
+of definition for procedure, the
+procedure need not capture
+
+453
+00:29:38,490 --> 00:29:42,030
+the environment at the
+time it's defined.
+
+454
+00:29:42,030 --> 00:29:47,900
+And so if we look here at this
+slide, we see that the clause
+
+455
+00:29:47,900 --> 00:29:51,890
+for a lambda expression, which
+is the way a procedure is
+
+456
+00:29:51,890 --> 00:29:57,820
+defined, does not make up a
+thing which has a type closure
+
+457
+00:29:57,820 --> 00:30:01,290
+and a attached environment
+structure.
+
+458
+00:30:01,290 --> 00:30:02,540
+It's just the expression
+itself.
+
+459
+00:30:02,540 --> 00:30:06,440
+And we'll decompose that some
+other way somewhere else.
+
+460
+00:30:06,440 --> 00:30:12,210
+The other thing we see is the
+applicator must be able to get
+
+461
+00:30:12,210 --> 00:30:14,290
+the environment of the caller.
+
+462
+00:30:14,290 --> 00:30:19,560
+The caller of a procedure
+is right here.
+
+463
+00:30:19,560 --> 00:30:22,810
+If the expression we're
+evaluating is anpplication or
+
+464
+00:30:22,810 --> 00:30:25,680
+a combination, then we're going
+to call a procedure
+
+465
+00:30:25,680 --> 00:30:26,980
+which is the value
+of the operator.
+
+466
+00:30:26,980 --> 00:30:29,840
+
+
+467
+00:30:29,840 --> 00:30:33,100
+The environment of the caller
+is the environment we have
+
+468
+00:30:33,100 --> 00:30:35,890
+right here, available now.
+
+469
+00:30:35,890 --> 00:30:38,570
+So all I have to do is pass
+that environment to the
+
+470
+00:30:38,570 --> 00:30:41,490
+applicator, to apply.
+
+471
+00:30:41,490 --> 00:30:44,680
+And if we look at that here,
+the only change we have to
+
+472
+00:30:44,680 --> 00:30:49,720
+make is that fellow takes that
+environment and uses that
+
+473
+00:30:49,720 --> 00:30:57,240
+environment for the purpose of
+extending that environment
+
+474
+00:30:57,240 --> 00:31:00,100
+when abiding the formal
+parameters of the procedure to
+
+475
+00:31:00,100 --> 00:31:04,560
+the arguments that were passed,
+not an environment
+
+476
+00:31:04,560 --> 00:31:06,810
+that was captured in
+the procedure.
+
+477
+00:31:06,810 --> 00:31:09,780
+The reason why the first Lisps
+were implemented this way, is
+
+478
+00:31:09,780 --> 00:31:14,130
+the sort of the obvious,
+accidental implementation.
+
+479
+00:31:14,130 --> 00:31:15,990
+And, of course, as usual,
+people got used to
+
+480
+00:31:15,990 --> 00:31:17,250
+it and liked it.
+
+481
+00:31:17,250 --> 00:31:18,730
+And there were some people
+said, this is
+
+482
+00:31:18,730 --> 00:31:21,590
+the way to do it.
+
+483
+00:31:21,590 --> 00:31:25,870
+Unfortunately that causes some
+serious problems. The most
+
+484
+00:31:25,870 --> 00:31:31,240
+important, serious problem in
+using dynamic binding is
+
+485
+00:31:31,240 --> 00:31:35,460
+there's a modularity crisis
+that's involved it.
+
+486
+00:31:35,460 --> 00:31:38,370
+If two people are working
+together on some big system,
+
+487
+00:31:38,370 --> 00:31:41,580
+then an important thing to want
+is that the names used by
+
+488
+00:31:41,580 --> 00:31:44,580
+each one don't interfere with
+the names of the other.
+
+489
+00:31:44,580 --> 00:31:47,930
+
+
+490
+00:31:47,930 --> 00:31:51,060
+It's important that when I
+invent some segment of code
+
+491
+00:31:51,060 --> 00:31:54,985
+that no one can make my code
+stop working by using my names
+
+492
+00:31:54,985 --> 00:31:59,850
+that I use internal to my code,
+internal to his code.
+
+493
+00:31:59,850 --> 00:32:03,140
+However, dynamic binding
+violates that particular
+
+494
+00:32:03,140 --> 00:32:06,670
+modularity constraint
+in a clear way.
+
+495
+00:32:06,670 --> 00:32:12,540
+Consider, for example, what
+happens over here.
+
+496
+00:32:12,540 --> 00:32:17,590
+Suppose it was the case
+that I decided to
+
+497
+00:32:17,590 --> 00:32:19,810
+change the word next.
+
+498
+00:32:19,810 --> 00:32:25,870
+Supposing somebody is writing
+sum, and somebody else is
+
+499
+00:32:25,870 --> 00:32:28,970
+going to use sum.
+
+500
+00:32:28,970 --> 00:32:33,790
+The writer of sum has a choice
+of what names he may use.
+
+501
+00:32:33,790 --> 00:32:36,760
+Let's say, I'm that writer.
+
+502
+00:32:36,760 --> 00:32:39,300
+Well, by gosh, just happens I
+didn't want to call this next.
+
+503
+00:32:39,300 --> 00:32:41,500
+I called it n.
+
+504
+00:32:41,500 --> 00:32:48,140
+So all places where you see
+next, I called it n.
+
+505
+00:32:48,140 --> 00:32:49,940
+Whoops.
+
+506
+00:32:49,940 --> 00:32:51,700
+I changed nothing about the
+specifications of this
+
+507
+00:32:51,700 --> 00:32:56,110
+program, but this program
+stops working.
+
+508
+00:32:56,110 --> 00:32:59,730
+Not only that, unfortunately,
+this one does too.
+
+509
+00:32:59,730 --> 00:33:02,260
+Why do these programs
+stop working?
+
+510
+00:33:02,260 --> 00:33:04,480
+Well, it's sort of clear.
+
+511
+00:33:04,480 --> 00:33:09,890
+Instead of chasing out the value
+of the n that occurs in
+
+512
+00:33:09,890 --> 00:33:16,450
+nth power over here or over
+here, through the environment
+
+513
+00:33:16,450 --> 00:33:19,940
+of definition, where this one is
+always linked to this one,
+
+514
+00:33:19,940 --> 00:33:21,660
+if it was through the
+environment of definition,
+
+515
+00:33:21,660 --> 00:33:24,370
+because here is the
+definition.
+
+516
+00:33:24,370 --> 00:33:27,320
+This lambda expression was
+executed in the environment
+
+517
+00:33:27,320 --> 00:33:30,700
+where that n was defined.
+
+518
+00:33:30,700 --> 00:33:33,150
+If instead of doing that, I have
+to chase through the call
+
+519
+00:33:33,150 --> 00:33:37,320
+chain, then look what horrible
+thing happens.
+
+520
+00:33:37,320 --> 00:33:44,780
+Well, this was called from
+inside sum as term, term a.
+
+521
+00:33:44,780 --> 00:33:47,350
+I'm looking for a value of n.
+
+522
+00:33:47,350 --> 00:33:50,700
+Instead of getting this
+one, I get that one.
+
+523
+00:33:50,700 --> 00:33:53,430
+So by changing the insides of
+this program, this program
+
+524
+00:33:53,430 --> 00:33:54,680
+stops working.
+
+525
+00:33:54,680 --> 00:33:56,770
+
+
+526
+00:33:56,770 --> 00:33:58,770
+So I no longer have
+a quantifier,
+
+527
+00:33:58,770 --> 00:34:00,020
+as I described before.
+
+528
+00:34:00,020 --> 00:34:02,700
+
+
+529
+00:34:02,700 --> 00:34:05,430
+The lambda symbol is supposed
+to be a quantifier.
+
+530
+00:34:05,430 --> 00:34:09,650
+A thing which has the property
+that the names that are bound
+
+531
+00:34:09,650 --> 00:34:14,739
+by it are unimportant, that I
+can uniformly substitute any
+
+532
+00:34:14,739 --> 00:34:18,230
+names for these throughout this
+thing, so long as they
+
+533
+00:34:18,230 --> 00:34:21,699
+don't occur in here, the new
+names, and the meaning of this
+
+534
+00:34:21,699 --> 00:34:24,040
+expression should remain
+unchanged.
+
+535
+00:34:24,040 --> 00:34:26,050
+I've just changed the meaning of
+the expression by changing
+
+536
+00:34:26,050 --> 00:34:28,690
+the one of the names.
+
+537
+00:34:28,690 --> 00:34:32,170
+So lambda is no longer
+a well defined idea.
+
+538
+00:34:32,170 --> 00:34:34,550
+It's a very serious problem.
+
+539
+00:34:34,550 --> 00:34:40,850
+So for that reason, I and my
+buddies have given up this
+
+540
+00:34:40,850 --> 00:34:43,650
+particular kind of abstraction,
+which I would
+
+541
+00:34:43,650 --> 00:34:48,090
+like to have, in favor of
+a modularity principle.
+
+542
+00:34:48,090 --> 00:34:52,310
+But this is the kind of
+experiment you can do if you
+
+543
+00:34:52,310 --> 00:34:54,530
+want to play with these
+interpreters.
+
+544
+00:34:54,530 --> 00:34:58,270
+You can try them out this way,
+that way, and the other way.
+
+545
+00:34:58,270 --> 00:35:00,070
+You see what makes
+a nicer language.
+
+546
+00:35:00,070 --> 00:35:02,680
+
+
+547
+00:35:02,680 --> 00:35:04,990
+So that's a very important
+thing to be able to do.
+
+548
+00:35:04,990 --> 00:35:07,260
+Now, I would like to give you
+a feeling for I think the
+
+549
+00:35:07,260 --> 00:35:10,880
+right thing to do is here.
+
+550
+00:35:10,880 --> 00:35:14,190
+How are you going to I get
+this kind of power in a
+
+551
+00:35:14,190 --> 00:35:16,280
+lexical system?
+
+552
+00:35:16,280 --> 00:35:18,610
+And the answer is, of course,
+what I really want is a
+
+553
+00:35:18,610 --> 00:35:21,790
+something that makes up for
+me an exponentiator for a
+
+554
+00:35:21,790 --> 00:35:23,690
+particular n.
+
+555
+00:35:23,690 --> 00:35:26,280
+Given an n, it will make
+me an exponentiator.
+
+556
+00:35:26,280 --> 00:35:28,170
+Oh, but that's easy too.
+
+557
+00:35:28,170 --> 00:35:30,570
+In other words, I can write
+my program this way.
+
+558
+00:35:30,570 --> 00:35:35,450
+
+
+559
+00:35:35,450 --> 00:35:40,720
+I'm going to define a thing
+called PGEN, which is a
+
+560
+00:35:40,720 --> 00:35:45,240
+procedure of n which produces
+for me an exponentiator.
+
+561
+00:35:45,240 --> 00:35:50,240
+
+
+562
+00:35:50,240 --> 00:35:51,490
+--x to the n.
+
+563
+00:35:51,490 --> 00:35:56,900
+
+
+564
+00:35:56,900 --> 00:36:00,310
+Given that I have that, then I
+can capture the abstraction I
+
+565
+00:36:00,310 --> 00:36:04,090
+wanted even better, because now
+it's encapsulated in a way
+
+566
+00:36:04,090 --> 00:36:07,890
+where I can't be destroyed
+by a change of names.
+
+567
+00:36:07,890 --> 00:36:20,200
+I can define some powers to be a
+procedure again of a, b, and
+
+568
+00:36:20,200 --> 00:36:28,070
+n which is the sum of the term
+function generated by using
+
+569
+00:36:28,070 --> 00:36:37,590
+this generator, PGEN, n, with
+a, incrementer, and b.
+
+570
+00:36:37,590 --> 00:36:42,490
+
+
+571
+00:36:42,490 --> 00:36:57,100
+And I can define the product of
+powers to be a procedure of
+
+572
+00:36:57,100 --> 00:37:09,010
+a, b, and n which is the product
+PGEN, n, with a,
+
+573
+00:37:09,010 --> 00:37:11,150
+increment, and b.
+
+574
+00:37:11,150 --> 00:37:14,340
+Now, of course, this is a very
+simple example where this
+
+575
+00:37:14,340 --> 00:37:17,280
+object that I'm trying to
+abstract over is small.
+
+576
+00:37:17,280 --> 00:37:20,100
+But it could be a 100
+lines of code.
+
+577
+00:37:20,100 --> 00:37:22,350
+And so, the purpose
+of this is, of
+
+578
+00:37:22,350 --> 00:37:23,670
+course, to make it simple.
+
+579
+00:37:23,670 --> 00:37:25,630
+I'd give a name to it, it's
+just that here it's a
+
+580
+00:37:25,630 --> 00:37:28,200
+parameterized name.
+
+581
+00:37:28,200 --> 00:37:31,460
+It's a name that depends upon,
+explicitly, the lexically
+
+582
+00:37:31,460 --> 00:37:34,050
+apparent value of n.
+
+583
+00:37:34,050 --> 00:37:37,130
+
+
+584
+00:37:37,130 --> 00:37:40,210
+So you can think of this
+as a long name.
+
+585
+00:37:40,210 --> 00:37:45,150
+And here, I've solved my problem
+by naming the term
+
+586
+00:37:45,150 --> 00:37:49,220
+generation procedures
+within an n in them.
+
+587
+00:37:49,220 --> 00:37:55,080
+
+
+588
+00:37:55,080 --> 00:37:57,140
+Are there any questions?
+
+589
+00:37:57,140 --> 00:37:58,380
+Oh, yes, David.
+
+590
+00:37:58,380 --> 00:38:04,820
+AUDIENCE: Is the only solution
+to the problem you raise to
+
+591
+00:38:04,820 --> 00:38:06,470
+create another procedure?
+
+592
+00:38:06,470 --> 00:38:09,020
+In other words, can this only
+work in languages that are
+
+593
+00:38:09,020 --> 00:38:12,402
+capable of defining objects
+as procedures?
+
+594
+00:38:12,402 --> 00:38:13,765
+PROFESSOR: Oh, I see.
+
+595
+00:38:13,765 --> 00:38:16,530
+
+
+596
+00:38:16,530 --> 00:38:20,530
+My solution to making this
+abstraction, when I didn't
+
+597
+00:38:20,530 --> 00:38:23,950
+want include the procedure
+inside the body, depends upon
+
+598
+00:38:23,950 --> 00:38:28,190
+my ability to return a procedure
+or export one.
+
+599
+00:38:28,190 --> 00:38:30,410
+And that's right.
+
+600
+00:38:30,410 --> 00:38:33,550
+If I don't have that, then I
+just don't have this ability
+
+601
+00:38:33,550 --> 00:38:39,490
+to make an abstraction in
+a way where I don't have
+
+602
+00:38:39,490 --> 00:38:40,930
+possibilities of symbol
+conflicts that were
+
+603
+00:38:40,930 --> 00:38:43,000
+unanticipated.
+
+604
+00:38:43,000 --> 00:38:45,610
+That's right.
+
+605
+00:38:45,610 --> 00:38:52,690
+I consider being able to return
+the procedural value
+
+606
+00:38:52,690 --> 00:38:57,780
+and, therefore, to sort of have
+first class procedures,
+
+607
+00:38:57,780 --> 00:39:01,840
+in general, as being essential
+to doing very good modular
+
+608
+00:39:01,840 --> 00:39:03,700
+programming.
+
+609
+00:39:03,700 --> 00:39:07,440
+Now, indeed there are many other
+ways to skin this cat.
+
+610
+00:39:07,440 --> 00:39:10,500
+What you can do is take for each
+of the bad things that
+
+611
+00:39:10,500 --> 00:39:13,420
+you have to worry about, you
+can make a special feature
+
+612
+00:39:13,420 --> 00:39:15,840
+that covers that thing.
+
+613
+00:39:15,840 --> 00:39:17,930
+You can make a package system.
+
+614
+00:39:17,930 --> 00:39:22,240
+You can make a module system
+as in Ada, et cetera.
+
+615
+00:39:22,240 --> 00:39:26,440
+And all of those work, or they
+cover little regions of it.
+
+616
+00:39:26,440 --> 00:39:28,820
+The thing is that returning
+procedures as values cover all
+
+617
+00:39:28,820 --> 00:39:35,820
+of those problems. And so it's
+the simplest mechanism that
+
+618
+00:39:35,820 --> 00:39:40,110
+gives you the best modularity,
+gives you all of the known
+
+619
+00:39:40,110 --> 00:39:45,590
+modularity mechanisms.
+
+620
+00:39:45,590 --> 00:39:48,248
+Well, I suppose it's time for
+the next break, thank you.
+
+621
+00:39:48,248 --> 00:40:41,871
+[MUSIC PLAYING]
+
+622
+00:40:41,871 --> 00:40:43,690
+PROFESSOR: Well, yesterday
+when you learned about
+
+623
+00:40:43,690 --> 00:40:52,110
+streams, Hal worried to you
+about the order of evaluation
+
+624
+00:40:52,110 --> 00:40:55,420
+and delayed arguments
+to procedures.
+
+625
+00:40:55,420 --> 00:41:00,620
+The way we played with streams
+yesterday, it was the
+
+626
+00:41:00,620 --> 00:41:07,170
+responsibility of the caller and
+the callee to both agree
+
+627
+00:41:07,170 --> 00:41:12,180
+that an argument was delayed,
+and the callee must force the
+
+628
+00:41:12,180 --> 00:41:15,250
+argument if it needs
+the answer.
+
+629
+00:41:15,250 --> 00:41:18,400
+So there had to be a lot of
+hand shaking between the
+
+630
+00:41:18,400 --> 00:41:26,100
+designer of a procedure and user
+of it over delayedness.
+
+631
+00:41:26,100 --> 00:41:29,670
+That turns out, of course, to
+be a fairly bad thing, it
+
+632
+00:41:29,670 --> 00:41:33,120
+works all right with streams.
+But as a general thing, what
+
+633
+00:41:33,120 --> 00:41:37,520
+you want is an idea to have a
+locus, a decision, a design
+
+634
+00:41:37,520 --> 00:41:40,580
+decision in general, to have
+a place where it's made,
+
+635
+00:41:40,580 --> 00:41:45,900
+explicitly, and notated
+in a clear way.
+
+636
+00:41:45,900 --> 00:41:48,780
+And so it's not a very good
+idea to have to have an
+
+637
+00:41:48,780 --> 00:41:52,670
+agreement, between the person
+who writes a procedure and the
+
+638
+00:41:52,670 --> 00:41:56,730
+person who calls it, about such
+details as, maybe, the
+
+639
+00:41:56,730 --> 00:41:59,500
+arguments of evaluation, the
+order of evaluation.
+
+640
+00:41:59,500 --> 00:42:00,750
+Although, that's not so bad.
+
+641
+00:42:00,750 --> 00:42:02,920
+I mean, we have other such
+agreements like,
+
+642
+00:42:02,920 --> 00:42:04,540
+the input's a number.
+
+643
+00:42:04,540 --> 00:42:07,650
+But it would be nice if only one
+of these guys could take
+
+644
+00:42:07,650 --> 00:42:11,020
+responsibility, completely.
+
+645
+00:42:11,020 --> 00:42:15,510
+Now this is not a new idea.
+
+646
+00:42:15,510 --> 00:42:22,020
+ALGOL 60 had two different ways
+of calling a procedure.
+
+647
+00:42:22,020 --> 00:42:25,590
+The arguments could be passed
+by name or by value.
+
+648
+00:42:25,590 --> 00:42:31,110
+And what that meant was that a
+name argument was delayed.
+
+649
+00:42:31,110 --> 00:42:34,020
+That when you passed an argument
+by name, that its
+
+650
+00:42:34,020 --> 00:42:39,620
+value would only be obtained if
+you accessed that argument.
+
+651
+00:42:39,620 --> 00:42:42,290
+
+
+652
+00:42:42,290 --> 00:42:45,870
+So what I'd like to do now is
+show you, first of all, a
+
+653
+00:42:45,870 --> 00:42:48,040
+little bit about, again, we're
+going to make a modification
+
+654
+00:42:48,040 --> 00:42:50,320
+to a language.
+
+655
+00:42:50,320 --> 00:42:53,370
+In this case, we're going
+to add a feature.
+
+656
+00:42:53,370 --> 00:42:56,900
+We're going to add the feature
+of, by name parameters, if you
+
+657
+00:42:56,900 --> 00:43:00,430
+will, or delayed parameters.
+
+658
+00:43:00,430 --> 00:43:05,580
+Because, in fact, the default
+in our Lisp system is by the
+
+659
+00:43:05,580 --> 00:43:08,220
+value of a pointer.
+
+660
+00:43:08,220 --> 00:43:10,530
+A pointer is copied, but
+the data structure it
+
+661
+00:43:10,530 --> 00:43:13,410
+points at is not.
+
+662
+00:43:13,410 --> 00:43:17,580
+But I'd like to, in fact, show
+you is how you add name
+
+663
+00:43:17,580 --> 00:43:19,990
+arguments as well.
+
+664
+00:43:19,990 --> 00:43:23,100
+Now again, why would we
+need such a thing?
+
+665
+00:43:23,100 --> 00:43:26,930
+Well supposing we wanted to
+invent certain kinds of what
+
+666
+00:43:26,930 --> 00:43:29,720
+otherwise would be special
+forms, reserve words?
+
+667
+00:43:29,720 --> 00:43:32,180
+But I'd rather not take
+up reserve words.
+
+668
+00:43:32,180 --> 00:43:36,360
+I want procedures that can
+do things like if.
+
+669
+00:43:36,360 --> 00:43:39,420
+If is special, or cond,
+or whatever it is.
+
+670
+00:43:39,420 --> 00:43:40,600
+It's the same thing.
+
+671
+00:43:40,600 --> 00:43:43,080
+It's special in that it
+determines whether or not to
+
+672
+00:43:43,080 --> 00:43:48,360
+evaluate the consequent or the
+alternative based on the value
+
+673
+00:43:48,360 --> 00:43:50,840
+of the predicate part
+of an expression.
+
+674
+00:43:50,840 --> 00:43:54,230
+So taking the value of one thing
+determines whether or
+
+675
+00:43:54,230 --> 00:43:57,270
+not to do something else.
+
+676
+00:43:57,270 --> 00:44:00,240
+Whereas all the procedures like
+plus, the ones that we
+
+677
+00:44:00,240 --> 00:44:05,900
+can define right now, evaluate
+all of their arguments before
+
+678
+00:44:05,900 --> 00:44:08,670
+application.
+
+679
+00:44:08,670 --> 00:44:11,750
+So, for example, supposing I
+wish to be able to define
+
+680
+00:44:11,750 --> 00:44:19,452
+something like the reverse
+of if in terms of if.
+
+681
+00:44:19,452 --> 00:44:20,702
+Call it unless.
+
+682
+00:44:20,702 --> 00:44:24,890
+
+
+683
+00:44:24,890 --> 00:44:26,760
+We've a predicate, a
+consequent, and an
+
+684
+00:44:26,760 --> 00:44:28,190
+alternative.
+
+685
+00:44:28,190 --> 00:44:30,995
+Now what I would like to sort of
+be able to do is say-- oh,
+
+686
+00:44:30,995 --> 00:44:32,440
+I'll do it in terms of cond.
+
+687
+00:44:32,440 --> 00:44:41,660
+Cond, if not the predicate,
+then take the consequent,
+
+688
+00:44:41,660 --> 00:44:45,350
+otherwise, take the
+alternative.
+
+689
+00:44:45,350 --> 00:44:51,290
+
+
+690
+00:44:51,290 --> 00:44:54,320
+Now, what I'd like this to
+mean, is supposing I do
+
+691
+00:44:54,320 --> 00:44:56,920
+something like this.
+
+692
+00:44:56,920 --> 00:45:05,860
+I'd like this unless say if
+equals one, 0, then the answer
+
+693
+00:45:05,860 --> 00:45:11,350
+is two, otherwise, the quotient
+of one and 0.
+
+694
+00:45:11,350 --> 00:45:15,980
+
+
+695
+00:45:15,980 --> 00:45:20,170
+What I'd like that to mean is
+the result of substituting
+
+696
+00:45:20,170 --> 00:45:23,450
+equal one, 0, and two, and
+the quotient of one, 0
+
+697
+00:45:23,450 --> 00:45:25,580
+for p, c, and a.
+
+698
+00:45:25,580 --> 00:45:28,750
+I'd like that to mean, and this
+is funny, I'd like it to
+
+699
+00:45:28,750 --> 00:45:40,940
+transform into or mean cond
+not equal one, 0, then the
+
+700
+00:45:40,940 --> 00:45:48,910
+result is two, otherwise
+I want it to be the
+
+701
+00:45:48,910 --> 00:45:51,160
+quotient one and 0.
+
+702
+00:45:51,160 --> 00:45:54,480
+
+
+703
+00:45:54,480 --> 00:45:56,210
+Now, you know that if I
+were to type this into
+
+704
+00:45:56,210 --> 00:45:59,970
+Lisp, I'd get a two.
+
+705
+00:45:59,970 --> 00:46:02,910
+There's no problem with that.
+
+706
+00:46:02,910 --> 00:46:05,940
+However, if I were to type this
+into Lisp, because all
+
+707
+00:46:05,940 --> 00:46:09,590
+the arguments are evaluated
+before I start, then I'm going
+
+708
+00:46:09,590 --> 00:46:10,840
+to get an error out of this.
+
+709
+00:46:10,840 --> 00:46:13,380
+
+
+710
+00:46:13,380 --> 00:46:16,130
+So that if the substitutions
+work at all, of course, I
+
+711
+00:46:16,130 --> 00:46:16,880
+would get the right answer.
+
+712
+00:46:16,880 --> 00:46:20,160
+But here's a case where the
+substitutions don't work.
+
+713
+00:46:20,160 --> 00:46:22,920
+
+
+714
+00:46:22,920 --> 00:46:23,860
+I don't get the wrong answer.
+
+715
+00:46:23,860 --> 00:46:24,670
+I get no answer.
+
+716
+00:46:24,670 --> 00:46:25,920
+I get an error.
+
+717
+00:46:25,920 --> 00:46:28,420
+
+
+718
+00:46:28,420 --> 00:46:31,860
+Now, however, I'd like to be
+able to make my definition so
+
+719
+00:46:31,860 --> 00:46:34,270
+that this kind of thing works.
+
+720
+00:46:34,270 --> 00:46:36,010
+What I want to do
+is say something
+
+721
+00:46:36,010 --> 00:46:39,930
+special about c and a.
+
+722
+00:46:39,930 --> 00:46:42,715
+I want them to be delayed
+automatically.
+
+723
+00:46:42,715 --> 00:46:46,300
+
+
+724
+00:46:46,300 --> 00:46:51,520
+I don't want them to be
+evaluated at the time I call.
+
+725
+00:46:51,520 --> 00:46:52,980
+So I'm going to make a
+declaration, and then I'm
+
+726
+00:46:52,980 --> 00:46:55,600
+going to see how to implement
+such a declaration.
+
+727
+00:46:55,600 --> 00:46:58,870
+But again, I want you to say
+to yourself, oh, this is an
+
+728
+00:46:58,870 --> 00:47:02,140
+interesting kluge he's
+adding in here.
+
+729
+00:47:02,140 --> 00:47:05,750
+The piles of kluges make
+a big complicated mess.
+
+730
+00:47:05,750 --> 00:47:08,240
+And is this going to
+foul up something
+
+731
+00:47:08,240 --> 00:47:10,120
+else that might occur.
+
+732
+00:47:10,120 --> 00:47:13,860
+First of all, is it
+syntactically unambiguous?
+
+733
+00:47:13,860 --> 00:47:16,120
+Well, it will be syntactically
+unambiguous with what we've
+
+734
+00:47:16,120 --> 00:47:17,840
+seen so far.
+
+735
+00:47:17,840 --> 00:47:21,670
+But what I'm going to do may,
+in fact, cause trouble.
+
+736
+00:47:21,670 --> 00:47:25,450
+It may be that the thing I had
+will conflict with type
+
+737
+00:47:25,450 --> 00:47:28,700
+declarations I might want to add
+in the future for giving
+
+738
+00:47:28,700 --> 00:47:31,730
+some system, some compiler or
+something, the ability to
+
+739
+00:47:31,730 --> 00:47:34,300
+optimize given the
+types are known.
+
+740
+00:47:34,300 --> 00:47:37,130
+Or it might conflict with other
+types of declarations I
+
+741
+00:47:37,130 --> 00:47:40,570
+might want to make about
+the formal parameters.
+
+742
+00:47:40,570 --> 00:47:44,520
+So I'm not making a general
+mechanism here where I can add
+
+743
+00:47:44,520 --> 00:47:44,925
+declarations.
+
+744
+00:47:44,925 --> 00:47:46,750
+And I would like to be
+able to do that.
+
+745
+00:47:46,750 --> 00:47:51,010
+But I don't want to talk
+about that right now.
+
+746
+00:47:51,010 --> 00:47:53,680
+So here I'm going to do, I'm
+going to build a kluge.
+
+747
+00:47:53,680 --> 00:47:57,050
+
+
+748
+00:47:57,050 --> 00:48:08,770
+So we're going to define
+unless of a predicate--
+
+749
+00:48:08,770 --> 00:48:10,180
+and I'm going to call
+these by name--
+
+750
+00:48:10,180 --> 00:48:12,810
+
+
+751
+00:48:12,810 --> 00:48:14,930
+the consequent, and name
+the alternative.
+
+752
+00:48:14,930 --> 00:48:19,850
+
+
+753
+00:48:19,850 --> 00:48:22,670
+Huh, huh--
+
+754
+00:48:22,670 --> 00:48:25,280
+I got caught in the corner.
+
+755
+00:48:25,280 --> 00:48:31,240
+
+
+756
+00:48:31,240 --> 00:48:37,165
+If not p then the result
+is c, else--
+
+757
+00:48:37,165 --> 00:48:40,110
+
+
+758
+00:48:40,110 --> 00:48:41,360
+that's what I'd like.
+
+759
+00:48:41,360 --> 00:48:44,670
+
+
+760
+00:48:44,670 --> 00:48:49,500
+Where I can explicitly declare
+certain of the parameters to
+
+761
+00:48:49,500 --> 00:48:51,650
+be delayed, to be
+computed later.
+
+762
+00:48:51,650 --> 00:48:55,008
+
+
+763
+00:48:55,008 --> 00:48:57,910
+Now, this is actually a very
+complicated modification to an
+
+764
+00:48:57,910 --> 00:49:00,450
+interpreter rather than
+a simple one.
+
+765
+00:49:00,450 --> 00:49:05,270
+The ones you saw before, dynamic
+binding or adding
+
+766
+00:49:05,270 --> 00:49:07,630
+indefinite argument procedures,
+
+767
+00:49:07,630 --> 00:49:09,280
+is relatively simple.
+
+768
+00:49:09,280 --> 00:49:12,120
+But this one changes
+a basic strategy.
+
+769
+00:49:12,120 --> 00:49:18,070
+The problem here is that our
+interpreter, as written,
+
+770
+00:49:18,070 --> 00:49:24,420
+evaluates a combination by
+evaluating the procedure, the
+
+771
+00:49:24,420 --> 00:49:26,910
+operator producing the
+procedure, and evaluating the
+
+772
+00:49:26,910 --> 00:49:31,410
+operands producing the
+arguments, and then doing
+
+773
+00:49:31,410 --> 00:49:36,110
+apply of the procedure
+to the arguments.
+
+774
+00:49:36,110 --> 00:49:40,540
+However, here, I don't want to
+evaluate the operands to
+
+775
+00:49:40,540 --> 00:49:44,640
+produce the arguments until
+after I examined the procedure
+
+776
+00:49:44,640 --> 00:49:46,810
+to see what the procedure's
+declarations look like.
+
+777
+00:49:46,810 --> 00:49:49,590
+
+
+778
+00:49:49,590 --> 00:49:52,680
+So let's look at that.
+
+779
+00:49:52,680 --> 00:49:57,480
+Here we have a changed
+evaluator.
+
+780
+00:49:57,480 --> 00:50:02,110
+I'm starting with the simple
+lexical evaluator, not
+
+781
+00:50:02,110 --> 00:50:06,730
+dynamic, but we're going to have
+to do something sort of
+
+782
+00:50:06,730 --> 00:50:09,750
+similar in some ways.
+
+783
+00:50:09,750 --> 00:50:13,710
+Because of the fact that,
+if I delay a procedure--
+
+784
+00:50:13,710 --> 00:50:15,790
+I'm sorry-- delay an argument
+to a procedure, I'm going to
+
+785
+00:50:15,790 --> 00:50:19,360
+have to attach and environment
+to it.
+
+786
+00:50:19,360 --> 00:50:23,380
+Remember how Hal implemented
+delay.
+
+787
+00:50:23,380 --> 00:50:28,650
+Hal implemented delay as being
+a procedure of no arguments
+
+788
+00:50:28,650 --> 00:50:31,180
+which does some expression.
+
+789
+00:50:31,180 --> 00:50:32,670
+That's what delay of
+the expression is.
+
+790
+00:50:32,670 --> 00:50:35,370
+
+
+791
+00:50:35,370 --> 00:50:36,620
+--of that expression.
+
+792
+00:50:36,620 --> 00:50:39,180
+
+
+793
+00:50:39,180 --> 00:50:40,950
+This turned into something
+like this.
+
+794
+00:50:40,950 --> 00:50:44,520
+
+
+795
+00:50:44,520 --> 00:50:47,760
+Now, however, if I evaluate a
+lambda expression, I have to
+
+796
+00:50:47,760 --> 00:50:49,010
+capture the environment.
+
+797
+00:50:49,010 --> 00:50:51,410
+
+
+798
+00:50:51,410 --> 00:50:56,920
+The reason why is because there
+are variables in there
+
+799
+00:50:56,920 --> 00:51:00,280
+who's meaning I wish to derive
+from the context where this
+
+800
+00:51:00,280 --> 00:51:01,530
+was written.
+
+801
+00:51:01,530 --> 00:51:04,010
+
+
+802
+00:51:04,010 --> 00:51:06,095
+So that's why a lambda
+does the job.
+
+803
+00:51:06,095 --> 00:51:08,070
+It's the right thing.
+
+804
+00:51:08,070 --> 00:51:17,070
+And such that the forcing of a
+delayed expression was same
+
+805
+00:51:17,070 --> 00:51:21,090
+thing as calling that
+with no arguments.
+
+806
+00:51:21,090 --> 00:51:24,100
+It's just the opposite
+of this.
+
+807
+00:51:24,100 --> 00:51:28,120
+Producing an environment of the
+call which is, in fact,
+
+808
+00:51:28,120 --> 00:51:31,713
+the environment where this was
+defined with an extra frame in
+
+809
+00:51:31,713 --> 00:51:33,132
+it that's empty.
+
+810
+00:51:33,132 --> 00:51:36,240
+I don't care about that.
+
+811
+00:51:36,240 --> 00:51:42,460
+Well, if we go back to this
+slide, since it's the case, if
+
+812
+00:51:42,460 --> 00:51:45,290
+we look at this for a second,
+everything is the same as it
+
+813
+00:51:45,290 --> 00:51:51,980
+was before except the case of
+applications or combinations.
+
+814
+00:51:51,980 --> 00:51:54,680
+And combinations are going
+to do two things.
+
+815
+00:51:54,680 --> 00:51:58,010
+One, is I have to evaluate
+the procedure--
+
+816
+00:51:58,010 --> 00:52:00,425
+forget the procedure-- by
+evaluating the operator.
+
+817
+00:52:00,425 --> 00:52:02,380
+That's what you see
+right here.
+
+818
+00:52:02,380 --> 00:52:04,990
+I have to make sure that that's
+current, that is not a
+
+819
+00:52:04,990 --> 00:52:08,530
+delayed object, and evaluate
+that to the point where it's
+
+820
+00:52:08,530 --> 00:52:10,730
+forced now.
+
+821
+00:52:10,730 --> 00:52:18,460
+And then I have to somehow apply
+that to the operands.
+
+822
+00:52:18,460 --> 00:52:20,040
+But I have to keep the
+environment, pass that
+
+823
+00:52:20,040 --> 00:52:21,530
+environmental along.
+
+824
+00:52:21,530 --> 00:52:23,710
+So some of those operands
+I may have to delay.
+
+825
+00:52:23,710 --> 00:52:29,302
+I may have to attach that
+environment to those operands.
+
+826
+00:52:29,302 --> 00:52:32,990
+This is a rather complicated
+thing happening here.
+
+827
+00:52:32,990 --> 00:52:34,240
+Looking at that in apply.
+
+828
+00:52:34,240 --> 00:52:36,400
+
+
+829
+00:52:36,400 --> 00:52:39,370
+Apply, well it has a
+primitive procedure
+
+830
+00:52:39,370 --> 00:52:42,610
+thing just like before.
+
+831
+00:52:42,610 --> 00:52:44,390
+But the compound one is a
+little more interesting.
+
+832
+00:52:44,390 --> 00:52:47,250
+
+
+833
+00:52:47,250 --> 00:52:50,920
+I have to evaluate the body,
+just as before, in an
+
+834
+00:52:50,920 --> 00:52:56,010
+environment which is the result
+of binding some formal
+
+835
+00:52:56,010 --> 00:53:00,290
+parameters to arguments
+in the environment.
+
+836
+00:53:00,290 --> 00:53:01,530
+That's true.
+
+837
+00:53:01,530 --> 00:53:03,070
+The environment is the
+one that comes from
+
+838
+00:53:03,070 --> 00:53:03,820
+the procedure now.
+
+839
+00:53:03,820 --> 00:53:08,040
+It's a lexical language,
+statically bound.
+
+840
+00:53:08,040 --> 00:53:11,230
+However, one thing I have
+to do is strip off the
+
+841
+00:53:11,230 --> 00:53:12,960
+declarations to get the names
+of the variables.
+
+842
+00:53:12,960 --> 00:53:15,450
+That's what this guy
+does, vnames.
+
+843
+00:53:15,450 --> 00:53:17,940
+And the other thing I have
+to do is process these
+
+844
+00:53:17,940 --> 00:53:21,770
+declarations, deciding which
+of these operands--
+
+845
+00:53:21,770 --> 00:53:24,150
+that's the operands now, as
+opposed to the arguments--
+
+846
+00:53:24,150 --> 00:53:28,010
+which of these operands to
+evaluate, and which of them
+
+847
+00:53:28,010 --> 00:53:33,770
+are to be encapsulated in
+delays of some sort.
+
+848
+00:53:33,770 --> 00:53:37,280
+
+
+849
+00:53:37,280 --> 00:53:40,720
+The other thing you see here is
+that we got a primitive, a
+
+850
+00:53:40,720 --> 00:53:43,170
+primitive like plus, had better
+
+851
+00:53:43,170 --> 00:53:45,820
+get at the real operands.
+
+852
+00:53:45,820 --> 00:53:47,690
+So here is a place where we're
+going to have to force them.
+
+853
+00:53:47,690 --> 00:53:49,306
+And we're going to look at what
+evlist is going to have
+
+854
+00:53:49,306 --> 00:53:51,340
+to do a bunch of forces.
+
+855
+00:53:51,340 --> 00:53:52,780
+So we have two different
+kinds of evlist now.
+
+856
+00:53:52,780 --> 00:53:55,980
+We have evlist and gevlist.
+Gevlist is going to wrap
+
+857
+00:53:55,980 --> 00:53:59,870
+delays around some things and
+force others, evaluate others.
+
+858
+00:53:59,870 --> 00:54:07,900
+And this guy's going to do
+some forcing of things.
+
+859
+00:54:07,900 --> 00:54:10,770
+Just looking at this a little
+bit, this is a game you must
+
+860
+00:54:10,770 --> 00:54:12,250
+play for yourself, you know.
+
+861
+00:54:12,250 --> 00:54:14,870
+It's not something that you're
+going to see all possible
+
+862
+00:54:14,870 --> 00:54:19,730
+variations on an evaluator
+talking to me.
+
+863
+00:54:19,730 --> 00:54:21,410
+What you have to do is
+do this for yourself.
+
+864
+00:54:21,410 --> 00:54:24,610
+And after you feel this, you
+play this a bit, you get to
+
+865
+00:54:24,610 --> 00:54:26,580
+see all the possible design
+decisions and what they might
+
+866
+00:54:26,580 --> 00:54:29,930
+mean, and how they interact
+with each other.
+
+867
+00:54:29,930 --> 00:54:33,160
+So what languages might
+have in them.
+
+868
+00:54:33,160 --> 00:54:35,340
+And what are some of the
+consistent sets that make a
+
+869
+00:54:35,340 --> 00:54:37,200
+legitimate language.
+
+870
+00:54:37,200 --> 00:54:39,135
+Whereas what things are
+complicated kluges that are
+
+871
+00:54:39,135 --> 00:54:41,850
+just piles of junk.
+
+872
+00:54:41,850 --> 00:54:45,050
+So evlist of course, over here,
+just as I said, is a
+
+873
+00:54:45,050 --> 00:54:49,450
+list of operands which are going
+to be undelayed after
+
+874
+00:54:49,450 --> 00:54:50,750
+evaluation.
+
+875
+00:54:50,750 --> 00:54:53,600
+So these are going to
+be forced, whatever
+
+876
+00:54:53,600 --> 00:54:56,050
+that's going to mean.
+
+877
+00:54:56,050 --> 00:54:58,490
+And gevlist, which is
+the next thing--
+
+878
+00:54:58,490 --> 00:55:01,320
+
+
+879
+00:55:01,320 --> 00:55:04,040
+Thank you.
+
+880
+00:55:04,040 --> 00:55:09,810
+What we see here, well there's
+a couple of possibilities.
+
+881
+00:55:09,810 --> 00:55:13,750
+Either it's a normal, ordinary
+thing, a symbol sitting there
+
+882
+00:55:13,750 --> 00:55:18,020
+like the predicate in the
+unless, and that's
+
+883
+00:55:18,020 --> 00:55:19,390
+what we have here.
+
+884
+00:55:19,390 --> 00:55:21,710
+In which case, this is intended
+to be evaluated in
+
+885
+00:55:21,710 --> 00:55:23,340
+applicative order.
+
+886
+00:55:23,340 --> 00:55:25,630
+And it's, essentially, just
+what we had before.
+
+887
+00:55:25,630 --> 00:55:30,400
+It's mapping eval down the
+list. In other words, I
+
+888
+00:55:30,400 --> 00:55:35,690
+evaluate the first expression
+and continue gevlisting the
+
+889
+00:55:35,690 --> 00:55:37,900
+CDR of the expression
+in the environment.
+
+890
+00:55:37,900 --> 00:55:43,600
+However, it's possible that
+this is a name parameter.
+
+891
+00:55:43,600 --> 00:55:47,320
+If it's a name parameter, I want
+to put a delay in which
+
+892
+00:55:47,320 --> 00:55:53,480
+combines that expression, which
+I'm calling by name,
+
+893
+00:55:53,480 --> 00:55:59,250
+with the environment that's
+available at this time and
+
+894
+00:55:59,250 --> 00:56:02,790
+passing that as the parameter.
+
+895
+00:56:02,790 --> 00:56:04,350
+And this is part of the
+mapping process
+
+896
+00:56:04,350 --> 00:56:05,600
+that you see here.
+
+897
+00:56:05,600 --> 00:56:09,070
+
+
+898
+00:56:09,070 --> 00:56:12,040
+The only other interesting
+place in this
+
+899
+00:56:12,040 --> 00:56:14,700
+interpreter is cond.
+
+900
+00:56:14,700 --> 00:56:16,440
+People tend to write this thing,
+and then they leave
+
+901
+00:56:16,440 --> 00:56:18,550
+this one out.
+
+902
+00:56:18,550 --> 00:56:20,510
+There's a place where
+you have to force.
+
+903
+00:56:20,510 --> 00:56:25,260
+Conditionals have to know
+whether or not the answer is
+
+904
+00:56:25,260 --> 00:56:25,990
+true or false.
+
+905
+00:56:25,990 --> 00:56:28,550
+It's like a primitive.
+
+906
+00:56:28,550 --> 00:56:31,890
+When you do a conditional,
+you have to force.
+
+907
+00:56:31,890 --> 00:56:32,880
+Now, I'm not going to
+look at any more
+
+908
+00:56:32,880 --> 00:56:34,350
+of this in any detail.
+
+909
+00:56:34,350 --> 00:56:36,750
+It isn't very exciting.
+
+910
+00:56:36,750 --> 00:56:38,990
+And what's left is how
+you make delays.
+
+911
+00:56:38,990 --> 00:56:42,680
+Well, delays are data structures
+which contain an
+
+912
+00:56:42,680 --> 00:56:44,840
+expression, an environment,
+and a type on them.
+
+913
+00:56:44,840 --> 00:56:46,680
+And it says they're a thunk.
+
+914
+00:56:46,680 --> 00:56:50,100
+That comes from ALGOL language,
+and it's claimed to
+
+915
+00:56:50,100 --> 00:56:52,970
+be the sound of something
+being pushed on a stack.
+
+916
+00:56:52,970 --> 00:56:53,410
+I don't know.
+
+917
+00:56:53,410 --> 00:56:57,830
+I was not an ALGOLician or an
+ALGOLite or whatever, so I
+
+918
+00:56:57,830 --> 00:56:58,740
+don't know.
+
+919
+00:56:58,740 --> 00:57:00,270
+But that's what was claimed.
+
+920
+00:57:00,270 --> 00:57:03,400
+And undelay is something which
+will recursively undelay
+
+921
+00:57:03,400 --> 00:57:07,860
+thunks until the thunk becomes
+something which isn't a thunk.
+
+922
+00:57:07,860 --> 00:57:09,930
+This is the way you implement
+a call by name
+
+923
+00:57:09,930 --> 00:57:12,050
+like thing in ALGOL.
+
+924
+00:57:12,050 --> 00:57:15,210
+And that's about all there is.
+
+925
+00:57:15,210 --> 00:57:16,460
+Are there any questions?
+
+926
+00:57:16,460 --> 00:57:26,840
+
+
+927
+00:57:26,840 --> 00:57:27,560
+AUDIENCE: Gerry?
+
+928
+00:57:27,560 --> 00:57:29,626
+PROFESSOR: Yes, Vesko?
+
+929
+00:57:29,626 --> 00:57:33,900
+AUDIENCE: I noticed you avoided
+calling by name in the
+
+930
+00:57:33,900 --> 00:57:38,480
+primitive procedures,
+I was wondering what
+
+931
+00:57:38,480 --> 00:57:39,350
+cause you have on that?
+
+932
+00:57:39,350 --> 00:57:40,070
+You never need that?
+
+933
+00:57:40,070 --> 00:57:44,720
+PROFESSOR: Vesko is asking if
+it's ever reasonable to call a
+
+934
+00:57:44,720 --> 00:57:47,140
+primitive procedure by name?
+
+935
+00:57:47,140 --> 00:57:49,270
+The answer is, yes.
+
+936
+00:57:49,270 --> 00:57:51,680
+There's one particular case
+where it's reasonable,
+
+937
+00:57:51,680 --> 00:57:52,930
+actually two.
+
+938
+00:57:52,930 --> 00:57:56,050
+
+
+939
+00:57:56,050 --> 00:57:59,250
+Construction of a data structure
+like cons where
+
+940
+00:57:59,250 --> 00:58:01,100
+making an array if you
+have arrays with
+
+941
+00:58:01,100 --> 00:58:03,690
+any number of elements.
+
+942
+00:58:03,690 --> 00:58:07,440
+It's unnecessary to evaluate
+those arguments.
+
+943
+00:58:07,440 --> 00:58:10,180
+All you need is promises to
+evaluate those arguments if
+
+944
+00:58:10,180 --> 00:58:11,160
+you look at them.
+
+945
+00:58:11,160 --> 00:58:17,310
+If I cons together two things,
+then I could cons together the
+
+946
+00:58:17,310 --> 00:58:21,830
+promises just as easily as I can
+cons together the things.
+
+947
+00:58:21,830 --> 00:58:23,720
+And it's not even when
+I CAR CDR them that I
+
+948
+00:58:23,720 --> 00:58:24,840
+have to look at them.
+
+949
+00:58:24,840 --> 00:58:26,150
+That just gets out
+the promises and
+
+950
+00:58:26,150 --> 00:58:28,260
+passes them to somebody.
+
+951
+00:58:28,260 --> 00:58:31,320
+That's why the lambda calculus
+definition, the Alonzo Church
+
+952
+00:58:31,320 --> 00:58:34,420
+definition of CAR, CDR,
+and cons makes sense.
+
+953
+00:58:34,420 --> 00:58:36,630
+It's because no work is done
+in CAR, CDR, and cons, it's
+
+954
+00:58:36,630 --> 00:58:40,760
+just shuffling data, it's just
+routing, if you will.
+
+955
+00:58:40,760 --> 00:58:42,960
+However, the things that do
+have to look at data are
+
+956
+00:58:42,960 --> 00:58:45,280
+things like plus.
+
+957
+00:58:45,280 --> 00:58:47,910
+Because they have a look at the
+bits that the numbers are
+
+958
+00:58:47,910 --> 00:58:50,220
+made out of, unless they're
+lambda calculus
+
+959
+00:58:50,220 --> 00:58:52,460
+numbers which are funny.
+
+960
+00:58:52,460 --> 00:58:54,630
+They have to look at the bits
+to be able to crunch them
+
+961
+00:58:54,630 --> 00:58:55,880
+together to do the add.
+
+962
+00:58:55,880 --> 00:58:59,210
+
+
+963
+00:58:59,210 --> 00:59:03,280
+So, in fact, data constructors,
+data selectors,
+
+964
+00:59:03,280 --> 00:59:08,500
+and, in fact, things that
+side-effect data objects don't
+
+965
+00:59:08,500 --> 00:59:13,300
+need to do any forcing in the
+laziest possible interpreters.
+
+966
+00:59:13,300 --> 00:59:16,460
+
+
+967
+00:59:16,460 --> 00:59:18,700
+On the other hand predicates
+on data structures have to.
+
+968
+00:59:18,700 --> 00:59:21,710
+
+
+969
+00:59:21,710 --> 00:59:23,560
+Is this a pair?
+
+970
+00:59:23,560 --> 00:59:24,640
+Or is it a symbol?
+
+971
+00:59:24,640 --> 00:59:25,690
+Well, you better find out.
+
+972
+00:59:25,690 --> 00:59:26,940
+You got to look at it then.
+
+973
+00:59:26,940 --> 00:59:30,300
+
+
+974
+00:59:30,300 --> 00:59:31,550
+Any other questions?
+
+975
+00:59:31,550 --> 00:59:40,050
+
+
+976
+00:59:40,050 --> 00:59:41,610
+Oh, well, I suppose it's
+time for a break.
+
+977
+00:59:41,610 --> 00:59:42,106
+Thank you.
+
+978
+00:59:42,106 --> 01:00:02,950
+[MUSIC PLAYING]
+
+979
+01:00:02,950 --> 01:00:04,200
+and
+
+980
+01:00:04,200 --> 01:00:05,972
+

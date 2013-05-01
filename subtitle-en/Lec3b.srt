@@ -1,0 +1,3622 @@
+0
+00:00:00,000 --> 00:00:02,928
+
+
+1
+00:00:02,928 --> 00:00:19,520
+[MUSIC PLAYING]
+
+2
+00:00:19,520 --> 00:00:22,720
+PROFESSOR: Well, Hal just told
+us how you build robust
+
+3
+00:00:22,720 --> 00:00:26,960
+systems. The key idea was--
+
+4
+00:00:26,960 --> 00:00:30,000
+I'm sure that many of you don't
+really assimilate that
+
+5
+00:00:30,000 --> 00:00:32,980
+yet-- but the key idea is that
+in order to make a system
+
+6
+00:00:32,980 --> 00:00:36,850
+that's robust, it has to be
+insensitive to small changes,
+
+7
+00:00:36,850 --> 00:00:39,680
+that is, a small change in the
+problem should lead to only a
+
+8
+00:00:39,680 --> 00:00:41,340
+small change in the solution.
+
+9
+00:00:41,340 --> 00:00:42,670
+There ought to be
+a continuity.
+
+10
+00:00:42,670 --> 00:00:45,275
+The space of solutions ought to
+be continuous in this space
+
+11
+00:00:45,275 --> 00:00:46,120
+of problems.
+
+12
+00:00:46,120 --> 00:00:50,270
+The way he was explaining how
+to do that was instead of
+
+13
+00:00:50,270 --> 00:00:52,240
+solving a particular problem
+at every level of
+
+14
+00:00:52,240 --> 00:00:55,520
+decomposition of the problem at
+the subproblems, where you
+
+15
+00:00:55,520 --> 00:00:58,570
+solve the class of problems,
+which are a neighborhood of
+
+16
+00:00:58,570 --> 00:01:01,440
+the particular problem that
+you're trying to solve.
+
+17
+00:01:01,440 --> 00:01:03,980
+The way you do that is by
+producing a language at that
+
+18
+00:01:03,980 --> 00:01:07,500
+level of detail in which the
+solutions to that class of
+
+19
+00:01:07,500 --> 00:01:11,170
+problems is representable
+in that language.
+
+20
+00:01:11,170 --> 00:01:14,370
+Therefore when you makes more
+changes to the problem you're
+
+21
+00:01:14,370 --> 00:01:17,140
+trying to solve, you generally
+have to make only small local
+
+22
+00:01:17,140 --> 00:01:20,640
+changes to the solution you've
+constructed, because at the
+
+23
+00:01:20,640 --> 00:01:23,190
+level of detail you're working,
+there's a language
+
+24
+00:01:23,190 --> 00:01:26,940
+where you can express the
+various solutions to alternate
+
+25
+00:01:26,940 --> 00:01:30,170
+problems of the same type.
+
+26
+00:01:30,170 --> 00:01:35,090
+Well that's the beginning of a
+very important idea, the most
+
+27
+00:01:35,090 --> 00:01:37,950
+important perhaps idea that
+makes computer science more
+
+28
+00:01:37,950 --> 00:01:40,320
+powerful than most of the other
+kinds of engineering
+
+29
+00:01:40,320 --> 00:01:43,500
+disciplines we know about.
+
+30
+00:01:43,500 --> 00:01:47,350
+What we've seen so far
+is sort of how to use
+
+31
+00:01:47,350 --> 00:01:49,500
+embedding of languages.
+
+32
+00:01:49,500 --> 00:01:52,570
+And, of course, the power of
+embedding languages partly
+
+33
+00:01:52,570 --> 00:01:55,480
+comes from procedures
+like this one that
+
+34
+00:01:55,480 --> 00:01:57,500
+I showed you yesterday.
+
+35
+00:01:57,500 --> 00:02:01,210
+What you see here is the
+derivative program that we
+
+36
+00:02:01,210 --> 00:02:02,280
+described yesterday.
+
+37
+00:02:02,280 --> 00:02:06,270
+It's a procedure that takes a
+procedure as an argument and
+
+38
+00:02:06,270 --> 00:02:09,880
+returns a procedure
+as a value.
+
+39
+00:02:09,880 --> 00:02:12,680
+And using such things
+is very nice.
+
+40
+00:02:12,680 --> 00:02:15,480
+You can make things like push
+combinators and all that sort
+
+41
+00:02:15,480 --> 00:02:18,020
+of wonderful thing that
+you saw last time.
+
+42
+00:02:18,020 --> 00:02:21,730
+However, now I'm going to
+really muddy the waters.
+
+43
+00:02:21,730 --> 00:02:25,430
+See this confuses the issue of
+what's the procedure and what
+
+44
+00:02:25,430 --> 00:02:28,310
+is data, but not very badly.
+
+45
+00:02:28,310 --> 00:02:31,260
+What we really want to do is
+confuse it very badly.
+
+46
+00:02:31,260 --> 00:02:33,400
+And the best way to do that is
+to get involved with the
+
+47
+00:02:33,400 --> 00:02:35,980
+manipulation of the algebraic
+expressions that the
+
+48
+00:02:35,980 --> 00:02:39,750
+procedures themselves
+are expressed in.
+
+49
+00:02:39,750 --> 00:02:43,660
+So at this point, I want to talk
+about instead of things
+
+50
+00:02:43,660 --> 00:02:48,300
+like on this slide, the
+derivative procedure being a
+
+51
+00:02:48,300 --> 00:02:49,880
+thing that manipulates
+a procedure--
+
+52
+00:02:49,880 --> 00:02:51,870
+this is a numerical method
+you see here.
+
+53
+00:02:51,870 --> 00:02:56,440
+And what you're seeing is
+a representation of the
+
+54
+00:02:56,440 --> 00:02:59,275
+numerical approximation
+to the derivative.
+
+55
+00:02:59,275 --> 00:03:00,980
+That's what's here.
+
+56
+00:03:00,980 --> 00:03:04,180
+In fact what I'd like to talk
+about is instead things that
+
+57
+00:03:04,180 --> 00:03:06,170
+look like this.
+
+58
+00:03:06,170 --> 00:03:12,080
+And what we have here are rules
+from a calculus book.
+
+59
+00:03:12,080 --> 00:03:15,010
+These are rules for finding
+the derivatives of the
+
+60
+00:03:15,010 --> 00:03:18,190
+expressions that one
+might write in
+
+61
+00:03:18,190 --> 00:03:21,520
+some algebraic language.
+
+62
+00:03:21,520 --> 00:03:24,990
+It says things like a derivative
+of a constant is 0.
+
+63
+00:03:24,990 --> 00:03:27,700
+The derivative of the valuable
+with respect to which you are
+
+64
+00:03:27,700 --> 00:03:29,250
+taking the derivative is 1.
+
+65
+00:03:29,250 --> 00:03:32,490
+The derivative of a constant
+times the function is the
+
+66
+00:03:32,490 --> 00:03:34,980
+constant times the derivative
+of the function,
+
+67
+00:03:34,980 --> 00:03:38,300
+and things like that.
+
+68
+00:03:38,300 --> 00:03:39,690
+These are exact expressions.
+
+69
+00:03:39,690 --> 00:03:43,090
+These are not numerical
+approximations.
+
+70
+00:03:43,090 --> 00:03:44,560
+Can we make programs?
+
+71
+00:03:44,560 --> 00:03:51,000
+And, in fact, it's very easy
+to make programs that
+
+72
+00:03:51,000 --> 00:03:52,250
+manipulate these expressions.
+
+73
+00:03:52,250 --> 00:03:56,130
+
+
+74
+00:03:56,130 --> 00:03:57,480
+Well let's see.
+
+75
+00:03:57,480 --> 00:04:01,350
+Let's look at these rules
+in some detail.
+
+76
+00:04:01,350 --> 00:04:03,850
+You all have seen these rules
+in your elementary calculus
+
+77
+00:04:03,850 --> 00:04:06,140
+class at one time or another.
+
+78
+00:04:06,140 --> 00:04:10,570
+And you know from calculus
+that it's easy to produce
+
+79
+00:04:10,570 --> 00:04:12,840
+derivatives of arbitrary
+expressions.
+
+80
+00:04:12,840 --> 00:04:14,900
+You also know from your
+elementary calculus that it's
+
+81
+00:04:14,900 --> 00:04:17,140
+hard to produce integrals.
+
+82
+00:04:17,140 --> 00:04:19,690
+Yet integrals and derivatives
+are opposites of each other.
+
+83
+00:04:19,690 --> 00:04:21,800
+They're inverse operations.
+
+84
+00:04:21,800 --> 00:04:24,360
+And they have the same rules.
+
+85
+00:04:24,360 --> 00:04:29,110
+What is special about these
+rules that makes it possible
+
+86
+00:04:29,110 --> 00:04:32,310
+for one to produce derivatives
+easily and
+
+87
+00:04:32,310 --> 00:04:35,100
+integrals why it's so hard?
+
+88
+00:04:35,100 --> 00:04:37,510
+Let's think about that
+very simply.
+
+89
+00:04:37,510 --> 00:04:39,390
+Look at these rules.
+
+90
+00:04:39,390 --> 00:04:42,190
+Every one of these rules, when
+used in the direction for
+
+91
+00:04:42,190 --> 00:04:44,260
+taking derivatives, which is
+in the direction of this
+
+92
+00:04:44,260 --> 00:04:48,830
+arrow, the left side is
+matched against your
+
+93
+00:04:48,830 --> 00:04:51,710
+expression, and the right side
+is the thing which is the
+
+94
+00:04:51,710 --> 00:04:53,810
+derivative of that expression.
+
+95
+00:04:53,810 --> 00:04:55,570
+The arrow is going that way.
+
+96
+00:04:55,570 --> 00:04:58,630
+
+
+97
+00:04:58,630 --> 00:05:02,830
+In each of these rules, the
+expressions on the right-hand
+
+98
+00:05:02,830 --> 00:05:05,600
+side of the rule that are
+contained within derivatives
+
+99
+00:05:05,600 --> 00:05:08,630
+are subexpressions, are proper
+subexpressions, of the
+
+100
+00:05:08,630 --> 00:05:10,670
+expression on the
+left-hand side.
+
+101
+00:05:10,670 --> 00:05:14,510
+So here we see the derivative
+of the sum, with is the
+
+102
+00:05:14,510 --> 00:05:17,260
+expression on the left-hand
+side is the sum of the
+
+103
+00:05:17,260 --> 00:05:20,030
+derivatives of the pieces.
+
+104
+00:05:20,030 --> 00:05:25,070
+So the rule of moving to the
+right are reduction rules.
+
+105
+00:05:25,070 --> 00:05:28,110
+The problem becomes easier.
+
+106
+00:05:28,110 --> 00:05:30,810
+I turn a big complicated problem
+it's lots of smaller
+
+107
+00:05:30,810 --> 00:05:35,000
+problems and then combine the
+results, a perfect place for
+
+108
+00:05:35,000 --> 00:05:36,730
+recursion to work.
+
+109
+00:05:36,730 --> 00:05:42,310
+If I'm going in the other
+direction like this, if I'm
+
+110
+00:05:42,310 --> 00:05:44,160
+trying to produce integrals,
+well there are several
+
+111
+00:05:44,160 --> 00:05:45,340
+problems you see here.
+
+112
+00:05:45,340 --> 00:05:48,460
+First of all, if I try to
+integrate an expression like a
+
+113
+00:05:48,460 --> 00:05:50,930
+sum, more than one
+rule matches.
+
+114
+00:05:50,930 --> 00:05:52,610
+Here's one that matches.
+
+115
+00:05:52,610 --> 00:05:54,850
+Here's one that matches.
+
+116
+00:05:54,850 --> 00:05:56,210
+I don't know which
+one to take.
+
+117
+00:05:56,210 --> 00:05:57,870
+And they may be different.
+
+118
+00:05:57,870 --> 00:06:00,250
+I may get to explore
+different things.
+
+119
+00:06:00,250 --> 00:06:04,660
+Also, the expressions become
+larger in that direction.
+
+120
+00:06:04,660 --> 00:06:06,910
+And when the expressions become
+larger, then there's no
+
+121
+00:06:06,910 --> 00:06:10,940
+guarantee that any particular
+path I choose will terminate,
+
+122
+00:06:10,940 --> 00:06:14,380
+because we will only terminate
+by accidental cancellation.
+
+123
+00:06:14,380 --> 00:06:16,840
+So that's why integrals
+are complicated
+
+124
+00:06:16,840 --> 00:06:19,170
+searches and hard to do.
+
+125
+00:06:19,170 --> 00:06:21,640
+Right now I don't want to do
+anything as hard as that.
+
+126
+00:06:21,640 --> 00:06:24,260
+Let's work on derivatives
+for a while.
+
+127
+00:06:24,260 --> 00:06:26,860
+Well, these roles are
+ones you know for
+
+128
+00:06:26,860 --> 00:06:28,860
+the most part hopefully.
+
+129
+00:06:28,860 --> 00:06:32,410
+So let's see if we can write a
+program which is these rules.
+
+130
+00:06:32,410 --> 00:06:34,790
+And that should be very easy.
+
+131
+00:06:34,790 --> 00:06:36,830
+Just write the program.
+
+132
+00:06:36,830 --> 00:06:39,010
+See, because while I showed you
+is that it's a reduction
+
+133
+00:06:39,010 --> 00:06:43,180
+rule, it's something appropriate
+for a recursion.
+
+134
+00:06:43,180 --> 00:06:45,230
+And, of course, what we have for
+each of these rules is we
+
+135
+00:06:45,230 --> 00:06:48,375
+have a case in some
+case analysis.
+
+136
+00:06:48,375 --> 00:06:50,350
+So I'm just going to write
+this program down.
+
+137
+00:06:50,350 --> 00:06:53,130
+
+
+138
+00:06:53,130 --> 00:06:56,780
+Now, of course, I'm going to be
+saying something you have
+
+139
+00:06:56,780 --> 00:06:57,450
+to believe.
+
+140
+00:06:57,450 --> 00:06:57,890
+Right?
+
+141
+00:06:57,890 --> 00:06:59,870
+What you have to believe is I
+can represent these algebraic
+
+142
+00:06:59,870 --> 00:07:03,210
+expressions, that I can grab
+their parts, that I can put
+
+143
+00:07:03,210 --> 00:07:04,330
+them together.
+
+144
+00:07:04,330 --> 00:07:07,620
+We've invented list structures
+so that you can do that.
+
+145
+00:07:07,620 --> 00:07:09,810
+But you don't want to worry
+about that now.
+
+146
+00:07:09,810 --> 00:07:11,680
+Right now I'm going to write the
+program that encapsulates
+
+147
+00:07:11,680 --> 00:07:14,920
+these rules independent of
+the representation of the
+
+148
+00:07:14,920 --> 00:07:16,170
+algebraic expressions.
+
+149
+00:07:16,170 --> 00:07:20,580
+
+
+150
+00:07:20,580 --> 00:07:27,610
+You have a derivative of
+an expression with
+
+151
+00:07:27,610 --> 00:07:30,280
+respect to a variable.
+
+152
+00:07:30,280 --> 00:07:32,020
+This is a different
+thing than the
+
+153
+00:07:32,020 --> 00:07:35,040
+derivative of the function.
+
+154
+00:07:35,040 --> 00:07:39,130
+That's what we saw last time,
+that numerical approximation.
+
+155
+00:07:39,130 --> 00:07:40,860
+It's something you can't
+open up a function.
+
+156
+00:07:40,860 --> 00:07:42,990
+It's just the answers.
+
+157
+00:07:42,990 --> 00:07:44,450
+The derivative of
+an expression is
+
+158
+00:07:44,450 --> 00:07:45,990
+the way it's written.
+
+159
+00:07:45,990 --> 00:07:48,410
+And therefore it's a syntactic
+phenomenon.
+
+160
+00:07:48,410 --> 00:07:50,540
+And so a lot of what we're going
+to be doing today is
+
+161
+00:07:50,540 --> 00:07:53,400
+worrying about syntax,
+syntax of expressions
+
+162
+00:07:53,400 --> 00:07:54,830
+and things like that.
+
+163
+00:07:54,830 --> 00:07:57,700
+Well, there's a case analysis.
+
+164
+00:07:57,700 --> 00:08:00,420
+Anytime we do anything
+complicated thereby a
+
+165
+00:08:00,420 --> 00:08:03,690
+recursion, we presumably
+need a case analysis.
+
+166
+00:08:03,690 --> 00:08:05,340
+It's the essential
+way to begin.
+
+167
+00:08:05,340 --> 00:08:06,590
+And that's usually
+a conditional
+
+168
+00:08:06,590 --> 00:08:08,170
+of some large kind.
+
+169
+00:08:08,170 --> 00:08:10,000
+Well, what are their
+possibilities?
+
+170
+00:08:10,000 --> 00:08:12,290
+the first rule that you saw is
+this something a constant?
+
+171
+00:08:12,290 --> 00:08:16,610
+
+
+172
+00:08:16,610 --> 00:08:20,510
+And what I'm asking is, is the
+expression a constant with
+
+173
+00:08:20,510 --> 00:08:21,920
+respect to the variable given?
+
+174
+00:08:21,920 --> 00:08:24,990
+
+
+175
+00:08:24,990 --> 00:08:28,460
+If so, the result is 0,
+because the derivative
+
+176
+00:08:28,460 --> 00:08:31,880
+represents the rate of
+change of something.
+
+177
+00:08:31,880 --> 00:08:38,169
+If, however, the expression that
+I'm taking the derivative
+
+178
+00:08:38,169 --> 00:08:42,770
+of is the variable I'm varying,
+then this is the same
+
+179
+00:08:42,770 --> 00:08:52,560
+variable, the expression var,
+then the rate of change of the
+
+180
+00:08:52,560 --> 00:08:55,560
+expression with respect
+to the variable is 1.
+
+181
+00:08:55,560 --> 00:08:56,810
+It's the same 1.
+
+182
+00:08:56,810 --> 00:08:58,970
+
+
+183
+00:08:58,970 --> 00:09:01,490
+Well now there are a couple
+of other possibilities.
+
+184
+00:09:01,490 --> 00:09:04,010
+It could, for example,
+be a sum.
+
+185
+00:09:04,010 --> 00:09:06,140
+Well, I don't know how I'm going
+to express sums yet.
+
+186
+00:09:06,140 --> 00:09:07,180
+Actually I do.
+
+187
+00:09:07,180 --> 00:09:10,370
+But I haven't told you yet.
+
+188
+00:09:10,370 --> 00:09:12,630
+But is it a sum?
+
+189
+00:09:12,630 --> 00:09:15,520
+I'm imagining that there's
+some way of telling.
+
+190
+00:09:15,520 --> 00:09:20,860
+I'm doing a dispatch on the type
+of the expression here,
+
+191
+00:09:20,860 --> 00:09:24,960
+absolutely essential in
+building languages.
+
+192
+00:09:24,960 --> 00:09:26,520
+Languages are made out of
+different expressions.
+
+193
+00:09:26,520 --> 00:09:28,930
+And soon we're going to see
+that in our more powerful
+
+194
+00:09:28,930 --> 00:09:32,760
+methods of building languages
+on languages.
+
+195
+00:09:32,760 --> 00:09:35,530
+Is an expression a sum?
+
+196
+00:09:35,530 --> 00:09:38,360
+If it's a sum, well, we know the
+rule for derivative of the
+
+197
+00:09:38,360 --> 00:09:42,160
+sum is the sum of the
+derivatives of the parts.
+
+198
+00:09:42,160 --> 00:09:43,370
+One of them is called
+the addend and the
+
+199
+00:09:43,370 --> 00:09:44,050
+other is the augend.
+
+200
+00:09:44,050 --> 00:09:45,710
+But I don't have enough space
+on the blackboard
+
+201
+00:09:45,710 --> 00:09:46,810
+to such long names.
+
+202
+00:09:46,810 --> 00:09:48,660
+So I'll call them A1 and A2.
+
+203
+00:09:48,660 --> 00:09:50,250
+I want to make a sum.
+
+204
+00:09:50,250 --> 00:09:53,100
+
+
+205
+00:09:53,100 --> 00:09:57,300
+Do you remember which is the sum
+for end or the menu end?
+
+206
+00:09:57,300 --> 00:10:00,310
+Or was it the dividend
+and the divisor or
+
+207
+00:10:00,310 --> 00:10:01,700
+something like that?
+
+208
+00:10:01,700 --> 00:10:08,720
+Make sum of the derivative
+of the A1, I'll call it.
+
+209
+00:10:08,720 --> 00:10:12,640
+It's the addend of the
+expression with respect to the
+
+210
+00:10:12,640 --> 00:10:23,506
+variable, and the derivative of
+the A2 of the expression,
+
+211
+00:10:23,506 --> 00:10:27,020
+because the two arguments,
+the addition with
+
+212
+00:10:27,020 --> 00:10:28,270
+respect to the variable.
+
+213
+00:10:28,270 --> 00:10:32,450
+
+
+214
+00:10:32,450 --> 00:10:36,350
+And another rule that we know is
+product rule, which is, if
+
+215
+00:10:36,350 --> 00:10:37,600
+the expression is a product.
+
+216
+00:10:37,600 --> 00:10:43,090
+
+
+217
+00:10:43,090 --> 00:10:47,070
+By the way, it's a good idea
+when you're defining things,
+
+218
+00:10:47,070 --> 00:10:49,440
+when you're defining predicates,
+to give them a
+
+219
+00:10:49,440 --> 00:10:51,290
+name that ends in
+a question mark.
+
+220
+00:10:51,290 --> 00:10:53,140
+This question mark doesn't
+mean anything.
+
+221
+00:10:53,140 --> 00:10:54,730
+It's for us as an agreement.
+
+222
+00:10:54,730 --> 00:10:57,710
+It's a conventional interface
+between humans so you can read
+
+223
+00:10:57,710 --> 00:10:59,980
+my programs more easily.
+
+224
+00:10:59,980 --> 00:11:02,510
+So I want you to, when you write
+programs, if you define
+
+225
+00:11:02,510 --> 00:11:05,330
+a predicate procedure, that's
+something that rings true of
+
+226
+00:11:05,330 --> 00:11:07,720
+false, it should have a name
+which ends in question mark.
+
+227
+00:11:07,720 --> 00:11:09,740
+The list doesn't care.
+
+228
+00:11:09,740 --> 00:11:11,740
+I care.
+
+229
+00:11:11,740 --> 00:11:13,400
+I want to make a sum.
+
+230
+00:11:13,400 --> 00:11:18,280
+Because the derivative of a
+product is the sum of the
+
+231
+00:11:18,280 --> 00:11:19,920
+first times the derivative of
+the second plus the second
+
+232
+00:11:19,920 --> 00:11:26,620
+times the derivative of the
+first. Make a sum of two
+
+233
+00:11:26,620 --> 00:11:37,710
+things, a product of, well, I'm
+going to say the M1 of the
+
+234
+00:11:37,710 --> 00:11:47,560
+expression, and the derivative
+of the M2 of the expression
+
+235
+00:11:47,560 --> 00:12:01,680
+with respect to the variable,
+and the product of the
+
+236
+00:12:01,680 --> 00:12:10,720
+derivative of M1, the multiplier
+of the expression,
+
+237
+00:12:10,720 --> 00:12:13,450
+with respect to the variable.
+
+238
+00:12:13,450 --> 00:12:17,340
+It's the product of that and the
+multiplicand, M2, of the
+
+239
+00:12:17,340 --> 00:12:18,590
+expression.
+
+240
+00:12:18,590 --> 00:12:21,660
+
+
+241
+00:12:21,660 --> 00:12:22,630
+Make that product.
+
+242
+00:12:22,630 --> 00:12:23,850
+Make the sum.
+
+243
+00:12:23,850 --> 00:12:25,080
+Close that case.
+
+244
+00:12:25,080 --> 00:12:28,590
+And, of course, I could add as
+many cases as I like here for
+
+245
+00:12:28,590 --> 00:12:30,960
+a complete set of rules you
+might find in a calculus book.
+
+246
+00:12:30,960 --> 00:12:34,880
+
+
+247
+00:12:34,880 --> 00:12:41,184
+So this is what it takes to
+encapsulate those rules.
+
+248
+00:12:41,184 --> 00:12:43,080
+And you see, you have to realize
+there's a lot of
+
+249
+00:12:43,080 --> 00:12:44,690
+wishful thinking here.
+
+250
+00:12:44,690 --> 00:12:46,620
+I haven't told you anything
+about how I'm going to make
+
+251
+00:12:46,620 --> 00:12:48,570
+these representations.
+
+252
+00:12:48,570 --> 00:12:52,830
+Now, once I've decided that
+this is my set of rules, I
+
+253
+00:12:52,830 --> 00:12:55,820
+think it's time to play with
+the representation.
+
+254
+00:12:55,820 --> 00:12:58,030
+Let's attack that/
+
+255
+00:12:58,030 --> 00:13:01,120
+Well, first of all, I'm
+going to play a pun.
+
+256
+00:13:01,120 --> 00:13:02,870
+It's an important pun.
+
+257
+00:13:02,870 --> 00:13:06,590
+It's a key to a sort
+of powerful idea.
+
+258
+00:13:06,590 --> 00:13:09,750
+
+
+259
+00:13:09,750 --> 00:13:12,790
+If I want to represent sums, and
+products, and differences,
+
+260
+00:13:12,790 --> 00:13:16,450
+and quotients, and things like
+that, why not use the same
+
+261
+00:13:16,450 --> 00:13:20,660
+language as I'm writing
+my program in?
+
+262
+00:13:20,660 --> 00:13:23,130
+I write my program in algebraic
+expressions that
+
+263
+00:13:23,130 --> 00:13:29,280
+look like the sum of the product
+on a and the product
+
+264
+00:13:29,280 --> 00:13:34,330
+of x and x, and things
+like that.
+
+265
+00:13:34,330 --> 00:13:39,390
+And the product of b and x and
+c, whatever, make that a sum
+
+266
+00:13:39,390 --> 00:13:40,960
+of the product.
+
+267
+00:13:40,960 --> 00:13:43,230
+Right now I don't want to have
+procedures with unknown
+
+268
+00:13:43,230 --> 00:13:48,300
+numbers of arguments, a product
+of b and x and c.
+
+269
+00:13:48,300 --> 00:13:51,050
+
+
+270
+00:13:51,050 --> 00:13:54,280
+This is list structure.
+
+271
+00:13:54,280 --> 00:13:56,950
+And the reason why this is nice,
+is because any one of
+
+272
+00:13:56,950 --> 00:14:00,380
+these objects has a property.
+
+273
+00:14:00,380 --> 00:14:01,970
+I know where the car is.
+
+274
+00:14:01,970 --> 00:14:04,100
+The car is the operator.
+
+275
+00:14:04,100 --> 00:14:08,190
+And the operands are the
+successive cdrs the successive
+
+276
+00:14:08,190 --> 00:14:12,276
+cars of the cdrs of the
+list that this is.
+
+277
+00:14:12,276 --> 00:14:14,470
+It makes it very convenient.
+
+278
+00:14:14,470 --> 00:14:15,560
+I have to parse it.
+
+279
+00:14:15,560 --> 00:14:17,590
+It's been done for me.
+
+280
+00:14:17,590 --> 00:14:19,685
+I'm using the embedding
+and Lisp to advantage.
+
+281
+00:14:19,685 --> 00:14:22,860
+
+
+282
+00:14:22,860 --> 00:14:29,340
+So, for example, let's start
+using list structure to write
+
+283
+00:14:29,340 --> 00:14:35,390
+down the representation that I'm
+implicitly assuming here.
+
+284
+00:14:35,390 --> 00:14:37,590
+Well I have to define various
+things that are implied in
+
+285
+00:14:37,590 --> 00:14:38,640
+this representation.
+
+286
+00:14:38,640 --> 00:14:41,210
+Like I have to find out
+how to do a constant,
+
+287
+00:14:41,210 --> 00:14:42,520
+how you do same variable.
+
+288
+00:14:42,520 --> 00:14:45,890
+Let's do those first. That's
+pretty easy enough.
+
+289
+00:14:45,890 --> 00:14:47,410
+Now I'm going to be introducing
+lots of primitives
+
+290
+00:14:47,410 --> 00:14:49,680
+here, because these are
+the primitives that
+
+291
+00:14:49,680 --> 00:14:51,745
+come with list structure.
+
+292
+00:14:51,745 --> 00:14:53,015
+OK, you define a constant.
+
+293
+00:14:53,015 --> 00:15:02,800
+
+
+294
+00:15:02,800 --> 00:15:06,350
+And what I mean by a constant,
+an expression that's constant
+
+295
+00:15:06,350 --> 00:15:10,860
+with respect to a veritable,
+is that the expression is
+
+296
+00:15:10,860 --> 00:15:11,530
+something simple.
+
+297
+00:15:11,530 --> 00:15:13,550
+I can't take it into
+pieces, and yet
+
+298
+00:15:13,550 --> 00:15:16,550
+it isn't that variable.
+
+299
+00:15:16,550 --> 00:15:18,940
+I can't break it up, and yet
+it isn't that variable.
+
+300
+00:15:18,940 --> 00:15:22,840
+That does not mean that there
+may be other expressions that
+
+301
+00:15:22,840 --> 00:15:25,230
+are more complicated
+that are constants.
+
+302
+00:15:25,230 --> 00:15:26,700
+It's just that I'm going to
+look at the primitive
+
+303
+00:15:26,700 --> 00:15:30,510
+constants in this way.
+
+304
+00:15:30,510 --> 00:15:34,080
+So what this is, is it says
+that's it's the and.
+
+305
+00:15:34,080 --> 00:15:37,030
+I can combine predicate
+expressions which return true
+
+306
+00:15:37,030 --> 00:15:38,610
+or false with and.
+
+307
+00:15:38,610 --> 00:15:45,600
+Something atomic, The expression
+is atomic, meaning
+
+308
+00:15:45,600 --> 00:15:47,050
+it cannot be broken
+into parts.
+
+309
+00:15:47,050 --> 00:15:51,150
+It doesn't have a car and a cdr.
+It's not a list. It adds
+
+310
+00:15:51,150 --> 00:15:54,250
+a special test built
+into the system.
+
+311
+00:15:54,250 --> 00:16:06,950
+And it's not identically
+equal to that variable.
+
+312
+00:16:06,950 --> 00:16:11,810
+I'm representing my variable
+by things that are symbols
+
+313
+00:16:11,810 --> 00:16:16,550
+which cannot be broken into
+pieces, things like x, and y,
+
+314
+00:16:16,550 --> 00:16:17,800
+things like this.
+
+315
+00:16:17,800 --> 00:16:19,850
+
+
+316
+00:16:19,850 --> 00:16:21,890
+Whereas, of course, something
+like this can be broken up
+
+317
+00:16:21,890 --> 00:16:23,140
+into pieces.
+
+318
+00:16:23,140 --> 00:16:24,860
+
+
+319
+00:16:24,860 --> 00:16:40,560
+And the same variable of an
+expression with respect to a
+
+320
+00:16:40,560 --> 00:16:48,840
+variable is, in fact, an
+atomic expression.
+
+321
+00:16:48,840 --> 00:16:50,040
+I want to have an atomic
+
+322
+00:16:50,040 --> 00:16:59,330
+expression, which is identical.
+
+323
+00:16:59,330 --> 00:17:08,030
+
+
+324
+00:17:08,030 --> 00:17:13,329
+I don't want to look inside
+this stuff anymore.
+
+325
+00:17:13,329 --> 00:17:16,040
+These are primitive maybe.
+
+326
+00:17:16,040 --> 00:17:18,180
+But it doesn't matter.
+
+327
+00:17:18,180 --> 00:17:22,569
+I'm using things that are given
+to me with a language.
+
+328
+00:17:22,569 --> 00:17:24,300
+I'm not terribly interest
+in them
+
+329
+00:17:24,300 --> 00:17:26,900
+Now how do we deal with sums?
+
+330
+00:17:26,900 --> 00:17:29,100
+Ah, something very interesting
+will happen.
+
+331
+00:17:29,100 --> 00:17:32,380
+A sum is something which is not
+atomic and begins with the
+
+332
+00:17:32,380 --> 00:17:35,230
+plus symbol.
+
+333
+00:17:35,230 --> 00:17:36,680
+That's what it means.
+
+334
+00:17:36,680 --> 00:17:39,125
+So here, I will define.
+
+335
+00:17:39,125 --> 00:17:45,630
+
+
+336
+00:17:45,630 --> 00:18:08,380
+An question is a sum if and it's
+not atomic and it's head,
+
+337
+00:18:08,380 --> 00:18:15,140
+it's beginning, its car of the
+expression is the symbol plus.
+
+338
+00:18:15,140 --> 00:18:19,950
+
+
+339
+00:18:19,950 --> 00:18:21,730
+Now you're about to see
+something you haven't seen
+
+340
+00:18:21,730 --> 00:18:23,690
+before, this quotation.
+
+341
+00:18:23,690 --> 00:18:26,240
+
+
+342
+00:18:26,240 --> 00:18:29,440
+Why do I have that
+quotation there?
+
+343
+00:18:29,440 --> 00:18:30,970
+Say your name,
+
+344
+00:18:30,970 --> 00:18:31,410
+AUDIENCE: Susanna.
+
+345
+00:18:31,410 --> 00:18:32,270
+PROFESSOR: Louder.
+
+346
+00:18:32,270 --> 00:18:33,190
+AUDIENCE: Susanna
+
+347
+00:18:33,190 --> 00:18:34,250
+PROFESSOR: Say your name.
+
+348
+00:18:34,250 --> 00:18:35,160
+AUDIENCE: Your name.
+
+349
+00:18:35,160 --> 00:18:35,910
+PROFESSOR: Louder.
+
+350
+00:18:35,910 --> 00:18:36,960
+AUDIENCE: Your name.
+
+351
+00:18:36,960 --> 00:18:39,100
+PROFESSOR: OK.
+
+352
+00:18:39,100 --> 00:18:42,040
+What I'm showing you here
+is that the words
+
+353
+00:18:42,040 --> 00:18:45,520
+of English are ambiguous.
+
+354
+00:18:45,520 --> 00:18:52,220
+I was saying, say your name.
+
+355
+00:18:52,220 --> 00:18:57,070
+I was also possibly saying
+say, your name.
+
+356
+00:18:57,070 --> 00:19:00,710
+
+
+357
+00:19:00,710 --> 00:19:04,100
+But that cannot be distinguished
+in speech.
+
+358
+00:19:04,100 --> 00:19:09,600
+However, we do have a notation
+in writing, which is quotation
+
+359
+00:19:09,600 --> 00:19:14,180
+for distinguishing these
+two possible meanings.
+
+360
+00:19:14,180 --> 00:19:19,490
+In particular, over here, in
+Lisp we have a notation for
+
+361
+00:19:19,490 --> 00:19:21,510
+distinguishing these meetings.
+
+362
+00:19:21,510 --> 00:19:24,992
+If I were to just write a plus
+here, a plus symbol, I would
+
+363
+00:19:24,992 --> 00:19:29,400
+be asking, is the first element
+of the expression, is
+
+364
+00:19:29,400 --> 00:19:32,220
+the operator position
+of the expression,
+
+365
+00:19:32,220 --> 00:19:34,760
+the addition operator?
+
+366
+00:19:34,760 --> 00:19:36,330
+I don't know.
+
+367
+00:19:36,330 --> 00:19:39,550
+I would have to have written the
+addition operator there,
+
+368
+00:19:39,550 --> 00:19:41,330
+which I can't write.
+
+369
+00:19:41,330 --> 00:19:45,470
+However, this way I'm asking,
+is this the symbolic object
+
+370
+00:19:45,470 --> 00:19:49,790
+plus, which normally stands
+for the addition operator?
+
+371
+00:19:49,790 --> 00:19:50,420
+That's what I want.
+
+372
+00:19:50,420 --> 00:19:53,110
+That's the question
+I want to ask.
+
+373
+00:19:53,110 --> 00:19:55,430
+Now before I go any further,
+I want to point out the
+
+374
+00:19:55,430 --> 00:19:59,780
+quotation is a very complex
+concept, and adding it to a
+
+375
+00:19:59,780 --> 00:20:03,510
+language causes a great
+deal of troubles.
+
+376
+00:20:03,510 --> 00:20:06,370
+Consider the next slide.
+
+377
+00:20:06,370 --> 00:20:11,830
+Here's a deduction which we
+should all agree with.
+
+378
+00:20:11,830 --> 00:20:17,530
+We have, Alyssa is smart and
+Alyssa is George's mother.
+
+379
+00:20:17,530 --> 00:20:22,350
+This is an equality, is.
+
+380
+00:20:22,350 --> 00:20:27,470
+From those two, we can deduce
+that George's mother is smart.
+
+381
+00:20:27,470 --> 00:20:32,320
+Because we can always substitute
+equals for equals
+
+382
+00:20:32,320 --> 00:20:34,250
+in expressions.
+
+383
+00:20:34,250 --> 00:20:36,420
+Or can we?
+
+384
+00:20:36,420 --> 00:20:41,400
+Here's a case where we have
+"Chicago" has seven letters.
+
+385
+00:20:41,400 --> 00:20:45,100
+The quotation means that I'm
+discussing the word Chicago,
+
+386
+00:20:45,100 --> 00:20:46,365
+not what the word represents.
+
+387
+00:20:46,365 --> 00:20:49,940
+
+
+388
+00:20:49,940 --> 00:20:54,830
+Here I have that Chicago is the
+biggest city in Illinois.
+
+389
+00:20:54,830 --> 00:20:57,160
+As a consequence of this, I
+would like to deduce that the
+
+390
+00:20:57,160 --> 00:20:59,250
+biggest city in Illinois
+has seven letters.
+
+391
+00:20:59,250 --> 00:21:00,785
+But that's manifestly false.
+
+392
+00:21:00,785 --> 00:21:05,480
+
+
+393
+00:21:05,480 --> 00:21:09,420
+Wow, it works.
+
+394
+00:21:09,420 --> 00:21:13,420
+OK, so once we have things like
+that, our language gets
+
+395
+00:21:13,420 --> 00:21:14,540
+much more complicated.
+
+396
+00:21:14,540 --> 00:21:17,440
+Because it's no longer true that
+things we tend to like to
+
+397
+00:21:17,440 --> 00:21:19,750
+do with languages, like
+substituting equals for equals
+
+398
+00:21:19,750 --> 00:21:22,840
+and getting right answers, are
+going to work without being
+
+399
+00:21:22,840 --> 00:21:24,550
+very careful.
+
+400
+00:21:24,550 --> 00:21:26,470
+We can't substitute into what's
+called referentially
+
+401
+00:21:26,470 --> 00:21:30,410
+opaque contexts, of which a
+quotation is the prototypical
+
+402
+00:21:30,410 --> 00:21:33,380
+type of referentially
+opaque context.
+
+403
+00:21:33,380 --> 00:21:35,560
+If you know what that means, you
+can consult a philosopher.
+
+404
+00:21:35,560 --> 00:21:38,790
+Presumably there is
+one in the room.
+
+405
+00:21:38,790 --> 00:21:42,280
+In any case, let's continue now,
+now that we at least have
+
+406
+00:21:42,280 --> 00:21:45,660
+an operational understanding of
+a 2000-year-old issue that
+
+407
+00:21:45,660 --> 00:21:47,350
+has to do with name, and
+mention, and all sorts of
+
+408
+00:21:47,350 --> 00:21:48,600
+things like that.
+
+409
+00:21:48,600 --> 00:21:52,440
+
+
+410
+00:21:52,440 --> 00:21:59,790
+I have to define what I mean,
+how to make a sum of two
+
+411
+00:21:59,790 --> 00:22:02,250
+things, an a1 and a2.
+
+412
+00:22:02,250 --> 00:22:03,590
+And I'm going to do
+this very simply.
+
+413
+00:22:03,590 --> 00:22:13,600
+It's a list of the symbol
+plus, and a1, and a2.
+
+414
+00:22:13,600 --> 00:22:17,075
+And I can determine
+the first element.
+
+415
+00:22:17,075 --> 00:22:21,600
+
+
+416
+00:22:21,600 --> 00:22:34,510
+Define a1 to be cadr. I've just
+
+417
+00:22:34,510 --> 00:22:36,370
+introduced another primitive.
+
+418
+00:22:36,370 --> 00:22:39,990
+This is the car of the
+cdr of something.
+
+419
+00:22:39,990 --> 00:22:43,950
+You might want to know why car
+and cdr are names of these
+
+420
+00:22:43,950 --> 00:22:46,720
+primitives, and why they've
+survived, even though they're
+
+421
+00:22:46,720 --> 00:22:48,970
+much better ideas like
+left and right.
+
+422
+00:22:48,970 --> 00:22:51,380
+We could have called them
+things like that.
+
+423
+00:22:51,380 --> 00:22:54,340
+Well, first of all, the names
+come from the fact that in the
+
+424
+00:22:54,340 --> 00:22:57,470
+great past, when Lisp was
+invented, I suppose in '58 or
+
+425
+00:22:57,470 --> 00:23:00,730
+something, it was on a
+704 or something like
+
+426
+00:23:00,730 --> 00:23:01,870
+that, which had a machine.
+
+427
+00:23:01,870 --> 00:23:04,440
+It was a machine that had an
+address register and a
+
+428
+00:23:04,440 --> 00:23:05,340
+decrement register.
+
+429
+00:23:05,340 --> 00:23:07,610
+And these were the contents of
+the address register and the
+
+430
+00:23:07,610 --> 00:23:08,270
+decrement register.
+
+431
+00:23:08,270 --> 00:23:09,880
+So it's an historical
+accident.
+
+432
+00:23:09,880 --> 00:23:11,880
+Now why have these
+names survived?
+
+433
+00:23:11,880 --> 00:23:14,110
+It's because Lisp programmers
+like to talk to each other
+
+434
+00:23:14,110 --> 00:23:15,900
+over the phone.
+
+435
+00:23:15,900 --> 00:23:18,460
+And if you want to have a long
+sequence of cars and cdrs you
+
+436
+00:23:18,460 --> 00:23:22,530
+might say, cdaddedr, which
+can be understood.
+
+437
+00:23:22,530 --> 00:23:26,330
+But left of right or right of
+left is not so clear if you
+
+438
+00:23:26,330 --> 00:23:26,970
+get good at it.
+
+439
+00:23:26,970 --> 00:23:30,570
+So that's why we have
+these words.
+
+440
+00:23:30,570 --> 00:23:33,566
+All of them up to four deep
+are defined typically in a
+
+441
+00:23:33,566 --> 00:23:34,816
+Lisp system.
+
+442
+00:23:34,816 --> 00:23:38,270
+
+
+443
+00:23:38,270 --> 00:23:40,540
+A2 to be--
+
+444
+00:23:40,540 --> 00:23:43,540
+
+
+445
+00:23:43,540 --> 00:23:46,170
+and, of course, you can see
+that if I looked at one of
+
+446
+00:23:46,170 --> 00:23:54,630
+these expressions like the sum
+of 3 and 5, what that is is a
+
+447
+00:23:54,630 --> 00:24:06,100
+list containing the symbol
+plus, and a number 3,
+
+448
+00:24:06,100 --> 00:24:11,470
+and a number 5.
+
+449
+00:24:11,470 --> 00:24:16,100
+Then the car is the
+symbol plus.
+
+450
+00:24:16,100 --> 00:24:19,210
+The car of the cdr. Well
+I take the cdr and
+
+451
+00:24:19,210 --> 00:24:20,070
+then I take the car.
+
+452
+00:24:20,070 --> 00:24:21,200
+And that's how I get to the 3.
+
+453
+00:24:21,200 --> 00:24:22,630
+That's the first argument.
+
+454
+00:24:22,630 --> 00:24:24,370
+And the car of the cdr
+of the cdr gets me to
+
+455
+00:24:24,370 --> 00:24:25,640
+this one, the 5.
+
+456
+00:24:25,640 --> 00:24:28,860
+
+
+457
+00:24:28,860 --> 00:24:32,970
+And similarly, of course, I
+can define what's going on
+
+458
+00:24:32,970 --> 00:24:35,300
+with products.
+
+459
+00:24:35,300 --> 00:24:36,550
+Let's do that very quickly.
+
+460
+00:24:36,550 --> 00:24:48,760
+
+
+461
+00:24:48,760 --> 00:24:51,130
+Is the expression a product?
+
+462
+00:24:51,130 --> 00:25:01,910
+Yes if and if it's true, that's
+it's not atomic and
+
+463
+00:25:01,910 --> 00:25:13,260
+it's EQ quote, the asterisk
+symbol, which is the operator
+
+464
+00:25:13,260 --> 00:25:15,800
+for multiplication.
+
+465
+00:25:15,800 --> 00:25:35,090
+Make product of an M1 and an
+M2 to be list, quote, the
+
+466
+00:25:35,090 --> 00:25:40,930
+asterisk operation
+and M1 and M2.
+
+467
+00:25:40,930 --> 00:26:00,596
+and I define M1 to be cadr and
+M2 to be caddr. You get to be
+
+468
+00:26:00,596 --> 00:26:02,690
+a good Lisp programmer because
+you start talking that way.
+
+469
+00:26:02,690 --> 00:26:06,430
+I cdr down lists and console
+them up and so on.
+
+470
+00:26:06,430 --> 00:26:09,480
+Now, now that we have
+essentially a complete program
+
+471
+00:26:09,480 --> 00:26:10,880
+for finding derivatives,
+you can add more
+
+472
+00:26:10,880 --> 00:26:12,360
+rules if you like.
+
+473
+00:26:12,360 --> 00:26:14,800
+What kind of behavior
+do we get out of it?
+
+474
+00:26:14,800 --> 00:26:17,930
+I'll have to clear that x.
+
+475
+00:26:17,930 --> 00:26:28,060
+Well, supposing I define foo
+here to be the sum of the
+
+476
+00:26:28,060 --> 00:26:30,450
+product of ax square
+and bx plus c.
+
+477
+00:26:30,450 --> 00:26:34,020
+That's the same thing we see
+here as the algebraic
+
+478
+00:26:34,020 --> 00:26:35,260
+expression written in the
+more conventional
+
+479
+00:26:35,260 --> 00:26:37,860
+notation over there.
+
+480
+00:26:37,860 --> 00:26:40,620
+Well, the derivative of foo with
+respect to x, which we
+
+481
+00:26:40,620 --> 00:26:46,250
+can see over here, is this
+horrible, horrendous mess.
+
+482
+00:26:46,250 --> 00:26:50,760
+I would like it to
+be 2ax plus b.
+
+483
+00:26:50,760 --> 00:26:52,240
+But it's not.
+
+484
+00:26:52,240 --> 00:26:54,620
+It's equivalent to it.
+
+485
+00:26:54,620 --> 00:26:56,090
+What is it?
+
+486
+00:26:56,090 --> 00:27:00,510
+I have here, what do I have?
+
+487
+00:27:00,510 --> 00:27:04,550
+I have the derivative of
+the product of x and x.
+
+488
+00:27:04,550 --> 00:27:09,410
+Over here is, of course,
+the sum of x times
+
+489
+00:27:09,410 --> 00:27:12,830
+1 and 1 times x.
+
+490
+00:27:12,830 --> 00:27:14,100
+Now, well, it's the first times
+the derivative of the
+
+491
+00:27:14,100 --> 00:27:15,330
+second plus the second times the
+derivative of the first.
+
+492
+00:27:15,330 --> 00:27:17,780
+It's right.
+
+493
+00:27:17,780 --> 00:27:20,220
+That's 2x of course.
+
+494
+00:27:20,220 --> 00:27:26,600
+a times 2x is 2ax plus 0X square
+doesn't count plus B
+
+495
+00:27:26,600 --> 00:27:29,100
+over here plus a bunch of 0's.
+
+496
+00:27:29,100 --> 00:27:30,130
+Well the answer is right.
+
+497
+00:27:30,130 --> 00:27:34,390
+But I give people take off
+points on an exam for that,
+
+498
+00:27:34,390 --> 00:27:35,690
+sadly enough.
+
+499
+00:27:35,690 --> 00:27:37,830
+Let's worry about that
+in the next segment.
+
+500
+00:27:37,830 --> 00:27:39,080
+Are there any questions?
+
+501
+00:27:39,080 --> 00:27:42,970
+
+
+502
+00:27:42,970 --> 00:27:44,070
+Yes?
+
+503
+00:27:44,070 --> 00:27:46,790
+AUDIENCE: If you had left the
+quote when you put the plus,
+
+504
+00:27:46,790 --> 00:27:51,120
+then would that be referring
+to the procedure plus and
+
+505
+00:27:51,120 --> 00:27:53,560
+could you do a comparison
+between that procedure and
+
+506
+00:27:53,560 --> 00:27:55,460
+some other procedure
+if you wanted to?
+
+507
+00:27:55,460 --> 00:27:56,320
+PROFESSOR: Yes.
+
+508
+00:27:56,320 --> 00:27:58,960
+Good question.
+
+509
+00:27:58,960 --> 00:28:05,650
+If I had left this quotation
+off at this point, if I had
+
+510
+00:28:05,650 --> 00:28:08,720
+left that quotation off at that
+point, then I would be
+
+511
+00:28:08,720 --> 00:28:12,790
+referring here to the procedure
+which is the thing
+
+512
+00:28:12,790 --> 00:28:15,510
+that plus is defined to be.
+
+513
+00:28:15,510 --> 00:28:22,810
+And indeed, I could compare
+some procedures with each
+
+514
+00:28:22,810 --> 00:28:25,070
+other for identity.
+
+515
+00:28:25,070 --> 00:28:28,080
+Now what that means is
+not clear right now.
+
+516
+00:28:28,080 --> 00:28:30,100
+I don't like to think
+about it.
+
+517
+00:28:30,100 --> 00:28:31,840
+Because I don't know exactly
+what it would need to compare
+
+518
+00:28:31,840 --> 00:28:32,450
+procedures.
+
+519
+00:28:32,450 --> 00:28:35,610
+There are reasons why that
+may make no sense at all.
+
+520
+00:28:35,610 --> 00:28:38,890
+However, the symbols,
+we understand.
+
+521
+00:28:38,890 --> 00:28:41,240
+And so that's why I
+put that quote in.
+
+522
+00:28:41,240 --> 00:28:42,510
+I want to talk about
+the symbol that's
+
+523
+00:28:42,510 --> 00:28:43,760
+apparent on the page.
+
+524
+00:28:43,760 --> 00:28:46,250
+
+
+525
+00:28:46,250 --> 00:28:48,700
+Any other questions?
+
+526
+00:28:48,700 --> 00:28:50,720
+OK.
+
+527
+00:28:50,720 --> 00:28:51,060
+Thank you.
+
+528
+00:28:51,060 --> 00:28:54,210
+Let's take a break.
+
+529
+00:28:54,210 --> 00:29:30,010
+[MUSIC PLAYING]
+
+530
+00:29:30,010 --> 00:29:31,580
+PROFESSOR: Well, let's see.
+
+531
+00:29:31,580 --> 00:29:35,560
+We've just developed a fairly
+plausible program for
+
+532
+00:29:35,560 --> 00:29:38,390
+computing the derivatives of
+algebraic expressions.
+
+533
+00:29:38,390 --> 00:29:40,400
+It's an incomplete program,
+if you would
+
+534
+00:29:40,400 --> 00:29:42,330
+like to add more rules.
+
+535
+00:29:42,330 --> 00:29:46,020
+And perhaps you might extend
+it to deal with uses of
+
+536
+00:29:46,020 --> 00:29:48,390
+addition with any number of
+arguments and multiplication
+
+537
+00:29:48,390 --> 00:29:49,950
+with any of the number
+of arguments.
+
+538
+00:29:49,950 --> 00:29:52,470
+And that's all rather easy.
+
+539
+00:29:52,470 --> 00:29:57,620
+However, there was a little
+fly in that ointment.
+
+540
+00:29:57,620 --> 00:30:02,980
+We go back to this slide.
+
+541
+00:30:02,980 --> 00:30:09,000
+We see that the expressions that
+we get are rather bad.
+
+542
+00:30:09,000 --> 00:30:11,620
+This is a rather
+bad expression.
+
+543
+00:30:11,620 --> 00:30:14,000
+How do we get such
+an expression?
+
+544
+00:30:14,000 --> 00:30:16,940
+Why do we have that
+expression?
+
+545
+00:30:16,940 --> 00:30:19,060
+Let's look at this expression
+in some detail.
+
+546
+00:30:19,060 --> 00:30:21,850
+Let's find out where all
+the pieces come from.
+
+547
+00:30:21,850 --> 00:30:24,590
+As we see here, we
+have a sum--
+
+548
+00:30:24,590 --> 00:30:27,012
+just what I showed you at the
+end of the last time--
+
+549
+00:30:27,012 --> 00:30:30,110
+of X times 1 plus 1
+time X. That is a
+
+550
+00:30:30,110 --> 00:30:32,590
+derivative of this product.
+
+551
+00:30:32,590 --> 00:30:36,270
+The produce of a times that,
+where a does not depend upon
+
+552
+00:30:36,270 --> 00:30:40,430
+x, and therefore is constant
+with respect to x, is this
+
+553
+00:30:40,430 --> 00:30:43,910
+sum, which goes from here all
+the way through here and
+
+554
+00:30:43,910 --> 00:30:44,840
+through here.
+
+555
+00:30:44,840 --> 00:30:48,470
+Because it is the first thing
+times the derivative of the
+
+556
+00:30:48,470 --> 00:30:54,900
+second plus the derivative of
+the first times the second as
+
+557
+00:30:54,900 --> 00:30:57,970
+the program we wrote
+on the blackboard
+
+558
+00:30:57,970 --> 00:31:00,740
+indicated we should do.
+
+559
+00:31:00,740 --> 00:31:06,690
+And, of course, the product of
+bx over here manifests itself
+
+560
+00:31:06,690 --> 00:31:15,220
+as B times 1 plus 0 times X
+because we see that B does not
+
+561
+00:31:15,220 --> 00:31:19,085
+depend upon X. And so the
+derivative of B is this 0, and
+
+562
+00:31:19,085 --> 00:31:23,100
+the derivative of X with respect
+itself is the 1.
+
+563
+00:31:23,100 --> 00:31:26,510
+And, of course, the derivative
+of the sums over here turn
+
+564
+00:31:26,510 --> 00:31:29,360
+into these two sums of the
+derivatives of the parts.
+
+565
+00:31:29,360 --> 00:31:32,620
+So what we're seeing here is
+exactly the thing I was trying
+
+566
+00:31:32,620 --> 00:31:37,760
+to tell you about with Fibonacci
+numbers a while ago,
+
+567
+00:31:37,760 --> 00:31:44,430
+that the form of the process
+is expanded from the local
+
+568
+00:31:44,430 --> 00:31:48,850
+rules that you see in the
+procedure, that the procedure
+
+569
+00:31:48,850 --> 00:31:51,720
+represents a set of local rules
+for the expansion of
+
+570
+00:31:51,720 --> 00:31:53,520
+this process.
+
+571
+00:31:53,520 --> 00:31:59,440
+And here, the process left
+behind some stuff, which is
+
+572
+00:31:59,440 --> 00:32:00,370
+the answer.
+
+573
+00:32:00,370 --> 00:32:03,850
+And it was constructed by the
+walk it takes of the tree
+
+574
+00:32:03,850 --> 00:32:05,775
+structure, which is
+the expression.
+
+575
+00:32:05,775 --> 00:32:08,390
+
+
+576
+00:32:08,390 --> 00:32:11,540
+So every part in the answer we
+see here derives from some
+
+577
+00:32:11,540 --> 00:32:14,670
+part of the problem.
+
+578
+00:32:14,670 --> 00:32:17,360
+Now, we can look at, for
+example, the derivative of
+
+579
+00:32:17,360 --> 00:32:20,500
+foo, which is ax square plus
+bx plus c, with respect to
+
+580
+00:32:20,500 --> 00:32:25,320
+other things, like here, for
+example, we can see that the
+
+581
+00:32:25,320 --> 00:32:27,860
+derivative of foo with
+respect to a.
+
+582
+00:32:27,860 --> 00:32:29,390
+And it's very similar.
+
+583
+00:32:29,390 --> 00:32:32,840
+It's, in fact, the identical
+algebraic expression, except
+
+584
+00:32:32,840 --> 00:32:34,320
+for the fact that theses
+0's and 1's are
+
+585
+00:32:34,320 --> 00:32:35,900
+in different places.
+
+586
+00:32:35,900 --> 00:32:38,260
+Because the only degree of
+freedom we have in this tree
+
+587
+00:32:38,260 --> 00:32:42,285
+walk is what's constant with
+respect to the variable we're
+
+588
+00:32:42,285 --> 00:32:44,550
+taking the derivative
+with respect to and
+
+589
+00:32:44,550 --> 00:32:45,800
+was the same variable.
+
+590
+00:32:45,800 --> 00:32:48,310
+
+
+591
+00:32:48,310 --> 00:32:51,660
+In other words, if we go back
+to this blackboard and we
+
+592
+00:32:51,660 --> 00:32:55,302
+look, we have no choice what
+to do when we take the
+
+593
+00:32:55,302 --> 00:32:58,150
+derivative of the sum
+or a product.
+
+594
+00:32:58,150 --> 00:33:03,840
+The only interesting place here
+is, is the expression the
+
+595
+00:33:03,840 --> 00:33:07,590
+variable, or is the expression
+a constant with respect to
+
+596
+00:33:07,590 --> 00:33:10,130
+that variable for very, very
+small expressions?
+
+597
+00:33:10,130 --> 00:33:13,220
+In which case we get various
+1's and 0's, which if we go
+
+598
+00:33:13,220 --> 00:33:17,290
+back to this slide, we can see
+that the 0's that appear here,
+
+599
+00:33:17,290 --> 00:33:21,740
+for example, this 1 over here
+in derivative of foo with
+
+600
+00:33:21,740 --> 00:33:25,980
+respect to A, which gets us an
+X square, because that 1 gets
+
+601
+00:33:25,980 --> 00:33:32,770
+the multiply of X and X into
+the answer, that 1 is 0.
+
+602
+00:33:32,770 --> 00:33:34,173
+Over here, we're not taking
+the derivative of foo with
+
+603
+00:33:34,173 --> 00:33:36,690
+respect to c.
+
+604
+00:33:36,690 --> 00:33:40,301
+But the shapes of these
+expressions are the same.
+
+605
+00:33:40,301 --> 00:33:42,561
+See all those shapes.
+
+606
+00:33:42,561 --> 00:33:43,811
+They're the same.
+
+607
+00:33:43,811 --> 00:33:50,480
+
+
+608
+00:33:50,480 --> 00:33:53,750
+Well is there anything
+wrong with our rules?
+
+609
+00:33:53,750 --> 00:33:54,030
+No.
+
+610
+00:33:54,030 --> 00:33:56,250
+They're the right rules.
+
+611
+00:33:56,250 --> 00:33:58,160
+We've been through
+this one before.
+
+612
+00:33:58,160 --> 00:34:02,020
+One of the things you're going
+to begin to discover is that
+
+613
+00:34:02,020 --> 00:34:03,270
+there aren't too many
+good ideas.
+
+614
+00:34:03,270 --> 00:34:06,510
+
+
+615
+00:34:06,510 --> 00:34:12,139
+When we were looking at rational
+numbers yesterday,
+
+616
+00:34:12,139 --> 00:34:14,909
+the problem was that we got
+6/8 rather then 3/4.
+
+617
+00:34:14,909 --> 00:34:17,949
+The answer was unsimplified.
+
+618
+00:34:17,949 --> 00:34:21,150
+The problem, of course,
+is very similar.
+
+619
+00:34:21,150 --> 00:34:24,350
+There are things I'd like to be
+identical by simplification
+
+620
+00:34:24,350 --> 00:34:27,350
+that don't become identical.
+
+621
+00:34:27,350 --> 00:34:30,690
+And yet the rules for doing
+addition a multiplication of
+
+622
+00:34:30,690 --> 00:34:34,000
+rational numbers were correct.
+
+623
+00:34:34,000 --> 00:34:36,350
+So the way we might solve this
+problem is do the thing we did
+
+624
+00:34:36,350 --> 00:34:37,940
+last time, which always works.
+
+625
+00:34:37,940 --> 00:34:40,690
+If something worked last time
+it ought to work again.
+
+626
+00:34:40,690 --> 00:34:43,120
+It's changed representation.
+
+627
+00:34:43,120 --> 00:34:45,350
+Perhaps in the representation
+we could put in a
+
+628
+00:34:45,350 --> 00:34:48,940
+simplification step that
+produces a simplified
+
+629
+00:34:48,940 --> 00:34:50,199
+representation.
+
+630
+00:34:50,199 --> 00:34:52,580
+This may not always
+work, of course.
+
+631
+00:34:52,580 --> 00:34:55,210
+I'm not trying to say that
+it always works.
+
+632
+00:34:55,210 --> 00:34:59,540
+But it's one of the pieces of
+artillery we have in our war
+
+633
+00:34:59,540 --> 00:35:01,560
+against complexity.
+
+634
+00:35:01,560 --> 00:35:04,360
+You see, because we solved our
+problem very carefully.
+
+635
+00:35:04,360 --> 00:35:06,170
+What we've done, is
+we've divided the
+
+636
+00:35:06,170 --> 00:35:07,630
+world in several parts.
+
+637
+00:35:07,630 --> 00:35:12,980
+There are derivatives rules and
+general rules for algebra
+
+638
+00:35:12,980 --> 00:35:16,420
+of some sort at this
+level of detail.
+
+639
+00:35:16,420 --> 00:35:17,925
+and i have an abstraction
+barrier.
+
+640
+00:35:17,925 --> 00:35:21,874
+
+
+641
+00:35:21,874 --> 00:35:32,710
+And i have the representation of
+the algebraic expressions,
+
+642
+00:35:32,710 --> 00:35:33,960
+list structure.
+
+643
+00:35:33,960 --> 00:35:37,420
+
+
+644
+00:35:37,420 --> 00:35:43,050
+And in this barrier, I have
+the interface procedures.
+
+645
+00:35:43,050 --> 00:35:49,410
+I have constant, and things
+like same-var.
+
+646
+00:35:49,410 --> 00:35:54,680
+
+
+647
+00:35:54,680 --> 00:35:58,095
+I have things like
+sum, make-sum.
+
+648
+00:35:58,095 --> 00:36:02,310
+
+
+649
+00:36:02,310 --> 00:36:06,770
+I have A1, A2.
+
+650
+00:36:06,770 --> 00:36:09,370
+I have products and things
+like that, all the other
+
+651
+00:36:09,370 --> 00:36:11,490
+things I might need for various
+kinds of algebraic
+
+652
+00:36:11,490 --> 00:36:13,000
+expressions.
+
+653
+00:36:13,000 --> 00:36:18,080
+Making this barrier allows me
+to arbitrarily change the
+
+654
+00:36:18,080 --> 00:36:21,710
+representation without changing
+the rules that are
+
+655
+00:36:21,710 --> 00:36:25,060
+written in terms of that
+representation.
+
+656
+00:36:25,060 --> 00:36:28,220
+So if I can make the problem
+go away by changing
+
+657
+00:36:28,220 --> 00:36:32,320
+representation, the composition
+of the problem
+
+658
+00:36:32,320 --> 00:36:35,660
+into these two parts has
+helped me a great deal.
+
+659
+00:36:35,660 --> 00:36:38,860
+So let's take a very simple
+case of this.
+
+660
+00:36:38,860 --> 00:36:40,330
+What was one of the problems?
+
+661
+00:36:40,330 --> 00:36:44,115
+Let's go back to this
+transparency again.
+
+662
+00:36:44,115 --> 00:36:48,280
+And we see here, oh yes, there's
+horrible things like
+
+663
+00:36:48,280 --> 00:36:53,190
+here is the sum of an
+expression and 0.
+
+664
+00:36:53,190 --> 00:36:55,590
+Well that's no reason to think
+of it as anything other than
+
+665
+00:36:55,590 --> 00:36:57,300
+the expression itself.
+
+666
+00:36:57,300 --> 00:36:59,970
+Why should the summation
+operation have
+
+667
+00:36:59,970 --> 00:37:03,450
+made up this edition?
+
+668
+00:37:03,450 --> 00:37:05,550
+It can be smarter than that.
+
+669
+00:37:05,550 --> 00:37:09,080
+Or here, for example, is
+a multiplication of
+
+670
+00:37:09,080 --> 00:37:10,816
+something by 1.
+
+671
+00:37:10,816 --> 00:37:12,990
+It's another thing like that.
+
+672
+00:37:12,990 --> 00:37:14,960
+Or here is a product of
+something with 0, which is
+
+673
+00:37:14,960 --> 00:37:17,800
+certainly 0.
+
+674
+00:37:17,800 --> 00:37:21,430
+So we won't have to make
+this construction.
+
+675
+00:37:21,430 --> 00:37:23,800
+So why don't we just do that?
+
+676
+00:37:23,800 --> 00:37:25,340
+We need to change the way
+the representation
+
+677
+00:37:25,340 --> 00:37:27,990
+works, almost here.
+
+678
+00:37:27,990 --> 00:37:37,500
+
+
+679
+00:37:37,500 --> 00:37:42,060
+Make-sum to be.
+
+680
+00:37:42,060 --> 00:37:44,020
+Well, now it's not something
+so simple.
+
+681
+00:37:44,020 --> 00:37:48,500
+I'm not going to make a list
+containing the symbol plus and
+
+682
+00:37:48,500 --> 00:37:51,322
+things unless I need to.
+
+683
+00:37:51,322 --> 00:37:52,630
+Well, what are the
+possibilities?
+
+684
+00:37:52,630 --> 00:37:57,220
+
+
+685
+00:37:57,220 --> 00:37:59,420
+I have some sort
+of cases here.
+
+686
+00:37:59,420 --> 00:38:09,160
+If I have numbers, if
+anyone is a number--
+
+687
+00:38:09,160 --> 00:38:10,930
+and here's another primitive
+I've just introduced, it's
+
+688
+00:38:10,930 --> 00:38:15,230
+possible to tell whether
+something's number--
+
+689
+00:38:15,230 --> 00:38:23,090
+and if number A2, meaning
+they're not symbolic
+
+690
+00:38:23,090 --> 00:38:26,280
+expressions, then why not
+do the addition now?
+
+691
+00:38:26,280 --> 00:38:29,540
+The result is just a
+plus of A1 and A2.
+
+692
+00:38:29,540 --> 00:38:32,270
+
+
+693
+00:38:32,270 --> 00:38:34,000
+I'm not asking if these
+represent numbers.
+
+694
+00:38:34,000 --> 00:38:37,100
+Of course all of these symbols
+represent numbers.
+
+695
+00:38:37,100 --> 00:38:39,100
+I'm talking about whether
+the one I've got is the
+
+696
+00:38:39,100 --> 00:38:43,420
+number 3 right now.
+
+697
+00:38:43,420 --> 00:38:59,070
+And, for example, supposing A1
+is a number, and it's equal to
+
+698
+00:38:59,070 --> 00:39:06,900
+0, well then the answer
+is just A2.
+
+699
+00:39:06,900 --> 00:39:10,698
+There is no reason to
+make anything up.
+
+700
+00:39:10,698 --> 00:39:27,630
+And if A2 is a number,
+and equal A20, then
+
+701
+00:39:27,630 --> 00:39:30,210
+the result is A1.
+
+702
+00:39:30,210 --> 00:39:32,770
+And only if I can't figure out
+something better to do with
+
+703
+00:39:32,770 --> 00:39:41,160
+this situation, well, I can
+start a list. Otherwise I want
+
+704
+00:39:41,160 --> 00:39:45,790
+the representation to be the
+list containing the quoted
+
+705
+00:39:45,790 --> 00:39:51,850
+symbol plus, and A1, and A2.
+
+706
+00:39:51,850 --> 00:39:58,720
+
+
+707
+00:39:58,720 --> 00:40:00,660
+And, of course, a very
+similar thing
+
+708
+00:40:00,660 --> 00:40:03,020
+can be done for products.
+
+709
+00:40:03,020 --> 00:40:05,650
+And I think I'll avoid
+boring you with them.
+
+710
+00:40:05,650 --> 00:40:07,740
+I was going to write it
+on the blackboard.
+
+711
+00:40:07,740 --> 00:40:09,080
+I don't think it's necessary.
+
+712
+00:40:09,080 --> 00:40:10,830
+You know what to do.
+
+713
+00:40:10,830 --> 00:40:12,880
+It's very simple.
+
+714
+00:40:12,880 --> 00:40:17,890
+But now, let's just see the kind
+of results we get out of
+
+715
+00:40:17,890 --> 00:40:21,870
+changing our program
+in this way.
+
+716
+00:40:21,870 --> 00:40:25,920
+Well, here's the derivatives
+after having just changed the
+
+717
+00:40:25,920 --> 00:40:28,810
+constructors for expressions.
+
+718
+00:40:28,810 --> 00:40:35,810
+The same foo, aX square plus bX
+plus c, and what I get is
+
+719
+00:40:35,810 --> 00:40:40,265
+nothing more than the derivative
+of that is 2aX plus
+
+720
+00:40:40,265 --> 00:40:40,660
+B.
+
+721
+00:40:40,660 --> 00:40:42,670
+Well, it's not completely
+simplified.
+
+722
+00:40:42,670 --> 00:40:45,170
+I would like to collect
+common terms and sums.
+
+723
+00:40:45,170 --> 00:40:47,180
+Well, that's more work.
+
+724
+00:40:47,180 --> 00:40:51,130
+And, of course, programs to do
+this sort of thing are huge
+
+725
+00:40:51,130 --> 00:40:52,440
+and complicated.
+
+726
+00:40:52,440 --> 00:40:56,510
+Algebraic simplification, it's
+a very complicated mess.
+
+727
+00:40:56,510 --> 00:40:58,240
+There's a very famous program
+you may have heard of called
+
+728
+00:40:58,240 --> 00:41:02,750
+Maxima developed at MIT in the
+past, which is 5,000 pages of
+
+729
+00:41:02,750 --> 00:41:05,830
+Lisp code, mostly the algebraic
+simplification
+
+730
+00:41:05,830 --> 00:41:07,080
+operations.
+
+731
+00:41:07,080 --> 00:41:10,080
+
+
+732
+00:41:10,080 --> 00:41:12,210
+There we see the derivative
+of foo.
+
+733
+00:41:12,210 --> 00:41:14,390
+In fact, X is at something I
+wouldn't take off more than 1
+
+734
+00:41:14,390 --> 00:41:18,390
+point for on an elementary
+calculus class.
+
+735
+00:41:18,390 --> 00:41:20,960
+And the derivative of foo with
+respect to a, well it's gone
+
+736
+00:41:20,960 --> 00:41:24,730
+down to X times X, which
+isn't so bad.
+
+737
+00:41:24,730 --> 00:41:28,200
+And the derivative of foo with
+respect to b is just X itself.
+
+738
+00:41:28,200 --> 00:41:30,730
+And the derivative of foo with
+respect to c comes out 1.
+
+739
+00:41:30,730 --> 00:41:34,260
+So I'm pretty pleased
+with this.
+
+740
+00:41:34,260 --> 00:41:36,830
+What you've seen is, of
+course, a little bit
+
+741
+00:41:36,830 --> 00:41:41,020
+contrived, carefully organized
+example to show you how we can
+
+742
+00:41:41,020 --> 00:41:43,610
+manipulate algebraic
+expressions, how we do that
+
+743
+00:41:43,610 --> 00:41:46,890
+abstractly in terms of abstract
+syntax rather than
+
+744
+00:41:46,890 --> 00:41:53,910
+concrete syntax and how we can
+use the abstraction to control
+
+745
+00:41:53,910 --> 00:41:57,850
+what goes on in building
+these expressions.
+
+746
+00:41:57,850 --> 00:42:00,910
+But the real story isn't just
+such a simple thing as that.
+
+747
+00:42:00,910 --> 00:42:03,890
+The real story is, in fact, that
+I'm manipulating these
+
+748
+00:42:03,890 --> 00:42:04,450
+expressions.
+
+749
+00:42:04,450 --> 00:42:06,860
+And the expressions are
+the same expressions--
+
+750
+00:42:06,860 --> 00:42:08,150
+going back to the slide--
+
+751
+00:42:08,150 --> 00:42:12,110
+as the ones that are
+Lisp expressions.
+
+752
+00:42:12,110 --> 00:42:13,890
+There's a pun here.
+
+753
+00:42:13,890 --> 00:42:17,020
+I've chosen my representation
+to be the same as the
+
+754
+00:42:17,020 --> 00:42:22,830
+representation in my language
+of similar things.
+
+755
+00:42:22,830 --> 00:42:26,990
+By doing so, I've invoked
+a necessity.
+
+756
+00:42:26,990 --> 00:42:30,890
+I created the necessity to have
+things like quotation
+
+757
+00:42:30,890 --> 00:42:35,690
+because of the fact that my
+language is capable of writing
+
+758
+00:42:35,690 --> 00:42:39,820
+expressions that talk about
+expressions of the language.
+
+759
+00:42:39,820 --> 00:42:42,420
+I need to have something that
+says, this is an expression
+
+760
+00:42:42,420 --> 00:42:45,320
+I'm talking about rather than
+this expression is talking
+
+761
+00:42:45,320 --> 00:42:48,400
+about something, and I want
+to talk about that.
+
+762
+00:42:48,400 --> 00:42:51,290
+
+
+763
+00:42:51,290 --> 00:42:54,420
+So quotation stops and says,
+I'm talking about this
+
+764
+00:42:54,420 --> 00:42:55,670
+expression itself.
+
+765
+00:42:55,670 --> 00:42:58,140
+
+
+766
+00:42:58,140 --> 00:43:03,030
+Now, given that power, if I can
+manipulate expressions of
+
+767
+00:43:03,030 --> 00:43:07,370
+the language, I can begin to
+build even much more powerful
+
+768
+00:43:07,370 --> 00:43:09,860
+layers upon layers
+of languages.
+
+769
+00:43:09,860 --> 00:43:12,370
+Because I can write languages
+that not only are embedded in
+
+770
+00:43:12,370 --> 00:43:16,730
+Lisp or whatever language you
+start with, but languages that
+
+771
+00:43:16,730 --> 00:43:20,400
+are completely different, that
+are just, if we say,
+
+772
+00:43:20,400 --> 00:43:23,280
+interpreted in Lisp or
+something like that.
+
+773
+00:43:23,280 --> 00:43:26,232
+We'll get to understand those
+words more in the future.
+
+774
+00:43:26,232 --> 00:43:30,150
+But right now I just want to
+leave you with the fact that
+
+775
+00:43:30,150 --> 00:43:36,160
+we've hit a line which gives
+us tremendous power.
+
+776
+00:43:36,160 --> 00:43:37,900
+And this point we've bought
+a sledgehammer.
+
+777
+00:43:37,900 --> 00:43:42,250
+We have to be careful to what
+flies when we apply it.
+
+778
+00:43:42,250 --> 00:43:42,570
+Thank you.
+
+779
+00:43:42,570 --> 00:43:43,820
+[MUSIC PLAYING]
+
+780
+00:43:43,820 --> 00:44:03,796
+
