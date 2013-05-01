@@ -1,0 +1,5469 @@
+0
+00:00:00,000 --> 00:00:24,460
+
+
+1
+00:00:24,460 --> 00:00:28,270
+PROFESSOR: Well, yesterday we
+learned a bit about symbolic
+
+2
+00:00:28,270 --> 00:00:35,140
+manipulation, and we wrote a
+rather stylized program to
+
+3
+00:00:35,140 --> 00:00:40,620
+implement a pile of calculus
+rule from the calculus book.
+
+4
+00:00:40,620 --> 00:00:47,790
+Here on the transparencies, we
+see a bunch of calculus rules
+
+5
+00:00:47,790 --> 00:00:49,470
+from such a book.
+
+6
+00:00:49,470 --> 00:00:53,030
+And, of course, what we did is
+sort of translate these rules
+
+7
+00:00:53,030 --> 00:00:56,040
+into the language
+of the computer.
+
+8
+00:00:56,040 --> 00:00:59,340
+But, of course, that's a
+sort of funny strategy.
+
+9
+00:00:59,340 --> 00:01:03,570
+Why should we have to translate
+these rules into the
+
+10
+00:01:03,570 --> 00:01:04,989
+language of the computer?
+
+11
+00:01:04,989 --> 00:01:07,320
+And what do I really
+mean by that?
+
+12
+00:01:07,320 --> 00:01:08,170
+These are--the program we wrote
+
+13
+00:01:08,170 --> 00:01:11,240
+yesterday was very stylized.
+
+14
+00:01:11,240 --> 00:01:15,210
+It was a conditional, a dispatch
+on the type of the
+
+15
+00:01:15,210 --> 00:01:19,660
+expression as observed
+by the rules.
+
+16
+00:01:19,660 --> 00:01:23,450
+What we see here are rules that
+say if the object being
+
+17
+00:01:23,450 --> 00:01:26,850
+the derivative is being taken
+of, if that expression is a
+
+18
+00:01:26,850 --> 00:01:29,350
+constant, then do one thing.
+
+19
+00:01:29,350 --> 00:01:31,590
+If it's a variable,
+do another thing.
+
+20
+00:01:31,590 --> 00:01:34,040
+If it's a product of a constant
+times a variable, do
+
+21
+00:01:34,040 --> 00:01:36,220
+something and so on.
+
+22
+00:01:36,220 --> 00:01:38,630
+There's sort of a dispatch
+there on a type.
+
+23
+00:01:38,630 --> 00:01:41,750
+
+
+24
+00:01:41,750 --> 00:01:44,260
+Well, since it has such a
+stylized behavior and
+
+25
+00:01:44,260 --> 00:01:48,110
+structure, is there some other
+way of writing this program
+
+26
+00:01:48,110 --> 00:01:50,401
+that's more clear?
+
+27
+00:01:50,401 --> 00:01:52,280
+Well, what's a rule,
+first of all?
+
+28
+00:01:52,280 --> 00:01:53,530
+What are these rules?
+
+29
+00:01:53,530 --> 00:01:55,960
+
+
+30
+00:01:55,960 --> 00:01:57,130
+Let's think about that.
+
+31
+00:01:57,130 --> 00:01:58,910
+Rules have parts.
+
+32
+00:01:58,910 --> 00:02:04,400
+If you look at these rules in
+detail, what you see, for
+
+33
+00:02:04,400 --> 00:02:08,750
+example, is the rule has
+a left-hand side and a
+
+34
+00:02:08,750 --> 00:02:10,940
+right-hand side.
+
+35
+00:02:10,940 --> 00:02:13,220
+Each of these rules has a
+left-hand side and the
+
+36
+00:02:13,220 --> 00:02:14,960
+right-hand side.
+
+37
+00:02:14,960 --> 00:02:18,640
+The left-hand side is somehow
+compared with the expression
+
+38
+00:02:18,640 --> 00:02:21,250
+you're trying to take
+the derivative of.
+
+39
+00:02:21,250 --> 00:02:24,440
+The right-hand side is the
+replacement for that
+
+40
+00:02:24,440 --> 00:02:25,690
+expression.
+
+41
+00:02:25,690 --> 00:02:28,410
+
+
+42
+00:02:28,410 --> 00:02:33,070
+So all rules on this page
+are something like this.
+
+43
+00:02:33,070 --> 00:02:35,900
+
+
+44
+00:02:35,900 --> 00:02:45,990
+I have patterns, and somehow,
+I have to produce, given a
+
+45
+00:02:45,990 --> 00:02:47,845
+pattern, a skeleton.
+
+46
+00:02:47,845 --> 00:02:51,700
+
+
+47
+00:02:51,700 --> 00:02:52,950
+This is a rule.
+
+48
+00:02:52,950 --> 00:02:55,420
+
+
+49
+00:02:55,420 --> 00:02:58,650
+A pattern is something that
+matches, and a skeleton is
+
+50
+00:02:58,650 --> 00:03:02,470
+something you substitute into
+in order to get a new
+
+51
+00:03:02,470 --> 00:03:03,720
+expression.
+
+52
+00:03:03,720 --> 00:03:06,410
+
+
+53
+00:03:06,410 --> 00:03:12,960
+So what that means is that the
+pattern is matched against the
+
+54
+00:03:12,960 --> 00:03:15,910
+expression, which is the
+source expression.
+
+55
+00:03:15,910 --> 00:03:23,730
+
+
+56
+00:03:23,730 --> 00:03:26,620
+And the result of the
+application of the rule is to
+
+57
+00:03:26,620 --> 00:03:38,070
+produce a new expression, which
+I'll call a target, by
+
+58
+00:03:38,070 --> 00:03:41,620
+instantiation of a skeleton.
+
+59
+00:03:41,620 --> 00:03:42,870
+That's called instantiation.
+
+60
+00:03:42,870 --> 00:03:50,580
+
+
+61
+00:03:50,580 --> 00:03:52,530
+So that is the process by which
+
+62
+00:03:52,530 --> 00:03:55,780
+these rules are described.
+
+63
+00:03:55,780 --> 00:04:02,680
+What I'd like to do today is
+build a language and a means
+
+64
+00:04:02,680 --> 00:04:04,950
+of interpreting that language,
+a means of executing that
+
+65
+00:04:04,950 --> 00:04:07,770
+language, where that language
+allows us to directly express
+
+66
+00:04:07,770 --> 00:04:10,550
+these rules.
+
+67
+00:04:10,550 --> 00:04:14,150
+And what we're going to do is
+instead of bringing the rules
+
+68
+00:04:14,150 --> 00:04:16,920
+to the level of the computer by
+writing a program that is
+
+69
+00:04:16,920 --> 00:04:20,279
+those rules in the computer's
+language--
+
+70
+00:04:20,279 --> 00:04:22,170
+at the moment, in a Lisp--
+
+71
+00:04:22,170 --> 00:04:25,740
+we're going to bring the
+computer to the level of us by
+
+72
+00:04:25,740 --> 00:04:28,400
+writing a way by which the
+computer can understand rules
+
+73
+00:04:28,400 --> 00:04:30,670
+of this sort.
+
+74
+00:04:30,670 --> 00:04:35,210
+This is slightly emphasizing the
+idea that we had last time
+
+75
+00:04:35,210 --> 00:04:37,560
+that we're trying to make
+a solution to a class of
+
+76
+00:04:37,560 --> 00:04:39,630
+problems rather than
+a particular one.
+
+77
+00:04:39,630 --> 00:04:45,740
+The problem is if I want to
+write rules for a different
+
+78
+00:04:45,740 --> 00:04:49,990
+piece of mathematics, say,
+to simple algebraic
+
+79
+00:04:49,990 --> 00:04:54,050
+simplification or something like
+that, or manipulation of
+
+80
+00:04:54,050 --> 00:04:57,160
+trigonometric functions,
+I would have to write a
+
+81
+00:04:57,160 --> 00:05:01,130
+different program in using
+yesterday's method.
+
+82
+00:05:01,130 --> 00:05:03,550
+Whereas I would like to
+encapsulate all of the things
+
+83
+00:05:03,550 --> 00:05:06,770
+that are common to both of those
+programs, meaning the
+
+84
+00:05:06,770 --> 00:05:09,870
+idea of matching, instantiation,
+the control
+
+85
+00:05:09,870 --> 00:05:12,090
+structure, which turns out to be
+very complicated for such a
+
+86
+00:05:12,090 --> 00:05:17,420
+thing, I'd like to encapsulate
+that separately from the rules
+
+87
+00:05:17,420 --> 00:05:20,010
+themselves.
+
+88
+00:05:20,010 --> 00:05:22,730
+So let's look at, first of
+all, a representation.
+
+89
+00:05:22,730 --> 00:05:24,670
+I'd like to use the
+overhead here.
+
+90
+00:05:24,670 --> 00:05:25,975
+I'd like-- there it is.
+
+91
+00:05:25,975 --> 00:05:29,440
+I'd like to look at a
+representation of the rules of
+
+92
+00:05:29,440 --> 00:05:36,010
+calculus for derivatives in a
+sort of simple language that
+
+93
+00:05:36,010 --> 00:05:38,140
+I'm writing right here.
+
+94
+00:05:38,140 --> 00:05:41,420
+Now, I'm going to avoid--I'm
+going to avoid
+
+95
+00:05:41,420 --> 00:05:44,250
+worrying about syntax.
+
+96
+00:05:44,250 --> 00:05:48,340
+We can easily pretty this, and
+I'm not interested in making--
+
+97
+00:05:48,340 --> 00:05:49,230
+this is indeed ugly.
+
+98
+00:05:49,230 --> 00:05:54,810
+This doesn't look like the
+beautiful text set dx by dt or
+
+99
+00:05:54,810 --> 00:05:56,730
+something that I'd
+like to write,
+
+100
+00:05:56,730 --> 00:05:58,710
+but that's not essential.
+
+101
+00:05:58,710 --> 00:06:00,480
+That's sort of an accidental
+phenomenon.
+
+102
+00:06:00,480 --> 00:06:03,220
+Here, we're just worrying
+about the fact that the
+
+103
+00:06:03,220 --> 00:06:07,060
+structure of the rules is that
+there is a left-hand side
+
+104
+00:06:07,060 --> 00:06:10,510
+here, represents the thing I
+want to match against the
+
+105
+00:06:10,510 --> 00:06:11,720
+derivative expression.
+
+106
+00:06:11,720 --> 00:06:14,140
+This is the representation
+I'm going to say for the
+
+107
+00:06:14,140 --> 00:06:18,980
+derivative of a constant, which
+we will call c with
+
+108
+00:06:18,980 --> 00:06:23,730
+respect to the variable we will
+call v. And what we will
+
+109
+00:06:23,730 --> 00:06:26,010
+get on the right-hand
+side is 0.
+
+110
+00:06:26,010 --> 00:06:29,620
+So this represents a rule.
+
+111
+00:06:29,620 --> 00:06:32,980
+The next rule will be the
+derivative of a variable,
+
+112
+00:06:32,980 --> 00:06:36,010
+which we will call v with
+respect to the same variable
+
+113
+00:06:36,010 --> 00:06:38,560
+v, and we get a 1.
+
+114
+00:06:38,560 --> 00:06:41,360
+However, if we have the
+derivative of a variable
+
+115
+00:06:41,360 --> 00:06:44,490
+called u with respect to
+a different variables
+
+116
+00:06:44,490 --> 00:06:47,790
+v, we will get 0.
+
+117
+00:06:47,790 --> 00:06:50,880
+I just want you look at these
+rules a little bit and see how
+
+118
+00:06:50,880 --> 00:06:52,750
+they fit together.
+
+119
+00:06:52,750 --> 00:06:56,310
+For example, over here, we're
+going to have the derivative
+
+120
+00:06:56,310 --> 00:07:00,360
+of the sum of an expression
+called x1 and an
+
+121
+00:07:00,360 --> 00:07:01,790
+expression called x2.
+
+122
+00:07:01,790 --> 00:07:04,960
+These things that begin with
+question marks are called
+
+123
+00:07:04,960 --> 00:07:08,910
+pattern variables in the
+language that we're inventing,
+
+124
+00:07:08,910 --> 00:07:12,820
+and you see we're just making
+it up, so pattern variables
+
+125
+00:07:12,820 --> 00:07:14,960
+for matching.
+
+126
+00:07:14,960 --> 00:07:16,050
+And so in this--
+
+127
+00:07:16,050 --> 00:07:19,140
+here we have the derivative of
+the sum of the expression
+
+128
+00:07:19,140 --> 00:07:20,380
+which we will call x1.
+
+129
+00:07:20,380 --> 00:07:23,150
+And the expression we will call
+x2 with respect to the
+
+130
+00:07:23,150 --> 00:07:26,500
+variable we call v will be--
+here is the right-hand side:
+
+131
+00:07:26,500 --> 00:07:29,700
+the sum of the derivative of
+that expression x1 with
+
+132
+00:07:29,700 --> 00:07:33,910
+respect to v-- the right-hand
+side is the skeleton--
+
+133
+00:07:33,910 --> 00:07:38,950
+and the derivative of x2 with
+respect to v. Colons here will
+
+134
+00:07:38,950 --> 00:07:42,170
+stand for substitution
+objects.
+
+135
+00:07:42,170 --> 00:07:44,690
+
+
+136
+00:07:44,690 --> 00:07:48,480
+They're--we'll call them
+skeleton evaluations.
+
+137
+00:07:48,480 --> 00:07:52,420
+So let me put up here on the
+blackboard for a second some
+
+138
+00:07:52,420 --> 00:07:54,380
+syntax so we'll know
+what's going on
+
+139
+00:07:54,380 --> 00:07:56,620
+for this rule language.
+
+140
+00:07:56,620 --> 00:07:58,730
+First of all, we're going to
+have to worry about the
+
+141
+00:07:58,730 --> 00:07:59,980
+pattern matching.
+
+142
+00:07:59,980 --> 00:08:05,790
+
+
+143
+00:08:05,790 --> 00:08:11,950
+We're going to have things like
+a symbol like foo matches
+
+144
+00:08:11,950 --> 00:08:13,200
+exactly itself.
+
+145
+00:08:13,200 --> 00:08:23,170
+
+
+146
+00:08:23,170 --> 00:08:35,919
+The expression f of a and b will
+be used to match any list
+
+147
+00:08:35,919 --> 00:08:51,130
+whose first element is f, whose
+second element is a, and
+
+148
+00:08:51,130 --> 00:08:58,550
+whose third element is b.
+
+149
+00:08:58,550 --> 00:09:03,200
+Also, another thing we might
+have in a pattern is that--
+
+150
+00:09:03,200 --> 00:09:08,150
+a question mark with some
+variable like x.
+
+151
+00:09:08,150 --> 00:09:17,965
+And what that means, it says
+matches anything, which we
+
+152
+00:09:17,965 --> 00:09:19,215
+will call x.
+
+153
+00:09:19,215 --> 00:09:25,610
+
+
+154
+00:09:25,610 --> 00:09:30,922
+Question mark c x will
+match only constants.
+
+155
+00:09:30,922 --> 00:09:41,140
+So this is something which
+matches a constant colon x.
+
+156
+00:09:41,140 --> 00:09:44,620
+
+
+157
+00:09:44,620 --> 00:09:55,920
+And question mark v x will
+match a variable,
+
+158
+00:09:55,920 --> 00:09:57,170
+which we call x.
+
+159
+00:09:57,170 --> 00:10:01,690
+
+
+160
+00:10:01,690 --> 00:10:04,140
+This is sort of the language
+we're making up now.
+
+161
+00:10:04,140 --> 00:10:07,240
+If I match two things against
+each other, then they are
+
+162
+00:10:07,240 --> 00:10:10,200
+compared element by element.
+
+163
+00:10:10,200 --> 00:10:13,630
+But elements in the pattern may
+contain these syntactic
+
+164
+00:10:13,630 --> 00:10:19,310
+variables, pattern variables,
+which will be used to match
+
+165
+00:10:19,310 --> 00:10:22,160
+arbitrary objects.
+
+166
+00:10:22,160 --> 00:10:28,480
+And we'll get that object as the
+value in the name x here,
+
+167
+00:10:28,480 --> 00:10:31,030
+for example.
+
+168
+00:10:31,030 --> 00:10:39,290
+Now, when we make skeletons
+for instantiation.
+
+169
+00:10:39,290 --> 00:10:42,320
+Well, then we have
+things like this.
+
+170
+00:10:42,320 --> 00:10:46,160
+foo, a symbol, instantiates
+to itself.
+
+171
+00:10:46,160 --> 00:10:55,020
+
+
+172
+00:10:55,020 --> 00:10:59,630
+Something which is a list
+like f of a and b,
+
+173
+00:10:59,630 --> 00:11:06,350
+instantiates to--
+
+174
+00:11:06,350 --> 00:11:14,270
+well, f instantiates to a
+3-list, a list of three
+
+175
+00:11:14,270 --> 00:11:27,420
+elements, okay, which are the
+results of instantiating each
+
+176
+00:11:27,420 --> 00:11:33,320
+of f, a, and b.
+
+177
+00:11:33,320 --> 00:11:36,310
+
+
+178
+00:11:36,310 --> 00:11:53,470
+And x well--we instantiate to
+the value of x as in the
+
+179
+00:11:53,470 --> 00:11:54,720
+matched pattern.
+
+180
+00:11:54,720 --> 00:12:02,960
+
+
+181
+00:12:02,960 --> 00:12:08,630
+So going back to the overhead
+here, we see--we see that all
+
+182
+00:12:08,630 --> 00:12:14,040
+of those kinds of objects, we
+see here a pattern variable
+
+183
+00:12:14,040 --> 00:12:18,180
+which matches a constant, a
+pattern variable which matches
+
+184
+00:12:18,180 --> 00:12:22,660
+a variable, a pattern variable
+which will match anything.
+
+185
+00:12:22,660 --> 00:12:25,810
+And if we have two instances of
+the same name, like this is
+
+186
+00:12:25,810 --> 00:12:29,840
+the derivative of the expression
+which is a variable
+
+187
+00:12:29,840 --> 00:12:34,510
+only whose name will be v with
+respect to some arbitrary
+
+188
+00:12:34,510 --> 00:12:38,560
+expression which we will call v,
+since this v appears twice,
+
+189
+00:12:38,560 --> 00:12:42,770
+we're going to want that to mean
+they have to be the same.
+
+190
+00:12:42,770 --> 00:12:45,630
+The only consistent match is
+that those are the same.
+
+191
+00:12:45,630 --> 00:12:48,170
+So here, we're making
+up a language.
+
+192
+00:12:48,170 --> 00:12:50,440
+And in fact, that's a very
+nice thing to be doing.
+
+193
+00:12:50,440 --> 00:12:52,555
+It's so much fun to make
+up a language.
+
+194
+00:12:52,555 --> 00:12:54,320
+And you do this all the time.
+
+195
+00:12:54,320 --> 00:12:57,390
+And the really most powerful
+design things you ever do are
+
+196
+00:12:57,390 --> 00:13:02,050
+sort of making up a language to
+solve problems like this.
+
+197
+00:13:02,050 --> 00:13:05,780
+Now, here we go back here and
+look at some of these rules.
+
+198
+00:13:05,780 --> 00:13:07,070
+Well, there's a whole
+set of them.
+
+199
+00:13:07,070 --> 00:13:10,540
+I mean, there's one for
+addition and one for
+
+200
+00:13:10,540 --> 00:13:12,390
+multiplication, just
+like we had before.
+
+201
+00:13:12,390 --> 00:13:16,900
+The derivative of the product of
+x1 and x2 with respect to v
+
+202
+00:13:16,900 --> 00:13:22,660
+is the sum of the product of x1
+and the derivative x2 with
+
+203
+00:13:22,660 --> 00:13:24,750
+respect to v and the
+product of the
+
+204
+00:13:24,750 --> 00:13:27,200
+derivative of x1 and x2.
+
+205
+00:13:27,200 --> 00:13:29,180
+And here we have
+exponentiation.
+
+206
+00:13:29,180 --> 00:13:30,880
+And, of course, we run off
+the end down here.
+
+207
+00:13:30,880 --> 00:13:32,540
+We get as many as we like.
+
+208
+00:13:32,540 --> 00:13:36,270
+But the whole thing over here,
+I'm giving this--this list of
+
+209
+00:13:36,270 --> 00:13:40,910
+rules the name "derivative
+rules."
+
+210
+00:13:40,910 --> 00:13:45,240
+What would we do with such
+a thing once we have it?
+
+211
+00:13:45,240 --> 00:13:49,080
+Well, one of the nicest ideas,
+first of all, is I'm going to
+
+212
+00:13:49,080 --> 00:13:52,230
+write for you, and we're going
+to play with it all day.
+
+213
+00:13:52,230 --> 00:13:56,680
+What I'm going to write for
+you is a program called
+
+214
+00:13:56,680 --> 00:14:00,150
+simplifier, the general-purpose
+simplifier.
+
+215
+00:14:00,150 --> 00:14:09,150
+And we're going to say something
+like define dsimp to
+
+216
+00:14:09,150 --> 00:14:17,260
+be a simplifier of the
+derivative rules.
+
+217
+00:14:17,260 --> 00:14:23,740
+
+
+218
+00:14:23,740 --> 00:14:26,390
+And what simplifier is going
+to do is, given a set of
+
+219
+00:14:26,390 --> 00:14:29,670
+rules, it will produce for
+me a procedure which will
+
+220
+00:14:29,670 --> 00:14:33,200
+simplify expressions containing
+the things that are
+
+221
+00:14:33,200 --> 00:14:34,680
+referred to by these rules.
+
+222
+00:14:34,680 --> 00:14:37,360
+
+
+223
+00:14:37,360 --> 00:14:42,110
+So here will be a procedure
+constructed for your purposes
+
+224
+00:14:42,110 --> 00:14:45,150
+to simplify things with
+derivatives in them such that,
+
+225
+00:14:45,150 --> 00:14:49,050
+after that, if we're typing at
+some list system, and we get a
+
+226
+00:14:49,050 --> 00:14:58,030
+prompt, and we say dsimp, for
+example, of the derivative of
+
+227
+00:14:58,030 --> 00:15:03,885
+the sum of x and y with
+respect to x--
+
+228
+00:15:03,885 --> 00:15:06,990
+
+
+229
+00:15:06,990 --> 00:15:08,740
+note the quote here because
+I'm talking about the
+
+230
+00:15:08,740 --> 00:15:10,660
+expression which is
+the derivative--
+
+231
+00:15:10,660 --> 00:15:13,310
+
+
+232
+00:15:13,310 --> 00:15:19,970
+then I will get back as
+a result plus 1 0.
+
+233
+00:15:19,970 --> 00:15:23,760
+Because the derivative of x plus
+y is the derivative of x
+
+234
+00:15:23,760 --> 00:15:24,490
+plus derivative y.
+
+235
+00:15:24,490 --> 00:15:26,300
+The derivative of x with
+respect to x is 1.
+
+236
+00:15:26,300 --> 00:15:29,260
+The derivative of y with
+respect to x is 0.
+
+237
+00:15:29,260 --> 00:15:31,170
+It's not what we're
+going to get.
+
+238
+00:15:31,170 --> 00:15:33,280
+I haven't put any simplification
+at that level--
+
+239
+00:15:33,280 --> 00:15:34,440
+algebraic simplification--
+
+240
+00:15:34,440 --> 00:15:36,010
+yet.
+
+241
+00:15:36,010 --> 00:15:39,702
+Of course, once we have such a
+thing, then we can--then we
+
+242
+00:15:39,702 --> 00:15:42,340
+can look at other rules.
+
+243
+00:15:42,340 --> 00:15:49,310
+So, for example, we can, if
+we go to the slide, OK?
+
+244
+00:15:49,310 --> 00:15:52,480
+Here, for example, are other
+rules that we might have,
+
+245
+00:15:52,480 --> 00:15:56,780
+algebraic manipulation rules,
+ones that would be used for
+
+246
+00:15:56,780 --> 00:15:58,960
+simplifying algebraic
+expressions.
+
+247
+00:15:58,960 --> 00:16:04,470
+For example, just looking at
+some of these, the left-hand
+
+248
+00:16:04,470 --> 00:16:08,220
+side says any operator applied
+to a constant e1 and a
+
+249
+00:16:08,220 --> 00:16:12,310
+constant e2 is the result of
+evaluating that operator on
+
+250
+00:16:12,310 --> 00:16:15,850
+the constants e1 and e2.
+
+251
+00:16:15,850 --> 00:16:20,660
+Or an operator, applied to e1,
+any expression e1 and a
+
+252
+00:16:20,660 --> 00:16:24,520
+constant e2, is going to move
+the constant forward.
+
+253
+00:16:24,520 --> 00:16:25,980
+So that'll turn into
+the operator with
+
+254
+00:16:25,980 --> 00:16:28,770
+e2 followed by e1.
+
+255
+00:16:28,770 --> 00:16:30,200
+Why I did that, I don't know.
+
+256
+00:16:30,200 --> 00:16:33,560
+It wouldn't work if I had
+division, for example.
+
+257
+00:16:33,560 --> 00:16:36,610
+So there's a bug in the
+rules, if you like.
+
+258
+00:16:36,610 --> 00:16:42,120
+So the sum of 0 and e is e.
+
+259
+00:16:42,120 --> 00:16:46,110
+The product of 1 and any
+expression e is e.
+
+260
+00:16:46,110 --> 00:16:49,520
+The product of 0 and any
+expression e is 0.
+
+261
+00:16:49,520 --> 00:16:51,130
+Just looking at some more of
+these rules, we could have
+
+262
+00:16:51,130 --> 00:16:53,670
+arbitrarily complicated ones.
+
+263
+00:16:53,670 --> 00:16:59,050
+We could have things like the
+product of the constant e1 and
+
+264
+00:16:59,050 --> 00:17:04,230
+any constant e2 with e3 is the
+result of multiplying the
+
+265
+00:17:04,230 --> 00:17:10,310
+result of--multiplying now the
+constants e1 and e2 together
+
+266
+00:17:10,310 --> 00:17:13,319
+and putting e3 there.
+
+267
+00:17:13,319 --> 00:17:16,760
+So it says combine the constants
+that I had, which
+
+268
+00:17:16,760 --> 00:17:20,480
+was if I had a product of e1 and
+e2 and e3 just multiply--I
+
+269
+00:17:20,480 --> 00:17:23,800
+mean and e1 and e2 are both
+constants, multiply them.
+
+270
+00:17:23,800 --> 00:17:25,690
+And you can make up the
+rules as you like.
+
+271
+00:17:25,690 --> 00:17:27,619
+There are lots of them here.
+
+272
+00:17:27,619 --> 00:17:31,300
+There are things as complicated,
+for example, as--
+
+273
+00:17:31,300 --> 00:17:33,910
+oh, I suppose down here some
+distributive law, you see.
+
+274
+00:17:33,910 --> 00:17:39,150
+The product of any object c and
+the sum of d and e gives
+
+275
+00:17:39,150 --> 00:17:42,340
+the result as the same as the
+sum of the product of c and d
+
+276
+00:17:42,340 --> 00:17:45,320
+and the product of c and e.
+
+277
+00:17:45,320 --> 00:17:47,770
+Now, what exactly these
+rules are doesn't very
+
+278
+00:17:47,770 --> 00:17:49,220
+much interest me.
+
+279
+00:17:49,220 --> 00:17:51,970
+We're going to be writing the
+language that will allow us to
+
+280
+00:17:51,970 --> 00:17:56,480
+interpret these rules so that
+we can, in fact, make up
+
+281
+00:17:56,480 --> 00:17:59,430
+whatever rules we like, another
+whole language of
+
+282
+00:17:59,430 --> 00:18:00,680
+programming.
+
+283
+00:18:00,680 --> 00:18:03,350
+
+
+284
+00:18:03,350 --> 00:18:05,130
+Well, let's see.
+
+285
+00:18:05,130 --> 00:18:07,520
+I haven't told you how we're
+going to do this.
+
+286
+00:18:07,520 --> 00:18:10,760
+And, of course, for a while,
+we're going to work on that.
+
+287
+00:18:10,760 --> 00:18:13,980
+But there's a real question of
+what is--what am I going to do
+
+288
+00:18:13,980 --> 00:18:16,940
+at all at a large scale?
+
+289
+00:18:16,940 --> 00:18:18,930
+How do these rules work?
+
+290
+00:18:18,930 --> 00:18:21,830
+How is the simplifier program
+going to manipulate these
+
+291
+00:18:21,830 --> 00:18:26,190
+rules with your expression to
+produce a reasonable answer?
+
+292
+00:18:26,190 --> 00:18:28,410
+Well, first, I'd like to think
+about these rules as being
+
+293
+00:18:28,410 --> 00:18:32,100
+some sort of deck of them.
+
+294
+00:18:32,100 --> 00:18:42,030
+So here I have a whole bunch
+of rules, right?
+
+295
+00:18:42,030 --> 00:18:43,660
+Each rule--
+
+296
+00:18:43,660 --> 00:18:46,930
+here's a rule--
+
+297
+00:18:46,930 --> 00:18:49,720
+has a pattern and a skeleton.
+
+298
+00:18:49,720 --> 00:18:53,410
+I'm trying to make up a control
+structure for this.
+
+299
+00:18:53,410 --> 00:19:02,720
+Now, what I have is a matcher,
+and I have something which is
+
+300
+00:19:02,720 --> 00:19:03,970
+an instantiater.
+
+301
+00:19:03,970 --> 00:19:09,120
+
+
+302
+00:19:09,120 --> 00:19:13,950
+And I'm going to pass from the
+matcher to the instantiater
+
+303
+00:19:13,950 --> 00:19:18,200
+some set of meaning for the
+pattern variables, a
+
+304
+00:19:18,200 --> 00:19:20,560
+dictionary, I'll call it.
+
+305
+00:19:20,560 --> 00:19:26,740
+A dictionary, which will say
+x was matched against the
+
+306
+00:19:26,740 --> 00:19:30,410
+following subexpression and y
+was matched against another
+
+307
+00:19:30,410 --> 00:19:32,170
+following subexpression.
+
+308
+00:19:32,170 --> 00:19:35,040
+And from the instantiater, I
+will be making expressions,
+
+309
+00:19:35,040 --> 00:19:37,130
+and they will go into
+the matcher.
+
+310
+00:19:37,130 --> 00:19:38,380
+They will be expressions.
+
+311
+00:19:38,380 --> 00:19:44,960
+
+
+312
+00:19:44,960 --> 00:19:49,190
+And the patterns of the rules
+will be fed into the matcher,
+
+313
+00:19:49,190 --> 00:19:53,600
+and the skeletons from the same
+rule will be fed into the
+
+314
+00:19:53,600 --> 00:19:55,190
+instantiater.
+
+315
+00:19:55,190 --> 00:19:57,920
+Now, this is a little
+complicated because when you
+
+316
+00:19:57,920 --> 00:20:00,965
+have something like an algebraic
+expression, where
+
+317
+00:20:00,965 --> 00:20:02,290
+someth--the rules are intended
+to be able to allow you to
+
+318
+00:20:02,290 --> 00:20:04,290
+substitute equal for equal.
+
+319
+00:20:04,290 --> 00:20:06,860
+These are equal transformation
+rules.
+
+320
+00:20:06,860 --> 00:20:08,710
+So all subexpressions
+of the expression
+
+321
+00:20:08,710 --> 00:20:11,090
+should be looked at.
+
+322
+00:20:11,090 --> 00:20:14,440
+You give it an expression,
+this thing, and the rules
+
+323
+00:20:14,440 --> 00:20:16,010
+should be cycled around.
+
+324
+00:20:16,010 --> 00:20:18,540
+First of all, for every
+subexpression of the
+
+325
+00:20:18,540 --> 00:20:21,340
+expression you feed in, all
+of the rules must be
+
+326
+00:20:21,340 --> 00:20:24,390
+tried and looked at.
+
+327
+00:20:24,390 --> 00:20:27,200
+And if any rule matches, then
+this process occurs.
+
+328
+00:20:27,200 --> 00:20:30,620
+The dictionary--the dictionary
+is to have some values in it.
+
+329
+00:20:30,620 --> 00:20:34,800
+The instantiater makes a new
+expression, which is basically
+
+330
+00:20:34,800 --> 00:20:38,000
+replaces that part of the
+expression that was matched in
+
+331
+00:20:38,000 --> 00:20:40,800
+your original expression.
+
+332
+00:20:40,800 --> 00:20:44,700
+And then, then, of course, we're
+going to recheck that,
+
+333
+00:20:44,700 --> 00:20:47,170
+going to go around these rules
+again, seeing if that could be
+
+334
+00:20:47,170 --> 00:20:49,520
+simplified further.
+
+335
+00:20:49,520 --> 00:20:50,960
+And then, then we're going
+to do that for every
+
+336
+00:20:50,960 --> 00:20:54,940
+subexpression until the thing
+no longer changes.
+
+337
+00:20:54,940 --> 00:20:57,890
+You can think of this as sort
+of an organic process.
+
+338
+00:20:57,890 --> 00:21:00,190
+You've got some sort
+of stew, right?
+
+339
+00:21:00,190 --> 00:21:03,076
+You've got bacteria or
+something, or enzymes in some,
+
+340
+00:21:03,076 --> 00:21:05,590
+in some gooey mess.
+
+341
+00:21:05,590 --> 00:21:10,470
+And there's these--and these
+enzymes change things.
+
+342
+00:21:10,470 --> 00:21:13,320
+They attach to your expression,
+change it, and
+
+343
+00:21:13,320 --> 00:21:15,300
+then they go away.
+
+344
+00:21:15,300 --> 00:21:16,080
+And they have to match.
+
+345
+00:21:16,080 --> 00:21:17,740
+The key-in-lock phenomenon.
+
+346
+00:21:17,740 --> 00:21:19,660
+They match, they change
+it, they go away.
+
+347
+00:21:19,660 --> 00:21:22,310
+You can imagine it as a parallel
+process of some sort.
+
+348
+00:21:22,310 --> 00:21:26,250
+So you stick an expression into
+this mess, and after a
+
+349
+00:21:26,250 --> 00:21:29,440
+while, you take it out, and
+it's been simplified.
+
+350
+00:21:29,440 --> 00:21:31,660
+And it just keeps changing
+until it no
+
+351
+00:21:31,660 --> 00:21:33,170
+longer can be changed.
+
+352
+00:21:33,170 --> 00:21:37,840
+But these enzymes can attach
+to any part of the, of the
+
+353
+00:21:37,840 --> 00:21:39,230
+expression.
+
+354
+00:21:39,230 --> 00:21:44,990
+OK, at this point, I'd like to
+stop and ask for questions.
+
+355
+00:21:44,990 --> 00:21:45,950
+Yes.
+
+356
+00:21:45,950 --> 00:21:48,550
+AUDIENCE: This implies that the
+matching program and the
+
+357
+00:21:48,550 --> 00:21:50,460
+instantiation program
+are separate
+
+358
+00:21:50,460 --> 00:21:51,650
+programs; is that right?
+
+359
+00:21:51,650 --> 00:21:52,690
+Or is that-- they are.
+
+360
+00:21:52,690 --> 00:21:54,090
+PROFESSOR: They're separate
+little pieces.
+
+361
+00:21:54,090 --> 00:21:57,170
+They fit together in
+a larger structure.
+
+362
+00:21:57,170 --> 00:22:00,480
+AUDIENCE: So I'm going through
+and matching and passing the
+
+363
+00:22:00,480 --> 00:22:03,520
+information about what I matched
+to an instantiater,
+
+364
+00:22:03,520 --> 00:22:04,620
+which makes the changes.
+
+365
+00:22:04,620 --> 00:22:06,480
+And then I pass that back
+to the matcher?
+
+366
+00:22:06,480 --> 00:22:07,060
+PROFESSOR: It won't
+make a change.
+
+367
+00:22:07,060 --> 00:22:11,540
+It will make a new expression,
+which has, which has
+
+368
+00:22:11,540 --> 00:22:14,980
+substituted the values of the
+pattern variable that were
+
+369
+00:22:14,980 --> 00:22:17,860
+matched on the left-hand side
+for the variables that are
+
+370
+00:22:17,860 --> 00:22:20,570
+mentioned, the skeleton
+variables or evaluation
+
+371
+00:22:20,570 --> 00:22:25,170
+variables or whatever I called
+them, on the right-hand side.
+
+372
+00:22:25,170 --> 00:22:27,660
+AUDIENCE: And then that's passed
+back into the matcher?
+
+373
+00:22:27,660 --> 00:22:29,490
+PROFESSOR: Then this is going
+to go around again.
+
+374
+00:22:29,490 --> 00:22:31,330
+This is going to go through
+this mess until
+
+375
+00:22:31,330 --> 00:22:33,240
+it no longer changes.
+
+376
+00:22:33,240 --> 00:22:35,440
+AUDIENCE: And it seems that
+there would be a danger of
+
+377
+00:22:35,440 --> 00:22:37,170
+getting into a recursive loop.
+
+378
+00:22:37,170 --> 00:22:38,160
+PROFESSOR: Yes.
+
+379
+00:22:38,160 --> 00:22:41,240
+Yes, if you do not write your
+rules nicely, you are--
+
+380
+00:22:41,240 --> 00:22:43,870
+indeed, in any programming
+language you invent, if it's
+
+381
+00:22:43,870 --> 00:22:46,190
+sufficiently powerful to do
+anything, you can write
+
+382
+00:22:46,190 --> 00:22:49,280
+programs that will go
+into infinite loops.
+
+383
+00:22:49,280 --> 00:22:52,600
+And indeed, writing a program
+for doing algebraic
+
+384
+00:22:52,600 --> 00:22:55,010
+manipulation for long will
+produce infinite loops.
+
+385
+00:22:55,010 --> 00:23:00,722
+
+
+386
+00:23:00,722 --> 00:23:01,680
+Go ahead.
+
+387
+00:23:01,680 --> 00:23:04,580
+AUDIENCE: Some language
+designers feel that this
+
+388
+00:23:04,580 --> 00:23:07,850
+feature is so important that it
+should become part of the
+
+389
+00:23:07,850 --> 00:23:12,670
+basic language, for example,
+scheme in this case.
+
+390
+00:23:12,670 --> 00:23:13,960
+What are your thoughts on--
+
+391
+00:23:13,960 --> 00:23:15,722
+PROFESSOR: Which language
+feature?
+
+392
+00:23:15,722 --> 00:23:17,290
+AUDIENCE: The pairs matching.
+
+393
+00:23:17,290 --> 00:23:21,840
+It's all application of
+such rules should be--
+
+394
+00:23:21,840 --> 00:23:23,650
+PROFESSOR: Oh, you
+mean like Prolog?
+
+395
+00:23:23,650 --> 00:23:26,595
+AUDIENCE: Like Prolog, but it
+becomes a more general--
+
+396
+00:23:26,595 --> 00:23:28,470
+PROFESSOR: It's possible.
+
+397
+00:23:28,470 --> 00:23:33,740
+OK, I think my feeling about
+that is that I would like to
+
+398
+00:23:33,740 --> 00:23:35,840
+teach you how to do it so you
+don't depend upon some
+
+399
+00:23:35,840 --> 00:23:38,490
+language designer.
+
+400
+00:23:38,490 --> 00:23:40,870
+AUDIENCE: OK.
+
+401
+00:23:40,870 --> 00:23:41,850
+PROFESSOR: You make
+it yourself.
+
+402
+00:23:41,850 --> 00:23:44,640
+You can roll your own.
+
+403
+00:23:44,640 --> 00:23:45,890
+Thank you.
+
+404
+00:23:45,890 --> 00:24:14,120
+
+
+405
+00:24:14,120 --> 00:24:15,800
+Well, let's see.
+
+406
+00:24:15,800 --> 00:24:17,100
+Now we have to tell
+you how it works.
+
+407
+00:24:17,100 --> 00:24:21,586
+
+
+408
+00:24:21,586 --> 00:24:24,445
+It conveniently breaks up
+into various pieces.
+
+409
+00:24:24,445 --> 00:24:28,680
+I'd like to look now
+at the matcher.
+
+410
+00:24:28,680 --> 00:24:32,730
+The matcher has the following
+basic structure.
+
+411
+00:24:32,730 --> 00:24:44,500
+It's a box that takes as its
+input an expression and a
+
+412
+00:24:44,500 --> 00:24:53,570
+pattern, and it turns
+out a dictionary.
+
+413
+00:24:53,570 --> 00:25:01,530
+
+
+414
+00:25:01,530 --> 00:25:06,440
+A dictionary, remember, is a
+mapping of pattern variables
+
+415
+00:25:06,440 --> 00:25:09,990
+to the values that were found
+by matching, and it puts out
+
+416
+00:25:09,990 --> 00:25:20,370
+another dictionary, which is the
+result of augmenting this
+
+417
+00:25:20,370 --> 00:25:24,350
+dictionary by what was found
+in matching this expression
+
+418
+00:25:24,350 --> 00:25:25,600
+against this pattern.
+
+419
+00:25:25,600 --> 00:25:27,930
+
+
+420
+00:25:27,930 --> 00:25:29,180
+So that's the matcher.
+
+421
+00:25:29,180 --> 00:25:33,900
+
+
+422
+00:25:33,900 --> 00:25:37,600
+Now, this is a rather
+complicated program, and we
+
+423
+00:25:37,600 --> 00:25:42,530
+can look at it on the overhead
+over here and see, ha, ha,
+
+424
+00:25:42,530 --> 00:25:44,430
+it's very complicated.
+
+425
+00:25:44,430 --> 00:25:46,740
+I just want you to look
+at the shape of it.
+
+426
+00:25:46,740 --> 00:25:51,670
+It's too complicated to look
+at except in pieces.
+
+427
+00:25:51,670 --> 00:25:56,720
+However, it's a fairly large,
+complicated program with a lot
+
+428
+00:25:56,720 --> 00:26:00,140
+of sort of indented structure.
+
+429
+00:26:00,140 --> 00:26:02,090
+At the largest scale--
+
+430
+00:26:02,090 --> 00:26:04,740
+you don't try to read those
+characters, but at the largest
+
+431
+00:26:04,740 --> 00:26:09,130
+scale, you see that there is a
+case analysis, which is all
+
+432
+00:26:09,130 --> 00:26:12,100
+these cases lined up.
+
+433
+00:26:12,100 --> 00:26:15,400
+What we're now going to do is
+look at this in a bit more
+
+434
+00:26:15,400 --> 00:26:19,970
+detail, attempting to understand
+how it works.
+
+435
+00:26:19,970 --> 00:26:24,810
+Let's go now to the first slide,
+showing some of the
+
+436
+00:26:24,810 --> 00:26:28,710
+structure of the matcher
+at a large scale.
+
+437
+00:26:28,710 --> 00:26:33,440
+And we see that the matcher, the
+matcher takes as its input
+
+438
+00:26:33,440 --> 00:26:36,050
+a pattern, an expression,
+and a dictionary.
+
+439
+00:26:36,050 --> 00:26:38,580
+
+
+440
+00:26:38,580 --> 00:26:42,370
+And there is a case analysis
+here, which is made out of
+
+441
+00:26:42,370 --> 00:26:46,630
+several cases, some of which
+have been left out over here,
+
+442
+00:26:46,630 --> 00:26:50,560
+and the general case, which
+I'd like you to see.
+
+443
+00:26:50,560 --> 00:26:51,920
+Let's consider this
+general case.
+
+444
+00:26:51,920 --> 00:26:53,230
+It's a very important pattern.
+
+445
+00:26:53,230 --> 00:26:55,920
+
+
+446
+00:26:55,920 --> 00:27:00,650
+The problem is that we have
+to examine two trees
+
+447
+00:27:00,650 --> 00:27:03,000
+simultaneously.
+
+448
+00:27:03,000 --> 00:27:06,230
+One of the trees is the tree
+of the expression, and the
+
+449
+00:27:06,230 --> 00:27:08,660
+other is the tree
+of the pattern.
+
+450
+00:27:08,660 --> 00:27:12,540
+We have to compare them with
+each other so that the
+
+451
+00:27:12,540 --> 00:27:15,230
+subexpressions of the expression
+are matched against
+
+452
+00:27:15,230 --> 00:27:18,380
+subexpressions of the pattern.
+
+453
+00:27:18,380 --> 00:27:21,170
+Looking at that in a bit more
+detail, suppose I had a
+
+454
+00:27:21,170 --> 00:27:29,820
+pattern, a pattern, which was
+the sum of the product of a
+
+455
+00:27:29,820 --> 00:27:38,130
+thing which we will call x and
+a thing which we will call y,
+
+456
+00:27:38,130 --> 00:27:42,000
+and the sum of that, and the
+same thing we call y.
+
+457
+00:27:42,000 --> 00:27:45,070
+
+
+458
+00:27:45,070 --> 00:27:49,902
+So we're looking for a sum of a
+product whose second--whose
+
+459
+00:27:49,902 --> 00:27:53,790
+second argument is the
+same as the second
+
+460
+00:27:53,790 --> 00:27:56,960
+argument of the sum.
+
+461
+00:27:56,960 --> 00:27:59,650
+That's a thing you might
+be looking for.
+
+462
+00:27:59,650 --> 00:28:02,770
+Well, that, as a pattern,
+looks like this.
+
+463
+00:28:02,770 --> 00:28:09,660
+There is a tree, which consists
+of a sum, and a
+
+464
+00:28:09,660 --> 00:28:16,640
+product with a pattern variable
+question mark x and
+
+465
+00:28:16,640 --> 00:28:21,960
+question mark y, the other
+pattern variable, and question
+
+466
+00:28:21,960 --> 00:28:25,785
+mark y, just looking at the
+same, just writing down the
+
+467
+00:28:25,785 --> 00:28:28,760
+list structure in
+a different way.
+
+468
+00:28:28,760 --> 00:28:31,040
+Now, suppose we were matching
+that against an expression
+
+469
+00:28:31,040 --> 00:28:38,990
+which matches it, the sum of,
+say, the product of 3 and x
+
+470
+00:28:38,990 --> 00:28:42,420
+and, say, x.
+
+471
+00:28:42,420 --> 00:28:44,380
+That's another tree.
+
+472
+00:28:44,380 --> 00:28:56,250
+It's the sum of the product
+of 3 and x and of x.
+
+473
+00:28:56,250 --> 00:28:59,320
+
+
+474
+00:28:59,320 --> 00:29:02,030
+So what I want to do is traverse
+these two trees
+
+475
+00:29:02,030 --> 00:29:04,410
+simultaneously.
+
+476
+00:29:04,410 --> 00:29:08,670
+And what I'd like to do is
+walk them like this.
+
+477
+00:29:08,670 --> 00:29:12,880
+I'm going to say are
+these the same?
+
+478
+00:29:12,880 --> 00:29:15,200
+This is a complicated object.
+
+479
+00:29:15,200 --> 00:29:17,240
+Let's look at the
+left branches.
+
+480
+00:29:17,240 --> 00:29:18,460
+Well, that could be the car.
+
+481
+00:29:18,460 --> 00:29:19,250
+How does that look?
+
+482
+00:29:19,250 --> 00:29:21,880
+Oh yes, the plus looks
+just fine.
+
+483
+00:29:21,880 --> 00:29:24,080
+But the next thing here is
+a complicated thing.
+
+484
+00:29:24,080 --> 00:29:25,170
+Let's look at that.
+
+485
+00:29:25,170 --> 00:29:26,780
+Oh yes, that's pretty
+fine, too.
+
+486
+00:29:26,780 --> 00:29:28,560
+They're both asterisks.
+
+487
+00:29:28,560 --> 00:29:30,410
+Now, whoops!
+
+488
+00:29:30,410 --> 00:29:34,300
+My pattern variable, it
+matches against the 3.
+
+489
+00:29:34,300 --> 00:29:36,400
+Remember, x equals 3 now.
+
+490
+00:29:36,400 --> 00:29:38,290
+That's in my dictionary, and
+the dictionary's going to
+
+491
+00:29:38,290 --> 00:29:41,490
+follow along with me:
+x equals three.
+
+492
+00:29:41,490 --> 00:29:46,800
+Ah yes, x equals 3 and y
+equals x, different x.
+
+493
+00:29:46,800 --> 00:29:51,060
+The pattern x is the expression
+x, the pattern y.
+
+494
+00:29:51,060 --> 00:29:53,630
+
+
+495
+00:29:53,630 --> 00:29:56,570
+Oh yes, the pattern variable
+y, I've already
+
+496
+00:29:56,570 --> 00:29:57,270
+got a value for it.
+
+497
+00:29:57,270 --> 00:29:58,410
+It's x.
+
+498
+00:29:58,410 --> 00:29:59,050
+Is this an x?
+
+499
+00:29:59,050 --> 00:30:00,070
+Oh yeah, sure it is.
+
+500
+00:30:00,070 --> 00:30:02,040
+That's fine.
+
+501
+00:30:02,040 --> 00:30:03,380
+Yep, done.
+
+502
+00:30:03,380 --> 00:30:07,070
+I now have a dictionary,
+which I've accumulated
+
+503
+00:30:07,070 --> 00:30:08,320
+by making this walk.
+
+504
+00:30:08,320 --> 00:30:11,370
+
+
+505
+00:30:11,370 --> 00:30:14,080
+Well, now let's look at this
+general case here and see how
+
+506
+00:30:14,080 --> 00:30:15,830
+that works.
+
+507
+00:30:15,830 --> 00:30:17,150
+Here we have it.
+
+508
+00:30:17,150 --> 00:30:20,520
+I take in a pattern variable--a
+pattern, an
+
+509
+00:30:20,520 --> 00:30:22,310
+expression, and a dictionary.
+
+510
+00:30:22,310 --> 00:30:26,650
+And now I'm going to do a
+complicated thing here, which
+
+511
+00:30:26,650 --> 00:30:29,610
+is the general case.
+
+512
+00:30:29,610 --> 00:30:33,480
+The expression is made out of
+two parts: a left and a right
+
+513
+00:30:33,480 --> 00:30:35,470
+half, in general.
+
+514
+00:30:35,470 --> 00:30:38,080
+Anything that's complicated is
+made out of two pieces in a
+
+515
+00:30:38,080 --> 00:30:39,950
+Lisp system.
+
+516
+00:30:39,950 --> 00:30:41,870
+Well, now what do
+we have here?
+
+517
+00:30:41,870 --> 00:30:45,840
+I'm going to match the car's of
+the two expressions against
+
+518
+00:30:45,840 --> 00:30:50,190
+each other with respect to the
+dictionary I already have,
+
+519
+00:30:50,190 --> 00:30:55,620
+producing a dictionary as its
+value, which I will then use
+
+520
+00:30:55,620 --> 00:30:58,130
+for matching the cdr's
+against each other.
+
+521
+00:30:58,130 --> 00:31:00,580
+So that's how the dictionary
+travels,
+
+522
+00:31:00,580 --> 00:31:03,580
+threads the entire structure.
+
+523
+00:31:03,580 --> 00:31:06,310
+And then the result of that is
+the dictionary for the match
+
+524
+00:31:06,310 --> 00:31:11,230
+of the car and the cdr, and
+that's what's going to be
+
+525
+00:31:11,230 --> 00:31:13,640
+returned as a value.
+
+526
+00:31:13,640 --> 00:31:16,670
+Now, at any point, a
+match might fail.
+
+527
+00:31:16,670 --> 00:31:19,670
+It may be the case, for example,
+if we go back and
+
+528
+00:31:19,670 --> 00:31:24,010
+look at an expression that
+doesn't quite match, like
+
+529
+00:31:24,010 --> 00:31:29,040
+supposing this was a 4.
+
+530
+00:31:29,040 --> 00:31:33,520
+Well, now these two don't match
+any more, because the x
+
+531
+00:31:33,520 --> 00:31:38,190
+that had to be-- sorry, the y
+that had to be x here and this
+
+532
+00:31:38,190 --> 00:31:40,410
+y has to be 4.
+
+533
+00:31:40,410 --> 00:31:44,510
+But x and 4 were not the same
+object syntactically.
+
+534
+00:31:44,510 --> 00:31:47,130
+So this wouldn't match, and
+that would be rejected
+
+535
+00:31:47,130 --> 00:31:50,220
+sometimes, so matches
+may fail.
+
+536
+00:31:50,220 --> 00:31:54,140
+Now, of course, because this
+matcher takes the dictionary
+
+537
+00:31:54,140 --> 00:31:57,110
+from the previous match as
+input, it must be able to
+
+538
+00:31:57,110 --> 00:31:58,520
+propagate the failures.
+
+539
+00:31:58,520 --> 00:32:00,090
+And so that's what the
+first clause of
+
+540
+00:32:00,090 --> 00:32:03,420
+this conditional does.
+
+541
+00:32:03,420 --> 00:32:07,330
+It's also true that if it turned
+out that the pattern
+
+542
+00:32:07,330 --> 00:32:08,540
+was not atomic--
+
+543
+00:32:08,540 --> 00:32:10,280
+see, if the pattern was atomic,
+I'd go into this
+
+544
+00:32:10,280 --> 00:32:12,060
+stuff, which we haven't
+looked at yet.
+
+545
+00:32:12,060 --> 00:32:16,250
+But if the pattern is
+not atomic and the
+
+546
+00:32:16,250 --> 00:32:17,825
+expression is atomic--
+
+547
+00:32:17,825 --> 00:32:20,010
+it's not made out of pieces--
+
+548
+00:32:20,010 --> 00:32:23,560
+then that must be a failure,
+and so we go over here.
+
+549
+00:32:23,560 --> 00:32:26,660
+If the pattern is not atomic
+and the pattern is not a
+
+550
+00:32:26,660 --> 00:32:27,420
+pattern variable--
+
+551
+00:32:27,420 --> 00:32:29,716
+I have to remind myself
+of that--
+
+552
+00:32:29,716 --> 00:32:30,850
+then we go over here.
+
+553
+00:32:30,850 --> 00:32:32,570
+So that way, failures
+may occur.
+
+554
+00:32:32,570 --> 00:32:35,280
+
+
+555
+00:32:35,280 --> 00:32:39,612
+OK, so now let's look at the
+insides of this thing.
+
+556
+00:32:39,612 --> 00:32:42,080
+Well, the first place to look
+is what happens if I have an
+
+557
+00:32:42,080 --> 00:32:42,870
+atomic pattern?
+
+558
+00:32:42,870 --> 00:32:43,870
+That's very simple.
+
+559
+00:32:43,870 --> 00:32:46,945
+A pattern that's not made
+out of any pieces: foo.
+
+560
+00:32:46,945 --> 00:32:49,200
+That's a nice atomic pattern.
+
+561
+00:32:49,200 --> 00:32:52,060
+Well, here's what we see.
+
+562
+00:32:52,060 --> 00:32:56,750
+If the pattern is atomic, then
+if the expression is atomic,
+
+563
+00:32:56,750 --> 00:33:00,200
+then if they are the same thing,
+then the dictionary I
+
+564
+00:33:00,200 --> 00:33:03,120
+get is the same one
+as I had before.
+
+565
+00:33:03,120 --> 00:33:04,730
+Nothing's changed.
+
+566
+00:33:04,730 --> 00:33:09,160
+It's just that I matched plus
+against plus, asterisk against
+
+567
+00:33:09,160 --> 00:33:11,440
+asterisk, x against x.
+
+568
+00:33:11,440 --> 00:33:12,920
+That's all fine.
+
+569
+00:33:12,920 --> 00:33:16,110
+However, if the pattern is
+not the one which is the
+
+570
+00:33:16,110 --> 00:33:19,405
+expression, if I have two
+separate atomic objects, then
+
+571
+00:33:19,405 --> 00:33:25,810
+it was matching plus against
+asterisk, which case I fail.
+
+572
+00:33:25,810 --> 00:33:29,300
+Or if it turns out that the
+pattern is atomic but the
+
+573
+00:33:29,300 --> 00:33:33,310
+expression is complicated,
+it's not atomic,
+
+574
+00:33:33,310 --> 00:33:34,560
+then I get a failure.
+
+575
+00:33:34,560 --> 00:33:37,100
+
+
+576
+00:33:37,100 --> 00:33:38,800
+That's very simple.
+
+577
+00:33:38,800 --> 00:33:44,040
+Now, what about the various
+kinds of pattern variables?
+
+578
+00:33:44,040 --> 00:33:45,610
+We had three kinds.
+
+579
+00:33:45,610 --> 00:33:47,340
+I give them the names.
+
+580
+00:33:47,340 --> 00:33:50,990
+They're arbitrary constants,
+arbitrary variables, and
+
+581
+00:33:50,990 --> 00:33:53,770
+arbitrary expressions.
+
+582
+00:33:53,770 --> 00:34:01,210
+A question mark x is an
+arbitrary expression.
+
+583
+00:34:01,210 --> 00:34:04,830
+A question mark cx is an
+arbitrary constant, and a
+
+584
+00:34:04,830 --> 00:34:08,537
+question mark vx is an
+arbitrary variable.
+
+585
+00:34:08,537 --> 00:34:10,540
+Well, what do we do here?
+
+586
+00:34:10,540 --> 00:34:14,139
+Looking at this, we see that
+if I have an arbitrary
+
+587
+00:34:14,139 --> 00:34:18,080
+constant, if the pattern is an
+arbitrary constant, then it
+
+588
+00:34:18,080 --> 00:34:19,560
+had better be the case
+that the expression
+
+589
+00:34:19,560 --> 00:34:21,480
+had better be a constant.
+
+590
+00:34:21,480 --> 00:34:22,620
+If the expression is
+not a constant,
+
+591
+00:34:22,620 --> 00:34:23,920
+then that match fails.
+
+592
+00:34:23,920 --> 00:34:26,780
+If it is a constant, however,
+then I wish to extend the
+
+593
+00:34:26,780 --> 00:34:27,620
+dictionary.
+
+594
+00:34:27,620 --> 00:34:32,380
+I wish to extend the dictionary
+with that pattern
+
+595
+00:34:32,380 --> 00:34:36,650
+being remembered to be that
+expression using the old
+
+596
+00:34:36,650 --> 00:34:37,900
+dictionary as a starting
+point.
+
+597
+00:34:37,900 --> 00:34:41,050
+
+
+598
+00:34:41,050 --> 00:34:44,179
+So really, for arbitrary
+variables, I have to check
+
+599
+00:34:44,179 --> 00:34:47,440
+first if the expression is a
+variable by matching against.
+
+600
+00:34:47,440 --> 00:34:50,750
+If so, it's worth extending
+the dictionary so that the
+
+601
+00:34:50,750 --> 00:34:52,639
+pattern is remembered to
+be matched against that
+
+602
+00:34:52,639 --> 00:34:55,900
+expression, given the original
+dictionary, and this makes a
+
+603
+00:34:55,900 --> 00:34:58,880
+new dictionary.
+
+604
+00:34:58,880 --> 00:35:00,310
+Now, it has to check.
+
+605
+00:35:00,310 --> 00:35:03,860
+There's a sorts of failure
+inside extend dictionary,
+
+606
+00:35:03,860 --> 00:35:04,990
+which is that--
+
+607
+00:35:04,990 --> 00:35:09,200
+if one of these pattern
+variables already has a value
+
+608
+00:35:09,200 --> 00:35:12,810
+and I'm trying to match the
+thing against something else
+
+609
+00:35:12,810 --> 00:35:15,310
+which is not equivalent to the
+one that I've already matched
+
+610
+00:35:15,310 --> 00:35:17,760
+it against once, then a failure
+will come flying out
+
+611
+00:35:17,760 --> 00:35:20,220
+of here, too.
+
+612
+00:35:20,220 --> 00:35:22,890
+And I will see that some time.
+
+613
+00:35:22,890 --> 00:35:25,850
+And finally, an arbitrary
+expression does not have to
+
+614
+00:35:25,850 --> 00:35:29,010
+check anything syntactic about
+the expression that's being
+
+615
+00:35:29,010 --> 00:35:31,670
+matched, so all it does is
+it's an extension of the
+
+616
+00:35:31,670 --> 00:35:34,355
+dictionary.
+
+617
+00:35:34,355 --> 00:35:39,300
+So you've just seen a complete,
+very simple matcher.
+
+618
+00:35:39,300 --> 00:35:41,640
+Now, one of the things that's
+rather remarkable about this
+
+619
+00:35:41,640 --> 00:35:44,670
+is people pay an awful lot of
+money these days for someone
+
+620
+00:35:44,670 --> 00:35:49,290
+to make a, quote, AI expert
+system that has nothing more
+
+621
+00:35:49,290 --> 00:35:53,470
+in it than a matcher and maybe
+an instantiater like this.
+
+622
+00:35:53,470 --> 00:35:55,780
+But it's very easy to do, and
+now, of course, you can start
+
+623
+00:35:55,780 --> 00:35:59,070
+up a little start-up company and
+make a couple of megabucks
+
+624
+00:35:59,070 --> 00:36:01,835
+in the next week taking some
+people for a ride.
+
+625
+00:36:01,835 --> 00:36:04,690
+
+
+626
+00:36:04,690 --> 00:36:07,510
+20 years ago, this
+was remarkable,
+
+627
+00:36:07,510 --> 00:36:09,610
+this kind of program.
+
+628
+00:36:09,610 --> 00:36:11,870
+But now, this is sort of easy.
+
+629
+00:36:11,870 --> 00:36:13,660
+You can teach it to freshmen.
+
+630
+00:36:13,660 --> 00:36:15,380
+Well, now there's an
+instantiater as well.
+
+631
+00:36:15,380 --> 00:36:19,980
+
+
+632
+00:36:19,980 --> 00:36:21,710
+The problem is they're all
+going off and making more
+
+633
+00:36:21,710 --> 00:36:24,190
+money than I do.
+
+634
+00:36:24,190 --> 00:36:26,660
+But that's always been
+true of universities.
+
+635
+00:36:26,660 --> 00:36:33,140
+As expression, the purpose of
+the instantiater is to make
+
+636
+00:36:33,140 --> 00:36:39,245
+expressions given a dictionary
+and a skeleton.
+
+637
+00:36:39,245 --> 00:36:44,290
+
+
+638
+00:36:44,290 --> 00:36:46,770
+And that's not very
+hard at all.
+
+639
+00:36:46,770 --> 00:36:53,590
+We'll see that very simply in
+the next, the next slide here.
+
+640
+00:36:53,590 --> 00:36:57,570
+To instantiate a skeleton,
+given a particular
+
+641
+00:36:57,570 --> 00:36:58,230
+dictionary--
+
+642
+00:36:58,230 --> 00:36:59,650
+oh, this is easy.
+
+643
+00:36:59,650 --> 00:37:04,050
+We're going to do a recursive
+tree walk over the skeleton.
+
+644
+00:37:04,050 --> 00:37:06,540
+And for everything which is
+a skeleton variable--
+
+645
+00:37:06,540 --> 00:37:08,390
+I don't know, call it a
+skeleton evaluation.
+
+646
+00:37:08,390 --> 00:37:10,612
+That's the name and the abstract
+syntax that I give it
+
+647
+00:37:10,612 --> 00:37:13,610
+in this program: a skeleton
+evaluation, a thing beginning
+
+648
+00:37:13,610 --> 00:37:18,180
+with a colon in the rules.
+
+649
+00:37:18,180 --> 00:37:21,850
+For anything of that case, I'm
+going to look up the answer in
+
+650
+00:37:21,850 --> 00:37:24,470
+the dictionary, and we'll worry
+about that in a second.
+
+651
+00:37:24,470 --> 00:37:27,700
+Let's look at this as a whole.
+
+652
+00:37:27,700 --> 00:37:28,530
+Here, I have--
+
+653
+00:37:28,530 --> 00:37:32,740
+I'm going to instantiate a
+skeleton, given a dictionary.
+
+654
+00:37:32,740 --> 00:37:38,300
+Well, I'm going to define some
+internal loop right there, and
+
+655
+00:37:38,300 --> 00:37:40,190
+it's going to do something
+very simple.
+
+656
+00:37:40,190 --> 00:37:44,600
+Even if a skeleton--even if a
+skeleton is simple and atomic,
+
+657
+00:37:44,600 --> 00:37:46,450
+in which case it's nothing more
+than giving the skeleton
+
+658
+00:37:46,450 --> 00:37:51,140
+back as an answer, or in
+the general case, it's
+
+659
+00:37:51,140 --> 00:37:56,150
+complicated, in which case
+I'm going to make up the
+
+660
+00:37:56,150 --> 00:37:59,360
+expression which is the result
+of instantiating--
+
+661
+00:37:59,360 --> 00:38:01,000
+calling this loop
+recursively--
+
+662
+00:38:01,000 --> 00:38:04,870
+instantiating the car of the
+skeleton and the cdr.
+
+663
+00:38:04,870 --> 00:38:08,090
+So here is a recursive
+tree walk.
+
+664
+00:38:08,090 --> 00:38:12,410
+However, if it turns out to be a
+skeleton evaluation, a colon
+
+665
+00:38:12,410 --> 00:38:18,020
+expression in the skeleton, then
+what I'm going to do is
+
+666
+00:38:18,020 --> 00:38:21,520
+find the expression that's
+in the colon--
+
+667
+00:38:21,520 --> 00:38:22,820
+the CADR in this case.
+
+668
+00:38:22,820 --> 00:38:25,110
+It's a piece of abstract syntax
+here, so I can change
+
+669
+00:38:25,110 --> 00:38:27,480
+my representation of rules.
+
+670
+00:38:27,480 --> 00:38:31,330
+I'm going to evaluate that
+relative to this dictionary,
+
+671
+00:38:31,330 --> 00:38:32,940
+whatever evaluation means.
+
+672
+00:38:32,940 --> 00:38:36,100
+We'll find out a lot about
+that sometime.
+
+673
+00:38:36,100 --> 00:38:39,650
+And the result of that
+is my answer.
+
+674
+00:38:39,650 --> 00:38:39,830
+so.
+
+675
+00:38:39,830 --> 00:38:42,240
+I start up this loop-- here's
+my initialization--
+
+676
+00:38:42,240 --> 00:38:44,900
+by calling it with the whole
+skeleton, and this will just
+
+677
+00:38:44,900 --> 00:38:47,100
+do a recursive decomposition
+into pieces.
+
+678
+00:38:47,100 --> 00:38:49,690
+
+
+679
+00:38:49,690 --> 00:38:55,090
+Now, one more little bit
+of detail is what
+
+680
+00:38:55,090 --> 00:38:57,130
+happens inside evaluate?
+
+681
+00:38:57,130 --> 00:39:00,030
+I can't tell you that
+in great detail.
+
+682
+00:39:00,030 --> 00:39:01,650
+I'll tell you a little
+bit of it.
+
+683
+00:39:01,650 --> 00:39:03,130
+Later, we're going to see--look
+into this in much
+
+684
+00:39:03,130 --> 00:39:04,970
+more detail.
+
+685
+00:39:04,970 --> 00:39:10,120
+To evaluate some form, some
+expression with respect to a
+
+686
+00:39:10,120 --> 00:39:15,355
+dictionary, if the expression is
+an atomic object, well, I'm
+
+687
+00:39:15,355 --> 00:39:18,620
+going to go look it up.
+
+688
+00:39:18,620 --> 00:39:20,610
+Nothing very exciting there.
+
+689
+00:39:20,610 --> 00:39:23,900
+Otherwise, I'm going to do
+something complicated here,
+
+690
+00:39:23,900 --> 00:39:26,790
+which is I'm going to apply a
+procedure which is the result
+
+691
+00:39:26,790 --> 00:39:30,220
+of looking up the operator part
+in something that we're
+
+692
+00:39:30,220 --> 00:39:32,150
+going to find out
+about someday.
+
+693
+00:39:32,150 --> 00:39:34,630
+I want you realize you're
+seeing magic now.
+
+694
+00:39:34,630 --> 00:39:40,000
+This magic will become clear
+very soon, but not today.
+
+695
+00:39:40,000 --> 00:39:43,540
+Then I'm looking at--looking
+up all the pieces, all the
+
+696
+00:39:43,540 --> 00:39:48,460
+arguments to that in
+the dictionary.
+
+697
+00:39:48,460 --> 00:39:51,390
+So I don't want you to look
+at this in detail.
+
+698
+00:39:51,390 --> 00:39:54,330
+I want you to say that there's
+more going on here, and we're
+
+699
+00:39:54,330 --> 00:39:59,000
+going to see more about this.
+
+700
+00:39:59,000 --> 00:39:59,490
+But it's--
+
+701
+00:39:59,490 --> 00:40:02,490
+the magic is going to stop.
+
+702
+00:40:02,490 --> 00:40:07,140
+This part has to do with Lisp,
+and it's the end of that.
+
+703
+00:40:07,140 --> 00:40:10,260
+
+
+704
+00:40:10,260 --> 00:40:15,040
+OK, so now we know about
+matching and instantiation.
+
+705
+00:40:15,040 --> 00:40:16,505
+Are there any questions
+for this segment?
+
+706
+00:40:16,505 --> 00:40:27,936
+
+
+707
+00:40:27,936 --> 00:40:29,870
+AUDIENCE: I have a question.
+
+708
+00:40:29,870 --> 00:40:30,880
+PROFESSOR: Yes.
+
+709
+00:40:30,880 --> 00:40:33,600
+AUDIENCE: Is it possible to
+bring up a previous slide?
+
+710
+00:40:33,600 --> 00:40:36,160
+It's about this define
+match pattern.
+
+711
+00:40:36,160 --> 00:40:37,300
+PROFESSOR: Yes.
+
+712
+00:40:37,300 --> 00:40:40,590
+You'd like to see the overall
+slide define match pattern.
+
+713
+00:40:40,590 --> 00:40:41,890
+Can somebody put up the--
+
+714
+00:40:41,890 --> 00:40:42,940
+no, the overhead.
+
+715
+00:40:42,940 --> 00:40:45,300
+That's the biggest scale one.
+
+716
+00:40:45,300 --> 00:40:47,640
+What part would you
+like to see?
+
+717
+00:40:47,640 --> 00:40:49,930
+AUDIENCE: Well, the
+top would be fine.
+
+718
+00:40:49,930 --> 00:40:54,540
+Any of the parts where you're
+passing failed.
+
+719
+00:40:54,540 --> 00:40:56,300
+PROFESSOR: Yes.
+
+720
+00:40:56,300 --> 00:40:58,625
+AUDIENCE: The idea is to pass
+failed back to the dictionary;
+
+721
+00:40:58,625 --> 00:40:59,000
+is that right?
+
+722
+00:40:59,000 --> 00:41:05,180
+PROFESSOR: The dictionary is the
+answer to a match, right?
+
+723
+00:41:05,180 --> 00:41:13,150
+And it is either some mapping
+or there's no match.
+
+724
+00:41:13,150 --> 00:41:14,560
+It doesn't match.
+
+725
+00:41:14,560 --> 00:41:15,150
+AUDIENCE: Right.
+
+726
+00:41:15,150 --> 00:41:18,110
+PROFESSOR: So what you're seeing
+over here is, in fact,
+
+727
+00:41:18,110 --> 00:41:21,620
+because the fact that a match
+may have another match pass in
+
+728
+00:41:21,620 --> 00:41:24,950
+the dictionary, as you see in
+the general case down here.
+
+729
+00:41:24,950 --> 00:41:27,325
+Here's the general case where
+a match passes another match
+
+730
+00:41:27,325 --> 00:41:28,090
+to the dictionary.
+
+731
+00:41:28,090 --> 00:41:31,860
+When I match the cdr's, I match
+them in the dictionary
+
+732
+00:41:31,860 --> 00:41:36,070
+that is resulting from
+matching the car's.
+
+733
+00:41:36,070 --> 00:41:37,180
+OK, that's what I have here.
+
+734
+00:41:37,180 --> 00:41:41,430
+So because of that, if the match
+of the car's fails, then
+
+735
+00:41:41,430 --> 00:41:44,770
+it may be necessary that the
+match of the cdr's propagates
+
+736
+00:41:44,770 --> 00:41:48,570
+that failure, and that's
+what the first line is.
+
+737
+00:41:48,570 --> 00:41:51,400
+AUDIENCE: OK, well, I'm still
+unclear what matches--
+
+738
+00:41:51,400 --> 00:41:54,800
+what comes out of one instance
+of the match?
+
+739
+00:41:54,800 --> 00:41:56,320
+PROFESSOR: One of two
+possibilities.
+
+740
+00:41:56,320 --> 00:41:59,350
+Either the symbol failed, which
+means there is no match.
+
+741
+00:41:59,350 --> 00:41:59,840
+AUDIENCE: Right.
+
+742
+00:41:59,840 --> 00:42:03,360
+PROFESSOR: Or some mapping,
+which is an abstract thing
+
+743
+00:42:03,360 --> 00:42:06,480
+right now, and you should know
+about the structure of it,
+
+744
+00:42:06,480 --> 00:42:13,170
+which relates the pattern
+variables to their values as
+
+745
+00:42:13,170 --> 00:42:14,490
+picked up in the match.
+
+746
+00:42:14,490 --> 00:42:16,930
+AUDIENCE: OK, so it is--
+
+747
+00:42:16,930 --> 00:42:18,810
+PROFESSOR: That's constructed
+by extend dictionary.
+
+748
+00:42:18,810 --> 00:42:22,450
+AUDIENCE: So the recursive
+nature brings about the fact
+
+749
+00:42:22,450 --> 00:42:28,290
+that if ever a failed gets
+passed out of any calling of
+
+750
+00:42:28,290 --> 00:42:30,430
+match, then the first condition
+will pick it up--
+
+751
+00:42:30,430 --> 00:42:32,820
+PROFESSOR: And just propagate
+it along without any further
+
+752
+00:42:32,820 --> 00:42:33,530
+ado, right.
+
+753
+00:42:33,530 --> 00:42:34,370
+AUDIENCE: Oh, right.
+
+754
+00:42:34,370 --> 00:42:35,460
+OK.
+
+755
+00:42:35,460 --> 00:42:36,650
+PROFESSOR: That's just the
+fastest way to get that
+
+756
+00:42:36,650 --> 00:42:37,900
+failure out of there.
+
+757
+00:42:37,900 --> 00:42:43,260
+
+
+758
+00:42:43,260 --> 00:42:43,850
+Yes.
+
+759
+00:42:43,850 --> 00:42:46,530
+AUDIENCE: If I don't fail, that
+means that I've matched a
+
+760
+00:42:46,530 --> 00:42:51,230
+pattern, and I run the procedure
+extend dict and then
+
+761
+00:42:51,230 --> 00:42:52,655
+pass in the pattern
+in the expression.
+
+762
+00:42:52,655 --> 00:42:55,270
+
+
+763
+00:42:55,270 --> 00:42:57,290
+But the substitution will
+not be made at that
+
+764
+00:42:57,290 --> 00:42:58,400
+point; is that right?
+
+765
+00:42:58,400 --> 00:42:59,110
+I'm just--
+
+766
+00:42:59,110 --> 00:42:59,420
+PROFESSOR: No, no.
+
+767
+00:42:59,420 --> 00:43:00,960
+There's no substitution being
+there because there's no
+
+768
+00:43:00,960 --> 00:43:02,520
+skeleton to be substituted in.
+
+769
+00:43:02,520 --> 00:43:02,950
+AUDIENCE: Right.
+
+770
+00:43:02,950 --> 00:43:03,070
+So what--
+
+771
+00:43:03,070 --> 00:43:04,760
+PROFESSOR: All you've got there
+is we're making up the
+
+772
+00:43:04,760 --> 00:43:08,270
+dictionary for later
+substitution.
+
+773
+00:43:08,270 --> 00:43:10,680
+AUDIENCE: And what would the
+dictionary look like?
+
+774
+00:43:10,680 --> 00:43:13,540
+Is it ordered pairs?
+
+775
+00:43:13,540 --> 00:43:15,940
+PROFESSOR: That's--that's
+not told to you.
+
+776
+00:43:15,940 --> 00:43:16,700
+We're being abstract.
+
+777
+00:43:16,700 --> 00:43:17,650
+AUDIENCE: OK.
+
+778
+00:43:17,650 --> 00:43:18,850
+PROFESSOR: Why do you
+want to know?
+
+779
+00:43:18,850 --> 00:43:20,075
+What it is, it's a function.
+
+780
+00:43:20,075 --> 00:43:21,330
+It's a function.
+
+781
+00:43:21,330 --> 00:43:22,090
+AUDIENCE: Well, the reason
+I want to know is--
+
+782
+00:43:22,090 --> 00:43:23,300
+PROFESSOR: A function
+abstractly is a
+
+783
+00:43:23,300 --> 00:43:25,130
+set of ordered pairs.
+
+784
+00:43:25,130 --> 00:43:29,040
+It could be implemented as
+a set of list pairs.
+
+785
+00:43:29,040 --> 00:43:32,590
+It could be implemented as some
+fancy table mechanism.
+
+786
+00:43:32,590 --> 00:43:35,780
+It could be implemented
+as a function.
+
+787
+00:43:35,780 --> 00:43:38,500
+And somehow, I'm building
+up a function.
+
+788
+00:43:38,500 --> 00:43:40,560
+But I'm not telling you.
+
+789
+00:43:40,560 --> 00:43:43,090
+That's up to George, who's going
+to build that later.
+
+790
+00:43:43,090 --> 00:43:49,430
+
+
+791
+00:43:49,430 --> 00:43:52,470
+I know you really badly want
+to write concrete things.
+
+792
+00:43:52,470 --> 00:43:54,280
+I'm not going to let
+you do that.
+
+793
+00:43:54,280 --> 00:43:56,020
+AUDIENCE: Well, let me at
+least ask, what is the
+
+794
+00:43:56,020 --> 00:43:57,530
+important information
+there that's being
+
+795
+00:43:57,530 --> 00:43:59,750
+passed to extend dict?
+
+796
+00:43:59,750 --> 00:44:01,720
+I want to pass the
+pattern I found--
+
+797
+00:44:01,720 --> 00:44:02,630
+PROFESSOR: Yes.
+
+798
+00:44:02,630 --> 00:44:04,870
+The pattern that's matched
+against the expression.
+
+799
+00:44:04,870 --> 00:44:07,680
+You want to have the pattern,
+which happens to be in those
+
+800
+00:44:07,680 --> 00:44:09,970
+cases pattern variables,
+right?
+
+801
+00:44:09,970 --> 00:44:11,420
+All of those three
+cases for extend
+
+802
+00:44:11,420 --> 00:44:13,220
+dict are pattern variables.
+
+803
+00:44:13,220 --> 00:44:14,090
+AUDIENCE: Right.
+
+804
+00:44:14,090 --> 00:44:16,370
+PROFESSOR: So you have a pattern
+variable that is to be
+
+805
+00:44:16,370 --> 00:44:18,965
+given a value in a dictionary.
+
+806
+00:44:18,965 --> 00:44:19,250
+AUDIENCE: Mm-hmm.
+
+807
+00:44:19,250 --> 00:44:21,760
+PROFESSOR: The value is the
+expression that it matched
+
+808
+00:44:21,760 --> 00:44:27,260
+against. The dictionary is the
+set of things I've already
+
+809
+00:44:27,260 --> 00:44:30,195
+figured out that I have
+memorized or learned.
+
+810
+00:44:30,195 --> 00:44:33,250
+And I am going to make a new
+dictionary, which is extended
+
+811
+00:44:33,250 --> 00:44:36,870
+from the original one by having
+that pattern variable
+
+812
+00:44:36,870 --> 00:44:39,880
+have a value with the
+new dictionary.
+
+813
+00:44:39,880 --> 00:44:41,580
+AUDIENCE: I guess what I don't
+understand is why can't the
+
+814
+00:44:41,580 --> 00:44:43,450
+substitution be made right
+as soon as you find--
+
+815
+00:44:43,450 --> 00:44:44,760
+PROFESSOR: How do I know what
+I'm going to substitute?
+
+816
+00:44:44,760 --> 00:44:47,590
+I don't know anything
+about this skeleton.
+
+817
+00:44:47,590 --> 00:44:49,550
+This pattern, this matcher
+is an independent unit.
+
+818
+00:44:49,550 --> 00:44:50,320
+AUDIENCE: Oh, I see.
+
+819
+00:44:50,320 --> 00:44:51,090
+OK.
+
+820
+00:44:51,090 --> 00:44:51,350
+PROFESSOR: Right?
+
+821
+00:44:51,350 --> 00:44:52,330
+AUDIENCE: Yeah.
+
+822
+00:44:52,330 --> 00:44:53,200
+PROFESSOR: I take the matcher.
+
+823
+00:44:53,200 --> 00:44:54,170
+I apply the matcher.
+
+824
+00:44:54,170 --> 00:44:57,532
+If it matches, then it was worth
+doing instantiation.
+
+825
+00:44:57,532 --> 00:44:58,516
+AUDIENCE: OK, good.
+
+826
+00:44:58,516 --> 00:44:59,008
+Yeah.
+
+827
+00:44:59,008 --> 00:45:00,484
+PROFESSOR: OK?
+
+828
+00:45:00,484 --> 00:45:02,880
+AUDIENCE: Can you just do that
+answer again using that
+
+829
+00:45:02,880 --> 00:45:04,940
+example on the board?
+
+830
+00:45:04,940 --> 00:45:06,390
+You know, what you just passed
+back to the matcher.
+
+831
+00:45:06,390 --> 00:45:06,900
+PROFESSOR: Oh yes.
+
+832
+00:45:06,900 --> 00:45:08,480
+OK, yes.
+
+833
+00:45:08,480 --> 00:45:10,660
+You're looking at
+this example.
+
+834
+00:45:10,660 --> 00:45:14,470
+At this point when I'm
+traversing this structure, I
+
+835
+00:45:14,470 --> 00:45:16,630
+get to here: x.
+
+836
+00:45:16,630 --> 00:45:18,760
+I have some dictionary,
+presumably an empty dictionary
+
+837
+00:45:18,760 --> 00:45:22,020
+at this point if this is
+the whole expression.
+
+838
+00:45:22,020 --> 00:45:26,550
+So I have an empty dictionary,
+and I've matched x against 3.
+
+839
+00:45:26,550 --> 00:45:28,850
+So now, after this point,
+the dictionary
+
+840
+00:45:28,850 --> 00:45:33,550
+contains x is 3, OK?
+
+841
+00:45:33,550 --> 00:45:35,290
+Now, I continue walking
+along here.
+
+842
+00:45:35,290 --> 00:45:37,040
+I see y.
+
+843
+00:45:37,040 --> 00:45:39,780
+Now, this is a particular
+x, a pattern x.
+
+844
+00:45:39,780 --> 00:45:41,690
+I see y, a pattern y.
+
+845
+00:45:41,690 --> 00:45:48,940
+The dictionary says, oh yes, the
+pattern y is the symbol x
+
+846
+00:45:48,940 --> 00:45:52,360
+because I've got
+a match there.
+
+847
+00:45:52,360 --> 00:45:55,380
+So the dictionary now contains
+at this point two entries.
+
+848
+00:45:55,380 --> 00:46:02,180
+The pattern x is 3, and the
+pattern y is the expression x.
+
+849
+00:46:02,180 --> 00:46:04,230
+Now, I get that, I can
+walk along further.
+
+850
+00:46:04,230 --> 00:46:08,100
+I say, oh, pattern y
+also wants to be 4.
+
+851
+00:46:08,100 --> 00:46:10,680
+But that isn't possible,
+producing a failure.
+
+852
+00:46:10,680 --> 00:46:14,340
+
+
+853
+00:46:14,340 --> 00:46:14,830
+Thank you.
+
+854
+00:46:14,830 --> 00:46:16,080
+Let's take a break.
+
+855
+00:46:16,080 --> 00:47:02,380
+
+
+856
+00:47:02,380 --> 00:47:07,020
+OK, you're seeing your first
+very big and hairy program.
+
+857
+00:47:07,020 --> 00:47:10,380
+Now, of course, one of the goals
+of this subsegment is to
+
+858
+00:47:10,380 --> 00:47:12,440
+get you to be able to read
+something like this and not be
+
+859
+00:47:12,440 --> 00:47:13,760
+afraid of it.
+
+860
+00:47:13,760 --> 00:47:16,715
+This one's only about
+four pages of code.
+
+861
+00:47:16,715 --> 00:47:20,460
+By the end of the subject, I
+hope a 50-page program will
+
+862
+00:47:20,460 --> 00:47:22,510
+not look particularly
+frightening.
+
+863
+00:47:22,510 --> 00:47:25,310
+But I don't expect-- and I don't
+want you to think that I
+
+864
+00:47:25,310 --> 00:47:29,200
+expect you to be getting
+it as it's coming out.
+
+865
+00:47:29,200 --> 00:47:31,760
+You're supposed to feel the
+flavor of this, OK?
+
+866
+00:47:31,760 --> 00:47:33,800
+And then you're supposed to
+think about it because it is a
+
+867
+00:47:33,800 --> 00:47:35,220
+big program.
+
+868
+00:47:35,220 --> 00:47:40,812
+There's a lot of stuff
+inside this program.
+
+869
+00:47:40,812 --> 00:47:44,400
+Now, I've told you about the
+language we're implementing,
+
+870
+00:47:44,400 --> 00:47:46,770
+the pattern match substitution
+language.
+
+871
+00:47:46,770 --> 00:47:48,320
+I showed you some rules.
+
+872
+00:47:48,320 --> 00:47:51,490
+And I've told you about matching
+and instantiation,
+
+873
+00:47:51,490 --> 00:47:54,240
+which are the two halves
+of how a rule works.
+
+874
+00:47:54,240 --> 00:47:57,350
+Now we have to understand the
+control structure by which the
+
+875
+00:47:57,350 --> 00:48:03,220
+rules are applied to the
+expressions so as to do
+
+876
+00:48:03,220 --> 00:48:04,470
+algebraic simplification.
+
+877
+00:48:04,470 --> 00:48:06,960
+
+
+878
+00:48:06,960 --> 00:48:12,060
+Now, that's also a big
+complicated mess.
+
+879
+00:48:12,060 --> 00:48:16,450
+The problem is that there is
+a variety of interlocking,
+
+880
+00:48:16,450 --> 00:48:20,140
+interwoven loops, if you
+will, involved in this.
+
+881
+00:48:20,140 --> 00:48:22,540
+For one thing, I
+have to apply--
+
+882
+00:48:22,540 --> 00:48:25,910
+I have to examine every
+subexpression of my expression
+
+883
+00:48:25,910 --> 00:48:29,070
+that I'm trying to simplify.
+
+884
+00:48:29,070 --> 00:48:29,960
+That we know how to do.
+
+885
+00:48:29,960 --> 00:48:34,090
+It's a car cdr recursion of some
+sort, or something like
+
+886
+00:48:34,090 --> 00:48:37,480
+that, and some sort
+of tree walk.
+
+887
+00:48:37,480 --> 00:48:38,850
+And that's going to
+be happening.
+
+888
+00:48:38,850 --> 00:48:43,660
+Now, for every such place, every
+node that I get to in
+
+889
+00:48:43,660 --> 00:48:48,270
+doing my traversal of the
+expression I'm trying to
+
+890
+00:48:48,270 --> 00:48:53,390
+simplify, I want to apply
+all of the rules.
+
+891
+00:48:53,390 --> 00:48:56,380
+Every rule is going to
+look at every node.
+
+892
+00:48:56,380 --> 00:48:57,750
+I'm going to rotate
+the rules around.
+
+893
+00:48:57,750 --> 00:49:01,660
+
+
+894
+00:49:01,660 --> 00:49:07,530
+Now, either a rule will
+or will not match.
+
+895
+00:49:07,530 --> 00:49:10,140
+If the rule does not match,
+then it's not very
+
+896
+00:49:10,140 --> 00:49:12,270
+interesting.
+
+897
+00:49:12,270 --> 00:49:16,090
+If the rule does match, then I'm
+going to replace that node
+
+898
+00:49:16,090 --> 00:49:20,110
+in the expression by an
+alternate expression.
+
+899
+00:49:20,110 --> 00:49:21,360
+I'm actually going
+to make a new
+
+900
+00:49:21,360 --> 00:49:23,530
+expression, which contains--
+
+901
+00:49:23,530 --> 00:49:26,560
+everything contains that new
+value, the result of
+
+902
+00:49:26,560 --> 00:49:29,950
+substituting into the skeleton,
+instantiating the
+
+903
+00:49:29,950 --> 00:49:32,480
+skeleton for that rule
+at this level.
+
+904
+00:49:32,480 --> 00:49:35,670
+But no one knows whether that
+thing that I instantiated
+
+905
+00:49:35,670 --> 00:49:38,180
+there is in simplified form.
+
+906
+00:49:38,180 --> 00:49:41,690
+So we're going to have to
+simplify that, somehow to call
+
+907
+00:49:41,690 --> 00:49:43,370
+the simplifier on the thing
+that I just constructed.
+
+908
+00:49:43,370 --> 00:49:45,990
+
+
+909
+00:49:45,990 --> 00:49:48,710
+And then when that's done, then
+I sort of can build that
+
+910
+00:49:48,710 --> 00:49:51,820
+into the expression I
+want as my answer.
+
+911
+00:49:51,820 --> 00:49:55,490
+Now, there is a basic idea
+here, which I will call a
+
+912
+00:49:55,490 --> 00:49:57,110
+garbage- in, garbage-out
+simplifier.
+
+913
+00:49:57,110 --> 00:50:01,280
+
+
+914
+00:50:01,280 --> 00:50:03,570
+It's a kind of recursive
+simplifier.
+
+915
+00:50:03,570 --> 00:50:06,750
+And what happens is the way you
+simplify something is that
+
+916
+00:50:06,750 --> 00:50:10,660
+simple objects like variables
+are simple.
+
+917
+00:50:10,660 --> 00:50:14,110
+Compound objects, well,
+I don't know.
+
+918
+00:50:14,110 --> 00:50:16,260
+What I'm going to do is I'm
+going to build up from simple
+
+919
+00:50:16,260 --> 00:50:19,940
+objects, trying to make simple
+things by assuming that the
+
+920
+00:50:19,940 --> 00:50:21,220
+pieces they're made
+out of are simple.
+
+921
+00:50:21,220 --> 00:50:24,540
+
+
+922
+00:50:24,540 --> 00:50:27,830
+That's what's happening here.
+
+923
+00:50:27,830 --> 00:50:30,400
+Well, now, if we look
+at the first slide--
+
+924
+00:50:30,400 --> 00:50:31,965
+no, overhead, overhead.
+
+925
+00:50:31,965 --> 00:50:35,780
+If we look at the overhead, we
+see a very complicated program
+
+926
+00:50:35,780 --> 00:50:38,810
+like we saw before for the
+matcher, so complicated that
+
+927
+00:50:38,810 --> 00:50:41,260
+you can't read it like that.
+
+928
+00:50:41,260 --> 00:50:44,590
+I just want you to get the feel
+of the shape of it, and
+
+929
+00:50:44,590 --> 00:50:48,880
+the shape of it is that this
+program has various
+
+930
+00:50:48,880 --> 00:50:50,210
+subprograms in it.
+
+931
+00:50:50,210 --> 00:50:53,550
+
+
+932
+00:50:53,550 --> 00:50:57,080
+One of them--this part is the
+part for traversing the
+
+933
+00:50:57,080 --> 00:51:02,560
+expression, and this part is
+the part for trying rules.
+
+934
+00:51:02,560 --> 00:51:06,490
+Now, of course, we can look at
+that in some more detail.
+
+935
+00:51:06,490 --> 00:51:13,370
+Let's look at--let's look at the
+first transparency, right?
+
+936
+00:51:13,370 --> 00:51:17,990
+The simplifier is made
+out of several parts.
+
+937
+00:51:17,990 --> 00:51:20,500
+Now, remember at the very
+beginning, the simplifier is
+
+938
+00:51:20,500 --> 00:51:24,100
+the thing which takes a rules--a
+set of rules and
+
+939
+00:51:24,100 --> 00:51:27,190
+produces a program which will
+simplify it relative to them.
+
+940
+00:51:27,190 --> 00:51:29,850
+
+
+941
+00:51:29,850 --> 00:51:32,390
+So here we have our
+simplifier.
+
+942
+00:51:32,390 --> 00:51:36,150
+It takes a rule set.
+
+943
+00:51:36,150 --> 00:51:39,440
+And in the context where that
+rule set is defined, there are
+
+944
+00:51:39,440 --> 00:51:42,260
+various other definitions
+that are done here.
+
+945
+00:51:42,260 --> 00:51:46,660
+And then the result of this
+simplifier procedure is, in
+
+946
+00:51:46,660 --> 00:51:50,110
+fact, one of the procedures
+that was defined.
+
+947
+00:51:50,110 --> 00:51:52,400
+Simplify x.
+
+948
+00:51:52,400 --> 00:51:56,480
+What I'm returning as the
+value of calling the
+
+949
+00:51:56,480 --> 00:52:01,340
+simplifier on a set of rules is
+a procedure, the simplify x
+
+950
+00:52:01,340 --> 00:52:05,680
+procedure, which is defined in
+that context, which is a
+
+951
+00:52:05,680 --> 00:52:08,200
+simplification procedure
+appropriate for using those
+
+952
+00:52:08,200 --> 00:52:09,450
+set of rules.
+
+953
+00:52:09,450 --> 00:52:14,930
+
+
+954
+00:52:14,930 --> 00:52:17,460
+That's what I have there.
+
+955
+00:52:17,460 --> 00:52:21,440
+Now, the first two of these
+procedures, this one and this
+
+956
+00:52:21,440 --> 00:52:25,070
+one, are together going to be
+the recursive traversal of an
+
+957
+00:52:25,070 --> 00:52:26,950
+expression.
+
+958
+00:52:26,950 --> 00:52:29,680
+This one is the general
+simplification for any
+
+959
+00:52:29,680 --> 00:52:32,620
+expression, and this is the
+thing which simplifies a list
+
+960
+00:52:32,620 --> 00:52:35,540
+of parts of an expression.
+
+961
+00:52:35,540 --> 00:52:36,940
+Nothing more.
+
+962
+00:52:36,940 --> 00:52:38,770
+For each of those, we're going
+to do something complicated,
+
+963
+00:52:38,770 --> 00:52:40,340
+which involves trying
+the rules.
+
+964
+00:52:40,340 --> 00:52:41,700
+Now, we should look at
+the various parts.
+
+965
+00:52:41,700 --> 00:52:45,290
+
+
+966
+00:52:45,290 --> 00:52:47,710
+Well let's look first at the
+recursive traversal of an
+
+967
+00:52:47,710 --> 00:52:48,530
+expression.
+
+968
+00:52:48,530 --> 00:52:54,210
+And this is done in a
+sort of simple way.
+
+969
+00:52:54,210 --> 00:52:59,310
+This is a little nest of
+recursive procedures.
+
+970
+00:52:59,310 --> 00:53:02,580
+And what we have here
+are two procedures--
+
+971
+00:53:02,580 --> 00:53:06,600
+one for simplifying an
+expression, and one for
+
+972
+00:53:06,600 --> 00:53:08,982
+simplifying parts of
+an expression.
+
+973
+00:53:08,982 --> 00:53:12,130
+And the way this works
+is very simple.
+
+974
+00:53:12,130 --> 00:53:16,270
+If the expression I'm trying
+to simplify is a compound
+
+975
+00:53:16,270 --> 00:53:19,920
+expression, I'm going to
+simplify all the parts of it.
+
+976
+00:53:19,920 --> 00:53:22,480
+And that's calling--that
+procedure, simplify parts, is
+
+977
+00:53:22,480 --> 00:53:25,020
+going to make up a new
+expression with all the parts
+
+978
+00:53:25,020 --> 00:53:26,920
+simplified, which I'm then
+going to try the
+
+979
+00:53:26,920 --> 00:53:30,840
+rules on over here.
+
+980
+00:53:30,840 --> 00:53:33,560
+If it turns out that the
+expression is not compound, if
+
+981
+00:53:33,560 --> 00:53:37,990
+it's simple, like just a symbol
+or something like pi,
+
+982
+00:53:37,990 --> 00:53:40,300
+then in any case, I'm going to
+try the rules on it because it
+
+983
+00:53:40,300 --> 00:53:42,900
+might be that I want in my set
+of rules to expand pi to
+
+984
+00:53:42,900 --> 00:53:48,290
+3.14159265358979,
+dot, dot, dot.
+
+985
+00:53:48,290 --> 00:53:49,570
+But I may not.
+
+986
+00:53:49,570 --> 00:53:52,750
+But there is no reason
+not to do it.
+
+987
+00:53:52,750 --> 00:53:59,010
+Now, if I want to simplify the
+parts, well, that's easy too.
+
+988
+00:53:59,010 --> 00:54:02,480
+Either the expression is an
+empty one, there's no more
+
+989
+00:54:02,480 --> 00:54:05,730
+parts, in which case I have
+the empty expression.
+
+990
+00:54:05,730 --> 00:54:11,460
+Otherwise, I'm going to make a
+new expression by cons, which
+
+991
+00:54:11,460 --> 00:54:13,360
+is the result of simplifying
+the first part of the
+
+992
+00:54:13,360 --> 00:54:16,370
+expression, the car, and
+simplifying the rest of the
+
+993
+00:54:16,370 --> 00:54:21,060
+expression, which is the cdr.
+
+994
+00:54:21,060 --> 00:54:23,250
+Now, the reason why I'm showing
+you this sort of stuff
+
+995
+00:54:23,250 --> 00:54:26,740
+this way is because I want you
+get the feeling for the
+
+996
+00:54:26,740 --> 00:54:29,800
+various patterns that are very
+important when writing
+
+997
+00:54:29,800 --> 00:54:33,970
+programs. And this could be
+written a different way.
+
+998
+00:54:33,970 --> 00:54:35,850
+There's another way to write
+simplified expressions so
+
+999
+00:54:35,850 --> 00:54:37,355
+there would be only
+one of them.
+
+1000
+00:54:37,355 --> 00:54:39,530
+There would only be one
+little procedure here.
+
+1001
+00:54:39,530 --> 00:54:41,540
+Let me just write that on the
+blackboard to give you a
+
+1002
+00:54:41,540 --> 00:54:42,790
+feeling for that.
+
+1003
+00:54:42,790 --> 00:54:49,520
+
+
+1004
+00:54:49,520 --> 00:54:52,170
+This in another idiom,
+if you will.
+
+1005
+00:54:52,170 --> 00:54:58,449
+
+
+1006
+00:54:58,449 --> 00:55:02,696
+To simplify an expression
+called x, what
+
+1007
+00:55:02,696 --> 00:55:03,400
+am I going to do?
+
+1008
+00:55:03,400 --> 00:55:11,100
+I'm going to try the rules on
+the following situation.
+
+1009
+00:55:11,100 --> 00:55:12,170
+If--
+
+1010
+00:55:12,170 --> 00:55:14,090
+on the following expression--
+
+1011
+00:55:14,090 --> 00:55:15,690
+compound, just like
+we had before.
+
+1012
+00:55:15,690 --> 00:55:21,060
+
+
+1013
+00:55:21,060 --> 00:55:24,270
+If the expression is compound,
+well, what am I going to do?
+
+1014
+00:55:24,270 --> 00:55:25,970
+I'm going to simplify
+all the parts.
+
+1015
+00:55:25,970 --> 00:55:30,950
+But I already have a cdr
+recursion, a common pattern of
+
+1016
+00:55:30,950 --> 00:55:33,590
+usage, which has been captured
+as a high-order procedure.
+
+1017
+00:55:33,590 --> 00:55:36,040
+It's called map.
+
+1018
+00:55:36,040 --> 00:55:37,180
+So I'll just write that here.
+
+1019
+00:55:37,180 --> 00:55:47,290
+Map simplify the expression,
+all the parts of the
+
+1020
+00:55:47,290 --> 00:55:49,060
+expression.
+
+1021
+00:55:49,060 --> 00:55:52,580
+This says apply the
+simplification operation,
+
+1022
+00:55:52,580 --> 00:55:55,780
+which is this one, every part
+of the expression, and then
+
+1023
+00:55:55,780 --> 00:56:02,440
+that cuts those up into a list.
+It's every element of
+
+1024
+00:56:02,440 --> 00:56:06,254
+the list which the expression is
+assumed to be made out of,
+
+1025
+00:56:06,254 --> 00:56:08,910
+and otherwise, I have
+the expression.
+
+1026
+00:56:08,910 --> 00:56:12,650
+So I don't need the helper
+procedure, simplify parts,
+
+1027
+00:56:12,650 --> 00:56:15,370
+because that's really this.
+
+1028
+00:56:15,370 --> 00:56:17,690
+So sometimes, you just
+write it this way.
+
+1029
+00:56:17,690 --> 00:56:20,830
+It doesn't matter very much.
+
+1030
+00:56:20,830 --> 00:56:24,410
+Well, now let's take
+a look at--
+
+1031
+00:56:24,410 --> 00:56:27,660
+let's just look at how
+you try rules.
+
+1032
+00:56:27,660 --> 00:56:30,540
+If you look at this slide,
+we see this is a
+
+1033
+00:56:30,540 --> 00:56:33,680
+complicated mess also.
+
+1034
+00:56:33,680 --> 00:56:36,140
+I'm trying rules on
+an expression.
+
+1035
+00:56:36,140 --> 00:56:38,030
+It turns out the expression
+I'm trying it on is some
+
+1036
+00:56:38,030 --> 00:56:40,490
+subexpression now of the
+expression I started with.
+
+1037
+00:56:40,490 --> 00:56:43,040
+Because the thing I just
+arranged allowed us to try
+
+1038
+00:56:43,040 --> 00:56:44,290
+every subexpression.
+
+1039
+00:56:44,290 --> 00:56:46,050
+
+
+1040
+00:56:46,050 --> 00:56:50,140
+So now here we're taking in
+a subexpression of the
+
+1041
+00:56:50,140 --> 00:56:51,080
+expression we started with.
+
+1042
+00:56:51,080 --> 00:56:52,225
+That's what this is.
+
+1043
+00:56:52,225 --> 00:56:55,670
+And what we're going to define
+here is a procedure called
+
+1044
+00:56:55,670 --> 00:56:58,640
+scan, which is going
+to try every rule.
+
+1045
+00:56:58,640 --> 00:57:01,920
+And we're going to start it up
+on the whole set of rules.
+
+1046
+00:57:01,920 --> 00:57:06,670
+This is going to go cdr-ing down
+the rules, if you will,
+
+1047
+00:57:06,670 --> 00:57:09,370
+looking for a rule to apply.
+
+1048
+00:57:09,370 --> 00:57:14,140
+And when it finds one,
+it'll do the job.
+
+1049
+00:57:14,140 --> 00:57:17,630
+Well, let's take a look at
+how try rules works.
+
+1050
+00:57:17,630 --> 00:57:19,720
+It's very simple:
+the scan rules.
+
+1051
+00:57:19,720 --> 00:57:22,066
+Scan rules, the way
+of scanning.
+
+1052
+00:57:22,066 --> 00:57:23,270
+Well, is it so simple?
+
+1053
+00:57:23,270 --> 00:57:25,510
+It's a big program, of course.
+
+1054
+00:57:25,510 --> 00:57:28,060
+We take a bunch of rules,
+which is a sublist
+
+1055
+00:57:28,060 --> 00:57:30,700
+of the list of rules.
+
+1056
+00:57:30,700 --> 00:57:33,080
+We've tried some of them
+already, and they've not been
+
+1057
+00:57:33,080 --> 00:57:35,360
+appropriate, so we
+get to some here.
+
+1058
+00:57:35,360 --> 00:57:36,490
+We get to move to
+the next one.
+
+1059
+00:57:36,490 --> 00:57:38,600
+If there are no more rules, well
+then, there's nothing I
+
+1060
+00:57:38,600 --> 00:57:42,200
+can do with this expression,
+and it's simplified.
+
+1061
+00:57:42,200 --> 00:57:46,790
+However, if it turns out that
+there are still rules to be
+
+1062
+00:57:46,790 --> 00:57:52,180
+done, then let's match the
+pattern of the first rule
+
+1063
+00:57:52,180 --> 00:57:55,280
+against the expression using the
+empty dictionary to start
+
+1064
+00:57:55,280 --> 00:58:00,270
+with and use that as
+the dictionary.
+
+1065
+00:58:00,270 --> 00:58:02,830
+If that happens to
+be a failure, try
+
+1066
+00:58:02,830 --> 00:58:04,080
+the rest of the rules.
+
+1067
+00:58:04,080 --> 00:58:06,540
+
+
+1068
+00:58:06,540 --> 00:58:08,790
+That's all it says here.
+
+1069
+00:58:08,790 --> 00:58:11,080
+It says discard that rule.
+
+1070
+00:58:11,080 --> 00:58:14,640
+Otherwise, well, I'm going to
+get the skeleton of the first
+
+1071
+00:58:14,640 --> 00:58:17,890
+rule, instantiate that relative
+to the dictionary,
+
+1072
+00:58:17,890 --> 00:58:20,940
+and simplify the result, and
+that's the expression I want.
+
+1073
+00:58:20,940 --> 00:58:24,070
+
+
+1074
+00:58:24,070 --> 00:58:26,380
+So although that was a
+complicated program, every
+
+1075
+00:58:26,380 --> 00:58:29,940
+complicated program is made out
+of a lot of simple pieces.
+
+1076
+00:58:29,940 --> 00:58:34,760
+Now, the pattern of recursions
+here is very complicated.
+
+1077
+00:58:34,760 --> 00:58:35,950
+And one of the most important
+things is not
+
+1078
+00:58:35,950 --> 00:58:38,126
+to think about that.
+
+1079
+00:58:38,126 --> 00:58:41,130
+If you try to think about the
+actual pattern by which this
+
+1080
+00:58:41,130 --> 00:58:45,250
+does something, you're going
+to get very confused.
+
+1081
+00:58:45,250 --> 00:58:47,420
+I would.
+
+1082
+00:58:47,420 --> 00:58:51,470
+This is not a matter of you
+can do this with practice.
+
+1083
+00:58:51,470 --> 00:58:53,761
+These patterns are hard.
+
+1084
+00:58:53,761 --> 00:58:55,840
+But you don't have to
+think about it.
+
+1085
+00:58:55,840 --> 00:58:57,010
+The key to this--
+
+1086
+00:58:57,010 --> 00:59:00,120
+it's very good programming and
+very good design-- is to know
+
+1087
+00:59:00,120 --> 00:59:02,990
+what not to think about.
+
+1088
+00:59:02,990 --> 00:59:07,540
+The fact is, going back to this
+slide, I don't have to
+
+1089
+00:59:07,540 --> 00:59:11,640
+think about it because I have
+specifications in my mind for
+
+1090
+00:59:11,640 --> 00:59:14,000
+what simplify x does.
+
+1091
+00:59:14,000 --> 00:59:16,735
+I don't have to know
+how it does it.
+
+1092
+00:59:16,735 --> 00:59:20,720
+And it may, in fact, call scan
+somehow through try rules,
+
+1093
+00:59:20,720 --> 00:59:22,190
+which it does.
+
+1094
+00:59:22,190 --> 00:59:24,230
+And somehow, I've got another
+recursion going on here.
+
+1095
+00:59:24,230 --> 00:59:28,470
+But since I know that simplify
+x is assumed by wishful
+
+1096
+00:59:28,470 --> 00:59:31,446
+thinking to produce the
+simplified result, then I
+
+1097
+00:59:31,446 --> 00:59:33,900
+don't have to think
+about it anymore.
+
+1098
+00:59:33,900 --> 00:59:35,030
+I've used it.
+
+1099
+00:59:35,030 --> 00:59:36,480
+I've used it in a
+reasonable way.
+
+1100
+00:59:36,480 --> 00:59:39,468
+I will get a reasonable
+answer.
+
+1101
+00:59:39,468 --> 00:59:41,760
+And you have to learn how
+to program that way--
+
+1102
+00:59:41,760 --> 00:59:43,010
+with abandon.
+
+1103
+00:59:43,010 --> 00:59:47,480
+
+
+1104
+00:59:47,480 --> 00:59:50,390
+Well, there's very little
+left of this thing.
+
+1105
+00:59:50,390 --> 00:59:53,610
+All there is left is a few
+details associated with what a
+
+1106
+00:59:53,610 --> 00:59:55,060
+dictionary is.
+
+1107
+00:59:55,060 --> 00:59:57,520
+And those of you who've been
+itching to know what a
+
+1108
+00:59:57,520 --> 01:00:01,130
+dictionary is, well, I will flip
+it up and not tell you
+
+1109
+01:00:01,130 --> 01:00:04,110
+anything about it.
+
+1110
+01:00:04,110 --> 01:00:06,020
+Dictionaries are easy.
+
+1111
+01:00:06,020 --> 01:00:09,570
+It's represented in terms of
+something else called an A
+
+1112
+01:00:09,570 --> 01:00:14,730
+list, which is a particular
+pattern of usage for making
+
+1113
+01:00:14,730 --> 01:00:16,730
+tables in lists.
+
+1114
+01:00:16,730 --> 01:00:17,220
+They're easy.
+
+1115
+01:00:17,220 --> 01:00:21,670
+They're made out of pairs,
+as was asked a bit ago.
+
+1116
+01:00:21,670 --> 01:00:23,270
+And there are special procedures
+for dealing with
+
+1117
+01:00:23,270 --> 01:00:27,020
+such things called assq, and you
+can find them in manuals.
+
+1118
+01:00:27,020 --> 01:00:28,730
+I'm not terribly excited
+about it.
+
+1119
+01:00:28,730 --> 01:00:31,710
+The only interesting thing here
+in extend dictionary is I
+
+1120
+01:00:31,710 --> 01:00:36,480
+have to extend the dictionary
+with a pattern, a datum, and a
+
+1121
+01:00:36,480 --> 01:00:37,910
+dictionary.
+
+1122
+01:00:37,910 --> 01:00:42,896
+This pattern is, in fact, at
+this point a pattern variable.
+
+1123
+01:00:42,896 --> 01:00:44,880
+And what do I want to do?
+
+1124
+01:00:44,880 --> 01:00:48,220
+I want to pull out the name of
+that pattern variable, the
+
+1125
+01:00:48,220 --> 01:00:52,100
+pattern variable name, and I'm
+going to look up in the
+
+1126
+01:00:52,100 --> 01:00:53,750
+dictionary and see if it
+already has a value.
+
+1127
+01:00:53,750 --> 01:00:57,030
+If not, I'm going to
+add a new one in.
+
+1128
+01:00:57,030 --> 01:01:00,730
+If it does have one, if it has a
+value, then it had better be
+
+1129
+01:01:00,730 --> 01:01:03,920
+equal to the one that was
+already stored away.
+
+1130
+01:01:03,920 --> 01:01:05,690
+And if that's the case, the
+dictionary is what I
+
+1131
+01:01:05,690 --> 01:01:06,940
+expected it to be.
+
+1132
+01:01:06,940 --> 01:01:11,605
+Otherwise, I fail.
+
+1133
+01:01:11,605 --> 01:01:13,430
+So that's easy, too.
+
+1134
+01:01:13,430 --> 01:01:15,940
+If you open up any program,
+you're going to find inside of
+
+1135
+01:01:15,940 --> 01:01:20,000
+it lots of little pieces,
+all of which are easy.
+
+1136
+01:01:20,000 --> 01:01:23,340
+So at this point, I suppose,
+I've just told you some
+
+1137
+01:01:23,340 --> 01:01:27,995
+million-dollar valuable
+information.
+
+1138
+01:01:27,995 --> 01:01:30,320
+And I suppose at this point
+we're pretty much done with
+
+1139
+01:01:30,320 --> 01:01:31,930
+this program.
+
+1140
+01:01:31,930 --> 01:01:34,330
+I'd like to ask about
+questions.
+
+1141
+01:01:34,330 --> 01:01:35,940
+AUDIENCE: Yes, can you give me
+the words that describe the
+
+1142
+01:01:35,940 --> 01:01:38,650
+specification for a simplified
+expression?
+
+1143
+01:01:38,650 --> 01:01:39,475
+PROFESSOR: Sure.
+
+1144
+01:01:39,475 --> 01:01:43,330
+A simplified expression takes
+an expression and produces a
+
+1145
+01:01:43,330 --> 01:01:44,838
+simplified expression.
+
+1146
+01:01:44,838 --> 01:01:48,120
+That's it, OK?
+
+1147
+01:01:48,120 --> 01:01:51,212
+How it does it is very easy.
+
+1148
+01:01:51,212 --> 01:01:53,710
+In compound expressions, all the
+pieces are simplified, and
+
+1149
+01:01:53,710 --> 01:01:56,910
+then the rules are tried
+on the result.
+
+1150
+01:01:56,910 --> 01:01:59,216
+And for simple expressions, you
+just try all the rules.
+
+1151
+01:01:59,216 --> 01:02:01,280
+AUDIENCE: So an expression
+is simplified by
+
+1152
+01:02:01,280 --> 01:02:02,535
+virtue of the rules?
+
+1153
+01:02:02,535 --> 01:02:03,660
+PROFESSOR: That's,
+of course, true.
+
+1154
+01:02:03,660 --> 01:02:04,140
+AUDIENCE: Right.
+
+1155
+01:02:04,140 --> 01:02:06,060
+PROFESSOR: And the way this
+works is that simplifi
+
+1156
+01:02:06,060 --> 01:02:10,000
+expression, as you see here,
+what it does is it breaks the
+
+1157
+01:02:10,000 --> 01:02:13,190
+expression down into the
+smallest pieces, simplifies
+
+1158
+01:02:13,190 --> 01:02:16,690
+building up from the bottom
+using the rules to be the
+
+1159
+01:02:16,690 --> 01:02:21,100
+simplifier, to do the
+manipulations, and constructs
+
+1160
+01:02:21,100 --> 01:02:24,400
+a new expression
+as the result.
+
+1161
+01:02:24,400 --> 01:02:28,290
+Eventually, one of things you
+see is that the rules
+
+1162
+01:02:28,290 --> 01:02:30,880
+themselves, the try rules, call
+a simplified expression
+
+1163
+01:02:30,880 --> 01:02:34,280
+on the results when it changes
+something, the
+
+1164
+01:02:34,280 --> 01:02:35,830
+results of a match.
+
+1165
+01:02:35,830 --> 01:02:39,420
+I'm sorry, the results of
+instantiation of a skeleton
+
+1166
+01:02:39,420 --> 01:02:41,900
+for a rule that has matched.
+
+1167
+01:02:41,900 --> 01:02:44,570
+So the spec of a simplified
+expression is that any
+
+1168
+01:02:44,570 --> 01:02:46,860
+expression you put into it comes
+out simplified according
+
+1169
+01:02:46,860 --> 01:02:49,590
+to those rules.
+
+1170
+01:02:49,590 --> 01:02:50,190
+Thank you.
+
+1171
+01:02:50,190 --> 01:02:51,860
+Let's take a break.
+
+1172
+01:02:51,860 --> 01:03:07,924
+

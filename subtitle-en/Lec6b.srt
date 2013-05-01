@@ -1,0 +1,5552 @@
+0
+00:00:00,000 --> 00:00:20,970
+
+
+1
+00:00:20,970 --> 00:00:24,580
+PROFESSOR: OK, well, we've been
+looking at streams, this
+
+2
+00:00:24,580 --> 00:00:28,870
+signal processing way of putting
+systems together.
+
+3
+00:00:28,870 --> 00:00:35,200
+And remember, the key idea is
+that we decouple the apparent
+
+4
+00:00:35,200 --> 00:00:38,480
+order of events in our programs
+from the actual order
+
+5
+00:00:38,480 --> 00:00:40,635
+of events in the computer.
+
+6
+00:00:40,635 --> 00:00:43,630
+And that means that we can start
+dealing with very long
+
+7
+00:00:43,630 --> 00:00:46,340
+streams and only having
+to generate
+
+8
+00:00:46,340 --> 00:00:47,500
+the elements on demand.
+
+9
+00:00:47,500 --> 00:00:50,310
+That sort of on-demand
+computation is built into the
+
+10
+00:00:50,310 --> 00:00:51,560
+stream's data structure.
+
+11
+00:00:51,560 --> 00:00:54,450
+
+
+12
+00:00:54,450 --> 00:00:55,990
+So if we have a very long
+stream, we only
+
+13
+00:00:55,990 --> 00:00:58,040
+compute what we need.
+
+14
+00:00:58,040 --> 00:01:00,750
+The things only get computed
+when we actually ask for them.
+
+15
+00:01:00,750 --> 00:01:02,110
+Well, what are examples?
+
+16
+00:01:02,110 --> 00:01:04,800
+Are they actually
+asking for them?
+
+17
+00:01:04,800 --> 00:01:11,050
+For instance, we might ask for
+the n-th element of a stream.
+
+18
+00:01:11,050 --> 00:01:16,360
+
+
+19
+00:01:16,360 --> 00:01:18,130
+Here's a procedure that
+computes the n-th
+
+20
+00:01:18,130 --> 00:01:20,400
+element of a stream.
+
+21
+00:01:20,400 --> 00:01:23,810
+An integer n, the n-th element
+of some stream s, and we just
+
+22
+00:01:23,810 --> 00:01:25,570
+recursively walk down
+the stream.
+
+23
+00:01:25,570 --> 00:01:27,960
+And the end of 0, we
+compute the head.
+
+24
+00:01:27,960 --> 00:01:32,350
+Otherwise, it's the n-th the
+minus 1 element of the tail of
+
+25
+00:01:32,350 --> 00:01:34,310
+the stream.
+
+26
+00:01:34,310 --> 00:01:36,570
+Those two are just like for
+Lisp, but the difference is
+
+27
+00:01:36,570 --> 00:01:39,580
+those elements aren't going to
+get computed until we walk
+
+28
+00:01:39,580 --> 00:01:41,700
+down, taking successive n-ths.
+
+29
+00:01:41,700 --> 00:01:43,630
+So that's one way
+that the stream
+
+30
+00:01:43,630 --> 00:01:45,910
+elements might get forced.
+
+31
+00:01:45,910 --> 00:01:47,980
+And another way, here's
+a little procedure
+
+32
+00:01:47,980 --> 00:01:49,300
+that prints a stream.
+
+33
+00:01:49,300 --> 00:01:54,150
+We say print a stream, so
+to print a stream s.
+
+34
+00:01:54,150 --> 00:01:55,315
+Well, what do we do?
+
+35
+00:01:55,315 --> 00:01:58,270
+We print the head of the stream,
+and that will cause
+
+36
+00:01:58,270 --> 00:01:59,720
+the head to be computed.
+
+37
+00:01:59,720 --> 00:02:04,990
+And then we recursively print
+stream the tail of the stream.
+
+38
+00:02:04,990 --> 00:02:07,190
+And if we're already done,
+maybe we have to return
+
+39
+00:02:07,190 --> 00:02:09,660
+something about the
+message done.
+
+40
+00:02:09,660 --> 00:02:12,250
+OK, and then so if you make a
+stream, you could say here's
+
+41
+00:02:12,250 --> 00:02:14,310
+the stream, this very
+long stream.
+
+42
+00:02:14,310 --> 00:02:16,990
+And then you say print the
+stream, and the elements of
+
+43
+00:02:16,990 --> 00:02:20,550
+the stream will get computed
+successively as that print
+
+44
+00:02:20,550 --> 00:02:21,320
+calls them.
+
+45
+00:02:21,320 --> 00:02:24,680
+They won't get all computed
+initially.
+
+46
+00:02:24,680 --> 00:02:30,190
+So in this way, we can deal with
+some very long streams.
+
+47
+00:02:30,190 --> 00:02:33,600
+Well, how long can
+a stream be?
+
+48
+00:02:33,600 --> 00:02:36,360
+Well, it can be infinitely
+long.
+
+49
+00:02:36,360 --> 00:02:38,920
+Let's look at an example
+here on the computer.
+
+50
+00:02:38,920 --> 00:02:43,400
+I could walk up to this
+computer, and I could say--
+
+51
+00:02:43,400 --> 00:02:52,270
+how about we'll define the
+stream of integers starting
+
+52
+00:02:52,270 --> 00:02:56,170
+with some number N, the stream
+of positive integers starting
+
+53
+00:02:56,170 --> 00:02:57,420
+with some number n.
+
+54
+00:02:57,420 --> 00:02:59,760
+
+
+55
+00:02:59,760 --> 00:03:12,990
+And that's cons-stream
+of n onto the
+
+56
+00:03:12,990 --> 00:03:19,010
+integers from one more.
+
+57
+00:03:19,010 --> 00:03:24,680
+
+
+58
+00:03:24,680 --> 00:03:25,930
+So there are the integers.
+
+59
+00:03:25,930 --> 00:03:28,800
+
+
+60
+00:03:28,800 --> 00:03:31,500
+Then I could say let's
+get all the integers.
+
+61
+00:03:31,500 --> 00:03:34,410
+
+
+62
+00:03:34,410 --> 00:03:43,330
+define the stream of integers
+to be the integers
+
+63
+00:03:43,330 --> 00:03:44,580
+starting with 1.
+
+64
+00:03:44,580 --> 00:03:48,840
+
+
+65
+00:03:48,840 --> 00:03:54,950
+And now if I say something like
+what's the what's the
+
+66
+00:03:54,950 --> 00:04:02,995
+20th integer.
+
+67
+00:04:02,995 --> 00:04:07,270
+So it's 21 because we
+start counting at 0.
+
+68
+00:04:07,270 --> 00:04:09,450
+Or I can do more complicated
+things.
+
+69
+00:04:09,450 --> 00:04:10,840
+Let me to define a little
+predicate here.
+
+70
+00:04:10,840 --> 00:04:13,740
+
+
+71
+00:04:13,740 --> 00:04:19,160
+How about define no-seven.
+
+72
+00:04:19,160 --> 00:04:22,126
+It's going to test an
+integer, and it's
+
+73
+00:04:22,126 --> 00:04:23,376
+going to say it's not.
+
+74
+00:04:23,376 --> 00:04:28,820
+
+
+75
+00:04:28,820 --> 00:04:38,175
+I take the remainder of
+x by 7, I don't get 0.
+
+76
+00:04:38,175 --> 00:04:41,890
+
+
+77
+00:04:41,890 --> 00:04:50,360
+And then I could say define the
+integers with no sevens to
+
+78
+00:04:50,360 --> 00:04:58,885
+be, take all the integers and
+filter them to have no sevens.
+
+79
+00:04:58,885 --> 00:05:11,570
+
+
+80
+00:05:11,570 --> 00:05:14,060
+So now I've got the stream of
+all the integers that are not
+
+81
+00:05:14,060 --> 00:05:16,360
+divisible by seven.
+
+82
+00:05:16,360 --> 00:05:25,420
+So if I say what's the 100th
+integer and the list not
+
+83
+00:05:25,420 --> 00:05:28,320
+divisible by seven, I get 117.
+
+84
+00:05:28,320 --> 00:05:35,270
+Or if I'd like to say well,
+gee, what are all of them?
+
+85
+00:05:35,270 --> 00:05:39,810
+So I could say print stream
+all these integers with no
+
+86
+00:05:39,810 --> 00:05:41,700
+seven, it goes off printing.
+
+87
+00:05:41,700 --> 00:05:45,100
+
+
+88
+00:05:45,100 --> 00:05:47,070
+You may have to wait a very
+long time to see them all.
+
+89
+00:05:47,070 --> 00:05:52,670
+
+
+90
+00:05:52,670 --> 00:05:56,040
+Well, you can start asking, gee,
+is it really true that
+
+91
+00:05:56,040 --> 00:05:59,080
+this data structure with
+the integers is
+
+92
+00:05:59,080 --> 00:06:01,100
+really all the integers?
+
+93
+00:06:01,100 --> 00:06:04,053
+And let me draw a picture of
+that program I just wrote.
+
+94
+00:06:04,053 --> 00:06:08,170
+
+
+95
+00:06:08,170 --> 00:06:09,980
+Here's the definition of the
+integers again that I just
+
+96
+00:06:09,980 --> 00:06:14,850
+typed in, Right it's a cons of
+the first integer under the
+
+97
+00:06:14,850 --> 00:06:18,120
+integer starting with the
+rest. Now, we can make a
+
+98
+00:06:18,120 --> 00:06:19,775
+picture of that and see
+what it looks like.
+
+99
+00:06:19,775 --> 00:06:22,720
+
+
+100
+00:06:22,720 --> 00:06:26,270
+Conceptually, what I have is
+a box that's the integer
+
+101
+00:06:26,270 --> 00:06:27,420
+starting with n.
+
+102
+00:06:27,420 --> 00:06:31,900
+It takes in some number
+n, and it's going to
+
+103
+00:06:31,900 --> 00:06:35,050
+return a stream of--
+
+104
+00:06:35,050 --> 00:06:37,705
+this infinite stream of all
+integers starting with n.
+
+105
+00:06:37,705 --> 00:06:38,690
+And what do I do?
+
+106
+00:06:38,690 --> 00:06:42,470
+Well, this is an integers
+from box.
+
+107
+00:06:42,470 --> 00:06:45,070
+
+
+108
+00:06:45,070 --> 00:06:45,800
+What's it got in it?
+
+109
+00:06:45,800 --> 00:06:54,110
+Well, it takes in this n,
+and it increments it.
+
+110
+00:06:54,110 --> 00:06:58,030
+
+
+111
+00:06:58,030 --> 00:07:01,920
+And then it puts the result
+into recursively another
+
+112
+00:07:01,920 --> 00:07:03,170
+integer's from box.
+
+113
+00:07:03,170 --> 00:07:06,870
+
+
+114
+00:07:06,870 --> 00:07:10,630
+It takes the result of that and
+the original n and puts
+
+115
+00:07:10,630 --> 00:07:14,270
+those together with a cons
+and forms a stream.
+
+116
+00:07:14,270 --> 00:07:18,530
+So that's a picture of
+that program I wrote.
+
+117
+00:07:18,530 --> 00:07:18,780
+Let's see.
+
+118
+00:07:18,780 --> 00:07:21,380
+These kind of diagrams we
+first saw drawn by Peter
+
+119
+00:07:21,380 --> 00:07:23,320
+Henderson, the same guy who
+did the Escher language.
+
+120
+00:07:23,320 --> 00:07:26,170
+We call them Henderson diagrams.
+And the convention
+
+121
+00:07:26,170 --> 00:07:28,530
+here is that you put these
+things together.
+
+122
+00:07:28,530 --> 00:07:33,260
+And the solid lines are things
+coming out are streams, and
+
+123
+00:07:33,260 --> 00:07:37,270
+dotted lines are initial
+values going in.
+
+124
+00:07:37,270 --> 00:07:39,440
+So this one has the shape of--
+
+125
+00:07:39,440 --> 00:07:41,820
+it takes in some integer,
+some initial value,
+
+126
+00:07:41,820 --> 00:07:43,070
+and outputs a stream.
+
+127
+00:07:43,070 --> 00:07:46,410
+
+
+128
+00:07:46,410 --> 00:07:48,380
+Again, you can ask.
+
+129
+00:07:48,380 --> 00:07:49,710
+Is that data structure integers
+
+130
+00:07:49,710 --> 00:07:52,340
+really all the integers?
+
+131
+00:07:52,340 --> 00:07:55,190
+Or is it is something that's
+cleverly arranged so that
+
+132
+00:07:55,190 --> 00:07:58,190
+whenever you look for an integer
+you find it there?
+
+133
+00:07:58,190 --> 00:07:59,780
+That's sort of a philosophical
+question, right?
+
+134
+00:07:59,780 --> 00:08:03,090
+If something is there whenever
+you look, is it
+
+135
+00:08:03,090 --> 00:08:04,450
+really there or not?
+
+136
+00:08:04,450 --> 00:08:07,970
+It's sort of the same sense
+in which the money in your
+
+137
+00:08:07,970 --> 00:08:09,420
+savings account is
+in the bank.
+
+138
+00:08:09,420 --> 00:08:12,380
+
+
+139
+00:08:12,380 --> 00:08:19,830
+Well, let me do another
+example.
+
+140
+00:08:19,830 --> 00:08:22,040
+Gee, we started the course
+with an algorithm from
+
+141
+00:08:22,040 --> 00:08:25,910
+Alexandria, which was Heron of
+Alexandria's algorithm for
+
+142
+00:08:25,910 --> 00:08:28,470
+computing the square root.
+
+143
+00:08:28,470 --> 00:08:32,030
+Let's take a look at another
+Alexandrian algorithm.
+
+144
+00:08:32,030 --> 00:08:37,860
+This one is Eratosthenes method
+for computing all of
+
+145
+00:08:37,860 --> 00:08:39,110
+the primes.
+
+146
+00:08:39,110 --> 00:08:41,169
+
+
+147
+00:08:41,169 --> 00:08:42,830
+It is called the Sieve
+of Eratosthenes.
+
+148
+00:08:42,830 --> 00:08:51,830
+And what you do is you start
+out, and you list all the
+
+149
+00:08:51,830 --> 00:08:53,880
+integers, say, starting
+with 2.
+
+150
+00:08:53,880 --> 00:08:55,890
+And then you take the first
+integer, and you say, oh,
+
+151
+00:08:55,890 --> 00:08:57,310
+that's prime.
+
+152
+00:08:57,310 --> 00:08:59,600
+And then you go look at the
+rest, and you cross out all
+
+153
+00:08:59,600 --> 00:09:01,230
+the things divisible by 2.
+
+154
+00:09:01,230 --> 00:09:05,250
+So I cross out this
+and this and this.
+
+155
+00:09:05,250 --> 00:09:07,260
+This takes a long time because
+I have to do it
+
+156
+00:09:07,260 --> 00:09:11,160
+for all of the integers.
+
+157
+00:09:11,160 --> 00:09:19,680
+So I go through the entire list
+of integers, crossing the
+
+158
+00:09:19,680 --> 00:09:22,010
+ones divisible by 2.
+
+159
+00:09:22,010 --> 00:09:25,400
+And now when I finish with all
+of the integers, I go back and
+
+160
+00:09:25,400 --> 00:09:27,040
+look and say what
+am I left with?
+
+161
+00:09:27,040 --> 00:09:29,330
+Well, the first thing that
+starts there is 3.
+
+162
+00:09:29,330 --> 00:09:30,770
+So 3 is a prime.
+
+163
+00:09:30,770 --> 00:09:33,950
+And now I go back through what
+I'm left with, and I cross out
+
+164
+00:09:33,950 --> 00:09:35,120
+all the things divisible by 3.
+
+165
+00:09:35,120 --> 00:09:44,050
+So let's see, 9 and 15 and 21
+and 27 and 33 and so on.
+
+166
+00:09:44,050 --> 00:09:45,350
+I won't finish.
+
+167
+00:09:45,350 --> 00:09:47,250
+Then I see what I'm left with.
+
+168
+00:09:47,250 --> 00:09:50,860
+And the next one I have is 5.
+
+169
+00:09:50,860 --> 00:09:53,470
+Now I can through the rest,
+and I find the first one
+
+170
+00:09:53,470 --> 00:09:54,540
+that's divisible by 5.
+
+171
+00:09:54,540 --> 00:09:56,590
+I cross out from the remainder
+all the ones that are
+
+172
+00:09:56,590 --> 00:09:58,030
+divisible by 5.
+
+173
+00:09:58,030 --> 00:10:01,890
+And I do that, and then I
+go through and find 7.
+
+174
+00:10:01,890 --> 00:10:04,170
+Go through all the rest, cross
+out things divisible 7, and I
+
+175
+00:10:04,170 --> 00:10:06,810
+keep doing that forever.
+
+176
+00:10:06,810 --> 00:10:08,100
+And when I'm done, what
+I'm left with is a
+
+177
+00:10:08,100 --> 00:10:10,120
+list of all the primes.
+
+178
+00:10:10,120 --> 00:10:15,430
+So that's the Sieve
+of Eratosthenes.
+
+179
+00:10:15,430 --> 00:10:17,930
+Let's look at it as a
+computer program.
+
+180
+00:10:17,930 --> 00:10:19,550
+It's a procedure called sieve.
+
+181
+00:10:19,550 --> 00:10:27,910
+
+
+182
+00:10:27,910 --> 00:10:30,480
+Now, I just write what I did.
+
+183
+00:10:30,480 --> 00:10:34,510
+I'll say to sieve
+some stream s.
+
+184
+00:10:34,510 --> 00:10:38,770
+
+
+185
+00:10:38,770 --> 00:10:41,280
+I'm going to build a stream
+whose first element is the
+
+186
+00:10:41,280 --> 00:10:41,870
+head of this.
+
+187
+00:10:41,870 --> 00:10:44,930
+Remember, I always found the
+first thing I was left with,
+
+188
+00:10:44,930 --> 00:10:48,480
+and the rest of it is the result
+of taking the tail of
+
+189
+00:10:48,480 --> 00:10:54,030
+this, filtering it to throw away
+all the things that are
+
+190
+00:10:54,030 --> 00:10:59,020
+divisible by the head of this,
+and now sieving the result.
+
+191
+00:10:59,020 --> 00:11:01,980
+That's just what I did.
+
+192
+00:11:01,980 --> 00:11:05,560
+And now to get the infinite
+stream of times, we just sieve
+
+193
+00:11:05,560 --> 00:11:06,900
+all the integers starting
+from 2.
+
+194
+00:11:06,900 --> 00:11:14,920
+
+
+195
+00:11:14,920 --> 00:11:16,300
+Let's try that.
+
+196
+00:11:16,300 --> 00:11:19,760
+We can actually do it.
+
+197
+00:11:19,760 --> 00:11:23,170
+I typed in the definition of
+sieve before, I hope, so I can
+
+198
+00:11:23,170 --> 00:11:35,340
+say something like define the
+primes to be the result of
+
+199
+00:11:35,340 --> 00:11:41,350
+sieving the integers
+starting with 2.
+
+200
+00:11:41,350 --> 00:11:46,760
+
+
+201
+00:11:46,760 --> 00:11:48,100
+So now I've got this
+list of primes.
+
+202
+00:11:48,100 --> 00:11:50,990
+That's all of the
+primes, right?
+
+203
+00:11:50,990 --> 00:12:01,010
+So, if for example, what's the
+20th prime in that list?
+
+204
+00:12:01,010 --> 00:12:02,540
+73.
+
+205
+00:12:02,540 --> 00:12:05,080
+See, and that little pause, it
+was only at the point when I
+
+206
+00:12:05,080 --> 00:12:06,500
+started asking for
+the 20th prime is
+
+207
+00:12:06,500 --> 00:12:07,750
+that it started computing.
+
+208
+00:12:07,750 --> 00:12:10,370
+
+
+209
+00:12:10,370 --> 00:12:14,960
+Or I can say here let's look
+at all of the primes.
+
+210
+00:12:14,960 --> 00:12:22,780
+
+
+211
+00:12:22,780 --> 00:12:25,350
+And there it goes computing
+all of the primes.
+
+212
+00:12:25,350 --> 00:12:26,970
+Of course, it will take a while
+again if I want to look
+
+213
+00:12:26,970 --> 00:12:28,570
+at all of them, so
+let's stop it.
+
+214
+00:12:28,570 --> 00:12:32,030
+
+
+215
+00:12:32,030 --> 00:12:33,130
+Let me draw you a
+picture of that.
+
+216
+00:12:33,130 --> 00:12:34,890
+Well, I've got a picture
+of that.
+
+217
+00:12:34,890 --> 00:12:37,900
+What's that program
+really look like?
+
+218
+00:12:37,900 --> 00:12:39,550
+Again, some practice with
+these diagrams, I
+
+219
+00:12:39,550 --> 00:12:42,610
+have a sieve box.
+
+220
+00:12:42,610 --> 00:12:43,560
+How does sieve work?
+
+221
+00:12:43,560 --> 00:12:44,810
+It takes in a stream.
+
+222
+00:12:44,810 --> 00:12:48,850
+
+
+223
+00:12:48,850 --> 00:12:50,870
+It splits off the head
+from the tail.
+
+224
+00:12:50,870 --> 00:12:53,500
+And the first thing that's going
+to come out of the sieve
+
+225
+00:12:53,500 --> 00:12:54,970
+is the head of the
+original stream.
+
+226
+00:12:54,970 --> 00:12:57,796
+
+
+227
+00:12:57,796 --> 00:13:02,550
+Then it also takes the
+head and uses that.
+
+228
+00:13:02,550 --> 00:13:03,850
+It takes the stream.
+
+229
+00:13:03,850 --> 00:13:07,290
+It filters the tail and uses
+the head to filter for
+
+230
+00:13:07,290 --> 00:13:09,152
+nondivisibility.
+
+231
+00:13:09,152 --> 00:13:11,710
+It takes the result of
+nondivisibility and puts it
+
+232
+00:13:11,710 --> 00:13:15,130
+through another sieve box and
+puts the result together.
+
+233
+00:13:15,130 --> 00:13:17,890
+So you can think of this sieve a
+filter, but notice that it's
+
+234
+00:13:17,890 --> 00:13:19,650
+an infinitely recursive
+filter.
+
+235
+00:13:19,650 --> 00:13:23,560
+Because inside the sieve box
+is another sieve box, and
+
+236
+00:13:23,560 --> 00:13:27,130
+inside that is another sieve
+box and another sieve box.
+
+237
+00:13:27,130 --> 00:13:28,960
+So you see we start getting
+some very powerful things.
+
+238
+00:13:28,960 --> 00:13:32,390
+We're starting to mix this
+signal processing view of the
+
+239
+00:13:32,390 --> 00:13:35,760
+world with things like recursion
+that come from
+
+240
+00:13:35,760 --> 00:13:36,690
+computation.
+
+241
+00:13:36,690 --> 00:13:39,210
+And there are all sorts of
+interesting things you can do
+
+242
+00:13:39,210 --> 00:13:40,970
+that are like this.
+
+243
+00:13:40,970 --> 00:13:42,220
+All right, any questions?
+
+244
+00:13:42,220 --> 00:13:48,190
+
+
+245
+00:13:48,190 --> 00:13:49,440
+OK, let's take a break.
+
+246
+00:13:49,440 --> 00:14:28,820
+
+
+247
+00:14:28,820 --> 00:14:31,440
+Well, we've been looking at a
+couple of examples of stream
+
+248
+00:14:31,440 --> 00:14:32,690
+programming.
+
+249
+00:14:32,690 --> 00:14:34,790
+
+
+250
+00:14:34,790 --> 00:14:39,920
+All the stream procedures that
+we've looked at so far have
+
+251
+00:14:39,920 --> 00:14:41,490
+the same kind of character.
+
+252
+00:14:41,490 --> 00:14:44,470
+We've been writing these
+recursive procedures that kind
+
+253
+00:14:44,470 --> 00:14:46,820
+of generate these stream
+elements one at a time and put
+
+254
+00:14:46,820 --> 00:14:50,030
+them together in cons-streams.
+So we've been thinking a lot
+
+255
+00:14:50,030 --> 00:14:51,000
+about generators.
+
+256
+00:14:51,000 --> 00:14:53,970
+There's another way to think
+about stream processing, and
+
+257
+00:14:53,970 --> 00:14:57,840
+that's to focus not on programs
+that sort of process
+
+258
+00:14:57,840 --> 00:15:00,840
+these elements as you walk down
+the stream, but on things
+
+259
+00:15:00,840 --> 00:15:07,350
+that kind of process the
+streams all at once.
+
+260
+00:15:07,350 --> 00:15:09,950
+To show you what I mean, let
+me start by defining two
+
+261
+00:15:09,950 --> 00:15:12,410
+procedures that will
+come in handy.
+
+262
+00:15:12,410 --> 00:15:17,580
+The first one's called add
+streams. Add streams takes two
+
+263
+00:15:17,580 --> 00:15:22,330
+streams: s1 and s2.
+
+264
+00:15:22,330 --> 00:15:22,460
+and.
+
+265
+00:15:22,460 --> 00:15:27,240
+It's going to produce a stream
+whose elements are the are the
+
+266
+00:15:27,240 --> 00:15:32,970
+corresponding sums. We just sort
+of add them element-wise.
+
+267
+00:15:32,970 --> 00:15:36,810
+If either stream is empty, we
+just return the other one.
+
+268
+00:15:36,810 --> 00:15:42,000
+Otherwise, we're going to make a
+new stream whose head is the
+
+269
+00:15:42,000 --> 00:15:46,890
+sum of the two heads and whose
+tail is the result of
+
+270
+00:15:46,890 --> 00:15:50,090
+recursively adding the tails.
+
+271
+00:15:50,090 --> 00:15:52,100
+So that will produce the
+element-wise sum of two
+
+272
+00:15:52,100 --> 00:15:53,150
+streams.
+
+273
+00:15:53,150 --> 00:15:55,830
+And then another useful
+thing to have
+
+274
+00:15:55,830 --> 00:15:57,500
+around is scale stream.
+
+275
+00:15:57,500 --> 00:16:04,150
+Scale stream takes some constant
+number in a stream s
+
+276
+00:16:04,150 --> 00:16:08,140
+and is going to produce the
+stream of elements of s
+
+277
+00:16:08,140 --> 00:16:09,710
+multiplied by this constant.
+
+278
+00:16:09,710 --> 00:16:14,320
+And that's easy, that's just
+a map of the function of an
+
+279
+00:16:14,320 --> 00:16:17,040
+element that multiplies it by
+the constant, and we map that
+
+280
+00:16:17,040 --> 00:16:18,290
+down the stream.
+
+281
+00:16:18,290 --> 00:16:20,520
+
+
+282
+00:16:20,520 --> 00:16:23,630
+So given those two, let me
+show you what I mean by
+
+283
+00:16:23,630 --> 00:16:27,910
+programs that operate on
+streams all at once.
+
+284
+00:16:27,910 --> 00:16:30,200
+Let's look at this.
+
+285
+00:16:30,200 --> 00:16:31,680
+Suppose I write this.
+
+286
+00:16:31,680 --> 00:16:32,930
+I say define--
+
+287
+00:16:32,930 --> 00:16:36,618
+
+
+288
+00:16:36,618 --> 00:16:39,590
+I'll call it ones--
+
+289
+00:16:39,590 --> 00:16:52,190
+to be cons-stream
+of 1 onto ones.
+
+290
+00:16:52,190 --> 00:16:54,860
+
+
+291
+00:16:54,860 --> 00:16:56,950
+What's that?
+
+292
+00:16:56,950 --> 00:17:00,530
+That's going to be an infinite
+stream of ones because the
+
+293
+00:17:00,530 --> 00:17:03,330
+first thing is 1.
+
+294
+00:17:03,330 --> 00:17:07,819
+And the tail of it is a thing
+whose first thing is 1 and
+
+295
+00:17:07,819 --> 00:17:11,220
+whose tail is a thing whose
+first thing is 1 and so on and
+
+296
+00:17:11,220 --> 00:17:11,780
+so on and so on.
+
+297
+00:17:11,780 --> 00:17:15,130
+So that's an infinite
+stream of ones.
+
+298
+00:17:15,130 --> 00:17:17,380
+And now using that, let me give
+you another definition of
+
+299
+00:17:17,380 --> 00:17:18,599
+the integers.
+
+300
+00:17:18,599 --> 00:17:28,270
+We can define the
+integers to be--
+
+301
+00:17:28,270 --> 00:17:32,820
+well, the first integer we'll
+take to be 1, this cons-stream
+
+302
+00:17:32,820 --> 00:17:42,790
+of 1 onto the element-wise sum
+onto add streams of the
+
+303
+00:17:42,790 --> 00:17:48,270
+integers to ones.
+
+304
+00:17:48,270 --> 00:17:54,950
+
+
+305
+00:17:54,950 --> 00:18:01,240
+The integers are a thing whose
+first element is 1, and the
+
+306
+00:18:01,240 --> 00:18:04,940
+rest of them you get by taking
+those integers and
+
+307
+00:18:04,940 --> 00:18:06,640
+incrementing each one by one.
+
+308
+00:18:06,640 --> 00:18:10,400
+So the second element of the
+integers is the first element
+
+309
+00:18:10,400 --> 00:18:13,940
+of the integers incremented
+by one.
+
+310
+00:18:13,940 --> 00:18:15,830
+And the rest of that is the
+next one, and the third
+
+311
+00:18:15,830 --> 00:18:19,690
+element of that is the same as
+the first element of the tail
+
+312
+00:18:19,690 --> 00:18:25,050
+of the integers incremented by
+one, which is the same as the
+
+313
+00:18:25,050 --> 00:18:28,930
+first element of the original
+integers incremented by one
+
+314
+00:18:28,930 --> 00:18:31,250
+and incremented by one
+again and so on.
+
+315
+00:18:31,250 --> 00:18:35,240
+
+
+316
+00:18:35,240 --> 00:18:36,310
+That looks pretty suspicious.
+
+317
+00:18:36,310 --> 00:18:40,150
+See, notice that it works
+because of delay.
+
+318
+00:18:40,150 --> 00:18:42,480
+See, this looks like--
+
+319
+00:18:42,480 --> 00:18:43,870
+let's take a look at ones.
+
+320
+00:18:43,870 --> 00:18:46,810
+This looks like it couldn't even
+be processed because it's
+
+321
+00:18:46,810 --> 00:18:49,410
+suddenly saying in order to know
+what ones is, I say it's
+
+322
+00:18:49,410 --> 00:18:51,130
+cons-stream of something
+onto ones.
+
+323
+00:18:51,130 --> 00:18:53,220
+The reason that works is because
+of that very sneaky
+
+324
+00:18:53,220 --> 00:18:55,250
+hidden delay in there.
+
+325
+00:18:55,250 --> 00:18:58,870
+Because what this really is,
+remember, cons-stream is just
+
+326
+00:18:58,870 --> 00:19:00,290
+an abbreviation.
+
+327
+00:19:00,290 --> 00:19:08,785
+This really is cons of
+1 onto delay of ones.
+
+328
+00:19:08,785 --> 00:19:12,140
+
+
+329
+00:19:12,140 --> 00:19:15,500
+So how does that work?
+
+330
+00:19:15,500 --> 00:19:18,020
+You say I'm going
+to define ones.
+
+331
+00:19:18,020 --> 00:19:20,700
+First I see what ones is
+supposed to be defined as.
+
+332
+00:19:20,700 --> 00:19:27,320
+Well, ones is supposed to be
+defined as a cons whose first
+
+333
+00:19:27,320 --> 00:19:30,070
+part is 1 and whose second part
+is, well, it's a promise
+
+334
+00:19:30,070 --> 00:19:32,710
+to compute something that
+I don't worry about yet.
+
+335
+00:19:32,710 --> 00:19:34,680
+So it doesn't bother me that
+at the point I do this
+
+336
+00:19:34,680 --> 00:19:37,270
+definition, ones
+isn't defined.
+
+337
+00:19:37,270 --> 00:19:40,670
+Having run the definition
+now, ones is defined.
+
+338
+00:19:40,670 --> 00:19:44,920
+So that when I go and look at
+the tail of it, it's defined.
+
+339
+00:19:44,920 --> 00:19:46,590
+It's very sneaky.
+
+340
+00:19:46,590 --> 00:19:48,470
+And an integer is
+the same way.
+
+341
+00:19:48,470 --> 00:19:52,060
+I can refer to integers here
+because hidden way down--
+
+342
+00:19:52,060 --> 00:19:53,210
+because of this cons-stream.
+
+343
+00:19:53,210 --> 00:19:56,200
+It's the cons-stream of 1
+onto something that I
+
+344
+00:19:56,200 --> 00:19:57,050
+don't worry that yet.
+
+345
+00:19:57,050 --> 00:19:58,970
+So I don't look at it, and I
+don't notice that integers
+
+346
+00:19:58,970 --> 00:20:01,320
+isn't defined at the point
+where I try and run the
+
+347
+00:20:01,320 --> 00:20:02,570
+definition.
+
+348
+00:20:02,570 --> 00:20:06,320
+
+
+349
+00:20:06,320 --> 00:20:08,700
+OK, let me draw a picture of
+that integers thing because it
+
+350
+00:20:08,700 --> 00:20:12,430
+still maybe seems a
+little bit shaky.
+
+351
+00:20:12,430 --> 00:20:15,020
+What do I do?
+
+352
+00:20:15,020 --> 00:20:23,490
+I've got the stream of ones, and
+that sort of comes in and
+
+353
+00:20:23,490 --> 00:20:25,340
+goes into an adder that's
+going to be
+
+354
+00:20:25,340 --> 00:20:26,590
+this add streams thing.
+
+355
+00:20:26,590 --> 00:20:29,310
+
+
+356
+00:20:29,310 --> 00:20:33,260
+And that goes in--
+
+357
+00:20:33,260 --> 00:20:35,760
+that's going to put
+out the integers.
+
+358
+00:20:35,760 --> 00:20:40,760
+
+
+359
+00:20:40,760 --> 00:20:45,280
+And the other thing that goes
+into the adder here is the
+
+360
+00:20:45,280 --> 00:20:48,060
+integer, so there's a little
+feedback loop.
+
+361
+00:20:48,060 --> 00:20:51,930
+And all I need to start it off
+is someplace I've got a stick
+
+362
+00:20:51,930 --> 00:20:53,180
+that initial 1.
+
+363
+00:20:53,180 --> 00:20:57,100
+
+
+364
+00:20:57,100 --> 00:21:00,000
+In a real signal processing
+thing, this might be a delay
+
+365
+00:21:00,000 --> 00:21:02,910
+element with that was
+initialized to 1.
+
+366
+00:21:02,910 --> 00:21:07,860
+But there's a picture of
+that ones program.
+
+367
+00:21:07,860 --> 00:21:09,860
+And in fact, that looks
+a lot like--
+
+368
+00:21:09,860 --> 00:21:13,910
+if you've seen real signal block
+diagram things, that
+
+369
+00:21:13,910 --> 00:21:17,360
+looks a lot like accumulators,
+finite state accumulators.
+
+370
+00:21:17,360 --> 00:21:21,640
+And in fact, we can modify this
+a little bit to change
+
+371
+00:21:21,640 --> 00:21:25,700
+this into something that
+integrates a stream or a
+
+372
+00:21:25,700 --> 00:21:27,440
+finite state accumulator,
+however you like
+
+373
+00:21:27,440 --> 00:21:28,440
+to think about it.
+
+374
+00:21:28,440 --> 00:21:30,370
+So instead of the ones coming
+in and getting out the
+
+375
+00:21:30,370 --> 00:21:35,460
+integers, what we'll do is say
+there's a stream s coming in,
+
+376
+00:21:35,460 --> 00:21:43,210
+and we're going to get out the
+integral of this, successive
+
+377
+00:21:43,210 --> 00:21:45,700
+values of that, and it looks
+almost the same.
+
+378
+00:21:45,700 --> 00:21:49,220
+The only thing we're going to
+do is when s comes in here,
+
+379
+00:21:49,220 --> 00:21:53,010
+before we just add it in we're
+going to multiply it
+
+380
+00:21:53,010 --> 00:21:54,260
+by some number dt.
+
+381
+00:21:54,260 --> 00:21:57,680
+
+
+382
+00:21:57,680 --> 00:21:58,790
+And now what we have
+here, this is
+
+383
+00:21:58,790 --> 00:22:00,000
+exactly the same thing.
+
+384
+00:22:00,000 --> 00:22:04,020
+We have a box, which
+is an integrator.
+
+385
+00:22:04,020 --> 00:22:09,790
+
+
+386
+00:22:09,790 --> 00:22:15,250
+And it takes in a stream s, and
+instead of 1 here, we can
+
+387
+00:22:15,250 --> 00:22:19,980
+put the additional value
+for the integral.
+
+388
+00:22:19,980 --> 00:22:23,940
+And that one looks very much
+like a signal processing block
+
+389
+00:22:23,940 --> 00:22:25,270
+diagram program.
+
+390
+00:22:25,270 --> 00:22:27,980
+In fact, here's the procedure
+that looks exactly like that.
+
+391
+00:22:27,980 --> 00:22:31,490
+
+
+392
+00:22:31,490 --> 00:22:34,010
+Find the integral of a stream.
+
+393
+00:22:34,010 --> 00:22:36,350
+So an integral's going to take
+a stream and produce a new
+
+394
+00:22:36,350 --> 00:22:39,560
+stream, and it takes
+in an initial value
+
+395
+00:22:39,560 --> 00:22:42,230
+and some time constant.
+
+396
+00:22:42,230 --> 00:22:43,040
+And what do we do?
+
+397
+00:22:43,040 --> 00:22:45,560
+Well, we internally define this
+thing int, and we make
+
+398
+00:22:45,560 --> 00:22:47,850
+this internal name so
+we can feed it back,
+
+399
+00:22:47,850 --> 00:22:49,400
+loop it around itself.
+
+400
+00:22:49,400 --> 00:22:52,380
+And int is defined to be
+something that starts out at
+
+401
+00:22:52,380 --> 00:22:58,500
+the initial value, and
+the rest of it is
+
+402
+00:22:58,500 --> 00:23:01,280
+gotten by adding together.
+
+403
+00:23:01,280 --> 00:23:03,980
+We take our input stream,
+scale it by dt,
+
+404
+00:23:03,980 --> 00:23:06,880
+and add that to int.
+
+405
+00:23:06,880 --> 00:23:09,130
+And now we'll return from all
+that the value of integral is
+
+406
+00:23:09,130 --> 00:23:10,690
+this thing int.
+
+407
+00:23:10,690 --> 00:23:13,240
+And we use this internal
+definition syntax so we could
+
+408
+00:23:13,240 --> 00:23:14,670
+write a little internal
+definition
+
+409
+00:23:14,670 --> 00:23:15,920
+that refers to itself.
+
+410
+00:23:15,920 --> 00:23:21,880
+
+
+411
+00:23:21,880 --> 00:23:23,710
+Well, there are all sorts
+of things we can do.
+
+412
+00:23:23,710 --> 00:23:25,500
+Let's try this one.
+
+413
+00:23:25,500 --> 00:23:26,895
+how about the Fibonacci
+numbers.
+
+414
+00:23:26,895 --> 00:23:32,625
+You can say define fibs.
+
+415
+00:23:32,625 --> 00:23:36,350
+
+
+416
+00:23:36,350 --> 00:23:37,985
+Well, what are the Fibonacci
+numbers?
+
+417
+00:23:37,985 --> 00:23:48,840
+They're something that starts
+out with 0, and
+
+418
+00:23:48,840 --> 00:23:50,090
+the next one is 1.
+
+419
+00:23:50,090 --> 00:23:56,260
+
+
+420
+00:23:56,260 --> 00:24:06,470
+And the rest of the Fibonacci
+numbers are gotten by adding
+
+421
+00:24:06,470 --> 00:24:11,000
+the Fibonacci numbers
+to their own tail.
+
+422
+00:24:11,000 --> 00:24:17,570
+
+
+423
+00:24:17,570 --> 00:24:20,580
+There's a definition of
+the Fibonacci numbers.
+
+424
+00:24:20,580 --> 00:24:21,430
+How does that work?
+
+425
+00:24:21,430 --> 00:24:25,520
+Well, we start off, and someone
+says compute for us
+
+426
+00:24:25,520 --> 00:24:30,490
+the Fibonacci numbers, and we're
+going to tell you it
+
+427
+00:24:30,490 --> 00:24:31,870
+starts out with 0 and 1.
+
+428
+00:24:31,870 --> 00:24:35,790
+
+
+429
+00:24:35,790 --> 00:24:40,320
+And everything after the 0 and
+1 is gotten by summing two
+
+430
+00:24:40,320 --> 00:24:44,580
+streams. One is the fibs
+themselves, and the other one
+
+431
+00:24:44,580 --> 00:24:45,830
+is the tail of the fibs.
+
+432
+00:24:45,830 --> 00:24:48,870
+
+
+433
+00:24:48,870 --> 00:24:52,430
+So if I know that these start
+out with 0 and 1, I know that
+
+434
+00:24:52,430 --> 00:24:56,435
+the fibs now start out with 0
+and 1, and the tail of the
+
+435
+00:24:56,435 --> 00:24:58,360
+fibs start out with 1.
+
+436
+00:24:58,360 --> 00:25:00,850
+So as soon as I know that, I
+know that the next one here is
+
+437
+00:25:00,850 --> 00:25:04,600
+0 plus 1 is 1, and that tells me
+that the next one here is 1
+
+438
+00:25:04,600 --> 00:25:06,300
+and the next one here is 1.
+
+439
+00:25:06,300 --> 00:25:09,390
+And as soon as I know that, I
+know that the next one is 2.
+
+440
+00:25:09,390 --> 00:25:11,700
+So the next one here is 2 and
+the next one here is 2.
+
+441
+00:25:11,700 --> 00:25:12,950
+And this is 3.
+
+442
+00:25:12,950 --> 00:25:14,720
+
+
+443
+00:25:14,720 --> 00:25:18,530
+This one goes to 3,
+and this is 5.
+
+444
+00:25:18,530 --> 00:25:21,500
+So it's a perfectly sensible
+definition.
+
+445
+00:25:21,500 --> 00:25:22,830
+It's a one-line definition.
+
+446
+00:25:22,830 --> 00:25:25,590
+And again, I could walk over to
+the computer and type that
+
+447
+00:25:25,590 --> 00:25:28,650
+in, exactly that, and then say
+print stream the Fibonacci
+
+448
+00:25:28,650 --> 00:25:30,150
+numbers, and they all
+come flying out.
+
+449
+00:25:30,150 --> 00:25:32,790
+
+
+450
+00:25:32,790 --> 00:25:34,120
+See, this is a lot
+like learning
+
+451
+00:25:34,120 --> 00:25:36,810
+about recursion again.
+
+452
+00:25:36,810 --> 00:25:41,350
+Instead of thinking that
+recursive procedures, we have
+
+453
+00:25:41,350 --> 00:25:45,160
+recursively defined
+data objects.
+
+454
+00:25:45,160 --> 00:25:48,150
+But that shouldn't surprise you
+at all, because by now,
+
+455
+00:25:48,150 --> 00:25:50,020
+you should be coming to really
+believe that there's no
+
+456
+00:25:50,020 --> 00:25:53,090
+difference really between
+procedures and data.
+
+457
+00:25:53,090 --> 00:25:55,550
+In fact, in some sense, the
+underlying streams are
+
+458
+00:25:55,550 --> 00:25:57,240
+procedures sitting there,
+although we don't think of
+
+459
+00:25:57,240 --> 00:25:58,210
+them that way.
+
+460
+00:25:58,210 --> 00:26:00,910
+So the fact that we have
+recursive procedures, well,
+
+461
+00:26:00,910 --> 00:26:03,630
+then it should be natural that
+we have recursive data, too.
+
+462
+00:26:03,630 --> 00:26:07,840
+
+
+463
+00:26:07,840 --> 00:26:09,720
+OK, well, this is
+all pretty neat.
+
+464
+00:26:09,720 --> 00:26:13,120
+Unfortunately, there are
+problems that streams aren't
+
+465
+00:26:13,120 --> 00:26:14,990
+going to solve.
+
+466
+00:26:14,990 --> 00:26:17,580
+Let me show you one of them.
+
+467
+00:26:17,580 --> 00:26:21,190
+See, in the same way, let's
+imagine that we're building an
+
+468
+00:26:21,190 --> 00:26:26,810
+analog computer to solve some
+differential equation like,
+
+469
+00:26:26,810 --> 00:26:33,720
+say, we want to solve the
+equation y prime dy dt is y
+
+470
+00:26:33,720 --> 00:26:36,390
+squared, and I'm going to give
+you some initial value.
+
+471
+00:26:36,390 --> 00:26:38,030
+I'll tell you y of 0 equals 1.
+
+472
+00:26:38,030 --> 00:26:41,060
+
+
+473
+00:26:41,060 --> 00:26:43,690
+Let's say dt is equal
+to something.
+
+474
+00:26:43,690 --> 00:26:46,770
+
+
+475
+00:26:46,770 --> 00:26:49,530
+Now, in the old days, people
+built analog computers to
+
+476
+00:26:49,530 --> 00:26:51,040
+solve these kinds of things.
+
+477
+00:26:51,040 --> 00:26:53,020
+And the way you do that
+is really simple.
+
+478
+00:26:53,020 --> 00:27:01,030
+You get yourself an integrator,
+like that one, an
+
+479
+00:27:01,030 --> 00:27:03,055
+integrator box.
+
+480
+00:27:03,055 --> 00:27:08,530
+And we put in the initial
+value y of 0 is 1.
+
+481
+00:27:08,530 --> 00:27:10,900
+And now if we feed something
+in and get something out,
+
+482
+00:27:10,900 --> 00:27:13,890
+we'll say, gee, what we're
+getting out is the answer.
+
+483
+00:27:13,890 --> 00:27:18,420
+And what we're going to feed in
+is the derivative, and the
+
+484
+00:27:18,420 --> 00:27:21,490
+derivative is supposed to be
+the square of the answer.
+
+485
+00:27:21,490 --> 00:27:31,070
+So if we take these values and
+map using square, and if I
+
+486
+00:27:31,070 --> 00:27:38,750
+feed this around, that's how I
+build a block diagram for an
+
+487
+00:27:38,750 --> 00:27:42,910
+analog computer that solves this
+differential equation.
+
+488
+00:27:42,910 --> 00:27:45,630
+Now, what we'd like to do is
+write a stream program that
+
+489
+00:27:45,630 --> 00:27:47,230
+looks exactly like that.
+
+490
+00:27:47,230 --> 00:27:49,390
+And what do I mean exactly
+like that?
+
+491
+00:27:49,390 --> 00:28:08,100
+Well, I'd say define y to be the
+integral of dy starting at
+
+492
+00:28:08,100 --> 00:28:13,790
+1 with 0.001 as a time step.
+
+493
+00:28:13,790 --> 00:28:16,805
+And I'd like to say
+that says this.
+
+494
+00:28:16,805 --> 00:28:19,635
+And then I'd like to say, well,
+dy is gotten by mapping
+
+495
+00:28:19,635 --> 00:28:20,850
+the square along y.
+
+496
+00:28:20,850 --> 00:28:33,510
+So define dy to be map
+square along y.
+
+497
+00:28:33,510 --> 00:28:36,270
+So there's a stream description
+of this analog
+
+498
+00:28:36,270 --> 00:28:41,410
+computer, and unfortunately,
+it doesn't work.
+
+499
+00:28:41,410 --> 00:28:43,715
+And you can see why it doesn't
+work because when I come in
+
+500
+00:28:43,715 --> 00:28:49,550
+and say define y to be the
+integral of dy, it says, oh,
+
+501
+00:28:49,550 --> 00:28:51,190
+the integral of y-- huh?
+
+502
+00:28:51,190 --> 00:28:53,710
+Oh, that's undefined.
+
+503
+00:28:53,710 --> 00:28:56,860
+So I can't write this definition
+before I've
+
+504
+00:28:56,860 --> 00:28:58,770
+written this one.
+
+505
+00:28:58,770 --> 00:29:00,600
+On the other hand, if I try and
+write this one first, it
+
+506
+00:29:00,600 --> 00:29:03,580
+says, oh, I define y to be the
+map of square along y?
+
+507
+00:29:03,580 --> 00:29:05,770
+Oh, that's not defined yet.
+
+508
+00:29:05,770 --> 00:29:07,730
+So I can't write this one first,
+and I can't write that
+
+509
+00:29:07,730 --> 00:29:11,580
+one first. So I can't quite
+play this game.
+
+510
+00:29:11,580 --> 00:29:17,560
+
+
+511
+00:29:17,560 --> 00:29:20,460
+Well, is there a way out?
+
+512
+00:29:20,460 --> 00:29:22,200
+See, we can do that with ones.
+
+513
+00:29:22,200 --> 00:29:27,820
+See, over here, we did this
+thing ones, and we were able
+
+514
+00:29:27,820 --> 00:29:30,990
+to define ones in terms of ones
+because of this delay
+
+515
+00:29:30,990 --> 00:29:34,770
+that was built inside because
+cons-stream had a delay.
+
+516
+00:29:34,770 --> 00:29:36,070
+Now, why's it sensible?
+
+517
+00:29:36,070 --> 00:29:37,970
+Why's it sensible for
+cons-stream to be built with
+
+518
+00:29:37,970 --> 00:29:40,730
+this delay?
+
+519
+00:29:40,730 --> 00:29:43,940
+The reason is that cons-stream
+can do a useful thing without
+
+520
+00:29:43,940 --> 00:29:45,950
+looking at its tail.
+
+521
+00:29:45,950 --> 00:29:49,050
+See, if I say this is
+cons-stream of 1 onto
+
+522
+00:29:49,050 --> 00:29:52,340
+something without knowing
+anything about something, I
+
+523
+00:29:52,340 --> 00:29:54,870
+know that the stream
+starts off with 1.
+
+524
+00:29:54,870 --> 00:29:56,660
+That's why it was sensible
+to build something like
+
+525
+00:29:56,660 --> 00:29:57,910
+cons-stream.
+
+526
+00:29:57,910 --> 00:29:59,960
+
+
+527
+00:29:59,960 --> 00:30:02,610
+So we put a delay in there,
+and that allows us to have
+
+528
+00:30:02,610 --> 00:30:06,320
+this sort of self-referential
+definition.
+
+529
+00:30:06,320 --> 00:30:08,190
+Well, integral is a little
+bit the same way.
+
+530
+00:30:08,190 --> 00:30:14,620
+See, notice for an
+integral, I can--
+
+531
+00:30:14,620 --> 00:30:17,580
+let's go back and look at
+integral for a second.
+
+532
+00:30:17,580 --> 00:30:24,010
+See, notice integral, it makes
+sense to say what's the first
+
+533
+00:30:24,010 --> 00:30:27,390
+thing in the integral without
+knowing the stream that you're
+
+534
+00:30:27,390 --> 00:30:28,970
+integrating.
+
+535
+00:30:28,970 --> 00:30:30,770
+Because the first thing in the
+integral is always going to be
+
+536
+00:30:30,770 --> 00:30:33,140
+the initial value that
+you're handed.
+
+537
+00:30:33,140 --> 00:30:37,090
+So integral could be a procedure
+like cons-stream.
+
+538
+00:30:37,090 --> 00:30:39,830
+You could define it, and then
+even before it knows what it's
+
+539
+00:30:39,830 --> 00:30:44,360
+supposed to be integrating, it
+knows enough to say what its
+
+540
+00:30:44,360 --> 00:30:46,710
+initial value is.
+
+541
+00:30:46,710 --> 00:30:49,150
+So we can make a smarter
+integral, which is aha, you're
+
+542
+00:30:49,150 --> 00:30:51,390
+going to give me a stream to
+integrate and an initial
+
+543
+00:30:51,390 --> 00:30:54,140
+value, but I really don't have
+to look at that stream that
+
+544
+00:30:54,140 --> 00:30:56,430
+I'm supposed to integrate until
+you ask me to work down
+
+545
+00:30:56,430 --> 00:30:58,430
+the stream.
+
+546
+00:30:58,430 --> 00:31:00,870
+In other words, integral can be
+like cons-stream, and you
+
+547
+00:31:00,870 --> 00:31:02,690
+can expect that there's
+going to be a
+
+548
+00:31:02,690 --> 00:31:03,710
+delay around its integrand.
+
+549
+00:31:03,710 --> 00:31:05,610
+And we can write that.
+
+550
+00:31:05,610 --> 00:31:07,650
+Here's a procedure
+that does that.
+
+551
+00:31:07,650 --> 00:31:09,810
+Another version of integral,
+and this is almost like the
+
+552
+00:31:09,810 --> 00:31:13,960
+previous one, except the stream
+it's going to get in is
+
+553
+00:31:13,960 --> 00:31:17,110
+going to expect to be
+a delayed object.
+
+554
+00:31:17,110 --> 00:31:18,850
+And how does this
+integral work?
+
+555
+00:31:18,850 --> 00:31:21,340
+Well, the little thing it's
+going to define inside of
+
+556
+00:31:21,340 --> 00:31:25,350
+itself says on the cons-stream,
+the initial value
+
+557
+00:31:25,350 --> 00:31:29,750
+is the initial value, but only
+inside of that cons-stream,
+
+558
+00:31:29,750 --> 00:31:32,300
+and remember, there's going to
+be a hidden delay inside here.
+
+559
+00:31:32,300 --> 00:31:34,950
+
+
+560
+00:31:34,950 --> 00:31:38,260
+Only inside of that cons-stream
+will I start
+
+561
+00:31:38,260 --> 00:31:43,180
+looking at what the actual
+delayed object is.
+
+562
+00:31:43,180 --> 00:31:45,970
+So my answer is the first
+thing's the initial value.
+
+563
+00:31:45,970 --> 00:31:50,280
+If anybody now asks me for my
+tail, at that point, I'm going
+
+564
+00:31:50,280 --> 00:31:52,680
+to force that delayed object--
+
+565
+00:31:52,680 --> 00:31:54,500
+and I'll call that s--
+
+566
+00:31:54,500 --> 00:31:58,300
+and I do the add streams. So
+this is an integral which is
+
+567
+00:31:58,300 --> 00:31:59,260
+sort of like cons-stream.
+
+568
+00:31:59,260 --> 00:32:04,120
+It's not going to actually try
+and see what you handed it as
+
+569
+00:32:04,120 --> 00:32:06,080
+the thing to integrate
+until you look
+
+570
+00:32:06,080 --> 00:32:07,330
+past the first element.
+
+571
+00:32:07,330 --> 00:32:10,120
+
+
+572
+00:32:10,120 --> 00:32:13,900
+And if we do that and we can
+make this work, all we have to
+
+573
+00:32:13,900 --> 00:32:24,120
+do here is say define y to the
+integral of delay of y, of
+
+574
+00:32:24,120 --> 00:32:27,090
+delay of dy.
+
+575
+00:32:27,090 --> 00:32:33,380
+So y is going to be the integral
+of delay of dy
+
+576
+00:32:33,380 --> 00:32:35,280
+starting at 1, and now
+this will work.
+
+577
+00:32:35,280 --> 00:32:38,190
+Because I type in the definition
+of y, and that
+
+578
+00:32:38,190 --> 00:32:40,840
+says, oh, I'm supposed to use
+the integral of something I
+
+579
+00:32:40,840 --> 00:32:44,600
+don't care about right now
+because it's a delay.
+
+580
+00:32:44,600 --> 00:32:46,320
+And these things, now
+you define dy.
+
+581
+00:32:46,320 --> 00:32:47,550
+Now, y is defined.
+
+582
+00:32:47,550 --> 00:32:51,700
+So when I define dy, it can
+see that definition for y.
+
+583
+00:32:51,700 --> 00:32:52,840
+Everything is now started up.
+
+584
+00:32:52,840 --> 00:32:54,920
+Both streams have their
+first element.
+
+585
+00:32:54,920 --> 00:32:57,030
+And then when I start mapping
+down, looking at successive
+
+586
+00:32:57,030 --> 00:33:00,590
+elements, both y and
+dy are defined.
+
+587
+00:33:00,590 --> 00:33:02,820
+So there's a little game you
+can play that goes a little
+
+588
+00:33:02,820 --> 00:33:06,700
+bit beyond just using the delay
+that's hidden inside
+
+589
+00:33:06,700 --> 00:33:08,660
+streams. Questions?
+
+590
+00:33:08,660 --> 00:33:13,178
+
+
+591
+00:33:13,178 --> 00:33:14,428
+OK, let's take a break.
+
+592
+00:33:14,428 --> 00:34:07,300
+
+
+593
+00:34:07,300 --> 00:34:11,739
+Well, just before the break,
+I'm not sure if you noticed
+
+594
+00:34:11,739 --> 00:34:14,320
+it, but something nasty
+started to happen.
+
+595
+00:34:14,320 --> 00:34:21,040
+We've been going along with the
+streams and divorcing time
+
+596
+00:34:21,040 --> 00:34:24,580
+in the programs from time in
+the computers, and all that
+
+597
+00:34:24,580 --> 00:34:27,840
+divorcing got hidden inside the
+streams. And then at the
+
+598
+00:34:27,840 --> 00:34:30,429
+very end, we saw that sometimes
+in order to really
+
+599
+00:34:30,429 --> 00:34:32,580
+take advantage of this
+method, you have to
+
+600
+00:34:32,580 --> 00:34:34,389
+pull out other delays.
+
+601
+00:34:34,389 --> 00:34:36,480
+You have to write some explicit
+delays that are not
+
+602
+00:34:36,480 --> 00:34:39,030
+hidden inside that
+cons-stream.
+
+603
+00:34:39,030 --> 00:34:41,400
+And I did a very simple example
+with differential
+
+604
+00:34:41,400 --> 00:34:44,150
+equations, but if you have some
+very complicated system
+
+605
+00:34:44,150 --> 00:34:47,310
+with all kinds of self-loops,
+it becomes very, very
+
+606
+00:34:47,310 --> 00:34:49,929
+difficult to see where you
+need those delays.
+
+607
+00:34:49,929 --> 00:34:52,389
+And if you leave them out by
+mistake, it becomes very, very
+
+608
+00:34:52,389 --> 00:34:55,550
+difficult to see why the thing
+maybe isn't working.
+
+609
+00:34:55,550 --> 00:35:00,330
+So that's kind of mess, that
+by getting this power and
+
+610
+00:35:00,330 --> 00:35:03,030
+allowing us to use delay,
+we end up with some very
+
+611
+00:35:03,030 --> 00:35:05,080
+complicated programming
+sometimes, because it can't
+
+612
+00:35:05,080 --> 00:35:08,690
+all be hidden inside
+the streams.
+
+613
+00:35:08,690 --> 00:35:11,036
+Well, is there a way
+out of that?
+
+614
+00:35:11,036 --> 00:35:13,480
+Yeah, there is a way
+out of that.
+
+615
+00:35:13,480 --> 00:35:17,230
+We could change the language so
+that all procedures acted
+
+616
+00:35:17,230 --> 00:35:22,320
+like cons-stream, so that every
+procedure automatically
+
+617
+00:35:22,320 --> 00:35:25,450
+has an implicit delay around
+its arguments.
+
+618
+00:35:25,450 --> 00:35:27,520
+And what would that mean?
+
+619
+00:35:27,520 --> 00:35:30,760
+That would mean when you call
+a procedure, the arguments
+
+620
+00:35:30,760 --> 00:35:32,210
+wouldn't get evaluated.
+
+621
+00:35:32,210 --> 00:35:34,820
+Instead, they'd only be
+evaluated when you need them,
+
+622
+00:35:34,820 --> 00:35:36,830
+so they might be passed off to
+some other procedure, which
+
+623
+00:35:36,830 --> 00:35:39,260
+wouldn't evaluate them either.
+
+624
+00:35:39,260 --> 00:35:42,150
+So all these procedures would
+be passing promises around.
+
+625
+00:35:42,150 --> 00:35:44,970
+And then finally maybe when you
+finally got down to having
+
+626
+00:35:44,970 --> 00:35:48,040
+to look at the value of
+something that was handed to a
+
+627
+00:35:48,040 --> 00:35:50,720
+primitive operator would you
+actually start calling in all
+
+628
+00:35:50,720 --> 00:35:52,380
+those promises.
+
+629
+00:35:52,380 --> 00:35:54,400
+If we did that, since everything
+would have a
+
+630
+00:35:54,400 --> 00:35:58,220
+uniform delay, then you wouldn't
+have to write any
+
+631
+00:35:58,220 --> 00:36:00,370
+explicit delays, because it
+would be automatically built
+
+632
+00:36:00,370 --> 00:36:02,920
+into the way the
+language works.
+
+633
+00:36:02,920 --> 00:36:05,870
+Or another way to say that,
+technically what I'm
+
+634
+00:36:05,870 --> 00:36:09,130
+describing is what's called--
+
+635
+00:36:09,130 --> 00:36:12,720
+if we did that, our language
+would be so-called
+
+636
+00:36:12,720 --> 00:36:22,270
+normal-order evaluation language
+versus what we've
+
+637
+00:36:22,270 --> 00:36:24,260
+actually been working
+with, which is
+
+638
+00:36:24,260 --> 00:36:25,510
+called applicative order--
+
+639
+00:36:25,510 --> 00:36:31,240
+
+
+640
+00:36:31,240 --> 00:36:34,560
+versus applicative-order
+evaluation.
+
+641
+00:36:34,560 --> 00:36:36,835
+And remember the substitution
+model for applicative order.
+
+642
+00:36:36,835 --> 00:36:40,690
+It says when you go and evaluate
+a combination, you
+
+643
+00:36:40,690 --> 00:36:43,590
+find the values of
+all the pieces.
+
+644
+00:36:43,590 --> 00:36:46,430
+You evaluate the arguments and
+then you substitute them in
+
+645
+00:36:46,430 --> 00:36:47,600
+the body of the procedure.
+
+646
+00:36:47,600 --> 00:36:49,890
+Normal order says no,
+don't do that.
+
+647
+00:36:49,890 --> 00:36:53,980
+What you do is effectively
+substitute in the body of the
+
+648
+00:36:53,980 --> 00:36:56,640
+procedure, but instead of
+evaluating the arguments, you
+
+649
+00:36:56,640 --> 00:36:58,640
+just put a promise to
+compute them there.
+
+650
+00:36:58,640 --> 00:37:01,030
+Or another way to say that is
+you take the expressions for
+
+651
+00:37:01,030 --> 00:37:03,370
+the arguments, if you like,
+and substitute them in the
+
+652
+00:37:03,370 --> 00:37:06,320
+body of the procedure and go on,
+and never really simplify
+
+653
+00:37:06,320 --> 00:37:09,340
+anything until you get down
+to a primitive operator.
+
+654
+00:37:09,340 --> 00:37:11,840
+So that would be a normal-order
+language.
+
+655
+00:37:11,840 --> 00:37:13,490
+Well, why don't we do that?
+
+656
+00:37:13,490 --> 00:37:16,550
+Because if we did, we'd get all
+the advantages of delayed
+
+657
+00:37:16,550 --> 00:37:18,940
+evaluation with none
+of the mess.
+
+658
+00:37:18,940 --> 00:37:22,250
+In fact, if we did that and
+cons was just a delayed
+
+659
+00:37:22,250 --> 00:37:24,710
+procedure, that would make cons
+the same as cons-stream.
+
+660
+00:37:24,710 --> 00:37:27,240
+We wouldn't need streams of
+all because lists would
+
+661
+00:37:27,240 --> 00:37:30,675
+automatically be streams. That's
+how lists would behave,
+
+662
+00:37:30,675 --> 00:37:32,350
+and data structures would
+behave that way.
+
+663
+00:37:32,350 --> 00:37:35,270
+Everything would behave
+that way, right?
+
+664
+00:37:35,270 --> 00:37:38,510
+You'd never really do any
+computation until you actually
+
+665
+00:37:38,510 --> 00:37:41,020
+needed the answer.
+
+666
+00:37:41,020 --> 00:37:42,780
+You wouldn't have to worry
+about all these explicit
+
+667
+00:37:42,780 --> 00:37:44,790
+annoying delays.
+
+668
+00:37:44,790 --> 00:37:47,160
+Well, why don't we do that?
+
+669
+00:37:47,160 --> 00:37:49,230
+First of all, I should say
+people do do that.
+
+670
+00:37:49,230 --> 00:37:51,850
+There's some very beautiful
+languages.
+
+671
+00:37:51,850 --> 00:37:56,170
+One of the very nicest is a
+language called Miranda, which
+
+672
+00:37:56,170 --> 00:38:00,710
+is developed by David Turner
+at the University of Kent.
+
+673
+00:38:00,710 --> 00:38:01,930
+And that's how this
+language works.
+
+674
+00:38:01,930 --> 00:38:06,430
+It's a normal-order language and
+its data structures, which
+
+675
+00:38:06,430 --> 00:38:09,250
+look like lists, are actually
+streams. And you write
+
+676
+00:38:09,250 --> 00:38:11,710
+ordinary procedures in Miranda,
+and they do these
+
+677
+00:38:11,710 --> 00:38:13,950
+prime things and eight
+queens things, just
+
+678
+00:38:13,950 --> 00:38:14,970
+without anything special.
+
+679
+00:38:14,970 --> 00:38:17,790
+It's all built in there.
+
+680
+00:38:17,790 --> 00:38:19,040
+But there's a price.
+
+681
+00:38:19,040 --> 00:38:21,190
+
+
+682
+00:38:21,190 --> 00:38:23,170
+Remember how we got here.
+
+683
+00:38:23,170 --> 00:38:26,380
+We're decoupling time
+in the programs
+
+684
+00:38:26,380 --> 00:38:27,480
+from time in the machines.
+
+685
+00:38:27,480 --> 00:38:30,400
+And if we put delay, that sort
+of decouples it everywhere,
+
+686
+00:38:30,400 --> 00:38:33,140
+not just in streams. Remember
+what we're trying to do.
+
+687
+00:38:33,140 --> 00:38:36,900
+We're trying to think about
+programming as a way to
+
+688
+00:38:36,900 --> 00:38:39,300
+specify processes.
+
+689
+00:38:39,300 --> 00:38:41,690
+And if we give up too much time,
+our language becomes
+
+690
+00:38:41,690 --> 00:38:47,030
+more elegant, but it becomes a
+little bit less expressive.
+
+691
+00:38:47,030 --> 00:38:51,480
+There are certain distinctions
+that we can't draw.
+
+692
+00:38:51,480 --> 00:38:53,980
+One of them, for instance,
+is iteration.
+
+693
+00:38:53,980 --> 00:38:58,630
+Remember this old procedure,
+iterative factorial, that we
+
+694
+00:38:58,630 --> 00:39:01,230
+looked at quite a
+long time ago.
+
+695
+00:39:01,230 --> 00:39:03,410
+Iterative factorial had a thing,
+and it said there was
+
+696
+00:39:03,410 --> 00:39:06,290
+an internal procedure, and there
+was a state which was a
+
+697
+00:39:06,290 --> 00:39:09,970
+product and a counter,
+and we iterate that
+
+698
+00:39:09,970 --> 00:39:12,120
+going around the loop.
+
+699
+00:39:12,120 --> 00:39:13,880
+And we said that was an
+iterative procedure because it
+
+700
+00:39:13,880 --> 00:39:15,730
+didn't build up state.
+
+701
+00:39:15,730 --> 00:39:19,630
+And the reason it didn't build
+up state is because this iter
+
+702
+00:39:19,630 --> 00:39:23,900
+that's called is just passing
+these things around to itself.
+
+703
+00:39:23,900 --> 00:39:26,130
+Or in the substitution model,
+you could see in the
+
+704
+00:39:26,130 --> 00:39:29,480
+substitution model that Jerry
+did, that in an iterative
+
+705
+00:39:29,480 --> 00:39:31,660
+procedure, that state doesn't
+have to grow.
+
+706
+00:39:31,660 --> 00:39:33,030
+And in fact, we said
+it doesn't,
+
+707
+00:39:33,030 --> 00:39:34,840
+so this is an iteration.
+
+708
+00:39:34,840 --> 00:39:37,890
+But now think about this exact
+same text if we had a
+
+709
+00:39:37,890 --> 00:39:41,150
+normal-order language.
+
+710
+00:39:41,150 --> 00:39:44,230
+What would happen is this
+would no longer be an
+
+711
+00:39:44,230 --> 00:39:45,650
+iterative procedure?
+
+712
+00:39:45,650 --> 00:39:47,790
+And if you really think about
+the details of the
+
+713
+00:39:47,790 --> 00:39:51,460
+substitution model, which I'm
+not going to do here, this
+
+714
+00:39:51,460 --> 00:39:52,330
+expression would grow.
+
+715
+00:39:52,330 --> 00:39:53,280
+Why would it grow?
+
+716
+00:39:53,280 --> 00:39:56,740
+It's because when iter calls
+itself, it calls itself with
+
+717
+00:39:56,740 --> 00:39:58,080
+this product.
+
+718
+00:39:58,080 --> 00:40:00,210
+If it's a normal-order language,
+that multiplication
+
+719
+00:40:00,210 --> 00:40:02,510
+is not going to get done.
+
+720
+00:40:02,510 --> 00:40:04,790
+That's going to say I'm to call
+myself with a promise to
+
+721
+00:40:04,790 --> 00:40:06,670
+compute this product.
+
+722
+00:40:06,670 --> 00:40:09,760
+And now iter goes
+around again.
+
+723
+00:40:09,760 --> 00:40:13,680
+And I'm going to call myself
+with a promise to compute this
+
+724
+00:40:13,680 --> 00:40:18,400
+product where now one of the
+one factors is a promise.
+
+725
+00:40:18,400 --> 00:40:19,430
+And I call myself again.
+
+726
+00:40:19,430 --> 00:40:22,580
+And if you write out the
+substitution model for that
+
+727
+00:40:22,580 --> 00:40:26,430
+iterative process, you'll see
+exactly the same growth in
+
+728
+00:40:26,430 --> 00:40:29,080
+state, all those promises that
+are getting remembered that
+
+729
+00:40:29,080 --> 00:40:31,790
+have to get called in
+at the very end.
+
+730
+00:40:31,790 --> 00:40:35,690
+So one of the disadvantages
+is that you can't
+
+731
+00:40:35,690 --> 00:40:36,980
+really express iteration.
+
+732
+00:40:36,980 --> 00:40:39,610
+Maybe that's a little
+theoretical reason why not,
+
+733
+00:40:39,610 --> 00:40:43,510
+but in fact, people who are
+trying to write real operating
+
+734
+00:40:43,510 --> 00:40:46,750
+systems in these languages are
+running into exactly these
+
+735
+00:40:46,750 --> 00:40:51,650
+types of problems. Like it's
+perfectly possible to
+
+736
+00:40:51,650 --> 00:40:54,610
+implement a text editor in
+languages like these.
+
+737
+00:40:54,610 --> 00:40:58,830
+But after you work a while, you
+suddenly have 3 megabytes
+
+738
+00:40:58,830 --> 00:41:01,240
+of stuff, which is--
+
+739
+00:41:01,240 --> 00:41:04,470
+I guess they call them the
+dragging tail problem of
+
+740
+00:41:04,470 --> 00:41:07,320
+people who are looking at these,
+of promises that sort
+
+741
+00:41:07,320 --> 00:41:09,260
+of haven't been called in
+because you couldn't quite
+
+742
+00:41:09,260 --> 00:41:10,230
+express an iteration.
+
+743
+00:41:10,230 --> 00:41:14,330
+And one of the research
+questions in these kinds of
+
+744
+00:41:14,330 --> 00:41:17,930
+languages are figuring out the
+right compiler technology to
+
+745
+00:41:17,930 --> 00:41:20,110
+get rid of the so-called
+dragging tails.
+
+746
+00:41:20,110 --> 00:41:23,940
+It's not simple.
+
+747
+00:41:23,940 --> 00:41:28,520
+But there's another kind of more
+striking issue about why
+
+748
+00:41:28,520 --> 00:41:30,100
+you just don't go ahead
+and make your
+
+749
+00:41:30,100 --> 00:41:32,056
+language normal order.
+
+750
+00:41:32,056 --> 00:41:37,440
+And the reason is that
+normal-order evaluation and
+
+751
+00:41:37,440 --> 00:41:42,000
+side effects just don't mix.
+
+752
+00:41:42,000 --> 00:41:45,350
+They just don't go together
+very well.
+
+753
+00:41:45,350 --> 00:41:48,360
+Somehow, you can't--
+
+754
+00:41:48,360 --> 00:41:51,500
+it's sort of you can't
+simultaneously go around
+
+755
+00:41:51,500 --> 00:41:55,990
+trying to model objects with
+local state and change and at
+
+756
+00:41:55,990 --> 00:41:58,520
+the same time do these
+normal-order tricks of
+
+757
+00:41:58,520 --> 00:42:00,400
+de-coupling time.
+
+758
+00:42:00,400 --> 00:42:02,010
+Let me just show you
+a really simple
+
+759
+00:42:02,010 --> 00:42:03,790
+example, very, very simple.
+
+760
+00:42:03,790 --> 00:42:07,520
+Suppose we had a normal-order
+language.
+
+761
+00:42:07,520 --> 00:42:09,550
+And I'm going to start
+out in this language.
+
+762
+00:42:09,550 --> 00:42:10,520
+This is now normal order.
+
+763
+00:42:10,520 --> 00:42:13,570
+I'm going to define x to be 0.
+
+764
+00:42:13,570 --> 00:42:15,750
+It's just some variable
+I'll initialize.
+
+765
+00:42:15,750 --> 00:42:18,610
+And now I'm going to define this
+little funny function,
+
+766
+00:42:18,610 --> 00:42:22,640
+which is an identity function.
+
+767
+00:42:22,640 --> 00:42:25,520
+And what it does, it keeps track
+of the last time you
+
+768
+00:42:25,520 --> 00:42:26,770
+called it using x.
+
+769
+00:42:26,770 --> 00:42:31,620
+
+
+770
+00:42:31,620 --> 00:42:34,390
+So the identity of n just
+returns n, but it
+
+771
+00:42:34,390 --> 00:42:36,760
+sets x to be n.
+
+772
+00:42:36,760 --> 00:42:40,050
+And now I'll define a little
+increment function, which is a
+
+773
+00:42:40,050 --> 00:42:42,580
+very little, simple scenario.
+
+774
+00:42:42,580 --> 00:42:44,780
+Now, imagine I'm interacting
+with this in the normal-order
+
+775
+00:42:44,780 --> 00:42:47,230
+language, and I type
+the following.
+
+776
+00:42:47,230 --> 00:42:52,940
+I say define y to be increment
+the identity function of 3, so
+
+777
+00:42:52,940 --> 00:42:54,190
+y is going to be 4.
+
+778
+00:42:54,190 --> 00:42:57,410
+
+
+779
+00:42:57,410 --> 00:42:59,520
+Now, I say what's x?
+
+780
+00:42:59,520 --> 00:43:02,720
+Well, x should have been the
+value that was remembered last
+
+781
+00:43:02,720 --> 00:43:04,710
+when I called the identity
+function.
+
+782
+00:43:04,710 --> 00:43:06,500
+So you'd expect to say,
+well, x is 3 at this
+
+783
+00:43:06,500 --> 00:43:08,530
+point, but it's not.
+
+784
+00:43:08,530 --> 00:43:13,460
+Because when I defined y here,
+what I really defined y to be
+
+785
+00:43:13,460 --> 00:43:17,000
+increment of a promise
+to do this thing.
+
+786
+00:43:17,000 --> 00:43:19,050
+So I didn't look at y,
+so that identity
+
+787
+00:43:19,050 --> 00:43:21,560
+function didn't get run.
+
+788
+00:43:21,560 --> 00:43:24,070
+So if I type in this definition
+and look at x, I'm
+
+789
+00:43:24,070 --> 00:43:25,320
+going to get 0.
+
+790
+00:43:25,320 --> 00:43:28,360
+
+
+791
+00:43:28,360 --> 00:43:33,120
+Now, if I go look at y and say
+what's y, say y is 4, looking
+
+792
+00:43:33,120 --> 00:43:36,180
+at y, that very active looking
+at y caused the identity
+
+793
+00:43:36,180 --> 00:43:38,342
+function to be run.
+
+794
+00:43:38,342 --> 00:43:40,740
+And now x will get
+remembered as 3.
+
+795
+00:43:40,740 --> 00:43:42,020
+So here x will be 0.
+
+796
+00:43:42,020 --> 00:43:43,280
+Here, x will be 3.
+
+797
+00:43:43,280 --> 00:43:47,890
+That's a tiny, little, simple
+scenario, but you can see what
+
+798
+00:43:47,890 --> 00:43:52,640
+kind of a mess that's going to
+make for debugging interactive
+
+799
+00:43:52,640 --> 00:43:57,100
+programs when you have
+normal-order evaluation.
+
+800
+00:43:57,100 --> 00:43:59,690
+It's very confusing.
+
+801
+00:43:59,690 --> 00:44:03,200
+But it's very confusing for a
+very deep reason, which is
+
+802
+00:44:03,200 --> 00:44:07,250
+that the whole idea of putting
+in delays is that
+
+803
+00:44:07,250 --> 00:44:09,780
+you throw away time.
+
+804
+00:44:09,780 --> 00:44:11,750
+That's why we can have these
+infinite processes.
+
+805
+00:44:11,750 --> 00:44:13,870
+Since we've thrown away time, we
+don't have to wait for them
+
+806
+00:44:13,870 --> 00:44:17,790
+to run, right?
+
+807
+00:44:17,790 --> 00:44:21,000
+We decouple the order of events
+in the computer from
+
+808
+00:44:21,000 --> 00:44:23,730
+what we write in our programs.
+But when we talk about state
+
+809
+00:44:23,730 --> 00:44:26,910
+and set and change, that's
+exactly what we do want
+
+810
+00:44:26,910 --> 00:44:28,760
+control of.
+
+811
+00:44:28,760 --> 00:44:32,960
+So it's almost as if there's
+this fundamental contradiction
+
+812
+00:44:32,960 --> 00:44:34,570
+in what you want.
+
+813
+00:44:34,570 --> 00:44:38,710
+And that brings us back to these
+sort of philosophical
+
+814
+00:44:38,710 --> 00:44:40,720
+mutterings about what is it that
+you're trying to model
+
+815
+00:44:40,720 --> 00:44:42,410
+and how do you look
+at the world.
+
+816
+00:44:42,410 --> 00:44:45,890
+Or sometimes this is called
+the debate over functional
+
+817
+00:44:45,890 --> 00:44:47,140
+programming.
+
+818
+00:44:47,140 --> 00:44:53,570
+
+
+819
+00:44:53,570 --> 00:44:57,730
+A so-called purely functional
+language is one that just
+
+820
+00:44:57,730 --> 00:45:00,440
+doesn't have any side effects.
+
+821
+00:45:00,440 --> 00:45:02,450
+Since you have no side effects,
+there's no assignment
+
+822
+00:45:02,450 --> 00:45:06,360
+operator, so there are no
+terrible consequences of it.
+
+823
+00:45:06,360 --> 00:45:07,930
+You can use a substitution-like
+thing.
+
+824
+00:45:07,930 --> 00:45:11,120
+Programs really are like
+mathematics and not like
+
+825
+00:45:11,120 --> 00:45:12,640
+models in the real
+world, not like
+
+826
+00:45:12,640 --> 00:45:15,050
+objects in the real world.
+
+827
+00:45:15,050 --> 00:45:16,100
+There are a lot of
+wonderful things
+
+828
+00:45:16,100 --> 00:45:17,170
+about functional languages.
+
+829
+00:45:17,170 --> 00:45:19,240
+Since there's no time, you never
+have any synchronization
+
+830
+00:45:19,240 --> 00:45:23,140
+problems. And if you want to put
+something into a parallel
+
+831
+00:45:23,140 --> 00:45:26,820
+algorithm, you can run the
+pieces of that parallel
+
+832
+00:45:26,820 --> 00:45:29,260
+processing any way you want.
+
+833
+00:45:29,260 --> 00:45:31,235
+There's just never any
+synchronization to worry that,
+
+834
+00:45:31,235 --> 00:45:33,640
+and it's a very congenial
+environment for doing this.
+
+835
+00:45:33,640 --> 00:45:35,450
+The price is you give
+up assignment.
+
+836
+00:45:35,450 --> 00:45:39,060
+
+
+837
+00:45:39,060 --> 00:45:41,460
+So an advocate of a functional
+language would say, gee,
+
+838
+00:45:41,460 --> 00:45:44,520
+that's just a tiny
+price to pay.
+
+839
+00:45:44,520 --> 00:45:45,690
+You probably shouldn't
+use assignment
+
+840
+00:45:45,690 --> 00:45:46,510
+most of the time anyway.
+
+841
+00:45:46,510 --> 00:45:49,360
+And if you just give up
+assignment, you can be in this
+
+842
+00:45:49,360 --> 00:45:54,190
+much, much nicer world than
+this place with objects.
+
+843
+00:45:54,190 --> 00:45:56,300
+Well, what's the rejoinder
+to that?
+
+844
+00:45:56,300 --> 00:46:00,300
+Remember how we got
+into this mess.
+
+845
+00:46:00,300 --> 00:46:04,440
+We started trying to model
+things that had local state.
+
+846
+00:46:04,440 --> 00:46:06,840
+So remember Jerry's random
+number generator.
+
+847
+00:46:06,840 --> 00:46:10,000
+There was this random number
+generator that had some little
+
+848
+00:46:10,000 --> 00:46:12,290
+state in it to compute the next
+random number and the
+
+849
+00:46:12,290 --> 00:46:14,080
+next random number and the
+next random number.
+
+850
+00:46:14,080 --> 00:46:17,830
+And we wanted to hide that state
+away from the Cesaro
+
+851
+00:46:17,830 --> 00:46:21,050
+compute part process, and that's
+why we needed set.
+
+852
+00:46:21,050 --> 00:46:24,070
+We wanted to package that
+stated modularly.
+
+853
+00:46:24,070 --> 00:46:26,920
+Well, a functional programming
+person would say, well, you're
+
+854
+00:46:26,920 --> 00:46:27,560
+just all wet.
+
+855
+00:46:27,560 --> 00:46:28,810
+I mean, you can write
+a perfectly
+
+856
+00:46:28,810 --> 00:46:29,840
+good modular program.
+
+857
+00:46:29,840 --> 00:46:33,250
+It's just you're thinking
+about modularity wrong.
+
+858
+00:46:33,250 --> 00:46:35,420
+You're hung up in this next
+random number and the next
+
+859
+00:46:35,420 --> 00:46:36,880
+random number and the
+next random number.
+
+860
+00:46:36,880 --> 00:46:39,880
+Why don't you just say let's
+write a program.
+
+861
+00:46:39,880 --> 00:46:42,990
+Let's write an enumerator
+which just generates an
+
+862
+00:46:42,990 --> 00:46:44,445
+infinite stream of
+random numbers.
+
+863
+00:46:44,445 --> 00:46:49,010
+
+
+864
+00:46:49,010 --> 00:46:52,970
+We can sort of have that stream
+all at once, and that's
+
+865
+00:46:52,970 --> 00:46:54,540
+going to be our source
+of random numbers.
+
+866
+00:46:54,540 --> 00:46:56,770
+And then if you like, you can
+put that through some sort of
+
+867
+00:46:56,770 --> 00:46:58,530
+processor, which is--
+
+868
+00:46:58,530 --> 00:46:59,530
+I don't know--
+
+869
+00:46:59,530 --> 00:47:06,880
+a Cesaro test, and that
+can do what it wants.
+
+870
+00:47:06,880 --> 00:47:16,320
+And what would come out of there
+would be a stream of
+
+871
+00:47:16,320 --> 00:47:28,140
+successive approximations
+to pi.
+
+872
+00:47:28,140 --> 00:47:31,600
+So as we looked further down
+this stream, we'd tug on this
+
+873
+00:47:31,600 --> 00:47:34,420
+Cesaro thing, and it
+would pull out more
+
+874
+00:47:34,420 --> 00:47:35,540
+and more random numbers.
+
+875
+00:47:35,540 --> 00:47:37,200
+And the further and further we
+look down the stream, the
+
+876
+00:47:37,200 --> 00:47:39,720
+better an approximation
+we'd get to pi.
+
+877
+00:47:39,720 --> 00:47:41,850
+And it would do exactly the same
+as the other computation,
+
+878
+00:47:41,850 --> 00:47:43,890
+except we're thinking about
+the modularity different.
+
+879
+00:47:43,890 --> 00:47:46,360
+We're saying imagine we had all
+those infinite streams of
+
+880
+00:47:46,360 --> 00:47:49,400
+random numbers all at once.
+
+881
+00:47:49,400 --> 00:47:53,860
+You can see the details of this
+procedure in the book.
+
+882
+00:47:53,860 --> 00:47:56,940
+Similarly, there are other
+things that we tend to get
+
+883
+00:47:56,940 --> 00:48:00,730
+locked into on this one and that
+one and the next one and
+
+884
+00:48:00,730 --> 00:48:03,280
+the next one, which don't
+have to be that way.
+
+885
+00:48:03,280 --> 00:48:07,930
+Like you might think about like
+a banking system, which
+
+886
+00:48:07,930 --> 00:48:08,900
+is a very simple idea.
+
+887
+00:48:08,900 --> 00:48:10,960
+Imagine we have a program
+that sort of
+
+888
+00:48:10,960 --> 00:48:12,210
+represents a bank account.
+
+889
+00:48:12,210 --> 00:48:18,810
+
+
+890
+00:48:18,810 --> 00:48:22,860
+The bank account might
+have in it--
+
+891
+00:48:22,860 --> 00:48:26,020
+if we looked at this in a sort
+of message-passing view of the
+
+892
+00:48:26,020 --> 00:48:29,070
+world, we'd say a bank account
+is an object that has some
+
+893
+00:48:29,070 --> 00:48:31,510
+local state in there, which
+is the balance, say.
+
+894
+00:48:31,510 --> 00:48:34,110
+
+
+895
+00:48:34,110 --> 00:48:37,640
+And a user using this system
+comes and sends a transaction
+
+896
+00:48:37,640 --> 00:48:41,230
+request. So the user sends a
+transaction request, like
+
+897
+00:48:41,230 --> 00:48:43,970
+deposit some money, and the
+bank account maybe--
+
+898
+00:48:43,970 --> 00:48:45,850
+let's say the bank account
+always responds with what the
+
+899
+00:48:45,850 --> 00:48:48,560
+current balance is.
+
+900
+00:48:48,560 --> 00:48:50,360
+The user says let's deposits
+some money, and the bank
+
+901
+00:48:50,360 --> 00:48:54,350
+account sends back a message
+which is the balance.
+
+902
+00:48:54,350 --> 00:48:57,970
+And the user says deposit some
+more, and the bank account
+
+903
+00:48:57,970 --> 00:48:59,150
+sends back a message.
+
+904
+00:48:59,150 --> 00:49:00,900
+And just like the random number
+generator, you'd say,
+
+905
+00:49:00,900 --> 00:49:03,200
+gee, we would like to use set.
+
+906
+00:49:03,200 --> 00:49:06,150
+We'd like to have balance be a
+piece of local state inside
+
+907
+00:49:06,150 --> 00:49:08,110
+this bank account because we
+want to separate the state of
+
+908
+00:49:08,110 --> 00:49:09,570
+the user from the state
+of the bank account.
+
+909
+00:49:09,570 --> 00:49:13,280
+
+
+910
+00:49:13,280 --> 00:49:16,420
+Well, that's the
+message-processing view.
+
+911
+00:49:16,420 --> 00:49:20,030
+There's a stream view with that
+thing, which does the
+
+912
+00:49:20,030 --> 00:49:22,740
+same thing without any
+set or side effects.
+
+913
+00:49:22,740 --> 00:49:29,380
+And the idea is again we don't
+think about anything having
+
+914
+00:49:29,380 --> 00:49:31,180
+local state.
+
+915
+00:49:31,180 --> 00:49:33,640
+We think about the bank account
+as something that's
+
+916
+00:49:33,640 --> 00:49:38,640
+going to process a stream
+of transaction requests.
+
+917
+00:49:38,640 --> 00:49:40,670
+So think about this bank account
+not as something that
+
+918
+00:49:40,670 --> 00:49:44,510
+goes message by message, but
+something that takes in a
+
+919
+00:49:44,510 --> 00:49:46,610
+stream of transaction
+requests like maybe
+
+920
+00:49:46,610 --> 00:49:49,490
+successive deposit announced.
+
+921
+00:49:49,490 --> 00:49:55,940
+1, 2, 2, 4, those might be
+successive amounts to deposit.
+
+922
+00:49:55,940 --> 00:49:58,570
+And then coming out of
+it is the successive
+
+923
+00:49:58,570 --> 00:50:03,770
+balances 1, 3, 5, 9.
+
+924
+00:50:03,770 --> 00:50:05,550
+So we think of the bank account
+not as something that
+
+925
+00:50:05,550 --> 00:50:09,970
+has state, but something that
+acts sort of on the infinite
+
+926
+00:50:09,970 --> 00:50:10,820
+stream of requests.
+
+927
+00:50:10,820 --> 00:50:12,370
+But remember, we've
+thrown away time.
+
+928
+00:50:12,370 --> 00:50:17,950
+So what we can do is if the
+user's here, we can have this
+
+929
+00:50:17,950 --> 00:50:21,530
+infinite stream of requests
+being generated one at a time
+
+930
+00:50:21,530 --> 00:50:27,000
+coming from the user and this
+transaction stream coming back
+
+931
+00:50:27,000 --> 00:50:30,010
+on a printer being printed
+one at a time.
+
+932
+00:50:30,010 --> 00:50:33,850
+And if we drew a little line
+here, right there to the user,
+
+933
+00:50:33,850 --> 00:50:36,910
+the user couldn't tell
+that this system
+
+934
+00:50:36,910 --> 00:50:39,560
+doesn't have state.
+
+935
+00:50:39,560 --> 00:50:41,410
+It looks just like the
+other one, but
+
+936
+00:50:41,410 --> 00:50:42,660
+there's no state in there.
+
+937
+00:50:42,660 --> 00:50:45,120
+
+
+938
+00:50:45,120 --> 00:50:48,510
+And by the way, just to show
+you, here's an actual
+
+939
+00:50:48,510 --> 00:50:52,240
+implementation of this-- we'll
+call it make deposit account
+
+940
+00:50:52,240 --> 00:50:53,835
+because you can only deposit.
+
+941
+00:50:53,835 --> 00:50:57,430
+It takes an initial balance and
+then a stream of deposits
+
+942
+00:50:57,430 --> 00:51:00,020
+you might make.
+
+943
+00:51:00,020 --> 00:51:00,820
+And what is it?
+
+944
+00:51:00,820 --> 00:51:04,580
+Well, it's just cons-stream of
+the balance onto make a new
+
+945
+00:51:04,580 --> 00:51:08,490
+account stream whose initial
+balance is the old balance
+
+946
+00:51:08,490 --> 00:51:14,020
+plus the first thing in the
+deposit stream and make
+
+947
+00:51:14,020 --> 00:51:16,470
+deposit account works on the
+rest of which is the tail of
+
+948
+00:51:16,470 --> 00:51:18,300
+the deposit stream.
+
+949
+00:51:18,300 --> 00:51:24,650
+So there's sort of a very
+typical message-passing,
+
+950
+00:51:24,650 --> 00:51:26,700
+object-oriented thing
+that's done without
+
+951
+00:51:26,700 --> 00:51:28,790
+side effects at all.
+
+952
+00:51:28,790 --> 00:51:32,250
+There are very many things
+you can do this way.
+
+953
+00:51:32,250 --> 00:51:36,400
+Well, can you do everything
+without assignment?
+
+954
+00:51:36,400 --> 00:51:40,050
+Can everybody go over to purely
+functional languages?
+
+955
+00:51:40,050 --> 00:51:44,450
+Well, we don't know, but there
+seem to be places where purely
+
+956
+00:51:44,450 --> 00:51:48,100
+functional programming
+breaks down.
+
+957
+00:51:48,100 --> 00:51:50,030
+Where it starts hurting is
+when you have things like
+
+958
+00:51:50,030 --> 00:51:53,520
+this, but you also mix it up
+with the other things that we
+
+959
+00:51:53,520 --> 00:51:56,300
+had to worry that, which are
+objects and sharing and two
+
+960
+00:51:56,300 --> 00:51:58,850
+independent agents
+being the same.
+
+961
+00:51:58,850 --> 00:52:00,850
+So under a typical one, suppose
+you want to extend
+
+962
+00:52:00,850 --> 00:52:02,960
+this bank account.
+
+963
+00:52:02,960 --> 00:52:04,210
+So here's a bank account.
+
+964
+00:52:04,210 --> 00:52:12,220
+
+
+965
+00:52:12,220 --> 00:52:15,410
+Bank accounts take in a stream
+of transaction requests and
+
+966
+00:52:15,410 --> 00:52:18,780
+put out streams of, say,
+balances or responses to that.
+
+967
+00:52:18,780 --> 00:52:21,020
+But suppose you want to model
+the fact that this is a joint
+
+968
+00:52:21,020 --> 00:52:26,090
+bank account between two
+independent people.
+
+969
+00:52:26,090 --> 00:52:31,890
+So suppose there are two people,
+say, Bill and Dave,
+
+970
+00:52:31,890 --> 00:52:33,140
+who have a joint bank account.
+
+971
+00:52:33,140 --> 00:52:35,960
+
+
+972
+00:52:35,960 --> 00:52:36,850
+How would you model this?
+
+973
+00:52:36,850 --> 00:52:40,460
+Well, Bill puts out a stream of
+transaction requests, and
+
+974
+00:52:40,460 --> 00:52:42,390
+Dave puts out a stream of
+transaction requests, and
+
+975
+00:52:42,390 --> 00:52:45,880
+somehow, they have to merge
+into this bank account.
+
+976
+00:52:45,880 --> 00:52:48,370
+So what you might do is write
+a little stream processing
+
+977
+00:52:48,370 --> 00:52:58,660
+thing called merge, which sort
+of takes these, merges them
+
+978
+00:52:58,660 --> 00:53:01,190
+together, produces a single
+stream for the bank account.
+
+979
+00:53:01,190 --> 00:53:03,610
+Now they're both talking to
+the same bank account.
+
+980
+00:53:03,610 --> 00:53:06,600
+That's all great, but how
+do you write merge?
+
+981
+00:53:06,600 --> 00:53:09,730
+What's this procedure merge?
+
+982
+00:53:09,730 --> 00:53:12,760
+You want to do something
+that's reasonable.
+
+983
+00:53:12,760 --> 00:53:14,380
+Your first guess might be
+to say, well, we'll take
+
+984
+00:53:14,380 --> 00:53:20,050
+alternate requests from Bill and
+Dave. But what happens if
+
+985
+00:53:20,050 --> 00:53:21,950
+suddenly in the middle of this
+thing, Dave goes away on
+
+986
+00:53:21,950 --> 00:53:24,150
+vacation for two years?
+
+987
+00:53:24,150 --> 00:53:27,690
+Then Bill's sort of stuck.
+
+988
+00:53:27,690 --> 00:53:29,750
+So what you want to do is--
+well, it's hard to describe.
+
+989
+00:53:29,750 --> 00:53:33,380
+What you want to do is what
+people call fair merge.
+
+990
+00:53:33,380 --> 00:53:38,410
+
+
+991
+00:53:38,410 --> 00:53:41,850
+The idea of fair merge is it
+sort of should do them
+
+992
+00:53:41,850 --> 00:53:43,930
+alternately, but if there's
+nothing waiting here, it
+
+993
+00:53:43,930 --> 00:53:46,010
+should take one twice.
+
+994
+00:53:46,010 --> 00:53:48,450
+Notice I can't even say that
+without talking about time.
+
+995
+00:53:48,450 --> 00:53:51,300
+
+
+996
+00:53:51,300 --> 00:53:55,970
+So one of the other active
+researcher areas in functional
+
+997
+00:53:55,970 --> 00:54:00,480
+languages is inventing little
+things like fair merge and
+
+998
+00:54:00,480 --> 00:54:04,650
+maybe some others, which will
+take the places where I used
+
+999
+00:54:04,650 --> 00:54:08,050
+to need side effects and objects
+and sort of hide them
+
+1000
+00:54:08,050 --> 00:54:11,160
+away in some very well-defined
+modules of the system so that
+
+1001
+00:54:11,160 --> 00:54:14,430
+all the problems of assignment
+don't sort of leak out all
+
+1002
+00:54:14,430 --> 00:54:16,760
+over the system but are captured
+in some fairly
+
+1003
+00:54:16,760 --> 00:54:18,010
+well-understood things.
+
+1004
+00:54:18,010 --> 00:54:20,780
+
+
+1005
+00:54:20,780 --> 00:54:23,410
+More generally, I think what
+you're seeing is that we're
+
+1006
+00:54:23,410 --> 00:54:25,960
+running across what I think
+is a very basic problem in
+
+1007
+00:54:25,960 --> 00:54:29,450
+computer science, which is how
+to define languages that
+
+1008
+00:54:29,450 --> 00:54:36,240
+somehow can talk about delayed
+evaluation, but also be able
+
+1009
+00:54:36,240 --> 00:54:37,280
+to reflect this view
+that there are
+
+1010
+00:54:37,280 --> 00:54:38,360
+objects in the world.
+
+1011
+00:54:38,360 --> 00:54:41,230
+How do we somehow get both?
+
+1012
+00:54:41,230 --> 00:54:43,040
+And I think that's a
+very hard problem.
+
+1013
+00:54:43,040 --> 00:54:46,750
+And it may be that it's a very
+hard problem that has almost
+
+1014
+00:54:46,750 --> 00:54:49,260
+nothing to do with computer
+science, that it really is a
+
+1015
+00:54:49,260 --> 00:54:51,950
+problem having to do with two
+very incompatible ways of
+
+1016
+00:54:51,950 --> 00:54:53,840
+looking at the world.
+
+1017
+00:54:53,840 --> 00:54:55,090
+OK, questions?
+
+1018
+00:54:55,090 --> 00:55:17,556
+
+
+1019
+00:55:17,556 --> 00:55:20,610
+AUDIENCE: You mentioned
+earlier that once you
+
+1020
+00:55:20,610 --> 00:55:23,930
+introduce assignment, the
+general rule for using the
+
+1021
+00:55:23,930 --> 00:55:25,890
+substitution model
+is you can't.
+
+1022
+00:55:25,890 --> 00:55:27,570
+Unless you're very careful,
+you can't.
+
+1023
+00:55:27,570 --> 00:55:28,260
+PROFESSOR: Right.
+
+1024
+00:55:28,260 --> 00:55:32,550
+AUDIENCE: Is there a set of
+techniques or a set of
+
+1025
+00:55:32,550 --> 00:55:37,030
+guidelines for localizing the
+effects of assignment so that
+
+1026
+00:55:37,030 --> 00:55:40,300
+the very careful becomes
+defined?
+
+1027
+00:55:40,300 --> 00:55:42,890
+PROFESSOR: I don't know.
+
+1028
+00:55:42,890 --> 00:55:45,430
+Let me think.
+
+1029
+00:55:45,430 --> 00:55:50,150
+Well, certainly, there was an
+assignment inside memo proc,
+
+1030
+00:55:50,150 --> 00:55:51,480
+but that was sort
+of hidden away.
+
+1031
+00:55:51,480 --> 00:55:53,480
+It ended up not making
+any difference.
+
+1032
+00:55:53,480 --> 00:55:57,385
+Part of the reason for that is
+once this thing triggered that
+
+1033
+00:55:57,385 --> 00:55:58,990
+it had run and gotten
+an answer, that
+
+1034
+00:55:58,990 --> 00:56:00,390
+answer will never change.
+
+1035
+00:56:00,390 --> 00:56:02,080
+So that was sort of a
+one-time assignment.
+
+1036
+00:56:02,080 --> 00:56:05,020
+So one very general thing you
+can do is if you only do
+
+1037
+00:56:05,020 --> 00:56:08,750
+what's called a one-time
+assignment and never change
+
+1038
+00:56:08,750 --> 00:56:11,250
+anything, then you
+can do better.
+
+1039
+00:56:11,250 --> 00:56:17,156
+One of the problems in this
+merge thing, people have--
+
+1040
+00:56:17,156 --> 00:56:18,490
+let me see if this is right.
+
+1041
+00:56:18,490 --> 00:56:22,910
+I think it's true that with
+fair merge, with just fair
+
+1042
+00:56:22,910 --> 00:56:27,060
+merge, you can begin effectively
+simulating
+
+1043
+00:56:27,060 --> 00:56:30,820
+assignment in the rest
+of the language.
+
+1044
+00:56:30,820 --> 00:56:33,630
+It seems like anything you
+do to go outside--
+
+1045
+00:56:33,630 --> 00:56:36,440
+I'm not quite sure that's true
+for fair merge, but it's true
+
+1046
+00:56:36,440 --> 00:56:38,500
+of a little bit more
+general things that
+
+1047
+00:56:38,500 --> 00:56:39,520
+people have been doing.
+
+1048
+00:56:39,520 --> 00:56:42,630
+So it might be that any little
+bit you put in, suddenly if
+
+1049
+00:56:42,630 --> 00:56:44,610
+they allow you to build
+arbitrary stuff, it's almost
+
+1050
+00:56:44,610 --> 00:56:47,970
+as bad as having assignment
+altogether.
+
+1051
+00:56:47,970 --> 00:56:51,590
+But that's an area that people
+are thinking about now.
+
+1052
+00:56:51,590 --> 00:56:57,010
+AUDIENCE: I guess I don't see
+the problem here with merge if
+
+1053
+00:56:57,010 --> 00:57:00,930
+I call Bill, if Bill is a
+procedure, then Bill is going
+
+1054
+00:57:00,930 --> 00:57:03,690
+to increment the bank account
+or build the list that 's
+
+1055
+00:57:03,690 --> 00:57:04,730
+going to put in the
+next element.
+
+1056
+00:57:04,730 --> 00:57:07,170
+If I call Dave twice in a
+row, that will do that.
+
+1057
+00:57:07,170 --> 00:57:09,350
+I'm not sure where fair merge
+has to be involved.
+
+1058
+00:57:09,350 --> 00:57:10,150
+PROFESSOR: The problem
+is imagine
+
+1059
+00:57:10,150 --> 00:57:11,200
+these really as people.
+
+1060
+00:57:11,200 --> 00:57:13,490
+See, here I have the user who's
+interacting with this
+
+1061
+00:57:13,490 --> 00:57:14,850
+bank account.
+
+1062
+00:57:14,850 --> 00:57:15,960
+Put in a request,
+get an answer.
+
+1063
+00:57:15,960 --> 00:57:17,070
+Put in a request,
+get an answer.
+
+1064
+00:57:17,070 --> 00:57:18,200
+AUDIENCE: Right.
+
+1065
+00:57:18,200 --> 00:57:20,860
+PROFESSOR: But if the only way
+I can process request is to
+
+1066
+00:57:20,860 --> 00:57:22,290
+alternate them from
+two people--
+
+1067
+00:57:22,290 --> 00:57:24,220
+AUDIENCE: Well, why would
+you alternate them?
+
+1068
+00:57:24,220 --> 00:57:25,070
+PROFESSOR: Why don't I?
+
+1069
+00:57:25,070 --> 00:57:26,140
+AUDIENCE: Yes.
+
+1070
+00:57:26,140 --> 00:57:26,580
+Why do you?
+
+1071
+00:57:26,580 --> 00:57:27,640
+PROFESSOR: Think of them
+as real people, right?
+
+1072
+00:57:27,640 --> 00:57:29,280
+This guy might go
+away for a year.
+
+1073
+00:57:29,280 --> 00:57:32,700
+And you're sitting here at the
+bank account window, and you
+
+1074
+00:57:32,700 --> 00:57:34,040
+can't put in two requests
+because it's
+
+1075
+00:57:34,040 --> 00:57:35,480
+waiting for this guy.
+
+1076
+00:57:35,480 --> 00:57:37,380
+AUDIENCE: Why does it have
+to be waiting for one?
+
+1077
+00:57:37,380 --> 00:57:39,110
+PROFESSOR: Because it's trying
+to compute a function.
+
+1078
+00:57:39,110 --> 00:57:41,720
+I have to define a function.
+
+1079
+00:57:41,720 --> 00:57:44,210
+Another way to say that is the
+answer to what comes out of
+
+1080
+00:57:44,210 --> 00:57:51,690
+this merge box is not a function
+of what goes in.
+
+1081
+00:57:51,690 --> 00:57:53,490
+Because, see, what would
+the function be?
+
+1082
+00:57:53,490 --> 00:58:03,470
+Suppose he puts in 1, 1, 1, 1,
+and he puts in 2, 2, 2, 2.
+
+1083
+00:58:03,470 --> 00:58:05,910
+What's the answer
+supposed to be?
+
+1084
+00:58:05,910 --> 00:58:08,740
+It's not good enough to say
+it's 1, 2, 1, 2, 1, 2.
+
+1085
+00:58:08,740 --> 00:58:09,390
+AUDIENCE: I understand.
+
+1086
+00:58:09,390 --> 00:58:11,560
+But when Bill puts
+in 1, 1 goes in.
+
+1087
+00:58:11,560 --> 00:58:13,950
+When Dave puts in 2 twice,
+2 goes in twice.
+
+1088
+00:58:13,950 --> 00:58:15,090
+When Bill puts in--
+
+1089
+00:58:15,090 --> 00:58:15,450
+PROFESSOR: Right.
+
+1090
+00:58:15,450 --> 00:58:17,140
+AUDIENCE: Why can't
+it be hooked to
+
+1091
+00:58:17,140 --> 00:58:18,680
+the time of the input--
+
+1092
+00:58:18,680 --> 00:58:20,100
+the actual procedural--
+
+1093
+00:58:20,100 --> 00:58:23,980
+PROFESSOR: Because I
+don't have time.
+
+1094
+00:58:23,980 --> 00:58:26,900
+See, all I can say is I'm going
+to define a function.
+
+1095
+00:58:26,900 --> 00:58:28,150
+I don't have time.
+
+1096
+00:58:28,150 --> 00:58:32,070
+
+
+1097
+00:58:32,070 --> 00:58:34,690
+There's no concept if it's going
+to alternate, except if
+
+1098
+00:58:34,690 --> 00:58:38,420
+nobody's there, it's going
+to wait a while for him.
+
+1099
+00:58:38,420 --> 00:58:41,910
+It's just going to say I have
+the stream of requests, the
+
+1100
+00:58:41,910 --> 00:58:44,580
+timeless infinite streams of
+all the requests that Dave
+
+1101
+00:58:44,580 --> 00:58:47,810
+would have made, right?
+
+1102
+00:58:47,810 --> 00:58:49,710
+And the timeless infinite stream
+of all the requests
+
+1103
+00:58:49,710 --> 00:58:51,690
+Bill would have made, and I
+want to operate on them.
+
+1104
+00:58:51,690 --> 00:58:53,510
+See, that's how this bank
+account is working.
+
+1105
+00:58:53,510 --> 00:58:56,710
+
+
+1106
+00:58:56,710 --> 00:58:59,120
+And the problem is that these
+poor people who are sitting at
+
+1107
+00:58:59,120 --> 00:59:02,180
+the bank account windows
+have the
+
+1108
+00:59:02,180 --> 00:59:05,340
+misfortune to exist in time.
+
+1109
+00:59:05,340 --> 00:59:08,490
+They don't see their infinite
+stream of all the requests
+
+1110
+00:59:08,490 --> 00:59:10,070
+they would have ever made.
+
+1111
+00:59:10,070 --> 00:59:11,550
+They're waiting now, and
+they want an answer.
+
+1112
+00:59:11,550 --> 00:59:14,290
+
+
+1113
+00:59:14,290 --> 00:59:16,340
+So if you're sitting there--
+
+1114
+00:59:16,340 --> 00:59:20,360
+if this is the screen operation
+on some time-sharing
+
+1115
+00:59:20,360 --> 00:59:22,940
+system and it's working
+functionally, you want an
+
+1116
+00:59:22,940 --> 00:59:25,290
+answer then when you
+talk the character.
+
+1117
+00:59:25,290 --> 00:59:26,940
+You don't want it to have to
+wait for everybody in the
+
+1118
+00:59:26,940 --> 00:59:28,990
+whole system to have typed one
+character before it can get
+
+1119
+00:59:28,990 --> 00:59:30,910
+around to service you.
+
+1120
+00:59:30,910 --> 00:59:33,890
+So that's the problem.
+
+1121
+00:59:33,890 --> 00:59:36,850
+I mean, the fact that people
+live in time, apparently.
+
+1122
+00:59:36,850 --> 00:59:38,620
+If they didn't, it wouldn't
+be a problem.
+
+1123
+00:59:38,620 --> 00:59:49,100
+
+
+1124
+00:59:49,100 --> 00:59:52,240
+AUDIENCE: I'm afraid I miss the
+point of having no time in
+
+1125
+00:59:52,240 --> 00:59:54,740
+this banking transaction.
+
+1126
+00:59:54,740 --> 00:59:56,880
+Isn't time very important?
+
+1127
+00:59:56,880 --> 01:00:00,790
+For instance, the sequence
+of events.
+
+1128
+01:00:00,790 --> 01:00:07,150
+If Dave take out $100,
+then the timing
+
+1129
+01:00:07,150 --> 01:00:08,400
+sequence should be important.
+
+1130
+01:00:08,400 --> 01:00:11,260
+How do you treat transactions
+as streams?
+
+1131
+01:00:11,260 --> 01:00:14,260
+PROFESSOR: Well, that's
+the thing I'm saying.
+
+1132
+01:00:14,260 --> 01:00:17,510
+This is an example
+where you can't.
+
+1133
+01:00:17,510 --> 01:00:18,610
+You can't.
+
+1134
+01:00:18,610 --> 01:00:21,410
+The point is what comes out of
+here is simply not a function
+
+1135
+01:00:21,410 --> 01:00:24,170
+of the stream going in here and
+the stream going in here.
+
+1136
+01:00:24,170 --> 01:00:26,660
+It's a function of the stream
+going in here and the stream
+
+1137
+01:00:26,660 --> 01:00:29,670
+going in here and some kind of
+information about time, which
+
+1138
+01:00:29,670 --> 01:00:31,610
+is precisely what a normal-order
+language won't
+
+1139
+01:00:31,610 --> 01:00:32,860
+let you say.
+
+1140
+01:00:32,860 --> 01:00:34,810
+
+
+1141
+01:00:34,810 --> 01:00:36,950
+AUDIENCE: In order to brings
+this back into a more
+
+1142
+01:00:36,950 --> 01:00:40,476
+functional perspective, could we
+just explicitly time stamp
+
+1143
+01:00:40,476 --> 01:00:44,390
+all the inputs from Bill and
+Dave and define fair merge to
+
+1144
+01:00:44,390 --> 01:00:46,400
+just be the sort on
+those time stamps?
+
+1145
+01:00:46,400 --> 01:00:49,150
+
+
+1146
+01:00:49,150 --> 01:00:49,550
+PROFESSOR: Yeah, you
+can do that.
+
+1147
+01:00:49,550 --> 01:00:50,600
+You can do that sort of thing.
+
+1148
+01:00:50,600 --> 01:00:53,830
+Another thing you could say is
+imagine that really what this
+
+1149
+01:00:53,830 --> 01:00:59,070
+function is, is that it does a
+read every microsecond, and
+
+1150
+01:00:59,070 --> 01:01:00,110
+then if there's none
+there, that's
+
+1151
+01:01:00,110 --> 01:01:00,970
+considered an empty one.
+
+1152
+01:01:00,970 --> 01:01:03,610
+That's about equivalent
+to what you said.
+
+1153
+01:01:03,610 --> 01:01:07,110
+And yes, you can do that,
+but that's a clg.
+
+1154
+01:01:07,110 --> 01:01:09,480
+So it's not quite only
+implementation
+
+1155
+01:01:09,480 --> 01:01:10,170
+we're worried about.
+
+1156
+01:01:10,170 --> 01:01:12,830
+We're worried about expressive
+power in the language, and
+
+1157
+01:01:12,830 --> 01:01:15,630
+what we're running across is a
+real mismatch between what we
+
+1158
+01:01:15,630 --> 01:01:18,824
+can say easily and what
+we'd like to say.
+
+1159
+01:01:18,824 --> 01:01:20,790
+AUDIENCE: It sounds like where
+we're getting hung up with
+
+1160
+01:01:20,790 --> 01:01:23,480
+that is the fact it expects one
+input from both Bill and
+
+1161
+01:01:23,480 --> 01:01:26,080
+Dave at the same time.
+
+1162
+01:01:26,080 --> 01:01:28,530
+PROFESSOR: It's not quite one,
+but it's anything you define.
+
+1163
+01:01:28,530 --> 01:01:31,000
+So you can say Dave can go
+twice as often, but if
+
+1164
+01:01:31,000 --> 01:01:36,110
+anything you predefine, it's
+not the right thing.
+
+1165
+01:01:36,110 --> 01:01:39,880
+You can't decide at some
+particular function of their
+
+1166
+01:01:39,880 --> 01:01:41,930
+input requests.
+
+1167
+01:01:41,930 --> 01:01:44,870
+Worse yet, I mean, worse yet,
+there are things that even
+
+1168
+01:01:44,870 --> 01:01:47,290
+merge can't do.
+
+1169
+01:01:47,290 --> 01:01:49,170
+One thing you might want to do
+that's even more general is
+
+1170
+01:01:49,170 --> 01:01:52,470
+suddenly you add somebody else
+to this bank account system.
+
+1171
+01:01:52,470 --> 01:01:56,030
+You go and you add John to
+this bank account system.
+
+1172
+01:01:56,030 --> 01:01:58,250
+And now there's yet another
+stream that's going to come
+
+1173
+01:01:58,250 --> 01:02:02,040
+into the picture at some time
+which we haven't prespecified.
+
+1174
+01:02:02,040 --> 01:02:04,050
+So that's something even fair
+merge can't do, and they're
+
+1175
+01:02:04,050 --> 01:02:05,662
+things called--
+
+1176
+01:02:05,662 --> 01:02:07,220
+I forget--
+
+1177
+01:02:07,220 --> 01:02:08,860
+natagers or something.
+
+1178
+01:02:08,860 --> 01:02:11,790
+That's a generalization of
+fair merge to allow that.
+
+1179
+01:02:11,790 --> 01:02:14,140
+There's a whole sort of research
+discipline saying how
+
+1180
+01:02:14,140 --> 01:02:16,790
+far can you push this functional
+perspective by
+
+1181
+01:02:16,790 --> 01:02:19,580
+adding more and more
+mechanism?
+
+1182
+01:02:19,580 --> 01:02:21,470
+And how far does that go before
+the whole thing breaks
+
+1183
+01:02:21,470 --> 01:02:25,610
+down and you might as well
+been using set anyway.
+
+1184
+01:02:25,610 --> 01:02:28,960
+AUDIENCE: You need to set him
+up on automatic deposit.
+
+1185
+01:02:28,960 --> 01:02:39,630
+[LAUGHTER]
+
+1186
+01:02:39,630 --> 01:02:40,880
+PROFESSOR: OK, thank you.
+
+1187
+01:02:40,880 --> 01:03:00,115
+
