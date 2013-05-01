@@ -1,0 +1,6158 @@
+1
+00:00:00,000 --> 00:00:16,830
+[MUSIC PLAYING]
+
+2
+00:00:16,830 --> 00:00:22,480
+PROFESSOR: Well, so far we've
+invented enough programming to
+
+3
+00:00:22,480 --> 00:00:24,850
+do some very complicated
+things.
+
+4
+00:00:24,850 --> 00:00:28,710
+And you surely learned
+a lot about
+
+5
+00:00:28,710 --> 00:00:29,760
+programming at this point.
+
+6
+00:00:29,760 --> 00:00:32,189
+You've learned almost all the
+most important tricks that
+
+7
+00:00:32,189 --> 00:00:34,870
+usually don't get taught to
+people until they have had a
+
+8
+00:00:34,870 --> 00:00:36,610
+lot of experience.
+
+9
+00:00:36,610 --> 00:00:40,800
+For example, data directed
+programming is a major trick,
+
+10
+00:00:40,800 --> 00:00:42,755
+and yesterday you also saw
+an interpreted language.
+
+11
+00:00:42,755 --> 00:00:45,300
+
+
+12
+00:00:45,300 --> 00:00:50,320
+We did this all in a computer
+language, at this point, where
+
+13
+00:00:50,320 --> 00:00:54,020
+there was no assignment
+statement.
+
+14
+00:00:54,020 --> 00:00:56,790
+And presumably, for those of you
+who've seen your Basic or
+
+15
+00:00:56,790 --> 00:01:00,170
+Pascal or whatever, that's
+usually considered the most
+
+16
+00:01:00,170 --> 00:01:02,040
+important thing.
+
+17
+00:01:02,040 --> 00:01:03,580
+Well today, we're going to
+do some thing horrible.
+
+18
+00:01:03,580 --> 00:01:07,370
+We're going to add an assignment
+statement.
+
+19
+00:01:07,370 --> 00:01:09,220
+And since we can do all these
+wonderful things without it,
+
+20
+00:01:09,220 --> 00:01:11,110
+why should we add it?
+
+21
+00:01:11,110 --> 00:01:13,040
+An important thing to understand
+is that today we're
+
+22
+00:01:13,040 --> 00:01:17,270
+going to, first of all, have a
+rule, which is going to always
+
+23
+00:01:17,270 --> 00:01:19,520
+be obeyed, which is the only
+reason we ever add a feature
+
+24
+00:01:19,520 --> 00:01:23,636
+to our language is because
+there is a good reason.
+
+25
+00:01:23,636 --> 00:01:27,470
+And the good reason is going to
+boil down to the ability,
+
+26
+00:01:27,470 --> 00:01:30,500
+you now get an ability to break
+a problem into pieces
+
+27
+00:01:30,500 --> 00:01:32,010
+that are different sets of
+pieces then you could have
+
+28
+00:01:32,010 --> 00:01:35,380
+broken it down without that,
+give you another means of
+
+29
+00:01:35,380 --> 00:01:36,630
+decomposition.
+
+30
+00:01:36,630 --> 00:01:38,350
+
+
+31
+00:01:38,350 --> 00:01:39,490
+However, let's just start.
+
+32
+00:01:39,490 --> 00:01:43,270
+Let me quick begin by reviewing
+the kind of language
+
+33
+00:01:43,270 --> 00:01:48,240
+that we have now.
+
+34
+00:01:48,240 --> 00:01:51,310
+We've been writing what's called
+functional programs.
+
+35
+00:01:51,310 --> 00:01:56,770
+And functional programs are
+a kind of encoding of
+
+36
+00:01:56,770 --> 00:01:58,890
+mathematical truths.
+
+37
+00:01:58,890 --> 00:02:02,420
+For example, when we look at the
+factorial procedure that
+
+38
+00:02:02,420 --> 00:02:07,090
+you see on the slide here, it's
+basically two clauses.
+
+39
+00:02:07,090 --> 00:02:09,530
+If n is one, the result is
+one, otherwise n times
+
+40
+00:02:09,530 --> 00:02:11,230
+factorial n minus one.
+
+41
+00:02:11,230 --> 00:02:12,990
+That's factorial of n.
+
+42
+00:02:12,990 --> 00:02:14,960
+Well, that is factorial of n.
+
+43
+00:02:14,960 --> 00:02:17,120
+And written down in some other
+obscure notation that you
+
+44
+00:02:17,120 --> 00:02:22,310
+might have learned in calculus
+classes, mathematical logic,
+
+45
+00:02:22,310 --> 00:02:28,090
+what you see there is if n
+equals one, for the result of
+
+46
+00:02:28,090 --> 00:02:31,060
+n factorial is one, otherwise,
+greater than one, n factorial
+
+47
+00:02:31,060 --> 00:02:32,680
+is n times n minus
+one factorial.
+
+48
+00:02:32,680 --> 00:02:35,560
+True statements, that's
+the kind of
+
+49
+00:02:35,560 --> 00:02:37,000
+language we've been using.
+
+50
+00:02:37,000 --> 00:02:39,610
+And whenever we have true
+statements of that sort, there
+
+51
+00:02:39,610 --> 00:02:47,490
+is a kind of, a way of
+understanding how they work
+
+52
+00:02:47,490 --> 00:02:50,170
+which is that such processes
+can be involved by
+
+53
+00:02:50,170 --> 00:02:51,390
+substitution.
+
+54
+00:02:51,390 --> 00:02:56,230
+And so we see on the second
+slide here, that the way we
+
+55
+00:02:56,230 --> 00:03:02,010
+understand the execution implied
+by those statements in
+
+56
+00:03:02,010 --> 00:03:05,640
+arranged in that order, is
+that you do successive
+
+57
+00:03:05,640 --> 00:03:09,370
+substitutions of arguments for
+formal parameters in the body
+
+58
+00:03:09,370 --> 00:03:12,430
+of a procedure.
+
+59
+00:03:12,430 --> 00:03:14,710
+This is basically a sequence
+of equalities.
+
+60
+00:03:14,710 --> 00:03:17,390
+Factorial four is four times
+factorial three.
+
+61
+00:03:17,390 --> 00:03:21,290
+That is four times three times
+factorial of two and so on.
+
+62
+00:03:21,290 --> 00:03:23,325
+We're always preserving truth.
+
+63
+00:03:23,325 --> 00:03:26,580
+
+
+64
+00:03:26,580 --> 00:03:29,190
+Even though we're talking about
+true statements, there
+
+65
+00:03:29,190 --> 00:03:31,390
+might be more than one
+organization of these true
+
+66
+00:03:31,390 --> 00:03:34,630
+statements to describe the
+computation of a particular
+
+67
+00:03:34,630 --> 00:03:37,490
+function, the computation
+of the value of
+
+68
+00:03:37,490 --> 00:03:38,640
+a particular function.
+
+69
+00:03:38,640 --> 00:03:42,460
+So, for example, looking
+at the next one here.
+
+70
+00:03:42,460 --> 00:03:49,780
+Here is a way of looking
+at the sum of n and m.
+
+71
+00:03:49,780 --> 00:03:52,930
+And we did this one by
+a recursive process.
+
+72
+00:03:52,930 --> 00:04:00,130
+It's the increment of the sum
+of the decrement of n and m.
+
+73
+00:04:00,130 --> 00:04:03,780
+And, of course, there is some
+piece of mathematical logic
+
+74
+00:04:03,780 --> 00:04:06,240
+here that describes that.
+
+75
+00:04:06,240 --> 00:04:11,450
+It's the increment of the sum
+of the decrement of n and m,
+
+76
+00:04:11,450 --> 00:04:13,120
+just like that.
+
+77
+00:04:13,120 --> 00:04:16,440
+So there's nothing particularly
+magic about that.
+
+78
+00:04:16,440 --> 00:04:19,059
+And, of course, if we can also
+look at an iterative process
+
+79
+00:04:19,059 --> 00:04:22,920
+for the same, a program that
+evolves an iterative process,
+
+80
+00:04:22,920 --> 00:04:25,310
+for the same function.
+
+81
+00:04:25,310 --> 00:04:29,930
+These are two things that
+compute the same answer.
+
+82
+00:04:29,930 --> 00:04:34,220
+And we have equivalent
+mathematical truths that are
+
+83
+00:04:34,220 --> 00:04:36,720
+arranged there.
+
+84
+00:04:36,720 --> 00:04:38,920
+And just the way you arrange
+those truths determine the
+
+85
+00:04:38,920 --> 00:04:40,430
+particular process.
+
+86
+00:04:40,430 --> 00:04:42,810
+In the way choose and arrange
+them determines the process
+
+87
+00:04:42,810 --> 00:04:44,400
+that's evolved.
+
+88
+00:04:44,400 --> 00:04:47,370
+So we have the flexibility
+of talking about both the
+
+89
+00:04:47,370 --> 00:04:49,260
+function to be computed,
+and the method
+
+90
+00:04:49,260 --> 00:04:50,410
+by which it's computed.
+
+91
+00:04:50,410 --> 00:04:53,580
+So it's not clear
+we need more.
+
+92
+00:04:53,580 --> 00:04:55,440
+However, today I'm going
+to this awful thing.
+
+93
+00:04:55,440 --> 00:04:59,070
+I'm going to introduce this
+assignment operation.
+
+94
+00:04:59,070 --> 00:05:02,890
+Now, what is this?
+
+95
+00:05:02,890 --> 00:05:07,830
+Well, first of all, there is
+going to be another kind of
+
+96
+00:05:07,830 --> 00:05:09,960
+kind of statement, if you
+will, in a programming
+
+97
+00:05:09,960 --> 00:05:11,210
+language called Set!
+
+98
+00:05:11,210 --> 00:05:13,800
+
+
+99
+00:05:13,800 --> 00:05:16,550
+Things that do things like
+assignment, I'm going to put
+
+100
+00:05:16,550 --> 00:05:18,570
+exclamation points after.
+
+101
+00:05:18,570 --> 00:05:20,990
+We'll talk about what that
+means in a second.
+
+102
+00:05:20,990 --> 00:05:23,370
+The exclamation point, again
+like question mark, is an
+
+103
+00:05:23,370 --> 00:05:25,960
+arbitrary thing we attach to the
+symbol which is the name,
+
+104
+00:05:25,960 --> 00:05:28,090
+has no significance
+to the system.
+
+105
+00:05:28,090 --> 00:05:31,520
+The only significance is to me
+and you to alert you that this
+
+106
+00:05:31,520 --> 00:05:35,910
+is an assignment of some sort.
+
+107
+00:05:35,910 --> 00:05:39,960
+But we're going to set a
+variable to a value.
+
+108
+00:05:39,960 --> 00:05:43,800
+
+
+109
+00:05:43,800 --> 00:05:47,120
+And what that's going to mean
+is that there is a time at
+
+110
+00:05:47,120 --> 00:05:48,600
+which something happens.
+
+111
+00:05:48,600 --> 00:05:50,100
+Here's a time.
+
+112
+00:05:50,100 --> 00:05:55,030
+If I have time going this
+way, it's a time access.
+
+113
+00:05:55,030 --> 00:05:58,650
+Time progresses by walking
+down the page.
+
+114
+00:05:58,650 --> 00:06:01,250
+Then an assignment is the
+first thing we have that
+
+115
+00:06:01,250 --> 00:06:06,670
+produces the difference between
+a before and an after.
+
+116
+00:06:06,670 --> 00:06:09,660
+All the other programs that
+we've written, that have no
+
+117
+00:06:09,660 --> 00:06:12,400
+assignments in them, the order
+in which they were evaluated
+
+118
+00:06:12,400 --> 00:06:14,590
+didn't matter.
+
+119
+00:06:14,590 --> 00:06:17,990
+But assignment is special, it
+produces a moment in time.
+
+120
+00:06:17,990 --> 00:06:27,980
+So there is a moment before the
+set occurs and after, such
+
+121
+00:06:27,980 --> 00:06:39,500
+that after this moment in time,
+the variable has the
+
+122
+00:06:39,500 --> 00:06:43,320
+value, value.
+
+123
+00:06:43,320 --> 00:06:49,310
+
+
+124
+00:06:49,310 --> 00:06:53,340
+Independent of what value
+it had before, set!
+
+125
+00:06:53,340 --> 00:06:57,660
+changes the value
+of the variable.
+
+126
+00:06:57,660 --> 00:07:03,150
+Until this moment, we had
+nothing that changed.
+
+127
+00:07:03,150 --> 00:07:06,910
+So, for example, one of the
+things we can think of is that
+
+128
+00:07:06,910 --> 00:07:09,890
+the procedures we write for
+something like factorial are
+
+129
+00:07:09,890 --> 00:07:13,740
+in fact pretty much identical
+to the function factorial.
+
+130
+00:07:13,740 --> 00:07:18,120
+Factorial of four, if I write
+fact4, independent of what
+
+131
+00:07:18,120 --> 00:07:20,920
+context it's in, and independent
+of how many times
+
+132
+00:07:20,920 --> 00:07:23,040
+I write it, I always get
+the same answer.
+
+133
+00:07:23,040 --> 00:07:25,430
+It's always 24.
+
+134
+00:07:25,430 --> 00:07:30,360
+It's a unique map from the
+argument to the answer.
+
+135
+00:07:30,360 --> 00:07:33,580
+And all the programs we've
+written so far are like that.
+
+136
+00:07:33,580 --> 00:07:37,020
+However, once I have assignment,
+that isn't true.
+
+137
+00:07:37,020 --> 00:07:50,070
+So, for example, if I were to
+define count to be one.
+
+138
+00:07:50,070 --> 00:07:55,550
+And then I'm going to define
+also a procedure, a simple
+
+139
+00:07:55,550 --> 00:08:02,960
+procedure called demo, which
+takes argument x and does the
+
+140
+00:08:02,960 --> 00:08:03,870
+following operations.
+
+141
+00:08:03,870 --> 00:08:09,650
+It first sets x to x plus one.
+
+142
+00:08:09,650 --> 00:08:13,160
+My gosh, this looks just
+like FORTRAN, right--
+
+143
+00:08:13,160 --> 00:08:14,410
+in a funny syntax.
+
+144
+00:08:14,410 --> 00:08:16,910
+
+
+145
+00:08:16,910 --> 00:08:24,330
+And then add to x count, Oh,
+I just made a mistake.
+
+146
+00:08:24,330 --> 00:08:27,010
+I want to say, set! count
+to one plus count.
+
+147
+00:08:27,010 --> 00:08:30,310
+
+
+148
+00:08:30,310 --> 00:08:31,730
+It's this thing defined here.
+
+149
+00:08:31,730 --> 00:08:34,350
+
+
+150
+00:08:34,350 --> 00:08:36,369
+And then plus x count.
+
+151
+00:08:36,369 --> 00:08:40,409
+
+
+152
+00:08:40,409 --> 00:08:42,559
+Then I can try this procedure.
+
+153
+00:08:42,559 --> 00:08:43,880
+Let's run it.
+
+154
+00:08:43,880 --> 00:08:48,125
+So, suppose I get a prompt
+and I say, demo three.
+
+155
+00:08:48,125 --> 00:08:52,210
+
+
+156
+00:08:52,210 --> 00:08:53,540
+Well, what happens here?
+
+157
+00:08:53,540 --> 00:08:57,020
+The first thing that happens
+is count is currently one.
+
+158
+00:08:57,020 --> 00:08:59,130
+Currently, there is a time.
+
+159
+00:08:59,130 --> 00:09:00,710
+We're talking about time.
+
+160
+00:09:00,710 --> 00:09:02,960
+x gets three.
+
+161
+00:09:02,960 --> 00:09:06,090
+At this moment, I say,
+oh yes, count is
+
+162
+00:09:06,090 --> 00:09:08,690
+incremented, so count is two.
+
+163
+00:09:08,690 --> 00:09:10,710
+two plus three is five.
+
+164
+00:09:10,710 --> 00:09:14,460
+So the answer I get
+out is five.
+
+165
+00:09:14,460 --> 00:09:23,640
+Then I say, demo of
+say, three again.
+
+166
+00:09:23,640 --> 00:09:24,830
+What do I get?
+
+167
+00:09:24,830 --> 00:09:29,310
+Well, now count is two, it's
+not one anymore, because I
+
+168
+00:09:29,310 --> 00:09:30,760
+have incremented it.
+
+169
+00:09:30,760 --> 00:09:35,050
+But now I go through this
+process, three goes into x,
+
+170
+00:09:35,050 --> 00:09:38,160
+count becomes one plus count,
+so that's three now.
+
+171
+00:09:38,160 --> 00:09:42,130
+The sum of those two is six,
+so the answer is six.
+
+172
+00:09:42,130 --> 00:09:45,760
+And what we see is the same
+expression leads to two
+
+173
+00:09:45,760 --> 00:09:52,170
+different answers, depending
+upon time.
+
+174
+00:09:52,170 --> 00:09:55,040
+So demo is not a function,
+does not compute a
+
+175
+00:09:55,040 --> 00:09:56,290
+mathematical function.
+
+176
+00:09:56,290 --> 00:10:00,020
+
+
+177
+00:10:00,020 --> 00:10:03,180
+In fact, you could also see why
+now, of course, this is
+
+178
+00:10:03,180 --> 00:10:05,650
+the first place where the
+substitution model
+
+179
+00:10:05,650 --> 00:10:07,780
+isn't going to work.
+
+180
+00:10:07,780 --> 00:10:11,410
+This kills the substitution
+model dead.
+
+181
+00:10:11,410 --> 00:10:14,060
+You know, with quotation there
+were some little problems that
+
+182
+00:10:14,060 --> 00:10:17,380
+a philosopher might notice
+with the substitutions,
+
+183
+00:10:17,380 --> 00:10:19,560
+because you have to worry about
+what deductions you can
+
+184
+00:10:19,560 --> 00:10:23,070
+make when you substitute into
+quotes, if you're allowed to
+
+185
+00:10:23,070 --> 00:10:25,150
+do that at all.
+
+186
+00:10:25,150 --> 00:10:28,590
+But here the substitution
+model is dead, can't do
+
+187
+00:10:28,590 --> 00:10:29,810
+anything at all.
+
+188
+00:10:29,810 --> 00:10:34,490
+Because, supposing I wanted to
+use a substitution model to
+
+189
+00:10:34,490 --> 00:10:37,560
+consider substituting
+for count?
+
+190
+00:10:37,560 --> 00:10:42,150
+Well, my gosh, if I substitute
+for here and here, they're
+
+191
+00:10:42,150 --> 00:10:44,540
+different ones.
+
+192
+00:10:44,540 --> 00:10:46,570
+It's not the same
+count any more.
+
+193
+00:10:46,570 --> 00:10:47,880
+I get the wrong answer.
+
+194
+00:10:47,880 --> 00:10:51,410
+The substitution model is
+a static phenomenon that
+
+195
+00:10:51,410 --> 00:10:55,560
+describes things that are true
+and not things that change.
+
+196
+00:10:55,560 --> 00:10:56,810
+Here, we have truths
+that change.
+
+197
+00:10:56,810 --> 00:11:01,860
+
+
+198
+00:11:01,860 --> 00:11:06,770
+OK, Well, before I give you
+any understanding of this,
+
+199
+00:11:06,770 --> 00:11:07,870
+this is very bad.
+
+200
+00:11:07,870 --> 00:11:11,520
+Now, we've lost our model
+of computation.
+
+201
+00:11:11,520 --> 00:11:13,420
+Pretty soon, I'm going to have
+to build you a new model of
+
+202
+00:11:13,420 --> 00:11:15,030
+computation.
+
+203
+00:11:15,030 --> 00:11:18,710
+But ours plays with this, just
+now, in an informal sense.
+
+204
+00:11:18,710 --> 00:11:21,490
+Of course, what you already
+see is that when I have
+
+205
+00:11:21,490 --> 00:11:24,600
+something like assignment, the
+model that we're going to need
+
+206
+00:11:24,600 --> 00:11:27,760
+is different from the model that
+we had before in that the
+
+207
+00:11:27,760 --> 00:11:31,840
+variables, those symbols like
+count, or x are no longer
+
+208
+00:11:31,840 --> 00:11:35,010
+going to refer to the values
+they have, but rather to some
+
+209
+00:11:35,010 --> 00:11:37,810
+sort of place where the
+value restored.
+
+210
+00:11:37,810 --> 00:11:40,330
+We're going to have to think
+that way for a while.
+
+211
+00:11:40,330 --> 00:11:42,290
+And it's going to be a
+very bad thing and
+
+212
+00:11:42,290 --> 00:11:44,590
+cause a lot of trouble.
+
+213
+00:11:44,590 --> 00:11:47,350
+And so, as I said, the very fact
+that we're inventing this
+
+214
+00:11:47,350 --> 00:11:49,750
+bad thing, means that there had
+better be a good reason
+
+215
+00:11:49,750 --> 00:11:52,040
+for it, otherwise, just
+a waste of time
+
+216
+00:11:52,040 --> 00:11:53,510
+and a lot of effort.
+
+217
+00:11:53,510 --> 00:11:56,090
+Let's just look at some
+of it just to play.
+
+218
+00:11:56,090 --> 00:11:59,130
+Supposing we write down the
+functional version, functional
+
+219
+00:11:59,130 --> 00:12:02,770
+meaning in the old style,
+of factorial by
+
+220
+00:12:02,770 --> 00:12:04,430
+an iterative process.
+
+221
+00:12:04,430 --> 00:12:09,780
+
+
+222
+00:12:09,780 --> 00:12:26,810
+Factorial of n, we're going to
+iterate of m and i, which says
+
+223
+00:12:26,810 --> 00:12:40,030
+if i is greater than n, then
+the result is m, otherwise,
+
+224
+00:12:40,030 --> 00:12:46,930
+the result of iterating the
+product of i and m.
+
+225
+00:12:46,930 --> 00:12:51,690
+So m is going to be the product
+that I'm accumulating.
+
+226
+00:12:51,690 --> 00:12:52,940
+m is the product.
+
+227
+00:12:52,940 --> 00:12:58,170
+
+
+228
+00:12:58,170 --> 00:12:59,990
+And the count I'm going
+to increase by one.
+
+229
+00:12:59,990 --> 00:13:04,810
+
+
+230
+00:13:04,810 --> 00:13:12,060
+Plus, ITER, ELSE,
+COND, define.
+
+231
+00:13:12,060 --> 00:13:13,310
+I'm going to start this up.
+
+232
+00:13:13,310 --> 00:13:17,000
+
+
+233
+00:13:17,000 --> 00:13:18,980
+And these days, you should
+have no trouble reading
+
+234
+00:13:18,980 --> 00:13:21,020
+something like this.
+
+235
+00:13:21,020 --> 00:13:23,750
+What I have here is a
+product there being
+
+236
+00:13:23,750 --> 00:13:26,750
+accumulated and a counter.
+
+237
+00:13:26,750 --> 00:13:29,050
+I start them up both at one.
+
+238
+00:13:29,050 --> 00:13:32,380
+I'm going to buzz the counter
+up, i goes to i plus one every
+
+239
+00:13:32,380 --> 00:13:34,800
+time around.
+
+240
+00:13:34,800 --> 00:13:38,910
+But that's only our putting a
+time on the process, each of
+
+241
+00:13:38,910 --> 00:13:42,840
+this is just a set of
+truths, true rules.
+
+242
+00:13:42,840 --> 00:13:47,010
+And m is going to get a new
+values of i and m, i times m
+
+243
+00:13:47,010 --> 00:13:49,860
+each time around, and eventually
+i is going to be
+
+244
+00:13:49,860 --> 00:13:52,750
+bigger than n, in which case,
+the answer's going to be m.
+
+245
+00:13:52,750 --> 00:13:55,760
+Now, I'm speaking to you,
+use time in this.
+
+246
+00:13:55,760 --> 00:13:58,210
+That's just because I know
+how the computer works.
+
+247
+00:13:58,210 --> 00:13:59,090
+But I didn't have to.
+
+248
+00:13:59,090 --> 00:14:01,810
+This could be a purely
+mathematical description at
+
+249
+00:14:01,810 --> 00:14:03,040
+this point, because
+substitution
+
+250
+00:14:03,040 --> 00:14:05,280
+will work for this.
+
+251
+00:14:05,280 --> 00:14:08,870
+But let's set right down a
+similar sort of program, using
+
+252
+00:14:08,870 --> 00:14:11,975
+the same algorithm, but
+with assignments.
+
+253
+00:14:11,975 --> 00:14:15,296
+
+
+254
+00:14:15,296 --> 00:14:16,940
+So this is called the
+functional version.
+
+255
+00:14:16,940 --> 00:14:23,840
+
+
+256
+00:14:23,840 --> 00:14:25,255
+I want to write down an
+imperative version.
+
+257
+00:14:25,255 --> 00:14:34,150
+
+
+258
+00:14:34,150 --> 00:14:36,010
+Factorial of n.
+
+259
+00:14:36,010 --> 00:14:37,510
+I'm going to create
+my two variables.
+
+260
+00:14:37,510 --> 00:14:40,120
+
+
+261
+00:14:40,120 --> 00:14:48,230
+Let i initialize itself to one,
+and m be initialized to
+
+262
+00:14:48,230 --> 00:14:50,930
+one, similar.
+
+263
+00:14:50,930 --> 00:15:05,840
+We'll create a loop which has
+COND greater than i, and if i
+
+264
+00:15:05,840 --> 00:15:07,360
+is greater than n, we're done.
+
+265
+00:15:07,360 --> 00:15:10,910
+And the result is m, the product
+I'm accumulating.
+
+266
+00:15:10,910 --> 00:15:19,320
+Otherwise, I'm going to write
+down three things to do.
+
+267
+00:15:19,320 --> 00:15:22,300
+I'm going to set!
+
+268
+00:15:22,300 --> 00:15:34,610
+m to the product of i and m,
+set! i to the sum of i and
+
+269
+00:15:34,610 --> 00:15:40,610
+one, and go around
+the loop again.
+
+270
+00:15:40,610 --> 00:15:44,890
+Looks very familiar to you
+FORTRAN programmers.
+
+271
+00:15:44,890 --> 00:15:47,760
+ELSE, COND, define, funny
+syntax though.
+
+272
+00:15:47,760 --> 00:15:51,270
+
+
+273
+00:15:51,270 --> 00:15:59,320
+Start the loop up, and
+that's the program.
+
+274
+00:15:59,320 --> 00:16:02,790
+Now, this program, how
+do we think about it?
+
+275
+00:16:02,790 --> 00:16:04,690
+Well, let's just say what
+we're seeing here.
+
+276
+00:16:04,690 --> 00:16:07,820
+There are two local variables,
+i and m, that have been
+
+277
+00:16:07,820 --> 00:16:10,810
+initialized to one.
+
+278
+00:16:10,810 --> 00:16:13,120
+Every time around the loop, I
+test to see if i is greater
+
+279
+00:16:13,120 --> 00:16:16,040
+than n, which is the input
+argument, and if so, the
+
+280
+00:16:16,040 --> 00:16:19,240
+result is the product being
+accumulated in m.
+
+281
+00:16:19,240 --> 00:16:23,640
+However, if it's not the end of
+the loop, if I'm not done,
+
+282
+00:16:23,640 --> 00:16:26,260
+then what I'm going to do is
+change the product to be the
+
+283
+00:16:26,260 --> 00:16:29,130
+result of multiplying i times
+the current product.
+
+284
+00:16:29,130 --> 00:16:31,530
+Which is sort of what
+we were doing here.
+
+285
+00:16:31,530 --> 00:16:33,386
+Except here I wasn't changing.
+
+286
+00:16:33,386 --> 00:16:38,220
+I was making another copy,
+because the substitution model
+
+287
+00:16:38,220 --> 00:16:44,410
+says, you copy the body of the
+procedure with the arguments
+
+288
+00:16:44,410 --> 00:16:46,710
+substituted for the
+formal parameters.
+
+289
+00:16:46,710 --> 00:16:49,690
+Here I'm not worried about
+copying, here I've changed the
+
+290
+00:16:49,690 --> 00:16:51,990
+value of m.
+
+291
+00:16:51,990 --> 00:16:56,090
+I also then change the value
+of i to i plus one, and go
+
+292
+00:16:56,090 --> 00:16:58,300
+buzzing around.
+
+293
+00:16:58,300 --> 00:17:01,360
+Seems like essentially the same
+program, but there are
+
+294
+00:17:01,360 --> 00:17:03,110
+some ways of making
+errors here that
+
+295
+00:17:03,110 --> 00:17:06,160
+didn't exist until today.
+
+296
+00:17:06,160 --> 00:17:10,660
+For example, if I were to do
+the horrible thing of not
+
+297
+00:17:10,660 --> 00:17:15,329
+being careful in writing my
+program and interchange those
+
+298
+00:17:15,329 --> 00:17:17,890
+two assignments, the
+program wouldn't
+
+299
+00:17:17,890 --> 00:17:20,339
+compute the same function.
+
+300
+00:17:20,339 --> 00:17:24,859
+I get a timing error because
+there's a dependency that m
+
+301
+00:17:24,859 --> 00:17:27,460
+depends upon having the
+last value of i.
+
+302
+00:17:27,460 --> 00:17:32,760
+If I try to i first, then I've
+got the wrong value of i when
+
+303
+00:17:32,760 --> 00:17:36,060
+I multiply by m.
+
+304
+00:17:36,060 --> 00:17:38,600
+It's a bug that wasn't available
+until this moment,
+
+305
+00:17:38,600 --> 00:17:40,660
+until we introduced something
+that had time in it.
+
+306
+00:17:40,660 --> 00:17:43,470
+
+
+307
+00:17:43,470 --> 00:17:47,650
+So, as I said, first we need a
+new model of computation, and
+
+308
+00:17:47,650 --> 00:17:49,790
+second, we have to be damn good
+reason for doing this
+
+309
+00:17:49,790 --> 00:17:52,800
+kind of ugly thing.
+
+310
+00:17:52,800 --> 00:17:54,050
+Are there any questions?
+
+311
+00:17:54,050 --> 00:17:58,800
+
+
+312
+00:17:58,800 --> 00:18:00,505
+Speak loudly, David.
+
+313
+00:18:00,505 --> 00:18:04,220
+AUDIENCE: I'm confused about,
+we've introduced set now, but
+
+314
+00:18:04,220 --> 00:18:07,630
+we had let before and
+define before.
+
+315
+00:18:07,630 --> 00:18:09,980
+I'm confused about the
+difference between the three.
+
+316
+00:18:09,980 --> 00:18:14,100
+Wouldn't define work in the same
+situation as set if you
+
+317
+00:18:14,100 --> 00:18:15,280
+introduced it a bit?
+
+318
+00:18:15,280 --> 00:18:18,230
+PROFESSOR: No, define is
+intended for setting something
+
+319
+00:18:18,230 --> 00:18:20,230
+once the first time,
+for making it.
+
+320
+00:18:20,230 --> 00:18:22,790
+
+
+321
+00:18:22,790 --> 00:18:26,440
+You've never seen me write on a
+blackboard two defines in a
+
+322
+00:18:26,440 --> 00:18:30,940
+row whose intention was to
+change the old value of some
+
+323
+00:18:30,940 --> 00:18:31,970
+variable to a new one.
+
+324
+00:18:31,970 --> 00:18:34,380
+AUDIENCE: Is that by
+convention or--
+
+325
+00:18:34,380 --> 00:18:38,120
+PROFESSOR: No, it's intention.
+
+326
+00:18:38,120 --> 00:18:41,680
+The answer is that, for
+example, internal to a
+
+327
+00:18:41,680 --> 00:18:47,250
+procedure, two defines in a row
+are illegal, two defines
+
+328
+00:18:47,250 --> 00:18:49,850
+in a row of the same variable.
+
+329
+00:18:49,850 --> 00:18:51,890
+x can't be defined twice.
+
+330
+00:18:51,890 --> 00:18:54,300
+Whether or not a system catches
+that error is a
+
+331
+00:18:54,300 --> 00:18:58,840
+different question, but I
+legislate to you that define
+
+332
+00:18:58,840 --> 00:19:00,840
+happens once on anything.
+
+333
+00:19:00,840 --> 00:19:04,770
+Now, indeed, in interactive
+debugging, we intend that you
+
+334
+00:19:04,770 --> 00:19:08,460
+interacting with your computer
+will redefine things, and so
+
+335
+00:19:08,460 --> 00:19:10,050
+there's a special
+exception made
+
+336
+00:19:10,050 --> 00:19:11,610
+for interactive debugging.
+
+337
+00:19:11,610 --> 00:19:18,480
+But define is intended to mean
+to set up something which will
+
+338
+00:19:18,480 --> 00:19:22,460
+be forever that value
+after that point.
+
+339
+00:19:22,460 --> 00:19:26,490
+It's as if all the defines were
+done at the beginning.
+
+340
+00:19:26,490 --> 00:19:29,870
+In fact, the only legal place
+to put a define in Scheme,
+
+341
+00:19:29,870 --> 00:19:32,570
+internal to a procedure, is
+just at the beginning of a
+
+342
+00:19:32,570 --> 00:19:36,605
+lambda expression,
+the beginning of
+
+343
+00:19:36,605 --> 00:19:37,855
+the body of a procedure.
+
+344
+00:19:37,855 --> 00:19:41,750
+
+
+345
+00:19:41,750 --> 00:19:46,670
+Now, let of course does nothing
+like either of that.
+
+346
+00:19:46,670 --> 00:19:50,520
+I mean, if you look at what's
+happening with a let, this
+
+347
+00:19:50,520 --> 00:19:52,220
+happens again exactly once.
+
+348
+00:19:52,220 --> 00:19:56,820
+It sets up a context where i and
+m are values one and one.
+
+349
+00:19:56,820 --> 00:20:01,630
+That context exists throughout
+this scope, this
+
+350
+00:20:01,630 --> 00:20:02,880
+region of the program.
+
+351
+00:20:02,880 --> 00:20:05,080
+
+
+352
+00:20:05,080 --> 00:20:11,110
+However, you don't think of that
+let as setting i again.
+
+353
+00:20:11,110 --> 00:20:12,350
+It doesn't change it.
+
+354
+00:20:12,350 --> 00:20:15,390
+i never changes because
+of the let.
+
+355
+00:20:15,390 --> 00:20:18,690
+i gets created because of let.
+
+356
+00:20:18,690 --> 00:20:22,300
+In fact, the let is a
+very simple idea.
+
+357
+00:20:22,300 --> 00:20:30,930
+Let does nothing more, Let a
+variable one to have value
+
+358
+00:20:30,930 --> 00:20:37,660
+one; I'll write this down a
+little bit more neatly; Let's
+
+359
+00:20:37,660 --> 00:20:43,890
+write, var one have value, the
+value of expression e1, and
+
+360
+00:20:43,890 --> 00:20:48,470
+variable two, have this value
+of the expression e2, in an
+
+361
+00:20:48,470 --> 00:21:00,420
+expression e3, is the same thing
+as a procedure of var
+
+362
+00:21:00,420 --> 00:21:08,460
+one and var two, the formal
+parameters, and e3 being the
+
+363
+00:21:08,460 --> 00:21:15,010
+body, where var one is bound
+to the value of e1, and var
+
+364
+00:21:15,010 --> 00:21:16,820
+two gets the value of e2.
+
+365
+00:21:16,820 --> 00:21:19,590
+
+
+366
+00:21:19,590 --> 00:21:22,050
+So this is, in fact, a perfectly
+understandable thing
+
+367
+00:21:22,050 --> 00:21:24,930
+from a substitution
+point of view.
+
+368
+00:21:24,930 --> 00:21:27,300
+This is really the same
+expression written in two
+
+369
+00:21:27,300 --> 00:21:28,550
+different ways.
+
+370
+00:21:28,550 --> 00:21:31,820
+
+
+371
+00:21:31,820 --> 00:21:34,220
+In fact, the way the actual
+system works is this gets
+
+372
+00:21:34,220 --> 00:21:37,311
+translated into this before
+anything happens.
+
+373
+00:21:37,311 --> 00:21:39,690
+AUDIENCE: OK, I'm still unclear
+as then what makes the
+
+374
+00:21:39,690 --> 00:21:41,360
+difference between a
+let and a define.
+
+375
+00:21:41,360 --> 00:21:42,125
+They could--
+
+376
+00:21:42,125 --> 00:21:45,570
+PROFESSOR: A define is a
+syntactic sugar, whereby,
+
+377
+00:21:45,570 --> 00:21:48,270
+essentially a bunch of variables
+get created by lets
+
+378
+00:21:48,270 --> 00:21:49,520
+and then set up once.
+
+379
+00:21:49,520 --> 00:21:57,170
+
+
+380
+00:21:57,170 --> 00:21:58,790
+OK, time for the first
+break, I think.
+
+381
+00:21:58,790 --> 00:22:00,040
+Thank you.
+
+382
+00:22:00,040 --> 00:22:03,480
+
+
+383
+00:22:03,480 --> 00:23:04,430
+[MUSIC PLAYING]
+
+384
+00:23:04,430 --> 00:23:06,530
+Well let's see.
+
+385
+00:23:06,530 --> 00:23:10,520
+I now have to rebuild the model
+of computation, so you
+
+386
+00:23:10,520 --> 00:23:13,690
+understand how some such
+mechanical mechanism could
+
+387
+00:23:13,690 --> 00:23:17,600
+work that can do what we've
+just talked about.
+
+388
+00:23:17,600 --> 00:23:22,730
+I just recently destroyed
+your substitution model.
+
+389
+00:23:22,730 --> 00:23:25,070
+Unfortunately, this model is
+significantly more complicated
+
+390
+00:23:25,070 --> 00:23:26,380
+than the substitution model.
+
+391
+00:23:26,380 --> 00:23:29,010
+It's called the environment
+model.
+
+392
+00:23:29,010 --> 00:23:32,130
+And I'm going to have to
+introduce some terminology,
+
+393
+00:23:32,130 --> 00:23:34,660
+which is very good terminology
+for you to know anyway.
+
+394
+00:23:34,660 --> 00:23:36,640
+It's about names.
+
+395
+00:23:36,640 --> 00:23:39,360
+And we're going to give names
+to the kinds of names things
+
+396
+00:23:39,360 --> 00:23:42,720
+have and the way those
+names are used.
+
+397
+00:23:42,720 --> 00:23:48,290
+So this is a meta-description,
+if you will.
+
+398
+00:23:48,290 --> 00:23:50,840
+Anyway, there is a pile of an
+unfortunate terminology here,
+
+399
+00:23:50,840 --> 00:23:52,730
+but we're going to need this
+to understand what's called
+
+400
+00:23:52,730 --> 00:23:54,770
+the environment model.
+
+401
+00:23:54,770 --> 00:23:58,250
+We're about to do a little bit
+of boring, dog-work here.
+
+402
+00:23:58,250 --> 00:24:02,280
+Let's look at the first
+transparency.
+
+403
+00:24:02,280 --> 00:24:08,880
+And we see a description
+of a word called bound.
+
+404
+00:24:08,880 --> 00:24:11,980
+And we're going to say that a
+variable, v, is bound in an
+
+405
+00:24:11,980 --> 00:24:16,890
+expression, e, if the meaning
+of e is unchanged by the
+
+406
+00:24:16,890 --> 00:24:22,520
+uniform replacement of a
+variable w, not occurring in
+
+407
+00:24:22,520 --> 00:24:25,440
+e, for every occurrence
+of v in e.
+
+408
+00:24:25,440 --> 00:24:28,390
+Now that's a long sentence, so,
+I think, I'm going to have
+
+409
+00:24:28,390 --> 00:24:31,690
+to say a little bit about
+that before we even fool
+
+410
+00:24:31,690 --> 00:24:33,490
+around at all here.
+
+411
+00:24:33,490 --> 00:24:35,260
+Bound variables we're
+talking about here.
+
+412
+00:24:35,260 --> 00:24:44,030
+
+
+413
+00:24:44,030 --> 00:24:46,710
+And you've seen lots of them.
+
+414
+00:24:46,710 --> 00:24:48,170
+You may not know that you've
+seen lots of them.
+
+415
+00:24:48,170 --> 00:24:51,880
+Well, I suppose in your logic
+you saw a logical variables
+
+416
+00:24:51,880 --> 00:24:58,210
+like, for every x there exists
+a y such that p is true of x
+
+417
+00:24:58,210 --> 00:24:59,860
+and y from your calculus
+class.
+
+418
+00:24:59,860 --> 00:25:02,960
+
+
+419
+00:25:02,960 --> 00:25:06,780
+This variable, x, and this
+variable, y, are bound,
+
+420
+00:25:06,780 --> 00:25:10,920
+because the meaning of this
+expression does not depend
+
+421
+00:25:10,920 --> 00:25:16,640
+upon the particular letters I
+used to describe x and y.
+
+422
+00:25:16,640 --> 00:25:21,740
+If I were to change the w for x,
+then said for every w there
+
+423
+00:25:21,740 --> 00:25:26,420
+exists a y such that p is true
+of w and y, it would be the
+
+424
+00:25:26,420 --> 00:25:29,540
+same sentence.
+
+425
+00:25:29,540 --> 00:25:30,390
+That's what it means.
+
+426
+00:25:30,390 --> 00:25:35,690
+Or another case of this that
+you've seen is integral say,
+
+427
+00:25:35,690 --> 00:25:42,415
+from 0 to one of dx over
+one plus x square.
+
+428
+00:25:42,415 --> 00:25:46,080
+
+
+429
+00:25:46,080 --> 00:25:47,440
+Well that's something you
+see all the time.
+
+430
+00:25:47,440 --> 00:25:52,270
+And this x is a bound
+variable.
+
+431
+00:25:52,270 --> 00:25:55,190
+If I change that to a
+t, the expression is
+
+432
+00:25:55,190 --> 00:25:58,170
+still the same thing.
+
+433
+00:25:58,170 --> 00:26:04,850
+This is a 1/4 of the arctan of
+one or something like that.
+
+434
+00:26:04,850 --> 00:26:06,620
+Yes, that's the arctan of one.
+
+435
+00:26:06,620 --> 00:26:09,380
+So bound variables are actually
+fairly common, for
+
+436
+00:26:09,380 --> 00:26:13,690
+those of you who have played
+a bit with mathematics.
+
+437
+00:26:13,690 --> 00:26:19,100
+Well, let's go into the
+programming world.
+
+438
+00:26:19,100 --> 00:26:22,220
+Instead of the quantifier being
+something like, for
+
+439
+00:26:22,220 --> 00:26:25,000
+every, or there exists, or
+integral, a quantifier is a
+
+440
+00:26:25,000 --> 00:26:27,570
+symbol that binds a variable.
+
+441
+00:26:27,570 --> 00:26:30,280
+And we are going to use the
+quantifier lambda as being the
+
+442
+00:26:30,280 --> 00:26:33,970
+essential thing that
+binds variables.
+
+443
+00:26:33,970 --> 00:26:37,730
+And so we have some nice
+examples here like that
+
+444
+00:26:37,730 --> 00:26:43,160
+procedure of one argument
+y which does
+
+445
+00:26:43,160 --> 00:26:44,370
+the following thing.
+
+446
+00:26:44,370 --> 00:26:50,300
+It calls the procedure of one
+argument x, which multiplies x
+
+447
+00:26:50,300 --> 00:26:54,145
+by y, and applies
+that to three.
+
+448
+00:26:54,145 --> 00:26:58,810
+
+
+449
+00:26:58,810 --> 00:27:00,860
+That procedure has the property
+there of two bound
+
+450
+00:27:00,860 --> 00:27:04,790
+variables in it, x and y.
+
+451
+00:27:04,790 --> 00:27:08,500
+This quantifier, lambda here,
+binds this y, and this
+
+452
+00:27:08,500 --> 00:27:12,120
+quantifier, lambda,
+binds that x.
+
+453
+00:27:12,120 --> 00:27:15,000
+Because, if I were to take an
+arbitrary symbol does not
+
+454
+00:27:15,000 --> 00:27:20,130
+occur in this expression like w
+and replace all y's with w's
+
+455
+00:27:20,130 --> 00:27:23,610
+in this expression, the
+expression is still the same,
+
+456
+00:27:23,610 --> 00:27:26,240
+the same procedure.
+
+457
+00:27:26,240 --> 00:27:27,430
+And this is an important idea.
+
+458
+00:27:27,430 --> 00:27:30,700
+The reason why we had such
+things like that is a kind of
+
+459
+00:27:30,700 --> 00:27:31,500
+modularity.
+
+460
+00:27:31,500 --> 00:27:34,800
+If two people are writing
+programs, and they work
+
+461
+00:27:34,800 --> 00:27:38,150
+together, it shouldn't matter
+what names they use internal
+
+462
+00:27:38,150 --> 00:27:42,490
+to their own little machines
+that they're building.
+
+463
+00:27:42,490 --> 00:27:45,960
+And so, what I'm really telling
+you there, is that,
+
+464
+00:27:45,960 --> 00:27:49,490
+for example, this is equivalent
+to that procedure
+
+465
+00:27:49,490 --> 00:27:54,260
+of one argument y which uses
+that procedure of one argument
+
+466
+00:27:54,260 --> 00:28:01,200
+d which multiplies z by y.
+
+467
+00:28:01,200 --> 00:28:03,570
+Because nobody cares what
+I used in here.
+
+468
+00:28:03,570 --> 00:28:06,270
+
+
+469
+00:28:06,270 --> 00:28:08,880
+It's a nice example.
+
+470
+00:28:08,880 --> 00:28:15,320
+On the other hand, I have some
+variables that are not bound.
+
+471
+00:28:15,320 --> 00:28:22,450
+For example, that procedure
+of one argument x which
+
+472
+00:28:22,450 --> 00:28:27,390
+multiplies x by y.
+
+473
+00:28:27,390 --> 00:28:32,370
+In this case, y is not bound.
+
+474
+00:28:32,370 --> 00:28:36,440
+Supposing y had the value three,
+and z had the value
+
+475
+00:28:36,440 --> 00:28:41,420
+four, then this procedure
+would be the thing that
+
+476
+00:28:41,420 --> 00:28:44,910
+multiplies its argument
+by three.
+
+477
+00:28:44,910 --> 00:28:47,793
+If I were to replace every
+instance of y with z, I would
+
+478
+00:28:47,793 --> 00:28:50,190
+have a different procedure
+which multiplies every
+
+479
+00:28:50,190 --> 00:28:53,491
+argument that's given by four.
+
+480
+00:28:53,491 --> 00:28:57,810
+And, in fact, we have a name
+for such a variable.
+
+481
+00:28:57,810 --> 00:29:03,680
+Here, we say that a variable, v,
+is free in the expression,
+
+482
+00:29:03,680 --> 00:29:06,200
+e, if the meaning of the
+expression, e, is changed by
+
+483
+00:29:06,200 --> 00:29:09,355
+the uniform replacement of a
+variable, w, not occurring in
+
+484
+00:29:09,355 --> 00:29:13,120
+e for every occurrence
+of v and e.
+
+485
+00:29:13,120 --> 00:29:20,680
+So that's why this variable
+over here,
+
+486
+00:29:20,680 --> 00:29:22,525
+y, is a free variable.
+
+487
+00:29:22,525 --> 00:29:29,010
+
+
+488
+00:29:29,010 --> 00:29:33,610
+And so free variables
+in this expression--
+
+489
+00:29:33,610 --> 00:29:38,690
+And other examples of that is
+that procedure of one argument
+
+490
+00:29:38,690 --> 00:29:43,160
+y, which is just what we had
+before, which uses that
+
+491
+00:29:43,160 --> 00:29:48,130
+procedure of one argument x
+that multiplies x by y--
+
+492
+00:29:48,130 --> 00:29:51,540
+
+
+493
+00:29:51,540 --> 00:29:52,790
+use that on three.
+
+494
+00:29:52,790 --> 00:29:56,940
+
+
+495
+00:29:56,940 --> 00:30:00,060
+This procedure has
+a free variable
+
+496
+00:30:00,060 --> 00:30:01,795
+in it which is asterisk.
+
+497
+00:30:01,795 --> 00:30:05,010
+
+
+498
+00:30:05,010 --> 00:30:07,170
+See, because, if that has
+a normal meaning of
+
+499
+00:30:07,170 --> 00:30:11,360
+multiplication, then if I were
+to replace uniformly all
+
+500
+00:30:11,360 --> 00:30:15,770
+asterisks with pluses, then the
+meaning of this expression
+
+501
+00:30:15,770 --> 00:30:17,020
+would change.
+
+502
+00:30:17,020 --> 00:30:19,360
+
+
+503
+00:30:19,360 --> 00:30:22,850
+That's what you mean
+by a free variable.
+
+504
+00:30:22,850 --> 00:30:26,350
+So, so far you've learned some
+logician words which describe
+
+505
+00:30:26,350 --> 00:30:29,020
+the way names are used.
+
+506
+00:30:29,020 --> 00:30:32,490
+Now, we have to do a little bit
+more playing around here,
+
+507
+00:30:32,490 --> 00:30:35,200
+a little bit more.
+
+508
+00:30:35,200 --> 00:30:38,600
+I want to tell you about the
+regions are over which
+
+509
+00:30:38,600 --> 00:30:39,850
+variables are defined.
+
+510
+00:30:39,850 --> 00:30:42,270
+
+
+511
+00:30:42,270 --> 00:30:45,260
+You see, we've been very
+informal about this up till
+
+512
+00:30:45,260 --> 00:30:48,870
+now, and, of course, many of you
+have probably understood
+
+513
+00:30:48,870 --> 00:30:51,960
+very clearly or most of you,
+that the x that's being
+
+514
+00:30:51,960 --> 00:30:55,170
+declared here is defined
+only in here.
+
+515
+00:30:55,170 --> 00:30:58,250
+
+
+516
+00:30:58,250 --> 00:31:03,580
+This x is the defined only in
+here, and this y is defined
+
+517
+00:31:03,580 --> 00:31:04,830
+only in here.
+
+518
+00:31:04,830 --> 00:31:07,080
+
+
+519
+00:31:07,080 --> 00:31:08,400
+We have a name for
+such an idea.
+
+520
+00:31:08,400 --> 00:31:11,660
+It's called a scope.
+
+521
+00:31:11,660 --> 00:31:14,710
+And let me give you another
+piece of terminology.
+
+522
+00:31:14,710 --> 00:31:16,050
+It's a long story.
+
+523
+00:31:16,050 --> 00:31:18,850
+If x is a bound variable in
+e, then there is a lambda
+
+524
+00:31:18,850 --> 00:31:20,560
+expression where it is bound.
+
+525
+00:31:20,560 --> 00:31:23,956
+So the only way you can get a
+bound variable ultimately is
+
+526
+00:31:23,956 --> 00:31:24,970
+by lambda expression.
+
+527
+00:31:24,970 --> 00:31:28,250
+Then you may worry, does
+define quite an
+
+528
+00:31:28,250 --> 00:31:29,670
+exception to this?
+
+529
+00:31:29,670 --> 00:31:31,840
+And it turns out, we could
+always arrange things so you
+
+530
+00:31:31,840 --> 00:31:33,100
+don't need any defines.
+
+531
+00:31:33,100 --> 00:31:34,070
+And we'll see that in a while.
+
+532
+00:31:34,070 --> 00:31:36,900
+It's a very magical thing.
+
+533
+00:31:36,900 --> 00:31:39,000
+So define really can go away.
+
+534
+00:31:39,000 --> 00:31:42,650
+The really, only thing that
+makes names is lambda .
+
+535
+00:31:42,650 --> 00:31:44,350
+That's its job.
+
+536
+00:31:44,350 --> 00:31:46,865
+And what's so amazing about
+a lot of things is you can
+
+537
+00:31:46,865 --> 00:31:48,740
+compute with only lambda.
+
+538
+00:31:48,740 --> 00:31:53,910
+But, in any case, a lambda
+expression has a place where
+
+539
+00:31:53,910 --> 00:31:55,880
+it declares a variable.
+
+540
+00:31:55,880 --> 00:31:59,970
+We call it the formal parameter
+list or the bound
+
+541
+00:31:59,970 --> 00:32:03,290
+variable list. We say that the
+lambda expression binds--
+
+542
+00:32:03,290 --> 00:32:04,970
+so it's a verb--
+
+543
+00:32:04,970 --> 00:32:08,730
+binds the variables declared in
+it's found variable list.
+
+544
+00:32:08,730 --> 00:32:10,580
+In addition, those parts of
+the expression where the
+
+545
+00:32:10,580 --> 00:32:15,680
+variable is defined, which was
+declared by some declaration,
+
+546
+00:32:15,680 --> 00:32:20,400
+is called the scope
+of that variable.
+
+547
+00:32:20,400 --> 00:32:22,270
+So these are scopes.
+
+548
+00:32:22,270 --> 00:32:23,630
+This is the scope of y.
+
+549
+00:32:23,630 --> 00:32:27,140
+
+
+550
+00:32:27,140 --> 00:32:28,690
+And this is the scope of x--
+
+551
+00:32:28,690 --> 00:32:33,030
+
+
+552
+00:32:33,030 --> 00:32:34,280
+that sort of thing.
+
+553
+00:32:34,280 --> 00:32:41,460
+
+
+554
+00:32:41,460 --> 00:32:47,120
+OK, well, now we have enough
+terminology to begin to
+
+555
+00:32:47,120 --> 00:32:52,360
+understand how to make a new
+model for computation, because
+
+556
+00:32:52,360 --> 00:32:56,060
+the key thing going on here
+is that we destroyed the
+
+557
+00:32:56,060 --> 00:32:58,820
+substitution model, and we now
+have to have a model that
+
+558
+00:32:58,820 --> 00:33:03,950
+represents the names as
+referring to places.
+
+559
+00:33:03,950 --> 00:33:06,460
+Because if we are going to
+change something, then we have
+
+560
+00:33:06,460 --> 00:33:09,660
+a place where it's stored.
+
+561
+00:33:09,660 --> 00:33:14,860
+You see, if a name only refers
+to a value, and if I tried to
+
+562
+00:33:14,860 --> 00:33:19,280
+change the name's meaning,
+well, that's not clear.
+
+563
+00:33:19,280 --> 00:33:23,570
+There's nothing that is
+the place that that
+
+564
+00:33:23,570 --> 00:33:25,030
+name referred to.
+
+565
+00:33:25,030 --> 00:33:25,960
+How am I really saying it?
+
+566
+00:33:25,960 --> 00:33:28,220
+There is nothing shared
+among all of the
+
+567
+00:33:28,220 --> 00:33:29,840
+instances of that name.
+
+568
+00:33:29,840 --> 00:33:32,080
+And what we really mean,
+by a name, is that we
+
+569
+00:33:32,080 --> 00:33:34,440
+fan something out.
+
+570
+00:33:34,440 --> 00:33:37,350
+We've given something a name,
+and you have it, and you have
+
+571
+00:33:37,350 --> 00:33:39,470
+it, because I'm given you a
+reference to it, and I've
+
+572
+00:33:39,470 --> 00:33:41,130
+given you a reference to it.
+
+573
+00:33:41,130 --> 00:33:43,580
+And we'll see a lot
+about that.
+
+574
+00:33:43,580 --> 00:33:45,986
+So let me tell you about
+environments.
+
+575
+00:33:45,986 --> 00:33:52,140
+I need the overhead projection
+machine, thank you.
+
+576
+00:33:52,140 --> 00:34:01,590
+And so here is a bunch of
+environment structures.
+
+577
+00:34:01,590 --> 00:34:06,490
+An environment is a way of doing
+substitutions virtually.
+
+578
+00:34:06,490 --> 00:34:09,639
+It represents a place where
+something is stored which is
+
+579
+00:34:09,639 --> 00:34:11,409
+the substitutions that
+you haven't done.
+
+580
+00:34:11,409 --> 00:34:14,540
+
+
+581
+00:34:14,540 --> 00:34:17,639
+It's a place where everything
+accumulates, where the names
+
+582
+00:34:17,639 --> 00:34:20,600
+of the variables are associated
+with the values
+
+583
+00:34:20,600 --> 00:34:26,020
+they have such that when you
+say, what dose this name mean,
+
+584
+00:34:26,020 --> 00:34:28,090
+you look it up in
+an environment.
+
+585
+00:34:28,090 --> 00:34:32,420
+So an environment is a function,
+or a table, or
+
+586
+00:34:32,420 --> 00:34:33,290
+something like that.
+
+587
+00:34:33,290 --> 00:34:35,790
+But it's a structured
+sort of table.
+
+588
+00:34:35,790 --> 00:34:37,125
+It's made out of things
+called frames.
+
+589
+00:34:37,125 --> 00:34:41,050
+
+
+590
+00:34:41,050 --> 00:34:45,210
+Frames are pieces of
+environment, and they are
+
+591
+00:34:45,210 --> 00:34:50,270
+chained together, in some nice
+ways, by what's called parent
+
+592
+00:34:50,270 --> 00:34:53,940
+links or something like that.
+
+593
+00:34:53,940 --> 00:34:57,740
+So here, we have an environment
+structure
+
+594
+00:34:57,740 --> 00:35:00,100
+consisting of three
+environments,
+
+595
+00:35:00,100 --> 00:35:05,250
+basically, a, b, and c.
+
+596
+00:35:05,250 --> 00:35:11,480
+d is also an environment, but
+it's the same one, they share.
+
+597
+00:35:11,480 --> 00:35:14,550
+And that's the essence
+of assignment.
+
+598
+00:35:14,550 --> 00:35:18,120
+If I change a variable, a value
+of a valuable that lives
+
+599
+00:35:18,120 --> 00:35:21,950
+here, like that one, it should
+be visible from all places
+
+600
+00:35:21,950 --> 00:35:23,750
+that you're looking
+at it from.
+
+601
+00:35:23,750 --> 00:35:24,990
+Take this one, x.
+
+602
+00:35:24,990 --> 00:35:28,560
+If I change the x to four, it's
+
+603
+00:35:28,560 --> 00:35:30,340
+visible from other places.
+
+604
+00:35:30,340 --> 00:35:32,270
+But I'm not going to worry
+about that right now.
+
+605
+00:35:32,270 --> 00:35:34,590
+We're going to talk a lot about
+that in a little while.
+
+606
+00:35:34,590 --> 00:35:36,830
+What do we have here?
+
+607
+00:35:36,830 --> 00:35:37,990
+Well, these are called frames.
+
+608
+00:35:37,990 --> 00:35:43,270
+Here is a frame, here's a frame,
+and here's a frame.
+
+609
+00:35:43,270 --> 00:35:47,040
+a is an environment which
+consists of the table which is
+
+610
+00:35:47,040 --> 00:35:52,570
+frame two, followed by the
+table labeled frame one.
+
+611
+00:35:52,570 --> 00:35:59,280
+And, in this environment, in
+say this environment, frame
+
+612
+00:35:59,280 --> 00:36:04,150
+two, x and y are bound.
+
+613
+00:36:04,150 --> 00:36:05,920
+They have values.
+
+614
+00:36:05,920 --> 00:36:07,290
+Sorry, in frame one--
+
+615
+00:36:07,290 --> 00:36:15,340
+In frame two, z is bound, and
+x is bound, and y is bound,
+
+616
+00:36:15,340 --> 00:36:18,560
+but the value of x that we see,
+looking from this point
+
+617
+00:36:18,560 --> 00:36:20,940
+of view, is this x.
+
+618
+00:36:20,940 --> 00:36:24,940
+It's x is seven, rather than
+this one which is three.
+
+619
+00:36:24,940 --> 00:36:27,660
+We say that this x
+shadows this x.
+
+620
+00:36:27,660 --> 00:36:31,070
+
+
+621
+00:36:31,070 --> 00:36:33,320
+From environment three--
+
+622
+00:36:33,320 --> 00:36:36,460
+from frame three, from
+environment b, which refers to
+
+623
+00:36:36,460 --> 00:36:42,155
+frame three, we have variables
+n and y bound and also x.
+
+624
+00:36:42,155 --> 00:36:44,740
+
+
+625
+00:36:44,740 --> 00:36:48,630
+This y shadow this one.
+
+626
+00:36:48,630 --> 00:36:50,580
+So the value, looking
+from this point of
+
+627
+00:36:50,580 --> 00:36:53,410
+view, of y is two.
+
+628
+00:36:53,410 --> 00:36:54,900
+The value for looking
+from this point of
+
+629
+00:36:54,900 --> 00:36:56,500
+view and m is one.
+
+630
+00:36:56,500 --> 00:36:57,620
+And the value, looking
+from this point of
+
+631
+00:36:57,620 --> 00:36:58,870
+view, of x is three.
+
+632
+00:36:58,870 --> 00:37:02,310
+
+
+633
+00:37:02,310 --> 00:37:04,300
+So there we have a very
+simple environment
+
+634
+00:37:04,300 --> 00:37:06,340
+structure made out of frames.
+
+635
+00:37:06,340 --> 00:37:10,990
+These correspond to the
+applications of procedures.
+
+636
+00:37:10,990 --> 00:37:14,390
+And we'll see that
+in a second.
+
+637
+00:37:14,390 --> 00:37:16,860
+So now I have to make you some
+other nice little structure
+
+638
+00:37:16,860 --> 00:37:18,110
+that we build.
+
+639
+00:37:18,110 --> 00:37:20,870
+
+
+640
+00:37:20,870 --> 00:37:25,820
+Next slide, we see an object,
+which I'm going to draw
+
+641
+00:37:25,820 --> 00:37:27,850
+procedures.
+
+642
+00:37:27,850 --> 00:37:30,190
+This is a procedure.
+
+643
+00:37:30,190 --> 00:37:33,150
+A procedure is made
+out of two parts.
+
+644
+00:37:33,150 --> 00:37:34,515
+It's sort of like a cons.
+
+645
+00:37:34,515 --> 00:37:37,210
+
+
+646
+00:37:37,210 --> 00:37:38,460
+However, it's the two parts.
+
+647
+00:37:38,460 --> 00:37:40,820
+
+
+648
+00:37:40,820 --> 00:37:46,410
+The first part refers to some
+code, something that can be
+
+649
+00:37:46,410 --> 00:37:48,940
+executed, a set of instructions,
+if you will.
+
+650
+00:37:48,940 --> 00:37:50,750
+You can think of it that way.
+
+651
+00:37:50,750 --> 00:37:53,830
+And the second part is
+the environment.
+
+652
+00:37:53,830 --> 00:37:57,250
+The procedure is the
+whole thing.
+
+653
+00:37:57,250 --> 00:38:01,420
+And we're going to have to use
+this to capture the values of
+
+654
+00:38:01,420 --> 00:38:06,250
+the free variables that occur
+in the procedure.
+
+655
+00:38:06,250 --> 00:38:08,760
+If a variable occurs in the
+procedure it's either bound in
+
+656
+00:38:08,760 --> 00:38:11,170
+that procedure or free.
+
+657
+00:38:11,170 --> 00:38:16,930
+If it's bound, then the value
+will somehow be easy to find.
+
+658
+00:38:16,930 --> 00:38:19,070
+It will be in some easy
+environment to get at.
+
+659
+00:38:19,070 --> 00:38:21,800
+If it's free, we're going to
+have to have something that
+
+660
+00:38:21,800 --> 00:38:24,010
+goes with the procedure that
+says where we'll go
+
+661
+00:38:24,010 --> 00:38:27,100
+look for its value.
+
+662
+00:38:27,100 --> 00:38:32,290
+And the reasons why are not
+obvious yet, but will be soon.
+
+663
+00:38:32,290 --> 00:38:33,760
+So here's a procedure object.
+
+664
+00:38:33,760 --> 00:38:40,200
+It's a composite object
+consisting of a piece of code
+
+665
+00:38:40,200 --> 00:38:42,750
+and a environment structure.
+
+666
+00:38:42,750 --> 00:38:46,400
+Now I will tell you the new
+rules, the complete new rules,
+
+667
+00:38:46,400 --> 00:38:47,650
+for evaluation.
+
+668
+00:38:47,650 --> 00:38:50,690
+
+
+669
+00:38:50,690 --> 00:38:53,250
+The first rule is-- there's
+only two of them.
+
+670
+00:38:53,250 --> 00:38:57,250
+These correspond to the
+substitution model rules.
+
+671
+00:38:57,250 --> 00:39:00,830
+And the first one has to do
+with how do you apply a
+
+672
+00:39:00,830 --> 00:39:02,570
+procedure to its arguments?
+
+673
+00:39:02,570 --> 00:39:05,610
+
+
+674
+00:39:05,610 --> 00:39:08,890
+And a procedural object is
+applied to a set of arguments
+
+675
+00:39:08,890 --> 00:39:11,270
+by constructing a new frame.
+
+676
+00:39:11,270 --> 00:39:13,860
+That frame will contain the
+mapping of the former
+
+677
+00:39:13,860 --> 00:39:16,540
+parameters to the actual
+parameters of the arguments
+
+678
+00:39:16,540 --> 00:39:21,490
+that were supplied
+in the call.
+
+679
+00:39:21,490 --> 00:39:25,320
+As you know, when we make up
+a call to a procedure like
+
+680
+00:39:25,320 --> 00:39:28,670
+lambda x times x y, and we call
+that with the argument
+
+681
+00:39:28,670 --> 00:39:31,280
+three, then we're going
+to need some
+
+682
+00:39:31,280 --> 00:39:34,290
+mapping of x to three.
+
+683
+00:39:34,290 --> 00:39:38,490
+It's the same thing as later
+substituting, if you will, the
+
+684
+00:39:38,490 --> 00:39:41,990
+three for the x in
+the old model.
+
+685
+00:39:41,990 --> 00:39:45,160
+So I'm going to build a frame
+which contains x equals three
+
+686
+00:39:45,160 --> 00:39:46,550
+as the information
+in that frame.
+
+687
+00:39:46,550 --> 00:39:49,230
+
+
+688
+00:39:49,230 --> 00:39:52,640
+Now, the body of the procedure
+will then have to be evaluated
+
+689
+00:39:52,640 --> 00:39:54,170
+which is this.
+
+690
+00:39:54,170 --> 00:40:04,710
+I will be evaluated in an
+environment which is
+
+691
+00:40:04,710 --> 00:40:08,780
+constructed by adjoining the new
+frame that we just made to
+
+692
+00:40:08,780 --> 00:40:10,450
+the environment which
+was part of the
+
+693
+00:40:10,450 --> 00:40:13,100
+procedure that we applied.
+
+694
+00:40:13,100 --> 00:40:15,670
+So I'm going to make a little
+example of that here.
+
+695
+00:40:15,670 --> 00:40:19,220
+
+
+696
+00:40:19,220 --> 00:40:25,110
+Supposing I have some
+environment.
+
+697
+00:40:25,110 --> 00:40:27,980
+Here's a frame which
+represents it.
+
+698
+00:40:27,980 --> 00:40:30,190
+And some procedure-- which I'm
+going to draw with circles
+
+699
+00:40:30,190 --> 00:40:33,370
+here because it's easier
+than little triangles--
+
+700
+00:40:33,370 --> 00:40:38,940
+Sorry, those are rhombuses,
+rhomboidal little pieces of
+
+701
+00:40:38,940 --> 00:40:42,710
+fruit jelly or something.
+
+702
+00:40:42,710 --> 00:40:45,960
+So here's a procedure which
+takes this environment.
+
+703
+00:40:45,960 --> 00:40:48,920
+And the procedure has a piece
+of code, which is a lambda
+
+704
+00:40:48,920 --> 00:40:55,600
+expression, which binds x and
+y and then executes an
+
+705
+00:40:55,600 --> 00:40:58,010
+expression, e.
+
+706
+00:40:58,010 --> 00:40:59,345
+And this is the procedure.
+
+707
+00:40:59,345 --> 00:41:01,470
+We'll call it p.
+
+708
+00:41:01,470 --> 00:41:06,490
+I wish to apply that procedure
+to three and four.
+
+709
+00:41:06,490 --> 00:41:09,790
+So I want to do p of
+three and four.
+
+710
+00:41:09,790 --> 00:41:13,210
+What I'm going to do, of course,
+is make a new frame.
+
+711
+00:41:13,210 --> 00:41:18,630
+I build a frame which contains
+x equals three,
+
+712
+00:41:18,630 --> 00:41:21,740
+and y equals four.
+
+713
+00:41:21,740 --> 00:41:27,680
+I'm going to connect that frame
+to this frame over here.
+
+714
+00:41:27,680 --> 00:41:31,940
+And then this environment, with
+I will call b, is the
+
+715
+00:41:31,940 --> 00:41:34,880
+environment in which I will
+evaluate the body of e.
+
+716
+00:41:34,880 --> 00:41:39,940
+
+
+717
+00:41:39,940 --> 00:41:46,890
+Now, e may contain references
+to x and y and other things.
+
+718
+00:41:46,890 --> 00:41:50,790
+x and y will have values
+right here.
+
+719
+00:41:50,790 --> 00:41:55,040
+Other things will have
+their values here.
+
+720
+00:41:55,040 --> 00:41:56,920
+How do we get this frame?
+
+721
+00:41:56,920 --> 00:42:00,110
+That we do by the construction
+of procedures which is the
+
+722
+00:42:00,110 --> 00:42:01,980
+other rule.
+
+723
+00:42:01,980 --> 00:42:05,500
+And I think that's
+the next slide.
+
+724
+00:42:05,500 --> 00:42:10,000
+Rule two, when a lambda
+expression is evaluated,
+
+725
+00:42:10,000 --> 00:42:11,510
+relative to a particular
+environment--
+
+726
+00:42:11,510 --> 00:42:14,150
+
+
+727
+00:42:14,150 --> 00:42:17,470
+See, the way I get a procedure
+is by evaluating the lambda
+
+728
+00:42:17,470 --> 00:42:18,300
+expression.
+
+729
+00:42:18,300 --> 00:42:20,110
+Here's a lambda expression.
+
+730
+00:42:20,110 --> 00:42:22,880
+By evaluating it, I get
+a procedure which I
+
+731
+00:42:22,880 --> 00:42:25,170
+can apply to three.
+
+732
+00:42:25,170 --> 00:42:28,710
+Now this lambda expression is
+evaluated in an environment
+
+733
+00:42:28,710 --> 00:42:31,820
+where y is defined.
+
+734
+00:42:31,820 --> 00:42:33,760
+And I want the body of
+this which contains a
+
+735
+00:42:33,760 --> 00:42:36,680
+free version of y.
+
+736
+00:42:36,680 --> 00:42:41,790
+y is free in here, it's bound
+over the whole thing, but it's
+
+737
+00:42:41,790 --> 00:42:43,350
+free over here.
+
+738
+00:42:43,350 --> 00:42:47,440
+I want that y to be this one.
+
+739
+00:42:47,440 --> 00:42:53,150
+I evaluate this body of this
+procedure in the environment
+
+740
+00:42:53,150 --> 00:42:55,470
+where y was created.
+
+741
+00:42:55,470 --> 00:42:57,800
+That's this kind of thing,
+because that was done by
+
+742
+00:42:57,800 --> 00:42:59,140
+application.
+
+743
+00:42:59,140 --> 00:43:03,490
+Now, if I ever want to look up
+the value of y, I have to know
+
+744
+00:43:03,490 --> 00:43:04,370
+where it is.
+
+745
+00:43:04,370 --> 00:43:07,440
+Therefore, this procedural was
+created, the creation of the
+
+746
+00:43:07,440 --> 00:43:09,530
+procedure which is the result
+of evaluating that lambda
+
+747
+00:43:09,530 --> 00:43:14,480
+expression had better capture
+a pointer or remember the
+
+748
+00:43:14,480 --> 00:43:18,110
+frame in which y was bound.
+
+749
+00:43:18,110 --> 00:43:22,100
+So that's what this rule
+is telling us.
+
+750
+00:43:22,100 --> 00:43:28,610
+So, for example, if I happen
+to be evaluating a lambda
+
+751
+00:43:28,610 --> 00:43:37,370
+expression, lambda expression in
+e, lambda of say, x and y,
+
+752
+00:43:37,370 --> 00:43:43,020
+let's call it g in e,
+evaluating that.
+
+753
+00:43:43,020 --> 00:43:47,190
+Well, all that means is I now
+construct a procedure object.
+
+754
+00:43:47,190 --> 00:43:48,990
+e is some environment.
+
+755
+00:43:48,990 --> 00:43:51,920
+e is something which has
+a pointer to it.
+
+756
+00:43:51,920 --> 00:43:56,120
+I construct a procedure object
+that points up to that
+
+757
+00:43:56,120 --> 00:44:01,830
+environment, where the code of
+that is a lambda expression or
+
+758
+00:44:01,830 --> 00:44:03,180
+whatever that translates into.
+
+759
+00:44:03,180 --> 00:44:06,330
+
+
+760
+00:44:06,330 --> 00:44:07,580
+And this is the procedure.
+
+761
+00:44:07,580 --> 00:44:12,380
+
+
+762
+00:44:12,380 --> 00:44:17,640
+So this produces for me-- this
+object here, this environment
+
+763
+00:44:17,640 --> 00:44:21,140
+pointer, captures the place
+where this lambda expression
+
+764
+00:44:21,140 --> 00:44:25,820
+was evaluated, where the
+definition was used, where the
+
+765
+00:44:25,820 --> 00:44:26,900
+definition was used to make a
+
+766
+00:44:26,900 --> 00:44:32,950
+procedure, to make the procedure.
+
+767
+00:44:32,950 --> 00:44:35,190
+So it picks up the environment
+from the place where that
+
+768
+00:44:35,190 --> 00:44:39,680
+procedure was defined, stores
+it in the procedure itself,
+
+769
+00:44:39,680 --> 00:44:42,210
+and then when the procedure is
+used, the environment where it
+
+770
+00:44:42,210 --> 00:44:44,990
+was defined is extended
+with the new frame.
+
+771
+00:44:44,990 --> 00:44:48,740
+
+
+772
+00:44:48,740 --> 00:44:51,170
+So this gives us a locus
+for putting where a
+
+773
+00:44:51,170 --> 00:44:53,090
+variable has a value.
+
+774
+00:44:53,090 --> 00:44:55,700
+And, for example, if there are
+lots of guys pointing in at
+
+775
+00:44:55,700 --> 00:45:01,430
+that environment, then they
+share that place.
+
+776
+00:45:01,430 --> 00:45:03,810
+And we'll see more
+of that shortly.
+
+777
+00:45:03,810 --> 00:45:08,940
+Well, now you have a new model
+for understanding the
+
+778
+00:45:08,940 --> 00:45:12,420
+execution of programs. I suppose
+I'll take questions
+
+779
+00:45:12,420 --> 00:45:14,970
+now, and then we'll go on and
+use that for something.
+
+780
+00:45:14,970 --> 00:45:17,802
+
+
+781
+00:45:17,802 --> 00:45:21,870
+AUDIENCE: Is it right to say
+then, the environment is that
+
+782
+00:45:21,870 --> 00:45:23,695
+linked chain of frames--
+
+783
+00:45:23,695 --> 00:45:24,580
+PROFESSOR: That's right.
+
+784
+00:45:24,580 --> 00:45:25,650
+AUDIENCE: starting with--
+
+785
+00:45:25,650 --> 00:45:27,076
+working all the way back?
+
+786
+00:45:27,076 --> 00:45:29,400
+PROFESSOR: Yes, the environment
+is a sequence of
+
+787
+00:45:29,400 --> 00:45:32,470
+frames linked together.
+
+788
+00:45:32,470 --> 00:45:34,700
+And the way I like to think
+about it, it's the pointer to
+
+789
+00:45:34,700 --> 00:45:38,150
+the first one, because
+once you've got that
+
+790
+00:45:38,150 --> 00:45:39,400
+you've got them all.
+
+791
+00:45:39,400 --> 00:45:44,080
+
+
+792
+00:45:44,080 --> 00:45:44,995
+Anybody else?
+
+793
+00:45:44,995 --> 00:45:47,800
+AUDIENCE: Is it possible to
+evaluate a procedure or to
+
+794
+00:45:47,800 --> 00:45:49,300
+define a procedure in two
+different environments such
+
+795
+00:45:49,300 --> 00:45:51,580
+that it will behave
+differently, and
+
+796
+00:45:51,580 --> 00:45:52,140
+have pointers to both--
+
+797
+00:45:52,140 --> 00:45:53,600
+PROFESSOR: Oh, yes.
+
+798
+00:45:53,600 --> 00:45:55,260
+The same procedure is not going
+to have two different
+
+799
+00:45:55,260 --> 00:45:57,290
+environments.
+
+800
+00:45:57,290 --> 00:46:01,895
+The same code, the same lambda
+expression can be evaluated in
+
+801
+00:46:01,895 --> 00:46:03,430
+two environments producing
+two different procedures.
+
+802
+00:46:03,430 --> 00:46:06,220
+
+
+803
+00:46:06,220 --> 00:46:07,140
+Each procedure--
+
+804
+00:46:07,140 --> 00:46:08,690
+AUDIENCE: Their definition
+has the same name.
+
+805
+00:46:08,690 --> 00:46:09,170
+Their operation--
+
+806
+00:46:09,170 --> 00:46:11,070
+PROFESSOR: The definition is
+written the same, with the
+
+807
+00:46:11,070 --> 00:46:12,570
+same characters.
+
+808
+00:46:12,570 --> 00:46:16,700
+I can evaluate that set of
+characters, whatever, that
+
+809
+00:46:16,700 --> 00:46:19,530
+list structure that defines,
+that is the textual
+
+810
+00:46:19,530 --> 00:46:21,340
+representation.
+
+811
+00:46:21,340 --> 00:46:23,650
+I can evaluate that in two
+different environments
+
+812
+00:46:23,650 --> 00:46:25,650
+producing two different
+procedures.
+
+813
+00:46:25,650 --> 00:46:31,700
+Each of those procedures has
+its own local sets of
+
+814
+00:46:31,700 --> 00:46:33,490
+variables, and we'll
+see that right now.
+
+815
+00:46:33,490 --> 00:46:36,770
+
+
+816
+00:46:36,770 --> 00:46:38,020
+Anybody else?
+
+817
+00:46:38,020 --> 00:46:42,670
+
+
+818
+00:46:42,670 --> 00:46:43,280
+OK, thank you.
+
+819
+00:46:43,280 --> 00:46:44,530
+Let's take a break.
+
+820
+00:46:44,530 --> 00:46:48,750
+
+
+821
+00:46:48,750 --> 00:47:22,870
+[MUSIC PLAYING]
+
+822
+00:47:22,870 --> 00:47:26,670
+Well, now I've done this
+terrible thing to you.
+
+823
+00:47:26,670 --> 00:47:34,600
+I've introduced a very
+complicated thing, assignment,
+
+824
+00:47:34,600 --> 00:47:36,680
+which destroys most of the
+interesting mathematical
+
+825
+00:47:36,680 --> 00:47:43,270
+properties of our programs. Why
+should I have done this?
+
+826
+00:47:43,270 --> 00:47:46,590
+What possible good
+could this do?
+
+827
+00:47:46,590 --> 00:47:52,490
+Clearly not a nice thing, so I
+better have a good excuse.
+
+828
+00:47:52,490 --> 00:47:56,150
+Well, let's do a little bit of
+playing, first of all, with
+
+829
+00:47:56,150 --> 00:47:58,870
+some very interesting programs
+that have assignment.
+
+830
+00:47:58,870 --> 00:48:02,000
+Understand something special
+about them that makes them
+
+831
+00:48:02,000 --> 00:48:04,820
+somewhat valuable.
+
+832
+00:48:04,820 --> 00:48:08,110
+Start with a very simple program
+which I'm going to
+
+833
+00:48:08,110 --> 00:48:10,670
+call make-counter.
+
+834
+00:48:10,670 --> 00:48:26,480
+I'm going to define make-counter
+to be a procedure
+
+835
+00:48:26,480 --> 00:48:31,280
+of one argument n which
+returns as its value a
+
+836
+00:48:31,280 --> 00:48:34,390
+procedure of no arguments--
+
+837
+00:48:34,390 --> 00:48:36,840
+a procedure that produces
+a procedure--
+
+838
+00:48:36,840 --> 00:48:48,600
+which sets n to the increment
+of n and returns
+
+839
+00:48:48,600 --> 00:48:50,120
+that value of n.
+
+840
+00:48:50,120 --> 00:48:55,520
+
+
+841
+00:48:55,520 --> 00:48:57,560
+Now we're going to investigate
+the behavior of this.
+
+842
+00:48:57,560 --> 00:48:59,840
+It's a sort of interesting
+thing.
+
+843
+00:48:59,840 --> 00:49:02,150
+In order to investigate the
+behavior, I have to make an
+
+844
+00:49:02,150 --> 00:49:05,130
+environment model, because
+we can't understand
+
+845
+00:49:05,130 --> 00:49:06,380
+this any other way.
+
+846
+00:49:06,380 --> 00:49:08,630
+
+
+847
+00:49:08,630 --> 00:49:10,040
+So let's just do that.
+
+848
+00:49:10,040 --> 00:49:13,005
+We start out with
+some sort of--
+
+849
+00:49:13,005 --> 00:49:15,270
+let's say there is a global
+environment that the machine
+
+850
+00:49:15,270 --> 00:49:16,240
+is born with.
+
+851
+00:49:16,240 --> 00:49:19,720
+Global we'll call it.
+
+852
+00:49:19,720 --> 00:49:24,530
+And it's going to have in it
+a bunch of initial things.
+
+853
+00:49:24,530 --> 00:49:25,820
+We all know what it's got.
+
+854
+00:49:25,820 --> 00:49:32,930
+It's got things in it like
+say, plus, and times, and
+
+855
+00:49:32,930 --> 00:49:39,330
+quotient, and difference,
+and CAR, and et
+
+856
+00:49:39,330 --> 00:49:42,960
+cetera, lots of things.
+
+857
+00:49:42,960 --> 00:49:46,160
+I don't know what they are, some
+various squiggles that
+
+858
+00:49:46,160 --> 00:49:51,290
+are the things the machine
+is born with.
+
+859
+00:49:51,290 --> 00:49:56,350
+And by doing the definition
+here, what I plan to do--
+
+860
+00:49:56,350 --> 00:49:57,390
+Well, what am I doing?
+
+861
+00:49:57,390 --> 00:49:59,780
+I'm doing this relative to
+the global environment.
+
+862
+00:49:59,780 --> 00:50:03,580
+So here's my environment
+pointer.
+
+863
+00:50:03,580 --> 00:50:05,980
+In order to do that I have
+to evaluate this lambda
+
+864
+00:50:05,980 --> 00:50:08,270
+expression.
+
+865
+00:50:08,270 --> 00:50:11,490
+That means I make a
+procedure object.
+
+866
+00:50:11,490 --> 00:50:13,190
+So I'm going to make a procedure
+object here.
+
+867
+00:50:13,190 --> 00:50:17,400
+
+
+868
+00:50:17,400 --> 00:50:21,430
+And the procedure object has, as
+the place it's defined, the
+
+869
+00:50:21,430 --> 00:50:23,820
+global environment.
+
+870
+00:50:23,820 --> 00:50:29,880
+The procedure object contains
+some code that represents a
+
+871
+00:50:29,880 --> 00:50:33,470
+procedure of one argument n
+which returns a procedure of
+
+872
+00:50:33,470 --> 00:50:35,340
+no arguments which
+does something.
+
+873
+00:50:35,340 --> 00:50:38,320
+
+
+874
+00:50:38,320 --> 00:50:44,580
+And the define is a way of
+changing this environment, so
+
+875
+00:50:44,580 --> 00:50:53,230
+that I now add to it a
+make-counter, a special rule
+
+876
+00:50:53,230 --> 00:50:55,470
+for the special thing defined.
+
+877
+00:50:55,470 --> 00:50:59,810
+But what that is, is
+it gives me that
+
+878
+00:50:59,810 --> 00:51:03,840
+pointer to that procedure.
+
+879
+00:51:03,840 --> 00:51:06,370
+So now the global environment
+contains make-counter as well.
+
+880
+00:51:06,370 --> 00:51:09,330
+
+
+881
+00:51:09,330 --> 00:51:11,800
+Now, we're going to do
+some operations.
+
+882
+00:51:11,800 --> 00:51:14,596
+I'm going to use this to
+make some counters.
+
+883
+00:51:14,596 --> 00:51:17,140
+We'll see what a counter is.
+
+884
+00:51:17,140 --> 00:51:26,700
+So let's define c1 to be a
+counter beginning at 0.
+
+885
+00:51:26,700 --> 00:51:35,440
+
+
+886
+00:51:35,440 --> 00:51:39,660
+Well, we know how to do this
+now, according to the model.
+
+887
+00:51:39,660 --> 00:51:43,340
+I have to evaluate the
+expression make-counter in the
+
+888
+00:51:43,340 --> 00:51:47,900
+global environment,
+make-counter of 0.
+
+889
+00:51:47,900 --> 00:51:50,785
+Well, I look up make-counter and
+see that it's a procedure.
+
+890
+00:51:50,785 --> 00:51:53,630
+
+
+891
+00:51:53,630 --> 00:51:56,010
+I'm going to have to apply
+that procedure.
+
+892
+00:51:56,010 --> 00:51:59,820
+The way I apply the procedure
+is by constructing a frame.
+
+893
+00:51:59,820 --> 00:52:02,400
+
+
+894
+00:52:02,400 --> 00:52:12,030
+So I construct a frame which has
+a value for n in it which
+
+895
+00:52:12,030 --> 00:52:16,850
+is 0, and the parent environment
+is the one which
+
+896
+00:52:16,850 --> 00:52:18,810
+is the environment of definition
+of make-counter.
+
+897
+00:52:18,810 --> 00:52:23,890
+
+
+898
+00:52:23,890 --> 00:52:28,400
+So I've made an environment by
+applying make-counter to 0.
+
+899
+00:52:28,400 --> 00:52:31,580
+
+
+900
+00:52:31,580 --> 00:52:34,700
+Now, I have to evaluate the body
+of make-counter, which is
+
+901
+00:52:34,700 --> 00:52:37,455
+this lambda expression,
+in that environment.
+
+902
+00:52:37,455 --> 00:52:40,730
+
+
+903
+00:52:40,730 --> 00:52:43,770
+Well evaluating this body,
+this body is a lambda
+
+904
+00:52:43,770 --> 00:52:46,360
+expression.
+
+905
+00:52:46,360 --> 00:52:49,570
+Evaluate a lambda expression
+means make a procedure object.
+
+906
+00:52:49,570 --> 00:52:50,820
+So I'm going to make
+a procedure object.
+
+907
+00:52:50,820 --> 00:52:56,840
+
+
+908
+00:52:56,840 --> 00:52:59,620
+And that procedure object has
+the environment it was defined
+
+909
+00:52:59,620 --> 00:53:07,656
+in being that, where n
+was defined to be 0.
+
+910
+00:53:07,656 --> 00:53:11,370
+And it has some code, which is
+the procedure of no arguments
+
+911
+00:53:11,370 --> 00:53:17,622
+which does something, that sets
+something, and returns n.
+
+912
+00:53:17,622 --> 00:53:22,680
+And this thing is going to be
+the object, which in the
+
+913
+00:53:22,680 --> 00:53:26,020
+global environment, will
+have the name c1.
+
+914
+00:53:26,020 --> 00:53:32,625
+So we construct a name here, c1,
+and say that equals that.
+
+915
+00:53:32,625 --> 00:53:35,560
+
+
+916
+00:53:35,560 --> 00:53:50,790
+Now, but also make another
+counter, c2 to be make-counter
+
+917
+00:53:50,790 --> 00:53:53,868
+say, starting with 10.
+
+918
+00:53:53,868 --> 00:53:57,270
+Then I do essentially
+the same thing.
+
+919
+00:53:57,270 --> 00:53:59,910
+I apply the make-counter
+procedure, which I got from
+
+920
+00:53:59,910 --> 00:54:05,690
+here, to make another frame
+with n being 10.
+
+921
+00:54:05,690 --> 00:54:10,050
+That frame has the global
+environment as its parent.
+
+922
+00:54:10,050 --> 00:54:16,750
+I then construct a procedure
+which has that as it's frame
+
+923
+00:54:16,750 --> 00:54:18,000
+of definition.
+
+924
+00:54:18,000 --> 00:54:20,440
+
+
+925
+00:54:20,440 --> 00:54:23,240
+The code of it is the procedure
+of no arguments
+
+926
+00:54:23,240 --> 00:54:25,390
+which does something.
+
+927
+00:54:25,390 --> 00:54:28,700
+And it does a set, and so on.
+
+928
+00:54:28,700 --> 00:54:31,510
+And n comes out.
+
+929
+00:54:31,510 --> 00:54:36,950
+And c2 is this.
+
+930
+00:54:36,950 --> 00:54:38,780
+Well, you're already beginning
+to see something fairly
+
+931
+00:54:38,780 --> 00:54:40,200
+interesting.
+
+932
+00:54:40,200 --> 00:54:42,880
+There are two n's here.
+
+933
+00:54:42,880 --> 00:54:46,330
+They are not one n.
+
+934
+00:54:46,330 --> 00:54:49,310
+Each time I called make-counter,
+I made another
+
+935
+00:54:49,310 --> 00:54:52,520
+instance of n.
+
+936
+00:54:52,520 --> 00:54:54,370
+These are distinct and separate
+from each other.
+
+937
+00:54:54,370 --> 00:54:57,880
+
+
+938
+00:54:57,880 --> 00:55:00,783
+Now, let's do some execution,
+use those counters.
+
+939
+00:55:00,783 --> 00:55:02,735
+I'm going to use
+those counters.
+
+940
+00:55:02,735 --> 00:55:05,990
+
+
+941
+00:55:05,990 --> 00:55:15,900
+Well, what happens if I
+say, c1 at this point?
+
+942
+00:55:15,900 --> 00:55:18,420
+Well, I go over here,
+and I say, oh
+
+943
+00:55:18,420 --> 00:55:20,840
+yes, c1 is a procedure.
+
+944
+00:55:20,840 --> 00:55:23,490
+I'm going to call this procedure
+on no arguments, but
+
+945
+00:55:23,490 --> 00:55:25,060
+it has no parameters.
+
+946
+00:55:25,060 --> 00:55:27,020
+That's right.
+
+947
+00:55:27,020 --> 00:55:28,080
+What's its body?
+
+948
+00:55:28,080 --> 00:55:29,776
+Well, I have to look over
+here, because I
+
+949
+00:55:29,776 --> 00:55:30,130
+didn't write it down.
+
+950
+00:55:30,130 --> 00:55:39,050
+It said, set n to one plus n
+and return n, increment n.
+
+951
+00:55:39,050 --> 00:55:42,970
+Well, the n it sees
+is this one.
+
+952
+00:55:42,970 --> 00:55:45,490
+So I increment that n.
+
+953
+00:55:45,490 --> 00:55:50,040
+That becomes one, and I
+return the value one.
+
+954
+00:55:50,040 --> 00:55:53,050
+
+
+955
+00:55:53,050 --> 00:55:58,220
+Supposing I then called c2.
+
+956
+00:55:58,220 --> 00:55:59,820
+Well, what do I do?
+
+957
+00:55:59,820 --> 00:56:03,600
+I say c2 is this procedure which
+does the same thing, but
+
+958
+00:56:03,600 --> 00:56:05,450
+here's the n.
+
+959
+00:56:05,450 --> 00:56:11,140
+It becomes 11.
+
+960
+00:56:11,140 --> 00:56:15,980
+And so I have an 11 which
+is the value.
+
+961
+00:56:15,980 --> 00:56:18,130
+I then can say, let's
+try c1 again.
+
+962
+00:56:18,130 --> 00:56:21,580
+
+
+963
+00:56:21,580 --> 00:56:29,660
+c1 is this, that's two,
+so the answer is two.
+
+964
+00:56:29,660 --> 00:56:36,560
+And c2 gives me a 12 by the same
+method, by walking down
+
+965
+00:56:36,560 --> 00:56:38,730
+here looking at that and saying,
+here's the n, I'm
+
+966
+00:56:38,730 --> 00:56:39,980
+incrementing.
+
+967
+00:56:39,980 --> 00:56:41,630
+
+
+968
+00:56:41,630 --> 00:56:44,920
+So what I have are computational
+objects.
+
+969
+00:56:44,920 --> 00:56:49,780
+There are two counters,
+each with its own
+
+970
+00:56:49,780 --> 00:56:51,060
+independent local state.
+
+971
+00:56:51,060 --> 00:56:55,540
+
+
+972
+00:56:55,540 --> 00:56:56,650
+Let's talk about
+this a little.
+
+973
+00:56:56,650 --> 00:56:58,510
+This is a strange thing.
+
+974
+00:56:58,510 --> 00:57:01,270
+
+
+975
+00:57:01,270 --> 00:57:04,140
+What's an object?
+
+976
+00:57:04,140 --> 00:57:07,560
+It's not at all obvious
+what an object is.
+
+977
+00:57:07,560 --> 00:57:11,720
+We like to think about
+objects, because it's
+
+978
+00:57:11,720 --> 00:57:14,800
+economical to think that way.
+
+979
+00:57:14,800 --> 00:57:18,670
+It's an intellectual economy.
+
+980
+00:57:18,670 --> 00:57:21,120
+I am an object.
+
+981
+00:57:21,120 --> 00:57:23,610
+You are an object.
+
+982
+00:57:23,610 --> 00:57:25,030
+We are not the same object.
+
+983
+00:57:25,030 --> 00:57:27,600
+
+
+984
+00:57:27,600 --> 00:57:32,315
+I can divide the world into
+two parts, me and you, and
+
+985
+00:57:32,315 --> 00:57:36,600
+there's other things as well,
+such that most of the things I
+
+986
+00:57:36,600 --> 00:57:41,410
+might want to discuss about my
+workings do not involve you,
+
+987
+00:57:41,410 --> 00:57:43,790
+and most of the things I want to
+discuss about your workings
+
+988
+00:57:43,790 --> 00:57:45,750
+don't involve me.
+
+989
+00:57:45,750 --> 00:57:50,990
+I have a blood pressure, a
+temperature, a respiration
+
+990
+00:57:50,990 --> 00:57:56,900
+rate, a certain amount of
+sugar in my blood, and
+
+991
+00:57:56,900 --> 00:57:59,400
+numerous, thousands, of state
+variables-- millions actually,
+
+992
+00:57:59,400 --> 00:58:01,030
+or I don't know how many--
+
+993
+00:58:01,030 --> 00:58:03,040
+huge numbers of state variables
+in the physical
+
+994
+00:58:03,040 --> 00:58:09,240
+sense which represent the state
+of me as a particle, and
+
+995
+00:58:09,240 --> 00:58:12,770
+you have gazillions
+of them as well.
+
+996
+00:58:12,770 --> 00:58:17,290
+And most of mine are uncoupled
+to most of yours.
+
+997
+00:58:17,290 --> 00:58:21,000
+So we can compute the properties
+of me without
+
+998
+00:58:21,000 --> 00:58:23,940
+worrying too much about
+the properties of you.
+
+999
+00:58:23,940 --> 00:58:26,310
+If we had to work about both
+of us together, than the
+
+1000
+00:58:26,310 --> 00:58:28,460
+number of states that we have to
+consider is the product of
+
+1001
+00:58:28,460 --> 00:58:29,840
+the number of states you have
+and the number of states I
+
+1002
+00:58:29,840 --> 00:58:32,760
+have. But this way it's
+almost a sum.
+
+1003
+00:58:32,760 --> 00:58:36,110
+Now, indeed there are forces
+that couple us.
+
+1004
+00:58:36,110 --> 00:58:38,420
+I'm talking to you and
+your state changes.
+
+1005
+00:58:38,420 --> 00:58:41,680
+I'm looking at you and
+my state changes.
+
+1006
+00:58:41,680 --> 00:58:45,010
+Some of my state variables, a
+very few of them, therefore,
+
+1007
+00:58:45,010 --> 00:58:46,190
+are coupled to yours.
+
+1008
+00:58:46,190 --> 00:58:48,470
+If you were to suddenly yell
+very loud, my blood pressure
+
+1009
+00:58:48,470 --> 00:58:49,720
+would go up.
+
+1010
+00:58:49,720 --> 00:58:54,320
+
+
+1011
+00:58:54,320 --> 00:58:57,590
+However, and it may not be
+always appropriate to think
+
+1012
+00:58:57,590 --> 00:59:00,360
+about the world as being made
+out of independent states and
+
+1013
+00:59:00,360 --> 00:59:02,260
+independent particles.
+
+1014
+00:59:02,260 --> 00:59:05,350
+Lots of the bugs that occur in
+things like quantum mechanics,
+
+1015
+00:59:05,350 --> 00:59:07,660
+or the bugs in our minds that
+occur when we think about
+
+1016
+00:59:07,660 --> 00:59:09,840
+things like quantum mechanics,
+are due the fact that we are
+
+1017
+00:59:09,840 --> 00:59:11,910
+trying to think about things
+being broken up into
+
+1018
+00:59:11,910 --> 00:59:15,880
+independent pieces, when in
+fact there's more coupling
+
+1019
+00:59:15,880 --> 00:59:19,750
+than we see on the surface, or
+that we want to believe in,
+
+1020
+00:59:19,750 --> 00:59:22,300
+because we want to compute
+efficiently and effectively.
+
+1021
+00:59:22,300 --> 00:59:23,780
+We've been trained to
+think that way.
+
+1022
+00:59:23,780 --> 00:59:29,336
+
+
+1023
+00:59:29,336 --> 00:59:31,440
+Well, let's see.
+
+1024
+00:59:31,440 --> 00:59:35,140
+How would we know if we
+had objects at all?
+
+1025
+00:59:35,140 --> 00:59:37,690
+How can we tell if
+we have objects?
+
+1026
+00:59:37,690 --> 00:59:41,770
+Consider some possible
+optical illusions.
+
+1027
+00:59:41,770 --> 00:59:44,805
+This could be done.
+
+1028
+00:59:44,805 --> 00:59:47,970
+These pieces of chalk are not
+appropriately identical, but
+
+1029
+00:59:47,970 --> 00:59:49,520
+supposing you couldn't tell
+the difference of them by
+
+1030
+00:59:49,520 --> 00:59:52,130
+looking at them.
+
+1031
+00:59:52,130 --> 00:59:54,290
+Well, there's a possibility
+that this all a game I'm
+
+1032
+00:59:54,290 --> 00:59:55,725
+playing with mirrors.
+
+1033
+00:59:55,725 --> 00:59:59,690
+It's really the same piece
+of chalk, but you're
+
+1034
+00:59:59,690 --> 01:00:01,660
+seeing two of them.
+
+1035
+01:00:01,660 --> 01:00:05,160
+How would you know if you're
+seeing one or two?
+
+1036
+01:00:05,160 --> 01:00:07,430
+Well, there's only
+one way I know.
+
+1037
+01:00:07,430 --> 01:00:10,110
+You grab one of them and change
+it and see if the other
+
+1038
+01:00:10,110 --> 01:00:11,360
+one changed.
+
+1039
+01:00:11,360 --> 01:00:13,580
+
+
+1040
+01:00:13,580 --> 01:00:16,180
+And it didn't, so there's
+two of them.
+
+1041
+01:00:16,180 --> 01:00:19,070
+
+
+1042
+01:00:19,070 --> 01:00:20,890
+And, on the other hand, there
+is some other screwy
+
+1043
+01:00:20,890 --> 01:00:22,580
+properties of things
+like that.
+
+1044
+01:00:22,580 --> 01:00:25,040
+Like, how do we know if
+something changed?
+
+1045
+01:00:25,040 --> 01:00:28,760
+We have to look at it before
+and after the change.
+
+1046
+01:00:28,760 --> 01:00:32,200
+The change is an assignment,
+it's a moment in time.
+
+1047
+01:00:32,200 --> 01:00:34,120
+But that means we have to know
+it was the same one that we're
+
+1048
+01:00:34,120 --> 01:00:36,540
+looking at.
+
+1049
+01:00:36,540 --> 01:00:39,270
+So some very strange, and
+unusual, and obscure, and--
+
+1050
+01:00:39,270 --> 01:00:42,950
+I don't understand the problems
+associated with
+
+1051
+01:00:42,950 --> 01:00:47,380
+assignment, and change,
+and objects.
+
+1052
+01:00:47,380 --> 01:00:51,420
+These could get very,
+very bad.
+
+1053
+01:00:51,420 --> 01:00:56,250
+For example, here I am, I am
+a particular person, a
+
+1054
+01:00:56,250 --> 01:00:57,650
+particular object.
+
+1055
+01:00:57,650 --> 01:01:02,430
+Now, I can take out my knife,
+and cut my fingernail.
+
+1056
+01:01:02,430 --> 01:01:06,030
+A piece of my fingernail has
+fallen off onto the table.
+
+1057
+01:01:06,030 --> 01:01:11,200
+I believe I am the same person
+I was a second ago, but I'm
+
+1058
+01:01:11,200 --> 01:01:14,490
+not physically the same
+in the slightest.
+
+1059
+01:01:14,490 --> 01:01:15,620
+I have changed.
+
+1060
+01:01:15,620 --> 01:01:18,180
+Why am I the same?
+
+1061
+01:01:18,180 --> 01:01:21,070
+What is the identity of me?
+
+1062
+01:01:21,070 --> 01:01:22,320
+I don't know.
+
+1063
+01:01:22,320 --> 01:01:25,170
+
+
+1064
+01:01:25,170 --> 01:01:29,770
+Except for the fact that I have
+some sort of identity.
+
+1065
+01:01:29,770 --> 01:01:34,770
+And so, I think by introducing
+assignment and objects, we
+
+1066
+01:01:34,770 --> 01:01:37,670
+have opened ourselves up to all
+the horrible questions of
+
+1067
+01:01:37,670 --> 01:01:40,490
+philosophy that have been
+plaguing philosophers for some
+
+1068
+01:01:40,490 --> 01:01:43,510
+thousands of years about
+this sort of thing.
+
+1069
+01:01:43,510 --> 01:01:45,880
+It's why mathematics
+is a lot cleaner.
+
+1070
+01:01:45,880 --> 01:01:49,590
+Let's look at the best things
+I know to say about actions
+
+1071
+01:01:49,590 --> 01:01:50,840
+and identity.
+
+1072
+01:01:50,840 --> 01:01:52,500
+
+
+1073
+01:01:52,500 --> 01:01:56,050
+We say that an action, a, had an
+effect on an object, x, or
+
+1074
+01:01:56,050 --> 01:01:59,340
+equivalently, that x was
+changed by a, if some
+
+1075
+01:01:59,340 --> 01:02:02,410
+property, p, which was true
+of x before a, became
+
+1076
+01:02:02,410 --> 01:02:05,100
+false of x after a.
+
+1077
+01:02:05,100 --> 01:02:07,750
+Let's test. It still means
+I have to have the
+
+1078
+01:02:07,750 --> 01:02:10,950
+x before and after.
+
+1079
+01:02:10,950 --> 01:02:13,810
+Or, the other way of saying
+this is, we say that two
+
+1080
+01:02:13,810 --> 01:02:15,460
+objects x and y are the same
+for any action which has an
+
+1081
+01:02:15,460 --> 01:02:19,580
+effect on x has the
+same effect on y.
+
+1082
+01:02:19,580 --> 01:02:22,230
+However, objects are very
+useful, as I said, for
+
+1083
+01:02:22,230 --> 01:02:24,650
+intellectual economy.
+
+1084
+01:02:24,650 --> 01:02:28,350
+One of the things that's
+incredibly useful about them,
+
+1085
+01:02:28,350 --> 01:02:32,980
+is that the world is, we like
+to think about, made out of
+
+1086
+01:02:32,980 --> 01:02:35,050
+independent objects with
+independent local state.
+
+1087
+01:02:35,050 --> 01:02:36,430
+We like to think that
+way, although it
+
+1088
+01:02:36,430 --> 01:02:39,730
+isn't completely true.
+
+1089
+01:02:39,730 --> 01:02:42,470
+When we want to make very
+complicated programs that deal
+
+1090
+01:02:42,470 --> 01:02:45,400
+with such a world, if we want
+those programs to be
+
+1091
+01:02:45,400 --> 01:02:49,070
+understandable by us and also
+to be changeable, so that if
+
+1092
+01:02:49,070 --> 01:02:51,390
+we change the world we change
+the program only a little bit,
+
+1093
+01:02:51,390 --> 01:02:53,810
+then we want there to be
+connections, isomorphism,
+
+1094
+01:02:53,810 --> 01:02:56,130
+between the objects in the world
+and the objects in our
+
+1095
+01:02:56,130 --> 01:02:58,720
+mental model.
+
+1096
+01:02:58,720 --> 01:03:00,960
+The modularity of the world can
+give us the modularity in
+
+1097
+01:03:00,960 --> 01:03:02,400
+our programming.
+
+1098
+01:03:02,400 --> 01:03:04,590
+So we invent things called
+object-oriented programming
+
+1099
+01:03:04,590 --> 01:03:09,950
+and things like that to provide
+us with that power.
+
+1100
+01:03:09,950 --> 01:03:10,990
+But it's even easier.
+
+1101
+01:03:10,990 --> 01:03:12,310
+Let's play a little game.
+
+1102
+01:03:12,310 --> 01:03:15,110
+I want to play a little game,
+show you an even easier
+
+1103
+01:03:15,110 --> 01:03:19,610
+example of where modularity can
+be enhanced by using an
+
+1104
+01:03:19,610 --> 01:03:22,960
+assignment statement,
+judiciously.
+
+1105
+01:03:22,960 --> 01:03:26,280
+One thing I want to enforce and
+impress on you, is don't
+
+1106
+01:03:26,280 --> 01:03:28,280
+use assignment statements the
+way you use it in FORTRAN or
+
+1107
+01:03:28,280 --> 01:03:30,930
+Basic or something or Pascal,
+to do the things you don't
+
+1108
+01:03:30,930 --> 01:03:32,180
+have to do with it.
+
+1109
+01:03:32,180 --> 01:03:34,200
+
+
+1110
+01:03:34,200 --> 01:03:37,010
+It's not the right way to
+think for most things.
+
+1111
+01:03:37,010 --> 01:03:39,810
+Sometimes it's essential,
+or maybe it's essential.
+
+1112
+01:03:39,810 --> 01:03:42,320
+We'll see more about that too.
+
+1113
+01:03:42,320 --> 01:03:44,330
+OK, let me show you
+a fun game here.
+
+1114
+01:03:44,330 --> 01:03:47,270
+
+
+1115
+01:03:47,270 --> 01:03:51,750
+There was mathematician by
+the name of Cesaro--
+
+1116
+01:03:51,750 --> 01:03:54,760
+or Cesaro, Cesaro I
+suppose it is--
+
+1117
+01:03:54,760 --> 01:03:58,450
+who figured out a clever
+way of computing pi.
+
+1118
+01:03:58,450 --> 01:04:06,320
+It turns out that if I take to
+random numbers, two integers
+
+1119
+01:04:06,320 --> 01:04:11,110
+at random, and compute the
+greatest common divisor, their
+
+1120
+01:04:11,110 --> 01:04:13,920
+greatest common divisor is
+either one or it's not one.
+
+1121
+01:04:13,920 --> 01:04:15,445
+If it's one, then they have
+no common divisors.
+
+1122
+01:04:15,445 --> 01:04:18,240
+
+
+1123
+01:04:18,240 --> 01:04:21,060
+If their greatest common
+divisor is one--
+
+1124
+01:04:21,060 --> 01:04:23,590
+the probability that two random
+numbers, two numbers
+
+1125
+01:04:23,590 --> 01:04:26,910
+chosen at random, has as
+greatest common divisor one is
+
+1126
+01:04:26,910 --> 01:04:29,580
+related to pi.
+
+1127
+01:04:29,580 --> 01:04:31,310
+In fact--
+
+1128
+01:04:31,310 --> 01:04:33,070
+yes, it's very strange--
+
+1129
+01:04:33,070 --> 01:04:34,980
+of course there are other ways
+of computing pi, like dropping
+
+1130
+01:04:34,980 --> 01:04:38,100
+pins on flags, and things like
+that, and sort of the same
+
+1131
+01:04:38,100 --> 01:04:40,110
+kind of thing.
+
+1132
+01:04:40,110 --> 01:04:48,510
+So the probability of that the
+GCD of number one and number
+
+1133
+01:04:48,510 --> 01:04:55,660
+two, two random numbers chosen,
+is 6 over pi squared.
+
+1134
+01:04:55,660 --> 01:04:57,240
+I'm not going to try
+to prove that.
+
+1135
+01:04:57,240 --> 01:05:01,120
+It's actually not too hard
+and sort of fun.
+
+1136
+01:05:01,120 --> 01:05:03,590
+How would we estimate
+such probability?
+
+1137
+01:05:03,590 --> 01:05:07,340
+Well, the way we do that, the
+way we estimate probabilities,
+
+1138
+01:05:07,340 --> 01:05:09,620
+is by doing lots of experiments,
+and then
+
+1139
+01:05:09,620 --> 01:05:12,260
+computing the ratios of the ones
+that come out one way to
+
+1140
+01:05:12,260 --> 01:05:13,570
+the total number of
+experiments we do.
+
+1141
+01:05:13,570 --> 01:05:16,320
+
+
+1142
+01:05:16,320 --> 01:05:19,680
+It's called Monte Carlo, and
+it's useful in other contexts
+
+1143
+01:05:19,680 --> 01:05:21,280
+for doing things like integrals
+where you have lots
+
+1144
+01:05:21,280 --> 01:05:22,960
+and lots of variables--
+
+1145
+01:05:22,960 --> 01:05:24,780
+the space which is limiting the
+dimensions you are doing
+
+1146
+01:05:24,780 --> 01:05:26,360
+you integral in.
+
+1147
+01:05:26,360 --> 01:05:34,680
+But going back to here, Let's
+look at this slide, We can use
+
+1148
+01:05:34,680 --> 01:05:40,520
+Cesaro's method for estimating
+pi with n trials by taking the
+
+1149
+01:05:40,520 --> 01:05:45,850
+square root of six over a Monte
+Carlo, a Monte Carlo
+
+1150
+01:05:45,850 --> 01:05:51,410
+experiment with n trials, using
+Cesaro's experiment,
+
+1151
+01:05:51,410 --> 01:05:56,550
+where Cesaro's experiment is the
+test of whether the GCD of
+
+1152
+01:05:56,550 --> 01:05:59,070
+two random numbers--
+
+1153
+01:05:59,070 --> 01:06:01,200
+And you can see that I've
+already got some assignments
+
+1154
+01:06:01,200 --> 01:06:03,990
+in here, just by what I wrote.
+
+1155
+01:06:03,990 --> 01:06:07,930
+The fact that this word rand,
+in parentheses, therefore,
+
+1156
+01:06:07,930 --> 01:06:11,530
+that procedure call, yields a
+different value than this one,
+
+1157
+01:06:11,530 --> 01:06:13,330
+at least that's what I'm
+assuming by writing this this
+
+1158
+01:06:13,330 --> 01:06:18,590
+way, indicates that this is not
+a function, that there's
+
+1159
+01:06:18,590 --> 01:06:20,400
+internal state in it
+which is changing.
+
+1160
+01:06:20,400 --> 01:06:25,110
+
+
+1161
+01:06:25,110 --> 01:06:28,530
+If the GCD of those two random
+numbers is equal to one,
+
+1162
+01:06:28,530 --> 01:06:31,530
+that's the experiment.
+
+1163
+01:06:31,530 --> 01:06:34,330
+So here I have an experimental
+method for estimating the
+
+1164
+01:06:34,330 --> 01:06:36,560
+value of pi.
+
+1165
+01:06:36,560 --> 01:06:40,160
+Where, I can easily divide this
+problem into two parts.
+
+1166
+01:06:40,160 --> 01:06:43,610
+One is the specific Monte Carlo
+experiment of Cesaro,
+
+1167
+01:06:43,610 --> 01:06:46,700
+which you just saw, and the
+other is the general technique
+
+1168
+01:06:46,700 --> 01:06:49,320
+of doing Monte Carlo
+experiments.
+
+1169
+01:06:49,320 --> 01:06:51,190
+And that's what this is.
+
+1170
+01:06:51,190 --> 01:06:55,930
+If I want to do Monte Carlo
+experiments with n trials, a
+
+1171
+01:06:55,930 --> 01:06:59,590
+certain number of trials, and
+a particular experiment, the
+
+1172
+01:06:59,590 --> 01:07:03,460
+way I do that is I make a little
+iterative procedure
+
+1173
+01:07:03,460 --> 01:07:05,960
+which has variable the number
+of trials remaining and the
+
+1174
+01:07:05,960 --> 01:07:10,230
+number trials that have been
+passed, that I've gotten true.
+
+1175
+01:07:10,230 --> 01:07:13,010
+And if the number remaining is
+0, then the answer is the
+
+1176
+01:07:13,010 --> 01:07:16,260
+number past divided by this
+whole number of trials, was
+
+1177
+01:07:16,260 --> 01:07:19,150
+the estimate of the
+probability.
+
+1178
+01:07:19,150 --> 01:07:22,140
+And if it's not, if I have
+more trials to do,
+
+1179
+01:07:22,140 --> 01:07:22,870
+then let's do one.
+
+1180
+01:07:22,870 --> 01:07:23,860
+We do an experiment.
+
+1181
+01:07:23,860 --> 01:07:27,350
+We call the procedure which is
+experiment on no arguments.
+
+1182
+01:07:27,350 --> 01:07:30,870
+We do the experiment and then,
+if that turned out to be true,
+
+1183
+01:07:30,870 --> 01:07:33,830
+we go around the loop
+decrementing the number of
+
+1184
+01:07:33,830 --> 01:07:36,560
+experiments we have to do by
+one and incrementing the
+
+1185
+01:07:36,560 --> 01:07:38,650
+number that were passed.
+
+1186
+01:07:38,650 --> 01:07:41,880
+And if the experiment was false,
+we just go around the
+
+1187
+01:07:41,880 --> 01:07:44,700
+loop decrementing the number of
+experiments remaining and
+
+1188
+01:07:44,700 --> 01:07:48,910
+keeping the number
+passed the same.
+
+1189
+01:07:48,910 --> 01:07:51,320
+We start this up iterating
+over the total number of
+
+1190
+01:07:51,320 --> 01:07:55,840
+trials with 0 experiments
+past. A very
+
+1191
+01:07:55,840 --> 01:07:57,730
+elegant little program.
+
+1192
+01:07:57,730 --> 01:08:00,530
+And I don't have to just do this
+with Cesaro's experiment,
+
+1193
+01:08:00,530 --> 01:08:03,390
+it could be lots of Monte Carlo
+experiments I might do.
+
+1194
+01:08:03,390 --> 01:08:05,860
+Of course, this depends upon the
+existence of some sort of
+
+1195
+01:08:05,860 --> 01:08:07,440
+random number generator.
+
+1196
+01:08:07,440 --> 01:08:09,960
+And random number generators
+generally look
+
+1197
+01:08:09,960 --> 01:08:11,210
+something like this.
+
+1198
+01:08:11,210 --> 01:08:13,570
+
+
+1199
+01:08:13,570 --> 01:08:17,550
+There is a random number
+generator--
+
+1200
+01:08:17,550 --> 01:08:24,490
+is in fact a procedure which is
+going to do something just
+
+1201
+01:08:24,490 --> 01:08:25,710
+like the counter.
+
+1202
+01:08:25,710 --> 01:08:30,870
+It's going to update an x to
+the result of applying some
+
+1203
+01:08:30,870 --> 01:08:34,600
+function to x, where this
+function is some screwy kind
+
+1204
+01:08:34,600 --> 01:08:38,800
+of function that you might find
+out in Knuth's books on
+
+1205
+01:08:38,800 --> 01:08:41,689
+the details of programming.
+
+1206
+01:08:41,689 --> 01:08:45,020
+He does these wonderful books
+that are full of the details
+
+1207
+01:08:45,020 --> 01:08:47,500
+of programming, because I can't
+remember how to make a
+
+1208
+01:08:47,500 --> 01:08:50,156
+random number generator, but I
+can look it up there, and I
+
+1209
+01:08:50,156 --> 01:08:51,720
+can find out.
+
+1210
+01:08:51,720 --> 01:08:54,850
+And then, eventually, I return
+the value of x which is the
+
+1211
+01:08:54,850 --> 01:08:58,319
+state variable internal to the
+random number generator.
+
+1212
+01:08:58,319 --> 01:09:00,140
+That state variable
+is initialized
+
+1213
+01:09:00,140 --> 01:09:03,479
+somehow, and has a value.
+
+1214
+01:09:03,479 --> 01:09:06,490
+And this procedure is defined
+in the context where that
+
+1215
+01:09:06,490 --> 01:09:10,450
+variable is bound.
+
+1216
+01:09:10,450 --> 01:09:15,930
+So this is a hidden piece of
+local state that you see here.
+
+1217
+01:09:15,930 --> 01:09:21,720
+And this procedure is defined
+in that context.
+
+1218
+01:09:21,720 --> 01:09:24,103
+Now, that's a very simple
+thing to do.
+
+1219
+01:09:24,103 --> 01:09:26,020
+And it's very nice.
+
+1220
+01:09:26,020 --> 01:09:29,080
+Supposing, I didn't want
+to use assignments.
+
+1221
+01:09:29,080 --> 01:09:30,819
+Supposing, I wanted to write
+this program without
+
+1222
+01:09:30,819 --> 01:09:32,840
+assignments.
+
+1223
+01:09:32,840 --> 01:09:35,580
+What problems would I have?
+
+1224
+01:09:35,580 --> 01:09:37,890
+Well, let's see.
+
+1225
+01:09:37,890 --> 01:09:44,540
+I'd like to use the overhead
+machine here, thank you.
+
+1226
+01:09:44,540 --> 01:09:45,870
+First of all, let's look
+at the whole thing.
+
+1227
+01:09:45,870 --> 01:09:48,140
+It's a big story.
+
+1228
+01:09:48,140 --> 01:09:51,720
+Unfortunately, which tells you
+there is something wrong.
+
+1229
+01:09:51,720 --> 01:09:54,255
+It's at least that big,
+and it's monolithic.
+
+1230
+01:09:54,255 --> 01:09:57,020
+
+
+1231
+01:09:57,020 --> 01:09:59,580
+You don't have to understand
+or look at the text there
+
+1232
+01:09:59,580 --> 01:10:02,120
+right now to see that
+it's monolithic.
+
+1233
+01:10:02,120 --> 01:10:05,090
+It isn't a thing which is
+Cesaro's experiment.
+
+1234
+01:10:05,090 --> 01:10:10,050
+It's not pulled out from the
+Monte Carlo process.
+
+1235
+01:10:10,050 --> 01:10:10,890
+It's not separated.
+
+1236
+01:10:10,890 --> 01:10:12,140
+Let's look why.
+
+1237
+01:10:12,140 --> 01:10:14,350
+
+
+1238
+01:10:14,350 --> 01:10:19,330
+Remember, the constraint here is
+that every procedure return
+
+1239
+01:10:19,330 --> 01:10:23,070
+the same value for the
+same arguments.
+
+1240
+01:10:23,070 --> 01:10:26,800
+Every procedure represents
+a function.
+
+1241
+01:10:26,800 --> 01:10:28,275
+That's a different kind
+of constraint.
+
+1242
+01:10:28,275 --> 01:10:30,250
+Because when I have assignments,
+I can change some
+
+1243
+01:10:30,250 --> 01:10:31,840
+internal state variable.
+
+1244
+01:10:31,840 --> 01:10:35,060
+So let's see how that causes
+things to go wrong.
+
+1245
+01:10:35,060 --> 01:10:38,510
+Well, start at the beginning.
+
+1246
+01:10:38,510 --> 01:10:42,950
+The estimate of pi looks
+sort of the same.
+
+1247
+01:10:42,950 --> 01:10:47,560
+What I'm doing is I take the
+square root of six over the
+
+1248
+01:10:47,560 --> 01:10:52,990
+random GCD test applied to n,
+whereas that's what this is.
+
+1249
+01:10:52,990 --> 01:10:55,390
+But here, we are beginning
+to see something funny.
+
+1250
+01:10:55,390 --> 01:10:58,770
+The random GCD test of a certain
+number of trials is
+
+1251
+01:10:58,770 --> 01:11:03,400
+just like we had before, an
+iteration on the number of
+
+1252
+01:11:03,400 --> 01:11:06,210
+trials remaining, the number
+of trials that have been
+
+1253
+01:11:06,210 --> 01:11:10,870
+passed, and another
+variable x.
+
+1254
+01:11:10,870 --> 01:11:12,370
+What's that x?
+
+1255
+01:11:12,370 --> 01:11:14,950
+That x is the state of the
+random number generator.
+
+1256
+01:11:14,950 --> 01:11:18,950
+
+
+1257
+01:11:18,950 --> 01:11:21,150
+And it is now going
+to be used here.
+
+1258
+01:11:21,150 --> 01:11:23,890
+The same random update function
+that I have over here
+
+1259
+01:11:23,890 --> 01:11:25,890
+is the one I would have used in
+a random number generator
+
+1260
+01:11:25,890 --> 01:11:28,510
+if I were building it the other
+way, the one I get out
+
+1261
+01:11:28,510 --> 01:11:31,710
+of Knuth's books.
+
+1262
+01:11:31,710 --> 01:11:33,380
+x is going to get transformed
+into x1, I
+
+1263
+01:11:33,380 --> 01:11:34,950
+need two random numbers.
+
+1264
+01:11:34,950 --> 01:11:37,630
+And x1 is going to get
+transformed into x2, I have
+
+1265
+01:11:37,630 --> 01:11:39,550
+two random numbers.
+
+1266
+01:11:39,550 --> 01:11:42,620
+I then have to do exactly
+what I did before.
+
+1267
+01:11:42,620 --> 01:11:43,870
+I take the GCD of x1 x2.
+
+1268
+01:11:43,870 --> 01:11:48,260
+If that's one, then I go around
+the loop with x2 being
+
+1269
+01:11:48,260 --> 01:11:49,520
+the next value of x.
+
+1270
+01:11:49,520 --> 01:11:54,850
+
+
+1271
+01:11:54,850 --> 01:11:57,740
+You see what's happened here
+is that the state of the
+
+1272
+01:11:57,740 --> 01:12:00,480
+random number generator is no
+longer confined to the insides
+
+1273
+01:12:00,480 --> 01:12:01,495
+of the random number
+generator.
+
+1274
+01:12:01,495 --> 01:12:03,450
+It has leaked out.
+
+1275
+01:12:03,450 --> 01:12:09,240
+It has leaked out into my
+procedure that does the Monte
+
+1276
+01:12:09,240 --> 01:12:10,720
+Carlo experiment.
+
+1277
+01:12:10,720 --> 01:12:13,480
+But what's worse than that, is
+it's also, because it was
+
+1278
+01:12:13,480 --> 01:12:17,470
+contained inside my experiment
+itself, Cesaro, it leaked out
+
+1279
+01:12:17,470 --> 01:12:18,090
+of that too.
+
+1280
+01:12:18,090 --> 01:12:21,920
+Because Cesaro called twice, has
+to have a different value
+
+1281
+01:12:21,920 --> 01:12:24,780
+each time, if I going to have
+a legitimate experimental
+
+1282
+01:12:24,780 --> 01:12:31,910
+test. So Cesaro can't be a
+function either, unless I pass
+
+1283
+01:12:31,910 --> 01:12:34,730
+it the seed of the random number
+generator that is going
+
+1284
+01:12:34,730 --> 01:12:36,490
+to go wandering around.
+
+1285
+01:12:36,490 --> 01:12:39,740
+So unfortunately, the seed of
+random number generator has
+
+1286
+01:12:39,740 --> 01:12:42,850
+leaked out into Cesaro, from the
+random number generator,
+
+1287
+01:12:42,850 --> 01:12:45,465
+that's leaked into the Monte
+Carlo experiment.
+
+1288
+01:12:45,465 --> 01:12:48,485
+And, unfortunately, my Monte
+Carlo experiment here is no
+
+1289
+01:12:48,485 --> 01:12:50,310
+longer general.
+
+1290
+01:12:50,310 --> 01:12:52,990
+The Monte Carlo experiment here
+knows how many random
+
+1291
+01:12:52,990 --> 01:12:54,405
+numbers I need to do
+the experiment.
+
+1292
+01:12:54,405 --> 01:12:58,530
+
+
+1293
+01:12:58,530 --> 01:13:00,230
+That's sort of horrible.
+
+1294
+01:13:00,230 --> 01:13:04,090
+I lost an ability to decompose a
+problem into pieces, because
+
+1295
+01:13:04,090 --> 01:13:10,720
+I wasn't willing to accept the
+little loop of information,
+
+1296
+01:13:10,720 --> 01:13:14,720
+the feedback process, that
+happens inside the random
+
+1297
+01:13:14,720 --> 01:13:18,000
+number generator before that
+was made by having an
+
+1298
+01:13:18,000 --> 01:13:20,400
+assignment to a state variable
+that was confined to the
+
+1299
+01:13:20,400 --> 01:13:22,770
+random number generator.
+
+1300
+01:13:22,770 --> 01:13:26,070
+So the fact that the random
+number generator is an object,
+
+1301
+01:13:26,070 --> 01:13:29,040
+with an internal state variable,
+it's affected by
+
+1302
+01:13:29,040 --> 01:13:30,595
+nothing, but it'll give you
+something, and it will apply
+
+1303
+01:13:30,595 --> 01:13:34,290
+it's force to you, that was
+what we're missing now.
+
+1304
+01:13:34,290 --> 01:13:38,140
+
+
+1305
+01:13:38,140 --> 01:13:42,870
+OK, well I think we've seen
+enough reason for doing this,
+
+1306
+01:13:42,870 --> 01:13:45,510
+and it all sort of looks
+very wonderful.
+
+1307
+01:13:45,510 --> 01:13:51,840
+Wouldn't it be nice if
+assignment was a good thing
+
+1308
+01:13:51,840 --> 01:13:55,440
+and maybe it's worth it,
+but I'm not sure.
+
+1309
+01:13:55,440 --> 01:13:57,860
+As Mr. Gilbert and Sullivan
+said, things are seldom what
+
+1310
+01:13:57,860 --> 01:14:01,940
+they seem, skim milk masquerades
+as cream.
+
+1311
+01:14:01,940 --> 01:14:03,655
+Are there any questions?
+
+1312
+01:14:03,655 --> 01:14:17,010
+
+
+1313
+01:14:17,010 --> 01:14:20,120
+Are there any philosophers
+here?
+
+1314
+01:14:20,120 --> 01:14:21,930
+Anybody want to argue
+about objects?
+
+1315
+01:14:21,930 --> 01:14:24,590
+
+
+1316
+01:14:24,590 --> 01:14:25,840
+You're just floored, right?
+
+1317
+01:14:25,840 --> 01:14:29,840
+
+
+1318
+01:14:29,840 --> 01:14:30,805
+And you haven't done
+your homework yet.
+
+1319
+01:14:30,805 --> 01:14:32,055
+You haven't come up with
+a good question.
+
+1320
+01:14:32,055 --> 01:14:36,790
+
+
+1321
+01:14:36,790 --> 01:14:38,040
+Oh, well.
+
+1322
+01:14:38,040 --> 01:14:40,110
+
+
+1323
+01:14:40,110 --> 01:14:41,120
+Sure, thank you.
+
+1324
+01:14:41,120 --> 01:14:42,370
+Let's take the long break now.
+
+1325
+01:14:42,370 --> 01:15:17,567
+
