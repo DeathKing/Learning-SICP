@@ -1,7 +1,13 @@
-MIT OpenCourseWare
-http://ocw.mit.edu
-6.001 Structure and Interpretation of Computer Programs, Spring 2005
-Transcript – 2B: Compound Data
+哈尔滨工业大学 IBM技术中心
+倾情制作
+
+压制&&特效：蔡钟毓（JohnTitor）
+字幕&&时间轴：邓雄飞（Dysprosium）
+
+特别感谢：裘宗燕教授
+校对：曹竞帆（ChingfanTsou）
+
+复合过程
 
 目前为止 我们这门课讨论的都是过程
 Well, so far in this course we've been talking about procedures, 
@@ -2709,67 +2715,206 @@ well, it's that argument, this was the argument to car, applied to 1.
 这又是什么意思呢？
 Well, what does that mean?
 
-[1.08.31]
-I take 1, and I substitute it in the body here for this value of pick, which is the nameof the argument, what do I get? Well, I get the thing that says if 1 equals 1 it's 37, and if 1
-equals 2 it's 49, so the answer's 37. And similarly, if I'd taken cdr, that would apply it to 2,
-and I'd get 49.
-So you see, what I've demonstrated is that that completely weird implementation of cons,
-car, and cdr, satisfies the axioms. So it's a perfectly valid way of building, in fact, all of the
-data objects we're going to see in Lisp. So they all, if you like, can be built on sort of
-existential nothing. And as far as you know, that's how it works. You couldn't tell. If all
-you're ever going to do with pairs is construct them with cons and look at them with car and
-cdr, you couldn't possibly tell how this thing works.
-Now, it might give you a sort of warm feeling inside if I say, well, yeah, in fact, for various
-reasons there happens to be a primitive called cons, car, and cdr, and if it's too scary, if this
-kind of stuff is too scary, you don't have to look inside of it. So that might make you feel
-better, but the point is, it really could work this way, and it wouldn't make any difference to
-the system at all. So in some sense, we don't need data at all to build these data
-abstractions. We can do everything in terms of procedures.
-OK, well, why did I terrify you in this way? First, I really want to reinforce this idea of
-abstraction, that you really can do these things abstractly. Secondly, I want to introduce an
-idea we're going to see more and more of in this course, which is we're going to blur the
-line between what's data and what's a procedure.
-See, in this funny implementation it turned out that cons of something happened to be
-represented in terms of a procedure, even though we think of it as data. While here that's
-sort of a mathematical trick, but one of the things we'll see is that a lot of the very
-important programming techniques that we're going to get to sort of depend very crucially
-on blurring this traditional line between what you consider a procedure and what you
-consider data. We're going to see more and more of that, especially next time.
+在这里的代码体中 我拿1来替换pick
+I take 1, and I substitute it in the body here for this value of pick,
+
+也就是这个变量的名字 我们得到什么呢？
+which is the name of the argument, what do I get? 
+
+如果1等于1 那么就得到37
+Well, I get the thing that says if 1 equals 1 it's 37,
+
+如果1等于2 那么就得到49 当然答案就是37
+and if 1 equals 2 it's 49, so the answer's 37.
+
+类似的 如果是CDR的话 也就是将其应用于2 则得到49
+And similarly, if I'd taken cdr, that would apply it to 2, and I'd get 49.
+
+正如你们所见 我给你们演示了
+So you see, what I've demonstrated is that that completely weird implementation
+
+完全符合这些公理的CONS CAR CDR实现
+of cons, car, and cdr, satisfies the axioms.
+
+事实上 用这种方法来构建Lisp中所有的数据对象 非常有效
+So it's a perfectly valid way of building, in fact, all of the data objects we're going to see in Lisp.
+
+如果你愿意的话 这一切东西 都可以 #TBD
+So they all, if you like, can be built on sort of existential nothing.
+
+[1.09.09]
+And as far as you know, that's how it works.
+
+你无法分辨
+You couldn't tell.
+
+If all you're ever going to do with pairs
+
+is construct them with cons and look at them with car and cdr,
+
+you couldn't possibly tell how this thing works.
+
+
+Now, it might give you a sort of warm feeling inside if I say,
+
+well, yeah, in fact, for various reasons there happens to be a primitive
+
+called cons, car, and cdr, and if it's too scary,
+
+
+if this kind of stuff is too scary, you don't have to look inside of it.
+
+So that might make you feel better,
+
+but the point is, it really could work this way,
+
+and it wouldn't make any difference to the system at all.
+
+So in some sense, we don't need data at all to build these data
+abstractions.
+
+We can do everything in terms of procedures.
+
+OK, well, why did I terrify you in this way?
+
+First, I really want to reinforce this idea of abstraction,
+
+that you really can do these things abstractly.
+
+Secondly, I want to introduce an idea we're going to see more and more of in this course,
+
+which is we're going to blur the line between what's data and what's a procedure.
+
+
+See, in this funny implementation it turned out that cons of something
+
+happened to be represented in terms of a procedure, even though we think of it as data.
+
+While here that's sort of a mathematical trick,
+
+but one of the things we'll see is that a lot of the very important programming techniques
+
+that we're going to get to sort of depend very crucially
+
+on blurring this traditional line between what you consider a procedure and what you consider data.
+
+We're going to see more and more of that, especially next time.
+
+好了 有什么问题吗？
 OK, questions?
-AUDIENCE: If you asked the system to print a, what would happen?
-PROFESSOR: The question is, what would happen if I asked the system to print a. Given
-this representation, you already know the answer. The answer is compound procedure a,
-just like last time. It'd say compound procedure. It might say a little bit more. It might say
-compound procedure lambda or something or other, depending on details of how I named
-it. But it's a procedure.
-And the only reason for that is I haven't told the system anything special about how to print
-such things. Now, it's in fact true that with the actual implementation of cons that to be
-built in the system, it would print something else. It would print, say, this is a pair.
-AUDIENCE: When you define cons, and then you pass it into values, how does it know
-where to look for the cons, because you can use cons over and over again? How does it
-know where to look to know which a and b it's supposed to pull back out? I don't know if
-I'm expressing that quite right. Where is it stored?
-PROFESSOR: OK, the question is, I sort of have a cons with a 37 and a 49, and I might
-make another cons with a 1 and a 2, and I might have one called a, and I might have one
-called b. And the question is, how does it know? And why don't they get confused? And
-that's a very good question. See, you have to really believe that the procedures are objects.
-It's sort of like saying-- let's try another simpler example. Suppose I ask for the square root
-of 3. So I asked for the square root of 5, and then I ask for the square of 20. You're
-probably not the least bit bothered that I can take square root and apply it to 5, and then I
-can take square root and apply it to 20. And there's sort of no issue, gee, doesn't it get
-confused about whether it's working on 5 or 20? There's no issue about that because you're
-thinking of a procedure which goes off and does something.
-Now, in some sense you're asking me the same question. But it's really bothering you, and
-it's bothering you for a really good reason. Because when I write that, you're saying gee,
-this is, I know, sort of a procedure. But it's not a procedure that's just running. It's just sort
-of a procedure sitting there. And how can it be that sometimes this procedure has 37 and
-49, and there might be another one which has 5 and 6 in there, and why don't they get
-confused?
-So there's something very, very important that's bothering you. And it's really crucial to
-what's going on. We're suddenly saying that procedures are not just the act of doing
-something. Procedures are conceptual entities, objects, and if I built cons of 37 and 49,
-that's a particular procedure that sits there. And it's different from cons of 3 and 4. That's
-another procedure that sits there.
+
+学生：如果让系统打印A 会输出什么呢？
+AUDIENCE: If you asked the system to print a, what would be the result?
+
+教授：你想问 如果我让系统打印A
+PROFESSOR: The question is, what would happen if I asked the system to print a. 
+
+看看这种表示法 你就知道答案了
+Given this representation, you already know the answer.
+
+像上次一样 这是一个复合过程A
+The answer is compound procedure a, just like last time.
+
+系统返回“复合过程”
+It'd say compound procedure.
+
+说着说得更详细一点 像“复合LAMBDA过程”等等
+It might say a little bit more. It might say compound procedure lambda or something or other,
+
+这得看我是如何给它命名的 但它归根是个过程
+depending on details of how I named it. But it's a procedure.
+
+
+And the only reason for that is I haven't told the system
+
+anything special about how to print such things.
+
+Now, it's in fact true that with the actual implementation of cons that to be built in the system,
+
+it would print something else.
+
+它会打印出这是个序对
+It would print, say, this is a pair.
+
+学生：你定义CONS后 
+AUDIENCE: When you define cons,
+
+你给它传递了几个值
+and then you pass it into values,
+
+它怎么知道该去哪里找这些值 毕竟你可以多次使用CONS
+how does it know where to look for the cons, because you can use cons over and over again?
+
+它是怎么知道我们希望取出的a和b存储在哪里呢？
+How does it know where to look to know which a and b it's supposed to pull back out?
+
+可能表达得不是很正确 我只是想问它都存放在哪儿？
+I don't know if I'm expressing that quite right. Where is it stored?
+
+教授：嗯 来想想
+PROFESSOR: OK, the question is,
+
+我先用37和49来构造一个序对 在用1和2又构造一个
+I sort of have a cons with a 37 and a 49, and I might make another cons with a 1 and a 2,
+
+有一个参数为a 有一个参数为b
+and I might have one called a, and I might have one called b.
+
+问题是 系统又是怎么知道的呢？它为什么没有弄混淆呢？
+And the question is, how does it know? And why don't they get confused?
+
+这个问题非常好
+And that's a very good question.
+
+首先 你需要认定过程是一种对象
+See, you have to really believe that the procedures are objects.
+
+这就像是说——让我来换个更简单的例子
+It's sort of like saying-- let's try another simpler example.
+
+我想去求3的平方根
+Suppose I ask for the square root of 3.
+
+我这里用5的平方根来说好了
+So I asked for the square root of 5,
+
+我也可以求20的平方根
+and then I ask for the square of 20.
+
+You're probably not the least bit bothered that I can take square root and apply it to 5, and then I can take square root and apply it to 20.
+
+And there's sort of no issue, gee, doesn't it get confused about whether it's working on 5 or 20?
+
+There's no issue about that because you're thinking of a procedure which goes off and does something.
+
+从某种方面来说 你问了我一个同样的问题
+Now, in some sense you're asking me the same question.
+
+但它使你困惑
+But it's really bothering you,
+
+
+and it's bothering you for a really good reason.
+
+Because when I write that, you're saying gee, this is, I know, sort of a procedure.
+
+But it's not a procedure that's just running. It's just sort of a procedure sitting there.
+
+And how can it be that sometimes this procedure has 37 and 49, 
+
+and there might be another one which has 5 and 6 in there, and why don't they get confused?
+
+So there's something very, very important that's bothering you. 
+
+And it's really crucial to what's going on.
+
+It's, we're suddenly saying that procedures are not just the act of doing something.
+
+Procedures are conceptual entities, objects,
+
+and if I built cons of 37 and 49, that's a particular procedure that sits there.
+
+And it's different from cons of 3 and 4. That's another procedure that sits there.
 
 学生：它们都是独立存在的
 AUDIENCE: Both of them exist independently.
