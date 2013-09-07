@@ -6,7 +6,7 @@ cont = []
 block = []
 counter, flag = 1, false
 newline = "\n"
-template = "%d#{newline}00:00:00,000 --> 00:000:00,000#{newline}"
+template = "%d#{newline}00:00:00,000 --> 00:00:00,000#{newline}"
 
 if ARGV.empty?
     puts "Timeline - 为字幕添加初始化时间轴。"
