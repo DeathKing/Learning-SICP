@@ -17,7 +17,7 @@ cont = []
 # 如有问题，可以尝试调整为 \n、\r、\r\n中的其它值
 newline = "\n"
 
-open(ARGV[0]).each_line { |line|
+open(ARGV[0]).each_line do |line|
     if line == newline
         # 一个块 
         eng << cont[0] << cont[1]
@@ -40,7 +40,7 @@ open(ARGV[0]).each_line { |line|
     else
         cont << line
     end
-}
+end
 
 filename = ARGV[0].split(".")[0]
 eng_file = "#{filename}-eng.srt"
