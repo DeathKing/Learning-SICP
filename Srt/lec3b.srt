@@ -7,7 +7,7 @@
 特别感谢：裘宗燕教授
 校对：邓雄飞（Dysprosium）
 
-符号化微分系统
+符号化求导系统
 
 教授：哈尔教授讲解了如何构造健壮的系统
 PROFESSOR: Well, Hal just told us how you build robust systems.
@@ -36,14 +36,13 @@ There ought to be a continuity.
 解决方案应该的问题的一个延续
 The space of solutions ought to be continuous in this space of problems.
 
-这也就是说
+Hal教授给你们解释过
 The way he was explaining how to do that
 
 
-was instead of solving a particular problem at every level of 
+was instead of solving a particular problem
 
-
-decomposition of the problem at the subproblems,
+at every level of decomposition of the problem at the subproblems,
 
 
 where you solve the class of problems,
@@ -54,7 +53,7 @@ which are a neighborhood of the particular problem that you're trying to solve.
 解决之道便是在该层构造一门语言
 The way you do that is by producing a language at that level of detail
 
-使得我们可以用这门语言来解决这类问题
+使得我们可以用这门语言来表述这类问题
 in which the solutions to that class of problems is representable in that language.
 
 因此 当着手解决的问题再发生变动时
@@ -63,7 +62,7 @@ Therefore when you makes more changes to the problem you're trying to solve,
 通常 你只需要在已构造好的解决方案上做出微小改动
 you generally have to make only small local changes to the solution you've constructed,
 
-
+因为在你所处层面上
 because at the level of detail you're working,
 
 有一门语言可以
@@ -72,18 +71,25 @@ there's a language where you can express
 表达与该问题类似的其它问题的各种解法
 the various solutions to alternate problems of the same type.
 
+呃... 这是一个重要思想的萌芽
 Well that's the beginning of a very important idea,
 
+其重要性也使得计算机科学比
 the most important perhaps idea that makes computer science more powerful
 
+大多数其它工程学科还要强大
 than most of the other kinds of engineering disciplines we know about.
 
+目前为止 我们学习的是
 What we've seen so far
 
+类似于如何使用语言内置元素
 is sort of how to use embedding of languages.
 
+当然 内置元素的力量一部分来源于过程
 And, of course, the power of embedding languages partly comes from
 
+就比如这个 我昨天给你们展示过了
 procedures like this one that I showed you yesterday.
 
 这里 是一份昨天给你们描述过的求导程序
@@ -95,12 +101,13 @@ It's a procedure that takes a procedure as an argument
 并返回一个过程
 and returns a procedure as a value.
 
-这样做很棒
+这个系统很棒
 And using such things is very nice.
 
-
+你可以压入组合子 #TBD
 You can make things like push combinators
 
+还有你上次看到的各种美妙的事
 and all that sort of wonderful thing that you saw last time.
 
 然而 现在我要搅浑这滩水
@@ -112,34 +119,40 @@ See this confuses the issue of what's the procedure and what is data,
 虽然不太严重
 but not very badly.
 
-
+而我们将要严重地混淆两者
 What we really want to do is confuse it very badly.
 
-And the best way to do that is to get involved with the manipulation of the algebraic expressions that the procedures themselves are expressed in.
-￼
+最好的做法就是
+And the best way to do that
 
+
+is to get involved with the manipulation of the algebraic expressions that the procedures themselves are expressed in.
+￼
+所以 这里我不会讨论这张幻灯片上的东西
 So at this point, I want to talk about instead of things like on this slide,
 
+一个通过操作过程的求导程序
 the derivative procedure being a thing that manipulates a procedure--
 
+这只是一个数值方法而已
 this is a numerical method you see here.
 
-
+你们所看到的是 用数值近似的方法来呈现的求导
 And what you're seeing is a representation of the numerical approximationto the derivative.
 
 也就是这里的东西了
 That's what's here.
 
-
+事实上 我想讨论的是这些东西
 In fact what I'd like to talk about is instead things that look like this.
 
-这是一份从算术书中摘录的法则
+这是一份从微积分书中摘录的法则
 And what we have here are rules from a calculus book.
 
 这是求导函数表达式的法则
 These are rules for finding the derivatives of the expressions
 
-不过是用几何语言书写的
+不过是用代数语言书写的
 that one might write in some algebraic language.
 
 法则说 常数的导数是0
@@ -181,7 +194,7 @@ that it's easy to produce derivatives of arbitrary expressions.
 在微积分课上 你们也知道计算积分不容易
 You also know from your elementary calculus that it's hard to produce integrals. 
 
-虽然积分和微分相对
+虽然积分和求导相对
 Yet integrals and derivatives are opposites of each other.
 
 它俩互为逆运算
@@ -190,12 +203,13 @@ They're inverse operations.
 但它们有同样地法则
 And they have the same rules.
 
-
+但这些法则中又有什么特殊的东西
 What is special about these rules that makes it possible for one
 
+使得求导容易 求积分就困难呢？
 to produce derivatives easily and integrals why it's so hard?
 
-
+我们浅显地想一想
 Let's think about that very simply.
 
 仔细考察这些法则
@@ -219,20 +233,25 @@ The arrow is going that way.
 每条法则中
 In each of these rules,
 
-
+法则右边的表达式
 the expressions on the right-hand side of the rule
 
+都是求导过程中的子表达式
 that are contained within derivatives are subexpressions,
 
+都是左边式子的合法的子表达式 #TBD
 are proper subexpressions, of the expression on the left-hand side.
 
+这里 我们发现 和的导数
 So here we see the derivative of the sum,
 
-with is the expression on the left-hand side
+也就是左边式子的导数
+witch is the expression on the left-hand side
 
+就是两部分之和
 is the sum of the derivatives of the pieces.
 
-
+法则从左至右的方向是“归约式规则”
 So the rule of moving to the right are reduction rules.
 
 问题就变简单了
@@ -244,13 +263,13 @@ I turn a big complicated problem it's lots of smaller problems
 然后把结果组合起来 用递归的方法完美地解决了
 and then combine the results, a perfect place for recursion to work.
 
-但如果我从这个方向来思考
+但如果我从另外的方向来思考
 If I'm going in the other direction like this,
 
-如果我想求积分的话 你回发现有很多问题
+如果我想求积分的话 你会发现有很多问题
 if I'm trying to produce integrals, well there are several problems you see here. 
 
-就比如 如果我想求一个和式的积分
+就比如 如果我想求一个和的积分
 First of all, if I try to integrate an expression like a sum,
 
 就会有多条法则符合
@@ -277,10 +296,10 @@ And when the expressions become larger,
 就没法保证我所选的路径一定能终止了
 then there's no guarantee that any particular path I choose will terminate,
 
-
+因为唯一的可能是偶然的约分
 because we will only terminate by accidental cancellation.
 
-这也就是为什么积分是一种复杂的搜索
+这也就是为什么 积分是一种复杂的搜索 而难以完成
 So that's why integrals are complicated searches and hard to do.
 
 现在我不想处理这么复杂的东西
@@ -289,8 +308,8 @@ Right now I don't want to do anything as hard as that.
 我们先来讨论求导数
 Let's work on derivatives for a while.
 
-
-Well, these roles are ones you know for the most part hopefully.
+好吧 我就假设你们都了解这些法则了
+Well, these rules are ones you know for the most part hopefully.
 
 让我们来看看能不能用程序表达这些法则
 So let's see if we can write a program which is these rules.
@@ -301,7 +320,7 @@ And that should be very easy.
 信手拈来
 Just write the program.
 
-呃 我给你们展示的是“规约式规则”
+因为 我给你们展示的是“归约式规则”
 See, because while I showed you is that it's a reduction rule,
 
 这样用递归来编写会比较合适
@@ -316,19 +335,19 @@ in some case analysis.
 我就这么写了
 So I'm just going to write this program down.
 
+当然 我得先让你们认识到点什么 对吧？
+Now, of course, I'm going to be saying something you have to believe. Right?
 
-Now, of course, I'm going to be saying something you have to believe.
-
-Right?
-
+我希望你们认识到我可以表示这些代数式
 What you have to believe is I can represent these algebraic expressions,
 
+我可以从中抽取式子 也可以将它们组合起来
 that I can grab their parts, that I can put them together.
 
 我们发明了表结构来解决这个问题
 We've invented list structures so that you can do that.
 
-但现在我们不必关系
+但现在我们不必关心
 But you don't want to worry about that now.
 
 现在 我要编写一个程序来封装这些法则
@@ -337,26 +356,34 @@ Right now I'm going to write the program that encapsulates these rules
 使它独立于代数表达式的表示法
 independent of the representation of the algebraic expressions.
 
-
+(DERIV EXP VAR)表示表达式EXP对于变量VAR的导数
 You have a derivative of an expression with respect to a variable.
 
+这和函数的导数是不一样的
 This is a different thing than the derivative of the function.
 
+那个是我们上节课看到的数值近似
 That's what we saw last time, that numerical approximation.
 
+这是由于你无法看到函数内部
 It's something you can't open up a function.
 
+这只是一个数值
 It's just the answers.
 
+表达式的导数与它的书写别无二致
 The derivative of an expression is the way it's written.
 
+因此 这只是一个语法问题
 And therefore it's a syntactic phenomenon.
 
+我们今天要做的大多数工作 就是讨论语法
 And so a lot of what we're going to be doing today is worrying about syntax,
 
+表达式的语法或类似
 syntax of expressions and things like that.
 
-这是一个CASE语句
+这有一个CASE语句
 Well, there's a case analysis.
 
 任何时候我们处理复杂事物都是通过递归
@@ -365,84 +392,124 @@ Anytime we do anything complicated thereby a recursion,
 我们很可能需要“按情况分析”
 we presumably need a case analysis.
 
-
+通常都是这样开始的
 It's the essential way to begin.
 
+大一点的问题都是用“按情况分析” #TBD
 And that's usually a conditional of some large kind.
 
+那么 有哪些可能（的情况）呢？
 Well, what are their possibilities?
 
+第一条法则说 如果你遇到一个常数
 the first rule that you saw is this something a constant?
 
+这里 我就是在判断
 And what I'm asking is,
 
+表达式EXP是否是关于给定变量VAR的常数
 is the expression a constant with respect to the variable given?
 
+如果是的话 结果就是0
 If so, the result is 0,
 
+因为导数表征的是某物的变化率
 because the derivative represents the rate of change of something.
 
+然而
 If, however,
 
+如果我求导的表达式 与我关心的变量有关
 the expression that I'm taking the derivative of is the variable I'm varying,
 
+如果判定表达式和变量相同
 then this is the same variable, the expression var,
 
+那么关于变量VAR的表达式EXP的变化率就是1
 then the rate of change of the expression with respect to the variable is 1.
 
+它俩相同 结果是1
 It's the same 1.
 
-
+当然 还可能有其它的可能性
 Well now there are a couple of other possibilities.
 
+比如说 它可能是一个和式
 It could, for example, be a sum.
 
+呃 我现在还完全知道该如何表示和式
 Well, I don't know how I'm going to express sums yet.
 
+事实上 我可以
 Actually I do.
 
+只是我还没有告诉你们
 But I haven't told you yet.
 
+如果表达式是一个和式
 But is it a sum?
 
+我就假想有一种方式可以判别（和式）
 I'm imagining that there's some way of telling.
 
+我将在这里做一个表达式的类型分配
 I'm doing a dispatch on the type of the expression here,
 
+这是在构建语言时绝对必要的
 absolutely essential in building languages.
 
+语言由不同的表达式构成
 Languages are made out of different expressions.
 
-And soon we're going to see that in our more powerful methods of building languages on languages.
+不就我们就将看到
+And soon we're going to see that
 
+如何用更强大的方法 用语言去构建语言
+in our more powerful methods of building languages on languages.
+
+表达式是和式吗？
 Is an expression a sum?
 
+如果是的话 很好 我们已经知道和式的求导法则了
 If it's a sum, well, we know the rule for derivative of the sum
 
+即是各部分导数之和
 is the sum of the derivatives of the parts.
 
+其中一个叫做加数 另一个叫做被加数
 One of them is called the addend and the other is the augend.
 
+黑板上没那么多空间写这么长的名字了
 But I don't have enough space on the blackboard to such long names.
 
+我就姑且把它们叫做 A1和A2
 So I'll call them A1 and A2.
 
+将它们求和
 I want to make a sum.
 
+10 ：01
 Do you remember which is the sum for end or the menu end?
+
 
 Or was it the dividend and the divisor or something like that?
 
+将A1的导数...
 Make sum of the derivative of the A1, I'll call it.
 
+这是关于VAR的表达式的加数
 It's the addend of the expression with respect to the variable,
 
+与A2的导数相加
 and the derivative of the A2 of the expression,
+
 
 because the two arguments, the addition with respect to the variable.
 
+我们知道还有一条乘法的求导法则
 And another rule that we know is product rule,
 
+也就是说 如果表达式是积式
 which is, if the expression is a product.
 
 顺便说下 当你定义过程时 有个好习惯
@@ -460,7 +527,7 @@ This question mark doesn't mean anything.
 但这是俗成的约定
 It's for us as an agreement.
 
-这是人们之间的约定接口 以方便他人阅读你的脚本
+这是人们之间约定的接口 以方便他人阅读你的脚本
 It's a conventional interface between humans so you can read my programs more easily.
 
 我希望你在写程序的时候
@@ -478,25 +545,34 @@ it should have a name which ends in question mark.
 这对Lisp无异 但对人类友好
 The lisp doesn't care. I care.
 
-
+我需要求和
 I want to make a sum.
 
+因为积的导数就是...
 Because the derivative of a product is the sum
 
+被乘数乘以乘数的导数
 of the first times the derivative of the second plus
 
+加上乘数乘以被乘数的导数
 the second times the derivative of the first.
 
+两者加起来
 Make a sum of two things,
 
+求积... 呃 就用表达式中的M1来表示（被乘数）好了
 a product of, well, I'm going to say the M1 of the expression,
 
+表达式中M2关于变量VAR的导数
 and the derivative of the M2 of the expression with respect to the variable,
 
+以及 M1的导数乘以
 and the product of the derivative of M1,
 
+M1是这里的被乘数
 the multiplier of the expression, with respect to the variable.
 
+12:17
 It's the product of that and the multiplicand, M2, of the expression.
 
 Make that product. Make the sum. Close that case.
