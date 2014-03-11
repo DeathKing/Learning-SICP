@@ -763,641 +763,940 @@ AUDIENCE: Your name.
 教授：对了
 PROFESSOR: OK.
 
+我想在这里告诉你英语词汇是有歧义的
 What I'm showing you here is that the words of English are ambiguous.
 
+我可能说 “说你的名字”
 I was saying, say your name.
 
+我也可能说 “说‘你的名字’”
 I was also possibly saying say, your name.
 
+光从说话上还无法辨别
 But that cannot be distinguished in speech.
 
+然而我们在书写时却有专门的符号——引号
 However, we do have a notation in writing,
 
+用来区别这两种可能的意思
 which is quotation for distinguishing these two possible meanings.
 
+具体来说 这里
 In particular, over here,
 
+在Lisp中有用于区别这些语义的符号
 in Lisp we have a notation for distinguishing these meanings.
 
+如果我只是想写下一个加号——作为符号的加号
 If I were to just write a plus here, a plus symbol,
 
+我会问系统 表达式的首元素
 I would be asking, is the first element of the expression,
 
+也就是表达式的运算符 是加运算符么？
 is the operator position of the expression, the addition operator?
 
+我并不知道
 I don't know.
 
+我本应该在那里写一个加运算符的
 I would have to have written the addition operator there,
 
+但我无法那样做
 which I can't write.
 
+而这种方式则是问 这个符号对象是否为
 However, this way I'm asking, is this the symbolic object plus,
 
+代表加运算符的加号符号
 which normally stands for the addition operator?
 
+这才是我想要问和知道的问题
 That's what I want. That's the question I want to ask.
 
+才我们深入讨论之前
 Now before I go any further,
 
+我想要指出 “引用”是一个复杂的概念
 I want to point out the quotation is a very complex concept,
 
+语言中引入这个概念将会造成许多麻烦
 and adding it to a language causes a great deal of troubles.
 
+看看下面这张幻灯片
 Consider the next slide. 
 
+这里这个推论没有问题
 Here's a deduction which we should all agree with.
 
+这是说 Alyssa聪明而Alyssa是George的母亲
 We have, Alyssa is smart and Alyssa is George's mother.
 
+这是一个等式
 This is an equality, is.
 
+从这两个陈述 我们可以推论George的母亲很聪明
 From those two, we can deduce that George's mother is smart.
 
+这是因为我们可以在表达式中等价替换
 Because we can always substitute equals for equals in expressions.
 
 真是这样吗？
 Or can we?
 
+这个例子说 “Chicago”有七个字母
 Here's a case where we have "Chicago" has seven letters.
 
+引用则是强调我讨论的是单词“Chicago”
 The quotation means that I'm discussing the word Chicago,
 
+而不是单词所代表的意思
 not what the word represents.
 
+这里说 Chicago是Illinois（州）最大的城市
 Here I have that Chicago is the biggest city in Illinois.
 
+而（等价代换的）结果是……
 As a consequence of this,
 
+我可能会得到 Illinois（州）最大的城市有七个字母
 I would like to deduce that the biggest city in Illinois has seven letters.
 
+这显然是错的
 But that's manifestly false.
 
+喔！这玩意儿好使了
 Wow, it works.
 
+所以 一旦我们有了（引用）这样的东西
 OK, so once we have things like that,
 
+我们的语言就会变得复杂
 our language gets much more complicated.
 
+因为我们对于语言的一些操作
 Because it's no longer true that things we tend to like to do with languages,
 
+比如通过等价代换来得到正确答案
 like substituting equals for equals and getting right answers,
 
+如果不小心地操作就会出错
 are going to work without being very careful.
 
+#TBD
 We can't substitute into what's called referentially opaque contexts,
 
 of which a quotation is the prototypical type of referentially opaque context.
 
+如果你知道那是什么意思……你可以成为一位哲学家
 If you know what that means, you can consult a philosopher.
 
+或许我们之中就有一位
 Presumably there is one in the room.
 
+言归正传 我们继续
 In any case, let's continue now,
 
+现在我们对一个有2000年历史的问题至少有了操作上的理解
 now that we at least have an operational understanding of a 2000-year-old issue
 
+#TBD
 that has to do with name, and mention, and all sorts of things like that.
 
+我得定义如何把两个数加起来 (DEFINE (MAKE-SUM A1 A2))
 I have to define what I mean, how to make a sum of two things, an a1 and a2.
 
+我简单实现一下
 And I'm going to do this very simply.
 
+这是一个由符号加、A1、A2构成的列表
 It's a list of the symbol plus, and a1, and a2.
 
+我可以决定如何取出第一个元素
 And I can determine the first element.
 
+(DEFINE A1 CADR)
 Define a1 to be cadr.
 
+这里又给大家介绍了一个基本过程
 I've just introduced another primitive.
 
+这个是取出某物CDR部分的CAR部分
 This is the car of the cdr of something.
 
+你或许好奇于这些基本过程为什么叫做CAR和CDR
 You might want to know why car and cdr are names of these primitives,
 
+而且传承了下来 尽管叫做LEFT和RIGHT会好一点
 and why they've survived, even though they're much better ideas like left and right.
 
+我们本可以那样叫的
 We could have called them things like that.
 
+呃 其实 这个名字来自于很久以前
 Well, first of all, the names come from the fact that in the great past,
 
+当发明Lisp时
 when Lisp was invented,
 
+我想大概是58年的样子 是在类似于704之类的机子上实现的
 I suppose in '58 or something, it was on a 704 or something like that,
 
+这个机器有个地址寄存器和减量寄存器
 which had a machine. It was a machine that had an address register and a decrement register.
 
+而这些就是地址寄存器和减量寄存器的值
 And these were the contents of the address register and the decrement register.
 
+所以这是有历史遗留原因的
 So it's an historical accident.
 
+但是这些名字为什么又延续下来了呢？
 Now why have these names survived?
 
+这是因为Lisp程序员喜欢用电话交流
 It's because Lisp programmers like to talk to each other over the phone.
 
+要是你有一长串的CAR和CDR序列 你就可能说“CDADDEDR”
 And if you want to have a long sequence of cars and cdrs you might say, cdaddedr,
 
+这是可以理解的
 which can be understood.
 
+但是左边的右边的右边的左边就不是那么清楚了
 But left of right or right of left is not so clear if you get good at it.
 
+这就是我们为什么有这些术语
 So that's why we have these words.
 
+Lisp系统中默认定义到第四层
 All of them up to four deep are defined typically in a Lisp system.
 
+而定义A2为……当然 如果我们考察这些表达式中的一个
 A2 to be-- and, of course, you can see that if I looked at one of these expressions
 
+比如(+ 3 5)
 like the sum of 3 and 5,
 
+这个实际上是一个包含有符号加、数3和数5的列表
 what that is is a list containing the symbol plus, and a number 3, and a number 5.
 
+它（列表）的CAR部分是符号加
 Then the car is the symbol plus.
 
+CDR部分的CAR部分
 The car of the cdr.
 
+也就是先取CDR部分 然后再取CAR部分
 Well I take the cdr and then I take the car.
 
+这就是我如何取得3的 也就是第一个参数
 And that's how I get to the 3. That's the first argument.
 
+CDR的CDR部分的CAR部分 就是这个……数5
 And the car of the cdr of the cdr gets me to this one, the 5.
 
+当然 类似地 我可以这样定义乘法
 And similarly, of course, I can define what's going on with products.
 
+我快速地演示一下
 Let's do that very quickly.
 
+(DEFINE (PRODUCT? EXP))
 Is the expression a product?
 
+如果它不是原子的 而且 
 Yes if and if it's true, that's it's not atomic
 
+EXP的CAR部分与用于表示乘法的符号*在 EQ?的语义下相等
 and it's EQ quote, the asterisk symbol, which is the operator for multiplication.
 
+(DEFINE (MAKE-PRODUCT M1 M2))
 Make product of an M1 and an M2 to be list,
 
+(LIST '* M1 M2)
 quote, the asterisk operation and M1 and M2.
 
+并定义M1为CADR M2为CADDR
 And I define M1 to be cadr and M2 to be caddr.
 
+你越按照行话说 你就越入行
 You get to be a good Lisp programmer because you start talking that way.
 
+# TBD
 I cdr down lists and console them up and so on.
 
+现在 我们有了原理上完整的求导程序了
 Now, now that we have essentially a complete program for finding derivatives,
 
+如果需要的话 你也可以添加更多的规则
 you can add more rules if you like.
 
+我们期望它如何运作呢？
 What kind of behavior do we get out of it?
 
+#TBD
 I'll have to clear that x.
 
+恩 假设我在这里定义FOO为
 Well, supposing I define foo here
 
+定义FOO为a*x^2 + b*x + c
 to be the sum of the product of ax square and bx plus c.
 
+跟我们这里看到的是一样的
 That's the same thing we see here
 
+这里是用更习见的记号书写的代数表达式
 as the algebraic expression written in the more conventional notation over there.
 
+那么 关于X的表达式FOO的导数 结果在这里
 Well, the derivative of foo with respect to x, which we can see over here,
 
+真是乱得一团糟
 is this horrible, horrendous mess.
 
+我期望答案是2*a*x + b
 I would like it to be 2ax plus b.
 
+虽然与结果等价 但它并不是我们希望的结果
 But it's not. It's equivalent to it.
 
+这是什么呢？
 What is it?
 
+我们最初有什么？
 I have here, what do I have?
 
+我求 x * x 的导数
 I have the derivative of the product of x and x.
 
+答案是 x*1 + 1*x 当然这没错
 Over here is, of course, the sum of x times 1 and 1 times x.
 
+现在
 Now, well, it's the first times the derivative of the second plus the second times the derivative of the first.
 
+这是对的
 It's right.
 
+#TBD
 That's 2x of course. a times 2x is 2ax plus 0X square doesn't count plus B over here plus a bunch of 0's.
 
 Well the answer is right.
 
+
 But I give people take off points on an exam for that, sadly enough.
 
+我们在下一节再考虑这个内容
 Let's worry about that in the next segment.
 
+有疑问吗？
 Are there any questions?
 
+请说
 Yes?
 
+观众：
 AUDIENCE: If you had left the quote when you put the plus,
 
 then would that be referring to the procedure plus
 
 and could you do a comparison between that procedure and some other procedure if you wanted to?
 
+教授：问得好！
 PROFESSOR: Yes. Good question.
 
+如果我用左引号将这个引住
 If I had left this quotation off at this point,
 
+然后再用左引号那那个引住
 if I had left that quotation off at that point,
 
 then I would be referring here to the procedure which is the thing that plus is defined to be.
 
+
 And indeed, I could compare some procedures with each other for identity.
 
+现在很难从语义上解释
 Now what that means is not clear right now.
 
+我现在不想考虑这个问题
 I don't like to think about it.
 
+因为我不知道比较过程究竟意味着什么
 Because I don't know exactly what it would need to compare procedures.
 
+这样做没有意义是有很多原因的
 There are reasons why that may make no sense at all.
 
+然而 这些符号我们是可以理解的
 However, the symbols, we understand.
 
+这也是我为什么我要将它们引住
 And so that's why I put that quote in.
+
 
 I want to talk about the symbol that's apparent on the page.
 
+还有什么问题么？
 Any other questions?
 
+好吧 休息一下 谢谢大家
 OK. Thank you. Let's take a break.
 
 [MUSIC PLAYING]
 
-
+教授：好 我们继续
 PROFESSOR: Well, let's see.
 
+我们编写了一个貌似可行的代数表达式求导程序
 We've just developed a fairly plausible program for computing the derivatives of algebraic expressions.
 
+这个程序是不完整的 你需要添加一些规则
 It's an incomplete program, if you would like to add more rules.
 
+#TBD
 And perhaps you might extend it to deal with uses of addition with any number of arguments and multiplication with any of the number of arguments.
 
+这些都相当简单
 And that's all rather easy.
 
+但这里面也有一些瑕疵
 However, there was a little fly in that ointment.
 
+回到这张幻灯片来
 We go back to this slide.
 
+我们发现得到的表达式相当乱
 We see that the expressions that we get are rather bad.
 
+这是一个非常糟糕的表达式
 This is a rather bad expression.
 
+我们是怎么得到这样的表达式的？
 How do we get such an expression?
 
+为什么这样呢？
 Why do we have that expression?
 
+我们详细地分析一下这个表达式
 Let's look at this expression in some detail.
 
+找出这些片段都是出自哪里
 Let's find out where all the pieces come from.
 
+如我们所见 这里的加
 As we see here, we have a sum--
 
+也就是上一小节中给你们提到的
 just what I showed you at the end of the last time--
 
+(+ (* x 1) (* 1 x))
 of X times 1 plus 1 time X.
 
+是这个积式的导数
 That is a derivative of this product.
 
-The produce of a times that, where a does not depend upon x,
+也就是a乘上这个的积 这里a并不依赖于x
+The product of a times that, where a does not depend upon x,
 
+因此它的导数为常数 #TBD
 and therefore is constant with respect to x,
 
+导数为这个和式 从这里到这里 再到这里
 is this sum, which goes from here all the way through here and through here.
 
+# TBD 30：49
 Because it is the first thing times the derivative of the second
 
 plus the derivative of the first times the second
 
 as the program we wrote on the blackboard indicated we should do.
 
+当然 这里B乘以X的积
 And, of course, the product of bx over here
 
+被化成了 B*1+0*X
 manifests itself as B times 1 plus 0 times X
 
+因为B并不依赖于X
 because we see that B does not depend upon X.
 
+因此B的导数为0
 And so the derivative of B is this 0,
 
+而X对自己求导则为1
 and the derivative of X with respect itself is the 1.
 
+这里的加法化成了 这两个导数的和式
 And, of course, the derivative of the sums over here turn into these two sums of the derivatives of the parts.
 
-So what we're seeing here is exactly the thing
+所以 #TBD 31:40
+So what we're seeing here is exactly the thing I was trying to tell you about
 
-I was trying to tell you about with Fibonacci numbers a while ago,
+with Fibonacci numbers a while ago,
 
+所谓的 “过程的形式”
 that the form of the process
+
 
 is expanded from the local rules that you see in the procedure,
 
+也就是过程代表了一系列用于演进过程局部规则 #TBD
 that the procedure represents a set of local rules for the expansion of this process.
 
+
 And here, the process left behind some stuff, which is the answer.
+
 
 And it was constructed by the walk it takes of the tree structure,
 
 which is the expression.
 
+答案中的每一部分 都是问题中的某些部分
 So every part in the answer we see here derives from some part of the problem.
 
+比如说 现在我们考察FOO的导数
 Now, we can look at, for example, the derivative of foo,
 
+也就是AX^2+BX+C
 which is ax square plus bx plus c,
 
+并另令自变量 比如像这里
 with respect to other things, like here, for example,
 
+我们令A为自变量 求FOO的导数
 we can see that the derivative of foo with respect to a.
 
+这都非常相似 实际上 它们是同样地代数表达式
 And it's very similar. It's, in fact, the identical algebraic expression,
 
+只是它们之中0和1的位置不一样罢了
 except for the fact that theses 0's and 1's are in different places.
 
+# TBD 32：40
 Because the only degree of freedom we have in this tree walk
 
 is what's constant with respect to the variable we're taking the derivative with respect to
 
 and was the same variable.
 
+回到黑板上来再看看
 In other words, if we go back to this blackboard and we look,
 
+我们在求和式或积式的导数时根本没有选择
 we have no choice what to do when we take the derivative of the sum or a product.
 
+真正可以做文章的地方 则是表达式和自变量
 The only interesting place here is, is the expression the variable,
 
-or is the expression a constant with respect to that variable
+表达式是否为关于自变量的常数 #TBD 33：11
+or is the expression a constant with respect to that variable for very, very small expressions?
 
-for very, very small expressions?
 
 In which case we get various 1's and 0's, which if we go back to this slide,
 
+这里就出现了“0”
 we can see that the 0's that appear here, for example,
 
+这里 求FOO(A)的导数时得到的“1”
 this 1 over here in derivative of foo with respect to A,
+
 
 which gets us an X square,
 
+
 because that 1 gets the multiply of X and X into the answer, that 1 is 0.
+
 
 Over here, we're not taking the derivative of foo with respect to c.
 
+但是这些表达式的轮廓是一致的
 But the shapes of these expressions are the same.
 
+看看这些轮廓 都是相同的
 See all those shapes. They're the same.
 
+那么 难道是我们的规则出了问题？
 Well is there anything wrong with our rules?
 
+不 这些规则都正确
 No. They're the right rules.
 
+我们曾经遇到过这种问题
 We've been through this one before.
 
-One of the things you're going to begin to discover
 
-is that there aren't too many good ideas.
+One of the things you're going to begin to discover is that there aren't too many good ideas.
 
+昨天 我们在考察有理数时
 When we were looking at rational numbers yesterday,
 
+想要得到3/4却得到6/8
 the problem was that we got 6/8 rather then 3/4.
 
+答案没有化简
 The answer was unsimplified.
 
+当然 当下的问题也非常类似 
 The problem, of course, is very similar.
+
 
 There are things I'd like to be identical by simplification that don't become identical.
 
+当然 有理数加法和乘法的规则依然正确
 And yet the rules for doing addition a multiplication of rational numbers were correct.
 
+因此这里 我们依葫芦画瓢
 So the way we might solve this problem is do the thing we did last time, which always works.
 
+上次能行的办法 这次也没问题
 If something worked last time it ought to work again.
 
+也就是改换一下它的表示
 It's changed representation.
 
+或许在将其表示出来时我们可以进行
 Perhaps in the representation we could put in a simplification step
 
+一步产生简化表示的步骤
 that produces a simplified representation.
 
+当然啦 这也不是万用万灵
 This may not always work, of course.
 
+我也不想证明它是万能的
 I'm not trying to say that it always works.
 
+但这也是控制复杂度的一着妙计
 But it's one of the pieces of artillery we have in our war against complexity.
 
+我们小心翼翼地解决这些问题
 You see, because we solved our problem very carefully.
 
+我们所做的 就是把问题划分为几个部分
 What we've done, is we've divided the world in several parts.
 
-There are derivatives rules and general rules for algebra of some sort at this level of detail.
+分别是求导规则
+There are derivatives rules
 
+和在这种层面上的一般代数规则
+and general rules for algebra of some sort at this level of detail.
+
+然后就有一道抽象屏障
 and i have an abstraction barrier.
 
+这里是代数表达式的表示——表结构
 And i have the representation of the algebraic expressions, list structure.
 
+在这道屏障中 我定义了接口过程
 And in this barrier, I have the interface procedures.
 
+比如 CONSTANT? SAME-VAR?
 I have constant, and things like same-var.
 
+又比如 SUM? MAKE-SUM
 I have things like sum, make-sum.
 
+还有 A1 A2
 I have A1, A2.
 
+还有 PRODUCT? 之类的东西
 I have products and things like that,
 
+我所需要的、针对各式代数表达式的东西
 all the other things I might need for various kinds of algebraic expressions.
 
+构筑这些屏障我可以随意地改换表示法
 Making this barrier allows me to arbitrarily change the representation
 
+而不用改变在某种表示法下编写的规则
 without changing the rules that are written in terms of that representation.
 
+如果我能通过改变表示法来解决问题
 So if I can make the problem go away by changing representation,
 
+那么把问题分解为两个部分则帮了我大忙
 the composition of the problem into these two parts has helped me a great deal.
 
+好吧 举一个非常简单的例子
 So let's take a very simple case of this.
 
+我们的问题是什么？
 What was one of the problems?
 
+回到这张幻灯片来
 Let's go back to this transparency again.
 
+看这里 哦 这相当糟糕
 And we see here, oh yes, there's horrible things
 
+这里是一个表达式与“0”的和
 like here is the sum of an expression and 0.
 
+毋庸置疑这应该是该表达式本身
 Well that's no reason to think of it as anything other than the expression itself.
 
+为什么这里还会有加号？
 Why should the summation operation have made up this edition?
 
+这其实可以更智能点
 It can be smarter than that.
 
+又比如说这里 是某表达式与“1”的积
 Or here, for example, is a multiplication of something by 1.
 
+这和之前一个道理
 It's another thing like that.
 
+又像这里 与“0”相乘显然是“0”
 Or here is a product of something with 0, which is certainly 0.
 
+因此我们也不用去构造这些式子了
 So we won't have to make this construction.
 
+我们为什么不这么做呢？
 So why don't we just do that?
 
+我们需要去修改表示法 基本上就是那里了
 We need to change the way the representation works, almost here.
 
+定义 MAKE-SUM 为
 Make-sum to be.
 
+呃 现在就不是那么简单了
 Well, now it's not something so simple.
 
+除非是有必要 否则我不会简单地把加号和式子组合成表
 I'm not going to make a list containing the symbol plus and things unless I need to.
 
+那么 还有哪些可能呢？
 Well, what are the possibilities?
 
+如果……这里有一些可能的情况
 If...I have some sort of cases here.
 
+如果都是数值的话 如果A1是数值的话
 If I have numbers, if a1 is a number--
 
+这个基本过程我刚刚提到过
 and here's another primitive I've just introduced,
 
+也就是用来检测参数是否为数值
 it's possible to tell whether something's number--
 
+并且A2也是数值的话 也就是A2不是符号表达式
 and if number A2, meaning they're not symbolic expressions,
 
+那么我们就直接把它们加起来
 then why not do the addition now?
 
+结果就是A1加上A2的和
 The result is just a plus of A1 and A2.
 
+我并不是检查它们代表数值
 I'm not asking if these represent numbers.
 
+这里所有的符号都代表数值
 Of course all of these symbols represent numbers.
 
+就比如 我想要考察的是这个东西是否为数值3
 I'm talking about whether the one I've got is the number 3 right now.
 
+另一种情况
 And, for example,
 
+假设A1是数值 并且为0
 supposing A1 is a number, and it's equal to 0,
 
+那么答案就是A2
 well then the answer is just A2.
 
+不用再构造什么
 There is no reason to make anything up.
 
+如果A2是数值 并且为0
 And if A2 is a number, and equal A2 0,
 
+那么答案就是A1
 then the result is A1.
 
+如果没有比这些更好的情况
 And only if I can't figure out something better to do with this situation,
 
-well, I can start a list.
+我就需要构造一个表
+well, I can construct a list.
 
+构造一个用于表示答案的表
 Otherwise I want the representation to be the list
 
+其中有 '+、A1和A2
 containing the quoted symbol plus, and A1, and A2.
 
+档案 积的导数也可以类比此法
 And, of course, a very similar thing can be done for products.
 
+这里 我就不细讲了
 And I think I'll avoid boring you with them.
 
+我就直接在黑板上写出结果
 I was going to write it on the blackboard.
 
+这并不是很重要 你们已经了解它的思想了
 I don't think it's necessary. You know what to do.
 
+非常简明
 It's very simple.
 
+现在 我们来看看用这种方式改造程序后 效果如何
 But now, let's just see the kind of results we get out of changing our program in this way.
 
+哦 这是修改表达式构造函数后的求导结果
 Well, here's the derivatives after having just changed the constructors for expressions.
 
+对同样地FOO求导：AX^2+BX+C
 The same foo, aX square plus bX plus c,
 
+我得到了 2AX+B
 and what I get is nothing more than the derivative of that is 2aX plus B.
 
+虽然它并没有化到最简
 Well, it's not completely simplified.
 
+我应该合并同类项和求和
 I would like to collect common terms and sums.
 
+但这又是另外一回事了
 Well, that's more work.
 
+当然啦 完成这个功能的代码就大而复杂了
 And, of course, programs to do this sort of thing are huge and complicated.
 
+代数化简 是一项复杂的工作 #TBD
 Algebraic simplification, it's a very complicated mess.
 
+你们可能听过MIT以前开发的一个非常出名的程序 MAXIMA
 There's a very famous program you may have heard of called Maxima developed at MIT in the past,
 
+它有5000页的LISP代码
 which is 5,000 pages of Lisp code,
 
+大部分是代数化简的操作
 mostly the algebraic simplification operations.
 
+这里是FOO的导数
 There we see the derivative of foo.
 
+#TBD 41：20
 In fact, X is at something I wouldn't take off more than 1 point for on an elementary calculus class.
 
+以A为自变量 FOO的导数则是X*X
 And the derivative of foo with respect to a, well it's gone down to X times X, 
 
+看起来还不差
 which isn't so bad.
 
+以B为自变量 FOO的导数则是X本身
 And the derivative of foo with respect to b is just X itself.
 
+以C为自变量 FOO的导数则为“1”
 And the derivative of foo with respect to c comes out 1.
 
+我对这些结果很满意
 So I'm pretty pleased with this.
 
+你所看到的 都是精心设计、仔细规划的例子
 What you've seen is, of course, a little bit contrived, carefully organized example
 
+用以展示如何操作代数表达式
 to show you how we can manipulate algebraic expressions,
 
-how we do that abstractly in terms of abstract syntax
+我们如何不用具体的语法 而用抽象的语法抽象地进行
+how we do that abstractly in terms of abstract syntax rather than concrete syntax
 
-rather than concrete syntax and how we can use the abstraction to control what goes on in building these expressions.
+以及我们如何使用抽象屏障控制构造这些表达式 #TBD 41：56
+and how we can use the abstraction to control what goes on in building these expressions.
 
+真正的奥义并不是如此的简单
 But the real story isn't just such a simple thing as that.
 
+实际上 真正的奥义在于我在操作这些表达式时
 The real story is, in fact, that I'm manipulating these expressions.
 
+代数表达式和代码表达式——
 And the expressions are the same expressions--
 
+回过头来看看幻灯片
 going back to the slide--
 
+都是同一种LISP表达式
 as the ones that are Lisp expressions.
 
+这样一语双关 一石二鸟
 There's a pun here.
 
+#TBD 42：00 
 I've chosen my representation to be the same as the representation in my language of similar things.
 
+为了要这样做 我得付出点代价
 By doing so, I've invoked a necessity.
 
+我需要使用类似于“引用”的东西
 I created the necessity to have things like quotation
+
 
 because of the fact that my language is capable of writing expressions that talk about expressions of the language.
 
+我需要有某种东西指出 这个是我需要讨论的表达式
 I need to have something that says, this is an expression I'm talking about
 
+而不是说 这个表达式的值 #TBD
 rather than this expression is talking about something,
+
 
 and I want to talk about that.
 
+引用阻止表达式被求值 其语义为“就是表达式本身”
 So quotation stops and says, I'm talking about this expression itself.
 
+有了这种能力以后
 Now, given that power,
 
+如果我可以操作语言的表达式
 if I can manipulate expressions of the language,
+
 
 I can begin to build even much more powerful layers upon layers of languages.
 
+因为我可以编写不仅仅是内嵌于LISP的语言
 Because I can write languages that not only are embedded in Lisp
 
+或者是其它的语言
 or whatever language you start with,
 
+我可以编写一种完全不同的语言
 but languages that are completely different,
 
+而其实质上则是被LISP或其它语言所解释
 that are just, if we say, interpreted in Lisp or something like that.
 
+我们以后还会对此有更深入的理解
 We'll get to understand those words more in the future.
 
+我现在只是想让你们意识到 #TBD
 But right now I just want to leave you with the fact that we've hit a line
 
+我们已经感触到了一种惊人的力量
 which gives us tremendous power.
 
+现在我们有了方天画戟
 And this point we've bought a sledgehammer.
 
+当我们使用它时 也得万分小心
 We have to be careful to what flies when we apply it.
 
+谢谢大家
 Thank you.
 
 [MUSIC PLAYING]
-￼￼￼
