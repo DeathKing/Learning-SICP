@@ -15,7 +15,7 @@ cont = []
 
 # 换行符，由于文件比较混乱，有时需要自行调整
 # 如有问题，可以尝试调整为 \n、\r、\r\n中的其它值
-newline = "\n"
+newline = "\r\n" 
 
 open(ARGV[0]).each_line do |line|
     if line == newline
@@ -43,8 +43,8 @@ open(ARGV[0]).each_line do |line|
 end
 
 filename = ARGV[0].split(".")[0]
-eng_file = "#{filename}-eng.srt"
-chn_file = "#{filename}-chn.srt" 
+eng_file = "#{filename}_eng.srt"
+chn_file = "#{filename}_chn.srt" 
 
 open(eng_file, "w").puts(eng.join)
 open(chn_file, "w").puts(chn.join)
