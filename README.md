@@ -12,8 +12,10 @@
 
 [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
 
-+ Lec1a：[《Lisp概览》](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html)，DeathKing译。
-+ Lec1b：[《计算过程》](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html)，ChingfanTsou译。
++ Lec1a：[《Lisp概览》](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html)，[下载地址](http://pan.baidu.com/s/1kTmeMgR)，DeathKing译。
++ Lec1b：[《计算过程》](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html)，[下载地址](http://pan.baidu.com/s/1o6G0Qgi)，ChingfanTsou译。
++ Lec2a: [《高阶过程》](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html)，[下载地址](http://pan.baidu.com/s/1jG3HI8A)，endyul译。
++ Lec2b: [《复合数据》](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html)，[下载地址](http://pan.baidu.com/s/1o6HgNgu)，DeathKing译。
 
 Youtube 版本即将上传
 
