@@ -23,8 +23,8 @@ Youtube 版本即将上传
 
 + 给@DeathKing(`dk#hit.edu.cn`)发送一封邮件
 + `fork`
-+ [项目Wiki](https://github.com/FoOTOo/Learning-SICP/wiki)
-+ [项目状态](https://github.com/FoOTOo/Learning-SICP/wiki/%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81)
++ [项目Wiki](https://github.com/DeathKing/Learning-SICP/wiki)
++ [项目状态](https://github.com/DeathKing/Learning-SICP/wiki/%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81)
 
 
 ## 声明与致谢
