@@ -23,6 +23,8 @@ Youtube版本暂时不支持。
 
 ## 加入我们
 
+SICP学习交流群：97747648。
+
 + 给@DeathKing(`dk#hit.edu.cn`)发送一封邮件
 + `fork`
 + [项目Wiki](https://github.com/DeathKing/Learning-SICP/wiki)
