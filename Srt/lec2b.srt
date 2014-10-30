@@ -1,0 +1,5201 @@
+﻿1
+00:00:00,000 --> 00:00:04,000
+哈尔滨工业大学 IBM技术中心
+倾情制作
+
+2
+00:00:04,100 --> 00:00:08,000
+压制&&特效：蔡钟毓（JohnTitor）
+翻译&&时间轴：邓雄飞（Dysprosium）
+
+3
+00:00:08,100 --> 00:00:12,000
+特别感谢：裘宗燕教授
+校对：邓雄飞（Dysprosium）
+
+4
+00:00:13,000 --> 00:00:16,500
+复合数据
+Compound Data
+
+5
+00:00:21,720 --> 00:00:25,020
+到目前为止 这门课都在讨论过程
+Well, so far in this course we've been talking about procedures,
+
+6
+00:00:25,920 --> 00:00:27,900
+我想提醒大家 我们介绍的这个框架
+and then just to remind you of this framework
+
+7
+00:00:29,040 --> 00:00:30,840
+是用来讨论语言的
+that we introduced for talking about languages,
+
+8
+00:00:30,840 --> 00:00:34,800
+我们讨论内建于系统中的基本元素
+we talked about the primitive things that are built into the system.
+
+9
+00:00:35,540 --> 00:00:37,620
+我们介绍了一些组合的方法
+We mentioned some means of combination
+
+10
+00:00:38,660 --> 00:00:41,540
+这些方法用来组合基本元素 使你能够构造更复杂的东西
+by which you take the primitive thingsand you make more complicated things.
+
+11
+00:00:42,200 --> 00:00:43,960
+然后我们讨论了抽象的方法
+And then we talked about the means of abstraction,
+
+12
+00:00:43,960 --> 00:00:46,220
+你如何去取用这些复杂的东西
+how you can take those complicated things and name them
+
+13
+00:00:46,560 --> 00:00:48,220
+给它们命名 这样就可以像简单单元那样使用
+so you can use them as simple building blocks.
+
+14
+00:00:49,320 --> 00:00:51,560
+上节课最后 我们甚至做了更超前的东西
+And then last time you saw we went even beyond that.
+
+15
+00:00:51,560 --> 00:00:54,140
+我们看到 通过使用高阶过程
+We saw that by using higher order procedures,
+
+16
+00:00:55,200 --> 00:00:57,800
+我们甚至可以表达计算的通用方法
+you can actually express general methods for computing things.
+
+17
+00:00:57,800 --> 00:01:02,160
+这就像求不动点的方法和牛顿法
+Like the method of doing something by fixed points, or Newton's method,
+
+18
+00:01:02,940 --> 00:01:05,500
+你可以通过组合这些抽象的方法
+and so the incredible expressive power you can get
+
+19
+00:01:05,760 --> 00:01:08,280
+来得到这种难以置信的表达力
+just by combining these means of abstraction.
+
+20
+00:01:08,280 --> 00:01:11,820
+这样做的中心点是
+And the crucial idea in all of this is
+
+21
+00:01:11,820 --> 00:01:14,220
+我们要构建一个层次系统
+the one that we build a layered system.
+
+22
+00:01:14,900 --> 00:01:15,940
+譬如说
+So for instance,
+
+23
+00:01:16,180 --> 00:01:18,080
+如果我们编写平方根过程
+if we're writing the square root procedure,
+
+24
+00:01:20,880 --> 00:01:25,920
+而这个平方根过程又用到了一个叫GOOD-ENOUGH的过程
+somewhere the square root procedure uses a procedure called good-enough,
+
+25
+00:01:31,080 --> 00:01:35,060
+而这两者之间就有某种抽象屏障
+and between those there is some sort of abstraction boundary.
+
+26
+00:01:37,640 --> 00:01:40,980
+这大概就像是我们开始编写平方根程序
+It's almost as if we go out and in writing square root,
+
+27
+00:01:40,980 --> 00:01:43,640
+先要与George订好“契约”
+we go and make a contract with George,
+
+28
+00:01:44,760 --> 00:01:46,940
+告诉他 他的工作是编写GOOD-ENOUGH过程
+and tell George that his job is to write good-enough,
+
+29
+00:01:48,660 --> 00:01:50,320
+因此只要GOOD-ENOUGH按我们的预期运作
+and so long as good-enough works,
+
+30
+00:01:50,320 --> 00:01:51,460
+我们就不管它是如何运作的
+we don't care what it does.
+
+31
+00:01:52,320 --> 00:01:54,220
+我们不关心（它的内部）实现
+We don't care exactly how it's implemented.
+
+32
+00:01:54,220 --> 00:01:58,880
+实现层面是Goerge操心的 和我们无关
+There are levels of detail here that are George's concern and not ours.
+
+33
+00:02:00,100 --> 00:02:00,900
+又比如
+So for instance,
+
+34
+00:02:00,900 --> 00:02:05,440
+George可能用了Harry写的绝对值过程
+George might use an absolute value procedure that's written by Harry,
+
+35
+00:02:06,240 --> 00:02:07,440
+但我们不会去关心这些
+and we don't much care about that
+
+36
+00:02:07,440 --> 00:02:09,940
+我们甚至可能还不知道有Harry这号人
+or even know that, maybe, Harry exists.
+
+37
+00:02:13,500 --> 00:02:16,320
+关键就是 当我们在构造东西时
+So the crucial idea is that when we're building things,
+
+38
+00:02:16,320 --> 00:02:23,740
+我们将构造整体的任务划分为了实现部件的任务
+we divorce the task of building things from the task of implementing the parts.
+
+39
+00:02:26,340 --> 00:02:28,740
+当然 在一个大型系统中
+And in a large system, of course,
+
+40
+00:02:28,740 --> 00:02:30,580
+我们有像这样的抽象屏障
+we have abstraction barriers like this
+
+41
+00:02:30,920 --> 00:02:32,580
+在很高很高很高层次上的抽象屏障
+at lots, and lots, and lots of levels.
+
+42
+00:02:33,780 --> 00:02:35,980
+这也是我们到目前为止一直在使用的思想
+And that's the idea that we've been using so far
+
+43
+00:02:35,980 --> 00:02:37,740
+贯彻到每次编写过程之中
+over and over in implementing procedures.
+
+44
+00:02:37,740 --> 00:02:42,360
+言归正传 我们将要在数据中看到同样的问题
+Well, now what we're going to do is look at the same issues for data.
+
+45
+00:02:43,760 --> 00:02:46,100
+我们发现系统中有基本数据
+We're going to see that the system has primitive data.
+
+46
+00:02:46,100 --> 00:02:47,180
+实际上我们已经注意了
+In fact, we've already seen that.
+
+47
+00:02:47,180 --> 00:02:48,960
+我们已经讨论了作为基本对象的数
+We've talked about numbers as primitive data.
+
+48
+00:02:49,940 --> 00:02:52,120
+我们将看到适用于数据的组合方法
+And then we're going to see their means of combination for data.
+
+49
+00:02:52,120 --> 00:02:55,620
+有一种“胶水” 能让你把基本数据粘合在一起
+There's glue that allows you to put primitive data together
+
+50
+00:02:56,040 --> 00:02:58,720
+来构造一种更复杂的符合数据
+to make more complicated, kind of compound data.
+
+51
+00:02:59,160 --> 00:03:03,700
+然后我们将看到一种抽象方法学
+And then we're going to see a methodology for abstraction
+
+52
+00:03:04,600 --> 00:03:06,040
+这种方法十分好用 尤其是
+that's a very good thing to use
+
+53
+00:03:06,040 --> 00:03:08,480
+当你用简易的数据构造复杂数据时
+when you start building up data in terms of simpler data.
+
+54
+00:03:08,480 --> 00:03:12,560
+再次强调 中心思想是要建立层次化的系统
+And again, the key idea is that you're going to build the system in layers
+
+55
+00:03:13,420 --> 00:03:17,860
+建立抽象屏障将细节隔离在底层
+and set up abstraction barriers that isolate the details at the lower layers
+
+56
+00:03:19,560 --> 00:03:21,280
+将细节与你所工作的高层环境隔离开
+from the thing that's going on at the upper layers.
+
+57
+00:03:21,280 --> 00:03:24,120
+底层的细节 底层的思想 都不重要
+The details at the lower layers, the ideas, they won't matter.
+
+58
+00:03:24,920 --> 00:03:26,260
+那是George该操心的
+They're going to be George's concern
+
+59
+00:03:26,520 --> 00:03:28,160
+因为他跟我们“订好契约”
+because he signed this contract with us
+
+60
+00:03:28,480 --> 00:03:30,560
+他负责实现这些行为
+for how the stuff that he implements behaves,
+
+61
+00:03:31,640 --> 00:03:34,120
+怎么实现都是他的事
+and how he implements the thing is his problem.
+
+62
+00:03:35,960 --> 00:03:37,360
+好了 来看一个实例吧
+All right, well let's look at an example.
+
+63
+00:03:37,480 --> 00:03:40,320
+我们将会讨论一个系统
+And the example I'm going to talk about is a system
+
+64
+00:03:40,400 --> 00:03:42,560
+一个在有理数域上做算术运算的系统
+that does arithmetic on rational numbers.
+
+65
+00:03:42,560 --> 00:03:44,300
+我现在所想到的是
+And what I have in mind is that
+
+66
+00:03:44,660 --> 00:03:46,520
+计算机中应该有某种东西
+we should have something in the computer
+
+67
+00:03:46,860 --> 00:03:50,340
+使得我们可以查询
+that allows us to ask it,
+
+68
+00:03:50,340 --> 00:03:55,160
+类似于 1/2加上1/4的和是多少
+like, what's the sum of 1/2 and 1/4,
+
+69
+00:03:55,520 --> 00:04:01,220
+系统说 是3/4
+and somehow the system should say, yeah, that's 3/4.
+
+70
+00:04:02,520 --> 00:04:09,400
+我们也可以查询3/4乘以2/3的积
+Or we should be able to say what's 3/4 times 2/3,
+
+71
+00:04:10,720 --> 00:04:13,400
+系统因该能够回答 结果是1/2
+and the system should be able to say, yeah, that's 1/2.
+
+72
+00:04:16,100 --> 00:04:17,700
+对吧？ 你知道我想表达的意思
+Right? And you know what I have in mind.
+
+73
+00:04:17,700 --> 00:04:20,240
+我不太确定你们是多久掌握这些运算的
+And you also know how to do this from, I don't know,
+
+74
+00:04:20,240 --> 00:04:21,480
+五年级或者六年级吧？
+fifth grade or sixth grade.
+
+75
+00:04:21,900 --> 00:04:23,420
+这里的一些公式说
+There are these formulas that say
+
+76
+00:04:23,420 --> 00:04:28,020
+如果有形式为分子除以分母的分数
+if I have some fraction which is a numerator over a denominator,
+
+77
+00:04:28,200 --> 00:04:31,100
+而如果我要将这个分数与另一个分数相加的话
+and I want to add that to some other fraction
+
+78
+00:04:31,360 --> 00:04:34,600
+当然 这个分数也是分子除以分母
+which is another numerator over another denominator,
+
+79
+00:04:34,980 --> 00:04:38,380
+那么结果将会是 第一个分数的分子
+then the answer is the numerator of the first
+
+80
+00:04:39,020 --> 00:04:40,980
+乘以第二个分数的分母
+times the denominator of the second,
+
+81
+00:04:41,680 --> 00:04:46,300
+加上第二个分数的分子乘以第一个分数的分母
+plus the numerator of the second times the denominator of the first.
+
+82
+00:04:48,100 --> 00:04:49,380
+当然 这只是答案的分子
+That's the numerator of the answer,
+
+83
+00:04:49,380 --> 00:04:52,860
+答案的分母是两个分数的分母之积
+and the denominator is the product of the two denominators.
+
+84
+00:04:52,860 --> 00:04:57,040
+对吧？ 这大概就是五、六年级课程的分数算术
+Right? So there's something from fifth or sixth grade fraction arithmetic.
+
+85
+00:04:57,040 --> 00:04:59,360
+类似地 如果我想要将两个数乘起来
+And then similarly, if I want to multiply two things,
+
+86
+00:04:59,360 --> 00:05:04,600
+N1除以D1的商 乘以 N2除以D2的商
+n1 over d1 multiplied by n2 over d2
+
+87
+00:05:05,460 --> 00:05:10,600
+就是两个分数的分子之积除以两个分母之积的商
+is the product of the numerators over the product of the denominators.
+
+88
+00:05:14,020 --> 00:05:15,160
+所以这些都不构成问题
+So it's no problem at all,
+
+89
+00:05:16,380 --> 00:05:17,860
+当然 理解这些
+but it's absolutely no problem to
+
+90
+00:05:18,420 --> 00:05:20,580
+你想进行的分数运算
+think about what computation you want to make
+
+91
+00:05:20,580 --> 00:05:22,480
+是完全没问题的
+in adding and multiplying these fractions.
+
+92
+00:05:23,460 --> 00:05:26,840
+但是当我们实现这个功能的时候 我们似乎遗漏了什么
+But as soon as we go to implement it, we run up across something.
+
+93
+00:05:27,560 --> 00:05:31,560
+我们连有理数都没有
+We don't have what a rational number is.
+
+94
+00:05:32,960 --> 00:05:38,220
+系统只提供给我们了单个数字 比如5和3
+so we said that the system gives us individuals number so we can have 5 and 3,
+
+95
+00:05:38,840 --> 00:05:42,700
+但我们没法去表达
+but somehow we don't have a way of
+
+96
+00:05:43,180 --> 00:05:46,820
+一个同时具有3和4的东西
+saying there's a thing that has both a 3 and a 4 in it,
+
+97
+00:05:47,380 --> 00:05:49,340
+或者同时具有2和3的东西
+or both a 2 and a 3.
+
+98
+00:05:49,340 --> 00:05:53,220
+但只要我们去想象
+It's almost as if we'd like to imagine
+
+99
+00:05:53,380 --> 00:05:55,640
+我们就会看到一些云彩
+that somehow there are these clouds,
+
+100
+00:05:57,280 --> 00:06:01,840
+某个云彩不知咋的就有分子和分母
+and a cloud somehow has both a numerator and a denominator in it,
+
+101
+00:06:02,060 --> 00:06:03,960
+这就是我们想让拥有的功能
+and that's what we'd like to work in terms of.
+
+102
+00:06:06,500 --> 00:06:07,980
+那么 我们要怎么解决这个问题呢？
+Well, how are we going to solve that problem?
+
+103
+00:06:07,980 --> 00:06:13,100
+我们将使用一种强大的设计策略来解决这个问题
+We're going to solve that problem by using this incredibly powerful design strategy
+
+104
+00:06:13,520 --> 00:06:15,560
+这种策略我们已经反复使用过了
+that you've already seen us use over and over.
+
+105
+00:06:16,180 --> 00:06:18,160
+这就是按愿望思维的策略
+And that's the strategy of wishful thinking.
+
+106
+00:06:25,340 --> 00:06:27,340
+假设现在还没有任何过程
+Just like before when we didn't have a procedure,
+
+107
+00:06:27,340 --> 00:06:30,380
+我们就想象确实存在着某个过程
+we said, well, let's imagine that that procedure already exists.
+
+108
+00:06:30,980 --> 00:06:34,040
+那么 我们就来想象我们有了这些（有理数）云彩吧
+We'll say, well, let's imagine that we have these clouds.
+
+109
+00:06:35,720 --> 00:06:37,820
+更准确一点来说
+Now more precisely what I mean is
+
+110
+00:06:38,820 --> 00:06:43,180
+让我们假设我们有了三个过程
+let's imagine that we have three procedures，
+
+111
+00:06:43,960 --> 00:06:45,240
+其一为MAKE-RAT
+one called MAKE-RAT.
+
+112
+00:06:47,340 --> 00:06:53,120
+MAKE-RAT有两个参数
+MAKE-RAT is going to take as arguments two numbers,
+
+113
+00:06:54,200 --> 00:06:55,820
+我们分别把它们叫作分子和分母
+so I'll call them numerator and denominator,
+
+114
+00:06:57,620 --> 00:07:03,400
+它给我们返回一朵——我们需要的云彩
+and it'll return for us a cloud-- one of these clouds.
+
+115
+00:07:04,860 --> 00:07:06,420
+我并不知道云彩是什么
+I don't really know what a cloud is.
+
+116
+00:07:06,660 --> 00:07:09,160
+无论MAKE-RAT返回什么 那都是它的事
+It's whatever MAKE-RAT returns, that's its business.
+
+117
+00:07:11,060 --> 00:07:11,960
+并且我们会说
+And then we're going to say,
+
+118
+00:07:12,080 --> 00:07:13,520
+假设我们有了这样的一个云彩
+suppose we've got one of these clouds,
+
+119
+00:07:13,780 --> 00:07:15,740
+我们有个叫NUMER的过程
+we have a procedure called NUMER,
+
+120
+00:07:16,720 --> 00:07:19,900
+这个过程需要我们传递具有N和D的云彩
+which takes in a cloud that has an n and a d in it,
+
+121
+00:07:19,920 --> 00:07:21,820
+不管这个云彩是什么 我也不知道这个云彩是什么
+whatever a cloud is, and I don't know what it is,
+
+122
+00:07:22,780 --> 00:07:24,440
+但NUMER过程会返回（云彩的）分子部分
+and returns for us the numerator part.
+
+123
+00:07:26,760 --> 00:07:28,900
+我们也会假设我们有个叫DENOM的过程
+And then we'll assume we have a procedure DENOM,
+
+124
+00:07:30,820 --> 00:07:33,560
+该过程需要我们传递一个云彩 不管云彩是什么
+which again takes in a cloud, whatever a cloud is,
+
+125
+00:07:34,880 --> 00:07:37,480
+并返回（云彩的）分母部分
+and returns for us the denominator part.
+
+126
+00:07:37,480 --> 00:07:42,480
+就像之前我们构造平方根过程一样
+This is just like before, when if we're building a square root,
+
+127
+00:07:42,560 --> 00:07:43,860
+我们假设我们有GOOD-ENOUGH过程
+we assume that we have good-enough.
+
+128
+00:07:45,020 --> 00:07:48,520
+对吧？ 我们会找到George 对他说
+Right? And what we'll say is, we'll go find George, and we'll say to George,
+
+129
+00:07:48,700 --> 00:07:50,780
+那么 你的任务就是实现这三个过程
+well, it's your business to make us these procedures.
+
+130
+00:07:51,920 --> 00:07:54,440
+你选择如何实现这些云彩 就是你的事了
+And how you choose to implement these clouds, that's your problem.
+
+131
+00:07:54,660 --> 00:07:55,380
+我们不想深究
+We don't want to know.
+
+132
+00:07:58,500 --> 00:08:02,100
+这样 把这些杂事都推给George后
+Well, having pushed this task off onto George,
+
+133
+00:08:03,120 --> 00:08:05,080
+完成其它部分就相当容易了
+then it's pretty easy to do the other part.
+
+134
+00:08:05,080 --> 00:08:08,180
+一旦我们有了这些云彩后 编写那些
+Once we've got the clouds, it's pretty easy to write the thing
+
+135
+00:08:08,180 --> 00:08:10,500
+把有理数加起来的程序就变得容易多了
+that does say addition of rational numbers.
+
+136
+00:08:11,340 --> 00:08:17,980
+你可以定义 这么说吧 定义+RAT
+You can just say define, well, let's say +RAT.
+
+137
+00:08:22,080 --> 00:08:27,660
+定义+RAT过程 该过程需要两个有理数参数 X和Y
+Define +RAT, which will take in two rational numbers, x and y.
+
+138
+00:08:27,760 --> 00:08:30,340
+X和Y就是这些云彩
+x and y are each these clouds.
+
+139
+00:08:31,520 --> 00:08:32,460
+这个过程干些啥呢？
+And what does it do? Well
+
+140
+00:08:32,760 --> 00:08:35,580
+它将返回给我们一个有理数
+it's going to return for us a rational number.
+
+141
+00:08:39,980 --> 00:08:41,340
+这个有理数是怎么得来的呢？
+What rational number is it? Well,
+
+142
+00:08:41,880 --> 00:08:43,220
+依据这里的公式
+we've got the formulas there.
+
+143
+00:08:43,340 --> 00:08:45,760
+答案的分子的一部分为
+The numerator of it is the sum of
+
+144
+00:08:47,020 --> 00:08:56,340
+X的分子与Y的分母之积
+the product of the numerator of x and the denominator of y.
+
+145
+00:09:02,220 --> 00:09:03,360
+这只是答案的分子的一部分
+It's one thing in the sum.
+
+146
+00:09:03,600 --> 00:09:06,180
+结果的分子剩下的一部分是
+And the other thing in the numerator is
+
+147
+00:09:06,260 --> 00:09:16,960
+Y的分子与X的分母之积
+the product of the numerator of y and the denominator of x.
+
+148
+00:09:18,800 --> 00:09:20,080
+闭合* 闭合+
+The star, close the plus.
+
+149
+00:09:20,500 --> 00:09:23,380
+好了 这是MAKE-RAT的第一个参数
+Right, that's the first argument to MAKE-RAT,
+
+150
+00:09:23,380 --> 00:09:25,380
+这是我将要构造的云彩的分子
+which is the numerator of the thing I'm constructing.
+
+151
+00:09:26,220 --> 00:09:28,460
+而MAKE-RAT剩下的参数
+And then the rest of the thing goes into MAKE-RAT is
+
+152
+00:09:28,460 --> 00:09:30,340
+则是答案的分母
+the denominator of the answer,
+
+153
+00:09:30,380 --> 00:09:40,860
+也就是X的分母乘以Y的分母
+which is the product of the denominator of x and the denominator of y.
+
+154
+00:09:41,960 --> 00:09:42,600
+像这样
+Like that.
+
+155
+00:09:45,440 --> 00:09:51,320
+好 这就是对有理数加法的一个模拟
+OK? So there is the analog of doing rational number addition.
+
+156
+00:09:51,380 --> 00:09:54,780
+在假设我们有了这些云彩后 就变得完全没有问题
+And it's no problem at all, assuming that we have these clouds.
+
+157
+00:09:59,000 --> 00:10:02,060
+当然 我们可以用同样的方法把它们乘起来
+And of course, we can do multiplication in the same way.
+
+158
+00:10:05,240 --> 00:10:11,900
+我们把将两个有理数乘起来定义为*RAT过程
+Define how to get the product of two rational numbers, call it *RAT.
+
+159
+00:10:12,800 --> 00:10:16,140
+该过程需要两朵云彩 X和Y
+Takes in two of these clouds, x and y,
+
+160
+00:10:19,540 --> 00:10:21,540
+返回一个用MAKE-RAT构造的有理数
+it returns a rational number, MAKE-RAT,
+
+161
+00:10:24,280 --> 00:10:27,460
+这个有理数的分子是
+whose numerator is the product of the numerators--
+
+162
+00:10:30,040 --> 00:10:36,220
+X的分子与Y的分子之积
+numerator of x times the numerator of y.
+
+163
+00:10:37,820 --> 00:10:40,780
+而这个有理数的分母则是
+And the denominator of the thing it's going to return
+
+164
+00:10:41,200 --> 00:10:42,780
+X的分母与Y的分母之积
+is the product of the denominators.
+
+165
+00:10:57,120 --> 00:11:01,520
+好了 现在就差告诉你这些云彩是什么了
+Well, except that I haven't told you what these clouds are,
+
+166
+00:11:02,560 --> 00:11:04,860
+所有操作都是围绕它展开的 看到我做了什么吗？
+that's all there is to it. See, what did I do?
+
+167
+00:11:04,960 --> 00:11:09,180
+我按照我的愿望假设我有一种新的数据类型
+I assumed by wishful thinking that I had a new kind of data object.
+
+168
+00:11:09,940 --> 00:11:15,100
+特别地 我假设我有创建这些数据类型的能力
+And in particular, I assumed I had ways of creating these data objects.
+
+169
+00:11:15,920 --> 00:11:17,780
+这里的MAKE-RAT就创建了一个新的数据类型
+MAKE-RAT creates one of these things.
+
+170
+00:11:17,780 --> 00:11:18,940
+这叫作“构造函数”
+This is called a constructor.
+
+171
+00:11:25,300 --> 00:11:28,980
+我现在有了可以构造这些数据类型的东西了
+All right, I have a thing that constructs such data objects.
+
+172
+00:11:29,380 --> 00:11:34,200
+然后我假设我有某些东西 有了这些东西后
+And then I assume I have things that, having made these things,
+
+173
+00:11:34,200 --> 00:11:37,680
+我就有从中抽取部分信息的方法了 这些叫作“选择函数”
+I have ways of getting the parts out. Those are called selectors.
+
+174
+00:11:42,460 --> 00:11:44,540
+说得更正式一点 就是说
+And so formally, what I said is I assumed
+
+175
+00:11:44,540 --> 00:11:48,660
+我假设有了用于处理这些数据类型的构造函数和选择函数
+I had procedures that are constructors and selectors for these data objects,
+
+176
+00:11:48,660 --> 00:11:49,940
+我就可以靠它们来编程了
+and then I went off and used them.
+
+177
+00:11:51,700 --> 00:11:55,580
+这就好比我说假设我有GOOD-ENOUGH?过程
+That's no different in kind from saying I assume I have a procedure GOOD-ENOUGH?,
+
+178
+00:11:56,000 --> 00:11:57,800
+并用它来实现平方根这种做法
+and I go use it to implement square root.
+
+179
+00:12:00,420 --> 00:12:01,840
+好 在我们继续之前
+OK, well before we go on,
+
+180
+00:12:04,520 --> 00:12:08,020
+让我们来想想 为什么我们首先就在这个地方实现了这些东西？
+let's ask the question of why do we want to do this in the first place?
+
+181
+00:12:08,360 --> 00:12:12,200
+为什么我们需要一个像+RAT这样的过程
+See, why do we want a procedure like, like +RAT
+
+182
+00:12:13,260 --> 00:12:19,280
+一个需要两个有理数作为参数并返回一个有理数的过程
+that takes in two rational numbers and returns a rational number?
+
+183
+00:12:19,960 --> 00:12:22,620
+换一种想法就是 我们实现的是这里的这个公式
+See, another way to think about this is, well, here's this formula.
+
+184
+00:12:24,780 --> 00:12:28,760
+这里我也实现了用于加和两个有理数的东西
+And I've also got to implement something that adds rational numbers.
+
+185
+00:12:29,520 --> 00:12:31,680
+再换一种想法就是 这有这么一个东西
+One other way to think about is, well, there's this thing,
+
+186
+00:12:31,860 --> 00:12:35,660
+可以让我输入四个数 N1 D1 N2 D2
+and I type in four numbers, an n1, and a d1, and an n2, and a d2.
+
+187
+00:12:36,240 --> 00:12:38,020
+然后这个东西就修改机器里的寄存器
+And it sets some registers in the machine
+
+188
+00:12:38,300 --> 00:12:42,120
+来代表分子和分母
+to a, this numerator and this denominator.
+
+189
+00:12:42,120 --> 00:12:42,920
+所以你大概会问
+So I might say, well,
+
+190
+00:12:43,020 --> 00:12:45,600
+你为什么不用四个分别代表分子和分母的数
+why don't I just add rational numbers by I type in four numbers,
+
+191
+00:12:45,740 --> 00:12:46,880
+来做有理数加法
+numerators and denominators,
+
+192
+00:12:46,880 --> 00:12:49,340
+这个加法返回两个数 分别代表分子和分母
+and get out two numbers, which is a numerator and a denominator.
+
+193
+00:12:50,480 --> 00:12:54,840
+我们为什么要像这样构造“云彩”？
+Why are we worrying about building things like this anyway?
+
+194
+00:12:58,380 --> 00:12:59,700
+呃 那是因为
+Well, the answer is,
+
+195
+00:12:59,820 --> 00:13:05,720
+假设你想表达像这样的东西
+suppose you want to think about expressing something like this,
+
+196
+00:13:05,780 --> 00:13:11,740
+假设我想表达让两个有理数
+suppose I'd like to express the idea of taking two rational numbers,
+
+197
+00:13:12,980 --> 00:13:21,340
+X加Y的和 乘以 另外两个有理数S、T的和
+x plus y, say, and multiplying that by the sum of two other rational numbers.
+
+198
+00:13:23,300 --> 00:13:27,380
+然而 当我有了像+RAT和*RAT这样的东西后
+Well, the way I do it, having things like +RAT and *RAT,
+
+199
+00:13:28,200 --> 00:13:33,520
+我就会将其考虑为乘积
+is I'd say, oh yeah, what that is is just the product.
+
+200
+00:13:33,600 --> 00:13:49,060
+就是将*RAT应用于X和Y的和以及S和T的和上
+That's *RAT of the sum of x and y and the sum of s and t.
+
+201
+00:13:51,260 --> 00:13:55,320
+我就得到了一个表达式 如果不考虑语法的话
+So except for syntax, I get an expression
+
+202
+00:13:55,620 --> 00:13:59,200
+这个表达式看起来像是按照数学思想表达的
+that looks like the way I want to think about it mathematically.
+
+203
+00:13:59,540 --> 00:14:03,420
+我说这有两个数 这个东西代表了这两个数的和
+I want to say there are two numbers. There's a thing which is the sum of them,
+
+204
+00:14:05,300 --> 00:14:07,360
+然而这个东西又代表了另两个数的和
+and there's a thing which is the sum of these two.
+
+205
+00:14:08,000 --> 00:14:10,440
+就是这个和这个
+That's this and this.
+
+206
+00:14:10,440 --> 00:14:11,700
+然后我把它们乘起来
+And then I multiply them.
+
+207
+00:14:12,200 --> 00:14:14,200
+所以我有了一个和这里的表达式相匹配的表达式
+So I get an expression that matches this expression.
+
+208
+00:14:14,200 --> 00:14:16,680
+而如果我用其它的方式去表达 我说
+If I did the other thing, if I said, well,
+
+209
+00:14:16,680 --> 00:14:20,160
+我向机器传递四个数
+the way I want to think about this is I type into my machine four numbers,
+
+210
+00:14:20,320 --> 00:14:22,860
+四个分别代表X和Y的分子、分母的数
+which are the numerators and the denominators of x and y,
+
+211
+00:14:23,800 --> 00:14:28,000
+然后又是四个分别代表S和T的分子、分母的数
+and then four more numbers, which are the numerators and denominators of s and t.
+
+212
+00:14:28,780 --> 00:14:30,780
+我现在又该干什么呢？
+And then what I'd be sitting with is, well, what would I do?
+
+213
+00:14:31,000 --> 00:14:34,560
+我把这些加起来 然后我们就得到了两个临时变量
+I'd add these, and somehow I'd have to have two temporary variables,
+
+214
+00:14:35,240 --> 00:14:37,440
+分别代表了和的分子、分母
+which are the numerators and denominators of this sum,
+
+215
+00:14:37,960 --> 00:14:39,600
+我又得去找个地方把它们存储起来
+and I'd go off and store them someplace.
+
+216
+00:14:42,140 --> 00:14:44,200
+然后到了这里 我又传入了四个数
+And then I'd go over here, I'd type in four more numbers,
+
+217
+00:14:44,200 --> 00:14:45,960
+我得到了两个临时变量
+I'd get two more temporary variables,
+
+218
+00:14:46,480 --> 00:14:48,720
+分别代表了S和T之和的分子和分母
+which are the numerators and denominators of s and t.
+
+219
+00:14:49,820 --> 00:14:52,860
+最后 我通过把它们乘起来来将其结合在一起
+And then finally, I put those together by multiplying them.
+
+220
+00:14:54,620 --> 00:14:56,120
+如你所见 麻烦出来了
+You see, what's starting to happen,
+
+221
+00:14:56,140 --> 00:14:57,700
+这里满是临时变量
+there are all these temporary variables,
+
+222
+00:14:58,180 --> 00:15:02,780
+这些应该是这些有理数内部的“内脏”吧
+which are sort of the guts of the internals of these rational numbers
+
+223
+00:15:02,780 --> 00:15:04,900
+但却显露在我们的系统中
+that start hanging out all over the system.
+
+224
+00:15:05,860 --> 00:15:08,240
+当然 随着表达式变得越来越复杂
+And of course, if I had more and more complicated expressions,
+
+225
+00:15:08,240 --> 00:15:11,500
+这些“内脏”就会显露得越来越多 使我编程时感到困惑
+there'd be more and more guts hanging out that confuse my programming.
+
+226
+00:15:12,620 --> 00:15:15,540
+像这样写程序的人
+And those of you who sort of programmed things like that,
+
+227
+00:15:15,540 --> 00:15:18,140
+你只是在用汇编语言的思想来加和两数
+where you're just adding numbers in assembly language,
+
+228
+00:15:18,140 --> 00:15:21,060
+你也发现 你突然之间需要关注这些临时变量了
+you sort of see you have to suddenly be concerned with these temporary variables.
+
+229
+00:15:22,680 --> 00:15:29,200
+而这些对我大脑造成的困惑 要比对编程造成的困惑更严重
+But more importantly than confusing my programming, they're going to confuse my mind.
+
+230
+00:15:29,620 --> 00:15:31,480
+而编程的本质就是
+Because the whole name of this game
+
+231
+00:15:33,140 --> 00:15:35,420
+我们希望程序设计语言能够表达
+is that we'd like the programming language
+
+232
+00:15:36,820 --> 00:15:39,100
+我们脑中的概念
+to express the concepts that we have in our heads,
+
+233
+00:15:39,320 --> 00:15:41,780
+有理数就是这些概念
+like rational numbers are things that you can add
+
+234
+00:15:42,620 --> 00:15:44,540
+我们可以先把它们加起来然后再乘起来
+and then take that result and multiply them.
+
+235
+00:15:48,360 --> 00:15:49,300
+有疑问吗？
+Let's break for questions.
+
+236
+00:15:57,380 --> 00:15:57,780
+恩
+Yeah?
+
+237
+00:15:59,680 --> 00:16:01,480
+学生：我不太明白为什么
+AUDIENCE: Ya, I don't quite see the need-
+
+238
+00:16:01,480 --> 00:16:04,140
+我们既然有MAKE-RAT过程了
+when we had MAKE-RAT with the numerator and denominator,
+
+239
+00:16:04,140 --> 00:16:08,440
+我们传递两个参数作为分子和分母来构造一朵云彩
+we had to have the numerator and denominator to pass as parameters to create the cloud,
+
+240
+00:16:08,440 --> 00:16:11,040
+但最后我们又从中将这些东西原原本本地给抽取出来
+and then we extracted to get back what we had to have originally.
+
+241
+00:16:11,360 --> 00:16:11,980
+教授：是这样的
+PROFESSOR: That's right.
+
+242
+00:16:13,380 --> 00:16:16,600
+我们的问题是 既然我们是用分子和分母构造云彩
+So the question is, I sort of have the numerator and the denominator,
+
+243
+00:16:17,080 --> 00:16:21,720
+但我为什么又想从云彩里面把它们取出来呢？
+why am I worrying about having the cloud given that I have to get the pieces out?
+
+244
+00:16:23,280 --> 00:16:26,640
+这个是我在后面提到过的 不过让先说下吧
+That's sort of what I tried to say at the end, but let me try and say it again,
+
+245
+00:16:26,640 --> 00:16:28,040
+这个问题非常关键
+because that's really the crucial question.
+
+246
+00:16:29,260 --> 00:16:32,980
+关键点就是 我想让分子和分母
+The point is, I want to carry this numerator and denominator around
+
+247
+00:16:34,100 --> 00:16:35,220
+总是在绑一起
+together all the time.
+
+248
+00:16:36,840 --> 00:16:38,740
+我完完全全知道
+And it's almost as if I want to know,
+
+249
+00:16:38,740 --> 00:16:40,640
+这里面有分子和分母
+yeah, there's a numerator and denominator in there,
+
+250
+00:16:40,640 --> 00:16:44,940
+同样的 我也想表达
+but also, I would like to say, fine,
+
+251
+00:16:45,400 --> 00:16:48,640
+但是 从另一个角度来看 这就是X
+but from another point of view, that's x.
+
+252
+00:16:49,860 --> 00:16:52,460
+我可以取用X 我给它命名为X 我就可以控制它了
+And I carry x around, and I name it as x, and I hold it.
+
+253
+00:16:52,680 --> 00:16:55,160
+然后我就可以说 X加上Y的和
+And I can say things like, the sum of x and y,
+
+254
+00:16:55,800 --> 00:16:58,540
+我只考虑一个X的时候 使用两个数来代表分子、分母并无大碍
+rather than just have-- see, it's not so bad when I only think about x,
+
+255
+00:16:59,260 --> 00:17:01,300
+但是当我有10个有理数时
+but if I have a system with 10 rational numbers,
+
+256
+00:17:01,600 --> 00:17:03,500
+如果我不把它们联系起来
+suddenly I have 20 numerators and denominators,
+
+257
+00:17:03,920 --> 00:17:06,220
+我一下子就有了20个不必要的分子和分母
+which are not necessarily-- if I don't link them,
+
+258
+00:17:06,220 --> 00:17:09,900
+它们只是20个没有以一种特定方式联系起来的任意数而已
+then it's just 20 arbitrary numbers that are not linked in any particular way.
+
+259
+00:17:10,080 --> 00:17:13,100
+这就像是说
+It's a lot like saying, well,
+
+260
+00:17:13,100 --> 00:17:15,260
+我要把这些过程体的指令
+I have these instructions that are the body of the procedures,
+
+261
+00:17:15,260 --> 00:17:17,220
+把它们封装起来作为一个过程
+why do I want to package them and say it's the procedure?
+
+262
+00:17:17,620 --> 00:17:18,820
+这是一码子事儿
+It's exactly the same idea.
+
+263
+00:17:30,800 --> 00:17:34,100
+没问题了 好吧
+No more? OK.
+
+264
+00:17:34,560 --> 00:17:36,460
+那休息一下 活动一下吧 [听不清]
+Let's break, let's just stretch and get somebody-- [INAUDIBLE]
+
+265
+00:17:37,880 --> 00:17:43,240
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+266
+00:17:45,380 --> 00:17:50,320
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+267
+00:17:50,580 --> 00:17:55,440
+讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+By: Prof. Harold Abelson && Gerald Jay Sussman
+
+268
+00:18:09,000 --> 00:18:16,680
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+269
+00:18:18,800 --> 00:18:22,020
+复合数据
+Compound Data
+
+270
+00:18:26,700 --> 00:18:30,460
+好吧 回到我们的有理数算术系统来
+OK, well, we've been working on this rational number arithmetic system,
+
+271
+00:18:31,700 --> 00:18:35,240
+而我们做的 最重要的是
+and then what we did, the important thing about what we did,
+
+272
+00:18:35,320 --> 00:18:38,300
+我们我们把这个问题分解为了两部分
+is we thought about the problem by breaking it into two pieces.
+
+273
+00:18:39,780 --> 00:18:42,460
+我们假设跟George“订好契约”
+We said, assume there is this contract with George,
+
+274
+00:18:43,040 --> 00:18:46,320
+George已经给出了如何去构造这些云彩
+and George has figured out the way to how to construct these clouds,
+
+275
+00:18:47,640 --> 00:18:51,260
+他向我们提供了一个作为构造函数的MAKE-RAT过程
+provided us procedures MAKE-RAT, which was a constructor,
+
+276
+00:18:51,740 --> 00:18:54,600
+相应的 用于提取分子和分母的选择函数
+and selectors, which are numerator and denominator.
+
+277
+00:18:54,660 --> 00:18:55,460
+然后 我们用这些东西
+And then in terms of that,
+
+278
+00:18:55,460 --> 00:18:59,060
+我们实现了有理数的加法和乘法
+we went off and implemented addition and multiplication of rational numbers.
+
+279
+00:19:00,220 --> 00:19:02,420
+好了 我们来看看George面临的问题吧
+Well, now let's go look at George's problem.
+
+280
+00:19:03,100 --> 00:19:07,200
+我们如何来把分子和分母给封装起来
+How can we go and package together a numerator and a denominator
+
+281
+00:19:07,200 --> 00:19:08,540
+并把它们放在“云彩”里
+and actually make one of these clouds?
+
+282
+00:19:09,020 --> 00:19:11,160
+我们需要的是一种胶水
+See, what we need is a kind of glue,
+
+283
+00:19:12,440 --> 00:19:16,940
+一种可以让我们把数据结合在一起的胶水
+kind of a glue that, a glue for data objects that allows us to put things together.
+
+284
+00:19:17,740 --> 00:19:20,460
+幸而Lisp提供了这样的胶水
+And Lisp provides such a glue,
+
+285
+00:19:21,680 --> 00:19:24,160
+我们把它叫作“表结构”
+and that glue is called list structure.
+
+286
+00:19:30,000 --> 00:19:33,060
+表结构是一种将数据粘合在一起的工具
+List structure is a way of gluing things together,
+
+287
+00:19:35,200 --> 00:19:36,080
+说得更准确一点
+and more precisely,
+
+288
+00:19:36,280 --> 00:19:41,260
+就是Lisp提供了一种构造序对的方法
+Lisp provides a way of constructing things called pairs.
+
+289
+00:19:44,660 --> 00:19:50,800
+Lisp里面有一个叫CONS的基本过程
+There's a primitive operator in Lisp called CONS.
+
+290
+00:19:52,120 --> 00:19:53,140
+让我们来看一下
+We can take a look at it.
+
+291
+00:19:54,900 --> 00:19:56,940
+这个就是CONS
+There's a thing called CONS.
+
+292
+00:19:59,620 --> 00:20:04,160
+CONS是一个运算符 它需要两个参数X和Y
+Cons is an operator which takes in two arguments called x and y,
+
+293
+00:20:06,180 --> 00:20:08,400
+它返回给我们一种叫作“序对”的东西
+and it returns for us a thing called a pair.
+
+294
+00:20:11,220 --> 00:20:17,760
+而所谓的“序对” 就是具有“首部分”和“次部分”
+All right, so a thing called a pair that has a first part a second part.
+
+295
+00:20:21,540 --> 00:20:23,120
+这也解释了为什么CONS需要两个参数
+So CONS takes two objects.
+
+296
+00:20:25,080 --> 00:20:26,140
+如果我们有一个序对的话
+There's a thing called a pair.
+
+297
+00:20:26,460 --> 00:20:31,140
+X就是首部分 而Y就是次部分
+The first part of the cons is X, and the second part of the cons is Y.
+
+298
+00:20:31,140 --> 00:20:32,120
+这就是它的构造方式
+And that's what it builds.
+
+299
+00:20:33,760 --> 00:20:36,220
+我们同样也有把东西取出来的方法
+And then we also assume we have ways of getting things out.
+
+300
+00:20:36,520 --> 00:20:38,880
+给定一个序对 我们有一个叫CAR的东西
+If you're given a pair, there's a thing called CAR,
+
+301
+00:20:41,600 --> 00:20:45,240
+使得 序对P的CAR就是序对P的首部分
+and car of a pair, P, gives you out the first part of the pair, P.
+
+302
+00:20:46,320 --> 00:20:47,280
+也有一个叫CDR的东西
+And there's a thing called CDR,
+
+303
+00:20:47,780 --> 00:20:51,620
+使得序对P的CDR 就是序对P的次部分
+and CDR of the pair, P, gives you the second part of the pair, p.
+
+304
+00:20:54,440 --> 00:20:56,020
+这些就是我们构造数据的方法
+OK, so that's how we construct things.
+
+305
+00:20:56,460 --> 00:21:01,900
+在将这些数据用图画表示时 我们也有一种俗成的方法
+There's also a conventional way of drawing pictures of these things.
+
+306
+00:21:02,480 --> 00:21:11,260
+这类似于我们用俗成的方法书写柏拉图概念下的2
+Just like we write down that as the conventional way of writing Plato's idea of two,
+
+307
+00:21:13,440 --> 00:21:20,920
+我们像这样画个图来表示 (CONS 2 3)
+the way we could draw a diagram to represent cons of two and three is like this.
+
+308
+00:21:21,600 --> 00:21:22,580
+先画个小盒子
+We draw a little box.
+
+309
+00:21:23,860 --> 00:21:25,600
+这个就是我们讨论的（序对）
+And so here's the box we're talking about,
+
+310
+00:21:26,300 --> 00:21:28,320
+盒子“放出”两个箭头
+and this box has two arrows coming out of it.
+
+311
+00:21:29,620 --> 00:21:34,560
+我们说 这个序对的首部分是2
+And say the first part of this pair is 2,
+
+312
+00:21:34,800 --> 00:21:36,520
+而这个序对的次部分是3
+and the second part of this pair is 3.
+
+313
+00:21:37,920 --> 00:21:44,960
+这种记法叫作“盒子—指针”记法
+And this notation has a name, it's called box and pointer notation.
+
+314
+00:21:55,220 --> 00:21:56,940
+顺带一提 我现在就来说说
+Ok, By the way, let me say right now
+
+315
+00:21:57,140 --> 00:21:58,400
+困惑了很多人的一点
+that a lot of people get confused
+
+316
+00:21:58,400 --> 00:22:03,240
+我画这些指针时 重要的仅仅是指针的指向
+that there's some significance to the geometric way I drew these pointers, the directions.
+
+317
+00:22:03,240 --> 00:22:05,960
+一些人可能会认为 如果我这样画箭头
+Like some people think it'd be different if I took this pointer
+
+318
+00:22:05,960 --> 00:22:08,360
+并把3放在这里 结果会不一样
+and turned it up here, and put the 3 out here.
+
+319
+00:22:08,360 --> 00:22:10,660
+这实际上是没区别的 能理解吗？
+That has no significance. Right?
+
+320
+00:22:11,200 --> 00:22:14,700
+只不过是在这一大堆的箭头、指针和盒子中
+It's merely you have a bunch of arrows, these pointers, and the boxes.
+
+321
+00:22:14,700 --> 00:22:16,840
+唯一的区别就在于它们是如何联接的
+The only issue is how they're connected,
+
+322
+00:22:16,840 --> 00:22:21,300
+而不是我把它们怎么放置 譬如向上放 向下放 或者交叉放
+not the geometric arrangement of whether I write the pointer across, or up, or down.
+
+323
+00:22:23,220 --> 00:22:24,720
+关于它们为什么叫做表结构
+Now it's completely un-obvious,
+
+324
+00:22:25,720 --> 00:22:27,680
+或许现在就完全不清楚了
+probably, why that's called list structure.
+
+325
+00:22:28,500 --> 00:22:31,560
+我们今天不会讨论这个问题 我们下次再讨论吧
+We're not actually going to talk about that today. We'll see that next time.
+
+326
+00:22:37,620 --> 00:22:40,920
+所以 我们可以用CONS构造序对
+So those are pairs, there's CONS that constructs them.
+
+327
+00:22:41,480 --> 00:22:44,920
+我准确地知道CONS、CAR和CDR的行为是
+And what I'm going to know about CONS, and CAR, and CDR,
+
+328
+00:22:45,260 --> 00:22:49,320
+如果我有任意的X和Y
+is precisely that if I have any X and Y,
+
+329
+00:22:50,240 --> 00:22:52,280
+对任意的X和Y
+right, if I have any things X and Y,
+
+330
+00:22:53,680 --> 00:22:55,980
+我可以用CONS来构造一个序对
+and I use CONS to construct a pair,
+
+331
+00:22:59,000 --> 00:23:03,140
+那么该序对的CAR就是X 就是我的构造时的一个输入
+then the CAR of that pair is going to be X, the thing I put in,
+
+332
+00:23:03,600 --> 00:23:05,700
+而该序对的CDR就是Y
+and the CDR of that pair is going to be Y.
+
+333
+00:23:07,260 --> 00:23:10,660
+这就是CONS、CAR、CDR这些运算符的行为
+That's the behavior of these operators, CONS, CAR, and CDR.
+
+334
+00:23:12,020 --> 00:23:15,740
+有了这些东西 George构造有理数就明了多了
+Given them, it's pretty clear how George can go off and construct his rational numbers.
+
+335
+00:23:17,200 --> 00:23:18,480
+言归正传 George要——
+After all, all he has to do--
+
+336
+00:23:19,000 --> 00:23:22,720
+记得吗 George的任务是实现MAKE-RAT、NUMER、DENOM过程
+remember George's problem was to implement MAKE-RAT, numerator, and denom.
+
+337
+00:23:23,020 --> 00:23:36,180
+George这样编写代码  (DEFINE (MAKE-RAT N D)
+So all George has to do is say define MAKE-RAT of some N and a D--
+
+338
+00:23:36,640 --> 00:23:38,640
+就是将CONS应用于这二者
+Well, all I have to do is CONS them.
+
+339
+00:23:40,580 --> 00:23:42,520
+也就是(CONS N D)
+That's CONS of N and D.
+
+340
+00:23:45,220 --> 00:23:46,900
+而如果我想取出分子
+And then if I want to get the numerator out,
+
+341
+00:23:47,440 --> 00:23:59,140
+代码我这样写 (DEFINE (NUMER X)
+I would say define the numerator, numer, of some rational number, X.
+
+342
+00:23:59,960 --> 00:24:02,000
+如果我们是用序对来实现有理数的话
+If the rational number's implemented as a pair,
+
+343
+00:24:02,440 --> 00:24:04,320
+我只需要用CAR来获得X的首部分
+then all I have to do is get out the CAR of X.
+
+344
+00:24:06,240 --> 00:24:18,860
+类似的 DENOM就是用CDR运算符了
+And then similarly, define the denom is going to be the cdr,
+
+345
+00:24:19,020 --> 00:24:21,000
+也就是我用于构造序对的另一个数据
+the other thing I put into the pair.
+
+346
+00:24:26,700 --> 00:24:27,640
+我们现在就是在干这件事
+Well, now we're in business.
+
+347
+00:24:28,400 --> 00:24:32,860
+这就是有理数的一种实现
+That's a complete implementation of rational numbers.
+
+348
+00:24:33,460 --> 00:24:34,900
+我们来实践一下 假设我想要
+Let's use it. Suppose I want to say,
+
+349
+00:24:35,780 --> 00:24:43,080
+我想要求取1/2加上1/4 并观察系统是怎么运作的
+so I want to think about how to add 1/2 plus 1/4 and watch the system work.
+
+350
+00:24:43,080 --> 00:24:50,340
+那么 我或许会定义一个A
+Well, the way I'd use that is I'd say, well, maybe define A.
+
+351
+00:24:50,380 --> 00:24:51,760
+我需要构造一个1/2
+I have to make a 1/2.
+
+352
+00:24:52,760 --> 00:24:56,780
+也就是一个分子为1 分母为2的有理数
+Well, that's a rational number with numerator 1 and denominator 2,
+
+353
+00:24:59,320 --> 00:25:02,540
+也就是 A为(MAKE-RAT 1 2)
+so a will be MAKE-RAT of 1 and 2.
+
+354
+00:25:05,280 --> 00:25:07,160
+然后我来构造1/4
+And then I'll construct the 1/4.
+
+355
+00:25:07,260 --> 00:25:20,220
+我定义B为(MAKE-RAT 1 4)
+I'll say define B to be MAKE-RAT of 1 and 4.
+
+356
+00:25:23,360 --> 00:25:24,860
+如果我想解得答案的话
+And if I'd like to look at the answer--
+
+357
+00:25:25,060 --> 00:25:28,100
+先假设我们没有一个专门用于打印有理数的东西
+well, assuming I don't have a special thing that prints rational numbers,
+
+358
+00:25:28,100 --> 00:25:29,020
+我可以自己编写一个
+or I could make one--
+
+359
+00:25:29,740 --> 00:25:31,380
+比如说 我可以这样写
+I could say, for instance,
+
+360
+00:25:31,380 --> 00:25:43,740
+定义答案为(+RAT A B)
+define the answer to be +RAT of A and B,
+
+361
+00:25:45,980 --> 00:25:47,100
+那么我就可以问 答案是多少？
+and now I can say, what's the answer?
+
+362
+00:25:47,100 --> 00:25:50,120
+答案的分子和分母分别是多少？
+What are the numerators and denominators of the answer?
+
+363
+00:25:50,640 --> 00:26:00,280
+因此 我把1/2和1/4加起来后 我会问 答案的分子是多少？
+So if I'm adding 1/2 and 1/4, I'll say, what is the numerator of the answer?
+
+364
+00:26:03,880 --> 00:26:10,260
+系统就就会打印出 6
+And the system is going to type out, well, 6.
+
+365
+00:26:10,560 --> 00:26:11,240
+糟糕了
+Bad news.
+
+366
+00:26:12,860 --> 00:26:14,960
+而如果我问答案的分母是多少
+And if I say what's the denominator of the answer,
+
+367
+00:26:22,340 --> 00:26:24,480
+系统就就会打印出8
+the system's going to type out 8.
+
+368
+00:26:26,100 --> 00:26:28,740
+我们本来希望能得到
+So instead of what I would really like,
+
+369
+00:26:29,560 --> 00:26:32,380
+1/2加1/4是3/4
+which is for it to say that 1/2 and 1/4 is 3/4,
+
+370
+00:26:35,200 --> 00:26:38,340
+但这台愚蠢的机器却说 不 应该是6/8
+this foolish machine is going to say, no, it's 6/8.
+
+371
+00:26:40,100 --> 00:26:41,480
+恩 这的确有点糟糕
+Well, that's sort of bad news.
+
+372
+00:26:43,040 --> 00:26:43,880
+问题在哪里呢？
+Where's the bug?
+
+373
+00:26:46,940 --> 00:26:48,400
+是什么导致的呢？
+Why does it do that, after all?
+
+374
+00:26:48,400 --> 00:26:51,040
+问题出在+RAT上
+Well, it's the way that we just had +RAT.
+
+375
+00:26:51,040 --> 00:26:56,620
++RAT只是把A的分子和B分母之积与
++RAT just took the-- it said you add the numerator times the denominator,
+
+376
+00:26:57,860 --> 00:27:00,100
+B的分子和A的分母之积加在一起
+you add that to the numerator times the denominator,
+
+377
+00:27:00,440 --> 00:27:02,420
+并把它们除以两分母之积
+and put that over the product of the two denominators,
+
+378
+00:27:02,420 --> 00:27:03,580
+这就是为什么得到6/8的原因
+and that's why you get 6/8.
+
+379
+00:27:05,560 --> 00:27:09,680
+那么 我们的+RAT实现有什么问题呢？
+So what was wrong with our implementation of +RAT?
+
+380
+00:27:10,260 --> 00:27:13,720
+我们在此之前所做的有理数算术又有什么错误呢？
+What's wrong with that rational number arithmetic stuff that we did before the break?
+
+381
+00:27:15,500 --> 00:27:17,940
+当然 从一方面来看 这一点都没有错
+Well, the answer is one way to look at it is absolutely nothing's wrong.
+
+382
+00:27:19,360 --> 00:27:21,120
+这其实是一个相当好的实现
+That's perfectly good implementation.
+
+383
+00:27:21,120 --> 00:27:26,900
+这个实现完完全全遵守了分数加法法则
+It follows the sixth grade, fifth grade mathematic for adding fractions.
+
+384
+00:27:29,620 --> 00:27:31,820
+我们可以这样说 这就是George的问题了
+One thing we can say is, well, that's George's problem.
+
+385
+00:27:32,980 --> 00:27:37,560
+如果George只是简单地通过把分子和分母放在一起
+Like, boy, wasn't George dumb to say that he can make a rational number
+
+386
+00:27:37,800 --> 00:27:40,780
+来构造有理数的话 岂不是站不住脚？
+simply by sticking together the numerator and the denominator?
+
+387
+00:27:42,480 --> 00:27:46,460
+在构造有理数时 如果George把这些东西化到最简
+Wouldn't it be better for George, when he made a rational number,
+
+388
+00:27:47,640 --> 00:27:49,240
+难道不是会跟好一点吗？
+to reduce the stuff to lowest terms?
+
+389
+00:27:51,080 --> 00:27:55,540
+我想说的是 对George来说
+And what I mean is, wouldn't it be better for George,
+
+390
+00:27:55,540 --> 00:28:01,800
+用这个版本的MAKE-RAT 难道会比幻灯片上的这个好么？
+instead of using this version of MAKE-RAT, to use this one on the slide?
+
+391
+00:28:03,160 --> 00:28:06,660
+不是简单地通过CONS 把N和D结合起来
+Or instead of just saying CONS together N and D,
+
+392
+00:28:07,240 --> 00:28:11,680
+我们先寻找N和D的最大公约数
+what you do is compute the greatest common divisor of N and D,
+
+393
+00:28:12,420 --> 00:28:14,000
+我们用GCD过程来找
+and GCD is the procedure which,
+
+394
+00:28:14,700 --> 00:28:16,040
+我们只需知道GCD是一个基本过程
+well, for all we care is a primitive,
+
+395
+00:28:16,040 --> 00:28:18,520
+它返回的是两个数的最大公约数
+which computes the greatest common divisor of two numbers.
+
+396
+00:28:20,700 --> 00:28:22,900
+因此 这种构造有理数的方法就是
+So the way I can construct a rational number is
+
+397
+00:28:24,160 --> 00:28:26,520
+先找到两数的最大公约数
+get the greatest common divisor of the two numbers,
+
+398
+00:28:26,520 --> 00:28:27,580
+先用G来表示吧
+and I'm going to call that G,
+
+399
+00:28:29,920 --> 00:28:33,720
+不是简单通过CONS结合N、D 而是先让它们除以G
+and then instead of consing together N and D, I'll divide them through.
+
+400
+00:28:33,720 --> 00:28:38,940
+然后我再用CONS结合N/G和D/G的商
+I'll CONS together the quotient of N by the the GCD and the quotient of D by the GCD.
+
+401
+00:28:40,400 --> 00:28:42,600
+这样就把我们的有理数化到了最简
+And that will reduce the rational number to lowest terms.
+
+402
+00:28:43,740 --> 00:28:53,600
+因此 当我在做加法时 当+RAT调用MAKE-RAT过程时
+So that when, when I do this addition, when +RAT calls MAKE-RAT--
+
+403
+00:28:53,980 --> 00:28:56,320
++RAT的定义里面有对MAKE-RAT的调用
+and for the definition of +RAT it had a MAKE-RAT in there--
+
+404
+00:28:57,400 --> 00:28:59,240
+因此 当+RAT构造有理数时
+just by the fact that it's constructing that,
+
+405
+00:28:59,240 --> 00:29:01,440
+MAKE-RAT就自动将其化为最简了
+the thing will get reduced to lowest terms automatically.
+
+406
+00:29:08,780 --> 00:29:13,460
+好了 这就是一个完整的系统
+OK, that is a complete system.
+
+407
+00:29:14,640 --> 00:29:16,900
+让我们来看看我们完成的这个有理数算术系统吧
+For rational number arithmetic, let's look at what we've done.
+
+408
+00:29:19,240 --> 00:29:22,480
+好吧 我们说过我们想要构造一个有理数算术系统
+All right, we said we want to build rational number arithmetic,
+
+409
+00:29:25,220 --> 00:29:27,920
+我们实现了+RAT
+and we had a thing called +RAT. We implemented that.
+
+410
+00:29:29,620 --> 00:29:33,200
+我也给你们展示了*RAT的实现
+And I showed you multiplying rational numbers, and
+
+411
+00:29:34,100 --> 00:29:35,200
+虽然我并没有去实现-RAT
+although I didn't put them up there,
+
+412
+00:29:35,200 --> 00:29:38,280
+就姑且假设我们实现了-RAT吧
+presumably we'd like to have something that subtracts rational numbers,
+
+413
+00:29:38,960 --> 00:29:40,500
+事实上有些东西我并不知道
+and I don't know, all sorts of things.
+
+414
+00:29:40,500 --> 00:29:42,220
+比如通过除法来判断相等
+Things that test equality in division,
+
+415
+00:29:42,220 --> 00:29:45,140
+或者用某种特定方式打印有理数的函数
+and maybe things that print rational numbers in some particular way.
+
+416
+00:29:45,820 --> 00:29:49,960
+我们用序对的方式实现了它们
+And we implemented those in terms of pairs.
+
+417
+00:29:52,440 --> 00:29:54,600
+序对、CONS、CAR和CDR 这些都是内建于Lisp中的
+These pairs, CONS, CAR, and CDR that are built into Lisp.
+
+418
+00:29:55,560 --> 00:30:03,840
+而两者之间最重要的则是 这个和这个
+But the important thing is that between these and these,
+
+419
+00:30:04,680 --> 00:30:09,240
+我们在其间构筑了一道抽象屏障 一个抽象层
+we set up an abstraction barrier. We set up a layer of abstraction.
+
+420
+00:30:16,960 --> 00:30:18,640
+那么 “抽象层”又是什么呢？
+And what was that layer of abstraction?
+
+421
+00:30:18,640 --> 00:30:22,340
+准确的说 构造函数和选择函数就是抽象层
+That layer of abstraction was precisely the constructor and the selectors.
+
+422
+00:30:25,420 --> 00:30:34,360
+MAKE-RAT、NUMER、DENOM就是抽象层
+This layer was MAKE-RAT, and NUMER, and DENOM.
+
+423
+00:30:38,620 --> 00:30:42,920
+这种方法学 也就是我们的做法
+This methodology, another way to say what it's doing,
+
+424
+00:30:43,120 --> 00:30:51,000
+就是“分离” 分离对象的使用方法
+is that we are separating, we are separating the way something is used,
+
+425
+00:30:53,240 --> 00:30:55,000
+我们把数据对象的使用
+separating the use of data objects,
+
+426
+00:30:56,140 --> 00:30:59,040
+和它们的表示分离开来
+from the representation of data objects.
+
+427
+00:31:07,060 --> 00:31:12,040
+就目前来说 我们有了使用有理数做计算的方法
+So up here, we have the way that rational numbers are used, do arithmetic on them.
+
+428
+00:31:12,220 --> 00:31:14,760
+在这儿 我们有它们表示的方法
+Down here, we have the way that they're represented,
+
+429
+00:31:14,760 --> 00:31:16,300
+它们通过这条边界分隔开
+and they're separated by this boundary.
+
+430
+00:31:17,480 --> 00:31:19,500
+这条边界就是构造函数和选择函数
+The boundary is the constructors and selectors.
+
+431
+00:31:23,440 --> 00:31:25,420
+这种方法学有个名字
+And this methodology has a name.
+
+432
+00:31:25,420 --> 00:31:26,960
+叫做数据抽象
+This is called data abstraction.
+
+433
+00:31:35,880 --> 00:31:39,760
+数据抽象是一种通过假定的构造函数和选择函数将数据对象
+Data abstraction is sort of the programming methodology of setting up data objects
+
+434
+00:31:39,760 --> 00:31:44,080
+与它的表示分隔开来的编程方法学
+by postulating constructors and selectors to isolate use from representation.
+
+435
+00:31:47,140 --> 00:31:50,420
+我们也完全可以不这样做 这又有什么干系呢？
+Well, so what? I mean, after all, we didn't have to do it this way.
+
+436
+00:31:51,580 --> 00:31:55,000
+当然就算不用任何复合对象
+It's perfectly possible to do rational number addition
+
+437
+00:31:55,000 --> 00:31:56,800
+做有理数加法也是完全可行的
+without having any compound data objects,
+
+438
+00:31:56,800 --> 00:31:59,560
+幻灯片上就是一个例子
+and here on the slide is one example.
+
+439
+00:31:59,560 --> 00:32:02,620
+我们当然可以这样定义+RAT
+We certainly could have defined +RAT,
+
+440
+00:32:02,820 --> 00:32:05,920
+它需要两个参数X和Y
+which takes in things x and y,
+
+441
+00:32:05,920 --> 00:32:08,940
+而我们会问 这些有理数到底是什么呢？
+and we'll say, well what are these rational numbers really?
+
+442
+00:32:09,380 --> 00:32:11,160
+实质上 它们只是序对
+So really, they're just pairs,
+
+443
+00:32:11,680 --> 00:32:13,960
+分子是序对的CAR部分 分母是CDR部分
+and the numerator's the car and the denominator's the cdr.
+
+444
+00:32:14,180 --> 00:32:18,800
+我们要做的 就是取出X的CAR部分乘以Y的CDR部分
+So what we'll do is we'll take the car of x times the cdr of y,
+
+445
+00:32:21,920 --> 00:32:22,760
+并把它们乘起来
+multiply them.
+
+446
+00:32:23,020 --> 00:32:26,600
+取出Y的CAR部分和CDR部分相乘 再与之前的结果相加
+Take the car of y times the cdr of x, multiply them.Add them.
+
+447
+00:32:28,340 --> 00:32:31,080
+取出X的CDR部分乘以Y的CDR部分
+Take the cdr of x and the cdr of y, multiply them,
+
+448
+00:32:31,300 --> 00:32:32,540
+并把最终结果构造起来
+and then constitute together.
+
+449
+00:32:33,900 --> 00:32:36,700
+这其实是一样的
+Well, that sort of does the same thing.
+
+450
+00:32:41,080 --> 00:32:44,000
+但这种方法忽略了把对象归约到最低阶项的问题
+But this ignores the problem of reducing things to lowest terms,
+
+451
+00:32:44,000 --> 00:32:46,620
+让我们花点时间 仔细思考一下
+but let's not worry about that for a minute.
+
+452
+00:32:47,400 --> 00:32:48,920
+我们为什么不这样做呢？
+But so what? Why don't we do it that way?
+
+453
+00:32:50,420 --> 00:32:52,920
+对吧 毕竟这样看起来会少定义很多过程
+Right? After all, there are sort of fewer procedures to define,
+
+454
+00:32:52,920 --> 00:32:54,360
+并且更加直白
+and it's a lot more straightforward.
+
+455
+00:32:55,080 --> 00:33:00,600
+它省去了很多我们关于“数据抽象”的“自以为是”的方法
+Ah It saves all this self-righteous BS about talking about data abstraction.
+
+456
+00:33:00,600 --> 00:33:01,660
+而我们就不是这样做的
+We just sort of do it.
+
+457
+00:33:01,900 --> 00:33:04,660
+我的意思是这样或许会稍微高效一点
+I mean, who knows, maybe it's even marginally more efficient
+
+458
+00:33:04,660 --> 00:33:06,900
+如果我们用的编译器对此有优化的话
+depending on whatever compiler were using for this.
+
+459
+00:33:07,460 --> 00:33:11,920
+而将数据的使用与表示分离开来的意图是什么呢？
+What's the point of isolating the use from the representation?
+
+460
+00:33:13,660 --> 00:33:16,840
+这就将回到命名的记号了
+Well, it goes back to this notion of naming.
+
+461
+00:33:16,840 --> 00:33:21,180
+还记得吗 编程中最重要的原理
+Remember, one of the most important principles in programming
+
+462
+00:33:21,180 --> 00:33:25,180
+和魔法中最重要的原理是一样的 对吧？
+is the same as one of the most important principles in sorcery, all right?
+
+463
+00:33:25,180 --> 00:33:28,600
+如果你知道某个精灵的名字 你就可以控制它
+That's if you have the name of the spirit, you get control over it.
+
+464
+00:33:30,000 --> 00:33:31,860
+如果你回过头来看幻灯片
+And if you go back and look at the slide,
+
+465
+00:33:33,380 --> 00:33:35,680
+你会发现这里我们就有一个+RAT
+you see what's in there is we have this thing +RAT,
+
+466
+00:33:36,580 --> 00:33:40,900
+如果我们有+RAT -RAT *RAT 或者和这些类似的过程
+but nowhere in the system, if I have a +RAT and a -RAT and a *RAT,
+
+467
+00:33:40,900 --> 00:33:42,060
+但在这个系统的任何地方
+and things that look like that,
+
+468
+00:33:42,060 --> 00:33:50,460
+我无法找出任何一个有理数
+nowhere in the system do I have a thing that I can point at which is a rational number.
+
+469
+00:33:53,240 --> 00:33:55,900
+在像这样的一个系统中 我并没有
+I don't have, in a system like that,
+
+470
+00:33:56,800 --> 00:33:59,720
+没有一个有理数的概念实体
+the idea of rational number as a conceptual entity.
+
+471
+00:34:01,480 --> 00:34:02,960
+那么 这样做的优势是什么呢？
+Well, what's the advantage of that?
+
+472
+00:34:03,920 --> 00:34:08,000
+把有理数的概念和实体分离开来
+What's the advantage of isolating the idea of rational numbers as a conceptual entity,
+
+473
+00:34:08,000 --> 00:34:11,420
+然后用MAKE-RAT、NUMER、DENOM来控制它们有什么优势么？
+and really naming it with make-RAT, numerator, and denominator.
+
+474
+00:34:13,000 --> 00:34:19,180
+优势之一就是你可以使用其它的方法表示（数据）
+Well, one advantage is you might want to have alternative representations.
+
+475
+00:34:20,420 --> 00:34:23,320
+之前我不是给你们看过
+See, before I showed you that one way George can solve this
+
+476
+00:34:24,080 --> 00:34:26,560
+George解决分数化简的方法么？
+things not reduced to lowest terms problem,
+
+477
+00:34:26,560 --> 00:34:28,180
+当他在构建有理数时
+is when you build a rational number,
+
+478
+00:34:28,780 --> 00:34:30,780
+将分子分母同时除以最大公约数
+you divide up by the greatest common denominator.
+
+479
+00:34:30,780 --> 00:34:35,960
+另一种解决办法在这里
+Another way to do that is shown over here.
+
+480
+00:34:36,300 --> 00:34:38,840
+我可以用另一种方法表示有理数
+I can have an alternative representation for rational numbers
+
+481
+00:34:39,020 --> 00:34:41,560
+也就是直接使用CONS来构建有理数
+where when you make a rational number, you just cons them.
+
+482
+00:34:43,120 --> 00:34:45,420
+而当你在析取去分子时
+However, when you go to select out the numerator,
+
+483
+00:34:45,720 --> 00:34:51,260
+在那个时候再计算分子分母的最大公约数
+at that point you compute the gcd of the stuff that's sitting in that pair,
+
+484
+00:34:52,000 --> 00:34:53,580
+然后再用分子除以这个最大公约数
+and divide out by the gcd.
+
+485
+00:34:57,480 --> 00:34:59,400
+类似地 当我析取分母时
+And similarly, when I get the denominator,
+
+486
+00:35:00,740 --> 00:35:04,760
+当我在析取出分母时 我将它除以最大公约数
+at that point when I go to get the denominator, I'll divide out by the gcd.
+
+487
+00:35:05,260 --> 00:35:07,360
+所以在旧的表示法中
+So the difference would be in the old representation,
+
+488
+00:35:08,540 --> 00:35:10,200
+当ANS在这里被构造时
+when ans was constructed here,
+
+489
+00:35:11,080 --> 00:35:13,680
+在第一种方法中 也就是6和8
+say what's 6 and 8, in the first way,
+
+490
+00:35:14,100 --> 00:35:16,940
+在6和8被装入表中时 它们已经被化到最简
+the 6 and 8 would have got reduced when they got stuck into that pair,
+
+491
+00:35:16,940 --> 00:35:18,480
+析取分子会得到3
+numerator would select out 3.
+
+492
+00:35:20,040 --> 00:35:21,440
+而在我给你们展示的方法中
+And in the way I just showed you, well,
+
+493
+00:35:21,800 --> 00:35:24,300
+我们放入的是6和8
+ans would get 6 and 8 put in,
+
+494
+00:35:24,780 --> 00:35:26,880
+然后在我析取分子时会进行一些计算
+and then at the point where I said numerator,
+
+495
+00:35:27,320 --> 00:35:30,360
+使得我得到3而非6
+some computation would get done to put out 3 instead of 6.
+
+496
+00:35:32,280 --> 00:35:33,920
+这就是我可以使用的两种不同方法
+So those are two different ways I might do it.
+
+497
+00:35:33,920 --> 00:35:34,880
+哪种更好呢？
+Which one's better?
+
+498
+00:35:37,200 --> 00:35:38,320
+这得看情况 对吧？
+Well, it depends, right?
+
+499
+00:35:38,320 --> 00:35:41,640
+如果我的系统中我经常构造有理数
+If I'm making a system where I am mostly constructing rational numbers
+
+500
+00:35:41,640 --> 00:35:42,780
+而不常去析取它们
+and hardly ever looking at them,
+
+501
+00:35:42,780 --> 00:35:46,660
+那么早构造它们时就最好不要化简
+then it's probably better not to do that gcd computation when I construct them.
+
+502
+00:35:47,840 --> 00:35:51,500
+如果在我的系统中 比起构造 我更经常去析取它们
+If I'm doing a system where I look at things a lot more than I construct them,
+
+503
+00:35:51,720 --> 00:35:54,840
+那在构造时就将它们化简就一劳永逸了
+then it's probably better to do the work when I construct them.
+
+504
+00:35:56,940 --> 00:35:58,020
+这得视情况做出选择
+So there's a choice there.
+
+505
+00:35:58,020 --> 00:36:02,320
+但真正的问题是 在你实现这些有理数时
+But the real issue is that you might not be able to decide
+
+506
+00:36:04,220 --> 00:36:06,440
+没法决定要用哪种表示法
+at the moment you're worrying about these rational numbers.
+
+507
+00:36:07,320 --> 00:36:10,220
+通常来说 作为一名系统设计师
+See, in general, as systems designers,
+
+508
+00:36:13,040 --> 00:36:16,740
+你被强迫去做出 关于如何解决问题的决定
+you're forced with the necessity to make decisions about how you're going to do things,
+
+509
+00:36:17,680 --> 00:36:20,340
+通常来说 你用于保持系统弹性的方法
+and in general, the way you'd like to retain flexibility
+
+510
+00:36:20,500 --> 00:36:24,720
+就是在你被迫做出决定前不要做任何事
+is to never make up your mind about anything until you're forced to do it.
+
+511
+00:36:26,560 --> 00:36:31,500
+但问题是 在推迟决定和彻底推延之间
+The problem is, there's a very, very narrow line between
+
+512
+00:36:31,500 --> 00:36:34,960
+并没有太明显的界限
+deferring decisions and outright procrastination.
+
+513
+00:36:38,500 --> 00:36:43,720
+你想要继续前进 但与此同时
+So you'd like to make progress, but also at the same time,
+
+514
+00:36:43,720 --> 00:36:46,080
+你也希望不要被你决定的结果给限制住
+never be bound by the consequences of your decisions.
+
+515
+00:36:48,280 --> 00:36:50,060
+数据抽象就是解决方法之一
+Data abstraction's one way of doing this.
+
+516
+00:36:50,160 --> 00:36:52,080
+我的做的就是“按愿望思维”
+What we did is we used wishful thinking.
+
+517
+00:36:54,100 --> 00:36:55,800
+我们给结果命了个名字
+See, we gave a name to the decision.
+
+518
+00:36:56,800 --> 00:37:02,040
+我们让MAKE-RAT、NUMER、DENOM代表它们运作的结果
+We said, make-RAT, numerator, and denominator will stand for however it's going to be done,
+
+519
+00:37:02,040 --> 00:37:03,740
+但它们如何运作则是George的事
+and however it's going to be done is George's problem.
+
+520
+00:37:03,740 --> 00:37:08,000
+实际上 我们只是用几个名字代表我们期望运作的结果
+But really, what that was doing is giving a name to the decision of how we're going to do it,
+
+521
+00:37:09,980 --> 00:37:12,700
+然后继续编程 就像我们的确得到了结果
+and then continuing as if we made the decision.
+
+522
+00:37:13,700 --> 00:37:16,820
+到了最后 我们确实必须计算它时
+And then eventually, when we really wanted it to work,
+
+523
+00:37:16,820 --> 00:37:18,820
+再回过头来完成必要的计算
+coming back and facing what we really had to do.
+
+524
+00:37:20,320 --> 00:37:22,120
+事实上从现在起 我们将会三番五次地看到
+And in fact, we'll see a couple times from now
+
+525
+00:37:22,480 --> 00:37:25,640
+我们不会非得选定一个特定的表示方式 从来都不会
+that you may never have to choose any particular representation, ever, ever.
+
+526
+00:37:27,420 --> 00:37:29,600
+不管如何 这都是一种非常有用的设计技术
+Anyway, that's a very powerful design technique.
+
+527
+00:37:30,380 --> 00:37:32,240
+这也是人们使用数据抽象的原因
+It's the key to the reason people use data abstraction.
+
+528
+00:37:34,560 --> 00:37:36,660
+我们会不断的看到这个理念
+And we're going to see that idea again and again.
+
+529
+00:37:38,480 --> 00:37:39,680
+有什么问题吗？
+Let's stop for questions.
+
+530
+00:37:40,180 --> 00:37:44,360
+学生：通过抽象层做出决定与
+AUDIENCE: What does this decision making through abstraction layers
+
+531
+00:37:44,820 --> 00:37:48,040
+编码前做完成设计的信条相比 哪个更好呢？
+do to the axiom of do all your design before any of your code?
+
+532
+00:37:49,420 --> 00:37:51,840
+教授：这只是少数人的信条
+PROFESSOR: Well, that's someone's axiom,
+
+533
+00:37:51,840 --> 00:37:56,080
+我打赌这是那些不经常实现大型计算机系统的家伙的信条
+and I bet that's the axiom of someone who hasn't implemented very large computer systems very much.
+
+534
+00:38:00,880 --> 00:38:02,800
+我曾说过计算机科学非常像魔法
+I said that computer science is a lot like magic,
+
+535
+00:38:03,560 --> 00:38:05,020
+像魔法这一点非常好
+and it's sort of good that it's like magic.
+
+536
+00:38:05,020 --> 00:38:07,580
+但是计算机科学也非常像宗教 这就不好了
+There's a bad part of computer science that's a lot like religion.
+
+537
+00:38:08,220 --> 00:38:15,120
+通常来说 我认为那些相信在编码前就能把系统设计完美
+And in general, I think people who really believe that you design everything before you implement it
+
+538
+00:38:15,920 --> 00:38:18,140
+大多都是一些没有设计过大规模系统的人
+basically are people who haven't designed very many things.
+
+539
+00:38:20,980 --> 00:38:24,700
+我们的方法 厉害之处就在于可以假设我们已经得到结果了
+The real power is that you can pretend that you've made the decision
+
+540
+00:38:25,700 --> 00:38:27,920
+然后再讨论到底是哪个是对的
+and then later on figure out which one is right,
+
+541
+00:38:28,260 --> 00:38:29,800
+或者你应该得到怎样的结果
+which decision you ought to have made.
+
+542
+00:38:30,460 --> 00:38:32,480
+当你学会这招了 你会发现这个是最棒的一招
+And when you can do that, you have the best of both worlds.
+
+543
+00:38:35,660 --> 00:38:39,140
+学生：您能解释一下LET和DEFINE的区别吗？
+AUDIENCE: Can you explain the difference between let and define?
+
+544
+00:38:39,860 --> 00:38:41,060
+教授：好的
+PROFESSOR: Oh, OK.
+
+545
+00:38:41,540 --> 00:38:48,900
+LET是用来建立一个局部的名字
+Let is a way to establish local names.
+
+546
+00:38:53,100 --> 00:38:56,760
+嗯 我就先大概给你说下
+So there... Let me give you sort of the half answer.
+
+547
+00:38:57,200 --> 00:39:01,640
+然后我们再来讨论这整个复杂的过程
+And I'll say, later on we can talk about the whole very complicated thing.
+
+548
+00:39:02,620 --> 00:39:06,540
+就现在来说 区别就在于 当你在Lisp中编程时
+But the big difference for now is that, see, when you're typing at Lisp,
+
+549
+00:39:07,600 --> 00:39:10,920
+编写定义是与所在环境有关的
+you're typing in this environment where you're making definitions.
+
+550
+00:39:11,720 --> 00:39:19,100
+当你想把A定义为5时 我写(DEFINE A 5)
+And when you say define a to be 5, if I say define a to be 5,
+
+551
+00:39:20,420 --> 00:39:22,760
+从此以后我们就会记得A就是5
+then from then on the thing will remember that a is 5.
+
+552
+00:39:25,280 --> 00:39:29,840
+LET会建立一个包含一个定义的局部上下文
+Let is a way to set up a local context where there's a definition.
+
+553
+00:39:30,800 --> 00:39:36,640
+所以当我键入 比如(LET ((A
+So if I type something like, saying let a--
+
+554
+00:39:36,640 --> 00:39:44,880
+或者我写(LET ((Z 10)))
+no, I shouldn't say a-- if I said let z be 10,
+
+555
+00:39:48,020 --> 00:39:53,660
+然后在这个上下文中 我们计算Z加上Z的和
+and within that context, tell me what the sum of z and z is.
+
+556
+00:39:54,000 --> 00:39:56,260
+如果我在Lisp中这样写的话
+So if I typed in this expression to Lisp,
+
+557
+00:39:58,220 --> 00:40:00,840
+Lisp会输出20
+and then this would put out 20.
+
+558
+00:40:01,960 --> 00:40:05,460
+然而 如果我再问Z是什么
+However, then if I said what's z,
+
+559
+00:40:06,140 --> 00:40:09,140
+计算机会告诉我Z是一个未绑定的变量
+the computer would say that's an unbound variable.
+
+560
+00:40:10,600 --> 00:40:14,040
+因此LET可以创建一个上下文 你可以在这个上下文中进行定义
+So let is a way of setting up a context where you can make definitions.
+
+561
+00:40:15,840 --> 00:40:18,420
+但是这些都是这个上下文中的局部定义
+But those definitions are local to this context.
+
+562
+00:40:19,100 --> 00:40:27,720
+当然啦 我把这个改为A的话 我依旧会得到20
+And of course, if I'd said a in here, I'd still get 20.
+
+563
+00:40:27,720 --> 00:40:31,520
+但是这个A与这个A一点也不冲突
+But this a would not interfere at all with this one.
+
+564
+00:40:33,640 --> 00:40:36,040
+所以我键入这个 再键入这个 再问A是什么
+So if I type this, and then type this, and then say what's a?
+
+565
+00:40:36,040 --> 00:40:36,940
+A还会是5
+a will still be 5.
+
+566
+00:40:39,020 --> 00:40:42,120
+因此在LET和DEFINE之间有这另一种代换模型
+So there's some other subtle differences between let and define,
+
+567
+00:40:42,120 --> 00:40:44,120
+但这（LET的有效域是局部的）才是最重要的
+but that's the most important one.
+
+568
+00:40:44,120 --> 00:40:50,700
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+569
+00:41:03,760 --> 00:41:07,420
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+570
+00:41:07,580 --> 00:41:10,980
+讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+By: Prof. Harold Abelson && Gerald Jay Sussman
+
+571
+00:41:11,460 --> 00:41:14,440
+复合数据
+Compound Data
+
+572
+00:41:19,780 --> 00:41:23,220
+好了 我们已经看过作为数据抽象技术的示例
+All right, well, we've looked at implementing this little system
+
+573
+00:41:23,500 --> 00:41:29,100
+在有理数域上做算术的小型系统的实现
+for doing arithmetic on rational numbers as an example of this methodology of data abstraction.
+
+574
+00:41:30,880 --> 00:41:35,000
+这就是一种在大型系统中控制复杂度的方法
+And that's a way of controlling complexity in large systems.
+
+575
+00:41:36,560 --> 00:41:38,660
+就像定义过程
+But, see, like procedure definition,
+
+576
+00:41:38,820 --> 00:41:41,680
+以及我们谈论的所有的控制复杂度的方法
+and like all the ways we're going to talk about for controlling complexity,
+
+577
+00:41:41,980 --> 00:41:47,100
+这些东西的真正厉害之处不是体现在实现它们本身
+the real power of these things show up not when you sort of do these things in themselves,
+
+578
+00:41:47,780 --> 00:41:51,220
+我们构建的有理数运算系统并不是什么了不起的事
+like it's not such a great thing that we've done rational number arithmetic,
+
+579
+00:41:52,140 --> 00:41:57,860
+而是你可以将这些东西用于构建更复杂的东西
+it's that you can use these as building blocks for making more complicated things.
+
+580
+00:42:00,340 --> 00:42:04,020
+你把两个数放在一起构成一个序对 这也一点不新奇
+So it's no wonderful idea that you can just put two numbers together to form a pair.
+
+581
+00:42:04,020 --> 00:42:05,560
+如果你真想那么做的话
+If that's all you ever wanted to do,
+
+582
+00:42:05,720 --> 00:42:07,400
+我们有各式各样的方法
+there are tons of ways that you can do that.
+
+583
+00:42:08,200 --> 00:42:10,240
+我们的问题是 我们能否找到一种方法
+The real issue is can you do that in such a way
+
+584
+00:42:11,220 --> 00:42:12,420
+可以让我们构建的东西作为一个块
+so that the things that you build
+
+585
+00:42:12,700 --> 00:42:16,100
+用来构建更复杂的东西？
+become building blocks for doing something even more complex?
+
+586
+00:42:16,900 --> 00:42:19,060
+因此无论何时有人向你展示控制复杂度的方法
+So whenever someone shows you a method for controlling complexity,
+
+587
+00:42:19,060 --> 00:42:21,600
+你都应该说 嗯 这很不错 但我可以用它来构建什么呢？
+you should say, yeah, that's great, but what can I build with it?
+
+588
+00:42:24,960 --> 00:42:25,760
+举个例子吧
+So for example,
+
+589
+00:42:27,540 --> 00:42:31,740
+我举一个很像刚才那个有理数系统的例子
+let me just run through another thing that's a lot like the rational number one.
+
+590
+00:42:31,740 --> 00:42:34,780
+假设我们想要在平面中表示一个点
+Suppose we would like to represent points in the plane.
+
+591
+00:42:35,300 --> 00:42:36,780
+好吧 这里有一个点
+You sort of say, well, there's a point,
+
+592
+00:42:37,440 --> 00:42:39,060
+我们把它叫做点P
+and we're going to call that point p.
+
+593
+00:42:40,520 --> 00:42:45,100
+这个点可能会有一个坐标
+And that point might have coordinates,
+
+594
+00:42:47,000 --> 00:42:50,020
+比如点P就是(1,2)
+like this might be the point 1 comma 2.
+
+595
+00:42:50,020 --> 00:42:53,500
+X坐标为1 Y坐标为2
+The x-coordinate might be 1, and it's y-coordinate might be 2.
+
+596
+00:42:54,220 --> 00:42:57,920
+我们将要构建一个用于在平面中处理这些点的小型系统
+And we'll make a little system for manipulating points in the plane.
+
+597
+00:43:00,080 --> 00:43:03,800
+我们当然可以 可以像这样
+And again, we can do that-- here's a little example of that.
+
+598
+00:43:06,680 --> 00:43:09,360
+用向量来表示 就和点在平面中的表示是一样的
+It can represent vectors, the same as points in the plane,
+
+599
+00:43:09,720 --> 00:43:11,260
+我们也会说 嗯
+and we'll say, yep,
+
+600
+00:43:11,620 --> 00:43:17,820
+这里有一个叫做MAKE-VERCTOR的构造函数
+there's a constructor called make-vector,
+
+601
+00:43:17,820 --> 00:43:19,420
+函数MAKE-VERCTOR需要两个坐标
+make-vector's going to take two coordinates,
+
+602
+00:43:20,700 --> 00:43:23,300
+当然 如果我们愿意的话可以将其实现为序对
+and here we can implement them if we like as pairs,
+
+603
+00:43:23,680 --> 00:43:25,540
+但是最重点的是我们有一个构造函数
+but the important thing is that there's a constructor.
+
+604
+00:43:26,780 --> 00:43:28,320
+当我们传递了向量P后
+And then given some vector, p,
+
+605
+00:43:29,200 --> 00:43:30,600
+我们可以得到它的X坐标
+we can find its x-coordinate,
+
+606
+00:43:31,980 --> 00:43:33,220
+我们也可以得到它的Y坐标
+or we can get its y-coordinate.
+
+607
+00:43:33,220 --> 00:43:36,900
+所以这里就有了点在平面系统中的构造函数和选择函数
+So there's a constructor and selectors for points in the plane.
+
+608
+00:43:38,660 --> 00:43:41,820
+那么 我们有了平面中的点 就希望将它们用来构建事物
+Well, given points in the plane, we might want to use them to build something.
+
+609
+00:43:42,060 --> 00:43:44,060
+比如说 我们想要
+So for instance, we might want to talk about,
+
+610
+00:43:44,680 --> 00:43:47,560
+我们有一个点P 一个点Q
+we might have a point, p, and a point, q,
+
+611
+00:43:48,140 --> 00:43:52,460
+点P为(1,2) 点Q为(2,3)
+and p might be the point 1, 2, and q might be the point 2, 3.
+
+612
+00:43:54,460 --> 00:44:00,120
+我们想要得到从P开始 到Q截止的线段
+And we might want to talk about the line segment that starts at p and ends at q.
+
+613
+00:44:01,660 --> 00:44:03,100
+我们把它叫做线段S
+And that might be the segment s.
+
+614
+00:44:04,920 --> 00:44:12,340
+我们想用数字来表示点 并用点来构造向量
+So we might want to build points for vectors in terms of numbers,
+
+615
+00:44:12,540 --> 00:44:13,940
+用向量来表示线段
+and segments in terms of vectors.
+
+616
+00:44:16,140 --> 00:44:19,000
+因此我们也可以对线段如法炮制
+So we can represent line segments in exactly the same way.
+
+617
+00:44:19,700 --> 00:44:21,420
+因此 对于从P到Q的线段
+All right, so the line segment from p to q,
+
+618
+00:44:21,420 --> 00:44:23,740
+我们这里有一个构造函数MAKE-SEGMENT
+we'll say there's a constructor, make-segment.
+
+619
+00:44:26,680 --> 00:44:29,160
+然后是为选择函数取名
+And make up names for the selectors,
+
+620
+00:44:29,160 --> 00:44:32,240
+取得线段起点的函数 和取得终点的函数
+the starting point of the segment and the ending point of the segment.
+
+621
+00:44:32,240 --> 00:44:35,400
+当然了 我们可以将线段实现为两个点构造成的序对
+And again, we can implement a segment using cons as a pair of points,
+
+622
+00:44:36,840 --> 00:44:40,340
+CAR和CDR可以分别取得构成线段的两个点
+and car and cdr get out the two points that we put together to get the segment.
+
+623
+00:44:44,540 --> 00:44:45,560
+好了 我们已经完成这个系统了
+Well, now having done that,
+
+624
+00:44:47,660 --> 00:44:49,160
+我们可以进行一些此操作
+we can have some operations on them.
+
+625
+00:44:51,440 --> 00:44:56,120
+比如说 某个线段的中点是什么？
+Like we could say, what's the midpoint of a line segment?
+
+626
+00:44:57,320 --> 00:44:59,560
+这就是某个线段的中点
+So here's the midpoint of a line segment,
+
+627
+00:44:59,880 --> 00:45:06,840
+该点的X、Y坐标分别为起点和终点X、Y坐标和的一半
+that's going to be the points whose coordinates are the averages of the coordinates of the endpoints.
+
+628
+00:45:07,740 --> 00:45:08,780
+嗯 这就是中点
+OK, there's the midpoint.
+
+629
+00:45:09,840 --> 00:45:12,100
+因此 为了得到线段S的中点
+So to get the midpoint of a line segment, s,
+
+630
+00:45:13,600 --> 00:45:17,020
+我们先要取得该线段的起点
+we'll just say grab the starting point to the segment,
+
+631
+00:45:17,260 --> 00:45:18,680
+取得该线段的终点
+grab the ending point of the segment,
+
+632
+00:45:19,960 --> 00:45:21,980
+然后构建一个向量 也就是一个点
+and now make a vector--make a point
+
+633
+00:45:22,680 --> 00:45:28,980
+该点的X坐标为起点、终点X坐标和的一半
+whose coordinates are the average of the x-coordinate of the first point and the x-coordinate of the second point,
+
+634
+00:45:29,880 --> 00:45:32,300
+Y坐标为起点、终点Y坐标和的一半
+and whose y-coordinate is the average of the y-coordinates.
+
+635
+00:45:33,480 --> 00:45:35,760
+这就是函数MIDPOINT一种实现
+So there's an implementation of midpoint.
+
+636
+00:45:37,440 --> 00:45:42,980
+类似的 我们可以编写类似于求取线段长度的函数
+And then similarly, we can build something like the length of the segment.
+
+637
+00:45:43,960 --> 00:45:51,780
+线段的长度 可以根据勾股定理算得
+The length of the segment is a thing whose-- use Pythagoras's rule,
+
+638
+00:45:51,780 --> 00:45:56,100
+线段的长度是dX的平方加dY的平方的和的平方根
+the length of the segment is the square root of the d x squared plus d y squared.
+
+639
+00:45:56,680 --> 00:45:59,000
+当我们说计算某线段S的长度时
+We'll say to get the length of a line segment,
+
+640
+00:45:59,920 --> 00:46:10,200
+我们令dX为起点、终点X坐标之差
+we'll let dx be the difference of the x-coordinate of one endpoint and the x-coordinate of the other endpoint,
+
+641
+00:46:11,180 --> 00:46:14,500
+令dY为起点、终点Y坐标之差
+and we'll let dy be the difference of the y-coordinates.
+
+642
+00:46:15,880 --> 00:46:19,960
+然后我们求取dX、dY平方和的平方根
+And then we'll take the square root of the sum of the squares of dx and dy,
+
+643
+00:46:19,960 --> 00:46:20,780
+就是这样了
+that's what this says.
+
+644
+00:46:22,020 --> 00:46:24,600
+好了 这就是函数LENGTH的一种实现
+All right, so there's an implementation of length.
+
+645
+00:46:25,840 --> 00:46:33,940
+再次强调 我们构建的是一种层次系统
+And again, what we built is a layered system.
+
+646
+00:46:35,340 --> 00:46:40,200
+我们构建了一个有 呃 现在有线段
+We built a system which has, well, say up here there's segments.
+
+647
+00:46:47,060 --> 00:46:48,620
+这里就有了一道抽象屏障
+And then there's an abstraction barrier.
+
+648
+00:46:50,160 --> 00:46:54,840
+这道抽象屏障把
+The abstraction barrier separates the implementation
+
+649
+00:46:56,480 --> 00:46:58,920
+线段同向量、点的实现分离开来
+of segments from the implementation of vectors and points,
+
+650
+00:46:59,120 --> 00:47:03,580
+而这道抽象屏障 就是构造函数和选择函数
+and what that abstraction barrier is are the constructors and selectors.
+
+651
+00:47:03,580 --> 00:47:14,860
+也就是 MAKE-SEG SEG-START 和 SEG-END
+It's make-segment, and segment-start, and segment-end.
+
+652
+00:47:17,700 --> 00:47:18,600
+这里是向量
+And then there are vectors.
+
+653
+00:47:19,720 --> 00:47:24,080
+而向量则是建立在序对和数的基础上
+And vectors in turn are built on top of pairs and numbers.
+
+654
+00:47:25,080 --> 00:47:29,080
+所以这里是序对和数
+So I'll say pairs and numbers.
+
+655
+00:47:29,340 --> 00:47:31,760
+这又是它们的抽象屏障
+And that has its own abstraction barrier,
+
+656
+00:47:32,420 --> 00:47:42,620
+也就是 MAKE-VECT XCOR 和 YCOR
+which is make-vector, and x-coordinate, and y-coordinate.
+
+657
+00:47:46,440 --> 00:47:48,520
+如此可见 这就是一个层次系统
+So we have, again, a layered system.
+
+658
+00:47:48,520 --> 00:47:51,460
+你可以清楚的看出这些分明的层次
+You're starting to see that there are layers here.
+
+659
+00:47:51,720 --> 00:47:58,920
+我提一下 这里有一个非常重要但是又理所当然的东西
+I ought to mention, there is a very important thing that I kind of took for granted.
+
+660
+00:48:00,240 --> 00:48:07,120
+这点非常自然 但从另外一方面来说又非常重要
+And it's sort of so natural, but on the other hand it's a very important thing.
+
+661
+00:48:07,120 --> 00:48:10,220
+我们为了表示某线段S
+Notice that in order to represent this segment s,
+
+662
+00:48:11,600 --> 00:48:13,940
+我说这个线段就是由点构成的序对
+I said this segment is a pair of points.
+
+663
+00:48:16,260 --> 00:48:17,980
+而一个点又是由数构成的序对
+And a point is a pair of numbers.
+
+664
+00:48:18,800 --> 00:48:22,320
+如果要把这个结构的盒子—指针模型给画出来的话
+And if I were going to draw the box and pointers structure for that,
+
+665
+00:48:23,620 --> 00:48:25,060
+那么我会说 嗯 这个线段是
+I would say, oh, the segment is,
+
+666
+00:48:26,000 --> 00:48:29,260
+用我之前给你们说过的表示法来演示
+given those particular representations that I showed you,
+
+667
+00:48:29,260 --> 00:48:32,500
+线段就是一个序对
+I'd say this segment s is a pair,
+
+668
+00:48:33,720 --> 00:48:38,520
+序对的第一个元素是一个向量
+and the first thing in the pair is a vector,
+
+669
+00:48:40,200 --> 00:48:43,800
+向量是由数构成的序对
+and the vector is a pair of numbers.
+
+670
+00:48:45,460 --> 00:48:46,720
+这就是它 这就是点P
+And that's this, that's p.
+
+671
+00:48:49,920 --> 00:48:52,380
+线段中的另一个东西就是点Q
+And the other thing in the segment is q,
+
+672
+00:48:52,960 --> 00:48:58,160
+它本身就是一个由数构成的序对
+which is itself a pair of numbers.
+
+673
+00:48:59,800 --> 00:49:02,520
+当我说CONS可以让你把东西组合在一起的时候
+So I almost took it for granted when I said that
+
+674
+00:49:03,260 --> 00:49:06,480
+就把它视作理所当然了
+cons allows you to put things together.
+
+675
+00:49:08,600 --> 00:49:13,020
+但有一点也很容易搞不明白 请注意
+But it's very easy to not appreciate that, because notice,
+
+676
+00:49:13,020 --> 00:49:18,380
+我也可以把一些序对给组合在一起
+some of the things I can put together can themselves be pairs.
+
+677
+00:49:20,360 --> 00:49:23,520
+我以后会经常用一个术语来表示
+And let me introduce a word that I'll talk about more next time,
+
+678
+00:49:24,100 --> 00:49:26,920
+一个我最喜欢的术语 这称作“闭包”
+it's one of my favorite words, called closure.
+
+679
+00:49:30,280 --> 00:49:35,460
+这种所谓具有“闭包性质”的组合方法
+And by closure I mean that the means of combination in your system
+
+680
+00:49:36,220 --> 00:49:39,320
+就是哪些当你用它们把东西组合在一起时
+are such that when you put things together using them,
+
+681
+00:49:39,320 --> 00:49:40,240
+这就像我们构建序对的时候
+like we make a pair,
+
+682
+00:49:41,760 --> 00:49:44,500
+你可以继续用同样的方法把组合物继续进行组合
+you can then put those together with the same means of combination.
+
+683
+00:49:44,940 --> 00:49:48,420
+因此我不仅可以有由数构成的序对 也可有由序对构成的序对
+So I can have not only a pair of numbers, but I can have a pair of pairs.
+
+684
+00:49:51,460 --> 00:49:59,220
+比如说 在Fortran中的数组并不具有闭包性质
+So for instance, making arrays in a language like Fortran is not a closed means of combination,
+
+685
+00:49:59,220 --> 00:50:00,800
+因为我可以有元素为数的数组
+because I can make an array of numbers,
+
+686
+00:50:01,560 --> 00:50:02,980
+但不能有以数组为元素的数组
+but I can't make an array of arrays.
+
+687
+00:50:05,560 --> 00:50:07,000
+当某人给你展示组合的方法时
+And one of the things that you should ask,
+
+688
+00:50:07,420 --> 00:50:12,300
+你也应该这样问 通过该种组合方法
+one of your tests of quality for a means of combination that someone shows you,
+
+689
+00:50:12,600 --> 00:50:17,120
+构建出的东西是否封闭
+is gee, are the things you make closed under that means of combination?
+
+690
+00:50:18,040 --> 00:50:22,280
+如果序对仅仅只能是由数构成的序对的话 就不是那么有趣了
+So pairs would not be nearly so interesting if all I could do was make a pair of numbers.
+
+691
+00:50:22,820 --> 00:50:24,400
+我并不能用它构建出太多的结构
+I couldn't build very much structure at all.
+
+692
+00:50:26,520 --> 00:50:27,780
+好了 言归正传
+OK, well, we'll come back to that.
+
+693
+00:50:28,080 --> 00:50:30,760
+我现在只是提一下 后面我们还会详细讨论
+I just wanted to mention it now. You'll hear a lot about closure later on.
+
+694
+00:50:31,780 --> 00:50:38,840
+你也可以看到在我们有了层次系统后 如果不使用数据抽象
+You can also see the potential for losing control of complexity
+
+695
+00:50:38,840 --> 00:50:42,120
+系统复杂度会有失控的隐患
+as you have a layered system if you don't use data abstraction.
+
+696
+00:50:43,680 --> 00:50:46,520
+让我们回过头来看看LENGTH函数的幻灯片
+Let's go back and look at this slide for length.
+
+697
+00:50:47,740 --> 00:50:51,880
+LENGTH函数简单而有效是因为
+Length works and is a simple thing because I can say,
+
+698
+00:50:52,840 --> 00:50:55,060
+当我使用它时 我确信
+when I want to get this value, I can say, oh,
+
+699
+00:50:55,300 --> 00:51:00,320
+这个是第一个端点的X坐标
+that is the x-coordinate of the first endpoint of the segment.
+
+700
+00:51:02,700 --> 00:51:06,560
+这些东西 这些选择函数 XCOR 和 SEG-END
+And each of these things, each of these selectors, x-coordinate and endpoint,
+
+701
+00:51:07,140 --> 00:51:10,960
+都代表了一个决策选择 我不用关心它们的内部细节
+stand for a decision choice whose details I don't have to look at.
+
+702
+00:51:11,940 --> 00:51:16,000
+因此就和之前的有理数系统一样 我可以说
+So I could perfectly well, again, just like rational numbers I did before,
+
+703
+00:51:16,000 --> 00:51:19,900
+我可以认为 嗯 线段实际上就是由序对构成的序对
+I could say, oh well, gee, a segment really is a pair of pairs.
+
+704
+00:51:20,800 --> 00:51:27,040
+线段第一个端点的X坐标实际上是什么 是什么呢？
+And the x-coordinate of the first endpoint or the segment really is the-- well, what is it?
+
+705
+00:51:27,040 --> 00:51:33,040
+它的线段的CAR部分的CAR部分
+It's the car of the car of the segment.
+
+706
+00:51:33,640 --> 00:51:36,640
+所以我可以这样完美地重定义LENGTH
+So I could perfectly well go and redefine length.
+
+707
+00:51:37,140 --> 00:51:46,420
+我可以定义某线段S的长度为
+I could say, define the length of some segment s.
+
+708
+00:51:48,640 --> 00:51:50,280
+我这样来写
+I can start off writing something like,
+
+709
+00:51:50,280 --> 00:51:56,000
+我们令dX为 令dX为什么呢？
+well, we'll let dx be-- well, what's it have to be?
+
+710
+00:51:56,000 --> 00:51:57,920
+为两个坐标之差
+It's got to be the difference of the two coordinates,
+
+711
+00:51:57,920 --> 00:52:05,820
+坐标之一为(CAR (CAR S))
+so that's the difference of, the first one is the car of the car of s,
+
+712
+00:52:08,140 --> 00:52:11,620
+从第一个坐标中减去
+subtracted from the first one,
+
+713
+00:52:11,620 --> 00:52:15,820
+减去另一个点的坐标 也就是(CAR (CDR S))
+the car of the other half of it, the cdr of s.
+
+714
+00:52:21,080 --> 00:52:24,920
+好了 那么dY也就是 我看看
+and then dy would be-- well, let's see,
+
+715
+00:52:25,920 --> 00:52:33,060
+那么Y坐标也就是 (CDR (CAR S))
+I'd get the y-coordinate, so it'd be the difference of the cdr of the car of s,
+
+716
+00:52:34,040 --> 00:52:41,260
+减去(CDR (CDR S)) 诸如此类
+and the cdr of the cdr of s, sort of go on.
+
+717
+00:52:43,760 --> 00:52:47,640
+你可以发现同之前那个程序相比 这个更难度
+You can see that's much harder to read than the program I had before.
+
+718
+00:52:47,920 --> 00:52:52,900
+但比这个还糟的是 假设你这样实现了LENGTH函数
+But worse than that, suppose you'd gone and implemented length?
+
+719
+00:52:56,520 --> 00:53:00,240
+而第二天 George来和你说 抱歉 我改变主意了
+And then the next day, George comes to you and says, I'm sorry, I changed my mind.
+
+720
+00:53:00,740 --> 00:53:03,940
+我想把点的X坐标放在前面
+I want to write points with the x-coordinate first.
+
+721
+00:53:04,860 --> 00:53:06,460
+然后您回过头来看代码 找啊找啊
+So you come back you stare at this code and say,
+
+722
+00:53:06,460 --> 00:53:10,100
+那是什么呢 哦 是CAR
+oh gee, what was that? That was the car,
+
+723
+00:53:10,100 --> 00:53:15,820
+因此我要把这个改为CDR 把这个改为CDR
+so I have to change this to cdr, and this is cdr,
+
+724
+00:53:17,020 --> 00:53:21,960
+这个要改为CAR 这个也要改为CAR
+and this now has to be car. And this has to be car.
+
+725
+00:53:23,480 --> 00:53:26,800
+你也就这么做了 然后第二天George又跑来说 抱歉 抱歉
+And you sort of do that, and then the next day George comes back and says, sorry,
+
+726
+00:53:27,120 --> 00:53:35,080
+设计显示的那个家伙想要让线段指向反方向
+Ah the guys designing the display would like lines to be painted in the opposite direction,
+
+727
+00:53:35,080 --> 00:53:37,260
+因此我必须让截止点放到第一位
+so I have to write the endpoint first in the order.
+
+728
+00:53:37,260 --> 00:53:38,820
+然后你又回过头来审视这些代码
+And then you come back and you stare at this code,
+
+729
+00:53:38,820 --> 00:53:42,040
+哦 这又改怎么弄？
+and say, gee, what was it talking about?
+
+730
+00:53:42,040 --> 00:53:44,080
+嗯 把这个改为CDR
+Oh yeah, well I've got to change this one to cdr,
+
+731
+00:53:45,020 --> 00:53:50,500
+这个改为CAR 改为CAR 把这个改为CDR
+and this one becomes car, this one comes car, and this becomes cdr.
+
+732
+00:53:50,500 --> 00:53:51,420
+你又这么做了
+And you go up and do that,
+
+733
+00:53:52,040 --> 00:53:53,820
+第二天 George又跑过来说 太抱歉了
+and then the next day, George comes back and says, I'm sorry,
+
+734
+00:53:53,820 --> 00:53:58,680
+我其实只是想让线段总是在屏幕上从左向右描绘
+what I really meant is that the segments always have to be painted from left to right on the screen.
+
+735
+00:53:59,220 --> 00:54:03,220
+这时候 毫无疑问 你一定会给George一个耳光
+And then you sort of, it's clear, you just go and punch George in the mouth at that point.
+
+736
+00:54:03,220 --> 00:54:08,940
+正如你所见 一旦我们有了一个10层的系统
+But you see, as soon as we have a 10 layer system,
+
+737
+00:54:08,940 --> 00:54:11,040
+复杂度也就突增
+you see how that complexity immediately builds up
+
+738
+00:54:11,500 --> 00:54:14,240
+甚至达到像这里一样失控的地步
+to the point where even something like this gets out of control.
+
+739
+00:54:15,940 --> 00:54:20,820
+因此 为了避免发生这样的事 我们就要为精灵命名
+So again, the way we've gotten out of that is we've named that spirit.
+
+740
+00:54:20,820 --> 00:54:24,400
+我们构建一个系统 这个系统中有一个
+We built a system where there is a thing,
+
+741
+00:54:25,140 --> 00:54:30,220
+关于你要如何显示向量的选择
+which is the representation choice for how you're going to talk about vectors.
+
+742
+00:54:31,180 --> 00:54:34,620
+这个选择在这里
+And choices about that representation are localized right there.
+
+743
+00:54:35,340 --> 00:54:37,460
+它们不必将其完全显露出来
+They don't have their guts spilling over into things like
+
+744
+00:54:37,460 --> 00:54:39,460
+就像这里你计算长度和中点
+how you compute the length and how you compute the midpoint.
+
+745
+00:54:41,000 --> 00:54:43,900
+这才是这个系统真正强大之处
+And that's the real power of this system.
+
+746
+00:54:45,320 --> 00:54:49,480
+我们对它们很清楚 这样我们能控制它们
+OK, we're explicit about them, so that we have control over them.
+
+747
+00:54:50,840 --> 00:54:51,460
+好了 有疑问吗？
+All right, questions?
+
+748
+00:54:51,600 --> 00:54:55,900
+学生：在那些无法使用序对来表示的情况中会如何呢？
+AUDIENCE: What happens in the case where you don't want to be treating objects in terms of pairs?
+
+749
+00:54:55,900 --> 00:55:01,180
+比如说在三维空间里 一个序对无法表示三维坐标
+For instance, in three-dimensional space, you'd have three coordinates.
+
+750
+00:55:01,180 --> 00:55:03,800
+也就是说在N维空间中 我们该如何做呢？
+Or even in the case where you have n-dimensional space, what happens?
+
+751
+00:55:03,800 --> 00:55:04,800
+教授：啊 嗯
+PROFESSOR: Right, OK.
+
+752
+00:55:04,800 --> 00:55:07,180
+好吧 你提到了一点明天的内容
+Well, this is a preview of what I'll say tomorrow.
+
+753
+00:55:08,020 --> 00:55:15,760
+但关键点就是 一旦你有了二元的东西 就可以有多元的东西
+But the point is, once you have two things, you have as many things as you want.
+
+754
+00:55:16,800 --> 00:55:18,640
+能理解吗？ 如果我想要组合三个东西
+All right? Because if I want to make three things,
+
+755
+00:55:19,040 --> 00:55:21,020
+我构建一个序对
+I could start making things like a pair
+
+756
+00:55:24,680 --> 00:55:25,980
+该序对第一个元素是1
+whose first thing is 1,
+
+757
+00:55:26,620 --> 00:55:32,380
+第二个元素则又是一个序对 一个有2和3的序对
+and whose second thing is another pair that, say, has 2 and 3 in it.
+
+758
+00:55:34,700 --> 00:55:36,620
+以此类推 十个百个的东西 我可以把序对嵌套起来
+And so on, a hundred things. I can nest them out of pairs.
+
+759
+00:55:37,180 --> 00:55:40,040
+这里 我相当随意地使用了一种方法
+Here I made a pretty arbitrary decision about how to do it,
+
+760
+00:55:40,040 --> 00:55:42,320
+不久后你将看到更多地方法
+and you can immediately see there are lots of ways to do that.
+
+761
+00:55:42,680 --> 00:55:45,920
+而我们下节课将会讨论处理类似问题的约定
+What we'll start talking about next time are conventions for how to do things like that.
+
+762
+00:55:47,320 --> 00:55:50,360
+只要注意到我可以构建由序对构成的序对就好了
+But notice that what this really depends on is I can make pairs of pairs.
+
+763
+00:55:51,580 --> 00:55:53,900
+因为我只能构建由数构成的序对的话 我就没法了
+If all I could do was make pairs of numbers, I'd be stuck.
+
+764
+00:56:06,780 --> 00:56:10,040
+好吧 休息
+OK. Let's break.
+
+765
+00:56:11,060 --> 00:56:20,460
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+766
+00:56:21,860 --> 00:56:28,000
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+767
+00:56:38,000 --> 00:56:41,720
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+768
+00:56:42,000 --> 00:56:45,600
+讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+By: Prof. Harold Abelson && Gerald Jay Sussman
+
+769
+00:56:46,440 --> 00:56:49,940
+复合数据
+Compound Data
+
+770
+00:56:55,240 --> 00:56:57,340
+好吧 我们刚才只是做了
+All right, well, we've just gone off and done
+
+771
+00:56:59,240 --> 00:57:01,800
+一个数据抽象的简单示例
+a couple of simple examples of data abstraction.
+
+772
+00:57:03,620 --> 00:57:05,060
+现在我想做点更复杂的事儿
+Now I want to do something more complicated.
+
+773
+00:57:05,640 --> 00:57:07,120
+稍后我会详细说明这意味着什么
+We're going to talk about what it means.
+
+774
+00:57:07,900 --> 00:57:08,860
+这也将更困难
+And this will be harder,
+
+775
+00:57:08,860 --> 00:57:12,940
+因为在计算机程序设计中
+because it's always much harder in computer programming
+
+776
+00:57:12,940 --> 00:57:15,500
+说明某件事的的意义远比实现它难
+to talk about what something means than to go off and do it.
+
+777
+00:57:16,460 --> 00:57:21,600
+让我们回到最最开始的地方
+But let's go back to almost the very beginning.
+
+778
+00:57:21,600 --> 00:57:24,640
+还记得当时我说过的话么？
+Let's go back to the point where I said,
+
+779
+00:57:25,400 --> 00:57:27,900
+我说 我们假设已经存在一些过程
+we just assumed that there were procedures,
+
+780
+00:57:29,800 --> 00:57:36,620
+MAKE-RAT、NUMER以及DENOM
+make-rat, and numer, and denom.
+
+781
+00:57:38,120 --> 00:57:40,700
+好吧 我们就回到那里 回到最开始的地方
+Let's go back to where we had this, at the very beginning,
+
+782
+00:57:41,740 --> 00:57:47,020
+有构造函数和选择函数 以及定义有理数算术的地方
+constructors and selectors, and when often defined the rational number arithmetic.
+
+783
+00:57:47,020 --> 00:57:50,220
+我那时说过 假设我们已经有了那些需要George实现的东西了
+And remember, I said at that point we were sort of done, except for George.
+
+784
+00:57:51,620 --> 00:57:54,340
+那么 在那个时候我们实际上干了什么呢？
+Well, what is it that we'd actually done at that point?
+
+785
+00:57:55,580 --> 00:57:56,740
+做了些什么东西呢？
+What was it that was done?
+
+786
+00:57:59,040 --> 00:58:00,100
+我想说的就是
+Well, what I want to say is,
+
+787
+00:58:00,920 --> 00:58:05,240
+我们用这些东西实现了有理数操作后又做了什么呢
+what was done after we'd implemented the operations and terms of these,
+
+788
+00:58:05,720 --> 00:58:12,000
+我们用抽象数据来定义了有理数的表示
+was that we had defined a rational number representation in terms of abstract data.
+
+789
+00:58:18,060 --> 00:58:19,560
+通过数据抽象我想表达什么？
+What do I mean by abstract data?
+
+790
+00:58:20,700 --> 00:58:22,060
+关键点就是
+Well, the idea is that
+
+791
+00:58:24,520 --> 00:58:27,140
+在那个时候 当我们有了+RAT和*RAT
+at that point, when we had our +RAT and our *RAT,
+
+792
+00:58:28,580 --> 00:58:36,260
+任何George提供给我们的MAKE-RAT NUMER和DENOM函数
+that any implementation of make-RAT, and numerator, and denominator that George supplied us with,
+
+793
+00:58:37,700 --> 00:58:39,840
+都可以是有理数的表示基础
+could be the basis for a rational number representation.
+
+794
+00:58:40,620 --> 00:58:42,280
+因为你并不应该关心
+Like, it wasn't our concern where you
+
+795
+00:58:42,900 --> 00:58:46,460
+应该在那里获得最大公约数 等等
+divided through to get the greatest common denominator, or any of that.
+
+796
+00:58:48,540 --> 00:58:53,800
+关键点就是 我们构建了一个有理数算术系统
+So the idea is that what we built is a rational arithmetic system
+
+797
+00:58:53,800 --> 00:58:56,200
+一个可以基于任何表示方法的系统
+that would sit on top of any representation.
+
+798
+00:58:56,880 --> 00:58:58,360
+“任何表示方法”又是什么意思呢？
+What do I mean by any representation?
+
+799
+00:58:59,620 --> 00:59:01,160
+我当然不会是指
+I mean, certainly it can't be the case
+
+800
+00:59:01,820 --> 00:59:05,380
+George从一个包里面 随便取出3个过程
+that all I mean is George can reach in a bag and pull out three arbitrary procedures
+
+801
+00:59:07,140 --> 00:59:10,860
+然后说 这就是那些实现
+and say, well, fine, now that's the implementation.
+
+802
+00:59:11,460 --> 00:59:12,740
+不是这样的
+That can't be what I mean.
+
+803
+00:59:13,740 --> 00:59:19,000
+我指的是这里有一种衡量方法
+What I've got to mean is that there's some way of saying whether
+
+804
+00:59:20,820 --> 00:59:25,760
+可以判定这三个过程用于有理数的表示是否合适
+three procedures are going to be suitable as a basis for rational number representation.
+
+805
+00:59:25,760 --> 00:59:27,320
+如果我们仔细思考这个问题
+If we think about it,
+
+806
+00:59:28,340 --> 00:59:31,800
+我应该像这样定义 所谓的“合适”
+what suitable might mean is if I have to assume something like this,
+
+807
+00:59:31,800 --> 00:59:45,400
+我会说 如果X是(MAKR-RAT N D)
+I have to say that if x is the result of say, doing make-RAT of n and d,
+
+808
+00:59:48,540 --> 01:00:07,060
+那么(NUMER X)除以(DENOM X)等同于N除以D
+then the numerator of x divided by the denominator of x is equal to n over d.
+
+809
+01:00:09,360 --> 01:00:11,940
+看到了吗 这就和George订的契约
+See, what that is is that's George's contract.
+
+810
+01:00:13,400 --> 01:00:16,100
+而我们契约中订好的有理数规则
+What we mean by writing a contract for rational numbers,
+
+811
+01:00:16,100 --> 01:00:17,680
+你仔细想想的话 也是正确的
+if you think about it, this is the right thing.
+
+812
+01:00:18,480 --> 01:00:21,220
+我给你演示的这两个东西也是正确地
+And the two ones we showed do the right thing.
+
+813
+01:00:21,220 --> 01:00:23,220
+这样的话 就算我要考虑最大公约数
+See, if I'm taking out greatest common divisors,
+
+814
+01:00:25,400 --> 01:00:28,800
+我除不除、在哪里除 都无所谓
+it doesn't matter whether I take them out or not, or the place where I take them,
+
+815
+01:00:28,800 --> 01:00:30,520
+因为我这里进行了约分
+because the idea is I'm going to divide through.
+
+816
+01:00:32,060 --> 01:00:33,540
+嗯 这就是George的契约
+But see, this is George's contract.
+
+817
+01:00:33,540 --> 01:00:39,920
+我们要告诉Georg的就是 提供给我三个过程
+So what we really say to George is your business is to go off and find us three procedures,
+
+818
+01:00:40,620 --> 01:00:42,240
+MAKE-RAT NUMER 和 DENOM
+make-RAT, and numerator, and denominator,
+
+819
+01:00:42,520 --> 01:00:46,520
+使得无论N和D如何选择 都可以满足这个契约
+that fulfill this contract for any choice of n and d.
+
+820
+01:00:46,740 --> 01:00:52,140
+这也就是我所谓的我们可以用来作为有理数表示的基础
+And that's what we mean by we can use that as the basis for a rational number representation.
+
+821
+01:00:54,240 --> 01:00:56,540
+并且只要它们能满足契约
+And other than that, it fulfills this contract.
+
+822
+01:00:56,740 --> 01:00:58,040
+我们不关心他是如何实现的
+We don't care how he does it.
+
+823
+01:00:59,380 --> 01:01:02,320
+这不关我们的事儿 这在抽象层之下
+It's not our business. It's below the layer of abstraction.
+
+824
+01:01:06,620 --> 01:01:12,000
+事实上 如果我们想知道 有理数真正是什么
+In fact, if we want to say, what is a rational number really?
+
+825
+01:01:13,520 --> 01:01:16,940
+那么 如果不在抽象层之下来讨论的话
+See, what's it really, without having to talk about going below the layer of abstraction,
+
+826
+01:01:16,940 --> 01:01:21,340
+我们必须得说有理数实际上是
+what we're forced into saying is a rational number really
+
+827
+01:01:23,760 --> 01:01:25,100
+这里的这些公理
+is sort of this axiom,
+
+828
+01:01:25,800 --> 01:01:30,900
+就是MAKE-RAT NUMER 和 DENOM这三个满足这条公理的过程
+is three procedures, make-RAT, numerator, and denominator, that satisfy this axiom.
+
+829
+01:01:32,040 --> 01:01:36,880
+从某种抽象的意义来说 这就是真正的有理数
+In some sense, abstractly, that's what a rational number is really.
+
+830
+01:01:41,240 --> 01:01:45,760
+这听起来很容易 因为你脑中已经有了
+That's sort of easy words to listen to, because what you have in your head, of course, is well,
+
+831
+01:01:46,200 --> 01:01:49,480
+关于有理数是什么的知识
+for all this thing about saying that's what a rational number is really,
+
+832
+01:01:50,420 --> 01:01:52,800
+因为你已经看到了我们是如何构建有理数的
+you actually just saw that we built rational numbers.
+
+833
+01:01:58,480 --> 01:02:04,000
+对 我们是在序对的基础上构建有理数的
+See, what we really did is we built rational numbers on top of pairs.
+
+834
+01:02:08,520 --> 01:02:13,640
+因此 抽象地来说 我们可以认为有理数实际上就是这些公理
+So for all I'm saying abstractly, we can say a rational number really is just this axiom.
+
+835
+01:02:15,000 --> 01:02:19,160
+你可以很自然把有理数理解为序对 因为这正也是你们见到的
+You can listen to that comfortably, because you're saying, well, yeah, but really it's actually pairs,
+
+836
+01:02:19,960 --> 01:02:22,640
+我把它说得抽象后反而影响你理解
+and I'm just annoying you by trying to be abstract.
+
+837
+01:02:24,520 --> 01:02:27,700
+那么为了让你们明白
+Well, let me, as an antidote for that,
+
+838
+01:02:28,600 --> 01:02:31,720
+我会展示一个吓到你们的东西
+let me do something that I think is really going to terrify you.
+
+839
+01:02:32,620 --> 01:02:35,580
+我讲带领你们零距离地面对
+I mean, it's really going to bring you face to face
+
+840
+01:02:36,400 --> 01:02:40,620
+我们讨论的抽象的真实存在性
+with the sort of existential reality of this abstraction that we're talking about.
+
+841
+01:02:41,260 --> 01:02:44,100
+我们将讨论“序对”到底是什么？
+And what I'm going to talk about is, what are pairs really?
+
+842
+01:02:45,700 --> 01:02:47,020
+说说 我是怎么给你们讲“序对”的？
+See, what did I tell you about pairs?
+
+843
+01:02:48,340 --> 01:02:49,080
+我耍了你们 对吧？
+I tricked you, right?
+
+844
+01:02:49,080 --> 01:02:52,160
+我说 Lisp有一个叫CONS的基本过程可以构建序对
+I said that Lisp has this primitive called cons that builds pairs.
+
+845
+01:02:53,340 --> 01:02:54,740
+但我真正告诉你们什么呢？
+But what did I really tell you about?
+
+846
+01:02:56,180 --> 01:02:58,740
+如果你回过头来看 看这些幻灯片
+If you go back and said, let's look on this slide,
+
+847
+01:02:59,280 --> 01:03:04,680
+会发现我真正告诉你们的是序对应该具有这些属性
+all I really told you about pairs is that there happens to be this property,
+
+848
+01:03:04,680 --> 01:03:06,380
+这些CONS CAR 和 CDR构成的属性
+these properties of cons, car, and cdr.
+
+849
+01:03:06,540 --> 01:03:07,940
+而我说的“序对”
+And all I really said about pairs
+
+850
+01:03:08,520 --> 01:03:12,740
+只是说这里面有叫CONS 叫CAR 和叫CDR的东西
+is that there's a thing called cons, and a thing called car, and a thing called cdr.
+
+851
+01:03:14,520 --> 01:03:18,720
+在这个例子中 我构建了由X和Y构成的序对 取CAR部分得X
+And it is the case that if I build cons of x, y and take car of it, I get x.
+
+852
+01:03:20,440 --> 01:03:24,140
+构建由X和Y构成的序对 取CDR部分得Y
+And if I build cons of x, y and get cdr of it, I get y.
+
+853
+01:03:25,520 --> 01:03:32,460
+尽管如此 我也对你们谎称Lisp中有个东西能这么做
+And even though I lulled you into thinking that there's something in Lisp that does that,
+
+854
+01:03:32,460 --> 01:03:34,200
+因此你们也就假装确实有这么个东西
+so you pretended you knew what it was,
+
+855
+01:03:34,380 --> 01:03:38,100
+事实上 关于序对 我告诉你们的跟有理数一样多
+in fact, I didn't tell you any more about pairs than this tells you about rational numbers.
+
+856
+01:03:39,400 --> 01:03:41,020
+都是序对的一些公理
+It's just some axiom for pairs.
+
+857
+01:03:44,320 --> 01:03:49,380
+言归正传 我马上要大显身手了
+Well, to drive that home, let me really scare you,
+
+858
+01:03:51,360 --> 01:03:53,660
+我会用某个神秘的东西来构建序对
+and show you what we might build pairs in terms of.
+
+859
+01:03:55,760 --> 01:04:00,580
+你们将会看见 我们可以构建有理数
+And what you're going to see is that we can build rational numbers,
+
+860
+01:04:00,580 --> 01:04:03,740
+直线段、向量以及任何由序对构建起的东西
+and line segments, and vectors, and all of this stuff in terms of pairs,
+
+861
+01:04:04,720 --> 01:04:07,840
+我们在低于抽象层的这里看到 序对可以凭空产生
+and we're going to see below here that pairs can be built out of nothing at all.
+
+862
+01:04:10,640 --> 01:04:11,340
+纯粹的抽象
+Pure abstraction.
+
+863
+01:04:12,440 --> 01:04:18,440
+幻灯片中展示了CONS CAR和CDR的一种实现
+So let me show you on this slide an implementation of cons, car, and cdr.
+
+864
+01:04:21,140 --> 01:04:22,720
+等会儿我们会回来细看
+And we'll look at it again in a second,
+
+865
+01:04:23,160 --> 01:04:26,520
+但一定要注意过程CONS CAR和CDR的定义
+but notice that their procedure definitions of cons, car, and cdr,
+
+866
+01:04:27,060 --> 01:04:32,300
+这里你看不到任何数据 你只能看到一个lambda
+you don't see any data in there, what you see is a lambda.
+
+867
+01:04:34,860 --> 01:04:40,320
+这里的CONS将返回 一个返回值为新的过程的过程
+Cons, So cons here is going to return-- is a procedure that returns a procedure,
+
+868
+01:04:41,080 --> 01:04:42,400
+就像函数AVERAGE-ADPT
+just like average-adpt.
+
+869
+01:04:44,280 --> 01:04:49,340
+(CONS A B)返回一个具有单个参数的过程pick
+Cons of a and b returns a procedure of an argument called pick,
+
+870
+01:04:51,720 --> 01:04:52,300
+它的定义是
+and it says,
+
+871
+01:04:52,780 --> 01:04:55,860
+如果pick等于1 那么该过程返回a
+if pick is equal to 1, I'm going to return a,
+
+872
+01:04:57,080 --> 01:04:59,520
+而如果pick等于2 那么该过程返回b
+and if pick is equal to 2, I'm going to return b,
+
+873
+01:05:00,220 --> 01:05:01,660
+这就是CONS的定义
+and that's what cons is going to be.
+
+874
+01:05:04,460 --> 01:05:10,100
+取X的CAR部分 (CAR X)
+Car of a thing x, car of a pair x,
+
+875
+01:05:10,500 --> 01:05:13,020
+就是把X应用于1 注意了 这完全行得通
+is going to be x applied to 1. And notice that makes sense.
+
+876
+01:05:13,020 --> 01:05:17,360
+你现在还不太明白我为什么要这样做 但至少这样行得通
+You might not understand why or how I'm doing such a thing, but at least it makes sense,
+
+877
+01:05:17,760 --> 01:05:20,700
+因为我通过CONS构造出了一个过程
+because the thing constructed by cons is a procedure,
+
+878
+01:05:21,260 --> 01:05:22,620
+而CAR将其应用于1
+and car applies that to 1.
+
+879
+01:05:24,260 --> 01:05:26,760
+类似的 CDR将其应用于2
+And similarly, cdr applies that thing to 2.
+
+880
+01:05:29,060 --> 01:05:32,800
+好了 现在我已经给出了CONS CAR和CDR的一种表示法
+OK, now I claimed that this is a representation of cons, car, and cdr,
+
+881
+01:05:32,800 --> 01:05:34,100
+注意这里面没有任何数据
+and notice there's no data in it.
+
+882
+01:05:35,600 --> 01:05:37,940
+这就是“凭空”产生的 它们仅仅是过程
+All right, it's built out of air. It's just procedures.
+
+883
+01:05:39,220 --> 01:05:42,220
+这种表示法中没有任何数据对象
+There's no data objects at all in that representation.
+
+884
+01:05:43,460 --> 01:05:45,120
+那么 这又可能意味着什么呢？
+Well, what could that possibly mean?
+
+885
+01:05:49,260 --> 01:05:51,140
+嗯 如果你承认这些东西的话
+Well, if you really believe this stuff,
+
+886
+01:05:54,000 --> 01:05:59,340
+那么接下来 一旦我证明了CONS CAR CDR的这种表示法
+then you have to believe that in order to show that that's a representation for cons, car, and cdr,
+
+887
+01:05:59,640 --> 01:06:02,180
+能满足我们的公理的话 你就对此不容置疑了
+all I have to do is show that it satisfies the axiom.
+
+888
+01:06:03,220 --> 01:06:05,320
+那么 我来举一个例子
+See, all I should have to convince you of is,
+
+889
+01:06:05,560 --> 01:06:23,000
+例如 (CAR (CONS 37 49))应该返回37
+for example, that gee, that car of cons of 37 and 49 is 37
+
+890
+01:06:23,000 --> 01:06:25,700
+37和49是我随意挑选的任意值
+Right? for arbitrary values of 37 and 49.
+
+891
+01:06:26,460 --> 01:06:28,820
+CDR也是如此
+If I really.... And cdr the same way.
+
+892
+01:06:31,800 --> 01:06:36,140
+如果我能用这个凭空构造的怪异过程
+See, if I really can demonstrate to you that that weird procedure definition,
+
+893
+01:06:36,640 --> 01:06:40,180
+来向你们演示它能满足这些公理
+in terms of the air, has the property that it satisfies this,
+
+894
+01:06:41,480 --> 01:06:47,080
+那么你就应该认为这是CONS CAR和CDR的可行实现
+then you just have to grant me that that is a possible implementation of cons, car, and cdr,
+
+895
+01:06:47,080 --> 01:06:48,700
+也就可以用它们来构造其它东西了
+on which I can build everything else.
+
+896
+01:06:49,640 --> 01:06:53,360
+好了 让我们回过头来看看 这里将用到代换模型
+Well, let's look at that. And this will be practice in the substitution model.
+
+897
+01:06:53,480 --> 01:07:00,280
+我们该怎么来说清这个过程呢？
+How would I actually, How could we check this?
+
+898
+01:07:00,280 --> 01:07:03,180
+我们好像知道点怎么做 这都是同一个代换模型
+We sort of know how to do that. It's just the same substitution model.
+
+899
+01:07:04,640 --> 01:07:09,320
+我们来瞧瞧 首先 我们考虑(CAR (CONS 37 49))是什么
+Let's look. We start out, and we say, what's car of cons of 37 and 49?
+
+900
+01:07:10,800 --> 01:07:13,140
+接下来该怎么做？ CONS只是一个过程
+What do we do? Cons is some procedure.
+
+901
+01:07:15,600 --> 01:07:18,760
+它的值也就是一个有A和B的过程
+Its value is cons was a procedure of a and b.
+
+902
+01:07:19,580 --> 01:07:22,820
+CONS返回的是一个过程体
+The thing returned by cons is its procedure body
+
+903
+01:07:23,140 --> 01:07:26,820
+该过程体的参数被37和49代换掉了
+with 37 and 49 substituted for the parameters.
+
+904
+01:07:26,820 --> 01:07:31,080
+用37代换A 用49代换B
+It'll be 37 substituted for a and 49 substituted for b.
+
+905
+01:07:32,520 --> 01:07:36,700
+所以这个表达式和这个表达式的意思是相同的
+So this expression has the same meaning as this expression.
+
+906
+01:07:36,720 --> 01:07:40,980
+CAR没变 而CONS被代换为了一个以LAMBDA开头的表达式
+Its car of, and the body of cons was this thing that started with lambda.
+
+907
+01:07:42,780 --> 01:07:47,100
+这里PICK是另外一个变量 如果PICK为1的话
+And it says, so if pick is equal to 1, where pick is this other argument,
+
+908
+01:07:47,260 --> 01:07:50,420
+如果PICK等于1 那么就返回37 也就是A的值
+if pick is equal to 1, it's 37, that's where a was,
+
+909
+01:07:51,120 --> 01:07:53,460
+如果PICK等于2 那么就返回49
+and if pick is equal to 2, it's 49.
+
+910
+01:07:54,820 --> 01:07:55,780
+这是代换的第一步
+So that's the first step.
+
+911
+01:07:55,780 --> 01:07:58,620
+我只是进行了机械地代换
+I'm just going through mechanical substitution.
+
+912
+01:07:59,120 --> 01:08:00,560
+注意了 这也是本课的一大要点
+And remember, at this point in the course,
+
+913
+01:08:00,560 --> 01:08:02,220
+当你搞不清楚情况的时候
+if you're confused about what things mean,
+
+914
+01:08:02,480 --> 01:08:04,820
+就按照代换模型进行机械地代换
+go mechanically through the substitution model.
+
+915
+01:08:05,100 --> 01:08:06,320
+那么 这又会被归约为什么呢？
+Well, what is this reduced to?
+
+916
+01:08:07,620 --> 01:08:15,700
+而CAR则是 把给定的参数 也就是这些 应用于1
+Car said, take your, take your argument, which in this case is this, and apply it to 1.
+
+917
+01:08:15,780 --> 01:08:17,120
+这也就是CAR的定义
+That was the definition of car.
+
+918
+01:08:17,700 --> 01:08:22,000
+考虑CAR 将其展开 我将得到
+So if I look at car, if I do that, the answer is,
+
+919
+01:08:22,000 --> 01:08:26,000
+就是将CAR的参数 将其应用于1
+well, it's that argument, this was the argument to car, applied to 1.
+
+920
+01:08:29,180 --> 01:08:30,440
+这又是什么意思呢？
+Well, what does that mean?
+
+921
+01:08:30,780 --> 01:08:35,320
+在这里的代码体中 我拿1来替换PICK
+I take 1, and I substitute it in the body here for this value of pick,
+
+922
+01:08:35,540 --> 01:08:38,340
+也就是这个变量的名字 我们得到什么呢？
+which is the name of the argument, what do I get?
+
+923
+01:08:39,560 --> 01:08:42,840
+如果1等于1 那么就得到37
+Well, I get the thing that says if 1 equals 1 it's 37,
+
+924
+01:08:43,080 --> 01:08:45,620
+如果1等于2 那么就得到49 当然答案就是37
+and if 1 equals 2 it's 49, so the answer's 37.
+
+925
+01:08:46,280 --> 01:08:50,660
+类似的 如果是CDR的话 也就是将其应用于2 则得到49
+And similarly, if I'd taken cdr, that would apply it to 2, and I'd get 49.
+
+926
+01:08:51,460 --> 01:08:56,280
+正如你们所见 我给你们演示了相当怪异的实现
+So you see, what I've demonstrated is that that completely weird implementation
+
+927
+01:08:56,280 --> 01:08:58,740
+完全符合这些公理的CONS CAR CDR实现
+of cons, car, and cdr, satisfies the axioms.
+
+928
+01:08:59,820 --> 01:09:04,360
+事实上 用这种方法来构建Lisp中所有的数据对象 非常有效
+So it's a perfectly valid way of building, in fact, all of the data objects we're going to see in Lisp.
+
+929
+01:09:05,320 --> 01:09:08,760
+如果你愿意的话 这一切东西 都可以凭空构建
+So they all, if you like, can be built on sort of existential nothing.
+
+930
+01:09:09,640 --> 01:09:11,600
+就目前为止 你也知道它也正是这样工作的
+And as far as you know, that's how it works.
+
+931
+01:09:13,880 --> 01:09:16,180
+你无法分辨 你如果只是
+You couldn't tell. If all you're ever going to do
+
+932
+01:09:16,960 --> 01:09:19,860
+将它们用CONS构建成序对 再用CAR和CDR取出来
+with pairs is construct them with cons and look at them with car and cdr,
+
+933
+01:09:19,860 --> 01:09:22,160
+你可能还无法分辨它是如何运作的
+you couldn't possibly tell how this thing works.
+
+934
+01:09:23,920 --> 01:09:26,180
+现在 如果我这样说 你们可能会觉得好受一点
+Now, it might give you a sort of warm feeling inside if I say,
+
+935
+01:09:26,180 --> 01:09:29,840
+我说 实际上因为种种原因 Lisp中有几个基本过程
+well, yeah, in fact, for various reasons there happens to be a primitive
+
+936
+01:09:30,360 --> 01:09:33,200
+叫做CONS CAR和CDR 这样不会太吓着你们
+called cons, car, and cdr, and if it's too scary,
+
+937
+01:09:33,200 --> 01:09:35,820
+内部太难以理解 你就不必深究其内部了
+if this kind of stuff is too scary, you don't have to look inside of it.
+
+938
+01:09:36,440 --> 01:09:37,660
+这样可能会使你感觉好点
+So that might make you feel better,
+
+939
+01:09:38,720 --> 01:09:40,900
+但关键点就是 它真是照这样运作的
+but the point is, it really could work this way,
+
+940
+01:09:41,800 --> 01:09:43,920
+但是这对系统而言毫无区别
+and it wouldn't make any difference to the system at all.
+
+941
+01:09:46,280 --> 01:09:49,740
+从某种意义上来说 建立数据抽象不需要数据
+So in some sense, we don't need data at all to build these data abstractions.
+
+942
+01:09:51,380 --> 01:09:53,280
+我们可以用过程来完成所有事儿
+We can do everything in terms of procedures.
+
+943
+01:09:54,500 --> 01:09:56,320
+恩 那么 为什么我这样做吓到你们了呢？
+OK, well, why did I terrify you in this way?
+
+944
+01:09:57,120 --> 01:09:59,880
+首先 我想强化大家对抽象的认识
+First, I really want to reinforce this idea of abstraction,
+
+945
+01:10:01,820 --> 01:10:03,960
+也就是我们可以抽象地做事儿
+that you really can do these things abstractly.
+
+946
+01:10:05,880 --> 01:10:12,000
+其次 我给大家介绍了将在本课中不断体现的理念
+Secondly, I want to introduce an idea we're going to see more and more of in this course,
+
+947
+01:10:13,740 --> 01:10:18,160
+也就是数据和过程的边界将变得越来越模糊
+which is we're going to blur the line between what's data and what's a procedure.
+
+948
+01:10:19,820 --> 01:10:24,600
+看到了吧 这个有趣的CONS实现结果是
+See, in this funny implementation it turned out that cons of something
+
+949
+01:10:24,600 --> 01:10:28,640
+我们以为是数据 结果却是用一个过程来表示
+happened to be represented in terms of a procedure, even though we think of it as data.
+
+950
+01:10:31,560 --> 01:10:33,400
+虽然这里只是一个数学技巧
+While here that's sort of a mathematical trick,
+
+951
+01:10:34,260 --> 01:10:36,260
+当我们将看到的则是
+but one of the things we'll see is that
+
+952
+01:10:36,260 --> 01:10:39,500
+一些非常重要的编程技巧
+a lot of the very important programming techniques that we're going to get to
+
+953
+01:10:40,480 --> 01:10:42,960
+都非常依赖于
+sort of depend very crucially
+
+954
+01:10:43,280 --> 01:10:48,280
+模糊这条传统的界定数据和过程的分界线
+on blurring this traditional line between what you consider a procedure and what you consider data.
+
+955
+01:10:48,620 --> 01:10:50,680
+尤其在下次课 我们将接触得越来越多
+We're going to see more and more of that, especially next time.
+
+956
+01:10:52,580 --> 01:10:53,440
+好了 有什么问题吗？
+OK, questions?
+
+957
+01:10:54,720 --> 01:10:59,800
+学生：如果让系统打印A 会输出什么呢？
+AUDIENCE: If you asked the system to print a, what would be the result?
+
+958
+01:11:00,260 --> 01:11:04,960
+教授：你想问 如果我让系统打印A
+PROFESSOR: The question is, what would happen if I asked the system to print a.
+
+959
+01:11:04,960 --> 01:11:07,900
+看看这种表示法 你就知道答案了
+Given this representation, you already know the answer.
+
+960
+01:11:09,620 --> 01:11:17,980
+这是一个复合过程A 像上次一样
+The answer is compound procedure a, just like last time.
+
+961
+01:11:21,280 --> 01:11:22,600
+系统返回“复合过程”
+It'd say compound procedure.
+
+962
+01:11:25,260 --> 01:11:28,280
+说着说得更详细一点 像“复合LAMBDA过程”等等
+It might say a little bit more. It might say compound procedure lambda or something or other,
+
+963
+01:11:29,240 --> 01:11:32,360
+这得看我是如何给它命名的 但它归根是个过程
+depending on details of how I named it. But it's a procedure.
+
+964
+01:11:32,800 --> 01:11:36,520
+唯一的解释就是我并没有特别地告诉系统
+And the only reason for that is I haven't told the system anything special
+
+965
+01:11:37,320 --> 01:11:38,700
+如何打印这些东西
+about how to print such things.
+
+966
+01:11:39,900 --> 01:11:44,840
+实际上 根据系统中CONS实现的不同
+Now, it's in fact true that with the actual implementation of cons that to be built in the system,
+
+967
+01:11:44,840 --> 01:11:45,880
+它会打印出不同的东西
+it would print something else.
+
+968
+01:11:47,000 --> 01:11:48,500
+它会打印出这是个序对
+It would print, say, this is a pair.
+
+969
+01:11:53,200 --> 01:11:55,060
+学生：你定义CONS后
+AUDIENCE: When you define cons,
+
+970
+01:11:57,600 --> 01:11:59,640
+你给它传递了几个值
+and then you pass it into values,
+
+971
+01:12:00,760 --> 01:12:05,920
+它怎么知道该去哪里找这些值 毕竟你可以多次使用CONS
+how does it know where to look for the cons, because you can use cons over and over again?
+
+972
+01:12:06,380 --> 01:12:12,100
+它是怎么知道我们希望取出的a和b存储在哪里呢？
+How does it know where to look to know which a and b it's supposed to pull back out?
+
+973
+01:12:12,300 --> 01:12:17,060
+可能表达得不是很正确 我只是想问它都存放在哪儿？
+I don't know if I'm expressing that quite right. Where is it stored?
+
+974
+01:12:18,720 --> 01:12:20,040
+教授：嗯 来想想
+PROFESSOR: OK, the question is,
+
+975
+01:12:22,800 --> 01:12:28,020
+我先用37和49来构造一个序对 在用1和2又构造一个
+I sort of have a cons with a 37 and a 49, and I might make another cons with a 1 and a 2,
+
+976
+01:12:28,340 --> 01:12:30,800
+有一个参数为A 有一个参数为B
+and I might have one called a, and I might have one called b.
+
+977
+01:12:31,560 --> 01:12:34,500
+问题是 系统又是怎么知道的呢？它为什么没有弄混淆呢？
+And the question is, how does it know? And why don't they get confused?
+
+978
+01:12:35,280 --> 01:12:37,220
+这个问题非常好
+And that's a very good question.
+
+979
+01:12:40,440 --> 01:12:43,580
+首先 你需要认定过程是一种对象
+See, you have to really believe that the procedures are objects.
+
+980
+01:12:44,760 --> 01:12:47,920
+这就像是说——让我来换个更简单的例子
+It's sort of like saying-- let's try another simpler example.
+
+981
+01:12:49,140 --> 01:12:50,980
+我想去求3的平方根
+Suppose I ask for the square root of 3.
+
+982
+01:12:55,560 --> 01:12:56,820
+我这里用5的平方根来演示
+So I asked for the square root of 5,
+
+983
+01:12:57,920 --> 01:13:01,560
+我也可以求20的平方根
+and then I ask for the square of 20.
+
+984
+01:13:06,120 --> 01:13:10,080
+这可能一点也不困扰你 我可以将SQRT应用于5
+You're probably not the least bit bothered that I can take square root and apply it to 5,
+
+985
+01:13:10,080 --> 01:13:13,080
+也可以将其应用于20
+and then I can take square root and apply it to 20.
+
+986
+01:13:14,580 --> 01:13:18,600
+你知道这没问题 它分得清楚应用于哪个
+And there's sort of no issue, gee, doesn't it get confused about whether it's working on 5 or 20?
+
+987
+01:13:19,320 --> 01:13:25,120
+你觉得过程应该是做些事 所以没有问题
+There's no issue about that because you're thinking of a procedure which goes off and does something.
+
+988
+01:13:26,180 --> 01:13:28,480
+从某种方面来说 你问了我一个同样的问题
+Now, in some sense you're asking me the same question.
+
+989
+01:13:30,240 --> 01:13:31,580
+但它使你困惑
+But it's really bothering you,
+
+990
+01:13:31,580 --> 01:13:33,580
+这确实很容易让人困惑
+and it's bothering you for a really good reason.
+
+991
+01:13:34,240 --> 01:13:38,080
+因为我当我这样写的时候 你知道这是一个过程
+Because when I write that, you're saying gee, this is, I know, sort of a procedure.
+
+992
+01:13:38,080 --> 01:13:41,520
+但它不是一个能运行的过程 而是一个定义在这里的过程
+But it's not a procedure that's just running. It's just sort of a procedure sitting there.
+
+993
+01:13:42,220 --> 01:13:46,380
+那这个过程为什么时而能有37和49
+And how can it be that sometimes this procedure has 37 and 49,
+
+994
+01:13:46,380 --> 01:13:50,680
+可能又有一个过程有5和6 但它们为什么不搞混呢
+and there might be another one which has 5 and 6 in there, and why don't they get confused?
+
+995
+01:13:52,140 --> 01:13:56,200
+这里面就有一个非常重要的东西困扰了你
+So there's something very, very important that's bothering you.
+
+996
+01:13:58,640 --> 01:14:00,420
+这东西非常关键
+And it's really crucial to what's going on.
+
+997
+01:14:00,760 --> 01:14:06,740
+这就是 过程并不仅仅是动作的集合
+It's, we're suddenly saying that procedures are not just the act of doing something.
+
+998
+01:14:07,980 --> 01:14:10,920
+过程是概念实体 是对象
+Procedures are conceptual entities, objects,
+
+999
+01:14:11,400 --> 01:14:16,320
+如果我(CONS 37 49) 那么就构建好了一个特定的过程
+and if I built cons of 37 and 49, that's a particular procedure that sits there.
+
+1000
+01:14:17,680 --> 01:14:20,760
+这和(CONS 3 4)的那个不一样
+And it's different from cons of 3 and 4.
+
+1001
+01:14:21,120 --> 01:14:22,640
+这又是一个创立好的过程了
+That's another procedure that sits there.
+
+1002
+01:14:22,640 --> 01:14:23,840
+学生：它们都是独立存在的
+AUDIENCE: Both of them exist independently.
+
+1003
+01:14:23,840 --> 01:14:25,120
+教授：对 独立存在
+PROFESSOR: And exists independently.
+
+1004
+01:14:25,280 --> 01:14:27,840
+学生：可以通过CAR和CDR被引用
+AUDIENCE: And they both can be referenced by car and cdr.
+
+1005
+01:14:28,040 --> 01:14:30,040
+教授：它们都可以通过CAR和CDR被引用。
+PROFESSOR: And they both would be referenced by car and cdr.
+
+1006
+01:14:30,040 --> 01:14:37,420
+我可以增加这个 也可以增加那个
+Just like I could increment this, and I could increment that.
+
+1007
+01:14:37,900 --> 01:14:41,380
+它们都是对象 这也是我们需要的
+They're objects. And that's sort of where we're going.
+
+1008
+01:14:41,380 --> 01:14:43,320
+而你之所以这样问 正是体现了
+See, the fact that you're asking the question shows that
+
+1009
+01:14:43,320 --> 01:14:47,400
+你开始思考它蕴含的东西了
+you're really starting to think about the implications of what's going on.
+
+1010
+01:14:47,400 --> 01:14:51,520
+过程不仅仅只是说做某件事的行为
+It's the difference between saying a procedure is just the act of doing something.
+
+1011
+01:14:52,620 --> 01:14:55,360
+任何过程都是一个存在着的真实对象
+And a procedure is a real object that has existence.
+
+1012
+01:14:55,960 --> 01:14:57,580
+学生：也就是说过程在被构建时
+AUDIENCE: So when the procedure gets built,
+
+1013
+01:14:58,040 --> 01:15:00,960
+A和B的确切值就被代换进去了
+the actual values are now substituted for a and b--
+
+1014
+01:15:01,580 --> 01:15:02,020
+教授：是的
+PROFESSOR: That's right.
+
+1015
+01:15:02,020 --> 01:15:04,200
+学生：那些以LAMBDA形式存在的过程
+AUDIENCE: And then that procedure exists as lambda,
+
+1016
+01:15:04,200 --> 01:15:06,200
+而PICK实际上已经被传递进去了
+and pick is what's actually passed in.
+
+1017
+01:15:07,360 --> 01:15:09,580
+教授：是的 当CONS过程被调用时
+PROFESSOR: Yes, when cons gets called,
+
+1018
+01:15:09,580 --> 01:15:13,200
+CONS就返回了一个新构造好的过程
+and the result of cons is a new procedure that's constructed,
+
+1019
+01:15:13,620 --> 01:15:15,740
+而这个新过程有一个叫做PICK的参数
+that new procedure has an argument that's called pick.
+
+1020
+01:15:17,120 --> 01:15:18,460
+学生：但是就不再有A和B了
+AUDIENCE: But it no longer has an a and b.
+
+1021
+01:15:18,460 --> 01:15:20,520
+A和B的确切值在那时就被传递进去了
+The a and b are the actual values that are passed through.
+
+1022
+01:15:20,520 --> 01:15:23,120
+教授：根据代换模型 是这样的
+PROFESSOR: And it has-- right, according to the substitution model,
+
+1023
+01:15:23,120 --> 01:15:25,660
+现在它不再具有这些任意的名字A和B
+what it now has is not those arbitrary names a and b,
+
+1024
+01:15:25,960 --> 01:15:28,480
+取而代之的则是37和49
+it somehow has that 37 and 49 in there.
+
+1025
+01:15:31,200 --> 01:15:33,100
+但你是对的 把这件事想清楚很困难
+But you're right, that's a hard thing to think about it,
+
+1026
+01:15:33,100 --> 01:15:35,240
+这同我们之前对过程的认识有所不同
+and it's different from the way you've been thinking about procedures.
+
+1027
+01:15:36,100 --> 01:15:40,880
+学生：如果我再次调用(CONS 37 49) 是否得到了一个不同的[听不清]
+AUDIENCE: And if I have again cons of 37 and 49, it's a different [UNINTELLIGIBLE]?
+
+1028
+01:15:40,880 --> 01:15:47,860
+教授：如果你再次调用(CONS 37 49)
+PROFESSOR: And if you make another cons of 37 and 49,
+
+1029
+01:15:51,420 --> 01:15:53,700
+你就陷入了一个深刻的哲学问题
+you're into a wonderful philosophical problem,
+
+1030
+01:15:53,700 --> 01:15:58,500
+这个将是我们整个课程中段将讨论的问题
+which is going to be what the lecture about halfway through this course is about.
+
+1031
+01:15:59,720 --> 01:16:02,780
+也就是说 我调用(CONS 37 49) 然后我再调用一次
+Which is, if I cons 37 and 49, and I do it again,
+
+1032
+01:16:02,980 --> 01:16:05,460
+这两者是同一个东西还是不同的东西呢？
+is that the same thing, or is it a different thing?
+
+1033
+01:16:06,180 --> 01:16:08,720
+我又该如何区别它们呢？这又在什么时候产生影响呢？
+And how could you tell? And when could it possibly matter?
+
+1034
+01:16:09,920 --> 01:16:19,620
+这就像说 这个和这个是同一个东西么？
+And that's sort of like saying, is that the same thing as this?
+
+1035
+01:16:20,840 --> 01:16:22,440
+那这个和这个呢？
+Or is this the same thing as that?
+
+1036
+01:16:23,480 --> 01:16:24,660
+这都是同一种问题
+It's the same kind of question.
+
+1037
+01:16:24,660 --> 01:16:27,520
+这将是一个非常非常深刻的问题
+And that's a very, very deep question.
+
+1038
+01:16:27,520 --> 01:16:30,520
+我没法在一小时内讲清楚 但我们以后会讨论
+And I can't answer in less than an hour. But we will.
+
+1039
+01:16:37,600 --> 01:16:40,940
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+1040
+01:16:41,100 --> 01:16:47,660
+本项目主页
+https://github.com/FoOTOo/Learning-SICP
+
+
