@@ -25,7 +25,7 @@ First of all, there was a methodology of data abstraction,
 
 6
 00:00:32,940 --> 00:00:39,100
-关键是要将数据的使用
+其要点是将数据的使用
 and the point of that was that you could isolate the way that data objects are used
 
 7
@@ -35,22 +35,22 @@ from the way that they're represented:
 
 8
 00:00:41,550 --> 00:00:45,200
-我们可以与George“签订契约”
+比如说，我们可以与一个叫做George的人“签订契约”
 this idea that there's this guy, George, and you go out make a contract with him;
 
 9
 00:00:45,200 --> 00:00:47,480
-他负责数据的表示
+让他负责数据的表示
 and it's his business to represent the data objects;
 
 10
 00:00:47,480 --> 00:00:49,360
-而我们使用它们的时候
+而当我们使用这些数据的时候
 and at the moment you are using them,
 
 11
 00:00:49,360 --> 00:00:51,360
-不需要替George操心如何实现
+不需要替George操心他是如何完成数据表示的工作的
 you don't think about George's problem.
 
 12
@@ -65,12 +65,12 @@ to form objects called pairs,
 
 14
 00:01:00,520 --> 00:01:03,540
-这是通过CONS CAR CDR实现
+它是通过CONS CAR CDR实现的
 and that's done with cons, car and cdr.
 
 15
 00:01:03,540 --> 00:01:07,160
-CONS CAR CDR 都是独立实现的
+而CONS CAR CDR本身是如何实现的，则基本上是不相干的
 And the way that cons, car and cdr are implemented is basically irrelevant.
 
 16
@@ -90,7 +90,7 @@ It could be done using procedures in some weird way,
 
 19
 00:01:13,800 --> 00:01:15,220
-但是不用我们操心这些
+但是我们不用操心这些
 but we're not going to worry about that.
 
 20
@@ -110,7 +110,7 @@ and here's just a review of vectors.
 
 23
 00:01:24,180 --> 00:01:27,640
-这里有个对两个向量求和的运算符
+这里有个对两个向量求和的操作
 Here's an operation that takes the sum of of two vectors,
 
 24
@@ -120,12 +120,12 @@ so we want to add this vector, v1, and this vector, v2, and we get the sum.
 
 25
 00:01:34,460 --> 00:01:40,840
-和也是一个向量 它的坐标是两个向量的坐标的和
+它们的和也是一个向量 其坐标是两个向量的坐标的和
 And the sum is the vector whose coordinates are the sum of the coordinates of the pieces you're adding.
 
 26
 00:01:41,280 --> 00:01:45,660
-定义(+VECT V1 V2)为
+所以，为了定义(+VECT V1 V2)为两个向量的和
 So I can say, to define make-vect, right, to add two vectors
 
 27
@@ -140,7 +140,7 @@ and whose y coordinate is the sum of the two y coordinates.
 
 29
 00:01:56,060 --> 00:02:04,100
-同样 我们也可以定义一个缩放向量的运算符
+类似的 我们也可以定义一个缩放向量的操作
 And then similarly, we could have an operation that scales vectors,
 
 30
@@ -160,7 +160,7 @@ and I scale v, and I get a vector in the same direction that's longer.
 
 33
 00:02:21,560 --> 00:02:24,260
-缩放向量 我需要通过缩放坐标来实现
+为了缩放向量 我需要通过缩放坐标来实现
 And again, to scale a vector, I multiply the successive coordinates.
 
 34
@@ -175,12 +175,12 @@ and whose y coordinate is the scale factor times the y coordinate.
 
 36
 00:02:33,540 --> 00:02:40,280
-上述两个运算符的实现依赖于向量的表示
+上述两个操作都是利用了向量的表示来实现的
 So those are two operations that are implemented using the representation of vectors.
 
 37
 00:02:40,280 --> 00:02:45,020
-这种向量的表示方法 我们可以用序对来实现
+而这种向量的表示，我们则可以用序对来实现
 And the representation of vectors, for instance, is something that we can build in terms of pairs.
 
 38
@@ -200,7 +200,7 @@ and notice here, I wrote this in a slightly different way.
 
 41
 00:03:08,040 --> 00:03:11,000
-这个过程我们之前看过
+这个过程我们之前看过，其中我讲过
 The procedures we've seen before, I've said something like
 
 42
@@ -210,7 +210,7 @@ say, make-vector of x and y: cons of x and y.
 
 43
 00:03:16,220 --> 00:03:17,980
-这里我简单定义MAKE-VECTOR为CONS
+而我这里简单定义MAKE-VECTOR为CONS
 And here I just wrote make-vector cons.
 
 44
@@ -235,12 +235,12 @@ And here I am saying define make-vector to be the thing that cons is,
 
 48
 00:03:35,180 --> 00:03:39,660
-这跟我们写的其它代码的方式差不多
+这跟我们之前使用的方式基本上是一样的
 and that's almost the same as the other way we've been writing things.
 
 49
 00:03:39,660 --> 00:03:46,580
-大家要习惯于“过程也是可以被命名的对象”这种想法
+大家要习惯于“过程也是对象，而且你可以给他们命名”这种想法
 And I just want you to get used to the idea that procedures can be objects, and that you can name them.
 
 50
@@ -255,7 +255,7 @@ if that was all there was to it,this would all be pretty boring.
 
 52
 00:03:57,020 --> 00:04:02,160
-要记住 重点是通过使用CONS 我们不仅可以将数字组合成序对
+要记住 要点是我们不仅可以通过使用CONS将数字组合成序对
 And the point is, remember, that you can use cons to glue together not just numbers to form pairs,
 
 53
@@ -270,12 +270,12 @@ So for instance, if we'd like to represent a line segment,
 
 55
 00:04:11,600 --> 00:04:15,640
-可以说 线段来自一个特定的向量
+一个以某个向量为起点的线段
 say the line segment that goes from a certain vector:
 
 56
 00:04:16,060 --> 00:04:28,300
-这个线段从向量(2,3)到向量(5,1)
+比如从向量(2,3)所代表的起点到向量(5,1)所代表的终点的线段
 say, the segment from the vector 2,3 to the point represented by the vector 5,1.
 
 57
@@ -305,7 +305,7 @@ selects out the start of a segment, selects out the end point of the segment;
 
 62
 00:04:55,240 --> 00:04:59,760
-实际上 如果我们剥开抽象层一探究竟
+那么如果我们剥开抽象层一探究竟
 and then if we actually look at that, if we peel away the abstraction layers,
 
 63
@@ -320,7 +320,7 @@ we'd say well that's a pair.
 
 65
 00:05:06,220 --> 00:05:08,220
-这就是一个线段
+这里有个线段
 Here's the segment.
 
 66
@@ -340,7 +340,7 @@ And similarly the cdr is a pair of 2 and 3.
 
 69
 00:05:28,160 --> 00:05:29,240
-我再强调一下
+这里我再提醒大家一下
 And let me remind you again
 
 70
@@ -360,7 +360,7 @@ That's irrelevant.
 
 73
 00:05:38,580 --> 00:05:43,900
-我们关心的是对象间如何连接 与水平或竖直都无关紧要
+箭头指示的是对象间如何连接 它指向水平或竖直方向都是无关紧要的
 It's only how these are connected and not whether this arrow happens to go vertically or horizontally.
 
 74
@@ -370,72 +370,72 @@ And again just to remind you, there was this notion of closure.
 
 75
 00:05:52,940 --> 00:06:05,620
-闭包性质使我们可以构建更复杂的东西
+闭包性质使我们可以构建更复杂的东西，而不仅仅是简单的序对
 See, closure was the thing that allowed us to start building up complexity, that didn't trap us in pairs.
 
 76
 00:06:06,640 --> 00:06:15,240
-换句话说 我们用CONS来构建序对
+在这里我要特别指出 在我们用CONS构建出来的序对的基础上
 Particularly what I mean is the things that we make, having combined things using cons to get a pair,
 
 77
 00:06:16,440 --> 00:06:22,640
-构造出来的序对也可以使用CONS来构造更复杂的序对
+我们也可以进一步用CONS来构造更复杂的对象
 those things themselves can be combined using cons to make more complicated things.
 
 78
 00:06:23,280 --> 00:06:31,980
-数学家会说 Lisp中的数据关于CONS运算封闭
+或者用数学家的话说 Lisp中的数据对象在CONS运算下是封闭的
 Or as a mathematician might say, the set of data objects in Lisp is closed under the operation of forming pairs.
 
 79
 00:06:33,820 --> 00:06:36,340
-这就允许我们做更加复杂的构造
+这个性质使我们能够构造更加复杂的数据对象
 That's the thing that allows us to build complexity.
 
 80
 00:06:36,340 --> 00:06:38,040
-这个很显然 但是要记住
+这个似乎是显然的 但是要记住
 And that seems obvious, but remember
 
 81
 00:06:39,060 --> 00:06:42,460
-人们使用的编程语言大多不是封闭的
+人们使用的编程语言中有很多东西并不是封闭的
 a lot of the things in the computer languages that people use are not closed.
 
 82
 00:06:42,460 --> 00:06:48,060
-举例来说 Basic和Fortran中的数组就不具有闭包性质
+举例来说 Basic和Fortran中的构造数组操作 就不是封闭的
 So for example, forming arrays in Basic and Fortran is not a closed operation,
 
 83
 00:06:48,080 --> 00:06:51,940
-因为 虽然你可以建立数字、字符或字符串等的数组
+因为 虽然你可以用数字、字符或字符串等来构造数组
 because you can make an array of numbers or character strings or something,
 
 84
 00:06:52,040 --> 00:06:54,180
 但是你不能创建数组的数组
-but you can't make  an array of arrays.
+but you can't make an array of arrays.
 
 85
 00:06:54,640 --> 00:06:56,680
-在考察某种组合的方法时
+当考察某种组合的方法时
 And when you look at means of combination
 
 86
 00:06:57,600 --> 00:07:02,780
-你应该关心它是否封闭
+你应该相信它是否是一个封闭的操作
 you should be should be asking yourself whether things are closed under that means of combination.
 
 87
 00:07:05,060 --> 00:07:08,260
-在任何情况下 因为我们可以构造序对的序对
+不管怎样 因为我们可以构造序对的序对
 Well in any case, because we can form pairs of pairs,
 
 88
 00:07:08,860 --> 00:07:12,780
-我们就可以将数据组合成各种各样的序对
+我们就可以用序对将数据以各种各样的方式组合起来
 we can start using pairs to glue things together in all sorts of different ways.
 
 89
@@ -460,17 +460,17 @@ that had a 1 and a 2 and a 3 and a 4, right?
 
 93
 00:07:36,880 --> 00:07:40,060
-如果我喜欢 我可以像这样做
+或者如果我喜欢 我可以像这样做
 Or if I liked, I could do something like this.
 
 94
 00:07:40,060 --> 00:07:45,520
-我构造一个序对 它的CAR部分也是序对
+我构造一个序对 它的CAR部分也是一个序对
 I could make a pair, whose first thing is a pair,
 
 95
 00:07:46,440 --> 00:07:53,200
-它的CAR部分为1 而CDR部分为由2、3构成的序对
+这个序对的CAR部分为1 而CDR部分为由2、3构成的序对
 whose car is 1, and his cdr is itself a pair that has the 2 and the 3
 
 96
@@ -480,42 +480,42 @@ and then I could put the 4 up here.
 
 97
 00:07:56,920 --> 00:08:02,160
-看到了吧 组合对象的方式有很多种
+所以你可以看到 组合对象的方式有很多种
 So you see, there are a lot of different ways that I can start using pairs to glue things together,
 
 98
 00:08:02,160 --> 00:08:07,740
-所以有必要建立一些方便的方式
+因此就有必要建立一些统一的约定
 and so it'll be a good idea to establish some kind of conventions,right,
 
 99
 00:08:07,740 --> 00:08:11,580
-这样我们就可以用一些便捷的方式处理数据
+使我们能够用某种的通用的方式处理数据
 that allow us to deal with this thing in some conventional way,
 
 100
 00:08:11,580 --> 00:08:14,000
-这样我们就不用总是做一些选择
+而不用总是针对具体问题做一些生硬的选择
 so we're not constantly making an ad hoc choice.
 
 101
 00:08:15,940 --> 00:08:19,040
-Lisp里面有专门的表示法
+Lisp里面就有这样一种约定
 And Lisp has a particular convention
 
 102
 00:08:20,740 --> 00:08:25,820
-用于将序列表示为序对的链
+这个约定将一系列的东西表示成一个序对组成的链
 for representing a sequence of things as, essentially, a chain of pairs,
 
 103
 00:08:26,780 --> 00:08:28,180
-这个称为“表”
+而这样一个数据序列就叫做一个”表“
 and that's called a List.
 
 104
 00:08:34,720 --> 00:08:40,500
-表的本质上就是序列的简便表示
+表本质上就是Lisp用来表示序列数据的一个约定而已
 And what a list is is essentially just a convention for representing a sequence.
 
 105
@@ -530,7 +530,7 @@ I'd put 1 here and then the cdr of this would point to another pair
 
 107
 00:08:59,200 --> 00:09:01,400
-这个序对的CAR部分是序列的下一个数
+这个序对的CAR部分是序列中的下一个数
 whose car was the next thing in the sequence,
 
 108
@@ -555,27 +555,27 @@ and then another one.
 
 112
 00:09:09,740 --> 00:09:13,220
-所以 对于序列中的每一个元素都是一个序对
+所以 序列中的每一个元素都对应着一个序对
 So for each item in the sequence, I'll get a pair.
 
 113
 00:09:15,820 --> 00:09:18,320
-现在这个序列中没有其它元素了
+而当这个序列中没有其它元素时，我用一个特殊的标记
 And now there are no more, so I put a special marker
 
 114
 00:09:20,720 --> 00:09:22,740
-我用一个特殊的标记 表示列表中没有元素了
+来表示列表中没有元素了
 that means there's nothing more in the List.
 
 115
 00:09:24,140 --> 00:09:34,640
-好 这是将序列中的元素组合起来的简便方式
+好 这就是将序列中的元素组合起来的一种约定方式
 OK, so that's a conventional way to glue things together if you want to represent a sequence, right.
 
 116
 00:09:34,640 --> 00:09:37,980
-它其实就是一大堆序对
+而它其实就是一堆序对
 And what it is is a bunch of pairs,
 
 117
@@ -585,7 +585,7 @@ the successive cars of each pair are the items that you want to glue together,
 
 118
 00:09:46,000 --> 00:09:48,460
-CDR部分指向下一个序对
+这些序对的CDR部分则指向下一个序对
 and the cdr pointer points to the next pair.
 
 119
@@ -606,22 +606,22 @@ the cons of 4 onto, well, this thing nil.
 
 122
 00:10:15,280 --> 00:10:20,000
-NIL是表结束的记号
+NIL是序列末尾标志的名字
 And what nil is is a name for the end of List marker.
 
 123
 00:10:20,800 --> 00:10:23,240
-它是一个特殊的名字 意味着表结束了
+它是一个特殊的名字 意味着它所在的是表的末尾
 It's a special name, which means this is the end of the List.
 
 124
 00:10:26,240 --> 00:10:30,260
-这就是我如何构造表
+好的，这就是我如何构造表
 OK, so that's how I would actually construct that.
 
 125
 00:10:37,340 --> 00:10:45,180
-#TBD 当然 构造列表的时候总是写cons非常费力
+如果每次想要构造这样一个表，我都需要输入像(CONS 1 (CONS 2 (CONS 3 ...这么多的话，这当然是一件费时费力的事情
 Of course, it's a terrible drag to constantly have to write something like the cons of 1 onto the cons of 2 onto the cons of 3, whenever you want to make this thing.
 
 126
@@ -636,12 +636,12 @@ and List is just an abbreviation for this nest of conses.
 
 128
 00:10:58,960 --> 00:11:06,320
-所以我可以用(LIST 1 2 3 4)来构造表
+它可以让我用(LIST 1 2 3 4)来构造表
 So I could say, I could construct that by saying that is the List of 1, 2, 3 and 4.
 
 129
 00:11:07,780 --> 00:11:11,740
-这些都是一个语法糖
+这只是另外一种方式，一个语法糖
 And all this is is another way, a piece of syntactic sugar,
 
 130
@@ -656,7 +656,7 @@ cons of cons of cons of cons of cons of cons onto nil.
 
 132
 00:11:18,480 --> 00:11:39,780
-举例来说 我将表(1 2 3 4)叫做1-TO-4
+举例来说 我将构造一个表(1 2 3 4)，并把它叫做1-TO-4
 So for example, I could build this thing and say, I'll define 1-TO-4 to be the List of 1, 2, 3 and 4.
 
 133
@@ -976,7 +976,7 @@ I just return nil,
 
 196
 00:18:24,946 --> 00:18:35,140
-其他情况我用cons把列表中的第一个元素个我还需要处理的子列表连接起来 #TBD
+否则，我就用cons把列表中的第一个元素经过操作（缩放）后的结果
 otherwise I cons together the result of doing what I'm going to do to the first element in the List,
 
 197
@@ -986,7 +986,7 @@ namely taking the car of l and multiplying it by s,
 
 198
 00:18:40,360 --> 00:18:46,340
-然后用CONS递归连接正在缩放的剩余的表
+然后我就用CONS将这个结果 与用递归形式缩放后的表的剩下部分 连接在一起
 and I cons that onto recursively scaling the rest of the List.
 
 199
@@ -996,22 +996,22 @@ OK, so again, the general idea is that you
 
 200
 00:18:52,226 --> 00:18:56,093
-用CDR递归地处理表中的剩余元素
+你要用递归的方式处理表中的剩余元素 即表的CDR部分
 you recursively do something to the rest of the List, to the cdr of the List,
 
 201
 00:18:56,480 --> 00:19:01,160
-#TBD
+然后你用CONS将那部分的结果 与经过处理后的表的第一个元素连接在一起
 and then you cons that onto actually doing something to the first element of the List.
 
 202
 00:19:01,160 --> 00:19:05,186
-当你处理到结尾的时候 返回表尾指针
+当你处理到结尾的时候 返回表尾标志NIL
 When you get down to the end here, you return the end of List pointer,
 
 203
 00:19:07,346 --> 00:19:11,360
-这是处理表的基本模式
+这就是对一个表里的数据做某种操作的通用模式
 and that's a general pattern for doing something to a list.
 
 204
@@ -1061,12 +1061,12 @@ and it returns the List of the elements gotten by applying p to each successive 
 
 213
 00:19:51,813 --> 00:19:55,400
-从(P E1) (P E2) 到(P En)
+这个新表里的元素是(P E1) (P E2) ...  到(P En)
 All right, so p of e1, p of e2, p of en.
 
 214
 00:19:55,640 --> 00:20:01,540
-#TBD
+所以我指的就是对一个表做这样一种变换：将P应用到表的每一个元素上
 Right, so I think of taking this List and transforming it by applying p to each element.
 
 215
@@ -1126,17 +1126,17 @@ which takes an item and multiplies it by s.
 
 226
 00:20:58,960 --> 00:21:01,906
-这才是缩放表的关键点
+所以我思考缩放表这个过程的正确方式应该是
 Right, so this is really the way I should think about scaling the List,
 
 227
 00:21:02,120 --> 00:21:07,400
-#TBD
+将递归的部分构造成一个通用的策略，而不是将其引入我正在考虑的某个过程
 build that actual recursion into the general strategy, not to every particular procedure I write.
 
 228
 00:21:07,400 --> 00:21:11,280
-当然 这样做的意义之一是 我们可以发现它们的共性
+当然 这样做的意义之一是 是你会开始发现共性
 And of course, one of the values of doing this is that you start to see commonality.
 
 229
@@ -1201,7 +1201,7 @@ see, once you say scale is just MAP, you stop thinking about whether it's iterat
 
 241
 00:22:29,000 --> 00:22:31,820
-你可以说 有这样一种策略 给定这个表 #TBD
+你只会关心 啊 这里有这样一种数据集合 有这样一个表
 and you just say, well there's this aggregate, there's this List,
 
 242
@@ -1241,12 +1241,12 @@ and you start thinking about operations on aggregates,
 
 249
 00:22:55,013 --> 00:23:00,013
-在课程一半的时候 我们将讨论叫做流 #TBD
+在本课程进行到一半的时候 我们将讨论一种叫做流处理的东西
 and then about halfway through this course,we'll see when we talk about something called stream processing,
 
 250
 00:23:00,266 --> 00:23:02,640
-看看用流来处理又会是怎样
+那时我们将看到这种观点的真正威力
 how that view of the world really comes into its glory.
 
 251
@@ -1397,12 +1397,12 @@ Take questions.
 
 279
 00:25:00,620 --> 00:25:04,266
-学生：如果不是明确地指出 #TBD
+学生：除非你明确地指定
 AUDIENCE: Does it create a new copy with something done to it,
 
 280
 00:25:04,306 --> 00:25:07,540
-Lisp会创建对象的副本 是这样么？
+Lisp会创建一个你正在处理的对象的新拷贝 是这样么？
 unless you explicitly tell it to do that? Is that correct?
 
 281
@@ -1452,12 +1452,12 @@ It's just a subtle difference between them.
 
 290
 00:25:34,160 --> 00:25:36,306
-学生：你可以用FOR-EACH替代MAP么？
+学生：你能否用FOR-EACH来构造MAP
 AUDIENCE: Could you write MAP using for-each,
 
 291
 00:25:36,320 --> 00:25:40,160
-#TBD
+其中你用类似CONS的操作将表又构造出来了？
 so that you did some sort of cons or something to build the List back up?
 
 292
@@ -1472,7 +1472,7 @@ I can't think of how to do it right offhand, but yeah, I could arrange something
 
 294
 00:25:50,480 --> 00:26:00,620
-学生：map和for-each的关键区别在于一个是递归 而另一个不是 你上一节课定义了它
+学生：我相信MAP和FOR-EACH的关键区别在于 从你上节课定义的递归的角度来看 它们一个是递归 而另一个不是
 AUDIENCE: The vital difference between MAP and for-each is one is recursive and the other is not in the sense you defined early yesterday,I believe.
 
 295
@@ -1527,12 +1527,12 @@ I just didn't happen to.
 
 305
 00:26:34,240 --> 00:26:42,900
-学生：如果用CONS连接列表生成列表的列表 我想这个应该是可行的#TBD
-AUDIENCE: If you were to cons for each with a List that had embedded Lists, I imagine it would work, right?
+学生：将FOR-EACH用在一个列表的列表上的话，我想这是可行的吧？
+AUDIENCE: If you were to call for each with a List that had embedded Lists, I imagine it would work, right?
 
 306
 00:26:42,900 --> 00:26:48,100
-它会返回这些内部列表的内部元素么？
+它会对这些内部列表的元素进行处理么？
 It would give you the internal elements of each of those internal Lists?
 
 307
@@ -1562,12 +1562,12 @@ The answer is yes in the sense I mean work and no in the sense that you mean wor
 
 312
 00:27:06,866 --> 00:27:10,653
-来看一下 如果我们给定一个表
+来看一下 如果我给你一个表
 because all that-- see if I give you a List,
 
 313
 00:27:12,800 --> 00:27:14,200
-而在这里挂着的是
+而在个箭头所指的
 where hanging off here is,
 
 314
@@ -1582,7 +1582,7 @@ for-each just says do something to each item in this List.
 
 316
 00:27:24,540 --> 00:27:26,960
-不断地处理CDR部分
+它会不断地处理表CDR部分
 It goes down successively looking at the cdrs.
 
 317
@@ -1592,7 +1592,7 @@ AUDIENCE: OK.
 
 318
 00:27:27,200 --> 00:27:31,060
-教授：它所关心的是 表中的第一个元素#TBD
+教授：对FOR-EACH来说，表中的第一个元素就是这个箭头所指的东西
 PROFESSOR: And as far as it's concerned, the first item in this List is whatever is hanging off here.
 
 319
@@ -1602,7 +1602,7 @@ AUDIENCE: Mhm.
 
 320
 00:27:31,650 --> 00:27:33,940
-教授：这也许是对的 也许不是
+教授：这对于你要完成的任务而言 也许是对的 也许不是
 PROFESSOR: That might or might not be the right thing.
 
 321
@@ -1711,7 +1711,7 @@ is to build a suitable powerful language.
 
 342
 00:29:28,173 --> 00:29:34,740
-#TBD
+你们或许记得 我说过在这门课程中 你们将要学到的最重要的事情是
 You might recall what I said was pretty much the very most important thing that we're going to tell you in this course is that
 
 343
@@ -1726,12 +1726,12 @@ what are the means of combination--
 
 345
 00:29:49,720 --> 00:29:52,800
-是什么让你能够构建更大的东西
+关心那些让你能够构建更大的东西的东西
 right, what are the things that allow you to build bigger things;
 
 346
 00:29:53,613 --> 00:29:55,240
-以及 如何对它们进行抽象
+以及 抽象的方式
 and then what are the means of abstraction.
 
 347
@@ -1781,7 +1781,7 @@ You, sort of, see it has this complicated, kind of, recursive, sort of, recursiv
 
 356
 00:30:58,450 --> 00:31:05,050
-#TBD 中间的这个鱼的模式不断以更小的图案出现在原来的图案旁边
+其中中间的这个鱼的图案以自相似的方式不断以更小的形式出现在原来的团案旁边
 where there's this fish pattern in the middle and things sort of bleed out smaller and smaller in self similar ways.
 
 357
@@ -1846,7 +1846,7 @@ A primitive is not quite what you think it is.
 
 369
 00:32:07,080 --> 00:32:09,186
-唯一的基本元素叫做"图像"
+它唯一的基本元素叫做"图像"
 There's only one primitive called a picture,
 
 370
@@ -1871,7 +1871,7 @@ The idea is that
 
 374
 00:32:22,333 --> 00:32:31,466
-#TBD 在这个语言中的图像是绘制通过缩放填充到指定矩行区域的一个图形产生的
+在这个语言中的图像是这样一个东西 它能在你指定的一个矩形里画出一个图像来
 a picture in this language is going to be something that draws a figure scaled to fit a rectangle that you specify.
 
 375
@@ -1981,7 +1981,7 @@ All right, so those are, sort of, operations,
 
 396
 00:34:06,013 --> 00:34:10,400
-#TBD
+或者你可以把它们认为是组合一个元素的各种方式
 or you can think of those as means of combination of one element.
 
 397
@@ -1996,17 +1996,17 @@ There's a means of combination called Beside,
 
 399
 00:34:16,466 --> 00:34:24,786
-它做的事情是 给定两个图像A、B
+它做的事情是 给定两个图像A、B --
 and what Beside does: it'll take two pictures, let's say A and B--
 
 400
 00:34:29,020 --> 00:34:33,250
-#TBD 然后它将在一个指定的矩形中绘制一个图像
+这里图像是指能在指定的矩形中画一个图案的东西 -- 
 and by picture I mean something that's going to draw an image in a specified rectangle--
 
 401
 00:34:34,050 --> 00:34:36,510
-BESIDE则会
+BESIDE将会做的事情
 and what Beside will do--
 
 402
@@ -2191,12 +2191,12 @@ Right, the world of pictures is closed under those means of combination.
 
 438
 00:37:50,773 --> 00:37:55,173
-#TBD
+所以无论何时当我有一个（通过组合得来的）东西时 我可以立刻以它为基本元素去构造别的东西
 So whenever I have something, I can turn right around and use that as an element in something else.
 
 439
 00:37:55,600 --> 00:38:03,280
-#TBD
+这个例子可能会比表和线段更直观的告诉你 在使用封闭的操作的情况下 你将怎样迅速地构造复杂的对象
 So maybe better than List and segments, that just gives you an image for how fast you can build up complexity, because operations are closed.
 
 440
@@ -2211,7 +2211,7 @@ let's talk about how this language is actually implemented.
 
 442
 00:38:16,910 --> 00:38:21,506
-#TBD
+其中基本的一个元素
 The basic element that sits under the table here
 
 443
@@ -2251,7 +2251,7 @@ and another vector called the vertical part of the rectangle.
 
 450
 00:39:00,310 --> 00:39:09,970
-#TBD
+这三个就是矩形的基本元素： 矩形左下方的起点在哪儿，如何从起点到右下方的顶点，以及如何从起点到左上方的顶点
 And those three pieces are the elements: where the lower vertex is, how you get to the next vertex over here, and how you get to the vertex over there.
 
 451
@@ -2306,7 +2306,7 @@ So let's assume we have these rectangles to work with.
 
 461
 00:40:02,050 --> 00:40:05,080
-#TBD
+好的，现在来看我们接下来要做的事情
 OK. Now the idea of this, remember what's got to happen.
 
 462
@@ -2321,19 +2321,17 @@ and scaling it to fit some rectangle that you give it,
 
 464
 00:40:13,600 --> 00:40:16,600
-我们要安排这些基本的事
+这些事情是我们所需要安排
 that's the basic thing you have to arrange,
 
 465
 00:40:16,600 --> 00:40:16,613
-#TBD
+使得图像能够做到的事情
 that these pictures can do.
-我们要安排这些基本的事
-that's the basic thing you have to arrange,
 
 466
 00:40:16,613 --> 00:40:18,600
-#TBD
+使得图像能够做到的事情
 that these pictures can do.
 
 467
@@ -2383,22 +2381,22 @@ which maps this to that and this to that,
 
 476
 00:41:10,240 --> 00:41:12,080
-#TBD
+并且，把所有的东西都均匀的拉伸
 and sort of, stretches everything uniformly.
 
 477
 00:41:12,170 --> 00:41:18,253
-我们以这条线段为例
+我们我们将像这样的一条的线段
 So we take a line segment like this
 
 478
 00:41:19,733 --> 00:41:24,200
-#TBD
+并最终将它映射到像那样的一条线段
 and end up mapping it to a line segment like that,
 
 479
 00:41:26,200 --> 00:41:32,680
-所以点(X,Y)变成了这里的另外一个点
+而点(X,Y)变成了这里的另外一个点
 so some point (x,y) goes to some other point up there.
 
 480
@@ -2408,22 +2406,22 @@ And although it's not important, with a little vector algebra, you could write t
 
 481
 00:41:39,370 --> 00:41:43,186
-点(X,Y)会变到 变换规则是：
+初始点(X,Y)将会变换到的点的坐标是
 The thing that (x,y) goes to, the point that (x,y) goes to is
 
 482
 00:41:43,580 --> 00:41:53,266
-#TBD 用矩阵的原点和它做向量加法 --
+通过取矩形的原点 并将它作为一个向量加到这样两个向量上--
 gotten by taking the origin of the rectangle and then adding that as a vector to--
 
 483
 00:41:53,733 --> 00:42:01,970
-#TBD x坐标 这个值在0到1之间 乘以矩阵的水平向量
+第一个向量是 取初始点的X坐标--一个0和1直接的值--并乘上矩形的水平向量
 well, take x, the x coordinate, which is something between zero and one, multiply that by the horizontal vector of the rectangle;
 
 484
 00:42:07,220 --> 00:42:16,280
-# TBD y坐标 这个值也在0到1之间 乘以矩阵的竖直向量
+第二个向量是 取初始点的Y坐标--也是一个0和1的值--并乘上矩形的竖直向量
 and take the y coordinate, which is also something between zero and one and multiply that by the vertical vector of the rectangle.
 
 485
@@ -2448,12 +2446,12 @@ OK well, let's actually look at that as a procedure.
 
 489
 00:42:35,050 --> 00:42:42,850
-#TBD
+所以我们需要的是 给定一个矩形后 它所定义的坐标变换是怎样的
 So what we want is the thing which tells us that particular transformation that a rectangle defines.
 
 490
 00:42:43,800 --> 00:42:45,220
-就是这个过程
+这个过程具体是这样的
 So here's the procedure.
 
 491
@@ -2543,17 +2541,17 @@ All right, so for example, George here,
 
 508
 00:44:11,360 --> 00:44:16,346
-最初的George 可能只是我在单位方形中指定的线段
+最初的George 可能是我通过在单位正方形中通过线段指定的
 my original George, might have been something that I specified by segments in the unit square,
 
 509
 00:44:19,506 --> 00:44:28,170
-#TBD
+而当我把它应用到一个新的矩形中 我将会在这个新矩形中画出组成George的那些线段来
 and then for each rectangle I give this thing, I'm going to draw those segments inside that rectangle.
 
 510
 00:44:28,170 --> 00:44:29,880
-实际上怎么操作呢？
+我如何才能做到这件事情呢？
 How actually do I do that?
 
 511
@@ -3790,56 +3788,56 @@ Like for example, I may want to go to the basic primitive design and move the en
 
 758
 01:13:57,760 --> 01:14:00,760
-这个变化在最低的层次
+这是一个我会在最低的层次讨论的改变
 That's a change that I would discuss at the lowest level.
 
 759
 01:14:00,760 --> 01:14:02,760
-我可以说端点在某个地方
+我可以说端点在另外一个地方
 I would say the endpoint is somewhere else.
 
 760
 01:14:03,100 --> 01:14:10,940
-或许我可以上来说 我想做的下一个事情是：这个重复的元素 我想用其他方式来实现
+或许我会想到 我想做的下一个事情是：这个重复的元素 我想用其他方式来实现
 Or I might come up and say, well the next thing I wanted to do, this little replicated element, I might want to do by something else.
 
 761
 01:14:10,940 --> 01:14:13,840
-我可能想把一个放缩因子放入那个beside中
+我可能想把一个缩放因子放入那个BESIDE中
 I might want to put a scale factor in that Beside.
 
 762
 01:14:13,840 --> 01:14:19,340
-这个变化我可以在为下一个层次的设计时讨论---组合的层次
+这个变化我会在更高的一个层次上讨论---组合子的层次
 That's a change that I would discuss at the next level of design, the level of combinators.
 
 763
 01:14:19,340 --> 01:14:30,640
-或者我想说 我想改变这个基本的方法 我用这个模式然后做一些递归分解 也许不会 #TBD 后面的不知道怎么翻译
+或者我可以这样说 我也许想要改变我使用这个图案进行的一些递归构造（新图案）的方式，也许不把它逐渐变小去充满各个角落
 Or I might want to say, I might want to change the basic way that I took this pattern and made some recursive decomposition, maybe not bleeding out toward the corners or something else.
 
 764
 01:14:31,160 --> 01:14:34,180
-这个会改变我所讨论的最高的层次
+而这样的一个变化我就会在最高的层次来讨论
 That would be a change that I would discuss at the highest level.
 
 765
 01:14:34,180 --> 01:14:42,480
-因为我是用这种方式构建系统的 我有全部的词汇来用不同的方式实现(我说的)并且有很大的灵活性来让我决定那个更合适
+因为我是用这种方式构建系统的 我有全部的词汇来用不同的方式实现各种改变，并且有很大的灵活性来让我决定那个更合适
 And because I've structured the system to be this way, I have all these vocabularies for talking about change in different ways and a lot of flexibility to decide which one's appropriate.
 
 766
 01:14:44,560 --> 01:14:54,380
-在软件方法学中的一个很大的不同是--来自于Lisp 全部来自于概念
+这些就是来自Lisp的不同的软件方法学中的一个要点 它来自于这样一个我们已经提到的观点
 OK, well that's sort of a big point about the difference in software methodology that comes out from Lisp, and it all comes, again, out of the notion that really,
 
 767
 01:14:54,380 --> 01:14:59,620
-在设计的过程中 没有那么多的实现的程序作为实现的语言
+即设计的过程 与其说是在设计程序 不如说是在设计语言
 the design process is not so much implementing programs as implementing languages.
 
 768
 01:14:59,620 --> 01:15:04,020
-这就是Lisp的力量 好的 谢谢
-And that's really the powerful of Lisp. OK, thank you.
+而这就是Lisp的力量 好的 谢谢 我们休息吧
+And that's really the power of Lisp. OK, thank you. Let's take a break.
 
