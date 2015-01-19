@@ -3818,7 +3818,7 @@ See, you saw the other thing that we can do in Lisp
 763
 01:03:09,213 --> 01:03:17,520
 就是将通用方法抽象成高阶过程
- is capture general methods of doing things as higher order procedures.
+is capture general methods of doing things as higher order procedures.
 
 764
 01:03:19,093 --> 01:03:22,573
@@ -3837,17 +3837,17 @@ and this corner push thing are all generalizations of a common kind of idea.
 
 767
 01:03:34,720 --> 01:03:37,200
-大家仔细想象一下然后自己再实践一下使用复杂的高阶过程，我来给大家展示一下把组合放进去递归的基本思想
+为了演示并让大家熟悉
 So just to illustrate and give you practice in looking at a
 
 768
 01:03:37,986 --> 01:03:40,653
-大家仔细想象一下然后自己再实践一下使用复杂的高阶过程，我来给大家展示一下把组合放进去递归的基本思想
+使用廊腰缦回的高阶过程
 at a fairly convoluted use of higher order procedures,
 
 769
 01:03:41,120 --> 01:03:47,240
-大家仔细想象一下然后自己再实践一下使用复杂的高阶过程，我来给大家展示一下把组合放进去递归的基本思想
+#TBD
 let me show you the general idea of pushing some means of combination to recursively repeat it.
 
 770
@@ -3906,426 +3906,506 @@ So this is going to be something that takes a picture, a level number and a scal
 I'm going to do some repeated operation.
 
 781
-01:04:39,120 --> 01:04:59,420
-我将重复的应用这个过程，这个过程需要一个图片，和一个组合方法,还有原始图片,和在这里的缩放因子
-I'm going to repeatedly apply the procedure which takes a picture and applies the means of combination to the picture and the original picture and the one I took in here and the scale factor,
+01:04:39,450 --> 01:04:46,626
+我会重复应用一个接受一个图像P的过程
+I'm going to repeatedly apply the procedure which takes a picture
 
 782
-01:05:02,100 --> 01:05:16,420
-还有我要循环的次数n.我把整个事情都作用在原始图像上面
-and I do the thing which repeats this procedure N times, and I apply that whole thing to my original picture.
+01:04:48,400 --> 01:04:50,693
+并把组合的方式应用在
+and applies the means of combination
 
 783
-01:05:19,360 --> 01:05:34,320
-这里进行循环，这种情况大家还没有看到，是另一个高阶过程需要一个过程和一个数字;它返回另一个过程。返回的过程对这个过程应用n次
-Repeated here, in case you haven't seen it, is another higher order procedure that takes a procedure and a number and returns for you another procedure that applies this procedure N times.
+01:04:51,200 --> 01:04:59,080
+应用在图像PICT和在这里接受的图像P以及缩放因数A
+to the picture and the original picture and the one I took in here and the scale factor,
 
 784
-01:05:35,860 --> 01:05:43,220
-我想大家已经写过循环作为练习了，如果还没有，这是一个非常好的例子用来思考高阶过程
-And I think some of you have already written repeated as an exercise, but if you haven't, it's a very good exercise in thinking about higher order procedures.
+01:05:02,266 --> 01:05:07,280
+我要重复应用这个过程N次
+and I do the thing which repeats this procedure N times,
 
 785
-01:05:43,720 --> 01:05:46,980
-但是在任何情况下，这个循环的结果都是我应用到图片的过程
-But in any case, the result of this repeated is what I apply to picture.
+01:05:12,040 --> 01:05:16,200
+我则是把这整个过程应用在原图片PICT上
+and I apply that whole thing to my original picture.
 
 786
-01:05:49,260 --> 01:06:13,300
-做完这些，可以提取出来的是--我从beside的基本想法到right-push的基本想法。所以做完这个,我可以说,定义right-push来表示对beside做push.
-And having done that, that's going to capture-- that is the thing, the way I got from the idea of Beside to the idea of right-push So having done that, I could say define right-push to be push of Beside.
+01:05:19,560 --> 01:05:24,480
+虽然之前没提过 这里的REPEATED也是一个高阶过程
+Repeated here, in case you haven't seen it, is another higher order procedure
 
 787
-01:06:17,420 --> 01:06:26,860
-如果我说，定义个up-push来对beside做push, 我使用几何公式,或者定义corner-push来push那些相似的东西，比如beside和above,或者我可以push任何东西
-Or if I say, define up-push to be push of Beside, I'd get the analogous thing or define corner-push to be push of some appropriate thing that did both the Beside and Above, or I could push anything.
+01:05:24,533 --> 01:05:28,346
+它接受一个过程P和一个数字N
+that takes a procedure and a number
 
 788
-01:06:28,080 --> 01:06:34,760
-无论如何，如果你对lambda还不太熟悉，这个是一个非常好的练习来让大家体会这其中的意义
-Anyway this is, if you're having trouble with lambdas, this is an excellent exercise in figuring out what this means.
+01:05:29,546 --> 01:05:34,293
+它返回另一个过程：将给定的过程P重复应用N次的过程
+and returns for you another procedure that applies this procedure N times.
 
 789
-01:06:38,840 --> 01:06:41,200
-从这个例子以引申出很多的练习
-OK, well there's a lot to learn from this example.
+01:05:36,040 --> 01:05:39,306
+可能有些人已经在练习中编写过REPEATED了
+And I think some of you have already written repeated as an exercise,
 
 790
-01:06:42,100 --> 01:06:49,800
-我想要介绍的主要是在一个语言中嵌入另一个语言
-The main point I've been welling on is the notion of nicely embedding a language inside another language.
+01:05:39,706 --> 01:05:43,013
+如果还没做的话 这是理解和练习高阶过程的好机会
+but if you haven't, it's a very good exercise in thinking about higher order procedures.
 
 791
-01:06:50,540 --> 01:07:00,420
-这样所有这门语言的能力，像围绕着Lisp的语言，可以被别的语言访问，可以作为天然的扩展
-Right, so that all the power of this language like Lisp of the surrounding language is still accessible to you and appears as a natural extension of the language that you built.
+01:05:43,840 --> 01:05:46,906
+无论如何 我将把REPEATED过程的结果应用到PICT上
+But in any case, the result of this repeated is what I apply to picture.
 
 792
-01:07:00,420 --> 01:07:04,100
-这个例子很好的展示了这点
-That's one thing that this example shows very well.
+01:05:49,466 --> 01:05:52,386
+定义好PUSH后 这就
+And having done that, that's going to capture the --
 
 793
-01:07:07,900 --> 01:07:10,940
-另一个事情是，如果你回头去想
-Another thing is, if you go back and think about that,
+01:05:53,120 --> 01:05:57,733
+#TBD
+that is the thing, the way I got from the idea of Beside to the idea of right-push
 
 794
-01:07:10,940 --> 01:07:12,280
-什么是过程什么是数据
-what's procedures and what's data.
+01:05:59,013 --> 01:06:13,173
+现在 我就可以把RIGHT-PUSH定义为用BESIDE来做PUSH操作
+So having done that, I could say define right-push to be push of Beside.
 
 795
-01:07:12,280 --> 01:07:16,200
-到现在， 天啊， 到底发生了什么
-You know, by the time we get up to here, my God, what's going on.
+01:06:17,653 --> 01:06:20,320
+我也可以把UP-PUSH定义为用ABOVE来做PUSH操作
+Or if I say, define up-push to be push of Above
 
 796
-01:07:16,200 --> 01:07:19,660
-我的意思是，这是一个过程，它需要一个图片和一个参数
-I mean, this is some procedure, and it takes a picture and an argument,
+01:06:20,346 --> 01:06:25,480
+类似地 CORNER-PUSH就是用BESIDE和ABOVE的适当组合做PUSH操作
+I'd get the analogous thing or define corner-push to be push of some appropriate thing that did both the Beside and Above,
 
 797
-01:07:19,660 --> 01:07:20,360
-但是，什么是图片呢
-and what's a picture.
+01:06:25,493 --> 01:06:26,706
+我可以用任何东西做PUSH操作
+or I could push anything.
 
 798
-01:07:20,360 --> 01:07:23,820
-图片本身，你记得，也是一个过程，它需要一个矩形
-Well, a picture itself, as you remember, was a procedure, and that took a rectangle.
+01:06:28,266 --> 01:06:34,760
+嗯 如果你还不太理解lambda的话 这个参考这个例子
+Anyway this is, if you're having trouble with lambdas, this is an excellent exercise in figuring out what this means.
 
 799
+01:06:38,986 --> 01:06:41,000
+我们可以从这个例子中学到很多东西
+OK, well there's a lot to learn from this example.
+
+800
+01:06:42,186 --> 01:06:49,800
+我主要想要介绍的是在一个语言中嵌入另一个语言
+The main point I've been welling on is the notion of nicely embedding a language inside another language.
+
+801
+01:06:50,666 --> 01:06:55,626
+这样 母体语言--本例中是Lisp--的所有能力
+Right, so that all the power of this language like Lisp of the surrounding language
+
+802
+01:06:55,920 --> 01:07:00,280
+可以作为你所构建语言的一种扩展而取得
+is still accessible to you and appears as a natural extension of the language that you built.
+
+803
+01:07:00,986 --> 01:07:04,000
+这个例子很好地展示了这点
+That's one thing that this example shows very well.
+
+804
+01:07:08,146 --> 01:07:10,940
+另外 当我们回过头去思考
+Another thing is, if you go back and think about that,
+
+805
+01:07:10,940 --> 01:07:12,280
+什么是过程 什么是数据
+what's procedures and what's data.
+
+806
+01:07:12,280 --> 01:07:16,200
+在这里 天啊 发生了什么
+You know, by the time we get up to here, my God, what's going on.
+
+807
+01:07:16,200 --> 01:07:19,660
+在这里 这是一个过程 它接受一个图像和一个参数
+I mean, this is some procedure, and it takes a picture and an argument,
+
+808
+01:07:19,660 --> 01:07:20,360
+但是 什么是图片呢？
+and what's a picture.
+
+809
+01:07:20,360 --> 01:07:23,820
+请回想 图像本身 就是一个以矩形为参数的过程
+Well, a picture itself, as you remember, was a procedure, and that took a rectangle.
+
+810
 01:07:23,820 --> 01:07:25,820
 这个矩形是某种抽象
 And a rectangle is some abstraction.
 
-800
-01:07:25,820 --> 01:07:33,740
-我希望到现在大家可以完全丢掉在这个系统中什么是过程，什么是数据的疑问
-And I hope now that by now you're completely lost as to the question of what in the system is procedure and what's data.
+811
+01:07:26,093 --> 01:07:28,133
+我希望你们现在能彻底明白
+And I hope now that by now you're completely lost
 
-801
+812
+01:07:29,146 --> 01:07:33,740
+系统中什么是过程 什么是数据
+as to the question of what in the system is procedure and what's data.
+
+813
 01:07:33,740 --> 01:07:34,780
-大家可以看到，这没有任何区别
+我们发现 它们没有任何区别
 You see, there isn't any difference.
 
-802
-01:07:35,080 --> 01:07:36,780
+814
+01:07:35,493 --> 01:07:36,440
 真的没有区别
 There really isn't.
 
-803
-01:07:37,680 --> 01:07:41,840
-你可以认为有时候图片是一个过程，有时候是数据
+815
+01:07:37,933 --> 01:07:41,426
+你可以认为图片有时候是过程 有时候是数据
 And you might think of a picture sometimes as a procedure and sometimes as data,
 
-804
+816
 01:07:41,840 --> 01:07:44,900
-但是，你知道，那仅仅是让你感觉舒服一点点的方式
+但是 这只是让你容易理解的一种方法
 but that's just, sort of, you know, making you feel comfortable.
 
-805
-01:07:44,900 --> 01:07:47,640
-这有一定道理，也没有道理
+817
+01:07:44,900 --> 01:07:47,306
+这有一定道理 也没有道理
 It's really both in some sense or neither in some sense.
 
-806
-01:07:49,920 --> 01:08:14,200
-还有更普遍关于创造一门语言系统结构的观点：通过看工程师设计的过程来创造一门语言，或者创造一些语言的层级
-OK, there's a more general point about the structure of the system as creating a language, viewing the engineering design process as one of creating language or rather one of creating a sort of sequence of layers of language.
+818
+01:07:49,920 --> 01:08:02,200
+#TBD
+OK, there's a more general point about the structure of the system as creating a language,
 
-807
-01:08:14,560 --> 01:08:24,900
-你看，这里有一个方法论，或者我应该说是神话，姑且叫做”软件工程“
-You see, there's this methodology, or maybe I should say mythology, that's, sort of, charitably called software, quote, engineering.
+819
+01:08:02,520 --> 01:08:14,200
+#TBD
+viewing the engineering design process as one of creating language or rather one of creating a sort of sequence of layers of language.
 
-808
-01:08:25,040 --> 01:08:28,040
-它所说的很好，你来处理你的任务，
+820
+01:08:14,773 --> 01:08:20,013
+众所周知 有一种方法学 或者叫做“神话学”
+You see, there's this methodology, or maybe I should say mythology,
+
+821
+01:08:20,746 --> 01:08:24,900
+姑且叫做软件“工程”
+that's, sort of, charitably called software, quote, engineering.
+
+822
+01:08:25,213 --> 01:08:28,040
+#TBD
 All right, and what does it say, it's says well, you go and you figure out your task,
 
-809
+823
 01:08:28,040 --> 01:08:30,040
 你仅仅解决你要做的事情
 and you figure out exactly what you want to do.
 
-810
-01:08:30,400 --> 01:08:34,540
-一但你弄明白你要做的东西，你发现它变成了三个子问题，
-And once you figure out exactly what you want to do, you find out that it breaks out into three sub-tasks,
+824
+01:08:30,400 --> 01:08:32,200
+一但你搞清楚要做的东西
+And once you figure out exactly what you want to do,
 
-811
-01:08:34,540 --> 01:08:38,940
-然后你开始继续做---你开始处理这些子问题，然后你明确的发现它是什么
-and you go and you start working on-- and you work on this sub-task, and you figure out exactly what that is.
+825
+01:08:32,226 --> 01:08:34,540
+你把它划分为三个子问题
+you find out that it breaks out into three sub-tasks,
 
-812
+826
+01:08:34,540 --> 01:08:35,760
+然后你开始继续做--
+and you go and you start working on--
+
+827
+01:08:35,973 --> 01:08:38,940
+你开始处理这些子问题 然后你明确它是什么
+and you work on this sub-task, and you figure out exactly what that is.
+
+828
 01:08:38,940 --> 01:08:43,040
-这些子问题就分裂成三个子问题，你完全把它们处理完.
+这些子问题就分裂成三个子问题 你把它们处理完
 And you find out that that breaks down into three sub-tasks, and you specify them completely,
 
-813
+829
 01:08:43,040 --> 01:08:47,320
-然后你继续处理剩下的两个，然后你处理这个子问题，然后处理这个.
+#TBD
 and you go and you work on those two, and you work on this sub-one, and you specify that exactly.
 
-814
+830
 01:08:47,320 --> 01:08:51,100
 然后你最终完成了你要做的，你回到了这里，然后你开始处理你的第二个子问题
 And then finally when you're done, you come back way up here, and you work on your second sub-task,
 
-815
+831
 01:08:51,100 --> 01:08:53,400
 然后把它详细的实现出来
 and specify that out and work it out.
 
-816
+832
 01:08:53,400 --> 01:08:57,640
 然后你结束-- 你完成了这个美丽的大厦
 And then you end up with-- you end up at the end with this beautiful edifice.
 
-817
+833
 01:08:57,640 --> 01:09:08,240
 对，你完成了这个不寻常的树，你把问题分成子问题的时候，然后你把这些子问题分成了更小的子问题，然后把他们又分成了更小的问题.
 Right, you end up with a marvelous tree, where you've broken your task into sub-tasks and broken each of these into sub-tasks and broken those into sub-tasks, right.
 
-818
+834
 01:09:09,880 --> 01:09:18,640
 然后非常准确的定义了这些节点，他们都是构建这个大厦的完美任务.
 And each of these nodes is exactly and precisely defined to do the wonderful, beautiful task to make it fit into the whole edifice, right.
 
-819
+835
 01:09:18,640 --> 01:09:21,140
 这个就是我说的神话
 That's this mythology.
 
-820
+836
 01:09:21,140 --> 01:09:26,160
 只有计算机科学家才可能相信你构建的复杂系统想这个样子
 See only a computer scientist could possibly believe that you build a complex system like that, right.
 
-821
+837
 01:09:27,860 --> 01:09:32,800
 我们用Henderson的例子来做对比,
 Contrast that with this Henderson example.
 
-822
+838
 01:09:32,800 --> 01:09:34,300
 它不是这样工作的
 It didn't work like that.
 
-823
+839
 01:09:35,060 --> 01:09:39,900
 事实是：这里有一个语言层次的序列
 What happened was that there was a sequence of layers of language.
 
-824
+840
 01:09:40,920 --> 01:09:42,180
 它是什么？
 What happened?
 
-825
+841
 01:09:42,180 --> 01:09:48,760
 这里有一层允许我们构建基本图像
 There was a layer of a thing that allowed us to build primitive pictures.
 
-826
+842
 01:09:51,500 --> 01:09:56,240
 这个是基本图像，这就是个语言
 There's primitive pictures and that was a language.
 
-827
+843
 01:09:56,240 --> 01:09:58,020
 我这里不多说了
 I didn't say much about it.
 
-828
+844
 01:09:58,020 --> 01:10:05,180
 我们说一下如何构造George.这是一个语言,这个语言中有向量，线段，点，和它们做存在其中的正方形单元.
 We talked about how to construct George, but that was a language where you talked about vectors and line segments and points and where they sat in the unit square.
 
-829
+845
 01:10:06,160 --> 01:10:08,740
 在那的上面
 And then on top of that, right, on top of that--
 
-830
+846
 01:10:09,840 --> 01:10:14,280
 这个是这个语言的基本图片
 so this is the language of primitive pictures.
 
-831
+847
 01:10:16,680 --> 01:10:20,560
 谈论的图片中的线段在这个正方体单元中,
 Right, talking about line segments in particular pictures in the unit square.
 
-832
+848
 01:10:21,400 --> 01:10:23,800
 在这个上面是整个的语言
 On top of that was a whole language.
 
-833
+849
 01:10:23,800 --> 01:10:46,500
 有一个几何组合的语言，几何位置的语言，它讨论的是像above和beside，right-push，rotate这样的东西
 There was a language of geometric combinators, a language of geometric positions, which talks about things like Above and Beside and right-push and Rotate.
 
-834
+850
 01:10:48,040 --> 01:10:55,700
 这些事情恰巧与我们在这个语言中谈论的事情有关
 And those things, sort of, happened with reference to the things that are talked about in this language.
 
-835
+851
 01:10:55,700 --> 01:11:15,100
 只要我们愿意，我们可以在这个语言之上创造很多语言规则的组合
 And then if we like, we saw that above that there was sort of a language of schemes of combination.
 
-836
+852
 01:11:20,980 --> 01:11:27,880
 比如push,用一个放缩因子重复的做一个事情.
 For example, push, which talked about repeatedly doing something over with a scale factor.
 
-837
+853
 01:11:28,380 --> 01:11:34,540
 我们正在讨论的在那个语言中的东西正是我这里写下来的东西.
 And the things that were being discussed in that language were, sort of, the things that happened down here.
 
-838
+854
 01:11:36,060 --> 01:11:47,300
 在每个层次上都存在已经讨论过的对象，这些对象可以从前一个层级构建出来
 So what you have is, at each level, the objects that are being talked about are the things that were erected the previous level.
 
-839
+855
 01:11:48,080 --> 01:11:52,060
 这个和这个有什么区别呢？
 What's the difference between this thing and this thing?
 
-840
+856
 01:11:53,100 --> 01:12:05,460
 答案是：在这个树里,实际上,每一个节点的每一次分解，都是为了特殊的任务在做设计,
 The answer is that over here in the tree, each node, and in fact, each decomposition down here, is being designed to do a specific task,
 
-841
+857
 01:12:07,220 --> 01:12:15,120
 而在这里,你有在每个层级上的完完全全的语言层面的能力.
 whereas in the other scheme, what you have is a full range of linguistic power at each level.
 
-842
+858
 01:12:15,820 --> 01:12:22,940
 看看这里会发生什么 在任何一个层次，这里都不是建立一个特殊的任务
 See what's happening there, at any level, it's not being set up to do a particular task.
 
-843
+859
 01:12:22,940 --> 01:12:26,740
 它是建立要做事情整个范围
 It's being set up to talk about a whole range of things.
 
-844
+860
 01:12:27,500 --> 01:12:35,940
 结论是：这种设计方法更加健壮，
 The consequence of that for design is that something that's designed in that method is likely to be more robust,
 
-845
+861
 01:12:36,380 --> 01:12:45,200
 健壮，我的意思是,在你的描述中做一些改变，可以提取出相关的变化，
 where by robust, I mean that if you go and make some change in your description, it's more likely to be captured by a corresponding change,
 
-846
+862
 01:12:45,200 --> 01:12:56,620
 使用这种方式，语言可以在下一个层级实现，因为你已经把这个层级的事情做完了
 in the way that the language is implemented at the next level up, right, because you've made these levels full.
 
-847
+863
 01:12:56,620 --> 01:12:59,660
 所以你不需要讨论像beside这样的特殊东西
 So you're not talking about a particular thing like Beside.
 
-848
+864
 01:12:59,660 --> 01:13:07,020
 你创造了如何去表达事情的词汇，所以如果明确的改变你的定义，
 You've given yourself a whole vocabulary to express things of that sort, so if you go and change your specifications a little bit,
 
-849
+865
 01:13:07,020 --> 01:13:15,020
 很可能你的方法论需要随之更改来适应这种变化 因为这种设计不够健壮
 it's more likely that your methodology will able to adapt to capture that change, whereas a design like this is not going to be robust,
 
-850
+866
 01:13:15,020 --> 01:13:21,800
 因为如果我在这里改变一些东西 这将影响它向下的路径中的所有分解出来的东西 (影响它)下面的树
 because if I go and change something that's in here, that might affect the entire way that I decomposed everything down, further down the tree.
 
-851
+867
 01:13:23,000 --> 01:13:29,740
 最大的不同就是分解 语言分层级还是严格的分层
 Right, so very big difference in outlook in decomposition, levels of language rather than, sort of, a strict hierarchy.
 
-852
+868
 01:13:30,220 --> 01:13:38,740
 不仅这个如此 当你有一个多层的语言的时候 你会为不同的层次起不同的词汇
 Not only that, but when you have levels of language you've given yourself a different vocabularies for talking about the design at different levels.
 
-853
+869
 01:13:38,740 --> 01:13:48,680
 所以如果我们回头再看一次George 如果我想改变这个图像George 看 我有完全不同的方式来表述这个变化
 So if we go back and look at George one last time, if I wanted to change this picture George, see suddenly I have a whole different ways of describing the change.
 
-854
+870
 01:13:48,680 --> 01:13:56,080
 比如 我也许想要在基本的设计中修改一些向量的端点
 Like for example, I may want to go to the basic primitive design and move the endpoint of some vector.
 
-855
+871
 01:13:57,760 --> 01:14:00,760
 这是一个我会在最低的层次讨论的改变
 That's a change that I would discuss at the lowest level.
 
-856
+872
 01:14:00,760 --> 01:14:02,760
 我可以说端点在另外一个地方
 I would say the endpoint is somewhere else.
 
-857
+873
 01:14:03,100 --> 01:14:10,940
 或许我会想到 我想做的下一个事情是：这个重复的元素 我想用其他方式来实现
 Or I might come up and say, well the next thing I wanted to do, this little replicated element, I might want to do by something else.
 
-858
+874
 01:14:10,940 --> 01:14:13,840
 我可能想把一个缩放因子放入那个BESIDE中
 I might want to put a scale factor in that Beside.
 
-859
+875
 01:14:13,840 --> 01:14:19,340
 这个变化我会在更高的一个层次上讨论---组合子的层次
 That's a change that I would discuss at the next level of design, the level of combinators.
 
-860
+876
 01:14:19,340 --> 01:14:30,640
 或者我可以这样说 我也许想要改变我使用这个图案进行的一些递归构造（新图案）的方式，也许不把它逐渐变小去充满各个角落
 Or I might want to say, I might want to change the basic way that I took this pattern and made some recursive decomposition, maybe not bleeding out toward the corners or something else.
 
-861
+877
 01:14:31,160 --> 01:14:34,180
 而这样的一个变化我就会在最高的层次来讨论
 That would be a change that I would discuss at the highest level.
 
-862
+878
 01:14:34,180 --> 01:14:42,480
 因为我是用这种方式构建系统的 我有全部的词汇来用不同的方式实现各种改变，并且有很大的灵活性来让我决定那个更合适
 And because I've structured the system to be this way, I have all these vocabularies for talking about change in different ways and a lot of flexibility to decide which one's appropriate.
 
-863
+879
 01:14:44,560 --> 01:14:54,380
 这些就是来自Lisp的不同的软件方法学中的一个要点 它来自于这样一个我们已经提到的观点
 OK, well that's sort of a big point about the difference in software methodology that comes out from Lisp, and it all comes, again, out of the notion that really,
 
-864
+880
 01:14:54,380 --> 01:14:59,620
 即设计的过程 与其说是在设计程序 不如说是在设计语言
 the design process is not so much implementing programs as implementing languages.
 
-865
+881
 01:14:59,620 --> 01:15:04,020
 而这就是Lisp的力量 谢谢大家 下课
 And that's really the power of Lisp. OK, thank you. Let's take a break.
