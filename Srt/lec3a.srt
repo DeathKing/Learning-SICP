@@ -1,4412 +1,4551 @@
 ﻿1
-00:00:00,000 --> 00:00:00,000
-它得绘制出一个图像。你给定一个矩形，它就在这个矩形中绘制一些图像
-That's got to be picture. It's got to be a thing that you hand it a rectangle, and it draws something in that rectangle.
-[MUSIC PLAYING]
-
-2
 00:00:00,000 --> 00:00:18,980
 [MUSIC PLAYING]
 
-3
+2
 00:00:20,940 --> 00:00:23,860
 上节课我们讨论了复合数据
 PROFESSOR: Well, last time we talked about compound data,
 
-4
+3
 00:00:24,700 --> 00:00:29,740
 还举了两个例子
 and there were two main points to that business.
 
-5
+4
 00:00:29,740 --> 00:00:32,480
 首先 有一种数据抽象的方法
 First of all, there was a methodology of data abstraction,
 
-6
+5
 00:00:32,940 --> 00:00:39,100
 其要点是将数据的使用
 and the point of that was that you could isolate the way that data objects are used
 
-7
+6
 00:00:40,060 --> 00:00:41,500
 和表示分离开来
 from the way that they're represented:
 
-8
+7
 00:00:41,550 --> 00:00:45,200
-比如说，我们可以与一个叫做George的人“签订契约”
+比如说 我们可以与一个叫做George的人“签订契约”
 this idea that there's this guy, George, and you go out make a contract with him;
 
-9
+8
 00:00:45,200 --> 00:00:47,480
 让他负责数据的表示
 and it's his business to represent the data objects;
 
-10
+9
 00:00:47,480 --> 00:00:49,360
 而当我们使用这些数据的时候
 and at the moment you are using them,
 
-11
+10
 00:00:49,360 --> 00:00:51,360
 不需要替George操心他是如何完成数据表示的工作的
 you don't think about George's problem.
 
-12
+11
 00:00:51,980 --> 00:00:58,440
 其次 Lisp中有一种特殊的方式把对象连接在一起
 And then secondly, there was this particular way that Lisp has of gluing together things
 
-13
+12
 00:00:58,940 --> 00:01:00,520
 就是构成“序对”
 to form objects called pairs,
 
-14
+13
 00:01:00,520 --> 00:01:03,540
 它是通过CONS CAR CDR实现的
 and that's done with cons, car and cdr.
 
-15
+14
 00:01:03,540 --> 00:01:07,160
 而CONS CAR CDR本身是如何实现的，则基本上是不相干的
 And the way that cons, car and cdr are implemented is basically irrelevant.
 
-16
+15
 00:01:07,160 --> 00:01:10,020
 George的任务就是如何构建这些东西
 That's sort of George's problem of how to build those things.
 
-17
+16
 00:01:10,020 --> 00:01:11,160
 可以将它们实现为基本过程
 It could be done as primitives.
 
-18
+17
 00:01:11,160 --> 00:01:13,800
 也可以利用一些奇怪的过程来实现
 It could be done using procedures in some weird way,
 
-19
+18
 00:01:13,800 --> 00:01:15,220
 但是我们不用操心这些
 but we're not going to worry about that.
 
-20
+19
 00:01:16,020 --> 00:01:19,660
 举个例子 我们来看下有理数算术
 And as an example, we looked at rational number arithmetic.
 
-21
+20
 00:01:19,660 --> 00:01:21,500
 看下向量
 We looked at vectors,
 
-22
+21
 00:01:21,500 --> 00:01:24,180
 我们简单回顾一下向量
 and here's just a review of vectors.
 
-23
+22
 00:01:24,180 --> 00:01:27,640
 这里有个对两个向量求和的操作
 Here's an operation that takes the sum of of two vectors,
 
-24
+23
 00:01:27,640 --> 00:01:33,320
 我们想要把向量v1和v2相加
 so we want to add this vector, v1, and this vector, v2, and we get the sum.
 
-25
+24
 00:01:34,460 --> 00:01:40,840
 它们的和也是一个向量 其坐标是两个向量的坐标的和
 And the sum is the vector whose coordinates are the sum of the coordinates of the pieces you're adding.
 
-26
+25
 00:01:41,280 --> 00:01:45,660
-所以，为了定义(+VECT V1 V2)为两个向量的和
+所以 为了定义(+VECT V1 V2)为两个向量的和
 So I can say, to define make-vect, right, to add two vectors
 
-27
+26
 00:01:45,660 --> 00:01:51,720
 我创建一个向量 其X坐标是两向量X坐标的和
 I make a vector, whose x coordinate is the sum of the two x coordinates,
 
-28
+27
 00:01:52,100 --> 00:01:54,820
 而Y坐标是两向量Y坐标的和
 and whose y coordinate is the sum of the two y coordinates.
 
-29
+28
 00:01:56,060 --> 00:02:04,100
 类似的 我们也可以定义一个缩放向量的操作
 And then similarly, we could have an operation that scales vectors,
 
-30
+29
 00:02:04,940 --> 00:02:12,660
 这里的SCALE过程是用数字S乘以向量V
 so here's a procedure scale that multiplies a vector, v, by some number, s.
 
-31
+30
 00:02:13,080 --> 00:02:16,140
 向量V从这里到这里
 So here's v, v goes from there to there
 
-32
+31
 00:02:16,320 --> 00:02:20,220
 我放大V 得到了与原来同向但更长的向量
 and I scale v, and I get a vector in the same direction that's longer.
 
-33
+32
 00:02:21,560 --> 00:02:24,260
 为了缩放向量 我需要通过缩放坐标来实现
 And again, to scale a vector, I multiply the successive coordinates.
 
-34
+33
 00:02:24,260 --> 00:02:30,220
 所以我构建了一个向量 它的X坐标是原向量X坐标的S倍
 So I make a vector, whose x coordinate is the scale factor times the x coordinate
 
-35
+34
 00:02:30,560 --> 00:02:33,540
 同时 它的Y坐标是原来向量Y坐标的S倍
 and whose y coordinate is the scale factor times the y coordinate.
 
-36
+35
 00:02:33,540 --> 00:02:40,280
 上述两个操作都是利用了向量的表示来实现的
 So those are two operations that are implemented using the representation of vectors.
 
-37
+36
 00:02:40,280 --> 00:02:45,020
 而这种向量的表示，我们则可以用序对来实现
 And the representation of vectors, for instance, is something that we can build in terms of pairs.
 
-38
+37
 00:02:45,340 --> 00:02:51,280
 因此George需要为我们提供MAKE-VECTOR、XCOR和YCOR
 So George has gone out and implemented for us make-vector and x coordinate and y coordinate,
 
-39
+38
 00:02:53,020 --> 00:02:57,980
 他可以使用CONS CAR CDR来实现
 and this could be done, for instance, using cons,car and cdr;
 
-40
+39
 00:02:58,880 --> 00:03:06,780
 但是注意 我这里用了一个略微不同的方式
 and notice here, I wrote this in a slightly different way.
 
-41
+40
 00:03:08,040 --> 00:03:11,000
 这个过程我们之前看过，其中我讲过
 The procedures we've seen before, I've said something like
 
-42
+41
 00:03:11,140 --> 00:03:16,220
 (MAKE-VECTOR X Y)也就是(CONS X Y)
 say, make-vector of x and y: cons of x and y.
 
-43
+42
 00:03:16,220 --> 00:03:17,980
 而我这里简单定义MAKE-VECTOR为CONS
 And here I just wrote make-vector cons.
 
-44
+43
 00:03:17,980 --> 00:03:20,480
 这就与之前有些不同了
 And that means something slightly different.
 
-45
+44
 00:03:20,480 --> 00:03:26,220
 之前我们我们把MAKE-VECTOR定义为需要两个参数的过程
 Previously we'd say, define make-vector to be a procedure that takes two arguments, x and y,
 
-46
+45
 00:03:26,220 --> 00:03:28,040
 效果是(CONS X Y)
 and does cons of x and y.
 
-47
+46
 00:03:28,040 --> 00:03:34,120
 这里 我就把MAKE-VECTOR定义为CONS
 And here I am saying define make-vector to be the thing that cons is,
 
-48
+47
 00:03:35,180 --> 00:03:39,660
 这跟我们之前使用的方式基本上是一样的
 and that's almost the same as the other way we've been writing things.
 
-49
+48
 00:03:39,660 --> 00:03:46,580
 大家要习惯于“过程也是对象，而且你可以给他们命名”这种想法
 And I just want you to get used to the idea that procedures can be objects, and that you can name them.
 
-50
+49
 00:03:48,700 --> 00:03:51,800
 这些就是向量的表示方法了
 OK, well there's vector representation, and again,
 
-51
+50
 00:03:51,800 --> 00:03:55,680
 如果仅仅是那样 那就太无趣了
 if that was all there was to it,this would all be pretty boring.
 
-52
+51
 00:03:57,020 --> 00:04:02,160
 要记住 要点是我们不仅可以通过使用CONS将数字组合成序对
 And the point is, remember, that you can use cons to glue together not just numbers to form pairs,
 
-53
+52
 00:04:02,160 --> 00:04:04,160
 也可以组合任何东西
 but to glue together arbitrary things.
 
-54
+53
 00:04:05,200 --> 00:04:11,600
 例如 如果我想表示一个线段
 So for instance, if we'd like to represent a line segment,
 
-55
+54
 00:04:11,600 --> 00:04:15,640
 一个以某个向量为起点的线段
 say the line segment that goes from a certain vector:
 
-56
+55
 00:04:16,060 --> 00:04:28,300
 比如从向量(2,3)所代表的起点到向量(5,1)所代表的终点的线段
 say, the segment from the vector 2,3 to the point represented by the vector 5,1.
 
-57
+56
 00:04:28,300 --> 00:04:31,820
 如果我们想表示这条线段
 If we want to represent that line segment,
 
-58
+57
 00:04:33,260 --> 00:04:36,200
 那么我们可以构建一个序对的序对
 then we can build that as a pair of pairs.
 
-59
+58
 00:04:40,720 --> 00:04:42,940
 这样我们就可以表示一条线段了
 So again, we can represent line segments.
 
-60
+59
 00:04:42,940 --> 00:04:47,340
 我们可以编写一个使用CONS构造线段的构造函数
 We can make a constructor that makes a segment using cons,
 
-61
+60
 00:04:47,980 --> 00:04:51,600
 以及 析取出线段起点、终点的选择函数
 selects out the start of a segment, selects out the end point of the segment;
 
-62
+61
 00:04:55,240 --> 00:04:59,760
 那么如果我们剥开抽象层一探究竟
 and then if we actually look at that, if we peel away the abstraction layers,
 
-63
+62
 00:04:59,880 --> 00:05:02,100
 就会发现线段不过是 序对组成的序对
 and see what's that really is a pair of pairs,
 
-64
+63
 00:05:04,660 --> 00:05:06,220
 它还是一个序对
 we'd say well that's a pair.
 
-65
+64
 00:05:06,220 --> 00:05:08,220
 这里有个线段
 Here's the segment.
 
-66
+65
 00:05:10,000 --> 00:05:16,720
 它的CAR部分是个序对 CDR部分也是个序对
 It's car, right, it's car pointer is a pair, and it's cdr is also a pair,
 
-67
+66
 00:05:18,320 --> 00:05:25,540
 它的CAR部分是由2和3构成的序对
 and then what the car is--here's the car, that itself is a pair of 2 and 3.
 
-68
+67
 00:05:26,020 --> 00:05:28,080
 CDR部分则由5和1构成的序对（译注：口误）
 And similarly the cdr is a pair of 2 and 3.
 
-69
+68
 00:05:28,160 --> 00:05:29,240
 这里我再提醒大家一下
 And let me remind you again
 
-70
+69
 00:05:29,320 --> 00:05:33,460
 好多人认为如果我箭头向下画的话
 that a lot of people have some idea that if I'd taken this arrow and somehow
 
-71
+70
 00:05:33,800 --> 00:05:36,900
 会有其它的含意
 written it to point down, that would mean something else.
 
-72
+71
 00:05:36,980 --> 00:05:38,280
 这是不对的
 That's irrelevant.
 
-73
+72
 00:05:38,580 --> 00:05:43,900
 箭头指示的是对象间如何连接 它指向水平或竖直方向都是无关紧要的
 It's only how these are connected and not whether this arrow happens to go vertically or horizontally.
 
-74
+73
 00:05:47,480 --> 00:05:52,180
 还要提醒一下 序对是具有闭包性质的
 And again just to remind you, there was this notion of closure.
 
-75
+74
 00:05:52,940 --> 00:06:05,620
 闭包性质使我们可以构建更复杂的东西，而不仅仅是简单的序对
 See, closure was the thing that allowed us to start building up complexity, that didn't trap us in pairs.
 
-76
+75
 00:06:06,640 --> 00:06:15,240
 在这里我要特别指出 在我们用CONS构建出来的序对的基础上
 Particularly what I mean is the things that we make, having combined things using cons to get a pair,
 
-77
+76
 00:06:16,440 --> 00:06:22,640
 我们也可以进一步用CONS来构造更复杂的对象
 those things themselves can be combined using cons to make more complicated things.
 
-78
+77
 00:06:23,280 --> 00:06:31,980
 或者用数学家的话说 Lisp中的数据对象在CONS运算下是封闭的
 Or as a mathematician might say, the set of data objects in Lisp is closed under the operation of forming pairs.
 
-79
+78
 00:06:33,820 --> 00:06:36,340
 这个性质使我们能够构造更加复杂的数据对象
 That's the thing that allows us to build complexity.
 
-80
+79
 00:06:36,340 --> 00:06:38,040
 这个似乎是显然的 但是要记住
 And that seems obvious, but remember
 
-81
+80
 00:06:39,060 --> 00:06:42,460
 人们使用的编程语言中有很多东西并不是封闭的
 a lot of the things in the computer languages that people use are not closed.
 
-82
+81
 00:06:42,460 --> 00:06:48,060
 举例来说 Basic和Fortran中的构造数组操作 就不是封闭的
 So for example, forming arrays in Basic and Fortran is not a closed operation,
 
-83
+82
 00:06:48,080 --> 00:06:51,940
 因为 虽然你可以用数字、字符或字符串等来构造数组
 because you can make an array of numbers or character strings or something,
 
-84
+83
 00:06:52,040 --> 00:06:54,180
 但是你不能创建数组的数组
 but you can't make an array of arrays.
 
-85
+84
 00:06:54,640 --> 00:06:56,680
 当考察某种组合的方法时
 And when you look at means of combination
 
-86
+85
 00:06:57,600 --> 00:07:02,780
 你应该相信它是否是一个封闭的操作
 you should be should be asking yourself whether things are closed under that means of combination.
 
-87
+86
 00:07:05,060 --> 00:07:08,260
 不管怎样 因为我们可以构造序对的序对
 Well in any case, because we can form pairs of pairs,
 
-88
+87
 00:07:08,860 --> 00:07:12,780
 我们就可以用序对将数据以各种各样的方式组合起来
 we can start using pairs to glue things together in all sorts of different ways.
 
-89
+88
 00:07:14,020 --> 00:07:18,260
 比如我想要组合四个数 —— 1 2 3 4
 So for instance if I'd like to glue together the four things, 1, 2, 3 and 4,
 
-90
+89
 00:07:18,260 --> 00:07:19,820
 我有很多方法
 there are a lot of ways I can do it.
 
-91
+90
 00:07:20,740 --> 00:07:26,120
 比如 像构造线段那样 我可以构造一个序对
 I could, for example, like we did with that line segment, i could make a pair
 
-92
+91
 00:07:29,020 --> 00:07:36,880
 它是((1 2) (3 4)) 对吧？
 that had a 1 and a 2 and a 3 and a 4, right?
 
-93
+92
 00:07:36,880 --> 00:07:40,060
 或者如果我喜欢 我可以像这样做
 Or if I liked, I could do something like this.
 
-94
+93
 00:07:40,060 --> 00:07:45,520
 我构造一个序对 它的CAR部分也是一个序对
 I could make a pair, whose first thing is a pair,
 
-95
+94
 00:07:46,440 --> 00:07:53,200
 这个序对的CAR部分为1 而CDR部分为由2、3构成的序对
 whose car is 1, and his cdr is itself a pair that has the 2 and the 3
 
-96
+95
 00:07:53,260 --> 00:07:55,080
 最后 我把4放在这里
 and then I could put the 4 up here.
 
-97
+96
 00:07:56,920 --> 00:08:02,160
 所以你可以看到 组合对象的方式有很多种
 So you see, there are a lot of different ways that I can start using pairs to glue things together,
 
-98
+97
 00:08:02,160 --> 00:08:07,740
 因此就有必要建立一些统一的约定
 and so it'll be a good idea to establish some kind of conventions,right,
 
-99
+98
 00:08:07,740 --> 00:08:11,580
 使我们能够用某种的通用的方式处理数据
 that allow us to deal with this thing in some conventional way,
 
-100
+99
 00:08:11,580 --> 00:08:14,000
 而不用总是针对具体问题做一些生硬的选择
 so we're not constantly making an ad hoc choice.
 
-101
+100
 00:08:15,940 --> 00:08:19,040
 Lisp里面就有这样一种约定
 And Lisp has a particular convention
 
-102
+101
 00:08:20,740 --> 00:08:25,820
 这个约定将一系列的东西表示成一个序对组成的链
 for representing a sequence of things as, essentially, a chain of pairs,
 
-103
+102
 00:08:26,780 --> 00:08:28,180
 而这样一个数据序列就叫做一个”表“
 and that's called a List.
 
-104
+103
 00:08:34,720 --> 00:08:40,500
 表本质上就是Lisp用来表示序列数据的一个约定而已
 And what a list is is essentially just a convention for representing a sequence.
 
-105
+104
 00:08:40,700 --> 00:08:47,380
 我可以使用序对的序列来表示序列 1 2 3 4
 I would represent the sequence 1, 2, 3 and 4 by a sequence of pairs.
 
-106
+105
 00:08:48,260 --> 00:08:54,680
 我把1放在这里 它的CDR指向另一个序对
 I'd put 1 here and then the cdr of this would point to another pair
 
-107
+106
 00:08:59,200 --> 00:09:01,400
 这个序对的CAR部分是序列中的下一个数
 whose car was the next thing in the sequence,
 
-108
+107
 00:09:01,520 --> 00:09:03,420
 并且它的CDR指向了另一个序对
 and the cdr would point to another pair
 
-109
+108
 00:09:05,440 --> 00:09:07,300
 它的CAR部分是序列的再下一个数
 whose car was the next thing in the sequence--
 
-110
+109
 00:09:07,360 --> 00:09:08,440
 这个是3
 so there's 3--
 
-111
+110
 00:09:08,440 --> 00:09:09,740
 以此类推
 and then another one.
 
-112
+111
 00:09:09,740 --> 00:09:13,220
 所以 序列中的每一个元素都对应着一个序对
 So for each item in the sequence, I'll get a pair.
 
-113
+112
 00:09:15,820 --> 00:09:18,320
 而当这个序列中没有其它元素时，我用一个特殊的标记
 And now there are no more, so I put a special marker
 
-114
+113
 00:09:20,720 --> 00:09:22,740
 来表示列表中没有元素了
 that means there's nothing more in the List.
 
-115
+114
 00:09:24,140 --> 00:09:34,640
 好 这就是将序列中的元素组合起来的一种约定方式
 OK, so that's a conventional way to glue things together if you want to represent a sequence, right.
 
-116
+115
 00:09:34,640 --> 00:09:37,980
 而它其实就是一堆序对
 And what it is is a bunch of pairs,
 
-117
+116
 00:09:39,400 --> 00:09:44,800
 每个序对中的CAR部分就是我们想要组合到一起的元素
 the successive cars of each pair are the items that you want to glue together,
 
-118
+117
 00:09:46,000 --> 00:09:48,460
 这些序对的CDR部分则指向下一个序对
 and the cdr pointer points to the next pair.
 
-119
+118
 00:09:50,020 --> 00:09:56,040
 现在 如果我想要构造它 我需要向Lisp中输入
 Now if I actually wanted to construct that, what I would type into Lisp is this:
 
-120
+119
 00:09:56,620 --> 00:09:58,760
 我会像这样来构造
 I'd actually construct that as saying, well this thing is
 
-121
+120
 00:09:59,220 --> 00:10:15,280
 (CONS 1 (CONS 2 (CONS 3 (CONS 4 NIL))))
 the cons of 1 onto the cons of 2 onto the cons of 3 onto
 the cons of 4 onto, well, this thing nil.
 
-122
+121
 00:10:15,280 --> 00:10:20,000
 NIL是序列末尾标志的名字
 And what nil is is a name for the end of List marker.
 
-123
+122
 00:10:20,800 --> 00:10:23,240
 它是一个特殊的名字 意味着它所在的是表的末尾
 It's a special name, which means this is the end of the List.
 
-124
+123
 00:10:26,240 --> 00:10:30,260
 好的，这就是我如何构造表
 OK, so that's how I would actually construct that.
 
-125
+124
 00:10:37,340 --> 00:10:45,180
 如果每次想要构造这样一个表，我都需要输入像(CONS 1 (CONS 2 (CONS 3 ...这么多的话，这当然是一件费时费力的事情
 Of course, it's a terrible drag to constantly have to write something like the cons of 1 onto the cons of 2 onto the cons of 3, whenever you want to make this thing.
 
-126
+125
 00:10:45,180 --> 00:10:50,100
 所以表有一个叫做LIST的操作
 So List has an operation that's called List,
 
-127
+126
 00:10:53,700 --> 00:10:57,720
 LIST其实是这种嵌套CONS的缩写
 and List is just an abbreviation for this nest of conses.
 
-128
+127
 00:10:58,960 --> 00:11:06,320
 它可以让我用(LIST 1 2 3 4)来构造表
 So I could say, I could construct that by saying that is the List of 1, 2, 3 and 4.
 
-129
+128
 00:11:07,780 --> 00:11:11,740
 这只是另外一种方式，一个语法糖
 And all this is is another way, a piece of syntactic sugar,
 
-130
+129
 00:11:11,940 --> 00:11:14,760
 用来简便地书写嵌套的CONS
 a more convenient way for writing that chain of conses--
 
-131
+130
 00:11:14,760 --> 00:11:17,840
 (CONS (CONS (CONS (CONS NIL))))
 cons of cons of cons of cons of cons of cons onto nil.
 
-132
+131
 00:11:18,480 --> 00:11:39,780
 举例来说 我将构造一个表(1 2 3 4)，并把它叫做1-TO-4
 So for example, I could build this thing and say, I'll define 1-TO-4 to be the List of 1, 2, 3 and 4.
 
-133
+132
 00:11:47,960 --> 00:11:53,020
 注意使用这种简便写法的后果
 OK, well notice some of the consequences of using this convention.
 
-134
+133
 00:11:53,800 --> 00:11:56,920
 首先 如果我有这个表(1 2 3 4)
 First of all if I have this List, this 1, 2, 3 and 4,
 
-135
+134
 00:11:57,360 --> 00:12:02,640
 表的CAR把部分就是这个表的第一个元素 对吧？
 the car of the whole thing is the first element in the List, right.
 
-136
+135
 00:12:04,060 --> 00:12:05,280
 那么 如何获得元素2呢？
 How do I get 2?
 
-137
+136
 00:12:05,280 --> 00:12:23,940
 2应该是1-TO-4的CDR部分的CAR部分
 Well, 2 would be the car of the cdr of this thing 1-TO-4, it would be 2, right.
 
-138
+137
 00:12:23,980 --> 00:12:29,480
 它的CDR是这个
 I take this thing, I take the cdr of it, which is this much,
 
-139
+138
 00:12:29,820 --> 00:12:31,680
 而它的CAR部分是2
 and the car of that is 2,
 
-140
+139
 00:12:32,580 --> 00:12:47,420
 同理 1-TO-4的CDR的CDR的CAR部分
 and then similarly, the car of the cdr of the cdr of 1-TO-4, cdr, cdr, car--
 
-141
+140
 00:12:47,420 --> 00:12:51,360
 是3 以此类推
 would give me 3, and so on.
 
-142
+141
 00:12:52,680 --> 00:12:55,840
 我们来看下屏幕
 Let's take a look at that on the computer screen for a second.
 
-143
+142
 00:12:57,500 --> 00:13:11,180
 我定义一个列表(1 2 3 4)叫它1-TO-4
 I could come up to List, and I could type define 1-TO-4 to be the List of 1, 2, 3 and 4, right.
 
-144
+143
 00:13:13,780 --> 00:13:21,280
 我这样写 计算机返回定义完成 这个就是1-TO-4的定义
 And I'll tell that to List, and it says, fine, that's the definition of 1-TO-4.
 
-145
+144
 00:13:22,300 --> 00:13:36,740
 我问 比如 1-TO-4的cdr的cdr的car
 And I could say, for instance, what's the car of the cdr of the cdr of 1-TO-4, close paren, close paren.
 
-146
+145
 00:13:38,340 --> 00:13:42,420
 嗯 它是3
 Right, so the car of the cdr of the cdr would be 3.
 
-147
+146
 00:13:44,080 --> 00:13:50,080
 或者我问 1-TO-4是什么
 Right, or I could say, what's 1-TO-4 itself.
 
-148
+147
 00:13:51,260 --> 00:13:57,220
 Lisp输出的是用括号包围的 (1 2 3 4)
 And you see what Lisp typed out is 1, 2, 3, 4, enclosed in parentheses,
 
-149
+148
 00:13:57,220 --> 00:14:02,120
 用括号将表中的元素包围起来的这种记号
 and this notation, typing the elements of the List enclosed in parentheses
 
-150
+149
 00:14:02,120 --> 00:14:08,900
 通常用来用来打印用表示序列的序对链
 is Lisp's conventional way for printing back this chain of pairs that represents a sequence.
 
-151
+150
 00:14:08,900 --> 00:14:17,140
 又比如 我问1-TO-4的CDR部分是什么
 So for example, if I said, what's the cdr of 1-TO-4,
 
-152
+151
 00:14:19,300 --> 00:14:21,120
 结果是表的剩余部分
 that's going to be the rest of the List.
 
-153
+152
 00:14:21,320 --> 00:14:26,960
 这是原表首元素所指向的序对 新序列从2开始
 That's the thing pointed to by the first pair, which is, again, a sequence that starts off with 2.
 
-154
+153
 00:14:28,520 --> 00:14:37,740
 比如 1-TO-4的CDR的CDR部分是什么
 Or for example, I go off and say, what's the cdr of the cdr of 1-TO-4;
 
-155
+154
 00:14:43,240 --> 00:14:44,680
 返回(3 4)
 then that's 3,4.
 
-156
+155
 00:14:44,820 --> 00:14:59,660
 或者 1-TO-4的CDR的CDR的CDR的CDR部分是什么
 Or if I say, what's the cdr of the cdr of the cdr of the cdr of 1-TO-4,
 
-157
+156
 00:15:04,740 --> 00:15:10,460
 我们看一下表的尾指针 Lisp返回()
 and I'm down there looking at the end of List pointer itself, and Lisp prints that as just open paren, close paren.
 
-158
+157
 00:15:10,960 --> 00:15:13,480
 你们可以认为这是一个空表
 You can think of that as a List with nothing in there.
 
-159
+158
 00:15:14,120 --> 00:15:21,380
 我求取 1-TO-4的CDR的CDR的CDR部分
 All right, see at the end what I did there was I looked at the cdr of the cdr of the cdr of 1-TO-4,
 
-160
+159
 00:15:21,420 --> 00:15:25,200
 这就只剩下表尾指针本身
 and I'm just left with the end of List pointer itself.
 
-161
+160
 00:15:25,200 --> 00:15:27,200
 它的输出是()
 And that gets printed as open close.
 
-162
+161
 00:15:34,140 --> 00:15:39,980
 好了 这是处理表的一种常见方式
 All right, well that's a conventional way you can see for working down a List
 
-163
+162
 00:15:41,500 --> 00:15:43,440
 也就是不断地取CDR部分
 by taking successive cdrs of things.
 
-164
+163
 00:15:43,440 --> 00:15:45,000
 这个叫做表的CDRING
 It's called cdring down a List.
 
-165
+164
 00:15:46,640 --> 00:15:49,780
 当然手写这些CDR非常费劲
 And of course it's pretty much of a drag to type all those cdrs by hand.
 
-166
+165
 00:15:49,780 --> 00:15:52,240
 我们没必要这么做 我们编写程序来这么做
 You don't do that. You write procedures that do that.
 
-167
+166
 00:15:52,960 --> 00:15:59,100
 事实上 Lisp中非常普遍的事情是写一些过程
 And in fact one very, very common thing to do in Lisp is to write procedures that,
 
-168
+167
 00:15:59,850 --> 00:16:06,540
 表中所有元素进行某种操作 得到的是由结果构成的表
 sort of, take a List of things and do something to every element in List, and return you a List of the results.
 
-169
+168
 00:16:07,420 --> 00:16:11,920
 比如 我写一个SCALE-LIST的过程
 So what I mean for example, is I might write a procedure called Scale-List,
 
-170
+169
 00:16:16,800 --> 00:16:25,240
 我要用SCALE-List将表1-TO-4放大10倍
 and Scale-List I might say I want to scale by 10 the entire List 1-TO-4,
 
-171
+170
 00:16:26,660 --> 00:16:35,320
 那么它应该返回表(10 20 30 40)
 and that would return for me the List 10, 20, 30, 40.
 
-172
+171
 00:16:38,250 --> 00:16:40,250
 没错 它返回一个表
 Right, it returns List, and
 
-173
+172
 00:16:44,490 --> 00:16:49,300
 我们可以猜想到这当中采用了某种递归策略
 well you can see that there's going to be some kind of recursive strategy for doing it.
 
-174
+173
 00:16:49,300 --> 00:16:51,300
 我应该如何编写这个过程呢？
 How would I actually write that procedure?
 
-175
+174
 00:16:52,520 --> 00:16:59,800
 如果要构建一个每个元素都乘以10的列表
 The idea would be, well if you'd like to build up a List where you've multiplied every element by 10,
 
-176
+175
 00:17:00,440 --> 00:17:04,840
 需要做的是—假设已经得到了结果表的剩余元素
 what you'd say is well you imagine that you'd taken the rest of the List--
 
-177
+176
 00:17:05,860 --> 00:17:08,420
 也就是表的CDR部分
 right, the thing represented by the cdr of the List,
 
-178
+177
 00:17:08,420 --> 00:17:14,160
 这个子表中的每个元素都是原来元素乘以10
 and suppose I'd already built a List where each of these was multiplied by 10--
 
-179
+178
 00:17:16,060 --> 00:17:19,680
 这是SCALE-LIST对表CDR部分作用的结果
 that would be Scale-List of the cdr of the List.
 
-180
+179
 00:17:20,120 --> 00:17:23,820
 我需要做的 就只有用表的CAR部分乘以10
 And then all I have to do is multiply the car of the List by 10,
 
-181
+180
 00:17:24,890 --> 00:17:27,240
 然后用CONS将它和剩余部分连接起来 并返回这个列表
 and then cons that onto the rest, and I'll get a List.
 
-182
+181
 00:17:29,020 --> 00:17:33,090
 类似地 为了缩放子表 我得先缩放子表的CDR部分
 Right and then similarly, to have scaled the cdr of the List, I'll scale the cdr of that
 
-183
+182
 00:17:33,300 --> 00:17:36,200
 并将其与2*10连接起来
 cons onto that 2 multiplied by 10.
 
-184
+183
 00:17:36,420 --> 00:17:41,160
 最终 当我处理到表尾时 这里就只剩表尾指针了
 And finally when I get all the way down to the end, and I only have this end of List pointer.
 
-185
+184
 00:17:41,720 --> 00:17:45,280
 它叫做NIL 我就直接返回表尾指针
 All right, this thing whose name is nil-- well I just returned an end of List pointer.
 
-186
+185
 00:17:45,540 --> 00:17:47,680
 所以这就是这个过程的递归策略
 So there's a recursive strategy for doing that.
 
-187
+186
 00:17:47,680 --> 00:17:50,520
 这个过程就是这样
 Here's the actual procedure that does that.
 
-188
+187
 00:17:50,960 --> 00:17:55,040
 这个例子就是对表做CDRING操作的通用策略
 Right, this is an example of the general strategy of cdr-ing down a List and
 
-189
+188
 00:17:55,660 --> 00:17:58,240
 也就是所谓的“通过CONS组合结果”
 so called cons-ing up the result, right.
 
-190
+189
 00:17:58,240 --> 00:18:06,040
 那么 对表L缩放S倍 我该如何做呢？
 So to Scale a List l by some scale factor s, what do I do?
 
-191
+190
 00:18:06,040 --> 00:18:10,400
 首先得做判断 Lisp中有个叫NULL?的谓词
 Well there's a test, and Lisp has the predicate called null.
 
-192
+191
 00:18:10,400 --> 00:18:13,220
 NULL?判断对象是否为表尾
 Null means is this thing the end of List pointer,
 
-193
+192
 00:18:13,900 --> 00:18:17,160
 或者说 对象是否为空表
 or another way to think of that is are there any elements in this List, right.
 
-194
+193
 00:18:18,170 --> 00:18:23,000
 任何情况下 当我处理到表尾时 我就将其返回
 But in any case if I'm looking at the end of List pointer, then I just return the end of List pointer.
 
-195
+194
 00:18:23,650 --> 00:18:24,600
 简单地返回NIL
 I just return nil,
 
-196
+195
 00:18:24,940 --> 00:18:35,140
-否则，我就用cons把列表中的第一个元素经过操作（缩放）后的结果
+否则 我就用CONS把列表中的第一个元素经过操作（缩放）后的结果
 otherwise I cons together the result of doing what I'm going to do to the first element in the List,
 
-197
+196
 00:18:35,540 --> 00:18:39,290
 就是说 取L的CAR部分 然后用它乘以S
 namely taking the car of l and multiplying it by s,
 
-198
+197
 00:18:40,360 --> 00:18:46,340
 然后我就用CONS将这个结果 与用递归形式缩放后的表的剩下部分 连接在一起
 and I cons that onto recursively scaling the rest of the List.
 
-199
+198
 00:18:49,980 --> 00:18:52,180
 再说一次 总体的思想是
 OK, so again, the general idea is that you
 
-200
+199
 00:18:52,220 --> 00:18:56,090
 你要用递归的方式处理表中的剩余元素 即表的CDR部分
 you recursively do something to the rest of the List, to the cdr of the List,
 
-201
+200
 00:18:56,480 --> 00:19:01,160
 然后你用CONS将那部分的结果 与经过处理后的表的第一个元素连接在一起
 and then you cons that onto actually doing something to the first element of the List.
 
-202
+201
 00:19:01,160 --> 00:19:05,180
 当你处理到结尾的时候 返回表尾标志NIL
 When you get down to the end here, you return the end of List pointer,
 
-203
+202
 00:19:07,340 --> 00:19:11,360
 这就是对一个表里的数据做某种操作的通用模式
 and that's a general pattern for doing something to a list.
 
-204
+203
 00:19:16,140 --> 00:19:19,520
 现在 你们应该清楚知道这样一个事实
 Well of course you should know by now that the very fact
 
-205
+204
 00:19:19,530 --> 00:19:22,620
 也就是我不必额外为这种基本模式额外编写过程
 that there's a general pattern there means I shouldn't be writing this procedure at all.
 
-206
+205
 00:19:22,620 --> 00:19:24,900
 我要做的事情就是写一个过程
 What I should do is write a procedure
 
-207
+206
 00:19:24,900 --> 00:19:26,320
 这是这个基本模式
 that's the general pattern itself
 
-208
+207
 00:19:26,800 --> 00:19:30,300
 对表中的元素执行操作 并以表的形式返回结果
 that says, do something to everything in the List and define this thing in terms of that.
 
-209
+208
 00:19:30,680 --> 00:19:32,300
 好了 我们定义一些高阶过程
 Right, make some higher order procedure,
 
-210
+209
 00:19:32,320 --> 00:19:35,180
 我们定义一个叫MAP的高阶过程 来完成这些操作
 and here's the higher order procedure that does that. It's called MAP,
 
-211
+210
 00:19:36,730 --> 00:19:43,170
 MAP以表L和过程P为参数
 and what MAP does is it takes a List, takes a List l, and it takes a procedure p,
 
-212
+211
 00:19:44,920 --> 00:19:51,080
 并返回对表L中每个元素应用过程P后得到的新表
 and it returns the List of the elements gotten by applying p to each successive element in the List.
 
-213
+212
 00:19:51,810 --> 00:19:55,400
 这个新表里的元素是(P E1) (P E2) ...  到(P En)
 All right, so p of e1, p of e2, p of en.
 
-214
+213
 00:19:55,640 --> 00:20:01,540
 所以我指的就是对一个表做这样一种变换：将P应用到表的每一个元素上
 Right, so I think of taking this List and transforming it by applying p to each element.
 
-215
+214
 00:20:02,520 --> 00:20:07,080
 你们看到的这些过程正是我提到的通用策略
 And you see all this procedure is is exactly the general strategy I said.
 
-216
+215
 00:20:07,080 --> 00:20:09,080
 我们用它写乘以10的过程
 Instead of multiply by 10, it's do the procedure.
 
-217
+216
 00:20:09,080 --> 00:20:11,640
 如果表是空的 则返回NIL
 If the List is empty, return nil.
 
-218
+217
 00:20:11,860 --> 00:20:16,600
 否则 对表的首元素应用P
 Otherwise, apply p to the first element of the List.
 
-219
+218
 00:20:17,140 --> 00:20:18,740
 将P应用于L的CAR部分
 Right, apply p to car of l,
 
-220
+219
 00:20:19,300 --> 00:20:25,400
 然后连接它和将P应用于表CDR部分中的剩余元素得到的子表连接起来
 and cons that onto the result of applying p to everything in the cdr of the List,
 
-221
+220
 00:20:25,610 --> 00:20:28,840
 这就是一个通用过程——MAP
 so that's a general procedure called MAP.
 
-222
+221
 00:20:29,860 --> 00:20:39,040
 我们可以用MAP来定义SCALE-LIST
 And I could define Scale-List in terms of MAP.
 
-223
+222
 00:20:39,040 --> 00:20:41,040
 我给你们展示一下
 Let me show you that first.
 
-224
+223
 00:20:43,460 --> 00:20:52,500
 SCALE-LIST就是对表MAP一个特定的过程
 But I could say Scale-List is another way to define it is just MAP along the List by the procedure,
 
-225
+224
 00:20:52,500 --> 00:20:55,540
 这个过程需要一个参数 返回给定参数乘以S的结果
 which takes an item and multiplies it by s.
 
-226
+225
 00:20:58,960 --> 00:21:01,900
 所以我思考缩放表这个过程的正确方式应该是
 Right, so this is really the way I should think about scaling the List,
 
-227
+226
 00:21:02,120 --> 00:21:07,400
 将递归的部分构造成一个通用的策略，而不是将其引入我正在考虑的某个过程
 build that actual recursion into the general strategy, not to every particular procedure I write.
 
-228
+227
 00:21:07,400 --> 00:21:11,280
 当然 这样做的意义之一是 是你会开始发现共性
 And of course, one of the values of doing this is that you start to see commonality.
 
-229
+228
 00:21:12,160 --> 00:21:15,020
 我们正在掌握使用通用模式
 Right, again you're capturing general patterns of usage.
 
-230
+229
 00:21:15,960 --> 00:21:31,180
 比如 (MAP SQUARE 1-TO-4) 返回(1 4 9 16)
 For instance, if I said MAP, the square procedure, down this List 1-TO-4, then I'd end up with 1, 4, 9 and 16.
 
-231
+230
 00:21:32,480 --> 00:21:37,170
 对这个表做映射
 Right, or if I said MAP down this List,
 
-232
+231
 00:21:37,570 --> 00:21:46,320
 用(LAMBDA (X) (+ X 10))映射表1-TO-4
 lambda of x plus x 10, if I MAP that down 1-TO-4,
 
-233
+232
 00:21:49,680 --> 00:21:52,860
 我让表的每个元素都加了10
 then I'd get the List where everything had 10 added to it:
 
-234
+233
 00:21:53,340 --> 00:21:58,170
 也就是得到了(11 12  13 14)
 right, so I'd get 11,12, 13, 14.
 
-235
+234
 00:22:00,560 --> 00:22:05,760
 我们看到对表中每个元素做操作是一种非常普遍的想法
 And you can see that's going to be a very, very common idea: doing something to every element in the List.
 
-236
+235
 00:22:08,660 --> 00:22:12,220
 而大家需要思考如何编写MAP的迭代版本
 One thing you might think about is writing MAP in an iterative style.
 
-237
+236
 00:22:12,220 --> 00:22:16,040
 我碰巧写的是一个递归版本
 The one I wrote happens to evolve a recursive process,
 
-238
+237
 00:22:16,360 --> 00:22:19,100
 但是我们也可以很容易地把它改成迭代过程
 but we could just as easily have made one that evolves an iterative process.
 
-239
+238
 00:22:19,100 --> 00:22:23,160
 有趣的是 一旦你开始用MAP来思考
 But see the interesting thing about it is that once you start thinking in terms of MAP--
 
-240
+239
 00:22:24,020 --> 00:22:29,000
 比如 一旦把缩放看作是一种MAP 就不用关心是迭代还是递归实现
 see, once you say scale is just MAP, you stop thinking about whether it's iterative or recursive,
 
-241
+240
 00:22:29,000 --> 00:22:31,820
 你只会关心 啊 这里有这样一种数据集合 有这样一个表
 and you just say, well there's this aggregate, there's this List,
 
-242
+241
 00:22:32,220 --> 00:22:34,520
 我要做的是转化表中的每个元素
 and what I do is transform every item in the List,
 
-243
+242
 00:22:34,560 --> 00:22:38,360
 而不去考虑特别的控制流程或顺序
 and I stop thinking about the particular control structure in order.
 
-244
+243
 00:22:38,880 --> 00:22:41,090
 这是个非常非常重要的想法
 That's a very, very important idea,
 
-245
+244
 00:22:42,360 --> 00:22:46,480
 我猜这个想法来自APL语言
 and it, I guess it really comes out of APL.
 
-246
+245
 00:22:46,480 --> 00:22:49,100
 它是APL中非常重要的思想
 It's, sort of, the really important idea in APL
 
-247
+246
 00:22:49,120 --> 00:22:51,130
 即不要去考虑控制结构
 that you stop thinking about control structures,
 
-248
+247
 00:22:51,410 --> 00:22:53,920
 而是关注于策略操作
 and you start thinking about operations on aggregates,
 
-249
+248
 00:22:55,010 --> 00:23:00,010
 在本课程进行到一半的时候 我们将讨论一种叫做流处理的东西
 and then about halfway through this course,we'll see when we talk about something called stream processing,
 
-250
+249
 00:23:00,260 --> 00:23:02,640
 那时我们将看到这种观点的真正威力
 how that view of the world really comes into its glory.
 
-251
+250
 00:23:02,640 --> 00:23:05,300
 这是一种很聪明的思想
 This is just us a, sort of, cute idea.
 
-252
+251
 00:23:05,300 --> 00:23:08,700
 我们可以在以后看到更多应用
 But we'll see much more applications of that later on.
 
-253
+252
 00:23:09,360 --> 00:23:16,840
 还有一些非常有用也非常像MAP的过程
 Well let me mention that there's something that's very similar to MAP that's also a useful idea, and that's--
 
-254
+253
 00:23:17,560 --> 00:23:22,540
 MAP是将某个过程应用于表中每个元素
 see, MAP says I take a List, I apply something to each item,
 
-255
+254
 00:23:22,980 --> 00:23:25,620
 并返回相应结果构成的表
 and I return a List of the successive values.
 
-256
+255
 00:23:25,980 --> 00:23:28,690
 还有一种与此非常非常相似的操作
 There's another thing I might do, which is very, very similar,
 
-257
+256
 00:23:29,320 --> 00:23:35,860
 也就是给定一个列表和操作 依次将其应用于表中每个元素
 which is take a List and some action you want to do and then do it to each item in the List in sequence.
 
-258
+257
 00:23:36,290 --> 00:23:39,400
 而不会建立由结果构成的表 只是为了完成操作
 Don't make a List of the values, just do this particular action,
 
-259
+258
 00:23:40,020 --> 00:23:45,100
 这个过程非常像MAP
 and that's something that's very much like MAP.
 
-260
+259
 00:23:45,100 --> 00:23:46,740
 这叫做FOR-EACH
 It's called for-each,
 
-261
+260
 00:23:46,740 --> 00:23:49,480
 它接受一个过程和一个表
 and for-each takes a procedure and a List,
 这叫做FOR-EACH
 It's called for-each,
 
-262
+261
 00:23:49,480 --> 00:23:49,620
 这叫做FOR-EACH
 It's called for-each,
 
-263
+262
 00:23:49,620 --> 00:23:53,860
 它实际上是对表中每个元素执行此操作
 and what it's going to do is do something to every item in the List.
 这叫做FOR-EACH
 It's called for-each,
 
-264
+263
 00:23:53,860 --> 00:23:54,380
 这叫做FOR-EACH
 It's called for-each,
 
-265
+264
 00:23:55,160 --> 00:23:58,530
 通常是这样 如果表非空
 So basically what it does: it says if the List is not empty,
 
-266
+265
 00:23:59,740 --> 00:24:01,120
 也就是不是空表
 if the List is not null,
 
-267
+266
 00:24:01,900 --> 00:24:06,250
 然后对表中其余元素做同样的事情
 and then I do this thing to the rest of the List.
 我讲这个过程应用于表的第一个元素
 then what I do is, I apply my procedure to the first item in the List,
 
-268
+267
 00:24:12,300 --> 00:24:15,340
 我讲FOR-EACH也应用于表的CDR部分
 I apply for-each to the cdr of the List.
 
-269
+268
 00:24:15,880 --> 00:24:18,730
 我对表的首元素进行处理 然后对表的其余元素进行处理
 All right, so I do it to the first of the List, do it to the rest of the List,
 
-270
+269
 00:24:19,320 --> 00:24:23,920
 当然 以此类推 递归地调用 又会对表其余元素的其余部分进行处理
 and of course, when I call it recursively, that's going to do it to the rest of the rest of the List and so on.
 
-271
+270
 00:24:23,920 --> 00:24:28,120
 最终 过程结束时 我应该告知系统
 And finally, when I get done, I have to just do something to say I'm done,
 
-272
+271
 00:24:28,160 --> 00:24:32,400
 所以就返回“DONE” 所以这非常像MAP
 so we'll return the message "done." So that's very, very similar to MAP.
 
-273
+272
 00:24:32,800 --> 00:24:35,120
 它们之间只是返回值不同
 It's mostly different in what it returns.
 
-274
+273
 00:24:35,480 --> 00:24:39,900
 比如说 如果我有一个可以在屏幕上打印对象的过程
 And so for example, if I had some procedure that printed things on the screen,
 
-275
+274
 00:24:40,560 --> 00:24:45,810
 如果我想打印表中的所有元素 可以调用(FOR-EACH PRINT LIST)
 if I wanted to print everything in the List, I could say for-each, print this List.
 
-276
+275
 00:24:46,780 --> 00:24:51,330
 如果我有一系列图表构成的表 想把它们输出在屏幕上
 Or if I had a List of figures, and I wanted to draw them on the display,
 
-277
+276
 00:24:51,620 --> 00:24:54,860
 我可以对这个调用(FOR-EACH DISPLAY FIGURES)
 I could say for-each, display on the screen this figure.
 
-278
+277
 00:24:58,180 --> 00:24:59,320
 有问题么？
 Take questions.
 
-279
+278
 00:25:00,620 --> 00:25:04,260
 学生：除非你明确地指定
 AUDIENCE: Does it create a new copy with something done to it,
 
-280
+279
 00:25:04,300 --> 00:25:07,540
 Lisp会创建一个你正在处理的对象的新拷贝 是这样么？
 unless you explicitly tell it to do that? Is that correct?
 
-281
+280
 00:25:07,540 --> 00:25:09,180
 教授：对
 PROFESSOR: Right. Ah.
 
-282
+281
 00:25:09,930 --> 00:25:10,940
 就是这样
 Yeah, that's right.
 
-283
+282
 00:25:10,940 --> 00:25:15,140
 FOR-EACH不创建新列表 它只是对列表的每一个元素进行处理
 For-each does not create a List. It just sort of does something.
 
-284
+283
 00:25:15,140 --> 00:25:17,290
 所以如果你有一堆事情等着做
 So if you have a bunch of things you want to do
 
-285
+284
 00:25:18,020 --> 00:25:21,560
 并且你并不关心这些值 比如打印 绘图
 and you're not worried about values like printing something, or drawing something on the screen,
 
-286
+285
 00:25:21,890 --> 00:25:24,600
 或者在终端中响铃等等
 or ringing the bell on the terminal,or for something,
 
-287
+286
 00:25:24,600 --> 00:25:27,640
 FOR-EACH对表中每个元素做这些事
 you can say for-each, you know, do this for-each of those things in the List,
 
-288
+287
 00:25:28,210 --> 00:25:32,420
 而MAP其实构建了一个新集合 这个集合也许是你想要用的
 whereas MAP actually builds you this new collection of values that you might want to use.
 
-289
+288
 00:25:32,420 --> 00:25:34,160
 这就是它们之间的微妙关系
 It's just a subtle difference between them.
 
-290
+289
 00:25:34,160 --> 00:25:36,300
 学生：你能否用FOR-EACH来构造MAP
 AUDIENCE: Could you write MAP using for-each,
 
-291
+290
 00:25:36,320 --> 00:25:40,160
 其中你用类似CONS的操作将表又构造出来了？
 so that you did some sort of cons or something to build the List back up?
 
-292
+291
 00:25:40,180 --> 00:25:44,460
 教授：某种程度上 我也许可以
 PROFESSOR: Well, sort of. I mean, I probably could.
 
-293
+292
 00:25:44,460 --> 00:25:49,980
 我不知道如何随手写出它 但是我可以给一些思路
 I can't think of how to do it right offhand, but yeah, I could arrange something.
 
-294
+293
 00:25:50,480 --> 00:26:00,620
 学生：我相信MAP和FOR-EACH的关键区别在于 从你上节课定义的递归的角度来看 它们一个是递归 而另一个不是
 AUDIENCE: The vital difference between MAP and for-each is one is recursive and the other is not in the sense you defined early yesterday,I believe.
 
-295
+294
 00:26:01,240 --> 00:26:03,860
 教授：是的 关于MAP和FOR-EACH和递归
 PROFESSOR: Yeah, about MAP and for-each and recursion.
 
-296
+295
 00:26:03,860 --> 00:26:05,480
 这个观点很好
 Yeah, that's a good point.
 
-297
+296
 00:26:05,480 --> 00:26:13,080
 我写的MAP过程恰巧是一个递归过程
 For the MAP procedure I wrote, that happens to be a recursive process.
 
-298
+297
 00:26:13,820 --> 00:26:17,060
 这是因为 你需要得到处理完表的剩余部分后的值
 And the reason for that is that when you've done this thing to the rest of the List,
 
-299
+298
 00:26:17,080 --> 00:26:20,960
 使其与表的开头部分相连
 you're waiting for that value so that you can stick it on to the beginning of the List,
 
-300
+299
 00:26:21,730 --> 00:26:24,530
 但是FOR-EACH不需要等待返回值
 whereas for-each doesn't really have any values to wait for.
 
-301
+300
 00:26:24,840 --> 00:26:26,660
 所以它变成了一个迭代的过程
 So that turns out to be an iterative process.
 
-302
+301
 00:26:26,660 --> 00:26:27,720
 这不是本质
 That's not fundamental.
 
-303
+302
 00:26:27,720 --> 00:26:31,800
 我可以用迭代的方式定义MAP过程
 I could have defined MAP so that it's evolved by an iterative process.
 
-304
+303
 00:26:31,820 --> 00:26:32,820
 只是我没那么做
 I just didn't happen to.
 
-305
+304
 00:26:34,240 --> 00:26:42,900
 学生：将FOR-EACH用在一个列表的列表上的话，我想这是可行的吧？
 AUDIENCE: If you were to call for each with a List that had embedded Lists, I imagine it would work, right?
 
-306
+305
 00:26:42,900 --> 00:26:48,100
 它会对这些内部列表的元素进行处理么？
 It would give you the internal elements of each of those internal Lists?
 
-307
+306
 00:26:48,700 --> 00:26:50,400
 教授：问题是 如果我调用
 PROFESSOR: OK, the question is if I call
 
-308
+307
 00:26:50,400 --> 00:26:52,280
 FOR-EACH或者MAP
 for-each or map, for that matter
 
-309
+308
 00:26:52,810 --> 00:26:55,280
 参数是一个嵌套有一个表的表
 with a List that had Lists in it
 
-310
+309
 00:26:56,690 --> 00:27:00,600
 虽然我们还没有讲过这个 但是那是可行的
 although we haven't really looked at that yet--would that work.
 
-311
+310
 00:27:01,020 --> 00:27:06,560
 答案是肯定的 不过我俩对“可行”的定义可能有些不同
 The answer is yes in the sense I mean work and no in the sense that you mean work,
 
-312
+311
 00:27:06,860 --> 00:27:10,650
 来看一下 如果我给你一个表
 because all that-- see if I give you a List,
 
-313
+312
 00:27:12,800 --> 00:27:14,200
 而在个箭头所指的
 where hanging off here is,
 
-314
+313
 00:27:16,060 --> 00:27:21,460
 不是一个数 而是一个表 或者序对 或者是其它东西
 you know, is something that's not a number, maybe another List or you know, another cons or something,
 
-315
+314
 00:27:21,960 --> 00:27:24,540
 FOR-EACH对表中的每个元素做处理
 for-each just says do something to each item in this List.
 
-316
+315
 00:27:24,540 --> 00:27:26,960
 它会不断地处理表CDR部分
 It goes down successively looking at the cdrs.
 
-317
+316
 00:27:26,960 --> 00:27:27,200
 学生：嗯
 AUDIENCE: OK.
 
-318
+317
 00:27:27,200 --> 00:27:31,060
 教授：对FOR-EACH来说，表中的第一个元素就是这个箭头所指的东西
 PROFESSOR: And as far as it's concerned, the first item in this List is whatever is hanging off here.
 
-319
+318
 00:27:31,060 --> 00:27:31,650
 学生：唔
 AUDIENCE: Mhm.
 
-320
+319
 00:27:31,650 --> 00:27:33,940
 教授：这对于你要完成的任务而言 也许是对的 也许不是
 PROFESSOR: That might or might not be the right thing.
 
-321
+320
 00:27:33,940 --> 00:27:35,570
 学生：所以不能进入子表中
 AUDIENCE: So it wouldn't go down into the--
 
-322
+321
 00:27:35,570 --> 00:27:36,910
 教授：绝对不能
 PROFESSOR: Absolutely not.
 
-323
+322
 00:27:36,910 --> 00:27:38,510
 当然我也可以那样写程序
 I could certainly write something else.
 
-324
+323
 00:27:38,510 --> 00:27:42,970
 你所说的是另一种公共模式 叫做树递归
 There's another, what you're looking for is a common pattern of usage called tree recursion,
 
-325
+324
 00:27:43,010 --> 00:27:47,940
 当你给它一个表 它会不断向深度递归 直到遇到所谓的“树叶”
 where you take a List, and you actually go all the way down to the what's called the leaves of the tree.
 
-326
+325
 00:27:47,940 --> 00:27:51,050
 你可以写出来这个过程 但是它既不是FOR-EACH也不是MAP
 And you could write such a thing, but that's not for-each and it's not MAP.
 
-327
+326
 00:27:52,420 --> 00:27:55,050
 FOR-EACH和MAP都很简单
 Remember, these things are really being very simple minded.
 
-328
+327
 00:27:55,770 --> 00:27:56,890
 好 还有问题么？
 OK, no more questions?
 
-329
+328
 00:27:57,680 --> 00:27:58,570
 好的 大家休息一下吧
 All right, let's break.
 
-330
+329
 00:27:59,110 --> 00:28:41,940
 音乐#TBD
 [MUSIC PLAYING]
 
-331
+330
 00:28:41,940 --> 00:28:48,650
 教授：我将在本节课余下的时间中 讨论一个实例
 PROFESSOR: What I'd like to do now is spend the rest of this time talking about one example,
 
-332
+331
 00:28:50,040 --> 00:28:53,920
 这个实例 可以充分地总结我们所学的所有东西
 and this example, I think, pretty much summarizes everything that we've done up until now:
 
-333
+332
 00:28:54,740 --> 00:28:56,290
 比如 表结构
 all right, and that's List structure
 
-334
+333
 00:28:57,170 --> 00:28:59,480
 以及抽象的技术
 and issues of abstraction,
 
-335
+334
 00:28:59,540 --> 00:29:00,820
 数据的表示
 and representation
 
-336
+335
 00:29:01,600 --> 00:29:04,600
 和用高阶过程描绘共性
 and representation and capturing commonality with higher order procedures,
 
-337
+336
 00:29:04,600 --> 00:29:09,800
 也会介绍目前为止还没怎么谈论过的
 and also is going to introduce something we haven't really talked about a lot yet-- what I said is the major third theme in this course:
 
-338
+337
 00:29:09,850 --> 00:29:13,460
 也就是这门课的第三大主题
 what I said is the major third theme in this course:
 
-339
+338
 00:29:13,960 --> 00:29:15,530
 元语言抽象
 meta-linguistic abstraction,
 
-340
+339
 00:29:15,540 --> 00:29:21,900
 这种在工程设计中控制复杂度的思想
 which is the idea that one of the ways of tackling complexity in engineering design
 
-341
+340
 00:29:22,860 --> 00:29:25,800
 也就是建立一个合适而强大的语言
 is to build a suitable powerful language.
 
-342
+341
 00:29:28,170 --> 00:29:34,740
 你们或许记得 我说过在这门课程中 你们将要学到的最重要的事情是
 You might recall what I said was pretty much the very most important thing that we're going to tell you in this course is that
 
-343
+342
 00:29:34,740 --> 00:29:41,170
 当我们考察一门语言时 关心的是它的基本元素
 when you think about a language,you think about it in terms of what are the primitives;
 
-344
+343
 00:29:42,980 --> 00:29:46,690
 关心组合它们的方式
 what are the means of combination--
 
-345
+344
 00:29:49,720 --> 00:29:52,800
 关心那些让你能够构建更大的东西的东西
 right, what are the things that allow you to build bigger things;
 
-346
+345
 00:29:53,610 --> 00:29:55,240
 以及 抽象的方式
 and then what are the means of abstraction.
 
-347
+346
 00:30:00,970 --> 00:30:05,160
 如何取用这些你构造出来的“大东西”
 How do you take those bigger things that you've built
 
-348
+347
 00:30:05,560 --> 00:30:07,970
 并将它们放入“黑盒”中
 put black boxes around them
 
-349
+348
 00:30:08,450 --> 00:30:11,710
 然后用它们来构建更复杂的东西
 and use them as elements in making something even more complicated?
 
-350
+349
 00:30:13,530 --> 00:30:18,720
 我将要介绍的一种语言 就是元语言抽象的一个例子
 Now the particular language I'm going to talk about is an example
 
-351
+350
 00:30:18,730 --> 00:30:22,700
 这是我朋友Peter Handerson发明的
 that was made up by a friend of ours called Peter Henderson.
 
-352
+351
 00:30:28,240 --> 00:30:31,740
 他在苏格兰的斯特灵大学
 Peter Henderson is at the University of Stirling in Scotland.
 
-353
+352
 00:30:32,780 --> 00:30:40,980
 这个语言是用来画这样的图
 And what this language is about is making figures that sort of look like this.
 
-354
+353
 00:30:41,860 --> 00:30:46,660
 这是埃舍尔的木版画 《方极限》
 This is this is a woodcut by Escher called "Square Limit."
 
-355
+354
 00:30:49,330 --> 00:30:57,940
 正如大家所见 这里面有着很复杂的...图像的递归
 You, sort of, see it has this complicated, kind of, recursive, sort of, recursive kind of figure,
 
-356
+355
 00:30:58,450 --> 00:31:05,050
 其中中间的这个鱼的图案以自相似的方式不断以更小的形式出现在原来的团案旁边
 where there's this fish pattern in the middle and things sort of bleed out smaller and smaller in self similar ways.
 
-357
+356
 00:31:08,490 --> 00:31:12,800
 总之 Peter Hendersion的语言是用来表述这类图形
 Anyway, Peter Henderson's language was for describing figures that look like that
 
-358
+357
 00:31:13,370 --> 00:31:18,280
 并且设计类似的图形 将它画在显示器上
 and designing new ones that look like that and drawing them on a display screen.
 
-359
+358
 00:31:20,240 --> 00:31:27,480
 这个例子还展示了另外一个主题
 There's another theme that we'll see illustrated by this example,
 
-360
+359
 00:31:28,090 --> 00:31:32,020
 这也是我跟Gerry多次提到的
 and that's the issue of what Gerry and I have already mentioned a lot:
 
-361
+360
 00:31:32,020 --> 00:31:36,170
 也就是过程跟数据之间没有本质的区别
 that there's no real difference, in some sense, between procedures and data.
 
-362
+361
 00:31:37,260 --> 00:31:42,400
 不管如何 我希望今早课程结束后
 And anyway I hope by the end of this morning, if you're not already,
 
-363
+362
 00:31:42,580 --> 00:31:47,600
 你们能将过程和数据当作一回事儿
 you will be completely confused about what the difference between procedures and data are,
 
-364
+363
 00:31:47,960 --> 00:31:49,580
 即使现在你们还将它们区别对待
 if you're not confused about that already.
 
-365
+364
 00:31:50,800 --> 00:31:55,280
 好 先让我们看一下Peter的语言
 Well in any case, let's start describing Peter's language.
 
-366
+365
 00:31:55,280 --> 00:31:57,260
 我先告诉你们基本元素是什么
 I should start by telling you what the primitives are.
 
-367
+366
 00:31:58,290 --> 00:32:00,920
 这个语言非常简单 因为它的基本元素只有一个
 This language is very simple because there's only one primitive.
 
-368
+367
 00:32:03,330 --> 00:32:06,300
 这个基本元素不是大家想象的那样
 A primitive is not quite what you think it is.
 
-369
+368
 00:32:07,080 --> 00:32:09,180
 它唯一的基本元素叫做"图像"
 There's only one primitive called a picture,
 
-370
+369
 00:32:09,700 --> 00:32:12,110
 但此“图像”非彼“图像”
 and a picture is not quite what you think it is.
 
-371
+370
 00:32:12,110 --> 00:32:14,170
 具体地来说
 Here's an example.
 
-372
+371
 00:32:14,170 --> 00:32:15,170
 这是George的图像
 This is a picture of George.
 
-373
+372
 00:32:19,010 --> 00:32:20,370
 我们的想法是
 The idea is that
 
-374
+373
 00:32:22,330 --> 00:32:31,460
 在这个语言中的图像是这样一个东西 它能在你指定的一个矩形里画出一个图像来
 a picture in this language is going to be something that draws a figure scaled to fit a rectangle that you specify.
 
-375
+374
 00:32:33,000 --> 00:32:34,420
 这里大家看到的强调线
 So here you see emphasis line
 
-376
+375
 00:32:34,420 --> 00:32:37,700
 是这个矩形的轮廓 但不是图像的一部分
 is outline of a rectangle, that's not really part of the picture,
 
-377
+376
 00:32:40,490 --> 00:32:47,170
 但是一旦指定一个矩形区域 图像会以以填充的方式绘制满区域
 but the picture-- you'll give it a rectangle, and it will draw this figure scaled to fit the rectangle.
 
-378
+377
 00:32:47,170 --> 00:32:52,160
 比如 这个是George 在这里 这个也是George
 So for example, there's George, and here, this is also George.
 
-379
+378
 00:32:53,210 --> 00:32:56,650
 它是同一个图像 只是缩放程度不同
 It's the same picture, right, just scaled to fit a different rectangle.
 
-380
+379
 00:32:57,400 --> 00:32:59,280
 这是“胖”George的版本
 Here's George as a fat kid.
 
-381
+380
 00:33:00,010 --> 00:33:03,440
 这个也是George
 That's the same George.
 
-382
+381
 00:33:03,810 --> 00:33:05,140
 这是同一个图形
 It's all the same figure.
 
-383
+382
 00:33:05,140 --> 00:33:09,570
 这个语言中 这三个都是同一个图像
 All of these three things are the same picture in this language.
 
-384
+383
 00:33:09,580 --> 00:33:13,040
 仅仅是给了不同的矩形区域让它来填充
 I'm just giving it different rectangles to scale itself in.
 
-385
+384
 00:33:16,080 --> 00:33:20,650
 这就是基本元素
 OK, those are the primitives. That is the primitive.
 
-386
+385
 00:33:21,440 --> 00:33:25,250
 现在 我们来讨论元素组合和操作
 Now let's start talking about the means of combination and the operations.
 
-387
+386
 00:33:25,900 --> 00:33:30,170
 比如 这里有一个叫做旋转的操作
 There is, for example, an operation called Rotate.
 
-388
+387
 00:33:31,090 --> 00:33:33,660
 如果我有一个图像 “旋转”操作就是
 And what Rotate does is, if I have a picture,
 
-389
+388
 00:33:35,370 --> 00:33:39,930
 先假定有一个里面有个“A”的矩形
 say a picture that draws an "A" in some rectangle that I give it,
 
-390
+389
 00:33:41,840 --> 00:33:45,730
 而旋转90度的操作则会
 the Rotate of that--say the Rotate by 90 degrees would,
 
-391
+390
 00:33:47,020 --> 00:33:50,650
 在一个给定的矩形内 绘制同样的图像
 if I give it a rectangle, draw the same image,
 
-392
+391
 00:33:50,650 --> 00:33:53,880
 但是 会缩放图像以适应矩形
 but again, scaled to fit that rectangle.
 
-393
+392
 00:33:56,110 --> 00:33:58,340
 这个就是旋转90度
 So that's Rotate by 90 degrees.
 
-394
+393
 00:33:58,340 --> 00:34:03,200
 另一个操作是“翻转” 可以水平翻转也可以竖直翻转
 There's another operation called Flip that can flip something, either horizontally or vertically.
 
-395
+394
 00:34:04,770 --> 00:34:06,000
 就是这些操作了
 All right, so those are, sort of, operations,
 
-396
+395
 00:34:06,010 --> 00:34:10,400
 或者你可以把它们认为是组合一个元素的各种方式
 or you can think of those as means of combination of one element.
 
-397
+396
 00:34:10,890 --> 00:34:12,420
 我可以把它们混合起来
 I can put things together.
 
-398
+397
 00:34:13,440 --> 00:34:15,540
 我们有一种叫BESIDE的操作
 There's a means of combination called Beside,
 
-399
+398
 00:34:16,460 --> 00:34:24,780
 它做的事情是 给定两个图像A、B --
 and what Beside does: it'll take two pictures, let's say A and B--
 
-400
+399
 00:34:29,020 --> 00:34:33,250
 这里图像是指能在指定的矩形中画一个图案的东西 --
 and by picture I mean something that's going to draw an image in a specified rectangle--
 
-401
+400
 00:34:34,050 --> 00:34:36,510
 BESIDE将会做的事情
 and what Beside will do--
 
-402
+401
 00:34:37,850 --> 00:34:44,080
 类似于调用(BESIDE A B S) 其中S是一个数
 I have to say, Beside of A and B, the side of two pictures and some number, s.
 
-403
+402
 00:34:45,340 --> 00:34:48,080
 是一个在0到1之间的数
 And s will be a number between zero and one.
 
-404
+403
 00:34:50,510 --> 00:34:52,570
 BESIDE绘制像这样的图像
 And Beside will draw a picture that looks like this.
 
-405
+404
 00:34:52,570 --> 00:34:56,710
 以给定的矩形为基础 但会将基底缩放S
 It will take the rectangle you give it and scale its base by s.
 
-406
+405
 00:34:56,710 --> 00:34:58,710
 这里S是0.5
 Say s is 0.5.
 
-407
+406
 00:35:00,180 --> 00:35:07,170
 在这里 它会在这里画第一个图案
 And then over here it will draw-- it'll put the first picture, and over here it'll put the second picture.
 
-408
+407
 00:35:07,810 --> 00:35:12,650
 在这里画第二个图案
 and over here it'll put the second picture.
 
-409
+408
 00:35:13,820 --> 00:35:16,440
 又比如说 我令设一个S的值
 Or for instance if I gave it a different value of s,
 
-410
+409
 00:35:16,810 --> 00:35:23,020
 比如调用(BESIDE A B 0.25)
 Or for instance if I gave it a different value of s, if I said Beside with a 0.25,
 
-411
+410
 00:35:25,940 --> 00:35:29,090
 效果相同 只不过A更瘦了
 it would do the same thing, except the A would be much skinnier.
 
-412
+411
 00:35:34,050 --> 00:35:36,280
 而B是这样的
 So it would draw something like that.
 
-413
+412
 00:35:37,820 --> 00:35:40,290
 这就是组合手段之一——BESIDE
 So there's a means of combination Beside,
 
-414
+413
 00:35:40,680 --> 00:35:46,050
 类似地 ABOVE方法在竖直方向上做这种操作
 and similarly there's an Above, which does the same thing except it puts them vertically instead of horizontally.
 
-415
+414
 00:35:47,840 --> 00:35:48,890
 我们来看一下
 Well let's look at that.
 
-416
+415
 00:35:50,740 --> 00:35:56,000
 这是George和他的"弟弟"
 All right, there's George and his kid brother,
 
-417
+416
 00:35:56,720 --> 00:36:07,050
 这是通过将George放在一旁
 which is, right, constructed by taking George and putting him Beside
 
-418
+417
 00:36:10,360 --> 00:36:14,420
 George与空图像的上下组合放在另一旁
 The Above, taking the empty picture, and there's a thing called the empty picture,
 
-419
+418
 00:36:14,520 --> 00:36:16,140
 这样做的意图很明显
 which does the obvious thing--
 
-420
+419
 00:36:16,140 --> 00:36:19,140
 空图像放在了另一个George的上面
 putting the empty picture above a copy of George,
 
-421
+420
 00:36:19,140 --> 00:36:21,140
 合成的图像又放在了George的旁边
 and then putting that whole thing Beside George.
 
-422
+421
 00:36:28,960 --> 00:36:30,340
 这个是图像P
 Here's something called P which is,
 
-423
+422
 00:36:31,100 --> 00:36:39,040
 像之前一样 是George和翻转后George的BESIDE组合
 which is, again, George Beside Flipping George,
 
-424
+423
 00:36:40,530 --> 00:36:42,080
 这里 我们做的是水平翻转
 I think, horizontally in this case,
 
-425
+424
 00:36:42,370 --> 00:36:44,800
 然后整体旋转180度
 Rotating the whole result 180 degrees
 
-426
+425
 00:36:45,800 --> 00:36:50,820
 然后调用BESIDE让它们组合在一起 系数是0.5
 putting them Beside one another with the basic rectangle divided at 0.5,
 
-427
+426
 00:36:52,560 --> 00:36:53,900
 这样 我创建了图像P
 right, and I can call that P.
 
-428
+427
 00:36:55,900 --> 00:36:57,880
 然后使用图像P
 And then I can take P,
 
-429
+428
 00:36:59,210 --> 00:37:04,960
 与它的翻转图像做ABOVE操作 形成图像Q
 And then I can take P, and put it above the Flipped copy of itself, and I can call that Q.
 
-430
+429
 00:37:09,200 --> 00:37:13,260
 请注意 我们是如何快速地增加复杂度
 Notice how rapidly that we've built up complexity,
 
-431
+430
 00:37:14,360 --> 00:37:21,050
 转瞬之间 我们使用George组合得到了Q 这说明了什么？
 just in, you know, 15 seconds, you've gotten from George to that thing Q. Why is that?
 
-432
+431
 00:37:22,050 --> 00:37:24,550
 为什么我们可以做得如此迅速呢?
 How are how we able to do that so fast?
 
-433
+432
 00:37:25,850 --> 00:37:28,020
 答案是闭包性质
 The answer is the closure property.
 
-434
+433
 00:37:28,690 --> 00:37:32,980
 这是因为 当我将两个图像做BESIDE操作后
 See, it's the fact that when I take a picture and put it Beside another picture,
 
-435
+434
 00:37:34,300 --> 00:37:35,290
 得到的也是图像
 that's then, again, a picture
 
-436
+435
 00:37:35,330 --> 00:37:37,780
 我可以继续执行 ROTATE FLIP 或者 ABOVE操作
 that I can go and Rotate and Flip or put Above something else.
 
-437
+436
 00:37:39,170 --> 00:37:40,880
 而操作的结果P
 Right, and when I take that element P,
 
-438
+437
 00:37:40,893 --> 00:37:44,880
 BESIDE FLIP ROTATE操作的结果也是一个图像
 which is the Beside or the Flip or the Rotate of something, that's, again, a picture.
 
-439
+438
 00:37:45,220 --> 00:37:50,200
 在这种组合方法下 图像的世界是封闭的
 Right, the world of pictures is closed under those means of combination.
 
-440
+439
 00:37:50,770 --> 00:37:52,240
 所以 任何时候我都可以
 So whenever I have something,
 
-441
+440
 00:37:52,480 --> 00:37:55,170
 以一个东西为基本元素 去构造别的东西
 I can turn right around and use that as an element in something else.
 
-442
+441
 00:37:56,330 --> 00:37:58,520
 这个例子比表和线段更直观
 So maybe better than List and segments,
 
-443
+442
 00:37:58,540 --> 00:38:03,280
 它揭示了 我们如和用封闭的操作 快速增加复杂度
 that just gives you an image for how fast you can build up complexity, because operations are closed.
 
-444
+443
 00:38:07,480 --> 00:38:12,020
 在构建更多东西之前
 OK, well before we go on with building more things,
 
-445
+444
 00:38:12,040 --> 00:38:14,770
 我们先来看看这个语言是如何实现的
 let's talk about how this language is actually implemented.
 
-446
+445
 00:38:16,910 --> 00:38:21,500
 其中基本的一个元素
 The basic element that sits under the table here
 
-447
+446
 00:38:21,930 --> 00:38:24,520
 是一个称作“矩形”的东西
 is a thing called a rectangle,
 
-448
+447
 00:38:26,090 --> 00:38:28,280
 所谓的矩形就是
 and what a rectangle is going to be,
 
-449
+448
 00:38:28,280 --> 00:38:33,680
 它有一个原点
 it's a thing that specified by an origin
 
-450
+449
 00:38:36,450 --> 00:38:40,180
 原点是一个向量 用以说明矩形是从哪开始
 that's going to be some vector that says where the rectangle starts.
 
-451
+450
 00:38:40,180 --> 00:38:42,290
 至于其它的向量
 And then there's going to be some other vector
 
-452
+451
 00:38:43,660 --> 00:38:46,330
 我们称其为矩形的水平分量
 that I'm going to call the horizontal part of the rectangle,
 
-453
+452
 00:38:55,760 --> 00:38:59,250
 还有就是矩形的竖直分量
 and another vector called the vertical part of the rectangle.
 
-454
+453
 00:39:00,490 --> 00:39:02,680
 这就是构成矩形的三个基本元素
 And those three pieces are the elements:
 
-455
+454
 00:39:02,680 --> 00:39:04,510
 两个向量用作
 where the lower vertex is,
 
-456
+455
 00:39:04,933 --> 00:39:09,970
 计算左上角和右下角的顶点坐标
 how you get to the next vertex over here, and how you get to the vertex over there.
 
-457
+456
 00:39:09,970 --> 00:39:12,370
 这三个向量确定了一个矩形
 The three vectors specify a rectangle.
 
-458
+457
 00:39:16,000 --> 00:39:18,933
 为了构建矩形 我们假设
 Now to actually build rectangles, what I'll assume is
 
-459
+458
 00:39:19,773 --> 00:39:22,060
 假设有个“构建矩形”的构造函数
 that we have a constructor called "make rectangle,"
 
-460
+459
 00:39:23,010 --> 00:39:24,260
 也就是MAKE-RECT
 or "make-rect,"
 
-461
+460
 00:39:27,560 --> 00:39:35,170
 以及选择函数 HORIZ、VERT 和 ORIGIN
 and selectors for horiz and vert and origin
 
-462
+461
 00:39:37,580 --> 00:39:39,650
 用于取得对应的矩形属性
 that get out the pieces of that rectangle.
 
-463
+462
 00:39:39,650 --> 00:39:42,540
 我们知道有很多方法可以实现它
 And well, you know a lot of ways you can do this now.
 
-464
+463
 00:39:42,540 --> 00:39:47,620
 可以用序对或者表 或者其它东西
 You can do it by using pairs in some way or other standard List or not.
 
-465
+464
 00:39:47,620 --> 00:39:51,400
 但是 这些东西的实现是George的事
 But in any case, the implementation of these things, that's George's problem.
 
-466
+465
 00:39:51,400 --> 00:39:53,170
 这是一个数据表示的问题
 It's just a data representation problem.
 
-467
+466
 00:39:53,170 --> 00:39:55,470
 现在我们假设已经有了这些矩形了
 So let's assume we have these rectangles to work with.
 
-468
+467
 00:40:02,050 --> 00:40:05,080
 好的，现在来看我们接下来要做的事情
 OK. Now the idea of this, remember what's got to happen.
 
-469
+468
 00:40:05,080 --> 00:40:08,220
 我们需要关心如何取用图像
 Somehow we have to worry about taking the figure
 
-470
+469
 00:40:09,330 --> 00:40:12,970
 将它缩放以适应你给定的矩形
 and scaling it to fit some rectangle that you give it,
 
-471
+470
 00:40:13,600 --> 00:40:16,600
 我们要来安排这些事
 that's the basic thing you have to arrange,
 
-472
+471
 00:40:16,600 --> 00:40:18,600
 来完成图像的缩放
 that these pictures can do.
 
-473
+472
 00:40:22,220 --> 00:40:23,650
 有哪些思路呢？
 How do we think about that?
 
-474
+473
 00:40:23,650 --> 00:40:27,080
 一种想法是：无论何时给定一个矩形
 Well, one way to think about that is that any time I give you a rectangle,
 
-475
+474
 00:40:35,680 --> 00:40:38,680
 无论何时给定一个矩形 也就是说
 Any time I gave you a rectangle, that defines,
 
-476
+475
 00:40:39,250 --> 00:40:45,770
 这在某种意义上是把正方形转换成矩形
 that defines,in some sense, a transformation from the standard square into that rectangle.
 
-477
+476
 00:40:45,770 --> 00:40:46,540
 也就是说
 Let me say what I mean.
 
-478
+477
 00:40:46,540 --> 00:40:48,530
 我所谓的正方形
 By the standard square, I'll mean something,
 
-479
+478
 00:40:49,040 --> 00:40:59,040
 它的坐标是(0,0)、(1,0)和(1,1)
 which is a square whose coordinates are 0,0, and 1,0, and 0,1 and 1,1.
 
-480
+479
 00:41:01,400 --> 00:41:05,720
 我们有一些显而易见的缩放变换
 And there's some sort of the obvious scaling transformation,
 
-481
+480
 00:41:06,120 --> 00:41:10,220
 可以把这个变成这个 把这个变成这个
 which maps this to that and this to that,
 
-482
+481
 00:41:10,240 --> 00:41:12,080
 并且 把所有的东西统一地拉伸
 and sort of, stretches everything uniformly.
 
-483
+482
 00:41:12,170 --> 00:41:18,250
 我们将这样的一条的线段
 So we take a line segment like this
 
-484
+483
 00:41:19,730 --> 00:41:24,200
 将它最终映射到像那样的一条线段
 and end up mapping it to a line segment like that,
 
-485
+484
 00:41:26,200 --> 00:41:32,680
 而点(X,Y)变成了这里的另外一个点
 so some point (x,y) goes to some other point up there.
 
-486
+485
 00:41:32,680 --> 00:41:39,370
 这个不紧要 会点向量运算 就能写出变换公式
 And although it's not important, with a little vector algebra, you could write that formula.
 
-487
+486
 00:41:39,370 --> 00:41:43,180
 初始点(X,Y)将会变换到的点的坐标是
 The thing that (x,y) goes to, the point that (x,y) goes to is
 
-488
+487
 00:41:43,580 --> 00:41:50,746
 以矩形原点为基础做向量加法
 gotten by taking the origin of the rectangle and then adding that as a vector to--
 
-489
+488
 00:41:51,160 --> 00:41:55,480
 加上 初始点X坐标 一个介于0和1之间的值
 well, take x, the x coordinate, which is something between zero and one,
 
-490
+489
 00:41:55,986 --> 00:42:01,840
 并乘上矩形的水平向量
 multiply that by the horizontal vector of the rectangle;
 
-491
+490
 00:42:07,626 --> 00:42:11,000
 再加上初始点的Y坐标 也是一个介于0和1的值
 and take the y coordinate, which is also something between zero and one
 
-492
+491
 00:42:11,386 --> 00:42:16,280
 并乘上矩形的竖直向量
 and multiply that by the vertical vector of the rectangle.
 
-493
+492
 00:42:16,740 --> 00:42:19,310
 这是简单的线性代数
 That's just a little linear algebra.
 
-494
+493
 00:42:19,310 --> 00:42:23,480
 这个就是正确的变换公式
 Anyway, that's the formula, which is the right obvious transformation
 
-495
+494
 00:42:23,690 --> 00:42:28,180
 它将方形中的物件转化到对应矩形中
 that takes things into the unit square, into the interior of that rectangle.
 
-496
+495
 00:42:31,340 --> 00:42:34,020
 现在 我们把它看作是一个过程
 OK well, let's actually look at that as a procedure.
 
-497
+496
 00:42:35,160 --> 00:42:36,293
 我们想要得到的是
 So what we want is
 
-498
+497
 00:42:37,800 --> 00:42:40,826
 由一个单位正方形到特定矩形的
 the thing which tells us that particular transformation
 
-499
+498
 00:42:41,013 --> 00:42:42,520
 特定变换过程
 that a rectangle defines.
 
-500
+499
 00:42:43,800 --> 00:42:45,220
 这个过程具体是这样的
 So here's the procedure.
 
-501
+500
 00:42:45,220 --> 00:42:47,220
 我叫它COORD-MAP
 I'll call it coordinate-map.
 
-502
+501
 00:42:47,770 --> 00:42:52,000
 COORD-MAP以一个矩形作为参数
 Coordinate-map is the thing that takes as its argument a rectangle
 
-503
+502
 00:42:53,600 --> 00:42:57,850
 它返回一个以点为参数的过程
 and returns for you a procedure on points.
 
-504
+503
 00:43:00,450 --> 00:43:06,820
 每个矩形 都对应一个变换点(X, Y)坐标的过程
 Right, so for each rectangle you get a way of transforming a point (x,y) into that rectangle.，
 
-505
+504
 00:43:06,820 --> 00:43:08,020
 是怎么得到的呢？
 And how do you get it?
 
-506
+505
 00:43:08,020 --> 00:43:10,920
 就如黑板上的Lisp代码所示
 Well I just--  writing in Lisp what I wrote there on the blackboard--
 
-507
+506
 00:43:10,920 --> 00:43:16,010
 我让矩形的原点加上——
 I add to the origin of the rectangle
 
-508
+507
 00:43:20,220 --> 00:43:25,020
 首先是 矩形水平部分
 the result of adding-- I take the horizontal part of the rectangle;
 
-509
+508
 00:43:25,020 --> 00:43:27,680
 按照点POINT的X坐标缩放
 I scale that by the x coordinate of the point.
 
-510
+509
 00:43:29,650 --> 00:43:32,620
 然后是 矩形竖直部分
 I take the vertical vector of the rectangle.
 
-511
+510
 00:43:33,510 --> 00:43:37,140
 按照点POINT的Y坐标缩放
 I scale that by the y coordinate of the point,
 
-512
+511
 00:43:37,140 --> 00:43:39,140
 然后把它们三个加到一起
 and then add all those three things up.
 
-513
+512
 00:43:40,130 --> 00:43:41,340
 这个过程就是这样
 That's the procedure.
 
-514
+513
 00:43:41,340 --> 00:43:44,540
 这就是我将要应用在点POINT上的过程
 That is the procedure that I'm going to apply to a point.
 
-515
+514
 00:43:46,540 --> 00:43:52,170
 这个过程由每个矩形自己生成
 And this whole thing is generated for each rectangle.
 
-516
+515
 00:43:52,170 --> 00:43:57,250
 每个矩形对应了一个定义在点集上的过程 COORD-MAP
 So any rectangle defines a Coordinate-MAP, which is a procedure on points.
 
-517
+516
 00:44:06,660 --> 00:44:10,426
 比如说 这里的George
 All right, so for example, George here,
 
-518
+517
 00:44:11,360 --> 00:44:16,340
 最初的George 可能是我在单位正方形中通过线段绘制的
 my original George, might have been something that I specified by segments in the unit square,
 
-519
+518
 00:44:19,500 --> 00:44:21,960
 而当我把它应用到一个新的矩形中
 and then for each rectangle I give this thing,
 
-520
+519
 00:44:24,140 --> 00:44:28,170
 我将会在新矩形中画出组成George的那些线段来
 I'm going to draw those segments inside that rectangle.
 
-521
+520
 00:44:28,170 --> 00:44:29,880
 我是怎么做的呢？
 How actually do I do that?
 
-522
+521
 00:44:30,680 --> 00:44:36,940
 我枚举原始George中的每条线段
 Well I take each segment in my original reference George that was specified,
 
-523
+522
 00:44:38,640 --> 00:44:40,586
 我对每条线段的终点
 and to each of the end points of those segments,
 
-524
+523
 00:44:40,880 --> 00:44:44,450
 应用目标矩形对应的COORD-MAP过程
 I applied the COORDINATE-MAP of the particular rectangle I want to draw it in.
 
-525
+524
 00:44:44,450 --> 00:44:46,066
 比如下面的这个矩形
 So for example, this lower rectangle,
 
-526
+525
 00:44:46,666 --> 00:44:50,880
 这个胖George 有它对应的COORD-MAP
 this George as a fat kid rectangle, has its COORDINATE-MAP.
 
-527
+526
 00:44:51,250 --> 00:44:53,693
 如果我要绘制这个图像
 And if I want to draw this image,
 
-528
+527
 00:44:55,380 --> 00:44:57,920
 需要做的就是对这里的每条线段 比如这条
 And if I want to draw this image, what I do is for each segment here, say for this segment,
 
-529
+528
 00:44:59,293 --> 00:45:05,340
 用COORD-MAP变换这个点 同时变换这个点
 I transformed that point by the coordinate MAP, transform that point by the coordinate MAP.
 
-530
+529
 00:45:05,340 --> 00:45:07,093
 我就得到了这两个点
 That will give me this point and that point
 
-531
+530
 00:45:07,386 --> 00:45:08,946
 就可以将在两点之间画线
 and draw the segment between them.
 
-532
+531
 00:45:09,710 --> 00:45:11,520
 这就是核心思路
 Right, that's the idea.
 
-533
+532
 00:45:12,660 --> 00:45:14,780
 那么如果我给一个不同的矩形 比如这个
 Right, and if I give it a different rectangle like this one,
 
-534
+533
 00:45:14,800 --> 00:45:15,760
 得到的是不同的COORD-MAP
 that's a different coordinate-MAP,
 
-535
+534
 00:45:15,790 --> 00:45:17,840
 因此我得到这些线段的不同图像
 so I get a different image of those line segments.
 
-536
+535
 00:45:19,280 --> 00:45:22,140
 基本图像又该如何表示呢？
 Well how do we actually get a picture to start with?
 
-537
+536
 00:45:22,140 --> 00:45:26,520
 可以用线段组成的表来表示
 I can build a picture to start with out of a List of line segments initially.
 
-538
+537
 00:45:27,613 --> 00:45:32,200
 这是用于构建我所谓的“基本图像”的过程
 Here's a procedure that builds what I'll call a primitive picture,
 
-539
+538
 00:45:33,480 --> 00:45:37,173
 意思是 没有用BESIDE ROTATE等操作
 meaning one I, sort of, got that didn't come out of Beside or Rotate or something.
 
-540
+539
 00:45:37,520 --> 00:45:39,600
 它以由线段组成的表为参数
 It starts with a List of line segments,
 
-541
+540
 00:45:42,946 --> 00:45:44,040
 #TBD
 and now it does what I said.
 
-542
+541
 00:45:44,040 --> 00:45:45,580
 图像会是什么样子呢？
 What's a picture have to be?
 
-543
+542
 00:45:45,580 --> 00:45:49,440
 首先 它是一个根据矩形定义的过程
 First of all it's a procedure that's defined on rectangles.
 
-544
+543
 00:45:51,700 --> 00:45:53,000
 这个过程做什么呢？
 What does it do?
 
-545
+544
 00:45:53,000 --> 00:45:56,560
 对于由线段组成的表中每个元素
 It says for each-- this is going to be a List of line segments--
 
-546
+545
 00:45:57,666 --> 00:46:03,386
 表中的每条线段s
 for each segment, for each s, which is a segment in this List of segments,
 
-547
+546
 00:46:05,893 --> 00:46:07,300
 都绘制了一条线
 well it draws a line.
 
-548
+547
 00:46:07,300 --> 00:46:08,820
 它画什么样的线段呢？
 What line does it draw?
 
-549
+548
 00:46:10,600 --> 00:46:12,840
 先得到线段的起点
 It gets the start point of that segment,
 
-550
+549
 00:46:15,226 --> 00:46:17,946
 用对应的COORD-MAP对其做变换
 transforms that by the coordinate MAP of the rectangle.
 
-551
+550
 00:46:19,540 --> 00:46:21,760
 这是我们想要的第一个点
 That's the first new point it wants to do.
 
-552
+551
 00:46:21,760 --> 00:46:26,320
 然后对线段终点做COORD-MAP操作
 Then it takes the endpoint of the segment, transforms that by the coordinate MAP of the rectangle,
 
-553
+552
 00:46:26,693 --> 00:46:27,920
 并将两点连线
 and then draws a line between.
 
-554
+553
 00:46:27,920 --> 00:46:30,840
 我们假设在屏幕上绘制线段是基本操作
 Let's assume drawline is some primitive that's built into the system
 
-555
+554
 00:46:31,093 --> 00:46:33,220
 已经在系统中实现了
 that actually draws a line on the display.
 
-556
+555
 00:46:33,960 --> 00:46:37,106
 通过COORD-MAP变换了线段终点
 All right, so it transforms the endpoints by the coordinate MAP of the rectangle,
 
-557
+556
 00:46:37,133 --> 00:46:38,200
 再把起点和终点连线
 draws a line between them,
 
-558
+557
 00:46:39,613 --> 00:46:44,120
 对表中每一条线段S都执行这样的操作
 does that for each s in this List of segments.
 
-559
+558
 00:46:45,960 --> 00:46:51,400
 请注意 图像就是一个以矩形为参数的过程
 And now remember again, a picture is a procedure that takes a rectangle as argument.
 
-560
+559
 00:46:51,400 --> 00:46:55,653
 所以当你给图像一个矩形时 它就像这样绘制线段
 So when you hand it a rectangle, this is what it does: draws those lines.
 
-561
+560
 00:46:57,173 --> 00:47:01,106
 那好 我应该如何使用它呢？
 All right, so there's-- how would I actually use this thing?
 
-562
+561
 00:47:01,220 --> 00:47:04,080
 我来说得具体一点
 Let's make it a little bit more concrete.
 
-563
+562
 00:47:05,600 --> 00:47:24,226
 就比如说 (DEFINE R (MAKE-RECT ...))
 Right, I would say for instance, define R to be make-rectangle of some stuff,
 
-564
+563
 00:47:24,506 --> 00:47:28,666
 这里需要用MAKE-VECTOR来构造一些向量
 and I'd have to specify some vectors here using make-vector.
 
-565
+564
 00:47:29,840 --> 00:47:46,180
 然后定义G为 (DEFINE G (MAKE-PICT ...))
 And then I could say, define say, G to be make-picture, and then some stuff.
 
-566
+565
 00:47:46,680 --> 00:47:55,280
 我要在这里使用MAKE-SEGMENT来构建线段组成的表
 And what I'd have to specify here is a List of line segments, right, using make segment.
 
-567
+566
 00:47:55,280 --> 00:47:58,700
 MAKE-SEGMENT由向量构成 向量由点构成
 Make-segment might be made out of vectors, and vectors might be made out of points.
 
-568
+567
 00:47:59,506 --> 00:48:04,600
 如果我想在一个矩形中呈现图像G
 And then if I actually wanted to see the image of G inside a rectangle,
 
-569
+568
 00:48:04,653 --> 00:48:11,720
 注意 图像是一个过程 它接受一个矩形作为参数
 well a picture is a procedure that takes a rectangle as argument.
 
-570
+569
 00:48:12,066 --> 00:48:16,373
 所以 如果我调用(G R)
 So if I then called G with an input of R,
 
-571
+570
 00:48:17,960 --> 00:48:23,253
 那么无论G是什么 都会在矩形R中绘制出来
 that would cause whatever image G is worrying about to be drawn inside the rectangle R.
 
-572
+571
 00:48:23,620 --> 00:48:25,620
 这就是我们如何使用它
 Right, so that's how you'd use that.
 
-573
+572
 00:48:26,866 --> 00:48:36,293
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-574
+573
 00:48:36,290 --> 00:48:39,786
 《计算机程序的构造和解释》
 The Structure And Interpretation of Computer Programs
 
-575
+574
 00:48:39,820 --> 00:48:43,546
 讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
 By: Prof. Harold Abelson && Gerald Jay Sussman
 
-576
+575
 00:48:51,280 --> 00:48:55,453
 《计算机程序的构造和解释》
 The Structure And Interpretation of Computer Programs
 
-577
+576
 00:48:55,500 --> 00:48:58,733
 讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
 By: Prof. Harold Abelson && Gerald Jay Sussman
 
-578
+577
 00:48:59,346 --> 00:49:03,020
 Henderson-Escher的例子
 Henderson Escher Example
 
-579
+578
 00:49:07,720 --> 00:49:12,480
 教授：为什么我说这个例子很好呢？
 PROFESSOR: Well why is it that I say this example is nice?
 
-580
+579
 00:49:12,480 --> 00:49:13,740
 也许你们不这么认为
 You probably don't think it's nice.
 
-581
+580
 00:49:13,740 --> 00:49:15,420
 你们可能觉得它很奇怪
 You probably think it's more weird than nice.
 
-582
+581
 00:49:15,420 --> 00:49:20,920
 用来矩形做复杂变换的过程来表示图像 确实奇怪
 Right, representing these pictures as procedures, which do complicated things with rectangles.
 
-583
+582
 00:49:20,920 --> 00:49:22,720
 那么 它好在哪里呢？
 So why is it nice?
 
-584
+583
 00:49:25,360 --> 00:49:26,693
 原因就是
 The reason it's nice
 
-585
+584
 00:49:27,226 --> 00:49:30,400
 一旦你按这种方法实现了基本元素
 is that once you've implemented the primitives in this way,
 
-586
+585
 00:49:30,973 --> 00:49:35,200
 组合的方法就是构造过程#TBD
 the means of combination just fall out by implementing procedures.
 
-587
+586
 00:49:35,980 --> 00:49:37,480
 我给你们演示一下
 Let me show you what I mean.
 
-588
+587
 00:49:37,480 --> 00:49:39,026
 假设我想实现BESIDE
 Suppose we want to implement Beside.
 
-589
+588
 00:49:41,560 --> 00:49:47,360
 我要做的是 假设有门有一个叫P1的图像
 So I'd like to--  suppose I've got a picture. Let's call it P1.
 
-590
+589
 00:49:47,360 --> 00:49:50,620
 一定要记得：图像本质上是一个过程
 P1 is going to be-- and now remember what a picture really is.
 
-591
+590
 00:49:50,620 --> 00:49:54,826
 当你传递给它一个矩形
 It's a thing that if you hand it some rectangle,
 
-592
+591
 00:49:56,520 --> 00:50:01,466
 它会在你给定的矩形中绘制图形
 it will cause an image to be drawn in whatever rectangle you hand it.
 
-593
+592
 00:50:03,466 --> 00:50:09,266
 假设P2是另一个图像 你传递给它一个矩形
 And suppose P2 two is some other picture, and you hand that a rectangle.
 
-594
+593
 00:50:09,746 --> 00:50:12,440
 无论给它什么矩形 它都会绘制一些图案
 And whatever rectangle you hand it, it draws some picture.
 
-595
+594
 00:50:14,840 --> 00:50:26,600
 现在 我想实现(BESIDE P1 P2 A) A是缩放因子
 And now if I'd like to implement Beside of P1 and P2 with a scale factor A,
 
-596
+595
 00:50:27,040 --> 00:50:28,380
 那会发生什么呢？
 well what does that have to be?
 
-597
+596
 00:50:34,770 --> 00:50:37,186
 如果我们在一个矩形中执行BESIDE操作
 So if hand Beside this rectangle--
 
-598
+597
 00:50:38,586 --> 00:50:40,120
 比如这个矩形
 let's hand it a rectangle.
 
-599
+598
 00:50:41,500 --> 00:50:42,740
 要做什么呢？
 Well what's it going to do?
 
-600
+599
 00:50:42,760 --> 00:50:46,360
 一部分比例是A 另一部分是1-A
 It's going to take this rectangle and split it into two
 
-601
+600
 00:50:49,293 --> 00:50:51,570
 一部分比例是A 另一部分是1-A
 at a ratio of A and one minus A.
 
-602
+601
 00:50:52,653 --> 00:50:55,120
 现在 我们就有了两个矩形
 And it will say, oh sure, now I've got two rectangles.
 
-603
+602
 00:51:02,346 --> 00:51:06,546
 然后先让P1在这个矩形中绘制
 And now it goes off to P1 and says P1, well draw yourself in this rectangle,
 
-604
+603
 00:51:07,360 --> 00:51:11,640
 然后让P2在这个矩形中绘制
 and goes off to P2, and says, P2, fine, draw yourself in this rectangle.
 
-605
+604
 00:51:13,280 --> 00:51:16,880
 BESIDE仅仅需要计算出这些矩形来
 The only computation it has to do is figure out what these rectangles are.
 
-606
+605
 00:51:17,360 --> 00:51:22,866
 由于矩形是由原点、水平向量和竖直向量组成
 Remember a rectangle is specified by an origin and a horizontal vector
 
-607
+606
 00:51:23,146 --> 00:51:25,946
 BESIDE操作需要计算出这些要素
 so it's got to figure out what these things are.
 
-608
+607
 00:51:27,373 --> 00:51:32,293
 所以对第一个矩形来说 原点变成了矩形的原点
 So for this first rectangle, the origin turns out to be the origin of the original rectangle,
 
-609
+608
 00:51:33,640 --> 00:51:37,800
 竖直向量保持原矩形的 不发生变化
 and the vertical vector is the same as the vertical vector of the original rectangle.
 
-610
+609
 00:51:38,893 --> 00:51:46,600
 水平向量是原始矩形的水平向量缩放A得到的
 The horizontal vector is the horizontal vector of the original rectangle scaled by A.
 
-611
+610
 00:51:47,493 --> 00:51:48,906
 这就是第一个矩形
 And that's the first rectangle.
 
-612
+611
 00:51:49,460 --> 00:51:52,693
 第二个矩形的原点是
 The second rectangle, the origin
 
-613
+612
 00:51:54,066 --> 00:51:59,653
 原矩形的原点加上矩形的水平向量缩放A
 The second rectangle, the origin is the original origin plus that horizontal vector scaled by A.
 
-614
+613
 00:52:01,200 --> 00:52:03,400
 第二个矩形的水平向量是
 The horizontal vector of the second rectangle is
 
-615
+614
 00:52:03,770 --> 00:52:06,040
 除去前一个矩形水平向量所余下的部分
 the rest of the horizontal vector of the first one,
 
-616
+615
 00:52:06,346 --> 00:52:11,660
 也就是(1-A)*H H是原矩形的水平向量
 which is 1 minus A times the original H,
 
-617
+616
 00:52:12,053 --> 00:52:13,773
 它的竖直向量还是V
 and the vertical vector is still v.
 
-618
+617
 00:52:15,480 --> 00:52:17,986
 基本上 BESIDE就是构造这两个矩形
 But basically it goes and constructs these two rectangles,
 
-619
+618
 00:52:18,000 --> 00:52:20,573
 但重要的是 一旦构造好这些矩形
 and the important point is having constructed the rectangles,
 
-620
+619
 00:52:20,933 --> 00:52:24,586
 它就能让P1、P2在正确的位置绘制
 it says OK, p1, you draw yourself in there, and p2, you draw yourself in there,
 
-621
+620
 00:52:24,626 --> 00:52:26,186
 这就是BESIDE需要做的全部工作
 and that's all Beside has to do.
 
-622
+621
 00:52:27,800 --> 00:52:29,306
 我们看一下代码
 All right, let's look at that piece of code.
 
-623
+622
 00:52:34,333 --> 00:52:35,133
 这是BESIDE
 Beside
 
-624
+623
 00:52:39,640 --> 00:52:46,440
 (BESIDE P1 P2 A) A是缩放比例
 Beside of a picture and another picture with some scaling ratio
 
-625
+624
 00:52:47,840 --> 00:52:53,640
 因为该过程返回图像 所以结果是一个以矩形为参数的过程
 is first of all, since it's a picture, a procedure that's going to take a rectangle as argument.
 
-626
+625
 00:52:55,493 --> 00:52:56,560
 它做什么呢？
 What's it going to do?
 
-627
+626
 00:52:56,760 --> 00:53:02,320
 它让P1在某个矩形中绘制 P2在另一个矩形中绘制
 It says, p1 draw yourself in some rectangle and p2 draw yourself in some other rectangle.
 
-628
+627
 00:53:03,213 --> 00:53:04,460
 现在这些矩形又是什么呢?
 And now what are those rectangles?
 
-629
+628
 00:53:04,460 --> 00:53:05,480
 就在这里计算
 Well here's the computation.
 
-630
+629
 00:53:05,480 --> 00:53:06,546
 它创建了一个矩形
 It makes a rectangle,
 
-631
+630
 00:53:07,520 --> 00:53:10,400
 用的是我刚才在黑板上写的几何公式 这是矩形的原点
 and this is the algebra I just did on the board: the origin, something;
 
-632
+631
 00:53:10,400 --> 00:53:11,840
 矩形的水平向量
 the horizontal vector, something;
 
-633
+632
 00:53:11,840 --> 00:53:13,440
 还有矩形的竖直向量
 and the vertical vector, something.
 
-634
+633
 00:53:13,973 --> 00:53:14,813
 对于P2
 For p2
 
-635
+634
 00:53:15,506 --> 00:53:19,780
 矩形需要不同的原点 水平向量和竖直向量
 And for p2, the rectangle it wants has some other origin and horizontal vector and vertical vector.
 
-636
+635
 00:53:19,780 --> 00:53:20,706
 但重要的是
 But the important point
 
-637
+636
 00:53:21,213 --> 00:53:27,180
 BESIDE只是将这两个矩形分别传递给了P1和P2而已
 is that all it's saying is, p1, go do your thing in one rectangle, and p2, go do your thing in another rectangle.
 
-638
+637
 00:53:27,740 --> 00:53:29,420
 这就是BESIDE所需要做的
 That's all the Beside has to do.
 
-639
+638
 00:53:30,840 --> 00:53:35,620
 好 ROTATE也很类似
 OK, similarly Rotate--
 
-640
+639
 00:53:36,960 --> 00:53:42,000
 假设我有一个图像A
 see if I have this picture A,
 
-641
+640
 00:53:42,973 --> 00:53:46,120
 我想让它旋转90度
 and I want to look at say rotating A by 90 degrees,
 
-642
+641
 00:53:46,373 --> 00:53:51,920
 这意味着 给定这个矩形
 what that should mean is, well take this rectangle,
 
-643
+642
 00:53:53,946 --> 00:53:58,440
 它有原点、水平向量和竖直向量
 which is origin and horizontal vector and vertical vector,
 
-644
+643
 00:53:58,786 --> 00:54:03,186
 现在假设已经有了这样的矩形
 and now pretend that it's really the rectangle that looks like this,
 
-645
+644
 00:54:03,746 --> 00:54:09,120
 这个矩形的原点、水平向量和竖直向量在这里
 which has an origin and a horizontal vector up here, and a vertical vector there,
 
-646
+645
 00:54:09,600 --> 00:54:12,460
 然后在矩形里各自绘制自己
 and now draw yourself with respect to that rectangle.
 
-647
+646
 00:54:13,260 --> 00:54:15,040
 我们来看看代码
 Let me show you that as a procedure.
 
-648
+647
 00:54:17,026 --> 00:54:19,853
 那么 ROTATE90过程
 All right, so we'll Rotate 90 of the picture,
 
-649
+648
 00:54:20,613 --> 00:54:22,960
 返回的也是一个以矩形为参数的过程
 because again, a procedure for rectangle,
 
-650
+649
 00:54:23,253 --> 00:54:26,120
 它就是将图像绘制在一个特定矩形中
 which says, OK picture, draw yourself in some rectangle;
 
-651
+650
 00:54:27,213 --> 00:54:30,660
 这个几何公式就是这个矩形的变换规则
 and then this algebra is the transformation on the rectangle.
 
-652
+651
 00:54:30,660 --> 00:54:33,840
 这句代码让矩形看起来像向侧面的
 It's the one which makes it look like the rectangle is sideways,
 
-653
+652
 00:54:33,860 --> 00:54:36,520
 原点在别的地方 竖直向量在别的地方
 the origin is someplace else and the vertical vector is someplace else,
 
-654
+653
 00:54:37,133 --> 00:54:39,746
 水平向量在别的地方 竖直向量在别的地方
 and the horizontal vector is someplace else, and vertical vector is someplace else.
 
-655
+654
 00:54:46,760 --> 00:54:49,906
 再次注意 这里的关键是
 OK, again notice, the crucial thing that's going on here
 
-656
+655
 00:54:50,533 --> 00:55:00,973
 关键是使用过程来表示图片 天然地具有闭包性质
 is you're using the representation of pictures as procedures to automatically get the closure property,
 
-657
+656
 00:55:01,740 --> 00:55:05,220
 BESIDE只是接受并使用P1#TBD
 because what happens is, Beside just has this thing p1.
 
-658
+657
 00:55:05,220 --> 00:55:09,400
 BESIDE并不关心它是一个基本图像还是一些线段
 Beside doesn't care if that's a primitive picture or it's line segments
 
-659
+658
 00:55:09,610 --> 00:55:12,693
 或者P1还是ABOVE、BESIDE、ROTATE等操作的结果
 if p1 is, itself, the result of doing Aboves or Besides or Rotates.
 
-660
+659
 00:55:12,720 --> 00:55:16,080
 关于P1 BESIDE需要知道的就是
 All Beside has to know about, say, p1
 
-661
+660
 00:55:16,293 --> 00:55:19,733
 给P1传递一个矩形 就会导致某物的绘制
 p1 is that if you hand p1 a rectangle, it will cause something to be drawn.
 
-662
+661
 00:55:21,040 --> 00:55:25,986
 在这个层面上 BESIDE并不关心P1是如何完成绘制
 And above that level, Beside just doesn't-- it's none of its business how p1 accomplishes that drawing.
 
-663
+662
 00:55:27,733 --> 00:55:32,253
 我们使用过程来表示图像 以保持它的闭包性质
 All right, so you're using the procedural representation to ensure this closure.
 
-664
+663
 00:55:35,640 --> 00:55:40,813
 将图像实现为过程 使得组合的方法变得
 So implementing pictures as procedures makes these means of combination,
 
-665
+664
 00:55:41,186 --> 00:55:43,933
 变得简单而优雅
 both pretty simple and also, I think, elegant.
 
-666
+665
 00:55:45,920 --> 00:55:48,220
 #TBD
 But that's not the real punchline.
 
-667
+666
 00:55:49,280 --> 00:55:53,520
 
 The real punchline comes when you look at the means of abstraction in this language.
 
-668
+667
 00:55:54,700 --> 00:55:56,240
 
 Because what have we done?
 
-669
+668
 00:55:56,240 --> 00:56:03,720
 我们把组合的方法实现为了过程
 We've implemented the means of combination themselves as procedures.
 
-670
+669
 00:56:05,853 --> 00:56:09,386
 这也就意味着 当我们对这个语言进行抽象时
 And what that means is that when we go to abstract in this language,
 
-671
+670
 00:56:10,170 --> 00:56:15,693
 Lisp提供的 操作过程的一切方法
 everything that Lisp supplies us for manipulating procedures
 
-672
+671
 00:56:16,333 --> 00:56:21,453
 都可以自然地在这个图像语言中使用
 automatically available to do things in this picture language.
 
-673
+672
 00:56:21,920 --> 00:56:29,746
 与其用术语“这个语言以Lisp实现” — 虽然确实如此
 The technical term I want to say is not only is this language implemented in Lisp, obviously it is,
 
-674
+673
 00:56:29,760 --> 00:56:32,580
 我想描述为“这个语言嵌入于Lisp”
 but the language is nicely embedded in Lisp.
 
-675
+674
 00:56:37,640 --> 00:56:42,080
 也就是说 通过像这样将语言嵌入
 What I mean is by embedding the language in this way,
 
-676
+675
 00:56:42,906 --> 00:56:48,860
 可以自动地获得Lisp的所有力量 以扩展的形式
 all the power of Lisp is automatically available as an extension to whatever you want to do.
 
-677
+676
 00:56:50,060 --> 00:56:51,680
 这又是什么意思呢？
 And what do I mean by that?
 
-678
+677
 00:56:51,973 --> 00:57:02,946
 举个例子 假设我想用A B C D四副图像做东西
 Example: say, suppose I want to make a thing that takes four pictures A, B, C and D,
 
-679
+678
 00:57:03,760 --> 00:57:07,060
 让它们呈现像这样的格局
 and makes a configuration that looks like this.
 
-680
+679
 00:57:12,500 --> 00:57:16,960
 可以将其称为FOUR-PICT格局
 Well you might call that, you know, four pictures or something, four-pict configuration.
 
-681
+680
 00:57:16,960 --> 00:57:17,700
 我该如何做呢？
 How do I do that?
 
-682
+681
 00:57:17,700 --> 00:57:18,680
 我可以很容易的做到这些
 Well I can obviously do that.
 
-683
+682
 00:57:18,680 --> 00:57:23,333
 写个过程 让B和D做ABOVE
 I just write a procedure that takes B above D
 
-684
+683
 00:57:24,133 --> 00:57:25,853
 A和C做ABOVE
 and A above C
 
-685
+684
 00:57:26,093 --> 00:57:27,706
 得到的结果做BESIDE
 and puts those things beside each other.
 
-686
+685
 00:57:28,240 --> 00:57:31,820
 我自然地拥有Lisp组合过程的能力
 So I automatically have Lisp's ability to do procedure composition.
 
-687
+686
 00:57:32,920 --> 00:57:35,820
 这不需要我为图像语言做些特殊处理
 And I didn't have to make that specifically in the picture language.
 
-688
+687
 00:57:35,820 --> 00:57:39,920
 事实上 这些组合本身就是过程
 It's automatic from the fact that the means of combination are themselves procedures.
 
-689
+688
 00:57:40,960 --> 00:57:44,180
 假设我想做一些更复杂的事情
 Or suppose I wanted to do something a little bit more complicated.
 
-690
+689
 00:57:44,180 --> 00:57:46,506
 我想为这里的每一个传递一个参数
 I wanted to put in a parameter so that for each of these,
 
-691
+690
 00:57:46,520 --> 00:57:50,080
 我可以独立地做旋转90度的操作
 I could independently specify a rotation by 90 degrees.
 
-692
+691
 00:57:50,413 --> 00:57:52,640
 这只需要我在这个过程中加入一个参数
 That's just putting a parameter in the procedure.
 
-693
+692
 00:57:53,173 --> 00:57:54,560
 
 It's automatically there.
 
-694
+693
 00:57:54,800 --> 00:57:57,840
 它自动地嵌入进去了
 Right, it automatically comes from the embedding.
 
-695
+694
 00:57:58,160 --> 00:58:05,360
 甚至 假设我想使用递归
 Or even more, suppose I wanted to, you know, use recursion.
 
-696
+695
 00:58:06,160 --> 00:58:10,780
 我们看一下图片递归组合的方法
 Let's look at a recursive means of combination on pictures.
 
-697
+696
 00:58:10,780 --> 00:58:14,640
 定义--看看你们能理解这个不
 I could say define-- let's see if you can figure out what this one is--
 
-698
+697
 00:58:14,693 --> 00:58:18,973
 (DEFINE (RIGHT-PUSH PICT N A))
 suppose I say define what it means to right-push a picture,
 
-699
+698
 00:58:22,840 --> 00:58:29,800
 RIGHT-PUSH需要图片P 整数N和缩放因数A
 right-push a picture and some integer N and some scale factor A.
 
-700
+699
 00:58:31,460 --> 00:58:41,220
 定义是：如果N为0 那么返回图像P
 I'll define this to say if N equals 0, then the answer is the picture.
 
-701
+700
 00:58:42,200 --> 00:58:54,020
 否则，就-- 哦 这里是P
 Otherwise I'm going to put-- oops, name change: P.
 
-702
+701
 00:58:55,880 --> 00:59:00,213
 否则 我用图形P做BESIDE操作
 Otherwise, I'm going to take P and put it beside
 
-703
+702
 00:59:00,920 --> 00:59:18,306
 BESIDE的另一个操作数是(RIGHT-PUSH P (- N 1) A)的结果
 the results of recursively right-pushing P with N minus 1 and A and use a scale factor of A. OK,
 
-704
+703
 00:59:24,720 --> 00:59:31,120
 如果N为0 就返回P 否则就对P进行A倍缩放
 so if N 0 , it's P. Otherwise I put P with a scale factor of A--
 
-705
+704
 00:59:31,120 --> 00:59:32,800
 抱歉 我这里代码没对齐
 I'm sorry I didn't align this right--
 
-706
+705
 00:59:33,666 --> 00:59:38,500
 递归地调用(RIGHT-PUSH P (- N 1) A) 将结果用BESIDE连接
 recursively beside the result of right-pushing P, N minus 1 times with a scale factor of A.
 
-707
+706
 00:59:38,500 --> 00:59:42,000
 这就是一种递归组合方法
 There's a recursive means of combination.
 
-708
+707
 00:59:43,786 --> 00:59:44,760
 调用的结果会是怎样的？
 What's that look like?
 
-709
+708
 00:59:44,760 --> 00:59:45,906
 我们来看看
 Well, here's what it looks like.
 
-710
+709
 00:59:46,040 --> 00:59:56,040
 这是(RIGHT-PUSH GEORGE 2 0.75)的结果
 There's George right-pushed against himself twice with a scale factor of 0.75.
 
-711
+710
 00:59:59,260 --> 01:00:00,720
 这个是从什么地方来的呢？
 Where'd that come from?
 
-712
+711
 01:00:00,720 --> 01:00:02,340
 我是如何想象出这些递归来的呢？
 How did I get all this fancy recursion?
 
-713
+712
 01:00:02,340 --> 01:00:05,240
 答案是无意识的 绝对是无意识的
 And the answer is just automatic, absolutely automatic.
 
-714
+713
 01:00:05,240 --> 01:00:09,800
 由于它们都是过程 而嵌入的目标系统中允许定义递归过程
 Since these are procedures, the embedding says, well sure, I can define recursive procedures.
 
-715
+714
 01:00:10,360 --> 01:00:11,680
 我不必自己去做
 I didn't have to arrange that.
 
-716
+715
 01:00:13,560 --> 01:00:16,420
 当然 我们可以模仿这个方法做些更复杂的事
 And of course, we can do more complicated things of the same sort.
 
-717
+716
 01:00:16,420 --> 01:00:18,213
 我可以定义做UP-PUSH的过程
 I could make something that does an up-push.
 
-718
+717
 01:00:18,420 --> 01:00:22,600
 对 它可以递归地把图片放在原来的上面
 Right, that sort of goes like this, by recursively putting something above.
 
-719
+718
 01:00:22,600 --> 01:00:26,546
 我也可以用这种策略来做些其它事
 Or I could make something that, sort of, was this scheme.
 
-720
+719
 01:00:26,560 --> 01:00:28,853
 给定一个图像
 I might start out with a picture
 
-721
+720
 01:00:29,786 --> 01:00:37,160
 然后递归地把它放在原图片的旁边和上面
 and then, sort of, recursively both push it aside and above
 
-722
+721
 01:00:37,573 --> 01:00:38,920
 这里再放一些别的
 and that might put something there.
 
-723
+722
 01:00:39,520 --> 01:00:41,826
 然后我把同样递归的图像放在这里
 And then up here I put the same recursive thing,
 
-724
+723
 01:00:42,360 --> 01:00:44,200
 我可以用这个来终止
 and I might end up with something like this.
 
-725
+724
 01:00:45,400 --> 01:00:52,500
 这个过程比RIGHT-PUSH复杂一点 但也不算太多
 Right, so there's a procedure that's a little bit more complicated than right-push but not much.
 
-726
+725
 01:00:53,640 --> 01:00:58,140
 在BESIDE的基础上 我多加了一个ABOVE操作
 I just do an Above and a Beside, rather than just a Beside.
 
-727
+726
 01:01:01,120 --> 01:01:06,786
 如果我把它应用于四张放在一起的图像上
 Now if I take that and apply that with the idea of putting four pictures together,
 
-728
+727
 01:01:07,533 --> 01:01:08,653
 这样做当然没问题
 which I can surely do;
 
-729
+728
 01:01:09,013 --> 01:01:14,173
 我把它应用于我们之前定义的Q上
 and I go and I apply that to Q, which we defined before, right,
 
-730
+729
 01:01:15,973 --> 01:01:18,733
 我得到的是这个玩意儿
 what I end up with this is this thing,
 
-731
+730
 01:01:20,146 --> 01:01:25,266
 "图像Q的正方形极限" 做了两次
 which is, sort of, the square limit of Q, done twice.
 
-732
+731
 01:01:28,180 --> 01:01:32,253
 好 现在我们将其与Escher的"正方形极限"对比一下
 Right, and then we can compare that with Escher's "Square Limit."
 
-733
+732
 01:01:32,880 --> 01:01:34,533
 可以看到 这都是基于同样的思想
 And you see, it's sort of the same idea.
 
-734
+733
 01:01:34,740 --> 01:01:36,940
 当然 Escher的图像更加漂亮一些
 Escher's is, of course, much, much prettier.
 
-735
+734
 01:01:36,940 --> 01:01:44,040
 如果我们回过头审视George
 If we go back and look at George, right, if we go look at George here--
 
-736
+735
 01:01:44,386 --> 01:01:47,373
 我最开始用的是非常随意的设计
 see, I started with a fairly arbitrary design
 
-737
+736
 01:01:47,426 --> 01:01:49,260
 用了George的图像 做了一些操作
 this picture of George and did things with it.
 
-738
+737
 01:01:51,226 --> 01:01:53,146
 我们再看看Escher的图片
 Right, whereas if we go look at the Escher picture, right,
 
-739
+738
 01:01:54,080 --> 01:01:56,140
 Escher的图片不是随意设计的
 the Escher picture is not an arbitrary design.
 
-740
+739
 01:01:56,140 --> 01:01:57,666
 这个图案非常精妙
 It's this very, very clever thing,
 
-741
+740
 01:01:57,893 --> 01:02:00,200
 当我们把鱼身
 so that when you take this fish body
 
-742
+741
 01:02:01,826 --> 01:02:04,973
 把鱼身旋转并放缩 就会优美地变成下一条鱼
 and Rotate it and shrink it down, it bleeds into the next one really nicely.
 
-743
+742
 01:02:07,400 --> 01:02:11,480
 当然用George 我没有做像上面做的那些事情
 And of course with George, I didn't really do anything like that.
 
-744
+743
 01:02:12,120 --> 01:02:13,906
 就图像George来说
 So if we look at George,
 
-745
+744
 01:02:15,413 --> 01:02:18,640
 也有一些地方匹配 但不够好 比较随意
 right, there's a little bit of match up, but not very nice, and it's pretty arbitrary.
 
-746
+745
 01:02:18,640 --> 01:02:21,533
 顺便说下 一个好的程序
 One very nice project, by the way,
 
-747
+746
 01:02:22,306 --> 01:02:27,540
 应该有个过程 能接受像这里George一样的基本图像
 would be to write a procedure that could take some basic figure like this George thing
 
-748
+747
 01:02:27,866 --> 01:02:29,626
 然后调整其中的线段终点
 and start moving the ends of the lines around,
 
-749
+748
 01:02:29,866 --> 01:02:31,200
 这样可以得到一个好看的图像
 so you got a really nice one
 
-750
+749
 01:02:32,133 --> 01:02:34,066
 在做“正方形的极限”应该注意这些
 when you went and did that "Square Limit" process.
 
-751
+750
 01:02:34,680 --> 01:02:36,306
 这是一个非常值得思考的事情
 That'd be a really nice thing to think about.
 
-752
+751
 01:02:38,080 --> 01:02:39,720
 同时 我还可以进行组合
 Well so, we can combine things.
 
-753
+752
 01:02:39,720 --> 01:02:41,040
 我们还可以使用递归过程
 We can recursive procedures.
 
-754
+753
 01:02:41,040 --> 01:02:43,480
 我们可以自然而然地做任何事情
 We can do all kinds of things, and that's all automatic.
 
-755
+754
 01:02:44,600 --> 01:02:48,520
 重点在于 在语言中实际实现另一个语言
 Right, the important point, the difference between merely implementing something in a language
 
-756
+755
 01:02:48,693 --> 01:02:50,440
 在语言中嵌入另一个语言的差异
 and embedding something in the language,
 
-757
+756
 01:02:50,440 --> 01:02:53,720
 这可以让你不丢失原有语言的能力 而Lisp强大之处在于
 so that you don't lose the original power of the language, and what Lisp is great at,
 
-758
+757
 01:02:54,760 --> 01:02:57,620
 Lisp是一个强悍的语言 可以处理任何特定问题
 see Lisp is a lousy language for doing any particular problem.
 
-759
+758
 01:02:57,620 --> 01:03:02,100
 把你想要的语言嵌入到Lisp中才是真的好
 What it's good for is figuring out the right language that you want and embedding that in Lisp.
 
-760
+759
 01:03:02,100 --> 01:03:05,440
 这才是这种设计方法的真正力量
 That's the real power of this approach to design.
 
-761
+760
 01:03:05,693 --> 01:03:06,820
 我们可以深入一下
 Of course, we can go further.
 
-762
+761
 01:03:06,820 --> 01:03:08,813
 在Lisp中我们还可以做些其它的事
 See, you saw the other thing that we can do in Lisp
 
-763
+762
 01:03:09,213 --> 01:03:17,520
 就是将通用方法抽象成高阶过程
 is capture general methods of doing things as higher order procedures.
 
-764
+763
 01:03:19,093 --> 01:03:22,573
 在我画那些图像时 你们可能已经发现
 And you probably just from me drawing it got the idea that right-push
 
-765
+764
 01:03:23,786 --> 01:03:26,613
 RIGHT-PUSH和类似的过程 就是一直在上面放东西
 and the analogous thing where you push something up and up and up and up
 
-766
+765
 01:03:26,933 --> 01:03:33,820
 而这个CORNER-PUSH则是#TBD
 and this corner push thing are all generalizations of a common kind of idea.
 
-767
+766
 01:03:34,720 --> 01:03:37,200
 为了演示并让大家熟悉
 So just to illustrate and give you practice in looking at a
 
-768
+767
 01:03:37,986 --> 01:03:40,653
 使用廊腰缦回的高阶过程
 at a fairly convoluted use of higher order procedures,
 
-769
+768
 01:03:41,120 --> 01:03:47,240
 #TBD
 let me show you the general idea of pushing some means of combination to recursively repeat it.
 
-770
+769
 01:03:48,300 --> 01:03:50,706
 这个例子可以说明一切
 So here's a good one to puzzle out.
 
-771
+770
 01:03:51,220 --> 01:04:00,700
 我们可以定义一个依赖于具体组合方式的PUSH过程
 We'll define it what it means to push using a means of combination.
 
-772
+771
 01:04:01,493 --> 01:04:04,880
 COMB的取值可以是BESIDE或ABOVE等
 Comb is going to be something like the Beside or Above.
 
-773
+772
 01:04:06,186 --> 01:04:07,060
 过程的体是什么呢？
 Well what's that going to be.
 
-774
+773
 01:04:07,060 --> 01:04:12,060
 它返回一个过程 想一想BESIDE实际上是什么
 That's going to be a procedure, remember what Beside actually was, right.
 
-775
+774
 01:04:13,220 --> 01:04:15,186
 它接受一个图片
 It took a picture,
 
-776
+775
 01:04:15,960 --> 01:04:18,080
 哦  它接受两个图片和一个缩放因数
 took two pictures and a scale factor.
 
-777
+776
 01:04:18,626 --> 01:04:24,280
 利用这个过程 定义一个接受层数、图像和缩放因数的过程
 Using that I produced something that took a level number and a picture and a scale factor,
 
-778
+777
 01:04:24,280 --> 01:04:25,453
 我称之为RIGHT-PUSH
 that I called right-push.
 
-779
+778
 01:04:26,160 --> 01:04:33,660
 这个过程接受参数 图像PICT 层数N和缩放因数A
 So this is going to be something that takes a picture, a level number and a scale factor, and it's going to say--
 
-780
+779
 01:04:36,160 --> 01:04:39,120
 我要做一些重复操作
 I'm going to do some repeated operation.
 
-781
+780
 01:04:39,450 --> 01:04:46,626
 我会重复应用一个接受一个图像P的过程
 I'm going to repeatedly apply the procedure which takes a picture
 
-782
+781
 01:04:48,400 --> 01:04:50,693
 并把组合的方式应用在
 and applies the means of combination
 
-783
+782
 01:04:51,200 --> 01:04:59,080
 应用在图像PICT和在这里接受的图像P以及缩放因数A
 to the picture and the original picture and the one I took in here and the scale factor,
 
-784
+783
 01:05:02,266 --> 01:05:07,280
 我要重复应用这个过程N次
 and I do the thing which repeats this procedure N times,
 
-785
+784
 01:05:12,040 --> 01:05:16,200
 我则是把这整个过程应用在原图片PICT上
 and I apply that whole thing to my original picture.
 
-786
+785
 01:05:19,560 --> 01:05:24,480
 虽然之前没提过 这里的REPEATED也是一个高阶过程
 Repeated here, in case you haven't seen it, is another higher order procedure
 
-787
+786
 01:05:24,533 --> 01:05:28,346
 它接受一个过程P和一个数字N
 that takes a procedure and a number
 
-788
+787
 01:05:29,546 --> 01:05:34,293
 它返回另一个过程：将给定的过程P重复应用N次的过程
 and returns for you another procedure that applies this procedure N times.
 
-789
+788
 01:05:36,040 --> 01:05:39,306
 可能有些人已经在练习中编写过REPEATED了
 And I think some of you have already written repeated as an exercise,
 
-790
+789
 01:05:39,706 --> 01:05:43,013
 如果还没做的话 这是理解和练习高阶过程的好机会
 but if you haven't, it's a very good exercise in thinking about higher order procedures.
 
-791
+790
 01:05:43,840 --> 01:05:46,906
 无论如何 我将把REPEATED过程的结果应用到PICT上
 But in any case, the result of this repeated is what I apply to picture.
 
-792
+791
 01:05:49,466 --> 01:05:52,386
 定义好PUSH后 这就
 And having done that, that's going to capture the --
 
-793
+792
 01:05:53,120 --> 01:05:57,733
 #TBD
 that is the thing, the way I got from the idea of Beside to the idea of right-push
 
-794
+793
 01:05:59,013 --> 01:06:13,173
 现在 我就可以把RIGHT-PUSH定义为用BESIDE来做PUSH操作
 So having done that, I could say define right-push to be push of Beside.
 
-795
+794
 01:06:17,653 --> 01:06:20,320
 我也可以把UP-PUSH定义为用ABOVE来做PUSH操作
 Or if I say, define up-push to be push of Above
 
-796
+795
 01:06:20,346 --> 01:06:25,480
 类似地 CORNER-PUSH就是用BESIDE和ABOVE的适当组合做PUSH操作
 I'd get the analogous thing or define corner-push to be push of some appropriate thing that did both the Beside and Above,
 
-797
+796
 01:06:25,493 --> 01:06:26,706
 我可以用任何东西做PUSH操作
 or I could push anything.
 
-798
+797
 01:06:28,266 --> 01:06:34,760
 嗯 如果你还不太理解lambda的话 这个参考这个例子
 Anyway this is, if you're having trouble with lambdas, this is an excellent exercise in figuring out what this means.
 
-799
+798
 01:06:38,986 --> 01:06:41,000
 我们可以从这个例子中学到很多东西
 OK, well there's a lot to learn from this example.
 
-800
+799
 01:06:42,186 --> 01:06:49,800
 我主要想要介绍的是在一个语言中嵌入另一个语言
 The main point I've been welling on is the notion of nicely embedding a language inside another language.
 
-801
+800
 01:06:50,666 --> 01:06:55,626
 这样 母体语言--本例中是Lisp--的所有能力
 Right, so that all the power of this language like Lisp of the surrounding language
 
-802
+801
 01:06:55,920 --> 01:07:00,280
 可以作为你所构建语言的一种扩展而取得
 is still accessible to you and appears as a natural extension of the language that you built.
 
-803
+802
 01:07:00,986 --> 01:07:04,000
 这个例子很好地展示了这点
 That's one thing that this example shows very well.
 
-804
+803
 01:07:08,146 --> 01:07:10,940
 另外 当我们回过头去思考
 Another thing is, if you go back and think about that,
 
-805
+804
 01:07:10,940 --> 01:07:12,280
 什么是过程 什么是数据
 what's procedures and what's data.
 
-806
+805
 01:07:12,280 --> 01:07:16,200
 在这里 天啊 发生了什么
 You know, by the time we get up to here, my God, what's going on.
 
-807
+806
 01:07:16,200 --> 01:07:19,660
 在这里 这是一个过程 它接受一个图像和一个参数
 I mean, this is some procedure, and it takes a picture and an argument,
 
-808
+807
 01:07:19,660 --> 01:07:20,360
 但是 什么是图片呢？
 and what's a picture.
 
-809
+808
 01:07:20,360 --> 01:07:23,820
 请回想 图像本身 就是一个以矩形为参数的过程
 Well, a picture itself, as you remember, was a procedure, and that took a rectangle.
 
-810
+809
 01:07:23,820 --> 01:07:25,820
 这个矩形是某种抽象
 And a rectangle is some abstraction.
 
-811
+810
 01:07:26,093 --> 01:07:28,133
 我希望你们现在能彻底明白
 And I hope now that by now you're completely lost
 
-812
+811
 01:07:29,146 --> 01:07:33,740
 系统中什么是过程 什么是数据
 as to the question of what in the system is procedure and what's data.
 
-813
+812
 01:07:33,740 --> 01:07:34,780
 我们发现 它们没有任何区别
 You see, there isn't any difference.
 
-814
+813
 01:07:35,493 --> 01:07:36,440
 真的没有区别
 There really isn't.
 
-815
+814
 01:07:37,933 --> 01:07:41,426
 你可以认为图片有时候是过程 有时候是数据
 And you might think of a picture sometimes as a procedure and sometimes as data,
 
-816
+815
 01:07:41,840 --> 01:07:44,900
 但是 这只是让你容易理解的一种方法
 but that's just, sort of, you know, making you feel comfortable.
 
-817
+816
 01:07:44,900 --> 01:07:47,306
 这有一定道理 也没有道理
 It's really both in some sense or neither in some sense.
 
-818
+817
 01:07:49,920 --> 01:08:02,200
 #TBD
 OK, there's a more general point about the structure of the system as creating a language,
 
-819
+818
 01:08:02,520 --> 01:08:14,200
 #TBD
 viewing the engineering design process as one of creating language or rather one of creating a sort of sequence of layers of language.
 
-820
+819
 01:08:14,773 --> 01:08:20,013
 众所周知 有一种方法学 或者叫做“神话学”
 You see, there's this methodology, or maybe I should say mythology,
 
-821
+820
 01:08:20,746 --> 01:08:24,900
 姑且叫做软件“工程”
 that's, sort of, charitably called software, quote, engineering.
 
-822
+821
 01:08:25,213 --> 01:08:28,040
 #TBD
 All right, and what does it say, it's says well, you go and you figure out your task,
 
-823
+822
 01:08:28,040 --> 01:08:30,040
 你仅仅解决你要做的事情
 and you figure out exactly what you want to do.
 
-824
+823
 01:08:30,400 --> 01:08:32,200
 一但你搞清楚要做的东西
 And once you figure out exactly what you want to do,
 
-825
+824
 01:08:32,226 --> 01:08:34,540
 你把它划分为三个子问题
 you find out that it breaks out into three sub-tasks,
 
-826
+825
 01:08:34,540 --> 01:08:35,760
 然后你开始继续做--
 and you go and you start working on--
 
-827
+826
 01:08:35,973 --> 01:08:38,940
-你开始处理这些子问题 然后你明确它是什么
+你开始处理这个子问题 然后你明确它是什么
 and you work on this sub-task, and you figure out exactly what that is.
 
-828
+827
 01:08:38,940 --> 01:08:43,040
-这些子问题就分裂成三个子问题 你把它们处理完
+这个子问题就分裂成三个子问题 你把它们处理完
 And you find out that that breaks down into three sub-tasks, and you specify them completely,
 
-829
+828
 01:08:43,040 --> 01:08:47,320
 #TBD
 and you go and you work on those two, and you work on this sub-one, and you specify that exactly.
 
-830
+829
 01:08:47,320 --> 01:08:51,100
-然后你最终完成了你要做的，你回到了这里，然后你开始处理你的第二个子问题
+#TBD
 And then finally when you're done, you come back way up here, and you work on your second sub-task,
 
-831
+830
 01:08:51,100 --> 01:08:53,400
 然后把它详细的实现出来
 and specify that out and work it out.
 
-832
+831
 01:08:53,400 --> 01:08:57,640
-然后你结束-- 你完成了这个美丽的大厦
+结束之后-- 你完成了这个美丽的大厦
 And then you end up with-- you end up at the end with this beautiful edifice.
 
+832
+01:08:57,640 --> 01:09:00,253
+你最后得到了一棵不非凡的树
+Right, you end up with a marvelous tree,
+
 833
-01:08:57,640 --> 01:09:08,240
-对，你完成了这个不寻常的树，你把问题分成子问题的时候，然后你把这些子问题分成了更小的子问题，然后把他们又分成了更小的问题.
-Right, you end up with a marvelous tree, where you've broken your task into sub-tasks and broken each of these into sub-tasks and broken those into sub-tasks, right.
+01:09:00,893 --> 01:09:08,240
+你把问题划分为子问题 子问题再划分为子问题
+that where you've broken your task into sub-tasks and broken each of these into sub-tasks and broken those into sub-tasks, right.
 
 834
-01:09:09,880 --> 01:09:18,640
-然后非常准确的定义了这些节点，他们都是构建这个大厦的完美任务.
-And each of these nodes is exactly and precisely defined to do the wonderful, beautiful task to make it fit into the whole edifice, right.
+01:09:09,880 --> 01:09:15,026
+树中的每个结点都被严谨而准确地定义
+And each of these nodes is exactly and precisely defined
 
 835
-01:09:18,640 --> 01:09:21,140
-这个就是我说的神话
-That's this mythology.
+01:09:15,260 --> 01:09:18,666
+#TBD
+to do the wonderful, beautiful task to make it fit into the whole edifice
 
 836
-01:09:21,140 --> 01:09:26,160
-只有计算机科学家才可能相信你构建的复杂系统想这个样子
-See only a computer scientist could possibly believe that you build a complex system like that, right.
+01:09:18,960 --> 01:09:21,140
+这个就是所谓的“神话学”
+Right, that's this mythology.
 
 837
-01:09:27,860 --> 01:09:32,800
-我们用Henderson的例子来做对比,
-Contrast that with this Henderson example.
+01:09:21,140 --> 01:09:25,920
+只有计算机科学家才可能相信你构建的复杂系统像这个样子
+See only a computer scientist could possibly believe that you build a complex system like that
 
 838
-01:09:32,800 --> 01:09:34,300
-它不是这样工作的
-It didn't work like that.
+01:09:27,480 --> 01:09:32,800
+好了 我们用Henderson的例子来做对比
+Right. Contrast that with this Henderson example.
 
 839
-01:09:35,060 --> 01:09:39,900
+01:09:32,800 --> 01:09:34,300
+它的结构不是那样
+It didn't work like that.
+
+840
+01:09:35,260 --> 01:09:39,333
 事实是：这里有一个语言层次的序列
 What happened was that there was a sequence of layers of language.
 
-840
-01:09:40,920 --> 01:09:42,180
+841
+01:09:41,066 --> 01:09:42,053
 它是什么？
 What happened?
 
-841
+842
 01:09:42,180 --> 01:09:48,760
-这里有一层允许我们构建基本图像
+这里有一层 允许我们构建基本图像
 There was a layer of a thing that allowed us to build primitive pictures.
 
-842
-01:09:51,500 --> 01:09:56,240
-这个是基本图像，这就是个语言
+843
+01:09:51,693 --> 01:09:56,240
+这个语言描述基本图像
 There's primitive pictures and that was a language.
 
-843
-01:09:56,240 --> 01:09:58,020
-我这里不多说了
+844
+01:09:56,320 --> 01:09:57,840
+我们并没有做过多地讨论
 I didn't say much about it.
 
-844
-01:09:58,020 --> 01:10:05,180
-我们说一下如何构造George.这是一个语言,这个语言中有向量，线段，点，和它们做存在其中的正方形单元.
-We talked about how to construct George, but that was a language where you talked about vectors and line segments and points and where they sat in the unit square.
-
 845
-01:10:06,160 --> 01:10:08,740
-在那的上面
-And then on top of that, right, on top of that--
+01:09:58,220 --> 01:09:59,586
+我们讨论了如何构造George
+We talked about how to construct George,
 
 846
-01:10:09,840 --> 01:10:14,280
-这个是这个语言的基本图片
-so this is the language of primitive pictures.
+01:09:59,613 --> 01:10:04,880
+这个语言是在单位正方形中讨论点、线和向量
+but that was a language where you talked about vectors and line segments and points and where they sat in the unit square.
 
 847
-01:10:16,680 --> 01:10:20,560
-谈论的图片中的线段在这个正方体单元中,
-Right, talking about line segments in particular pictures in the unit square.
+01:10:06,426 --> 01:10:11,293
+而在这之上
+And then on top of that, right, on top of that--
 
 848
-01:10:21,400 --> 01:10:23,800
-在这个上面是整个的语言
-On top of that was a whole language.
+01:10:11,973 --> 01:10:14,106
+这是讨论基本图像的语言
+so this is the language of primitive pictures.
 
 849
-01:10:23,800 --> 01:10:46,500
-有一个几何组合的语言，几何位置的语言，它讨论的是像above和beside，right-push，rotate这样的东西
-There was a language of geometric combinators, a language of geometric positions, which talks about things like Above and Beside and right-push and Rotate.
+01:10:17,080 --> 01:10:20,360
+讨论在特定单位正方形中线段的构造
+Right, talking about line segments in particular pictures in the unit square.
 
 850
+01:10:21,400 --> 01:10:23,800
+在这个上面是另一个完整的语言
+On top of that was a whole language.
+
+851
+01:10:24,053 --> 01:10:30,866
+关于几何组合子的语言
+There was a language of geometric combinators,
+
+852
+01:10:32,666 --> 01:10:36,626
+关于几何物件的位置
+a language of geometric positions,
+
+853
+01:10:38,773 --> 01:10:46,500
+讨论像ABOVE、BESIDE、RIGHT-PUSH和ROTATE这样的东西
+which talks about things like Above and Beside and right-push and Rotate.
+
+854
 01:10:48,040 --> 01:10:55,700
 这些事情恰巧与我们在这个语言中谈论的事情有关
 And those things, sort of, happened with reference to the things that are talked about in this language.
 
-851
-01:10:55,700 --> 01:11:15,100
-只要我们愿意，我们可以在这个语言之上创造很多语言规则的组合
-And then if we like, we saw that above that there was sort of a language of schemes of combination.
-
-852
-01:11:20,980 --> 01:11:27,880
-比如push,用一个放缩因子重复的做一个事情.
-For example, push, which talked about repeatedly doing something over with a scale factor.
-
-853
-01:11:28,380 --> 01:11:34,540
-我们正在讨论的在那个语言中的东西正是我这里写下来的东西.
-And the things that were being discussed in that language were, sort of, the things that happened down here.
-
-854
-01:11:36,060 --> 01:11:47,300
-在每个层次上都存在已经讨论过的对象，这些对象可以从前一个层级构建出来
-So what you have is, at each level, the objects that are being talked about are the things that were erected the previous level.
-
 855
+01:10:58,570 --> 01:11:00,933
+再细化一点 我们发现在这之上
+And then if we like, we saw that above that
+
+856
+01:11:02,613 --> 01:11:15,100
+还有一门语言 描述组合的模式
+there was sort of a language of schemes of combination.
+
+857
+01:11:21,250 --> 01:11:22,440
+比如说PUSH
+For example, push,
+
+858
+01:11:24,453 --> 01:11:27,880
+也就是用一个放缩因子重复地做一件事儿
+which talked about repeatedly doing something over with a scale factor.
+
+859
+01:11:28,380 --> 01:11:31,280
+我们在那门语言中讨论的问题
+And the things that were being discussed in that language
+
+860
+01:11:31,506 --> 01:11:34,346
+正是我这里构建的东西
+were, sort of, the things that happened down here.
+
+861
+01:11:36,306 --> 01:11:42,760
+我们在每一层上所讨论的对象
+So what you have is, at each level, the objects that are being talked about
+
+862
+01:11:44,680 --> 01:11:47,000
+都是前一个层次所建立的
+are the things that were erected the previous level.
+
+863
 01:11:48,080 --> 01:11:52,060
 这个和这个有什么区别呢？
 What's the difference between this thing and this thing?
 
-856
-01:11:53,100 --> 01:12:05,460
-答案是：在这个树里,实际上,每一个节点的每一次分解，都是为了特殊的任务在做设计,
-The answer is that over here in the tree, each node, and in fact, each decomposition down here, is being designed to do a specific task,
-
-857
-01:12:07,220 --> 01:12:15,120
-而在这里,你有在每个层级上的完完全全的语言层面的能力.
-whereas in the other scheme, what you have is a full range of linguistic power at each level.
-
-858
-01:12:15,820 --> 01:12:22,940
-看看这里会发生什么 在任何一个层次，这里都不是建立一个特殊的任务
-See what's happening there, at any level, it's not being set up to do a particular task.
-
-859
-01:12:22,940 --> 01:12:26,740
-它是建立要做事情整个范围
-It's being set up to talk about a whole range of things.
-
-860
-01:12:27,500 --> 01:12:35,940
-结论是：这种设计方法更加健壮，
-The consequence of that for design is that something that's designed in that method is likely to be more robust,
-
-861
-01:12:36,380 --> 01:12:45,200
-健壮，我的意思是,在你的描述中做一些改变，可以提取出相关的变化，
-where by robust, I mean that if you go and make some change in your description, it's more likely to be captured by a corresponding change,
-
-862
-01:12:45,200 --> 01:12:56,620
-使用这种方式，语言可以在下一个层级实现，因为你已经把这个层级的事情做完了
-in the way that the language is implemented at the next level up, right, because you've made these levels full.
-
-863
-01:12:56,620 --> 01:12:59,660
-所以你不需要讨论像beside这样的特殊东西
-So you're not talking about a particular thing like Beside.
-
 864
-01:12:59,660 --> 01:13:07,020
-你创造了如何去表达事情的词汇，所以如果明确的改变你的定义，
-You've given yourself a whole vocabulary to express things of that sort, so if you go and change your specifications a little bit,
+01:11:53,346 --> 01:11:54,186
+这是因为
+The answer is
 
 865
-01:13:07,020 --> 01:13:15,020
-很可能你的方法论需要随之更改来适应这种变化 因为这种设计不够健壮
-it's more likely that your methodology will able to adapt to capture that change, whereas a design like this is not going to be robust,
+01:11:56,146 --> 01:12:01,733
+实际上在这里 树的每一个结点 每一次分解
+that over here in the tree, each node, and in fact, each decomposition down here,
 
 866
-01:13:15,020 --> 01:13:21,800
-因为如果我在这里改变一些东西 这将影响它向下的路径中的所有分解出来的东西 (影响它)下面的树
-because if I go and change something that's in here, that might affect the entire way that I decomposed everything down, further down the tree.
+01:12:02,146 --> 01:12:05,253
+都是旨在分成确定的任务
+is being designed to do a specific task,
 
 867
-01:13:23,000 --> 01:13:29,740
-最大的不同就是分解 语言分层级还是严格的分层
-Right, so very big difference in outlook in decomposition, levels of language rather than, sort of, a strict hierarchy.
+01:12:07,506 --> 01:12:08,880
+而在另一个方案中
+whereas in the other scheme,
 
 868
-01:13:30,220 --> 01:13:38,740
-不仅这个如此 当你有一个多层的语言的时候 你会为不同的层次起不同的词汇
-Not only that, but when you have levels of language you've given yourself a different vocabularies for talking about the design at different levels.
+01:12:09,213 --> 01:12:14,800
+你在每个层级上的完完全全的语言层面的能力
+what you have is a full range of linguistic power at each level.
 
 869
-01:13:38,740 --> 01:13:48,680
-所以如果我们回头再看一次George 如果我想改变这个图像George 看 我有完全不同的方式来表述这个变化
-So if we go back and look at George one last time, if I wanted to change this picture George, see suddenly I have a whole different ways of describing the change.
+01:12:16,000 --> 01:12:18,080
+这里的每一个层次
+See what's happening there, at any level,
 
 870
-01:13:48,680 --> 01:13:56,080
-比如 我也许想要在基本的设计中修改一些向量的端点
-Like for example, I may want to go to the basic primitive design and move the endpoint of some vector.
+01:12:20,240 --> 01:12:22,720
+都不是被设计为完成一个特定任务
+it's not being set up to do a particular task.
 
 871
-01:13:57,760 --> 01:14:00,760
-这是一个我会在最低的层次讨论的改变
-That's a change that I would discuss at the lowest level.
+01:12:23,146 --> 01:12:26,173
+它被设计为讨论整个事情
+It's being set up to talk about a whole range of things.
 
 872
-01:14:00,760 --> 01:14:02,760
-我可以说端点在另外一个地方
-I would say the endpoint is somewhere else.
+01:12:27,620 --> 01:12:30,786
+这样设计导致的结果是：
+The consequence of that for design
 
 873
-01:14:03,100 --> 01:14:10,940
-或许我会想到 我想做的下一个事情是：这个重复的元素 我想用其他方式来实现
-Or I might come up and say, well the next thing I wanted to do, this little replicated element, I might want to do by something else.
+01:12:31,146 --> 01:12:35,586
+用这种设计方法更加健壮
+is that something that's designed in that method is likely to be more robust,
 
 874
-01:14:10,940 --> 01:14:13,840
-我可能想把一个缩放因子放入那个BESIDE中
-I might want to put a scale factor in that Beside.
+01:12:36,613 --> 01:12:38,200
+我所谓的“健壮”是指
+where by robust, I mean
 
 875
-01:14:13,840 --> 01:14:19,340
-这个变化我会在更高的一个层次上讨论---组合子的层次
-That's a change that I would discuss at the next level of design, the level of combinators.
+01:12:38,440 --> 01:12:41,240
+当你在描述中做一些改变
+that if you go and make some change in your description,
 
 876
-01:14:19,340 --> 01:14:30,640
-或者我可以这样说 我也许想要改变我使用这个图案进行的一些递归构造（新图案）的方式，也许不把它逐渐变小去充满各个角落
-Or I might want to say, I might want to change the basic way that I took this pattern and made some recursive decomposition, maybe not bleeding out toward the corners or something else.
+01:12:42,700 --> 01:12:48,040
+我们可以做出相应的改变
+it's more likely to be captured by a corresponding change,
 
 877
-01:14:31,160 --> 01:14:34,180
-而这样的一个变化我就会在最高的层次来讨论
-That would be a change that I would discuss at the highest level.
+01:12:49,226 --> 01:12:52,600
+#TBD
+in the way that the language is implemented at the next level up,
 
 878
-01:14:34,180 --> 01:14:42,480
-因为我是用这种方式构建系统的 我有全部的词汇来用不同的方式实现各种改变，并且有很大的灵活性来让我决定那个更合适
-And because I've structured the system to be this way, I have all these vocabularies for talking about change in different ways and a lot of flexibility to decide which one's appropriate.
+01:12:54,293 --> 01:12:56,586
+
+right, because you've made these levels full.
 
 879
-01:14:44,560 --> 01:14:54,380
-这些就是来自Lisp的不同的软件方法学中的一个要点 它来自于这样一个我们已经提到的观点
-OK, well that's sort of a big point about the difference in software methodology that comes out from Lisp, and it all comes, again, out of the notion that really,
+01:12:56,620 --> 01:12:59,660
+所以你不需要讨论像BESIDE这样的特定操作
+So you're not talking about a particular thing like Beside.
 
 880
-01:14:54,380 --> 01:14:59,620
-即设计的过程 与其说是在设计程序 不如说是在设计语言
-the design process is not so much implementing programs as implementing languages.
+01:12:59,946 --> 01:13:03,786
+你为表达这类事物创造了完备的词汇
+You've given yourself a whole vocabulary to express things of that sort,
 
 881
-01:14:59,620 --> 01:15:04,020
-而这就是Lisp的力量 谢谢大家 下课
-And that's really the power of Lisp. OK, thank you. Let's take a break.
+01:13:04,773 --> 01:13:07,020
+所以当你轻微修改规格指标时
+so if you go and change your specifications a little bit,
+
+882
+01:13:07,020 --> 01:13:11,386
+这种方法论可以捕捉并适应那些变化
+it's more likely that your methodology will able to adapt to capture that change,
+
+883
+01:13:12,693 --> 01:13:15,020
+然而这种设计却不够健壮
+whereas a design like this is not going to be robust,
+
+884
+01:13:15,020 --> 01:13:17,080
+因为 如果我在这里改变一下
+because if I go and change something that's in here,
+
+885
+01:13:17,533 --> 01:13:21,693
+那可能会影响我划分这些东西的方式 严重地影响
+that might affect the entire way that I decomposed everything down, further down the tree.
+
+886
+01:13:23,200 --> 01:13:29,740
+分解观点的最大不同在于 按层次还是严格继承分解
+Right, so very big difference in outlook in decomposition, levels of language rather than, sort of, a strict hierarchy.
+
+887
+01:13:30,520 --> 01:13:33,026
+不只是如此 当你有多个层次的语言时
+Not only that, but when you have levels of language
+
+888
+01:13:33,506 --> 01:13:35,920
+你就有了不同的词汇储备
+you've given yourself a different vocabularies
+
+889
+01:13:36,453 --> 01:13:38,740
+用于讨论不同层次上的设计
+for talking about the design at different levels.
+
+890
+01:13:38,740 --> 01:13:40,920
+我们再回过头来看看George
+So if we go back and look at George one last time,
+
+891
+01:13:41,906 --> 01:13:44,080
+如果我想改变图像George
+if I wanted to change this picture George,
+
+892
+01:13:45,853 --> 01:13:48,680
+我立马得到了一种不同的方式来描述变化
+see suddenly I have a whole different ways of describing the change.
+
+893
+01:13:48,680 --> 01:13:56,080
+比如 我想在基本设计的层面上 移动某些向量的终点
+Like for example, I may want to go to the basic primitive design and move the endpoint of some vector.
+
+894
+01:13:57,760 --> 01:14:00,760
+我会在最底层讨论这个改变
+That's a change that I would discuss at the lowest level.
+
+895
+01:14:01,000 --> 01:14:02,506
+我会另外指定终点位置
+I would say the endpoint is somewhere else.
+
+896
+01:14:03,346 --> 01:14:07,986
+
+Or I might come up and say, well the next thing I wanted to do, this little replicated element,
+
+897
+01:14:09,106 --> 01:14:10,940
+我可能想做些其它操作
+I might want to do by something else.
+
+898
+01:14:10,940 --> 01:14:13,840
+我想在BESIDE中使用一个缩放因数
+I might want to put a scale factor in that Beside.
+
+899
+01:14:13,840 --> 01:14:19,340
+这个改变我会在更高的层次上讨论：在组合子的层次
+That's a change that I would discuss at the next level of design, the level of combinators.
+
+900
+01:14:19,340 --> 01:14:25,053
+我也可以改变图像的基本组合模式
+Or I might want to say, I might want to change the basic way that I took this pattern
+
+901
+01:14:26,493 --> 01:14:30,480
+做一些递归地分解 可能不会让它们填充满角落
+and made some recursive decomposition, maybe not bleeding out toward the corners or something else.
+
+902
+01:14:31,160 --> 01:14:34,180
+而这样的一个变化 我会在最高层次讨论
+That would be a change that I would discuss at the highest level.
+
+903
+01:14:34,180 --> 01:14:36,373
+正是因为我按这种结构组织系统
+And because I've structured the system to be this way,
+
+904
+01:14:36,520 --> 01:14:42,480
+#TBD
+I have all these vocabularies for talking about change in different ways and a lot of flexibility to decide which one's appropriate.
+
+905
+01:14:44,740 --> 01:14:51,053
+这就是Lisp中不同于软件工程方法论的最大要点
+OK, well that's sort of a big point about the difference in software methodology that comes out from Lisp,
+
+906
+01:14:51,250 --> 01:14:55,453
+它来自于这样一个观点：真正的设计过程
+and it all comes again, out of the notion that really, the design process
+
+907
+01:14:56,120 --> 01:14:59,620
+与其说是在设计程序 不如说是在设计语言
+is not so much implementing programs as implementing languages.
+
+908
+01:14:59,620 --> 01:15:01,093
+而这就是Lisp的力量
+And that's really the power of Lisp.
+
+909
+01:15:02,213 --> 01:15:03,613
+谢谢大家 下课
+OK, thank you. Let's take a break.
 
