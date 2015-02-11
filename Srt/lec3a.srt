@@ -5,7 +5,7 @@ Learning-SICP学习小组
 
 2
 00:00:04,400 --> 00:00:08,026
-翻译&&时间轴：邓雄飞（Dysprosium）
+翻译&&时间轴：邓雄飞（Dysprosium）、Savior Michael
 压制&&特效：邓雄飞（Dysprosium）
 校对：邓雄飞（Dysprosium）
 
@@ -637,7 +637,7 @@ Of course, it's a terrible drag to constantly have to write something like
 128
 00:10:41,453 --> 00:10:45,180
 (CONS 1 (CONS 2 (CONS 3...的话 将会非常费力
- the cons of 1 onto the cons of 2 onto the cons of 3, whenever you want to make this thing.
+the cons of 1 onto the cons of 2 onto the cons of 3, whenever you want to make this thing.
 
 129
 00:10:45,180 --> 00:10:50,100
@@ -1323,7 +1323,6 @@ and for-each takes a procedure and a List,
 00:23:49,620 --> 00:23:53,860
 它实际上是对表中每个元素执行此操作
 and what it's going to do is do something to every item in the List.
-
 
 266
 00:23:55,160 --> 00:23:58,530
@@ -2381,8 +2380,8 @@ It's just a data representation problem.
 So let's assume we have these rectangles to work with.
 
 477
-00:40:02,050 --> 00:40:05,080
-好的，现在来看我们接下来要做的事情
+00:39:59,053 --> 00:40:05,080
+好的 现在来看我们接下来要做的事情
 OK. Now the idea of this, remember what's got to happen.
 
 478
@@ -2447,7 +2446,7 @@ And there's some sort of the obvious scaling transformation,
 
 490
 00:41:06,120 --> 00:41:10,220
-可以把这个变成这个 把这个变成这个
+可以把这个映射成这个 把这个映射成这个
 which maps this to that and this to that,
 
 491
@@ -2747,8 +2746,8 @@ It starts with a List of line segments,
 
 550
 00:45:42,946 --> 00:45:44,040
-#TBD
-and now it does what I said.
+代码具体行为如下
+And now it does what I said.
 
 551
 00:45:44,040 --> 00:45:45,580
@@ -2772,7 +2771,7 @@ It says for each-- this is going to be a List of line segments--
 
 555
 00:45:57,666 --> 00:46:03,386
-表中的每条线段s
+表中的每条线段S
 for each segment, for each s, which is a segment in this List of segments,
 
 556
@@ -2972,7 +2971,7 @@ is that once you've implemented the primitives in this way,
 
 595
 00:49:30,973 --> 00:49:35,200
-组合的方法就是构造过程#TBD
+组合的手段就是构造Lisp过程
 the means of combination just fall out by implementing procedures.
 
 596
@@ -2987,7 +2986,7 @@ Suppose we want to implement Beside.
 
 598
 00:49:41,560 --> 00:49:47,360
-我要做的是 假设有门有一个叫P1的图像
+我要做的是 假设有个叫P1的图像
 So I'd like to--  suppose I've got a picture. Let's call it P1.
 
 599
@@ -3022,1576 +3021,1601 @@ And now if I'd like to implement Beside of P1 and P2 with a scale factor A,
 
 605
 00:50:27,040 --> 00:50:28,380
-那会发生什么呢？
+会得到什么呢？
 well what does that have to be?
 
 606
+00:50:28,380 --> 00:50:29,346
+我们会得到一个图像
+That's gotta be a picture.
+
+607
+00:50:29,920 --> 00:50:33,880
+也就是说你传给它一个矩形 它就会在其中绘图
+It's gotta be a thing that you handed a rectangle and draw something in that rectangle.
+
+608
 00:50:34,770 --> 00:50:37,186
 如果我们在一个矩形中执行BESIDE操作
 So if hand Beside this rectangle--
 
-607
+609
 00:50:38,586 --> 00:50:40,120
 比如这个矩形
 let's hand it a rectangle.
 
-608
+610
 00:50:41,500 --> 00:50:42,740
 要做什么呢？
 Well what's it going to do?
 
-609
+611
 00:50:42,760 --> 00:50:46,360
 一部分比例是A 另一部分是1-A
 It's going to take this rectangle and split it into two
 
-610
+612
 00:50:49,293 --> 00:50:51,570
 一部分比例是A 另一部分是1-A
 at a ratio of A and one minus A.
 
-611
+613
 00:50:52,653 --> 00:50:55,120
 现在 我们就有了两个矩形
 And it will say, oh sure, now I've got two rectangles.
 
-612
+614
 00:51:02,346 --> 00:51:06,546
 然后先让P1在这个矩形中绘制
 And now it goes off to P1 and says P1, well draw yourself in this rectangle,
 
-613
+615
 00:51:07,360 --> 00:51:11,640
 然后让P2在这个矩形中绘制
 and goes off to P2, and says, P2, fine, draw yourself in this rectangle.
 
-614
+616
 00:51:13,280 --> 00:51:16,880
 BESIDE仅仅需要计算出这些矩形来
 The only computation it has to do is figure out what these rectangles are.
 
-615
-00:51:17,360 --> 00:51:22,866
+617
+00:51:17,360 --> 00:51:23,973
 由于矩形是由原点、水平向量和竖直向量组成
-Remember a rectangle is specified by an origin and a horizontal vector
+Remember a rectangle is specified by an origin and a horizontal vector and a vertical vector.
 
-616
-00:51:23,146 --> 00:51:25,946
+618
+00:51:23,986 --> 00:51:25,940
 BESIDE操作需要计算出这些要素
 so it's got to figure out what these things are.
 
-617
+619
 00:51:27,373 --> 00:51:32,293
 所以对第一个矩形来说 原点变成了矩形的原点
 So for this first rectangle, the origin turns out to be the origin of the original rectangle,
 
-618
+620
 00:51:33,640 --> 00:51:37,800
-竖直向量保持原矩形的 不发生变化
+竖直向量与原矩形相同 不发生变化
 and the vertical vector is the same as the vertical vector of the original rectangle.
 
-619
+621
 00:51:38,893 --> 00:51:46,600
-水平向量是原始矩形的水平向量缩放A得到的
+水平向量是原始矩形的水平向量缩放A倍得到的
 The horizontal vector is the horizontal vector of the original rectangle scaled by A.
 
-620
+622
 00:51:47,493 --> 00:51:48,906
 这就是第一个矩形
 And that's the first rectangle.
 
-621
+623
 00:51:49,460 --> 00:51:52,693
 第二个矩形的原点是
 The second rectangle, the origin
 
-622
+624
 00:51:54,066 --> 00:51:59,653
-原矩形的原点加上矩形的水平向量缩放A
+原矩形的原点加上矩形的水平向量缩放A倍
 The second rectangle, the origin is the original origin plus that horizontal vector scaled by A.
 
-623
+625
 00:52:01,200 --> 00:52:03,400
 第二个矩形的水平向量是
 The horizontal vector of the second rectangle is
 
-624
+626
 00:52:03,770 --> 00:52:06,040
 除去前一个矩形水平向量所余下的部分
 the rest of the horizontal vector of the first one,
 
-625
+627
 00:52:06,346 --> 00:52:11,660
 也就是(1-A)*H H是原矩形的水平向量
 which is 1 minus A times the original H,
 
-626
+628
 00:52:12,053 --> 00:52:13,773
 它的竖直向量还是V
 and the vertical vector is still v.
 
-627
+629
 00:52:15,480 --> 00:52:17,986
 基本上 BESIDE就是构造这两个矩形
 But basically it goes and constructs these two rectangles,
 
-628
+630
 00:52:18,000 --> 00:52:20,573
 但重要的是 一旦构造好这些矩形
 and the important point is having constructed the rectangles,
 
-629
+631
 00:52:20,933 --> 00:52:24,586
 它就能让P1、P2在正确的位置绘制
 it says OK, p1, you draw yourself in there, and p2, you draw yourself in there,
 
-630
+632
 00:52:24,626 --> 00:52:26,186
 这就是BESIDE需要做的全部工作
 and that's all Beside has to do.
 
-631
+633
 00:52:27,800 --> 00:52:29,306
 我们看一下代码
 All right, let's look at that piece of code.
 
-632
+634
 00:52:34,333 --> 00:52:35,133
 这是BESIDE
 Beside
 
-633
+635
 00:52:39,640 --> 00:52:46,440
 (BESIDE P1 P2 A) A是缩放比例
 Beside of a picture and another picture with some scaling ratio
 
-634
+636
 00:52:47,840 --> 00:52:53,640
 因为该过程返回图像 所以结果是一个以矩形为参数的过程
 is first of all, since it's a picture, a procedure that's going to take a rectangle as argument.
 
-635
+637
 00:52:55,493 --> 00:52:56,560
 它做什么呢？
 What's it going to do?
 
-636
+638
 00:52:56,760 --> 00:53:02,320
 它让P1在某个矩形中绘制 P2在另一个矩形中绘制
 It says, p1 draw yourself in some rectangle and p2 draw yourself in some other rectangle.
 
-637
+639
 00:53:03,213 --> 00:53:04,460
 现在这些矩形又是什么呢?
 And now what are those rectangles?
 
-638
+640
 00:53:04,460 --> 00:53:05,480
 就在这里计算
 Well here's the computation.
 
-639
+641
 00:53:05,480 --> 00:53:06,546
 它创建了一个矩形
 It makes a rectangle,
 
-640
+642
 00:53:07,520 --> 00:53:10,400
 用的是我刚才在黑板上写的几何公式 这是矩形的原点
 and this is the algebra I just did on the board: the origin, something;
 
-641
+643
 00:53:10,400 --> 00:53:11,840
 矩形的水平向量
 the horizontal vector, something;
 
-642
+644
 00:53:11,840 --> 00:53:13,440
 还有矩形的竖直向量
 and the vertical vector, something.
 
-643
+645
 00:53:13,973 --> 00:53:14,813
 对于P2
 For p2
 
-644
+646
 00:53:15,506 --> 00:53:19,780
 矩形需要不同的原点 水平向量和竖直向量
 And for p2, the rectangle it wants has some other origin and horizontal vector and vertical vector.
 
-645
+647
 00:53:19,780 --> 00:53:20,706
 但重要的是
 But the important point
 
-646
+648
 00:53:21,213 --> 00:53:27,180
 BESIDE只是将这两个矩形分别传递给了P1和P2而已
 is that all it's saying is, p1, go do your thing in one rectangle, and p2, go do your thing in another rectangle.
 
-647
+649
 00:53:27,740 --> 00:53:29,420
 这就是BESIDE所需要做的
 That's all the Beside has to do.
 
-648
+650
 00:53:30,840 --> 00:53:35,620
 好 ROTATE也很类似
 OK, similarly Rotate--
 
-649
+651
 00:53:36,960 --> 00:53:42,000
 假设我有一个图像A
 see if I have this picture A,
 
-650
+652
 00:53:42,973 --> 00:53:46,120
 我想让它旋转90度
 and I want to look at say rotating A by 90 degrees,
 
-651
+653
 00:53:46,373 --> 00:53:51,920
 这意味着 给定这个矩形
 what that should mean is, well take this rectangle,
 
-652
+654
 00:53:53,946 --> 00:53:58,440
 它有原点、水平向量和竖直向量
 which is origin and horizontal vector and vertical vector,
 
-653
+655
 00:53:58,786 --> 00:54:03,186
 现在假设已经有了这样的矩形
 and now pretend that it's really the rectangle that looks like this,
 
-654
+656
 00:54:03,746 --> 00:54:09,120
 这个矩形的原点、水平向量和竖直向量在这里
 which has an origin and a horizontal vector up here, and a vertical vector there,
 
-655
+657
 00:54:09,600 --> 00:54:12,460
 然后在矩形里各自绘制自己
 and now draw yourself with respect to that rectangle.
 
-656
+658
 00:54:13,260 --> 00:54:15,040
 我们来看看代码
 Let me show you that as a procedure.
 
-657
+659
 00:54:17,026 --> 00:54:19,853
 那么 ROTATE90过程
 All right, so we'll Rotate 90 of the picture,
 
-658
+660
 00:54:20,613 --> 00:54:22,960
 返回的也是一个以矩形为参数的过程
 because again, a procedure for rectangle,
 
-659
+661
 00:54:23,253 --> 00:54:26,120
 它就是将图像绘制在一个特定矩形中
 which says, OK picture, draw yourself in some rectangle;
 
-660
+662
 00:54:27,213 --> 00:54:30,660
 这个几何公式就是这个矩形的变换规则
 and then this algebra is the transformation on the rectangle.
 
-661
+663
 00:54:30,660 --> 00:54:33,840
 这句代码让矩形看起来像向侧面的
 It's the one which makes it look like the rectangle is sideways,
 
-662
+664
 00:54:33,860 --> 00:54:36,520
 原点在别的地方 竖直向量在别的地方
 the origin is someplace else and the vertical vector is someplace else,
 
-663
+665
 00:54:37,133 --> 00:54:39,746
 水平向量在别的地方 竖直向量在别的地方
 and the horizontal vector is someplace else, and vertical vector is someplace else.
 
-664
+666
 00:54:46,760 --> 00:54:49,906
 再次注意 这里的关键是
 OK, again notice, the crucial thing that's going on here
 
-665
+667
 00:54:50,533 --> 00:55:00,973
-关键是使用过程来表示图片 天然地具有闭包性质
+关键是使用过程来表示图像 使其自动地具有闭包性质
 is you're using the representation of pictures as procedures to automatically get the closure property,
 
-666
+668
 00:55:01,740 --> 00:55:05,220
-BESIDE只是接受并使用P1#TBD
+这是因为 实际上 BESIDE只是接受并使用P1
 because what happens is, Beside just has this thing p1.
 
-667
+669
 00:55:05,220 --> 00:55:09,400
 BESIDE并不关心它是一个基本图像还是一些线段
 Beside doesn't care if that's a primitive picture or it's line segments
 
-668
+670
 00:55:09,610 --> 00:55:12,693
 或者P1还是ABOVE、BESIDE、ROTATE等操作的结果
 if p1 is, itself, the result of doing Aboves or Besides or Rotates.
 
-669
+671
 00:55:12,720 --> 00:55:16,080
 关于P1 BESIDE需要知道的就是
 All Beside has to know about, say, p1
 
-670
+672
 00:55:16,293 --> 00:55:19,733
 给P1传递一个矩形 就会导致某物的绘制
 p1 is that if you hand p1 a rectangle, it will cause something to be drawn.
 
-671
+673
 00:55:21,040 --> 00:55:25,986
 在这个层面上 BESIDE并不关心P1是如何完成绘制
 And above that level, Beside just doesn't-- it's none of its business how p1 accomplishes that drawing.
 
-672
+674
 00:55:27,733 --> 00:55:32,253
 我们使用过程来表示图像 以保持它的闭包性质
 All right, so you're using the procedural representation to ensure this closure.
 
-673
+675
 00:55:35,640 --> 00:55:40,813
 将图像实现为过程 使得组合的方法变得
 So implementing pictures as procedures makes these means of combination,
 
-674
+676
 00:55:41,186 --> 00:55:43,933
 变得简单而优雅
 both pretty simple and also, I think, elegant.
 
-675
+677
 00:55:45,920 --> 00:55:48,220
-#TBD
+但这并不是点睛之笔
 But that's not the real punchline.
 
-676
+678
 00:55:49,280 --> 00:55:53,520
-
+点睛之笔来自于这门语言中抽象的方法
 The real punchline comes when you look at the means of abstraction in this language.
 
-677
+679
 00:55:54,700 --> 00:55:56,240
-
+我们做了些什么？
 Because what have we done?
 
-678
+680
 00:55:56,240 --> 00:56:03,720
 我们把组合的方法实现为了过程
 We've implemented the means of combination themselves as procedures.
 
-679
+681
 00:56:05,853 --> 00:56:09,386
 这也就意味着 当我们对这个语言进行抽象时
 And what that means is that when we go to abstract in this language,
 
-680
+682
 00:56:10,170 --> 00:56:15,693
 Lisp提供的 操作过程的一切方法
 everything that Lisp supplies us for manipulating procedures
 
-681
+683
 00:56:16,333 --> 00:56:21,453
-都可以自然地在这个图像语言中使用
+都可以自动地在这个图像语言中使用
 automatically available to do things in this picture language.
 
-682
+684
 00:56:21,920 --> 00:56:29,746
 与其用术语“这个语言以Lisp实现” — 虽然确实如此
 The technical term I want to say is not only is this language implemented in Lisp, obviously it is,
 
-683
+685
 00:56:29,760 --> 00:56:32,580
 我想描述为“这个语言嵌入于Lisp”
 but the language is nicely embedded in Lisp.
 
-684
+686
 00:56:37,640 --> 00:56:42,080
 也就是说 通过像这样将语言嵌入
 What I mean is by embedding the language in this way,
 
-685
+687
 00:56:42,906 --> 00:56:48,860
-可以自动地获得Lisp的所有力量 以扩展的形式
+可以以扩展的形式 自动地获得Lisp的所有力量
 all the power of Lisp is automatically available as an extension to whatever you want to do.
 
-686
+688
 00:56:50,060 --> 00:56:51,680
 这又是什么意思呢？
 And what do I mean by that?
 
-687
+689
 00:56:51,973 --> 00:57:02,946
 举个例子 假设我想用A B C D四副图像做东西
 Example: say, suppose I want to make a thing that takes four pictures A, B, C and D,
 
-688
+690
 00:57:03,760 --> 00:57:07,060
 让它们呈现像这样的格局
 and makes a configuration that looks like this.
 
-689
+691
 00:57:12,500 --> 00:57:16,960
 可以将其称为FOUR-PICT格局
 Well you might call that, you know, four pictures or something, four-pict configuration.
 
-690
+692
 00:57:16,960 --> 00:57:17,700
 我该如何做呢？
 How do I do that?
 
-691
+693
 00:57:17,700 --> 00:57:18,680
 我可以很容易的做到这些
 Well I can obviously do that.
 
-692
+694
 00:57:18,680 --> 00:57:23,333
 写个过程 让B和D做ABOVE
 I just write a procedure that takes B above D
 
-693
+695
 00:57:24,133 --> 00:57:25,853
 A和C做ABOVE
 and A above C
 
-694
+696
 00:57:26,093 --> 00:57:27,706
 得到的结果做BESIDE
 and puts those things beside each other.
 
-695
+697
 00:57:28,240 --> 00:57:31,820
 我自然地拥有Lisp组合过程的能力
 So I automatically have Lisp's ability to do procedure composition.
 
-696
+698
 00:57:32,920 --> 00:57:35,820
 这不需要我为图像语言做些特殊处理
 And I didn't have to make that specifically in the picture language.
 
-697
+699
 00:57:35,820 --> 00:57:39,920
 事实上 这些组合本身就是过程
 It's automatic from the fact that the means of combination are themselves procedures.
 
-698
+700
 00:57:40,960 --> 00:57:44,180
 假设我想做一些更复杂的事情
 Or suppose I wanted to do something a little bit more complicated.
 
-699
+701
 00:57:44,180 --> 00:57:46,506
 我想为这里的每一个传递一个参数
 I wanted to put in a parameter so that for each of these,
 
-700
+702
 00:57:46,520 --> 00:57:50,080
 我可以独立地做旋转90度的操作
 I could independently specify a rotation by 90 degrees.
 
-701
+703
 00:57:50,413 --> 00:57:52,640
 这只需要我在这个过程中加入一个参数
 That's just putting a parameter in the procedure.
 
-702
+704
 00:57:53,173 --> 00:57:54,560
-
+它自然而然就有了这样的功能
 It's automatically there.
 
-703
+705
 00:57:54,800 --> 00:57:57,840
 它自动地嵌入进去了
 Right, it automatically comes from the embedding.
 
-704
+706
 00:57:58,160 --> 00:58:05,360
 甚至 假设我想使用递归
 Or even more, suppose I wanted to, you know, use recursion.
 
-705
+707
 00:58:06,160 --> 00:58:10,780
-我们看一下图片递归组合的方法
+我们看一下图像递归组合的方法
 Let's look at a recursive means of combination on pictures.
 
-706
+708
 00:58:10,780 --> 00:58:14,640
 定义--看看你们能理解这个不
 I could say define-- let's see if you can figure out what this one is--
 
-707
+709
 00:58:14,693 --> 00:58:18,973
 (DEFINE (RIGHT-PUSH PICT N A))
 suppose I say define what it means to right-push a picture,
 
-708
+710
 00:58:22,840 --> 00:58:29,800
 RIGHT-PUSH需要图片P 整数N和缩放因数A
 right-push a picture and some integer N and some scale factor A.
 
-709
+711
 00:58:31,460 --> 00:58:41,220
 定义是：如果N为0 那么返回图像P
 I'll define this to say if N equals 0, then the answer is the picture.
 
-710
+712
 00:58:42,200 --> 00:58:54,020
-否则，就-- 哦 这里是P
+否则 就-- 哦 这里是P
 Otherwise I'm going to put-- oops, name change: P.
 
-711
+713
 00:58:55,880 --> 00:59:00,213
 否则 我用图形P做BESIDE操作
 Otherwise, I'm going to take P and put it beside
 
-712
+714
 00:59:00,920 --> 00:59:18,306
 BESIDE的另一个操作数是(RIGHT-PUSH P (- N 1) A)的结果
 the results of recursively right-pushing P with N minus 1 and A and use a scale factor of A. OK,
 
-713
+715
 00:59:24,720 --> 00:59:31,120
 如果N为0 就返回P 否则就对P进行A倍缩放
 so if N 0 , it's P. Otherwise I put P with a scale factor of A--
 
-714
+716
 00:59:31,120 --> 00:59:32,800
 抱歉 我这里代码没对齐
 I'm sorry I didn't align this right--
 
-715
+717
 00:59:33,666 --> 00:59:38,500
 递归地调用(RIGHT-PUSH P (- N 1) A) 将结果用BESIDE连接
 recursively beside the result of right-pushing P, N minus 1 times with a scale factor of A.
 
-716
+718
 00:59:38,500 --> 00:59:42,000
 这就是一种递归组合方法
 There's a recursive means of combination.
 
-717
+719
 00:59:43,786 --> 00:59:44,760
 调用的结果会是怎样的？
 What's that look like?
 
-718
+720
 00:59:44,760 --> 00:59:45,906
 我们来看看
 Well, here's what it looks like.
 
-719
+721
 00:59:46,040 --> 00:59:56,040
 这是(RIGHT-PUSH GEORGE 2 0.75)的结果
 There's George right-pushed against himself twice with a scale factor of 0.75.
 
-720
+722
 00:59:59,260 --> 01:00:00,720
 这个是从什么地方来的呢？
 Where'd that come from?
 
-721
+723
 01:00:00,720 --> 01:00:02,340
 我是如何想象出这些递归来的呢？
 How did I get all this fancy recursion?
 
-722
+724
 01:00:02,340 --> 01:00:05,240
 答案是无意识的 绝对是无意识的
 And the answer is just automatic, absolutely automatic.
 
-723
+725
 01:00:05,240 --> 01:00:09,800
 由于它们都是过程 而嵌入的目标系统中允许定义递归过程
 Since these are procedures, the embedding says, well sure, I can define recursive procedures.
 
-724
+726
 01:00:10,360 --> 01:00:11,680
 我不必自己去做
 I didn't have to arrange that.
 
-725
+727
 01:00:13,560 --> 01:00:16,420
 当然 我们可以模仿这个方法做些更复杂的事
 And of course, we can do more complicated things of the same sort.
 
-726
+728
 01:00:16,420 --> 01:00:18,213
 我可以定义做UP-PUSH的过程
 I could make something that does an up-push.
 
-727
+729
 01:00:18,420 --> 01:00:22,600
 对 它可以递归地把图片放在原来的上面
 Right, that sort of goes like this, by recursively putting something above.
 
-728
+730
 01:00:22,600 --> 01:00:26,546
 我也可以用这种策略来做些其它事
 Or I could make something that, sort of, was this scheme.
 
-729
+731
 01:00:26,560 --> 01:00:28,853
 给定一个图像
 I might start out with a picture
 
-730
+732
 01:00:29,786 --> 01:00:37,160
 然后递归地把它放在原图片的旁边和上面
 and then, sort of, recursively both push it aside and above
 
-731
+733
 01:00:37,573 --> 01:00:38,920
 这里再放一些别的
 and that might put something there.
 
-732
+734
 01:00:39,520 --> 01:00:41,826
 然后我把同样递归的图像放在这里
 And then up here I put the same recursive thing,
 
-733
+735
 01:00:42,360 --> 01:00:44,200
 我可以用这个来终止
 and I might end up with something like this.
 
-734
+736
 01:00:45,400 --> 01:00:52,500
 这个过程比RIGHT-PUSH复杂一点 但也不算太多
 Right, so there's a procedure that's a little bit more complicated than right-push but not much.
 
-735
+737
 01:00:53,640 --> 01:00:58,140
 在BESIDE的基础上 我多加了一个ABOVE操作
 I just do an Above and a Beside, rather than just a Beside.
 
-736
+738
 01:01:01,120 --> 01:01:06,786
 如果我把它应用于四张放在一起的图像上
 Now if I take that and apply that with the idea of putting four pictures together,
 
-737
+739
 01:01:07,533 --> 01:01:08,653
 这样做当然没问题
 which I can surely do;
 
-738
+740
 01:01:09,013 --> 01:01:14,173
 我把它应用于我们之前定义的Q上
 and I go and I apply that to Q, which we defined before, right,
 
-739
+741
 01:01:15,973 --> 01:01:18,733
 我得到的是这个玩意儿
 what I end up with this is this thing,
 
-740
+742
 01:01:20,146 --> 01:01:25,266
-"图像Q的正方形极限" 做了两次
+"图像Q的方形极限" 做了两次
 which is, sort of, the square limit of Q, done twice.
 
-741
+743
 01:01:28,180 --> 01:01:32,253
-好 现在我们将其与Escher的"正方形极限"对比一下
+好 现在我们将其与Escher的"方形极限"对比一下
 Right, and then we can compare that with Escher's "Square Limit."
 
-742
+744
 01:01:32,880 --> 01:01:34,533
 可以看到 这都是基于同样的思想
 And you see, it's sort of the same idea.
 
-743
+745
 01:01:34,740 --> 01:01:36,940
 当然 Escher的图像更加漂亮一些
 Escher's is, of course, much, much prettier.
 
-744
+746
 01:01:36,940 --> 01:01:44,040
 如果我们回过头审视George
 If we go back and look at George, right, if we go look at George here--
 
-745
+747
 01:01:44,386 --> 01:01:47,373
 我最开始用的是非常随意的设计
 see, I started with a fairly arbitrary design
 
-746
+748
 01:01:47,426 --> 01:01:49,260
 用了George的图像 做了一些操作
 this picture of George and did things with it.
 
-747
+749
 01:01:51,226 --> 01:01:53,146
 我们再看看Escher的图片
 Right, whereas if we go look at the Escher picture, right,
 
-748
+750
 01:01:54,080 --> 01:01:56,140
 Escher的图片不是随意设计的
 the Escher picture is not an arbitrary design.
 
-749
+751
 01:01:56,140 --> 01:01:57,666
 这个图案非常精妙
 It's this very, very clever thing,
 
-750
+752
 01:01:57,893 --> 01:02:00,200
 当我们把鱼身
 so that when you take this fish body
 
-751
+753
 01:02:01,826 --> 01:02:04,973
 把鱼身旋转并放缩 就会优美地变成下一条鱼
 and Rotate it and shrink it down, it bleeds into the next one really nicely.
 
-752
+754
 01:02:07,400 --> 01:02:11,480
-当然用George 我没有做像上面做的那些事情
+当然我没有刻意处理过George
 And of course with George, I didn't really do anything like that.
 
-753
+755
 01:02:12,120 --> 01:02:13,906
 就图像George来说
 So if we look at George,
 
-754
+756
 01:02:15,413 --> 01:02:18,640
 也有一些地方匹配 但不够好 比较随意
 right, there's a little bit of match up, but not very nice, and it's pretty arbitrary.
 
-755
+757
 01:02:18,640 --> 01:02:21,533
 顺便说下 一个好的程序
 One very nice project, by the way,
 
-756
+758
 01:02:22,306 --> 01:02:27,540
 应该有个过程 能接受像这里George一样的基本图像
 would be to write a procedure that could take some basic figure like this George thing
 
-757
+759
 01:02:27,866 --> 01:02:29,626
 然后调整其中的线段终点
 and start moving the ends of the lines around,
 
-758
+760
 01:02:29,866 --> 01:02:31,200
 这样可以得到一个好看的图像
 so you got a really nice one
 
-759
+761
 01:02:32,133 --> 01:02:34,066
-在做“正方形的极限”应该注意这些
+在做“方形极限”应该注意这些
 when you went and did that "Square Limit" process.
 
-760
+762
 01:02:34,680 --> 01:02:36,306
 这是一个非常值得思考的事情
 That'd be a really nice thing to think about.
 
-761
+763
 01:02:38,080 --> 01:02:39,720
 同时 我还可以进行组合
 Well so, we can combine things.
 
-762
+764
 01:02:39,720 --> 01:02:41,040
 我们还可以使用递归过程
 We can recursive procedures.
 
-763
+765
 01:02:41,040 --> 01:02:43,480
 我们可以自然而然地做任何事情
 We can do all kinds of things, and that's all automatic.
 
-764
+766
 01:02:44,600 --> 01:02:48,520
 重点在于 在语言中实际实现另一个语言
 Right, the important point, the difference between merely implementing something in a language
 
-765
+767
 01:02:48,693 --> 01:02:50,440
 在语言中嵌入另一个语言的差异
 and embedding something in the language,
 
-766
+768
 01:02:50,440 --> 01:02:53,720
 这可以让你不丢失原有语言的能力 而Lisp强大之处在于
 so that you don't lose the original power of the language, and what Lisp is great at,
 
-767
+769
 01:02:54,760 --> 01:02:57,620
 Lisp是一个强悍的语言 可以处理任何特定问题
 see Lisp is a lousy language for doing any particular problem.
 
-768
+770
 01:02:57,620 --> 01:03:02,100
 把你想要的语言嵌入到Lisp中才是真的好
 What it's good for is figuring out the right language that you want and embedding that in Lisp.
 
-769
+771
 01:03:02,100 --> 01:03:05,440
 这才是这种设计方法的真正力量
 That's the real power of this approach to design.
 
-770
+772
 01:03:05,693 --> 01:03:06,820
 我们可以深入一下
 Of course, we can go further.
 
-771
+773
 01:03:06,820 --> 01:03:08,813
 在Lisp中我们还可以做些其它的事
 See, you saw the other thing that we can do in Lisp
 
-772
+774
 01:03:09,213 --> 01:03:17,520
 就是将通用方法抽象成高阶过程
 is capture general methods of doing things as higher order procedures.
 
-773
+775
 01:03:19,093 --> 01:03:22,573
 在我画那些图像时 你们可能已经发现
 And you probably just from me drawing it got the idea that right-push
 
-774
+776
 01:03:23,786 --> 01:03:26,613
 RIGHT-PUSH和类似的过程 就是一直在上面放东西
 and the analogous thing where you push something up and up and up and up
 
-775
+777
 01:03:26,933 --> 01:03:33,820
-而这个CORNER-PUSH则是#TBD
+而这个CORNER-PUSH则是一种一般性思想的泛化
 and this corner push thing are all generalizations of a common kind of idea.
 
-776
+778
 01:03:34,720 --> 01:03:37,200
 为了演示并让大家熟悉
 So just to illustrate and give you practice in looking at a
 
-777
+779
 01:03:37,986 --> 01:03:40,653
 使用廊腰缦回的高阶过程
 at a fairly convoluted use of higher order procedures,
 
-778
+780
 01:03:41,120 --> 01:03:47,240
-#TBD
+我给大家示范一下“递归地重复某种组合方法”的一般性思想
 let me show you the general idea of pushing some means of combination to recursively repeat it.
 
-779
+781
 01:03:48,300 --> 01:03:50,706
 这个例子可以说明一切
 So here's a good one to puzzle out.
 
-780
+782
 01:03:51,220 --> 01:04:00,700
 我们可以定义一个依赖于具体组合方式的PUSH过程
 We'll define it what it means to push using a means of combination.
 
-781
+783
 01:04:01,493 --> 01:04:04,880
 COMB的取值可以是BESIDE或ABOVE等
 Comb is going to be something like the Beside or Above.
 
-782
+784
 01:04:06,186 --> 01:04:07,060
 过程的体是什么呢？
 Well what's that going to be.
 
-783
+785
 01:04:07,060 --> 01:04:12,060
 它返回一个过程 想一想BESIDE实际上是什么
 That's going to be a procedure, remember what Beside actually was, right.
 
-784
+786
 01:04:13,220 --> 01:04:15,186
-它接受一个图片
+它接受一个图像
 It took a picture,
 
-785
+787
 01:04:15,960 --> 01:04:18,080
-哦  它接受两个图片和一个缩放因数
+哦  它接受两个图像和一个缩放因数
 took two pictures and a scale factor.
 
-786
+788
 01:04:18,626 --> 01:04:24,280
 利用这个过程 定义一个接受层数、图像和缩放因数的过程
 Using that I produced something that took a level number and a picture and a scale factor,
 
-787
+789
 01:04:24,280 --> 01:04:25,453
 我称之为RIGHT-PUSH
 that I called right-push.
 
-788
+790
 01:04:26,160 --> 01:04:33,660
-这个过程接受参数 图像PICT 层数N和缩放因数A
+这个过程接受 图像PICT 层数N和缩放因数A
 So this is going to be something that takes a picture, a level number and a scale factor, and it's going to say--
 
-789
+791
 01:04:36,160 --> 01:04:39,120
 我要做一些重复操作
 I'm going to do some repeated operation.
 
-790
+792
 01:04:39,450 --> 01:04:46,626
 我会重复应用一个接受一个图像P的过程
 I'm going to repeatedly apply the procedure which takes a picture
 
-791
+793
 01:04:48,400 --> 01:04:50,693
 并把组合的方式应用在
 and applies the means of combination
 
-792
+794
 01:04:51,200 --> 01:04:59,080
 应用在图像PICT和在这里接受的图像P以及缩放因数A
 to the picture and the original picture and the one I took in here and the scale factor,
 
-793
+795
 01:05:02,266 --> 01:05:07,280
 我要重复应用这个过程N次
 and I do the thing which repeats this procedure N times,
 
-794
+796
 01:05:12,040 --> 01:05:16,200
 我则是把这整个过程应用在原图片PICT上
 and I apply that whole thing to my original picture.
 
-795
+797
 01:05:19,560 --> 01:05:24,480
 虽然之前没提过 这里的REPEATED也是一个高阶过程
 Repeated here, in case you haven't seen it, is another higher order procedure
 
-796
+798
 01:05:24,533 --> 01:05:28,346
 它接受一个过程P和一个数字N
 that takes a procedure and a number
 
-797
+799
 01:05:29,546 --> 01:05:34,293
 它返回另一个过程：将给定的过程P重复应用N次的过程
 and returns for you another procedure that applies this procedure N times.
 
-798
+800
 01:05:36,040 --> 01:05:39,306
 可能有些人已经在练习中编写过REPEATED了
 And I think some of you have already written repeated as an exercise,
 
-799
+801
 01:05:39,706 --> 01:05:43,013
 如果还没做的话 这是理解和练习高阶过程的好机会
 but if you haven't, it's a very good exercise in thinking about higher order procedures.
 
-800
+802
 01:05:43,840 --> 01:05:46,906
 无论如何 我将把REPEATED过程的结果应用到PICT上
 But in any case, the result of this repeated is what I apply to picture.
 
-801
+803
 01:05:49,466 --> 01:05:52,386
 定义好PUSH后 这就
 And having done that, that's going to capture the --
 
-802
+804
 01:05:53,120 --> 01:05:57,733
-#TBD
+这就是从BESIDE、RIGHT-PUSH中总结出来的一般性思想
 that is the thing, the way I got from the idea of Beside to the idea of right-push
 
-803
+805
 01:05:59,013 --> 01:06:13,173
-现在 我就可以把RIGHT-PUSH定义为用BESIDE来做PUSH操作
+现在 我就可以把RIGHT-PUSH定义为 用BESIDE来做PUSH操作
 So having done that, I could say define right-push to be push of Beside.
 
-804
+806
 01:06:17,653 --> 01:06:20,320
-我也可以把UP-PUSH定义为用ABOVE来做PUSH操作
+我也可以把UP-PUSH定义为 用ABOVE来做PUSH操作
 Or if I say, define up-push to be push of Above
 
-805
+807
 01:06:20,346 --> 01:06:25,480
 类似地 CORNER-PUSH就是用BESIDE和ABOVE的适当组合做PUSH操作
 I'd get the analogous thing or define corner-push to be push of some appropriate thing that did both the Beside and Above,
 
-806
+808
 01:06:25,493 --> 01:06:26,706
 我可以用任何东西做PUSH操作
 or I could push anything.
 
-807
+809
 01:06:28,266 --> 01:06:34,760
-嗯 如果你还不太理解lambda的话 这个参考这个例子
+嗯 如果你还不太理解LAMBDA的话 可以参考这个例子
 Anyway this is, if you're having trouble with lambdas, this is an excellent exercise in figuring out what this means.
 
-808
+810
 01:06:38,986 --> 01:06:41,000
 我们可以从这个例子中学到很多东西
 OK, well there's a lot to learn from this example.
 
-809
+811
 01:06:42,186 --> 01:06:49,800
 我主要想要介绍的是在一个语言中嵌入另一个语言
 The main point I've been welling on is the notion of nicely embedding a language inside another language.
 
-810
+812
 01:06:50,666 --> 01:06:55,626
 这样 母体语言--本例中是Lisp--的所有能力
 Right, so that all the power of this language like Lisp of the surrounding language
 
-811
+813
 01:06:55,920 --> 01:07:00,280
 可以作为你所构建语言的一种扩展而取得
 is still accessible to you and appears as a natural extension of the language that you built.
 
-812
+814
 01:07:00,986 --> 01:07:04,000
 这个例子很好地展示了这点
 That's one thing that this example shows very well.
 
-813
+815
 01:07:08,146 --> 01:07:10,940
 另外 当我们回过头去思考
 Another thing is, if you go back and think about that,
 
-814
+816
 01:07:10,940 --> 01:07:12,280
 什么是过程 什么是数据
 what's procedures and what's data.
 
-815
+817
 01:07:12,280 --> 01:07:16,200
 在这里 天啊 发生了什么
 You know, by the time we get up to here, my God, what's going on.
 
-816
+818
 01:07:16,200 --> 01:07:19,660
 在这里 这是一个过程 它接受一个图像和一个参数
 I mean, this is some procedure, and it takes a picture and an argument,
 
-817
+819
 01:07:19,660 --> 01:07:20,360
-但是 什么是图片呢？
+但是 什么是图像呢？
 and what's a picture.
 
-818
+820
 01:07:20,360 --> 01:07:23,820
 请回想 图像本身 就是一个以矩形为参数的过程
 Well, a picture itself, as you remember, was a procedure, and that took a rectangle.
 
-819
+821
 01:07:23,820 --> 01:07:25,820
 这个矩形是某种抽象
 And a rectangle is some abstraction.
 
-820
+822
 01:07:26,093 --> 01:07:28,133
 我希望你们现在能彻底明白
 And I hope now that by now you're completely lost
 
-821
+823
 01:07:29,146 --> 01:07:33,740
 系统中什么是过程 什么是数据
 as to the question of what in the system is procedure and what's data.
 
-822
+824
 01:07:33,740 --> 01:07:34,780
 我们发现 它们没有任何区别
 You see, there isn't any difference.
 
-823
+825
 01:07:35,493 --> 01:07:36,440
 真的没有区别
 There really isn't.
 
-824
+826
 01:07:37,933 --> 01:07:41,426
-你可以认为图片有时候是过程 有时候是数据
+你可以认为图像有时候是过程 有时候是数据
 And you might think of a picture sometimes as a procedure and sometimes as data,
 
-825
+827
 01:07:41,840 --> 01:07:44,900
 但是 这只是让你容易理解的一种方法
 but that's just, sort of, you know, making you feel comfortable.
 
-826
+828
 01:07:44,900 --> 01:07:47,306
 这有一定道理 也没有道理
 It's really both in some sense or neither in some sense.
 
-827
+829
 01:07:49,920 --> 01:08:02,200
 #TBD
 OK, there's a more general point about the structure of the system as creating a language,
 
-828
+830
 01:08:02,520 --> 01:08:14,200
 #TBD
 viewing the engineering design process as one of creating language or rather one of creating a sort of sequence of layers of language.
 
-829
+831
 01:08:14,773 --> 01:08:20,013
 众所周知 有一种方法学 或者叫做“神话学”
 You see, there's this methodology, or maybe I should say mythology,
 
-830
+832
 01:08:20,746 --> 01:08:24,900
 姑且叫做软件“工程”
 that's, sort of, charitably called software, quote, engineering.
 
-831
+833
 01:08:25,213 --> 01:08:28,040
-#TBD
+它声称 你要先计算出你的任务
 All right, and what does it say, it's says well, you go and you figure out your task,
 
-832
+834
 01:08:28,040 --> 01:08:30,040
-你仅仅解决你要做的事情
+精确且正确地计算出你的任务
 and you figure out exactly what you want to do.
 
-833
+835
 01:08:30,400 --> 01:08:32,200
 一但你搞清楚要做的东西
 And once you figure out exactly what you want to do,
 
-834
+836
 01:08:32,226 --> 01:08:34,540
-你把它划分为三个子问题
+你把它划分为三个子任务
 you find out that it breaks out into three sub-tasks,
 
-835
+837
 01:08:34,540 --> 01:08:35,760
 然后你开始继续做--
 and you go and you start working on--
 
-836
+838
 01:08:35,973 --> 01:08:38,940
-你开始处理这个子问题 然后你明确它是什么
+你开始处理这个子任务 然后你明确它是什么
 and you work on this sub-task, and you figure out exactly what that is.
 
-837
+839
 01:08:38,940 --> 01:08:43,040
-这个子问题就分裂成三个子问题 你把它们处理完
+这个子问题就分裂成三个子任务 你把它们处理完
 And you find out that that breaks down into three sub-tasks, and you specify them completely,
 
-838
+840
 01:08:43,040 --> 01:08:47,320
-#TBD
+然后你先处理这两个任务 
 and you go and you work on those two, and you work on this sub-one, and you specify that exactly.
 
-839
+841
 01:08:47,320 --> 01:08:51,100
-#TBD
+解决完子任务后 你后退到这里 处理第二个子任务
 And then finally when you're done, you come back way up here, and you work on your second sub-task,
 
-840
+842
 01:08:51,100 --> 01:08:53,400
-然后把它详细的实现出来
+然后把它详细地实现出来
 and specify that out and work it out.
 
-841
+843
 01:08:53,400 --> 01:08:57,640
 结束之后-- 你完成了这个美丽的大厦
 And then you end up with-- you end up at the end with this beautiful edifice.
 
-842
+844
 01:08:57,640 --> 01:09:00,253
-你最后得到了一棵不非凡的树
+你最后得到了一棵非凡的树
 Right, you end up with a marvelous tree,
 
-843
+845
 01:09:00,893 --> 01:09:08,240
-你把问题划分为子问题 子问题再划分为子问题
+你把任务划分为子任务 子任务再划分为子任务
 that where you've broken your task into sub-tasks and broken each of these into sub-tasks and broken those into sub-tasks, right.
 
-844
+846
 01:09:09,880 --> 01:09:15,026
 树中的每个结点都被严谨而准确地定义
 And each of these nodes is exactly and precisely defined
 
-845
+847
 01:09:15,260 --> 01:09:18,666
-#TBD
+为奇妙而精美的任务 以构建整栋大厦
 to do the wonderful, beautiful task to make it fit into the whole edifice
 
-846
+848
 01:09:18,960 --> 01:09:21,140
 这个就是所谓的“神话学”
 Right, that's this mythology.
 
-847
+849
 01:09:21,140 --> 01:09:25,920
 只有计算机科学家才可能相信你构建的复杂系统像这个样子
 See only a computer scientist could possibly believe that you build a complex system like that
 
-848
+850
 01:09:27,480 --> 01:09:32,800
 好了 我们用Henderson的例子来做对比
 Right. Contrast that with this Henderson example.
 
-849
+851
 01:09:32,800 --> 01:09:34,300
 它的结构不是那样
 It didn't work like that.
 
-850
+852
 01:09:35,260 --> 01:09:39,333
 事实是：这里有一个语言层次的序列
 What happened was that there was a sequence of layers of language.
 
-851
+853
 01:09:41,066 --> 01:09:42,053
 它是什么？
 What happened?
 
-852
+854
 01:09:42,180 --> 01:09:48,760
 这里有一层 允许我们构建基本图像
 There was a layer of a thing that allowed us to build primitive pictures.
 
-853
+855
 01:09:51,693 --> 01:09:56,240
 这个语言描述基本图像
 There's primitive pictures and that was a language.
 
-854
+856
 01:09:56,320 --> 01:09:57,840
 我们并没有做过多地讨论
 I didn't say much about it.
 
-855
+857
 01:09:58,220 --> 01:09:59,586
 我们讨论了如何构造George
 We talked about how to construct George,
 
-856
+858
 01:09:59,613 --> 01:10:04,880
 这个语言是在单位正方形中讨论点、线和向量
 but that was a language where you talked about vectors and line segments and points and where they sat in the unit square.
 
-857
+859
 01:10:06,426 --> 01:10:11,293
 而在这之上
 And then on top of that, right, on top of that--
 
-858
+860
 01:10:11,973 --> 01:10:14,106
 这是讨论基本图像的语言
 so this is the language of primitive pictures.
 
-859
+861
 01:10:17,080 --> 01:10:20,360
 讨论在特定单位正方形中线段的构造
 Right, talking about line segments in particular pictures in the unit square.
 
-860
+862
 01:10:21,400 --> 01:10:23,800
 在这个上面是另一个完整的语言
 On top of that was a whole language.
 
-861
+863
 01:10:24,053 --> 01:10:30,866
 关于几何组合子的语言
 There was a language of geometric combinators,
 
-862
+864
 01:10:32,666 --> 01:10:36,626
 关于几何物件的位置
 a language of geometric positions,
 
-863
+865
 01:10:38,773 --> 01:10:46,500
 讨论像ABOVE、BESIDE、RIGHT-PUSH和ROTATE这样的东西
 which talks about things like Above and Beside and right-push and Rotate.
 
-864
+866
 01:10:48,040 --> 01:10:55,700
 这些事情恰巧与我们在这个语言中谈论的事情有关
 And those things, sort of, happened with reference to the things that are talked about in this language.
 
-865
+867
 01:10:58,570 --> 01:11:00,933
 再细化一点 我们发现在这之上
 And then if we like, we saw that above that
 
-866
+868
 01:11:02,613 --> 01:11:15,100
 还有一门语言 描述组合的模式
 there was sort of a language of schemes of combination.
 
-867
+869
 01:11:21,250 --> 01:11:22,440
 比如说PUSH
 For example, push,
 
-868
+870
 01:11:24,453 --> 01:11:27,880
 也就是用一个放缩因子重复地做一件事儿
 which talked about repeatedly doing something over with a scale factor.
 
-869
+871
 01:11:28,380 --> 01:11:31,280
 我们在那门语言中讨论的问题
 And the things that were being discussed in that language
 
-870
+872
 01:11:31,506 --> 01:11:34,346
 正是我这里构建的东西
 were, sort of, the things that happened down here.
 
-871
+873
 01:11:36,306 --> 01:11:42,760
 我们在每一层上所讨论的对象
 So what you have is, at each level, the objects that are being talked about
 
-872
+874
 01:11:44,680 --> 01:11:47,000
 都是前一个层次所建立的
 are the things that were erected the previous level.
 
-873
+875
 01:11:48,080 --> 01:11:52,060
 这个和这个有什么区别呢？
 What's the difference between this thing and this thing?
 
-874
+876
 01:11:53,346 --> 01:11:54,186
 这是因为
 The answer is
 
-875
+877
 01:11:56,146 --> 01:12:01,733
 实际上在这里 树的每一个结点 每一次分解
 that over here in the tree, each node, and in fact, each decomposition down here,
 
-876
+878
 01:12:02,146 --> 01:12:05,253
 都是旨在分成确定的任务
 is being designed to do a specific task,
 
-877
+879
 01:12:07,506 --> 01:12:08,880
 而在另一个方案中
 whereas in the other scheme,
 
-878
+880
 01:12:09,213 --> 01:12:14,800
 你在每个层级上的完完全全的语言层面的能力
 what you have is a full range of linguistic power at each level.
 
-879
+881
 01:12:16,000 --> 01:12:18,080
 这里的每一个层次
 See what's happening there, at any level,
 
-880
+882
 01:12:20,240 --> 01:12:22,720
 都不是被设计为完成一个特定任务
 it's not being set up to do a particular task.
 
-881
+883
 01:12:23,146 --> 01:12:26,173
 它被设计为讨论整个事情
 It's being set up to talk about a whole range of things.
 
-882
+884
 01:12:27,620 --> 01:12:30,786
 这样设计导致的结果是：
 The consequence of that for design
 
-883
+885
 01:12:31,146 --> 01:12:35,586
 用这种设计方法更加健壮
 is that something that's designed in that method is likely to be more robust,
 
-884
+886
 01:12:36,613 --> 01:12:38,200
 我所谓的“健壮”是指
 where by robust, I mean
 
-885
+887
 01:12:38,440 --> 01:12:41,240
 当你在描述中做一些改变
 that if you go and make some change in your description,
 
-886
+888
 01:12:42,700 --> 01:12:48,040
 我们可以做出相应的改变
 it's more likely to be captured by a corresponding change,
 
-887
+889
 01:12:49,226 --> 01:12:52,600
-#TBD
+用上一层语言实现的方法改变即可
 in the way that the language is implemented at the next level up,
 
-888
+890
 01:12:54,293 --> 01:12:56,586
-
+因为你让每个层次都是完全的
 right, because you've made these levels full.
 
-889
+891
 01:12:56,620 --> 01:12:59,660
 所以你不需要讨论像BESIDE这样的特定操作
 So you're not talking about a particular thing like Beside.
 
-890
+892
 01:12:59,946 --> 01:13:03,786
 你为表达这类事物创造了完备的词汇
 You've given yourself a whole vocabulary to express things of that sort,
 
-891
+893
 01:13:04,773 --> 01:13:07,020
 所以当你轻微修改规格指标时
 so if you go and change your specifications a little bit,
 
-892
+894
 01:13:07,020 --> 01:13:11,386
 这种方法论可以捕捉并适应那些变化
 it's more likely that your methodology will able to adapt to capture that change,
 
-893
+895
 01:13:12,693 --> 01:13:15,020
 然而这种设计却不够健壮
 whereas a design like this is not going to be robust,
 
-894
+896
 01:13:15,020 --> 01:13:17,080
 因为 如果我在这里改变一下
 because if I go and change something that's in here,
 
-895
+897
 01:13:17,533 --> 01:13:21,693
 那可能会影响我划分这些东西的方式 严重地影响
 that might affect the entire way that I decomposed everything down, further down the tree.
 
-896
+898
 01:13:23,200 --> 01:13:29,740
 分解观点的最大不同在于 按层次还是严格继承分解
 Right, so very big difference in outlook in decomposition, levels of language rather than, sort of, a strict hierarchy.
 
-897
+899
 01:13:30,520 --> 01:13:33,026
 不只是如此 当你有多个层次的语言时
 Not only that, but when you have levels of language
 
-898
+900
 01:13:33,506 --> 01:13:35,920
 你就有了不同的词汇储备
 you've given yourself a different vocabularies
 
-899
+901
 01:13:36,453 --> 01:13:38,740
 用于讨论不同层次上的设计
 for talking about the design at different levels.
 
-900
+902
 01:13:38,740 --> 01:13:40,920
 我们再回过头来看看George
 So if we go back and look at George one last time,
 
-901
+903
 01:13:41,906 --> 01:13:44,080
 如果我想改变图像George
 if I wanted to change this picture George,
 
-902
+904
 01:13:45,853 --> 01:13:48,680
 我立马得到了一种不同的方式来描述变化
 see suddenly I have a whole different ways of describing the change.
 
-903
+905
 01:13:48,680 --> 01:13:56,080
 比如 我想在基本设计的层面上 移动某些向量的终点
 Like for example, I may want to go to the basic primitive design and move the endpoint of some vector.
 
-904
+906
 01:13:57,760 --> 01:14:00,760
 我会在最底层讨论这个改变
 That's a change that I would discuss at the lowest level.
 
-905
+907
 01:14:01,000 --> 01:14:02,506
 我会另外指定终点位置
 I would say the endpoint is somewhere else.
 
-906
+908
 01:14:03,346 --> 01:14:07,986
-
+我也可以说 我想在这个小的重复元素上做文章
 Or I might come up and say, well the next thing I wanted to do, this little replicated element,
 
-907
+909
 01:14:09,106 --> 01:14:10,940
 我可能想做些其它操作
 I might want to do by something else.
 
-908
+910
 01:14:10,940 --> 01:14:13,840
 我想在BESIDE中使用一个缩放因数
 I might want to put a scale factor in that Beside.
 
-909
+911
 01:14:13,840 --> 01:14:19,340
 这个改变我会在更高的层次上讨论：在组合子的层次
 That's a change that I would discuss at the next level of design, the level of combinators.
 
-910
+912
 01:14:19,340 --> 01:14:25,053
 我也可以改变图像的基本组合模式
 Or I might want to say, I might want to change the basic way that I took this pattern
 
-911
+913
 01:14:26,493 --> 01:14:30,480
 做一些递归地分解 可能不会让它们填充满角落
 and made some recursive decomposition, maybe not bleeding out toward the corners or something else.
 
-912
+914
 01:14:31,160 --> 01:14:34,180
 而这样的一个变化 我会在最高层次讨论
 That would be a change that I would discuss at the highest level.
 
-913
+915
 01:14:34,180 --> 01:14:36,373
 正是因为我按这种结构组织系统
 And because I've structured the system to be this way,
 
-914
-01:14:36,520 --> 01:14:42,480
-#TBD
-I have all these vocabularies for talking about change in different ways and a lot of flexibility to decide which one's appropriate.
+916
+01:14:36,520 --> 01:14:39,626
+我有所有的词汇 可以用不同的方式描述变化
+I have all these vocabularies for talking about change in different ways
 
-915
+917
+01:14:39,653 --> 01:14:42,480
+而且可以灵活地决定哪个更合适
+and a lot of flexibility to decide which one's appropriate.
+
+918
 01:14:44,740 --> 01:14:51,053
 这就是Lisp中不同于软件工程方法论的最大要点
 OK, well that's sort of a big point about the difference in software methodology that comes out from Lisp,
 
-916
+919
 01:14:51,250 --> 01:14:55,453
 它来自于这样一个观点：真正的设计过程
 and it all comes again, out of the notion that really, the design process
 
-917
+920
 01:14:56,120 --> 01:14:59,620
 与其说是在设计程序 不如说是在设计语言
 is not so much implementing programs as implementing languages.
 
-918
+921
 01:14:59,620 --> 01:15:01,093
 而这就是Lisp的力量
 And that's really the power of Lisp.
 
-919
+922
 01:15:02,213 --> 01:15:03,613
 谢谢大家 下课
 OK, thank you. Let's take a break.
+
+923
+01:15:05,690 --> 01:15:15,626
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+924
+01:15:15,653 --> 01:15:23,370
+本项目主页
+https://github.com/FoOTOo/Learning-SICP
 
