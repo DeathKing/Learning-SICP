@@ -18,14 +18,26 @@
 + Lec1b：[《计算过程》](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html)，[下载地址](http://pan.baidu.com/s/1o6G0Qgi)，ChingfanTsou译。
 + Lec2a：[《高阶过程》](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html)，[下载地址](http://pan.baidu.com/s/1jG3HI8A)，endyul译。
 + Lec2b：[《复合数据》](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html)，[下载地址](http://pan.baidu.com/s/1o6HgNgu)，DeathKing译。
++ Lec3a：[《Henderson-Escher的例子》](http://v.youku.com/v_show/id_XODk4NjUwODMy.html)，[下载地址](http://pan.baidu.com/s/1bnHBWmz)，DeathKing & Michael Savior译。
++ Lec3b：[《符号化求导系统：引用》](http://v.youku.com/v_show/id_XODk4NjUwODA0.html)，[下载地址](http://pan.baidu.com/s/1o6Jry9G)，DeathKing译。
 
 Youtube版本暂时不支持。
 
+## 捐助本项目
+
+本项目不以盈利为目的，旨在为广大程序员、函数式编爱好者以及计算机专业学生提供相关学习资源。
+
+字幕制作之苦，如人饮水冷暖自知，期间又经历各种变故，如今也主要只有我一人坚守在这个岗位上为大家继续献上这门经典公开课。虽然拖拖拉拉断断续续，能坚持到今天实属不易。如果您愿意支持本项目，不妨向以下支付宝账户捐款。
+
+![deathking_alipay](https://cloud.githubusercontent.com/assets/895809/6343830/b3840a8c-bc2a-11e4-931e-dbed22ffca99.png)  
+账号：death0622@qq.com
+
+
 ## 加入我们
 
-SICP学习交流群：97747648。
+SICP学习交流群：97747648。加群请注明理由，否则一概拒绝。
 
-+ 给@DeathKing(`dk#hit.edu.cn`)发送一封邮件
++ 给@DeathKing(`dk#hit.edu.cn`)发送一封邮件认领翻译课程
 + `fork`
 + [项目Wiki](https://github.com/DeathKing/Learning-SICP/wiki)
 + [项目状态](https://github.com/DeathKing/Learning-SICP/wiki/%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81)
