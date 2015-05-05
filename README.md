@@ -12,16 +12,16 @@
 
 [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
 
+[中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
+
 [百度网盘SICP文件夹](http://pan.baidu.com/s/1bnvO3vT)
 
-+ Lec1a：[《Lisp概览》](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html)，[下载地址](http://pan.baidu.com/s/1kTmeMgR)，DeathKing译。
-+ Lec1b：[《计算过程》](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html)，[下载地址](http://pan.baidu.com/s/1o6G0Qgi)，ChingfanTsou译。
-+ Lec2a：[《高阶过程》](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html)，[下载地址](http://pan.baidu.com/s/1jG3HI8A)，endyul译。
-+ Lec2b：[《复合数据》](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html)，[下载地址](http://pan.baidu.com/s/1o6HgNgu)，DeathKing译。
-+ Lec3a：[《Henderson-Escher的例子》](http://v.youku.com/v_show/id_XODk4NjUwODMy.html)，[下载地址](http://pan.baidu.com/s/1bnHBWmz)，DeathKing & Michael Savior译。
-+ Lec3b：[《符号化求导系统：引用》](http://v.youku.com/v_show/id_XODk4NjUwODA0.html)，[下载地址](http://pan.baidu.com/s/1o6Jry9G)，DeathKing译。
-
-Youtube版本暂时不支持。
++ Lec1a：《Lisp概览》[优酷](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html)，[YouTube](https://www.youtube.com/watch?v=iG6eVomFrhE)，[下载地址](http://pan.baidu.com/s/1kTmeMgR)，DeathKing译。
++ Lec1b：《计算过程》[优酷](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html)，[YouTube](https://www.youtube.com/watch?v=sVErWRt8dG4)，[下载地址](http://pan.baidu.com/s/1o6G0Qgi)，ChingfanTsou译。
++ Lec2a：《高阶过程》[优酷](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html)，[YouTube](https://www.youtube.com/watch?v=A-uHMbrAvmQ)，[下载地址](http://pan.baidu.com/s/1jG3HI8A)，endyul译。
++ Lec2b：《复合数据》[优酷](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html)，[YouTube](https://www.youtube.com/watch?v=ggXt3Tmd1oY)，[下载地址](http://pan.baidu.com/s/1o6HgNgu)，DeathKing译。
++ Lec3a：《Henderson-Escher的例子》[优酷](http://v.youku.com/v_show/id_XODk4NjUwODMy.html)，[YouTube](https://www.youtube.com/watch?v=zpXX64Bi2tM)，[下载地址](http://pan.baidu.com/s/1bnHBWmz)，DeathKing & Michael Savior译。
++ Lec3b：《符号化求导系统：引用》[优酷](http://v.youku.com/v_show/id_XODk4NjUwODA0.html)，[YouTube](https://www.youtube.com/watch?v=XF5oixi2CTM)，[下载地址](http://pan.baidu.com/s/1o6Jry9G)，DeathKing译。
 
 ## 捐助本项目
 
