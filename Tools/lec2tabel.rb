@@ -10,10 +10,9 @@ AUTHORS = {
   "Michael Savior" => "https://github.com/mut0u"
 }
 
-FORMAT = "| %-6s | %-30s | %-4s | %-7s | %-8s | %-20s |" 
+FORMAT = "| %-s | %-s | %-s | %-s | %-s | %-s |" 
 
 def render_authors(authors)
-  puts authors
   res = []
   authors.each do |a|
     res << (AUTHORS.has_key?(a) ? render_as_mdlink(a, AUTHORS[a]) : a)
@@ -48,7 +47,7 @@ def table_head
 end
 
 def divider
-  FORMAT % %w{- - - - - -}
+  "| ---- | ---- | ---- | ------- | -------- | ---- |"
 end
 
 content = File.open('lec.json').read
@@ -61,4 +60,7 @@ puts divider
 db.each do |row|
   puts itemize(row)
 end
+
+
+
 

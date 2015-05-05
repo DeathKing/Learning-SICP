@@ -10,28 +10,18 @@
 
 ## 视频地址
 
-[中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
++ [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
++ [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
++ [百度网盘SICP文件夹](http://pan.baidu.com/s/1bnvO3vT)
 
-[中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
-
-[百度网盘SICP文件夹](http://pan.baidu.com/s/1bnvO3vT)
-
-| 编号     | 标题                             | 优酷   | YouTube | 下载地址     | 译者                   |
-| -      | -                              | -    | -       | -        | -                    |
-DeathKing
-| Lec1a  | 《Lisp概览》                       | [优酷](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) | [YouTube](https://www.youtube.com/watch?v=iG6eVomFrhE) | [百度网盘](http://pan.baidu.com/s/1kTmeMgR) | [DeathKing](https://github.com/DeathKing) |
-ChingfanTsou
-| Lec1b  | 《计算过程》                         | [优酷](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html) | [YouTube](https://www.youtube.com/watch?v=sVErWRt8dG4) | [百度网盘](http://pan.baidu.com/s/1o6G0Qgi) | [ChingfanTsou](https://github.com/ChingfanTsou) |
-endyul
-| Lec2a  | 《高阶过程》                         | [优酷](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html) | [YouTube](https://www.youtube.com/watch?v=A-uHMbrAvmQ) | [百度网盘](http://pan.baidu.com/s/1jG3HI8A) | [endyul](https://github.com/endyul) |
-DeathKing
-| Lec2b  | 《复合数据》                         | [优酷](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html) | [YouTube](https://www.youtube.com/watch?v=ggXt3Tmd1oY) | [百度网盘](http://pan.baidu.com/s/1o6HgNgu) | [DeathKing](https://github.com/DeathKing) |
-DeathKing
-Michael Savior
-| Lec3a  | 《Henderson-Escher的例子》          | [优酷](http://v.youku.com/v_show/id_XODk4NjUwODMy.html) | [YouTube](https://www.youtube.com/watch?v=zpXX64Bi2tM) | [百度网盘](http://pan.baidu.com/s/1bnHBWmz) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
-DeathKing
-| Lec3b  | 《符号化求导系统：引用》                   | [优酷](http://v.youku.com/v_show/id_XODk4NjUwODA0.html) | [YouTube](https://www.youtube.com/watch?v=XF5oixi2CTM) | [百度网盘](http://pan.baidu.com/s/1o6Jry9G) | [DeathKing](https://github.com/DeathKing) |
-
+| 编号 | 标题 | 优酷 | YouTube | 下载地址 | 译者 |
+| ---- | ---- | ---- | ------- | -------- | ---- |
+| Lec1a | 《Lisp概览》 | [优酷](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) | [YouTube](https://www.youtube.com/watch?v=iG6eVomFrhE) | [百度网盘](http://pan.baidu.com/s/1kTmeMgR) | [DeathKing](https://github.com/DeathKing) |
+| Lec1b | 《计算过程》 | [优酷](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html) | [YouTube](https://www.youtube.com/watch?v=sVErWRt8dG4) | [百度网盘](http://pan.baidu.com/s/1o6G0Qgi) | [ChingfanTsou](https://github.com/ChingfanTsou) |
+| Lec2a | 《高阶过程》 | [优酷](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html) | [YouTube](https://www.youtube.com/watch?v=A-uHMbrAvmQ) | [百度网盘](http://pan.baidu.com/s/1jG3HI8A) | [endyul](https://github.com/endyul) |
+| Lec2b | 《复合数据》 | [优酷](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html) | [YouTube](https://www.youtube.com/watch?v=ggXt3Tmd1oY) | [百度网盘](http://pan.baidu.com/s/1o6HgNgu) | [DeathKing](https://github.com/DeathKing) |
+| Lec3a | 《Henderson-Escher的例子》 | [优酷](http://v.youku.com/v_show/id_XODk4NjUwODMy.html) | [YouTube](https://www.youtube.com/watch?v=zpXX64Bi2tM) | [百度网盘](http://pan.baidu.com/s/1bnHBWmz) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
+| Lec3b | 《符号化求导系统：引用》 | [优酷](http://v.youku.com/v_show/id_XODk4NjUwODA0.html) | [YouTube](https://www.youtube.com/watch?v=XF5oixi2CTM) | [百度网盘](http://pan.baidu.com/s/1o6Jry9G) | [DeathKing](https://github.com/DeathKing) |
 
 ## 捐助本项目
 
