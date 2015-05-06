@@ -16,7 +16,7 @@
 
 
 | 编号 | 标题 | 优酷 | YouTube | 下载地址 | 译者 |
-| ---- | ---- | ---- | ------- | -------- | ---- |
+| ---- | ---- |:----:|:-------:|:--------:| ---- |
 | Lec1a | 《Lisp概览》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=iG6eVomFrhE) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1kTmeMgR) | [DeathKing](https://github.com/DeathKing) |
 | Lec1b | 《计算过程》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XNTMxODY1NTg4.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=sVErWRt8dG4) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1o6G0Qgi) | [ChingfanTsou](https://github.com/ChingfanTsou) |
 | Lec2a | 《高阶过程》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XNzAzNjI1NjU2.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=A-uHMbrAvmQ) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1jG3HI8A) | [endyul](https://github.com/endyul) |
