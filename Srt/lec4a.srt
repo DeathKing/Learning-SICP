@@ -2244,1532 +2244,1537 @@ I'm going to evaluate that relative to this dictionary, whatever evaluation mean
 
 450
 00:38:32,900 --> 00:38:34,656
-#TBD
+我们以后再仔细讨论
 We'll find out a lot about that sometime.
 
 451
-00:38:35,860 --> 00:38:38,900
-那就是我的答案
+00:38:36,128 --> 00:38:38,352
+求值的结果就是答案
 And the result of that is my answer.
 
 452
-00:38:39,400 --> 00:38:44,060
-这个初始化--循环要遍历整个框架
+00:38:39,680 --> 00:38:43,664
+这条初始化语句 通过传递循环给整个骨架来启动它
 so. I start up this loop-- here's my initialization-- by calling it with the whole skeleton,
 
 453
-00:38:44,060 --> 00:38:47,500
-这将递归的分解成小块
+00:38:44,448 --> 00:38:47,040
+这些调用又会被分成小块的递归调用
 and this will just do a recursive decomposition into pieces.
 
 454
-00:38:49,430 --> 00:38:56,860
-在求值里面发生了什么细节
+00:38:49,632 --> 00:38:56,480
+那么 求值过程里面发生了些什么
 Now, one more little bit of detail is what happens inside evaluate?
 
 455
-00:38:56,860 --> 00:38:59,530
-我没有办法说的很详细
+00:38:57,184 --> 00:38:59,072
+我无法详尽地给你们解释
 I can't tell you that in great detail.
 
 456
-00:38:59,530 --> 00:39:01,560
-我大致说一下
+00:38:59,984 --> 00:39:01,344
+我就大致说一下
 I'll tell you a little bit of it.
 
 457
-00:39:01,560 --> 00:39:04,330
-之后我们再看里面的更多细节
+00:39:01,560 --> 00:39:03,744
+之后 我们再深入地讨论
 Later, we're going to see--look into this in much more detail.
 
 458
-00:39:05,030 --> 00:39:11,260
-为了对这些表单进行求值  与词典相关的表达式
+00:39:05,296 --> 00:39:10,816
+在一本词典的环境下 求值一个表达式
 To evaluate some form, some expression with respect to a dictionary,
 
 459
-00:39:11,630 --> 00:39:14,730
-如果表达式是一个原子对象
+00:39:11,904 --> 00:39:14,176
+如果表达式是原子的
 if the expression is an atomic object, well,
 
 460
-00:39:14,730 --> 00:39:16,760
-就在词典中查找
+00:39:15,040 --> 00:39:16,224
+就在词典中进行查找
 I'm going to go look it up.
 
 461
-00:39:18,260 --> 00:39:20,300
-这里没有什么有趣的东西
+00:39:18,608 --> 00:39:19,872
+这没啥
 Nothing very exciting there.
 
 462
-00:39:20,300 --> 00:39:23,830
-否则 做一些复杂的事情
+00:39:20,576 --> 00:39:23,664
+难点在这里
 Otherwise, I'm going to do something complicated here,
 
 463
-00:39:23,830 --> 00:39:31,930
-我要应用一个过程寻找操作符  整个过程我们将来再说
-which is I'm going to apply a procedure which is the result of looking up the operator part in something that we're going to find out about someday.
+00:39:23,830 --> 00:39:28,288
+我将要应用表达式的car部分对应的一个过程
+which is I'm going to apply a procedure which is the result of looking up the operator part
 
 464
-00:39:31,930 --> 00:39:34,500
-我想让大家认识到大家正在看神奇的东西
-I want you realize you're seeing magic now.
+00:39:29,440 --> 00:39:31,680
+这个过程是在“某个地方”查找得到的——我们以后讨论
+in something that we're going to find out about someday.
 
 465
-00:39:34,500 --> 00:39:39,060
-这个魔法将会在不久变的清晰 但不是今天
-This magic will become clear very soon, but not today.
+00:39:32,144 --> 00:39:34,208
+睁大眼睛 仔细看！#TBD
+I want you realize you're seeing magic now.
 
 466
-00:39:39,060 --> 00:39:46,900
-然后在这个地点中找这些参数
-Then I'm looking at--looking up all the pieces, all the arguments to that in the dictionary.
+00:39:34,672 --> 00:39:38,720
+#TBD
+This magic will become clear very soon, but not today.
 
 467
-00:39:47,900 --> 00:39:51,230
-我不想让大家看这些细节
-So I don't want you to look at this in detail.
+00:39:40,000 --> 00:39:46,510
+我们在词典中查找表达式剩余部分对应的值
+Then I'm looking at--looking up all the pieces, all the arguments to that in the dictionary.
 
 468
-00:39:51,230 --> 00:39:57,160
-这里还有很多细节 我们以后再看
-I want you to say that there's more going on here, and we're going to see more about this.
+00:39:48,560 --> 00:39:50,880
+我还不想让你们关注细节
+So I don't want you to look at this in detail.
 
 469
-00:39:58,730 --> 00:40:01,330
-魔术将要停止
-But it's-- the magic is going to stop.
+00:39:51,440 --> 00:39:56,752
+#TBD
+I want you to say that there's more going on here, and we're going to see more about this.
 
 470
-00:40:02,160 --> 00:40:07,360
-这部分需要利用Lisp
-This part has to do with Lisp, and it's the end of that.
+00:39:59,040 --> 00:40:00,880
+但是 魔法就到此结束了
+But it's-- the magic is going to stop.
 
 471
-00:40:09,860 --> 00:40:14,000
-我们现在知道匹配和实例化
-OK, so now we know about matching and instantiation.
+00:40:02,576 --> 00:40:06,960
+这部分利用Lisp的神器力量 不过也就仅此而已了#TBD
+This part has to do with Lisp, and it's the end of that.
 
 472
-00:40:14,760 --> 00:40:17,230
-这一节大家有疑问么?
-Are there any questions for this segment?
+00:40:10,256 --> 00:40:13,568
+我们介绍了匹配和生成（实例化）
+OK, so now we know about matching and instantiation.
 
 473
-00:40:28,100 --> 00:40:29,800
-学生: 我有一个问题
-AUDIENCE: I have a question.
+00:40:15,056 --> 00:40:16,608
+这一节有疑问么?
+Are there any questions for this segment?
 
 474
-00:40:29,800 --> 00:40:30,430
-老师:好的
-PROFESSOR: Yes.
+00:40:28,100 --> 00:40:29,800
+学生：我有一个问题
+AUDIENCE: I have a question.
 
 475
-00:40:30,430 --> 00:40:33,030
-学生:是否有可能调出以前的幻灯片
-AUDIENCE: Is it possible to bring up a previous slide?
+00:40:29,800 --> 00:40:30,430
+教授：请讲
+PROFESSOR: Yes.
 
 476
-00:40:33,030 --> 00:40:35,860
+00:40:30,430 --> 00:40:32,560
+学生：您能切到前张幻灯片上吗？
+AUDIENCE: Is it possible to bring up a previous slide?
+
+477
+00:40:33,600 --> 00:40:35,568
 是关于定义匹配模式的
 It's about this define match pattern.
 
-477
-00:40:35,860 --> 00:40:40,760
-老师:好的 你想看定义匹配模式的全部的幻灯片
+478
+00:40:36,160 --> 00:40:40,760
+教授：好的 你想看定义匹配模式的全部的幻灯片
 PROFESSOR: Yes. You'd like to see the overall slide define match pattern.
 
-478
+479
 00:40:40,760 --> 00:40:43,060
 有人可以把它   #TBD
 Can somebody put up the -- no, the overhead.
 
-479
+480
 00:40:43,060 --> 00:40:45,160
 这是最大的规模
 That's the biggest scale one.
 
-480
-00:40:45,160 --> 00:40:46,760
+481
+00:40:45,312 --> 00:40:46,400
 你想看哪一部份
 What part would you like to see?
 
-481
+482
 00:40:46,760 --> 00:40:49,960
-学生:最上面的
+学生：呃 最上面吧
 AUDIENCE: Well, the top would be fine.
 
-482
-00:40:49,960 --> 00:40:54,030
-你匹配失败的任何一部份
+483
+00:40:49,960 --> 00:40:53,760
+就是传递失败的那一部分
 Any of the parts where you're passing failed.
 
-483
-00:40:54,300 --> 00:40:55,360
-老师:好
+484
+00:40:54,528 --> 00:40:55,216
+教授：恩
 PROFESSOR: Yes.
 
-484
-00:40:55,360 --> 00:40:59,330
-学生:基本的想法是把匹配的错误返回给词典 是么?
+485
+00:40:55,648 --> 00:40:59,330
+学生：基本的想法是把错误返回给词典 是么?
 AUDIENCE: The idea is to pass failed back to the dictionary; is that right?
 
-485
-00:40:59,330 --> 00:41:04,460
-老师:词典是匹配的答案
+486
+00:40:59,330 --> 00:41:04,256
+教授：所谓的词典 就是所是匹配的答案 对吧？
 PROFESSOR: The dictionary is the answer to a match, right?
 
-486
-00:41:04,800 --> 00:41:13,100
-或者它是一些匹配 或者就什么都没有
-And it is either some mapping or there's no match.
-
 487
-00:41:13,100 --> 00:41:14,330
-(失败的情况是)词典里没有任何匹配
-It doesn't match.
+00:41:05,160 --> 00:41:09,808
+要么它是一些配对
+And it is either some mapping
 
 488
-00:41:14,330 --> 00:41:15,130
-学生:对
-AUDIENCE: Right.
+00:41:11,072 --> 00:41:14,030
+要么根本就没有配对
+or there's no match. It doesn't match.
 
 489
-00:41:15,130 --> 00:41:17,830
-老师:这里事实上
-PROFESSOR: So what you're seeing over here is, in fact,
+00:41:14,464 --> 00:41:14,976
+学生：对
+AUDIENCE: Right.
 
 490
-00:41:17,830 --> 00:41:22,600
-因为一个匹配可能有子匹配传递了这个词典
-because the fact that a match may have another match pass in the dictionary,
+00:41:15,264 --> 00:41:17,830
+教授：这里 事实上
+PROFESSOR: So what you're seeing over here is, in fact,
 
 491
-00:41:22,600 --> 00:41:24,960
-你可以在这里看到一般的情况
-as you see in the general case down here.
+00:41:17,830 --> 00:41:22,600
+因为一个匹配可能有子匹配传递了这个词典 #TBD
+because the fact that a match may have another match pass in the dictionary,
 
 492
-00:41:24,960 --> 00:41:27,930
-这是一个匹配传递词典到另一个匹配的通用情况
-Here's the general case where a match passes another match to the dictionary.
+00:41:22,800 --> 00:41:24,656
+可以在这里的一般情况中看到
+as you see in the general case down here.
 
 493
-00:41:27,930 --> 00:41:34,400
-当我匹配cdr的时候 我用匹配car的结果的词典来匹配cdr
-When I match the cdr's, I match them in the dictionary that is resulting from matching the car's.
+00:41:25,120 --> 00:41:27,930
+这是一个匹配过程传递词典到另一个匹配过程
+Here's the general case where a match passes another match to the dictionary.
 
 494
-00:41:35,600 --> 00:41:37,200
-这是我已经有的东西
-OK, that's what I have here.
+00:41:28,144 --> 00:41:34,160
+我是用匹配car部分得到的词典来匹配cdr部分的
+When I match the cdr's, I match them in the dictionary that is resulting from matching the car's.
 
 495
-00:41:37,200 --> 00:41:40,500
-所以如果匹配car失败了
-So because of that, if the match of the car's fails,
+00:41:36,064 --> 00:41:37,088
+这是 我已经有的东西#TBD
+OK, that's what I have here.
 
 496
-00:41:40,900 --> 00:41:45,700
-有可能cdr的传播匹配失败
-then it may be necessary that the match of the cdr's propagates that failure,
+00:41:37,296 --> 00:41:40,304
+正因为如此 如果对car部分的匹配失败了
+So because of that, if the match of the car's fails,
 
 497
-00:41:45,700 --> 00:41:47,300
-这就是(代码的)第一行
-and that's what the first line is.
+00:41:41,232 --> 00:41:45,440
+匹配cdr部分的时候就有必要传播失败 
+then it may be necessary that the match of the cdr's propagates that failure,
 
 498
-00:41:48,260 --> 00:41:51,730
-学生:好的 我现在还不明白匹配 --
-AUDIENCE: OK, well, I'm still unclear what matches--
+00:41:45,952 --> 00:41:46,960
+第一行就是用于传播失败
+and that's what the first line is.
 
 499
-00:41:51,730 --> 00:41:54,730
+00:41:48,260 --> 00:41:51,730
+学生：好 但我还是不明白匹配 --
+AUDIENCE: OK, well, I'm still unclear what matches--
+
+500
+00:41:51,730 --> 00:41:54,240
 从匹配的实例出来的是什么?
 what comes out of one instance of the match?
 
-500
+501
 00:41:54,730 --> 00:41:56,230
 老师:两个可能中的一个
 PROFESSOR: One of two possibilities.
 
-501
+502
 00:41:56,230 --> 00:41:59,530
 如果符号失败了 意味着没有匹配
 Either the symbol failed, which means there is no match.
 
-502
+503
 00:41:59,530 --> 00:41:59,930
 学生:对
 AUDIENCE: Right.
 
-503
+504
 00:41:59,930 --> 00:42:04,160
 老师:或者某种映射 现在这还是一个抽象的东西
 PROFESSOR: Or some mapping, which is an abstract thing right now,
 
-504
+505
 00:42:04,160 --> 00:42:06,130
 你需要知道它的结构
 and you should know about the structure of it,
 
-505
+506
 00:42:06,130 --> 00:42:14,360
 它在匹配过程中把模式变量和他们的值关联起来
 which relates the pattern variables to their values as picked up in the match.
 
-506
+507
 00:42:14,360 --> 00:42:17,430
 学生:好 ---
 AUDIENCE: OK, so it is--
 
-507
+508
 00:42:17,430 --> 00:42:18,800
 老师:它是由扩展词典构造出来的
 PROFESSOR: That's constructed by extend dictionary.
 
-508
+509
 00:42:18,800 --> 00:42:28,860
 学生:所以根据递归性质 如果任何匹配如果失败了
 AUDIENCE: So the recursive nature brings about the fact that if ever a failed gets passed out of any calling of match,
 
-509
+510
 00:42:28,860 --> 00:42:30,400
 那么第一个条件将获取它 -
 then the first condition will pick it up--
 
-510
+511
 00:42:30,400 --> 00:42:33,560
 老师:并且传播它 不做任何其他处理
 PROFESSOR: And just propagate it along without any further ado, right.
 
-511
+512
 00:42:33,560 --> 00:42:34,830
 学生:对
 AUDIENCE: Oh, right.
 
-512
+513
 00:42:34,830 --> 00:42:37,760
 老师:这是从这里获得失败(结果)最快的方法
 PROFESSOR: That's just the fastest way to get that failure out of there.
 
-513
+514
 00:42:42,860 --> 00:42:43,600
 对
 Yes.
 
-514
+515
 00:42:43,600 --> 00:42:47,430
 学生:如果这里没有失败那意味着我匹配了一个模式
 AUDIENCE: If I don't fail, that means that I've matched a pattern,
 
-515
+516
 00:42:47,430 --> 00:42:53,330
 我会扩展词典并且传递表达式模式
 and I run the procedure extend dict and then pass in the pattern in the expression.
 
-516
+517
 00:42:53,330 --> 00:42:58,430
 但是替换不在这里对么:
 But the substitution will not be made at that point; is that right?
 
-517
+518
 00:42:58,430 --> 00:42:59,030
 我只是 --
 I'm just--
 
-518
+519
 00:42:59,030 --> 00:42:59,460
 老师:对
 PROFESSOR: No, no.
 
-519
+520
 00:42:59,460 --> 00:43:02,400
 这里没有替换因为这里还没有框架可以替换
 There's no substitution being there because there's no skeleton to be substituted in.
 
-520
+521
 00:43:02,400 --> 00:43:03,060
 学生:对
 AUDIENCE: Right.
 
-521
+522
 00:43:03,060 --> 00:43:07,160
 老师:这里只更改一个词典用来为以后做替换用
 PROFESSOR: All you've got there is we're making up the dictionary for later substitution.
 
-522
+523
 00:43:07,930 --> 00:43:12,530
 学生:词典应该是什么样子呢? 是有序的PAIR么
 AUDIENCE: And what would the dictionary look like? Is it ordered pairs?
 
-523
+524
 00:43:12,530 --> 00:43:15,960
 老师:那个还没有告诉你
 PROFESSOR: That's--that's not told to you.
 
-524
+525
 00:43:15,960 --> 00:43:17,060
 它还是一个抽象的东西
 We're being abstract.
 
-525
+526
 00:43:17,060 --> 00:43:17,560
 学生:哦
 AUDIENCE: OK.
 
-526
+527
 00:43:17,560 --> 00:43:18,900
 老师:你为什么要知道呢?
 PROFESSOR: Why do you want to know?
 
-527
+528
 00:43:18,900 --> 00:43:20,530
 它是一个函数
 What it is, it's a function.
 
-528
+529
 00:43:20,960 --> 00:43:21,660
 仅仅是一个函数
 It's a function.
 
-529
+530
 00:43:21,660 --> 00:43:22,330
 学生:我想知道它的原因是--
 AUDIENCE: Well, the reason I want to know is--
 
-530
+531
 00:43:22,330 --> 00:43:24,500
 有序的PAIRS集合抽象成了一个函数
 PROFESSOR: A function abstractly is a set of ordered pairs.
 
-531
+532
 00:43:24,900 --> 00:43:28,830
 它可以用PAIR列表来实现
 It could be implemented as a set of list pairs.
 
-532
+533
 00:43:29,060 --> 00:43:32,430
 它也可以用其它的表机制来实现
 It could be implemented as some fancy table mechanism.
 
-533
+534
 00:43:32,430 --> 00:43:34,730
 它可以用一个函数来实现
 It could be implemented as a function.
 
-534
+535
 00:43:35,260 --> 00:43:37,600
 用某种方式 我可以把它构建成一个函数
 And somehow, I'm building up a function.
 
-535
+536
 00:43:38,600 --> 00:43:40,430
 但是我还没有告诉你
 But I'm not telling you.
 
-536
+537
 00:43:40,430 --> 00:43:43,560
 这是George的事情 他来构建这个结构
 That's up to George, who's going to build that later.
 
-537
+538
 00:43:49,000 --> 00:43:52,360
 我知道你想把它具体写出来
 I know you really badly want to write concrete things.
 
-538
+539
 00:43:52,360 --> 00:43:54,430
 我不打算让你那么做
 I'm not going to let you do that.
 
-539
+540
 00:43:54,430 --> 00:44:02,430
 学生:恩 我再问最后一个问题 扩展到词典中的重要信息是什么? 我想可能是匹配发现的模式--
 AUDIENCE: Well, let me at least ask, what is the important information there that's being passed to extend dict? I want to pass the pattern I found--
 
-540
+541
 00:44:02,430 --> 00:44:04,830
 老师:对 是表达式匹配的模式
 PROFESSOR: Yes. The pattern that's matched against the expression.
 
-541
+542
 00:44:04,830 --> 00:44:09,300
 你想要这个模式 其实是想要这个模式的变量
 You want to have the pattern, which happens to be in those cases pattern variables,right?
 
-542
+543
 00:44:09,300 --> 00:44:13,200
 这三种扩展词典的情况都是模式变量
 All of those three cases for extend dict are pattern variables.
 
-543
+544
 00:44:13,200 --> 00:44:13,730
 学生:好
 AUDIENCE: Right.
 
-544
+545
 00:44:13,730 --> 00:44:19,000
 老师:你有一个词典中的一个模式变量的值
 PROFESSOR: So you have a pattern variable that is to be given a value in a dictionary.
 
-545
+546
 00:44:19,000 --> 00:44:22,500
 老师:这个值是匹配的表达式
 PROFESSOR: The value is the expression that it matched against.
 
-546
+547
 00:44:23,030 --> 00:44:30,030
 词典就是遍历过程中记录下来的变量的集合
 The dictionary is the set of things I've already figured out that I have memorized or learned.
 
-547
+548
 00:44:30,030 --> 00:44:38,800
 用原有的词典扩展这个模式变量生成一个新词典
 And I am going to make a new dictionary, which is extended from the original one by having that pattern variable have a value with the new dictionary.
 
-548
+549
 00:44:39,600 --> 00:44:43,730
 学生:我不理解为什么不能在右边匹配的过程中进行化简
 AUDIENCE: I guess what I don't understand is why can't the substitution be made right as soon as you find--
 
-549
+550
 00:44:43,730 --> 00:44:46,960
 老师:我怎么知道如何化简呢?我还不知道框架的任何事情
 PROFESSOR: How do I know what I'm going to substitute? I don't know anything about this skeleton.
 
-550
+551
 00:44:46,960 --> 00:44:49,660
 这个模式 这个匹配是一个独立的单元
 This pattern, this matcher is an independent unit.
 
-551
+552
 00:44:49,660 --> 00:44:51,000
 学生:哦 我明白了
 AUDIENCE: Oh, I see. OK.
 
-552
+553
 00:44:51,000 --> 00:44:51,500
 老师:好
 PROFESSOR: Right?
 
-553
+554
 00:44:51,500 --> 00:44:51,900
 学生:恩
 AUDIENCE: Yeah.
 
-554
+555
 00:44:51,900 --> 00:44:57,230
 老师:我用这个匹配器进行匹配 如果匹配了就可以实例化
 PROFESSOR: I take the matcher. I apply the matcher. If it matches, then it was worth doing instantiation.
 
-555
+556
 00:44:58,200 --> 00:44:59,500
 学生:好
 AUDIENCE: OK, good.
 
-556
+557
 00:45:00,760 --> 00:45:04,030
 学生:你可以再求解一次黑板上的例子么
 AUDIENCE: Can you just do that answer again using that example on the board?
 
-557
+558
 00:45:04,630 --> 00:45:06,930
 什么返回给了匹配器
 You know, what you just passed back to the matcher.
 
-558
+559
 00:45:06,930 --> 00:45:08,260
 好
 PROFESSOR: Oh yes. OK, yes.
 
-559
+560
 00:45:08,260 --> 00:45:10,130
 来看这个例子
 You're looking at this example.
 
-560
+561
 00:45:10,130 --> 00:45:10,160
 在这里当我遍历这个结构的时候 我得到了x
 At this point when I'm traversing this structure, I get to here: x.
 来看这个例子
 You're looking at this example.
 
-561
+562
 00:45:10,160 --> 00:45:15,900
 在这里当我遍历这个结构的时候 我得到了x
 At this point when I'm traversing this structure, I get to here: x.
 
-562
+563
 00:45:15,900 --> 00:45:20,860
 我有一个词典 假设它是空的
 I have some dictionary,presumably an empty dictionary at this point if this is the whole expression.
 
-563
+564
 00:45:21,560 --> 00:45:25,800
 所以我匹配到x是3
 So I have an empty dictionary,and I've matched x against 3.
 
-564
+565
 00:45:26,260 --> 00:45:31,760
 现在词典中存在x是3这个变量了
 So now, after this point,the dictionary contains x is 3, OK?
 
-565
+566
 00:45:33,000 --> 00:45:36,400
 现在我们继续遍历 我看到了y
 Now, I continue walking along here. I see y.
 
-566
+567
 00:45:36,400 --> 00:45:39,600
 它是一个特殊的x 模式x
 Now, this is a particular x, a pattern x.
 
-567
+568
 00:45:39,600 --> 00:45:41,600
 我看到y 模式y
 I see y, a pattern y.
 
-568
+569
 00:45:41,600 --> 00:45:51,630
 词典说 模式y是符号x 因为这里已经匹配过了
 The dictionary says, oh yes, the pattern y is the symbol x because I've gota match there.
 
-569
+570
 00:45:51,630 --> 00:45:54,930
 所以词典现在保存了这两个实体
 So the dictionary now contains at this point two entries.
 
-570
+571
 00:45:55,230 --> 00:46:00,530
 模式x是3 模式y是x
 The pattern x is 3, and the pattern y is the expression x.
 
-571
+572
 00:46:01,660 --> 00:46:04,230
 现在继续进行遍历
 Now, I get that, I can walk along further.
 
-572
+573
 00:46:04,230 --> 00:46:07,730
 这里模式y想要匹配成4
 I say, oh, pattern y also wants to be 4.
 
-573
+574
 00:46:07,730 --> 00:46:11,060
 但是这个不可能 产生一个失败
 But that isn't possible, producing a failure.
 
-574
+575
 00:46:13,730 --> 00:46:16,360
 谢谢 我们休息一下
 Thank you. Let's take a break.
 
-575
+576
 00:47:01,560 --> 00:47:06,660
 大家第一次正在看一个非常庞大而且复杂的程序
 OK, you're seeing your first very big and hairy program.
 
-576
+577
 00:47:06,660 --> 00:47:13,460
 这节的一个目标是让大家可以读懂这么庞大的程序 完全不用害怕它
 Now, of course, one of the goals of this subsegment is to get you to be able to read something like this and not be afraid of it.
 
-577
+578
 00:47:13,460 --> 00:47:16,830
 这仅仅是4页的代码
 This one's only about four pages of code.
 
-578
+579
 00:47:16,830 --> 00:47:22,260
 在这个主题结束的时候 我希望大家阅读一个50页的代码不会害怕
 By the end of the subject, I hope a 50-page program will not look particularly frightening.
 
-579
+580
 00:47:22,260 --> 00:47:28,760
 但是我不是说期望大家可以把它整个都看完 #TBD
 But I don't expect-- and I don't want you to think that I expect you to be getting it as it's coming out.
 
-580
+581
 00:47:28,760 --> 00:47:31,700
 你应该体会这个程序
 You're supposed to feel the flavor of this, OK?
 
-581
+582
 00:47:31,700 --> 00:47:34,830
 然后好好思考 因为它是一个很大的程序
 And then you're supposed to think about it because it is a big program.
 
-582
+583
 00:47:35,100 --> 00:47:39,330
 在这个程序中有很多东西
 There's a lot of stuff inside this program.
 
-583
+584
 00:47:40,860 --> 00:47:46,400
 我们正在实现我告诉大家的模式匹配语言
 Now, I've told you about the language we're implementing, the pattern match substitution language.
 
-584
+585
 00:47:46,400 --> 00:47:47,930
 我已经展示了一些规则
 I showed you some rules.
 
-585
+586
 00:47:47,930 --> 00:47:53,560
 我已经告诉大家匹配和实例化 他们是运行一个规则的两部份
 And I've told you about matching and instantiation, which are the two halves of how a rule works.
 
-586
+587
 00:47:53,760 --> 00:48:04,400
 现在我们需要理解控制结构 通过它规则被应用到表达式上来做代数化简
 Now we have to understand the control structure by which the rules are applied to the expressions so as to do algebraic simplification.
 
-587
+588
 00:48:06,530 --> 00:48:10,030
 它是非常复杂的
 Now, that's also a big complicated mess.
 
-588
+589
 00:48:11,760 --> 00:48:19,760
 其中有很多关联的相互交织的循环
 The problem is that there is a variety of interlocking,interwoven loops, if you will, involved in this.
 
-589
+590
 00:48:19,760 --> 00:48:27,430
 一方面 我不得不检查我需要化简的表达式中的每一个子表达式
 For one thing, I have to apply-- I have to examine every subexpression of my expression that I'm trying to simplify.
 
-590
+591
 00:48:28,630 --> 00:48:29,930
 我们已经知道要如何做这件事情了
 That we know how to do.
 
-591
+592
 00:48:29,930 --> 00:48:36,660
 它是car cdr 递归 像这样 一种树遍历
 It's a car cdr recursion of some sort, or something like that, and some sort of tree walk.
 
-592
+593
 00:48:37,200 --> 00:48:38,660
 那个将要发生
 And that's going to be happening.
 
-593
+594
 00:48:38,660 --> 00:48:48,760
 我试图化简表达遍历得到的每个节点
 Now, for every such place, every node that I get to in doing my traversal of the expression I'm trying to simplify,
 
-594
+595
 00:48:48,760 --> 00:48:51,530
 我需要应用所有的规则
 I want to apply all of the rules.
 
-595
+596
 00:48:53,060 --> 00:48:55,760
 每一个节点检查每个规则
 Every rule is going to look at every node.
 
-596
+597
 00:48:55,760 --> 00:48:58,360
 我一直在这些规则中打转(循环)
 I'm going to rotate the rules around.
 
-597
+598
 00:49:01,330 --> 00:49:05,930
 匹配一个规则或者不匹配
 Now, either a rule will or will not match.
 
-598
+599
 00:49:07,130 --> 00:49:11,000
 如果规则不匹配 那我就不关心了
 If the rule does not match, then it's not very interesting.
 
-599
+600
 00:49:11,800 --> 00:49:17,360
 如果规则匹配了 那个节点用另外一个表达式替换这个表达式
 If the rule does match, then I'm going to replace that node in the expression by an alternate expression.
 
-600
+601
 00:49:18,000 --> 00:49:23,230
 实际上我创建了一个新的表达式 它包含---
 I'm actually going to make a new expression, which contains--
 
-601
+602
 00:49:23,230 --> 00:49:32,230
 新值所包含的一切 替代框架的结果 在这个层级上框架的实例化
 everything contains that new value, the result of substituting into the skeleton, instantiating the skeleton for that rule at this level.
 
-602
+603
 00:49:32,230 --> 00:49:37,730
 但是没有人知道我那里实例化的是已经化简的形式
 But no one knows whether that thing that I instantiated there is in simplified form.
 
-603
+604
 00:49:38,260 --> 00:49:44,030
 所以我们要一个化简的形式 用某种方式调用化简器在我构建的东西上面
 So we're going to have to simplify that, somehow to call the simplifier on the thing that I just constructed.
 
-604
+605
 00:49:45,700 --> 00:49:50,630
 当这完成的时候 我可以把我想要的作为答案构建到表达式中
 And then when that's done, then I sort of can build that into the expression I want as my answer.
 
-605
+606
 00:49:51,430 --> 00:49:57,900
 这里我有一个基本想法 清理化简器#TBD
 Now, there is a basic idea here, which I will call a garbage- in, garbage-out  simplifier.
 
-606
+607
 00:50:01,130 --> 00:50:03,260
 它是一个递归的化简器
 It's a kind of recursive simplifier.
 
-607
+608
 00:50:03,260 --> 00:50:09,060
 化简的方法是基本对象 比如变量就是最简形式的了
 And what happens is the way simplify something is that simple objects like variables are simple.
 
-608
+609
 00:50:10,160 --> 00:50:13,660
 组合对象 --我也不知道
 Compound objects, well, I don't know.
 
-609
+610
 00:50:13,660 --> 00:50:16,760
 我要做的是从简单对象开始构建
 What I'm going to do is I'm going to build up from simple objects,
 
-610
+611
 00:50:16,760 --> 00:50:21,460
 通过假设他们分出来的小块都是基本对象
 trying to make simple things by assuming that the pieces they're made out of are simple.
 
-611
+612
 00:50:24,230 --> 00:50:26,000
 这就是这里所发生的
 That's what's happening here.
 
-612
+613
 00:50:27,230 --> 00:50:33,400
 现在如果我们看第一个幻灯片---在上面
 Well, now, if we look at the first slide-- no, overhead, overhead.
 
-613
+614
 00:50:33,400 --> 00:50:37,430
 我们看到一个非常复杂的程序像我们之前看到的匹配器一样
 If we look at the overhead, we see a very complicated program like we saw before for the matcher,
 
-614
+615
 00:50:37,430 --> 00:50:40,600
 它太复杂了 没有必要仔细阅读它
 so complicated that you can't read it like that.
 
-615
+616
 00:50:40,600 --> 00:50:50,460
 我只想让大家感受一下它的轮廓 这个轮廓就是这个程序里面有很多子程序
 I just want you to get the feel of the shape of it, and the shape of it is that this program has various subprograms in it.
 
-616
+617
 00:50:51,760 --> 00:51:01,700
 其中的一个 -- 这部份是遍历表达式 这部份是尝试规则
 One of them--this part is the part for traversing the expression, and this part is the part for trying rules.
 
-617
+618
 00:51:02,200 --> 00:51:06,100
 现在 我们更仔细的看看
 Now, of course, we can look at that in some more detail.
 
-618
+619
 00:51:06,100 --> 00:51:12,360
 我们看第一个幻灯片
 Let's look at--let's look at the first transparency, right?
 
-619
+620
 00:51:12,860 --> 00:51:17,800
 它是由好几部份组成的化简器
 The simplifier is made out of several parts.
 
-620
+621
 00:51:17,800 --> 00:51:27,800
 现在,记住在最开始, 化简器有一系列的规则和产生一个过程 这个过程将对它进行简化
 Now, remember at the very beginning, the simplifier is the thing which takes a rules-- a set of rules and produces a program which will simplify it relative to them.
 
-621
+622
 00:51:29,630 --> 00:51:33,060
 化简器在这里
 So here we have our simplifier.
 
-622
+623
 00:51:33,060 --> 00:51:35,300
 它需要一个规则集合
 It takes a rule set.
 
-623
+624
 00:51:35,300 --> 00:51:41,830
 规则集合在这个范围被定义 这里还定义了很多其它东西
 And in the context where that rule set is defined, there are various other definitions that are done here.
 
-624
+625
 00:51:41,830 --> 00:51:49,000
 这个化简器过程的结果是一个已经定义好的过程
 And then the result of this simplifier procedure is, in fact, one of the procedures that was defined.
 
-625
+626
 00:51:49,600 --> 00:51:51,200
 化简x
 Simplify x.
 
-626
+627
 00:51:52,130 --> 00:51:59,730
 在规则集合上  调用化简器返回一个过程
 What I'm returning as the value of calling the simplifier on a set of rules is a procedure,
 
-627
+628
 00:52:00,100 --> 00:52:09,100
 在这个范围定义的化简x的过程 是一个恰当利用这些规则的化简过程
 the simplify x procedure, which is defined in that context, which is a simplification procedure appropriate for using those set of rules.
 
-628
+629
 00:52:14,430 --> 00:52:16,400
 这就是我这里有的
 That's what I have there.
 
-629
+630
 00:52:16,960 --> 00:52:25,960
 这些过程的前两个 这个和这个 他们一起递归遍历一个表达式
 Now, the first two of these procedures, this one and this one, are together going to be the recursive traversal of an expression.
 
-630
+631
 00:52:25,960 --> 00:52:33,830
 这个是任何表达式的通用化简方法 这是对表达式列表的各个部分进行化简
 This one is the general simplification for any expression, and this is the thing which simplifies a list of parts of an expression.
 
-631
+632
 00:52:35,100 --> 00:52:36,460
 没有别的了
 Nothing more.
 
-632
+633
 00:52:36,460 --> 00:52:40,160
 每个化简做一些复杂的事情 包括尝试这些规则
 For each of those, we're going to do something complicated, which involves trying the rules.
 
-633
+634
 00:52:40,160 --> 00:52:42,130
 现在 我们看这些部份
 Now, we should look at the various parts.
 
-634
+635
 00:52:45,460 --> 00:52:48,400
 我们看一下表达式的递归遍历
 Well let's look first at the recursive traversal of an expression.
 
-635
+636
 00:52:48,400 --> 00:52:52,030
 这是一种简单的方式
 And this is done in a sort of simple way.
 
-636
+637
 00:52:53,730 --> 00:52:58,300
 这是一个小型的递归程序
 This is a little nest of recursive procedures.
 
-637
+638
 00:52:59,030 --> 00:53:02,230
 这里有两个过程 ---
 And what we have here are two procedures--
 
-638
+639
 00:53:02,230 --> 00:53:08,460
 一个是对一个表达式进行化简 另一个是表达式的各个部分进行化简
 one for simplifying an expression, and one for simplifying parts of an expression.
 
-639
+640
 00:53:08,900 --> 00:53:11,400
 他们的工作方式很简单
 And the way this works is very simple.
 
-640
+641
 00:53:11,400 --> 00:53:18,860
 如果要化简的表达式是组合表达式 就对每一个部分进行化简
 If the expression I'm trying to simplify is a compound expression, I'm going to simplify all the parts of it.
 
-641
+642
 00:53:19,500 --> 00:53:25,900
 调用这个过程 化简部分会构造一个新的表达式 表达式的各个部分都是化简过的
 And that's calling--that procedure, simplify parts, is going to make up a new expression with all the parts simplified,
 
-642
+643
 00:53:25,900 --> 00:53:29,100
 这个过程会尝试这里的所有的规则
 which I'm then going to try the rules on over here.
 
-643
+644
 00:53:30,460 --> 00:53:37,630
 如果表达式不是复合表达式 如果是简单的表达式 比如 符号pi
 If it turns out that the expression is not compound, if it's simple, like just a symbol or something like pi,
 
-644
+645
 00:53:37,630 --> 00:53:47,760
 这种情况就在所有规则上替换这个符号 因为我想让这些规则中的pi扩展成3.1415....
 then in any case, I'm going to try the rules on it because it might be that I want in my set of rules to expand pi to 3.14159265358979,dot, dot, dot.
 
-645
+646
 00:53:48,160 --> 00:53:49,660
 也许我不会这样做
 But I may not.
 
-646
+647
 00:53:49,660 --> 00:53:52,000
 但是没有理由不这样做
 But there is no reason not to do it.
 
-647
+648
 00:53:52,530 --> 00:53:57,830
 现在如果我要化简这些部分 那就很简单了
 Now, if I want to simplify the parts, well, that's easy too.
 
-648
+649
 00:53:58,660 --> 00:54:05,560
 要么表达式是空的 没有更多的部分(表达式) 这种情况我返回一个空表达式
 Either the expression is an empty one, there's no more parts, in which case I have the empty expression.
 
-649
+650
 00:54:05,560 --> 00:54:14,560
 要么用cons构建一个新的表达式 化简表达式的第一部分作为car
 Otherwise, I'm going to make a new expression by cons, which is the result of simplifying the first part of the expression, the car,
 
-650
+651
 00:54:15,160 --> 00:54:17,960
 然后化简表达式的其他部分作为cdr
 and simplifying the rest of the expression, which is the cdr.
 
-651
+652
 00:54:20,730 --> 00:54:30,630
 我用这种方式向大家展示这些的原因是 我想让大家感受在写程序的时候这些模式非常重要
 Now, the reason why I'm showing you this sort of stuff this way is because I want you get the feeling for the various patterns that are very important when writing programs.
 
-652
+653
 00:54:31,830 --> 00:54:34,000
 而且他们可以用不同的方式实现
 And this could be written a different way.
 
-653
+654
 00:54:34,000 --> 00:54:37,300
 还有其他的表达式化简的方法
 There's another way to write simplified expressions so there would be only one of them.
 
-654
+655
 00:54:37,300 --> 00:54:39,630
 这仅仅是一个小程序
 There would only be one little procedure here.
 
-655
+656
 00:54:39,630 --> 00:54:42,600
 我把它写到黑板上让大家感受一下
 Let me just write that on the blackboard to give you a feeling for that.
 
-656
+657
 00:54:49,400 --> 00:54:52,130
 这在另一个习俗里,如果你愿意. #TBD
 i think this sentence is wrong.This in another idiom, if you will.
 
-657
+658
 00:54:59,300 --> 00:55:03,430
 如何化简表达式x呢?
 To simplify an expression called x, what am I going to do?
 
-658
+659
 00:55:03,430 --> 00:55:10,730
 我尝试这些规则
 I'm going to try the rules on the following situation.
 
-659
+660
 00:55:10,730 --> 00:55:16,100
 如果后面的表达式是复合的 就像我之前说的
 If-- on the following expression-- compound, just like we had before.
 
-660
+661
 00:55:21,100 --> 00:55:24,530
 如果表达式是复合的 我要怎么做呢?
 If the expression is compound, well, what am I going to do?
 
-661
+662
 00:55:24,530 --> 00:55:25,700
 我要对它的每一个部分进行化简
 I'm going to simplify all the parts.
 
-662
+663
 00:55:25,700 --> 00:55:33,500
 但是我已经有cdr的递归 利用通用模式 已经抽象成了一个高阶过程#TBD
 But I already have a cdr recursion, a common pattern of usage, which has been captured as a high-order procedure.
 
-663
+664
 00:55:33,500 --> 00:55:35,100
 它叫做map
 It's called map.
 
-664
+665
 00:55:35,730 --> 00:55:37,160
 我在这里写出来
 So I'll just write that here.
 
-665
+666
 00:55:37,160 --> 00:55:48,230
 map化简这个表达式的每一个部分
 Map simplify the expression, all the parts of the expression.
 
-666
+667
 00:55:48,860 --> 00:55:54,930
 对表达式的每一个部分进行化简操作
 This says apply the simplification operation, which is this one, every part of the expression,
 
-667
+668
 00:55:54,930 --> 00:55:57,830
 然后把这些切分出来的部分组合成列表
 and then that cuts those up into a list.
 
-668
+669
 00:55:59,830 --> 00:56:08,230
 列表中的每一个元素都是表达式 表达式要么是新生成的 要么是原来就有的
 It's every element of the list which the expression is assumed to be made out of, and otherwise, I have the expression.
 
-669
+670
 00:56:08,630 --> 00:56:13,860
 所以我不需要helper过程来化简表达式的各个部分 因为我已经有了(这个表达式)
 So I don't need the helper procedure, simplify parts, because that's really this.
 
-670
+671
 00:56:15,230 --> 00:56:17,400
 所以有时候 可以这样写
 So sometimes, you just write it this way.
 
-671
+672
 00:56:17,400 --> 00:56:19,130
 这个无关紧要
 It doesn't matter very much.
 
-672
+673
 00:56:20,730 --> 00:56:26,830
 好现在看一下 --如何查找规则
 Well, now let's take a look at-- let's just look at how you try rules.
 
-673
+674
 00:56:27,700 --> 00:56:31,930
 大家看这个幻灯片会看到一堆复杂的东西
 If you look at this slide, we see this is a complicated mess also.
 
-674
+675
 00:56:33,260 --> 00:56:35,730
 我正在对一个表达式查找规则
 I'm trying rules on an expression.
 
-675
+676
 00:56:36,000 --> 00:56:40,430
 事实证明, 我正在查找的表达式是 原表达式的子表达式
 It turns out the expression I'm trying it on is some subexpression now of the expression I started with.
 
-676
+677
 00:56:40,430 --> 00:56:44,300
 因为我允许尝试每一个子表达式
 Because the thing I just arranged allowed us to try every subexpression.
 
-677
+678
 00:56:45,800 --> 00:56:51,900
 所以我们要接收表达式的子表达式 就是这个
 So now here we're taking in a subexpression of the expression we started with. That's what this is.
 
-678
+679
 00:56:51,900 --> 00:56:58,000
 我们这里要定义的是一个叫做scan的过程 它用来尝试每一个规则
 And what we're going to define here is a procedure called scan, which is going to try every rule.
 
-679
+680
 00:56:58,230 --> 00:57:00,830
 我们会在整个规则集上开始(扫描)
 And we're going to start it up on the whole set of rules.
 
-680
+681
 00:57:00,830 --> 00:57:08,460
 使用cdr向后遍历规则 根据你的意愿找规则来应用
 This is going to go cdr-ing down the rules, if you will, looking for a rule to apply.
 
-681
+682
 00:57:08,860 --> 00:57:12,600
 当找到一个(规则)它的任务就完成了
 And when it finds one, it'll do the job.
 
-682
+683
 00:57:13,600 --> 00:57:16,800
 我们来看一下查找规则是如何工作的
 Well, let's take a look at how try rules works.
 
-683
+684
 00:57:16,800 --> 00:57:21,300
 它很简单: 扫描所有的规则
 It's very simple: the scan rules. Scan rules, the way of scanning.
 
-684
+685
 00:57:21,300 --> 00:57:23,260
 它很简单
 Well, is it so simple?
 
-685
+686
 00:57:23,260 --> 00:57:24,930
 当然 它是一个很庞大的程序
 It's a big program, of course.
 
-686
+687
 00:57:24,930 --> 00:57:29,430
 我们使用了一堆规则 他们是整个规则列表的子列表
 We take a bunch of rules, which is a sublist of the list of rules.
 
-687
+688
 00:57:30,530 --> 00:57:35,530
 我们已经查找了其中的一些 他们都不符合 这里还有一些
 We've tried some of them already, and they've not been appropriate, so we get to some here.
 
-688
+689
 00:57:35,530 --> 00:57:36,400
 我们跳转到下一个
 We get to move to the next one.
 
-689
+690
 00:57:36,400 --> 00:57:41,030
 如果没有更多的规则了 那么不能对这个表达式做任何事情 这个很简单
 If there are no more rules, well then, there's nothing I can do with this expression, and it's simplified.
 
-690
+691
 00:57:42,060 --> 00:57:47,560
 然而如果还有规则
 However, if it turns out that there are still rules to be done,
 
-691
+692
 00:57:47,560 --> 00:57:59,300
 那么就用一个空的词典作为整个过程的词典 用剩余规则中的第一个对表达式进行模式匹配
 then let's match the pattern of the first rule against the expression using the empty dictionary to start with and use that as the dictionary.
 
-692
+693
 00:57:59,800 --> 00:58:04,160
 如果失败了 就尝试其它规则
 If that happens to be a failure, try the rest of the rules.
 
-693
+694
 00:58:06,160 --> 00:58:08,000
 这些代码就是说这个意思
 That's all it says here.
 
-694
+695
 00:58:08,000 --> 00:58:10,760
 它说:丢弃那个规则
 It says discard that rule.
 
-695
+696
 00:58:10,760 --> 00:58:17,700
 否则我将得到规则的框架 实例化它 然后关联到词典中
 Otherwise, well, I'm going to get the skeleton of the first rule, instantiate that relative to the dictionary,
 
-696
+697
 00:58:17,700 --> 00:58:21,300
 然后对结果进行化简 这个表达式就是我想要的
 and simplify the result, and that's the expression I want.
 
-697
+698
 00:58:23,830 --> 00:58:28,960
 虽然这是一个复杂的过程 但是每个复杂过程都是由许多简单部分组成的
 So although that was a complicated program, every complicated program is made out of a lot of simple pieces.
 
-698
+699
 00:58:28,960 --> 00:58:33,830
 这里的递归模式非常复杂
 Now, the pattern of recursions here is very complicated.
 
-699
+700
 00:58:34,430 --> 00:58:36,960
 最重要的事情就是不要考虑它
 And one of the most important things is not to think about that.
 
-700
+701
 00:58:38,430 --> 00:58:44,000
 如果去思考它的实际行为 大家就会迷惑
 If you try to think about the actual pattern by which this does something, you're going to get very confused.
 
-701
+702
 00:58:44,860 --> 00:58:46,000
 我会(迷惑)
 I would.
 
-702
+703
 00:58:46,360 --> 00:58:50,800
 没关系 可以多加练习
 This is not a matter. you can do this with practice.
 
-703
+704
 00:58:50,800 --> 00:58:53,100
 这些模式非常难
 These patterns are hard.
 
-704
+705
 00:58:53,800 --> 00:58:55,830
 但是大家不用考虑它
 But you don't have to think about it.
 
-705
+706
 00:58:55,830 --> 00:59:01,330
 窍门是--好的程序和好的设计--(知道编程时)什么是不需要考虑的
 The key to this-- it's very good programming and very good design-- is to know what not to think about.
 
-706
+707
 00:59:02,600 --> 00:59:13,830
 事实上回到这个幻灯片 我不需要考虑它 是因为我规定了x化简后的结果是什么样子
 The fact is, going back to this slide, I don't have to think about it because I have specifications in my mind for what simplify x does.
 
-707
+708
 00:59:13,830 --> 00:59:15,630
 我不需要知道它是如何做的
 I don't have to know how it does it.
 
-708
+709
 00:59:16,600 --> 00:59:21,630
 它也许是调用scan尝试规则实现的
 And it may, in fact, call scan somehow through try rules, which it does.
 
-709
+710
 00:59:21,800 --> 00:59:24,330
 然后通过某种方式 在这里运行另一个递归
 And somehow, I've got another recursion going on here.
 
-710
+711
 00:59:24,330 --> 00:59:33,430
 既然我知道化简x产生的化简后结果 那么我就不需要再考虑它的实现了
 But since I know that simplify x is assumed by wishful thinking to produce the simplified result, then I don't have to think about it anymore.
 
-711
+712
 00:59:33,430 --> 00:59:34,830
 我直接使用它
 I've used it.
 
-712
+713
 00:59:34,830 --> 00:59:36,430
 我合情合理的使用它
 I've used it in a reasonable way.
 
-713
+714
 00:59:36,430 --> 00:59:37,860
 我会得到一个正确的结果
 I will get a reasonable answer.
 
-714
+715
 00:59:39,500 --> 00:59:42,800
 大家需要学习这种编程方法 -- 学会放弃(思考过多)
 And you have to learn how to program that way-- with abandon.
 
-715
+716
 00:59:47,360 --> 00:59:49,560
 这里还有一点剩余
 Well, there's very little left of this thing.
 
-716
+717
 00:59:50,000 --> 00:59:54,860
 这里还有一些词典方面的细节
 All there is left is a few details associated with what a dictionary is.
 
-717
+718
 00:59:54,860 --> 01:00:02,160
 你们想知道到底词典是什么 但是我会跳过它 不告诉你们这些
 And those of you who've been itching to know what a dictionary is, well, I will flip it up and not tell you anything about it.
 
-718
+719
 01:00:03,760 --> 01:00:05,530
 词典很简单
 Dictionaries are easy.
 
-719
+720
 01:00:05,530 --> 01:00:16,500
 它可以用列表A来表示 它的作用是生成表的特定模式
 It's represented in terms of something else called an A list, which is a particular pattern of usage for making tables in lists.
 
-720
+721
 01:00:16,500 --> 01:00:20,630
 他们很简单 他们由pair构成 之前已经有同学问过了
 They're easy. They're made out of pairs, as was asked a bit ago.
 
-721
+722
 01:00:21,060 --> 01:00:26,760
 有个特殊的过程来处理这个东西叫做assq  大家可以查一些手册
 And there are special procedures for dealing with such things called assq, and you can find them in manuals.
 
-722
+723
 01:00:26,760 --> 01:00:28,830
 我对这个不是非常感兴趣
 I'm not terribly excited about it.
 
-723
+724
 01:00:28,830 --> 01:00:37,300
 这里有趣的是我需要用一个模式 一个数据 一个词典来扩展这个词典
 The only interesting thing here in extend dictionary is I have to extend the dictionary with a pattern, a datum, and a dictionary.
 
-724
+725
 01:00:37,300 --> 01:00:42,760
 这个模式实际上是一个模式变量
 This pattern is, in fact, at this point a pattern variable.
 
-725
+726
 01:00:43,530 --> 01:00:44,760
 我要做什么呢?
 And what do I want to do?
 
-726
+727
 01:00:44,760 --> 01:00:49,860
 我想离开模式变量的名字, 这个模式变量名字,  #TBD what the meaning of the pull out
 I want to pull out the name of that pattern variable, the pattern variable name,
 
-727
+728
 01:00:49,860 --> 01:00:53,700
 然后我在词典中找它 看看词典中是否已经有值了
 and I'm going to look up in the dictionary and see if it already has a value.
 
-728
+729
 01:00:53,700 --> 01:00:56,800
 如果没有就在词典中加入它
 If not, I'm going to add a new one in.
 
-729
+730
 01:00:56,800 --> 01:01:03,600
 如果已经存在了 有这个值 它最好等于现有的存储着的这个值
 If it does have one, if it has a value, then it had better be equal to the one that was already stored away.
 
-730
+731
 01:01:03,600 --> 01:01:06,830
 如果是这种情况 词典就是我所期待的
 And if that's the case, the dictionary is what I expected it to be.
 
-731
+732
 01:01:06,830 --> 01:01:09,430
 否则 置失败
 Otherwise, I fail.
 
-732
+733
 01:01:11,560 --> 01:01:13,260
 所以它也很简单
 So that's easy, too.
 
-733
+734
 01:01:13,260 --> 01:01:18,630
 如果你发现一些程序 它里面有很多小部分(过程)组成 这些小部分都很简单
 If you open up any program, you're going to find inside of it lots of little pieces, all of which are easy.
 
-734
+735
 01:01:19,660 --> 01:01:26,230
 这种情况下我认为 我告诉你价值一万美金的信息
 So at this point, I suppose, I've just told you some million-dollar valuable information.
 
-735
+736
 01:01:28,400 --> 01:01:31,430
 我想这个程序几乎已经完成了
 And I suppose at this point we're pretty much done with this program.
 
-736
+737
 01:01:31,430 --> 01:01:33,360
 大家有什么问题么?
 I'd like to ask about questions.
 
-737
+738
 01:01:33,360 --> 01:01:38,700
 学生:你可以给我描述一个化简后的表达式的规范么？
 AUDIENCE: Yes, can you give me the words that describe the specification for a simplified expression?
 
-738
+739
 01:01:38,700 --> 01:01:39,530
 老师:可以
 PROFESSOR: Sure.
 
-739
+740
 01:01:39,530 --> 01:01:44,800
 需要一个表达式和一个化简表达式的过程来化简
 A simplified expression takes an expression and produces a simplified expression.
 
-740
+741
 01:01:44,800 --> 01:01:47,800
 就是这个
 That's it, OK?
 
-741
+742
 01:01:47,800 --> 01:01:50,700
 它的工作方式很简单
 How it does it is very easy.
 
-742
+743
 01:01:51,100 --> 01:01:56,500
 在复合表达式的情况下 所有的子表达式都是简单的 然后在这个这些块上尝试这些规则
 In compound expressions, all the pieces are simplified, and then the rules are tried on the result.
 
-743
+744
 01:01:56,500 --> 01:01:59,160
 对于简单表达式 就直接尝试这些规则
 And for simple expressions, you just try all the rules.
 
-744
+745
 01:01:59,160 --> 01:02:02,700
 学生:是这些规则把表达式化简了么?
 AUDIENCE: So an expression is simplified by virtue of the rules?
 
-745
+746
 01:02:02,700 --> 01:02:03,800
 老师:当然
 PROFESSOR: That's, of course, true.
 
-746
+747
 01:02:03,800 --> 01:02:04,100
 学生:好
 AUDIENCE: Right.
 
-747
+748
 01:02:04,100 --> 01:02:07,760
 老师:它工作的方式是:化简的表达式 在这里
 PROFESSOR: And the way this works is that simplified expression, as you see here,
 
-748
+749
 01:02:07,760 --> 01:02:12,130
 把表达式切分成不能再分的小块
 what it does is it breaks the expression down into the smallest pieces,
 
-749
+750
 01:02:12,130 --> 01:02:17,730
 在化简器中使用这些规则自下而上化简构造表达式
 simplifies building up from the bottom using the rules to be the simplifier,
 
-750
+751
 01:02:17,730 --> 01:02:22,930
 处理它们 构造一个新的表达式作为结果
 to do the manipulations, and constructs a new expression as the result.
 
-751
+752
 01:02:24,030 --> 01:02:29,700
 最终大家看到这些尝试的规则
 Eventually, one of things you see is that the rules themselves, the try rules,
 
-752
+753
 01:02:29,700 --> 01:02:35,800
 当它改变匹配的结果时 叫做生成结果的化简表达式
 call a simplified expression on the results when it changes something, the results of a match.
 
-753
+754
 01:02:35,800 --> 01:02:40,900
 对不起 框架的实例化结果已经匹配了
 I'm sorry, the results of instantiation of a skeleton for a rule that has matched.
 
-754
+755
 01:02:40,900 --> 01:02:47,800
 化简表达式的细则是: 任何传入的表达式通过这些规则生成化简后的表达式
 So the spec of a simplified expression is that any expression you put into it comes out simplified according to those rules.
 
-755
+756
 01:02:49,300 --> 01:02:51,300
 谢谢 我们休息一下
 Thank you. Let's take a break.
