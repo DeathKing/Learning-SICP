@@ -3423,496 +3423,506 @@ Let me just write that on the blackboard to give you a feeling for that.
 This in another idiom, if you will.
 
 686
-00:54:59,300 --> 00:55:03,430
-如何化简表达式x呢?
-To simplify an expression called x, what am I going to do?
+00:54:59,300 --> 00:55:03,136
+那么 如何化简表达式exp呢？
+To simplify an expression called exp, what am I going to do?
 
 687
-00:55:03,430 --> 00:55:10,730
-我尝试这些规则
+00:55:03,216 --> 00:55:10,144
+#TBD
 I'm going to try the rules on the following situation.
 
 688
-00:55:10,730 --> 00:55:16,100
-如果后面的表达式是复合的 就像我之前说的
+00:55:11,120 --> 00:55:15,728
+如果表达式是复合的
 If-- on the following expression-- compound, just like we had before.
 
 689
-00:55:21,100 --> 00:55:24,530
+00:55:21,520 --> 00:55:24,272
 如果表达式是复合的 我要怎么做呢?
 If the expression is compound, well, what am I going to do?
 
 690
-00:55:24,530 --> 00:55:25,700
-我要对它的每一个部分进行化简
+00:55:24,530 --> 00:55:25,408
+我要化简它的每个部分
 I'm going to simplify all the parts.
 
 691
-00:55:25,700 --> 00:55:33,500
-但是我已经有cdr的递归 利用通用模式 已经抽象成了一个高阶过程#TBD
-But I already have a cdr recursion, a common pattern of usage, which has been captured as a high-order procedure.
+00:55:26,010 --> 00:55:27,808
+但是我已经有对cdr部分递归的过程了
+But I already have a cdr recursion,
 
 692
-00:55:33,500 --> 00:55:35,100
-它叫做map
-It's called map.
+00:55:30,256 --> 00:55:33,180
+一个被封装成高阶过程的通用模式
+ common pattern of usage, which has been captured as a high-order procedure.
 
 693
-00:55:35,730 --> 00:55:37,160
+00:55:34,096 --> 00:55:34,464
+也就是map过程
+It's called map.
+
+694
+00:55:36,080 --> 00:55:36,880
 我在这里写出来
 So I'll just write that here.
 
-694
-00:55:37,160 --> 00:55:48,230
-map化简这个表达式的每一个部分
+695
+00:55:37,160 --> 00:55:48,032
+(map simplify-exp exp)
 Map simplify the expression, all the parts of the expression.
 
-695
-00:55:48,860 --> 00:55:54,930
-对表达式的每一个部分进行化简操作
+696
+00:55:49,008 --> 00:55:54,592
+这是说 把simplify-exp这个过程应用在表达式的每个部分
 This says apply the simplification operation, which is this one, every part of the expression,
 
-696
-00:55:54,930 --> 00:55:57,830
-然后把这些切分出来的部分组合成列表
-and then that cuts those up into a list.
-
 697
-00:55:59,830 --> 00:56:08,230
-列表中的每一个元素都是表达式 表达式要么是新生成的 要么是原来就有的
-It's every element of the list which the expression is assumed to be made out of, and otherwise, I have the expression.
+00:55:55,344 --> 00:55:57,344
+然后把结果用cons组合成表
+and then that cons those up into a list.
 
 698
-00:56:08,630 --> 00:56:13,860
-所以我不需要helper过程来化简表达式的各个部分 因为我已经有了(这个表达式)
-So I don't need the helper procedure, simplify parts, because that's really this.
+00:56:00,920 --> 00:56:04,384
+#TBD
+It's every element of the list which the expression is assumed to be made out of,
 
 699
+00:56:05,456 --> 00:56:08,230
+不是复合表达式的话 就不用化简了
+and otherwise, I have the expression.
+
+700
+00:56:09,056 --> 00:56:13,488
+所以我不需要再写一个辅助函数来化简各个部分 这句话就够了
+So I don't need the helper procedure, simplify parts, because that's really this.
+
+701
 00:56:15,230 --> 00:56:17,400
 所以有时候 可以这样写
 So sometimes, you just write it this way.
 
-700
+702
 00:56:17,400 --> 00:56:19,130
 这个无关紧要
 It doesn't matter very much.
 
-701
+703
 00:56:20,730 --> 00:56:26,830
 好现在看一下 --如何查找规则
 Well, now let's take a look at-- let's just look at how you try rules.
 
-702
+704
 00:56:27,700 --> 00:56:31,930
 大家看这个幻灯片会看到一堆复杂的东西
 If you look at this slide, we see this is a complicated mess also.
 
-703
+705
 00:56:33,260 --> 00:56:35,730
 我正在对一个表达式查找规则
 I'm trying rules on an expression.
 
-704
+706
 00:56:36,000 --> 00:56:40,430
 事实证明, 我正在查找的表达式是 原表达式的子表达式
 It turns out the expression I'm trying it on is some subexpression now of the expression I started with.
 
-705
+707
 00:56:40,430 --> 00:56:44,300
 因为我允许尝试每一个子表达式
 Because the thing I just arranged allowed us to try every subexpression.
 
-706
+708
 00:56:45,800 --> 00:56:51,900
 所以我们要接收表达式的子表达式 就是这个
 So now here we're taking in a subexpression of the expression we started with. That's what this is.
 
-707
+709
 00:56:51,900 --> 00:56:58,000
 我们这里要定义的是一个叫做scan的过程 它用来尝试每一个规则
 And what we're going to define here is a procedure called scan, which is going to try every rule.
 
-708
+710
 00:56:58,230 --> 00:57:00,830
 我们会在整个规则集上开始(扫描)
 And we're going to start it up on the whole set of rules.
 
-709
+711
 00:57:00,830 --> 00:57:08,460
 使用cdr向后遍历规则 根据你的意愿找规则来应用
 This is going to go cdr-ing down the rules, if you will, looking for a rule to apply.
 
-710
+712
 00:57:08,860 --> 00:57:12,600
 当找到一个(规则)它的任务就完成了
 And when it finds one, it'll do the job.
 
-711
+713
 00:57:13,600 --> 00:57:16,800
 我们来看一下查找规则是如何工作的
 Well, let's take a look at how try rules works.
 
-712
+714
 00:57:16,800 --> 00:57:21,300
 它很简单: 扫描所有的规则
 It's very simple: the scan rules. Scan rules, the way of scanning.
 
-713
+715
 00:57:21,300 --> 00:57:23,260
 它很简单
 Well, is it so simple?
 
-714
+716
 00:57:23,260 --> 00:57:24,930
 当然 它是一个很庞大的程序
 It's a big program, of course.
 
-715
+717
 00:57:24,930 --> 00:57:29,430
 我们使用了一堆规则 他们是整个规则列表的子列表
 We take a bunch of rules, which is a sublist of the list of rules.
 
-716
+718
 00:57:30,530 --> 00:57:35,530
 我们已经查找了其中的一些 他们都不符合 这里还有一些
 We've tried some of them already, and they've not been appropriate, so we get to some here.
 
-717
+719
 00:57:35,530 --> 00:57:36,400
 我们跳转到下一个
 We get to move to the next one.
 
-718
+720
 00:57:36,400 --> 00:57:41,030
 如果没有更多的规则了 那么不能对这个表达式做任何事情 这个很简单
 If there are no more rules, well then, there's nothing I can do with this expression, and it's simplified.
 
-719
+721
 00:57:42,060 --> 00:57:47,560
 然而如果还有规则
 However, if it turns out that there are still rules to be done,
 
-720
+722
 00:57:47,560 --> 00:57:59,300
 那么就用一个空的词典作为整个过程的词典 用剩余规则中的第一个对表达式进行模式匹配
 then let's match the pattern of the first rule against the expression using the empty dictionary to start with and use that as the dictionary.
 
-721
+723
 00:57:59,800 --> 00:58:04,160
 如果失败了 就尝试其它规则
 If that happens to be a failure, try the rest of the rules.
 
-722
+724
 00:58:06,160 --> 00:58:08,000
 这些代码就是说这个意思
 That's all it says here.
 
-723
+725
 00:58:08,000 --> 00:58:10,760
 它说:丢弃那个规则
 It says discard that rule.
 
-724
+726
 00:58:10,760 --> 00:58:17,700
 否则我将得到规则的框架 实例化它 然后关联到词典中
 Otherwise, well, I'm going to get the skeleton of the first rule, instantiate that relative to the dictionary,
 
-725
+727
 00:58:17,700 --> 00:58:21,300
 然后对结果进行化简 这个表达式就是我想要的
 and simplify the result, and that's the expression I want.
 
-726
+728
 00:58:23,830 --> 00:58:28,960
 虽然这是一个复杂的过程 但是每个复杂过程都是由许多简单部分组成的
 So although that was a complicated program, every complicated program is made out of a lot of simple pieces.
 
-727
+729
 00:58:28,960 --> 00:58:33,830
 这里的递归模式非常复杂
 Now, the pattern of recursions here is very complicated.
 
-728
+730
 00:58:34,430 --> 00:58:36,960
 最重要的事情就是不要考虑它
 And one of the most important things is not to think about that.
 
-729
+731
 00:58:38,430 --> 00:58:44,000
 如果去思考它的实际行为 大家就会迷惑
 If you try to think about the actual pattern by which this does something, you're going to get very confused.
 
-730
+732
 00:58:44,860 --> 00:58:46,000
 我会(迷惑)
 I would.
 
-731
+733
 00:58:46,360 --> 00:58:50,800
 没关系 可以多加练习
 This is not a matter. you can do this with practice.
 
-732
+734
 00:58:50,800 --> 00:58:53,100
 这些模式非常难
 These patterns are hard.
 
-733
+735
 00:58:53,800 --> 00:58:55,830
 但是大家不用考虑它
 But you don't have to think about it.
 
-734
+736
 00:58:55,830 --> 00:59:01,330
 窍门是--好的程序和好的设计--(知道编程时)什么是不需要考虑的
 The key to this-- it's very good programming and very good design-- is to know what not to think about.
 
-735
+737
 00:59:02,600 --> 00:59:13,830
 事实上回到这个幻灯片 我不需要考虑它 是因为我规定了x化简后的结果是什么样子
 The fact is, going back to this slide, I don't have to think about it because I have specifications in my mind for what simplify x does.
 
-736
+738
 00:59:13,830 --> 00:59:15,630
 我不需要知道它是如何做的
 I don't have to know how it does it.
 
-737
+739
 00:59:16,600 --> 00:59:21,630
 它也许是调用scan尝试规则实现的
 And it may, in fact, call scan somehow through try rules, which it does.
 
-738
+740
 00:59:21,800 --> 00:59:24,330
 然后通过某种方式 在这里运行另一个递归
 And somehow, I've got another recursion going on here.
 
-739
+741
 00:59:24,330 --> 00:59:33,430
 既然我知道化简x产生的化简后结果 那么我就不需要再考虑它的实现了
 But since I know that simplify x is assumed by wishful thinking to produce the simplified result, then I don't have to think about it anymore.
 
-740
+742
 00:59:33,430 --> 00:59:34,830
 我直接使用它
 I've used it.
 
-741
+743
 00:59:34,830 --> 00:59:36,430
 我合情合理的使用它
 I've used it in a reasonable way.
 
-742
+744
 00:59:36,430 --> 00:59:37,860
 我会得到一个正确的结果
 I will get a reasonable answer.
 
-743
+745
 00:59:39,500 --> 00:59:42,800
 大家需要学习这种编程方法 -- 学会放弃(思考过多)
 And you have to learn how to program that way-- with abandon.
 
-744
+746
 00:59:47,360 --> 00:59:49,560
 这里还有一点剩余
 Well, there's very little left of this thing.
 
-745
+747
 00:59:50,000 --> 00:59:54,860
 这里还有一些词典方面的细节
 All there is left is a few details associated with what a dictionary is.
 
-746
+748
 00:59:54,860 --> 01:00:02,160
 你们想知道到底词典是什么 但是我会跳过它 不告诉你们这些
 And those of you who've been itching to know what a dictionary is, well, I will flip it up and not tell you anything about it.
 
-747
+749
 01:00:03,760 --> 01:00:05,530
 词典很简单
 Dictionaries are easy.
 
-748
+750
 01:00:05,530 --> 01:00:16,500
 它可以用列表A来表示 它的作用是生成表的特定模式
 It's represented in terms of something else called an A list, which is a particular pattern of usage for making tables in lists.
 
-749
+751
 01:00:16,500 --> 01:00:20,630
 他们很简单 他们由pair构成 之前已经有同学问过了
 They're easy. They're made out of pairs, as was asked a bit ago.
 
-750
+752
 01:00:21,060 --> 01:00:26,760
 有个特殊的过程来处理这个东西叫做assq  大家可以查一些手册
 And there are special procedures for dealing with such things called assq, and you can find them in manuals.
 
-751
+753
 01:00:26,760 --> 01:00:28,830
 我对这个不是非常感兴趣
 I'm not terribly excited about it.
 
-752
+754
 01:00:28,830 --> 01:00:37,300
 这里有趣的是我需要用一个模式 一个数据 一个词典来扩展这个词典
 The only interesting thing here in extend dictionary is I have to extend the dictionary with a pattern, a datum, and a dictionary.
 
-753
+755
 01:00:37,300 --> 01:00:42,760
 这个模式实际上是一个模式变量
 This pattern is, in fact, at this point a pattern variable.
 
-754
+756
 01:00:43,530 --> 01:00:44,760
 我要做什么呢?
 And what do I want to do?
 
-755
+757
 01:00:44,760 --> 01:00:49,860
 我想离开模式变量的名字, 这个模式变量名字,  #TBD what the meaning of the pull out
 I want to pull out the name of that pattern variable, the pattern variable name,
 
-756
+758
 01:00:49,860 --> 01:00:53,700
 然后我在词典中找它 看看词典中是否已经有值了
 and I'm going to look up in the dictionary and see if it already has a value.
 
-757
+759
 01:00:53,700 --> 01:00:56,800
 如果没有就在词典中加入它
 If not, I'm going to add a new one in.
 
-758
+760
 01:00:56,800 --> 01:01:03,600
 如果已经存在了 有这个值 它最好等于现有的存储着的这个值
 If it does have one, if it has a value, then it had better be equal to the one that was already stored away.
 
-759
+761
 01:01:03,600 --> 01:01:06,830
 如果是这种情况 词典就是我所期待的
 And if that's the case, the dictionary is what I expected it to be.
 
-760
+762
 01:01:06,830 --> 01:01:09,430
 否则 置失败
 Otherwise, I fail.
 
-761
+763
 01:01:11,560 --> 01:01:13,260
 所以它也很简单
 So that's easy, too.
 
-762
+764
 01:01:13,260 --> 01:01:18,630
 如果你发现一些程序 它里面有很多小部分(过程)组成 这些小部分都很简单
 If you open up any program, you're going to find inside of it lots of little pieces, all of which are easy.
 
-763
+765
 01:01:19,660 --> 01:01:26,230
 这种情况下我认为 我告诉你价值一万美金的信息
 So at this point, I suppose, I've just told you some million-dollar valuable information.
 
-764
+766
 01:01:28,400 --> 01:01:31,430
 我想这个程序几乎已经完成了
 And I suppose at this point we're pretty much done with this program.
 
-765
+767
 01:01:31,430 --> 01:01:33,360
 大家有什么问题么?
 I'd like to ask about questions.
 
-766
+768
 01:01:33,360 --> 01:01:38,700
 学生:你可以给我描述一个化简后的表达式的规范么？
 AUDIENCE: Yes, can you give me the words that describe the specification for a simplified expression?
 
-767
+769
 01:01:38,700 --> 01:01:39,530
 老师:可以
 PROFESSOR: Sure.
 
-768
+770
 01:01:39,530 --> 01:01:44,800
 需要一个表达式和一个化简表达式的过程来化简
 A simplified expression takes an expression and produces a simplified expression.
 
-769
+771
 01:01:44,800 --> 01:01:47,800
 就是这个
 That's it, OK?
 
-770
+772
 01:01:47,800 --> 01:01:50,700
 它的工作方式很简单
 How it does it is very easy.
 
-771
+773
 01:01:51,100 --> 01:01:56,500
 在复合表达式的情况下 所有的子表达式都是简单的 然后在这个这些块上尝试这些规则
 In compound expressions, all the pieces are simplified, and then the rules are tried on the result.
 
-772
+774
 01:01:56,500 --> 01:01:59,160
 对于简单表达式 就直接尝试这些规则
 And for simple expressions, you just try all the rules.
 
-773
+775
 01:01:59,160 --> 01:02:02,700
 学生:是这些规则把表达式化简了么?
 AUDIENCE: So an expression is simplified by virtue of the rules?
 
-774
+776
 01:02:02,700 --> 01:02:03,800
 老师:当然
 PROFESSOR: That's, of course, true.
 
-775
+777
 01:02:03,800 --> 01:02:04,100
 学生:好
 AUDIENCE: Right.
 
-776
+778
 01:02:04,100 --> 01:02:07,760
 老师:它工作的方式是:化简的表达式 在这里
 PROFESSOR: And the way this works is that simplified expression, as you see here,
 
-777
+779
 01:02:07,760 --> 01:02:12,130
 把表达式切分成不能再分的小块
 what it does is it breaks the expression down into the smallest pieces,
 
-778
+780
 01:02:12,130 --> 01:02:17,730
 在化简器中使用这些规则自下而上化简构造表达式
 simplifies building up from the bottom using the rules to be the simplifier,
 
-779
+781
 01:02:17,730 --> 01:02:22,930
 处理它们 构造一个新的表达式作为结果
 to do the manipulations, and constructs a new expression as the result.
 
-780
+782
 01:02:24,030 --> 01:02:29,700
 最终大家看到这些尝试的规则
 Eventually, one of things you see is that the rules themselves, the try rules,
 
-781
+783
 01:02:29,700 --> 01:02:35,800
 当它改变匹配的结果时 叫做生成结果的化简表达式
 call a simplified expression on the results when it changes something, the results of a match.
 
-782
+784
 01:02:35,800 --> 01:02:40,900
 对不起 框架的实例化结果已经匹配了
 I'm sorry, the results of instantiation of a skeleton for a rule that has matched.
 
-783
+785
 01:02:40,900 --> 01:02:47,800
 化简表达式的细则是: 任何传入的表达式通过这些规则生成化简后的表达式
 So the spec of a simplified expression is that any expression you put into it comes out simplified according to those rules.
 
-784
+786
 01:02:49,300 --> 01:02:51,300
 谢谢 我们休息一下
 Thank you. Let's take a break.
