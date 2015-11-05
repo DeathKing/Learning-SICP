@@ -24,6 +24,13 @@
 | Lec3a | 《Henderson-Escher的例子》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XODk4NjUwODMy.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=zpXX64Bi2tM) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1bnHBWmz) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
 | Lec3b | 《符号化求导系统：引用》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XODk4NjUwODA0.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=XF5oixi2CTM) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1o6Jry9G) | [DeathKing](https://github.com/DeathKing) |
 
+## 当前进度
+
++ lec4a: Savior Michael（校订中）
++ lec4b: rtmagic（已认领）【进度：20%】
++ lec5a: Windfarer（已认领）【进度：30%】
++ lec6a: 匿名（待校订）
++ lec9a: loucq123（已认领）
 
 ## 捐助本项目
 
@@ -46,6 +53,8 @@ SICP学习交流群：97747648。加群请注明理由，否则一概拒绝。
 
 
 ## 声明与致谢
+
+我们由衷感谢 Harold Abelson 及 Gerald Jay Sussman 教授为我们讲授这一门公开课，感谢 [MIT OCW](http://ocw.mit.edu ) 项目允许我们以 Creative Commons 的方式分发本课的中译版本，以下是原课中的许可与声明。
 
 > http://ocw.mit.edu  
 > License: Creative Commons Attribution-Noncommercial-Share Alike.  
