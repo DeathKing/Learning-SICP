@@ -27,10 +27,10 @@
 ## 当前进度
 
 + lec4a: Savior Michael（校订中）
-+ lec4b: rtmagic（已认领）【进度：20%】
-+ lec5a: Windfarer（已认领）【进度：30%】
++ lec4b: rtmagic（已认领）【进度：30%】
++ lec5a: Windfarer（已认领）【进度：40%】
 + lec6a: 匿名（待校订）
-+ lec9a: loucq123（已认领）
++ lec9a: loucq123【进度：20%】
 
 ## 捐助本项目
 
