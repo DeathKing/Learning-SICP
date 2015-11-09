@@ -8,6 +8,10 @@
 
 这门课程只提供了英文字幕，本项目旨在将这些英文字幕翻译为中文，方便广大的`Scheme/Lisp`学习者。
 
+### 参考书目
+
+SICP (Structure and Interpretation of Computer Programs) [HTML5/EPUB3 版](https://github.com/sarabander/sicp) [PDF 版](https://github.com/sarabander/sicp-pdf)
+
 ## 视频地址
 
 + [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
