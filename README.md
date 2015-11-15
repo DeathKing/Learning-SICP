@@ -23,16 +23,17 @@
 | Lec2b | 《复合数据》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=ggXt3Tmd1oY) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1o6HgNgu) | [DeathKing](https://github.com/DeathKing) |
 | Lec3a | 《Henderson-Escher的例子》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XODk4NjUwODMy.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=zpXX64Bi2tM) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1bnHBWmz) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
 | Lec3b | 《符号化求导系统：引用》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XODk4NjUwODA0.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=XF5oixi2CTM) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1o6Jry9G) | [DeathKing](https://github.com/DeathKing) |
-| Lec4a | 《符号化求导系统：引用》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XMTM4NTY5NzE3Ng.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](#) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1c0Hjs1U) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
+| Lec4a | 《模式匹配：基于规则的代换》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XMTM4NTY5NzE3Ng.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](#) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1c0Hjs1U) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
 
 
-## 当前进度
+## 任务队列
 
-+ lec4a: Savior Michael（校订中）
-+ lec4b: rtmagic（已认领）【进度：30%】
-+ lec5a: Windfarer（已认领）【进度：40%】
-+ lec6a: 匿名（待校订）
-+ lec9a: loucq123【进度：20%】
+|  编号  | 责任人     | 状态 | 进度 |
+|:-----:|:---------:|:----:|:-------:|
+| lec4b | rtmagic   | 翻译中 | 30% |
+| lec5a | Windfarer | 翻译中 | 45% |
+| lec6a | 匿名       | 待校订 | 0%  |
+| lec9a | loucq123  | 翻译中 | 30% |
 
 ## 捐助本项目
 
