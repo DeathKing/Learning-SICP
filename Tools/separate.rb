@@ -15,7 +15,7 @@ cont = []
 
 # 换行符，由于文件比较混乱，有时需要自行调整
 # 如有问题，可以尝试调整为 \n、\r、\r\n中的其它值
-newline = "\r\n" 
+newline = "\n" 
 
 open(ARGV[0]).each_line do |line|
     if line == newline
