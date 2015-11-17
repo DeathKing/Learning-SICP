@@ -1,0 +1,5915 @@
+0
+00:00:00,000 --> 00:00:04,470
+
+
+1
+00:00:04,470 --> 00:00:21,130
+[MUSIC PLAYING]
+
+2
+00:00:21,130 --> 00:00:24,770
+PROFESSOR: Well, last time we
+talked about compound data,
+
+3
+00:00:24,770 --> 00:00:29,800
+and there were two main points
+to that business.
+
+4
+00:00:29,800 --> 00:00:31,640
+First of all, there was
+a methodology of data
+
+5
+00:00:31,640 --> 00:00:35,010
+abstraction, and the point of
+that was that you could
+
+6
+00:00:35,010 --> 00:00:40,500
+isolate the way that data
+objects are used from the way
+
+7
+00:00:40,500 --> 00:00:43,170
+that they're represented: this
+idea that there's this guy,
+
+8
+00:00:43,170 --> 00:00:45,600
+George, and you go out make a
+contract with him; and it's
+
+9
+00:00:45,600 --> 00:00:47,800
+his business to represent the
+data objects; and at the
+
+10
+00:00:47,800 --> 00:00:49,880
+moment you are using them,
+you don't think
+
+11
+00:00:49,880 --> 00:00:52,220
+about George's problem.
+
+12
+00:00:52,220 --> 00:00:55,460
+And then secondly, there was
+this particular way that Lisp
+
+13
+00:00:55,460 --> 00:01:00,770
+has of gluing together things to
+form objects called pairs,
+
+14
+00:01:00,770 --> 00:01:03,870
+and that's done with cons, car
+and cdr. And the way that
+
+15
+00:01:03,870 --> 00:01:06,480
+cons, car and cdr are
+implemented is basically
+
+16
+00:01:06,480 --> 00:01:07,790
+irrelevant.
+
+17
+00:01:07,790 --> 00:01:09,230
+That's sort of George's
+problem of how
+
+18
+00:01:09,230 --> 00:01:10,030
+to build those things.
+
+19
+00:01:10,030 --> 00:01:11,160
+It could be done
+as primitives.
+
+20
+00:01:11,160 --> 00:01:13,780
+It could be done using
+procedures in some weird way,
+
+21
+00:01:13,780 --> 00:01:16,210
+but we're not going to
+worry about that.
+
+22
+00:01:16,210 --> 00:01:20,230
+And as an example, we looked at
+rational number arithmetic.
+
+23
+00:01:20,230 --> 00:01:21,800
+We looked at vectors,
+and here's
+
+24
+00:01:21,800 --> 00:01:24,160
+just a review of vectors.
+
+25
+00:01:24,160 --> 00:01:28,355
+Here's an operation that takes
+the sum of of two vectors, so
+
+26
+00:01:28,355 --> 00:01:32,390
+we want to add this vector, v1,
+and this vector, v2, and
+
+27
+00:01:32,390 --> 00:01:34,680
+we get the sum.
+
+28
+00:01:34,680 --> 00:01:39,120
+And the sum is the vector whose
+coordinates are the sum
+
+29
+00:01:39,120 --> 00:01:41,380
+of the coordinates of the
+pieces you're adding.
+
+30
+00:01:41,380 --> 00:01:45,440
+So I can say, to define
+make-vect, right, to add two
+
+31
+00:01:45,440 --> 00:01:50,710
+vectors I make a vector, whose x
+coordinate is the sum of the
+
+32
+00:01:50,710 --> 00:01:53,810
+two x coordinates, and whose y
+coordinate is the sum of the
+
+33
+00:01:53,810 --> 00:01:56,760
+two y coordinates.
+
+34
+00:01:56,760 --> 00:02:03,520
+And then similarly, we could
+have an operation that scales
+
+35
+00:02:03,520 --> 00:02:09,449
+vectors, so here's a procedure
+scale that multiplies a
+
+36
+00:02:09,449 --> 00:02:13,160
+vector, v, by some number, s.
+
+37
+00:02:13,160 --> 00:02:17,270
+So here's v, v goes from there
+to there and I scale v, and I
+
+38
+00:02:17,270 --> 00:02:21,520
+get a vector in the same
+direction that's longer.
+
+39
+00:02:21,520 --> 00:02:23,850
+And again, to scale a vector,
+I multiply the successive
+
+40
+00:02:23,850 --> 00:02:24,320
+coordinates.
+
+41
+00:02:24,320 --> 00:02:29,090
+So I make a vector, whose x
+coordinate is the scale factor
+
+42
+00:02:29,090 --> 00:02:31,900
+times the x coordinate and
+whose y coordinate is the
+
+43
+00:02:31,900 --> 00:02:34,340
+scale factor times
+the y coordinate.
+
+44
+00:02:34,340 --> 00:02:38,970
+So those are two operations that
+are implemented using the
+
+45
+00:02:38,970 --> 00:02:40,570
+representation of vectors.
+
+46
+00:02:40,570 --> 00:02:42,900
+And the representation of
+vectors, for instance, is
+
+47
+00:02:42,900 --> 00:02:45,640
+something that we can build
+in terms of pairs.
+
+48
+00:02:45,640 --> 00:02:48,760
+So George has gone out and
+implemented for us make-vector
+
+49
+00:02:48,760 --> 00:02:53,960
+and x coordinate and y
+coordinate, and this could be
+
+50
+00:02:53,960 --> 00:03:04,380
+done, for instance, using cons,
+car and cdr; and notice
+
+51
+00:03:04,380 --> 00:03:08,320
+here, I wrote this in a slightly
+different way.
+
+52
+00:03:08,320 --> 00:03:10,660
+The procedures we've seen
+before, I've said something
+
+53
+00:03:10,660 --> 00:03:16,170
+like say, make-vector of x
+and y: cons of x and y.
+
+54
+00:03:16,170 --> 00:03:18,870
+And here I just wrote
+make-vector cons.
+
+55
+00:03:18,870 --> 00:03:20,920
+And that means something
+slightly different.
+
+56
+00:03:20,920 --> 00:03:23,990
+Previously we'd say, define
+make-vector to be a procedure
+
+57
+00:03:23,990 --> 00:03:26,870
+that takes two arguments,
+x and y, and does
+
+58
+00:03:26,870 --> 00:03:28,150
+cons of x and y.
+
+59
+00:03:28,150 --> 00:03:32,870
+And here I am saying define
+make-vector to be the thing
+
+60
+00:03:32,870 --> 00:03:38,630
+that cons is, and that's almost
+the same as the other
+
+61
+00:03:38,630 --> 00:03:39,670
+way we've been writing things.
+
+62
+00:03:39,670 --> 00:03:43,510
+And I just want you to get
+used to the idea that
+
+63
+00:03:43,510 --> 00:03:46,360
+procedures can be objects, and
+that you can name them.
+
+64
+00:03:46,360 --> 00:03:48,960
+
+
+65
+00:03:48,960 --> 00:03:52,640
+OK, well there's vector
+representation, and again, if
+
+66
+00:03:52,640 --> 00:03:54,650
+that was all there was
+to it, this would
+
+67
+00:03:54,650 --> 00:03:56,666
+all be pretty boring.
+
+68
+00:03:56,666 --> 00:04:00,290
+And the point is, remember, that
+you can use cons to glue
+
+69
+00:04:00,290 --> 00:04:02,790
+together not just numbers to
+form pairs, but to glue
+
+70
+00:04:02,790 --> 00:04:04,270
+together arbitrary things.
+
+71
+00:04:04,270 --> 00:04:11,500
+So for instance, if we'd like
+to represent a line segment,
+
+72
+00:04:11,500 --> 00:04:16,959
+say the line segment that goes
+from a certain vector: say,
+
+73
+00:04:16,959 --> 00:04:27,160
+the segment from the vector 2,3
+to the point represented
+
+74
+00:04:27,160 --> 00:04:28,270
+by the vector 5,1.
+
+75
+00:04:28,270 --> 00:04:33,770
+If we want to represent that
+line segment, then we can
+
+76
+00:04:33,770 --> 00:04:35,785
+build that as a pair of pairs.
+
+77
+00:04:35,785 --> 00:04:41,130
+
+
+78
+00:04:41,130 --> 00:04:42,990
+So again, we can represent
+line segments.
+
+79
+00:04:42,990 --> 00:04:48,150
+We can make a constructor that
+makes a segment using cons,
+
+80
+00:04:48,150 --> 00:04:50,760
+selects out the start of a
+segment, selects out the end
+
+81
+00:04:50,760 --> 00:04:57,310
+point of the segment; and then
+if we actually look at that,
+
+82
+00:04:57,310 --> 00:05:00,040
+if we peel away the abstraction
+layers, and say
+
+83
+00:05:00,040 --> 00:05:05,160
+what's that really is a pair
+of pairs, we'd say
+
+84
+00:05:05,160 --> 00:05:06,290
+well that's a pair.
+
+85
+00:05:06,290 --> 00:05:07,540
+Here's the segment.
+
+86
+00:05:07,540 --> 00:05:10,320
+
+
+87
+00:05:10,320 --> 00:05:15,030
+It's car, right, it's car
+pointer is a pair, and it's
+
+88
+00:05:15,030 --> 00:05:21,130
+cdr is also a pair, and then
+what the car is-- here's the
+
+89
+00:05:21,130 --> 00:05:26,110
+car, that itself is
+a pair of 2 and 3.
+
+90
+00:05:26,110 --> 00:05:28,090
+And similarly the cdr is
+a pair of 2 and 3.
+
+91
+00:05:28,090 --> 00:05:30,800
+And let me remind you again,
+that a lot of people have some
+
+92
+00:05:30,800 --> 00:05:35,110
+idea that if I'd taken this
+arrow and somehow written it
+
+93
+00:05:35,110 --> 00:05:36,870
+to point down, that would
+mean something else.
+
+94
+00:05:36,870 --> 00:05:38,980
+That's irrelevant.
+
+95
+00:05:38,980 --> 00:05:40,900
+It's only how these are
+connected and not whether this
+
+96
+00:05:40,900 --> 00:05:43,280
+arrow happens to go vertically
+or horizontally.
+
+97
+00:05:43,280 --> 00:05:47,770
+
+
+98
+00:05:47,770 --> 00:05:49,930
+And again just to remind
+you, there was
+
+99
+00:05:49,930 --> 00:05:52,860
+this notion of closure.
+
+100
+00:05:52,860 --> 00:06:02,900
+See, closure was the thing
+that allowed us to start
+
+101
+00:06:02,900 --> 00:06:06,910
+building up complexity, that
+didn't trap us in pairs.
+
+102
+00:06:06,910 --> 00:06:12,610
+Particularly what I mean is
+the things that we make,
+
+103
+00:06:12,610 --> 00:06:16,970
+having combined things using
+cons to get a pair, those
+
+104
+00:06:16,970 --> 00:06:21,330
+things themselves can be
+combined using cons to make
+
+105
+00:06:21,330 --> 00:06:23,800
+more complicated things.
+
+106
+00:06:23,800 --> 00:06:27,360
+Or as a mathematician might say,
+the set of data objects
+
+107
+00:06:27,360 --> 00:06:34,130
+in List is closed under the
+operation of forming pairs.
+
+108
+00:06:34,130 --> 00:06:36,360
+That's the thing that allows
+us to build complexity.
+
+109
+00:06:36,360 --> 00:06:40,000
+And that seems obvious, but
+remember, a lot of the things
+
+110
+00:06:40,000 --> 00:06:42,480
+in the computer languages that
+people use are not closed.
+
+111
+00:06:42,480 --> 00:06:47,120
+So for example, forming arrays
+in basic and Fortran is not a
+
+112
+00:06:47,120 --> 00:06:50,390
+closed operation, because you
+can make an array of numbers
+
+113
+00:06:50,390 --> 00:06:52,690
+or character strings or
+something, but you can't make
+
+114
+00:06:52,690 --> 00:06:54,800
+an array of arrays.
+
+115
+00:06:54,800 --> 00:06:59,260
+And when you look at means of
+combination, you should be
+
+116
+00:06:59,260 --> 00:07:01,260
+should be asking yourself
+whether things are closed
+
+117
+00:07:01,260 --> 00:07:02,510
+under that means
+of combination.
+
+118
+00:07:02,510 --> 00:07:05,280
+
+
+119
+00:07:05,280 --> 00:07:09,100
+Well in any case, because we
+can form pairs of pairs, we
+
+120
+00:07:09,100 --> 00:07:11,980
+can start using pairs to glue
+things together in all sorts
+
+121
+00:07:11,980 --> 00:07:14,230
+of different ways.
+
+122
+00:07:14,230 --> 00:07:17,300
+So for instance if I'd like to
+glue together the four things,
+
+123
+00:07:17,300 --> 00:07:20,880
+1, 2, 3 and 4, there are a
+lot of ways I can do it.
+
+124
+00:07:20,880 --> 00:07:25,050
+I could, for example, like we
+did with that line segment, I
+
+125
+00:07:25,050 --> 00:07:32,990
+could make a pair that
+had a 1 and a 2 and
+
+126
+00:07:32,990 --> 00:07:36,900
+a 3 and a 4, right?
+
+127
+00:07:36,900 --> 00:07:40,090
+Or if I liked, I could do
+something like this.
+
+128
+00:07:40,090 --> 00:07:46,580
+I could make a pair, whose first
+thing is a pair, whose
+
+129
+00:07:46,580 --> 00:07:53,010
+car is 1, and his cdr is itself
+a pair that has the 2
+
+130
+00:07:53,010 --> 00:07:56,660
+and the 3, and then I could
+put the 4 up here.
+
+131
+00:07:56,660 --> 00:07:59,420
+So you see, there are a lot of
+different ways that I can
+
+132
+00:07:59,420 --> 00:08:02,560
+start using pairs to glue things
+together, and so it'll
+
+133
+00:08:02,560 --> 00:08:07,540
+be a good idea to establish
+some kind of conventions,
+
+134
+00:08:07,540 --> 00:08:10,830
+right, that allow us to deal
+with this thing in some
+
+135
+00:08:10,830 --> 00:08:12,590
+conventional way, so we're
+not constantly
+
+136
+00:08:12,590 --> 00:08:16,070
+making an ad hoc choice.
+
+137
+00:08:16,070 --> 00:08:21,650
+And List has a particular
+convention for representing a
+
+138
+00:08:21,650 --> 00:08:26,730
+sequence of things as,
+essentially, a chain of pairs,
+
+139
+00:08:26,730 --> 00:08:34,581
+and that's called a List.
+
+140
+00:08:34,581 --> 00:08:39,169
+And what a List is is
+essentially just a convention
+
+141
+00:08:39,169 --> 00:08:40,929
+for representing a sequence.
+
+142
+00:08:40,929 --> 00:08:45,790
+I would represent the sequence
+1, 2, 3 and 4 by
+
+143
+00:08:45,790 --> 00:08:48,420
+a sequence of pairs.
+
+144
+00:08:48,420 --> 00:08:53,920
+I'd put 1 here and then the
+cdr of this would point to
+
+145
+00:08:53,920 --> 00:09:01,490
+another pair whose car was the
+next thing in the sequence,
+
+146
+00:09:01,490 --> 00:09:06,260
+and the cdr would point to
+another pair whose car was the
+
+147
+00:09:06,260 --> 00:09:08,400
+next thing in the sequence--
+so there's 3--
+
+148
+00:09:08,400 --> 00:09:09,550
+and then another one.
+
+149
+00:09:09,550 --> 00:09:15,450
+So for each item in the
+sequence, I'll get a pair.
+
+150
+00:09:15,450 --> 00:09:21,130
+And now there are no more, so
+I put a special marker that
+
+151
+00:09:21,130 --> 00:09:28,760
+means there's nothing more in
+the List. OK, so that's a
+
+152
+00:09:28,760 --> 00:09:31,750
+conventional way to glue things
+together if you want to
+
+153
+00:09:31,750 --> 00:09:34,450
+represent a sequence, right.
+
+154
+00:09:34,450 --> 00:09:42,570
+And what it is is a bunch of
+pairs, the successive cars of
+
+155
+00:09:42,570 --> 00:09:46,470
+each pair are the items that you
+want to glue together, and
+
+156
+00:09:46,470 --> 00:09:50,330
+the cdr pointer points
+to the next pair.
+
+157
+00:09:50,330 --> 00:09:52,710
+Now if I actually wanted to
+construct that, what I would
+
+158
+00:09:52,710 --> 00:09:57,630
+type into List is this: I'd
+actually construct that as
+
+159
+00:09:57,630 --> 00:10:07,640
+saying, well this thing is the
+cons of 1 onto the cons of 2
+
+160
+00:10:07,640 --> 00:10:14,390
+onto the cons of 3 onto
+the cons of 4 onto,
+
+161
+00:10:14,390 --> 00:10:15,150
+well, this thing nil.
+
+162
+00:10:15,150 --> 00:10:21,050
+And what nil is is a name for
+the end of List marker.
+
+163
+00:10:21,050 --> 00:10:22,960
+It's a special name, which means
+this is the end of the
+
+164
+00:10:22,960 --> 00:10:29,980
+List. OK, so that's how I would
+actually construct that.
+
+165
+00:10:29,980 --> 00:10:37,195
+
+
+166
+00:10:37,195 --> 00:10:40,670
+Of course, it's a terrible drag
+to constantly have to
+
+167
+00:10:40,670 --> 00:10:43,000
+write something like the cons
+of 1 onto the cons of 2 onto
+
+168
+00:10:43,000 --> 00:10:45,310
+the cons of 3, whenever you
+want to make this thing.
+
+169
+00:10:45,310 --> 00:10:54,270
+So List has an operation that's
+called List, and List
+
+170
+00:10:54,270 --> 00:10:59,160
+is just an abbreviation for
+this nest of conses.
+
+171
+00:10:59,160 --> 00:11:02,310
+So I could say, I could
+construct that by saying that
+
+172
+00:11:02,310 --> 00:11:08,010
+is the List of 1, 2, 3 and 4.
+
+173
+00:11:08,010 --> 00:11:11,310
+And all this is is another
+way, a piece of syntactic
+
+174
+00:11:11,310 --> 00:11:13,550
+sugar, a more convenient
+way for writing
+
+175
+00:11:13,550 --> 00:11:15,390
+that chain of conses--
+
+176
+00:11:15,390 --> 00:11:18,410
+cons of cons of cons of cons
+of cons of cons onto nil.
+
+177
+00:11:18,410 --> 00:11:21,810
+So for example, I could build
+this thing and say, I'll
+
+178
+00:11:21,810 --> 00:11:39,150
+define 1-TO-4 to be the
+List of 1, 2, 3 and 4.
+
+179
+00:11:39,150 --> 00:11:48,070
+
+
+180
+00:11:48,070 --> 00:11:51,890
+OK, well notice some of the
+consequences of using this
+
+181
+00:11:51,890 --> 00:11:54,190
+convention.
+
+182
+00:11:54,190 --> 00:11:57,520
+First of all if I have this
+List, this 1, 2, 3 and 4, the
+
+183
+00:11:57,520 --> 00:11:59,290
+car of the whole thing
+is the first element
+
+184
+00:11:59,290 --> 00:12:04,100
+in the List, right.
+
+185
+00:12:04,100 --> 00:12:05,400
+How do I get 2?
+
+186
+00:12:05,400 --> 00:12:21,850
+Well, 2 would be the car of the
+cdr of this thing 1-TO-4,
+
+187
+00:12:21,850 --> 00:12:25,160
+it would be 2, right.
+
+188
+00:12:25,160 --> 00:12:30,050
+I take this thing, I take the
+cdr of it, which is this much,
+
+189
+00:12:30,050 --> 00:12:38,760
+and the car of that is 2, and
+then similarly, the car of the
+
+190
+00:12:38,760 --> 00:12:48,060
+cdr of the cdr of 1-TO-4,
+cdr, cdr, car--
+
+191
+00:12:48,060 --> 00:12:52,898
+would give me 3, and so on.
+
+192
+00:12:52,898 --> 00:12:54,650
+Let's take a look at that
+on the computer
+
+193
+00:12:54,650 --> 00:12:55,900
+screen for a second.
+
+194
+00:12:55,900 --> 00:12:57,880
+
+
+195
+00:12:57,880 --> 00:13:07,050
+I could come up to List, and I
+could type define 1-TO-4 to be
+
+196
+00:13:07,050 --> 00:13:14,190
+the List of 1, 2,
+3 and 4, right.
+
+197
+00:13:14,190 --> 00:13:19,690
+And I'll tell that to List, and
+it says, fine, that's the
+
+198
+00:13:19,690 --> 00:13:22,540
+definition of 1-TO-4.
+
+199
+00:13:22,540 --> 00:13:28,950
+And I could say, for instance,
+what's the car of the cdr of
+
+200
+00:13:28,950 --> 00:13:38,096
+the cdr of 1-TO-4, close
+paren, close paren.
+
+201
+00:13:38,096 --> 00:13:43,916
+Right, so the car of the cdr
+of the cdr would be 3.
+
+202
+00:13:43,916 --> 00:13:51,660
+Right, or I could say,
+what's 1-TO-4 itself.
+
+203
+00:13:51,660 --> 00:13:56,160
+And you see what List typed out
+is 1, 2, 3, 4, enclosed in
+
+204
+00:13:56,160 --> 00:13:59,630
+parentheses, and this notation,
+typing the elements
+
+205
+00:13:59,630 --> 00:14:02,930
+of the List enclosed in
+parentheses is List's
+
+206
+00:14:02,930 --> 00:14:07,660
+conventional way for printing
+back this chain of pairs that
+
+207
+00:14:07,660 --> 00:14:09,190
+represents a sequence.
+
+208
+00:14:09,190 --> 00:14:19,520
+So for example, if I said,
+what's the cdr of 1-TO-4,
+
+209
+00:14:19,520 --> 00:14:22,080
+that's going to be the rest of
+the List. That's the thing
+
+210
+00:14:22,080 --> 00:14:25,410
+pointed to by the first pair,
+which is, again, a sequence
+
+211
+00:14:25,410 --> 00:14:28,880
+that starts off with 2.
+
+212
+00:14:28,880 --> 00:14:36,740
+Or for example, I go off and
+say, what's the cdr of the cdr
+
+213
+00:14:36,740 --> 00:14:44,990
+of 1-TO-4; then that's 3,4.
+
+214
+00:14:44,990 --> 00:14:58,205
+Or if I say, what's the cdr of
+the cdr of the cdr of the cdr
+
+215
+00:14:58,205 --> 00:15:07,090
+of 1-TO-4, and I'm down there
+looking at the end of List
+
+216
+00:15:07,090 --> 00:15:09,340
+pointer itself, and List prints
+that as just open
+
+217
+00:15:09,340 --> 00:15:10,780
+paren, close paren.
+
+218
+00:15:10,780 --> 00:15:13,805
+You can think of that as a List
+with nothing in there.
+
+219
+00:15:13,805 --> 00:15:16,190
+All right, see at the end what
+I did there was I looked at
+
+220
+00:15:16,190 --> 00:15:22,150
+the cdr of the cdr of the cdr
+of 1-TO-4, and I'm just left
+
+221
+00:15:22,150 --> 00:15:24,880
+with the end of List
+pointer itself.
+
+222
+00:15:24,880 --> 00:15:26,450
+And that gets printed
+as open close.
+
+223
+00:15:26,450 --> 00:15:34,350
+
+
+224
+00:15:34,350 --> 00:15:37,660
+All right, well that's a
+conventional way you can see
+
+225
+00:15:37,660 --> 00:15:42,080
+for working down a
+List by taking
+
+226
+00:15:42,080 --> 00:15:43,340
+successive cdrs of things.
+
+227
+00:15:43,340 --> 00:15:47,470
+It's called cdring down a
+List. And of course it's
+
+228
+00:15:47,470 --> 00:15:49,840
+pretty much of a drag to type
+all those cdrs by hand.
+
+229
+00:15:49,840 --> 00:15:50,570
+You don't do that.
+
+230
+00:15:50,570 --> 00:15:53,220
+You write procedures
+that do that.
+
+231
+00:15:53,220 --> 00:15:56,300
+And in fact one very, very
+common thing to do in List is
+
+232
+00:15:56,300 --> 00:16:02,290
+to write procedures that, sort
+of, take a List of things and
+
+233
+00:16:02,290 --> 00:16:05,630
+do something to every element in
+List, and return you a List
+
+234
+00:16:05,630 --> 00:16:07,400
+of the results.
+
+235
+00:16:07,400 --> 00:16:10,550
+So what I mean for example, is
+I might write a procedure
+
+236
+00:16:10,550 --> 00:16:18,440
+called Scale-List, and
+Scale-List I might say I want
+
+237
+00:16:18,440 --> 00:16:27,640
+to scale by 10 the entire List
+1-TO-4, and that would return
+
+238
+00:16:27,640 --> 00:16:36,513
+for me the List 10,
+20, 30, 40.
+
+239
+00:16:36,513 --> 00:16:38,480
+[UNINTELLIGIBLE PHRASE]
+
+240
+00:16:38,480 --> 00:16:46,360
+Right, it returns List, and well
+you can see that there's
+
+241
+00:16:46,360 --> 00:16:48,320
+going to be some kind
+of recursive
+
+242
+00:16:48,320 --> 00:16:49,320
+strategy for doing it.
+
+243
+00:16:49,320 --> 00:16:52,800
+How would I actually write
+that procedure?
+
+244
+00:16:52,800 --> 00:16:56,760
+The idea would be, well if you'd
+like to build up a List
+
+245
+00:16:56,760 --> 00:17:01,140
+where you've multiplied every
+element by 10, what you'd say
+
+246
+00:17:01,140 --> 00:17:06,010
+is well you imagine that you'd
+taken the rest of the List--
+
+247
+00:17:06,010 --> 00:17:08,560
+right, the thing represented
+by the cdr of the List, and
+
+248
+00:17:08,560 --> 00:17:12,869
+suppose I'd already built a List
+where each of these was
+
+249
+00:17:12,869 --> 00:17:16,470
+multiplied by 10--
+
+250
+00:17:16,470 --> 00:17:20,784
+that would be Scale-List of the
+cdr of the List. And then
+
+251
+00:17:20,784 --> 00:17:25,099
+all I have to do is multiply the
+car of the List by 10, and
+
+252
+00:17:25,099 --> 00:17:28,666
+then cons that onto the rest,
+and I'll get a List.
+
+253
+00:17:28,666 --> 00:17:31,610
+Right and then similarly, to
+have scaled the cdr of the
+
+254
+00:17:31,610 --> 00:17:35,020
+List, I'll scale the cdr of
+that and cons onto that 2
+
+255
+00:17:35,020 --> 00:17:36,830
+multiplied by 10.
+
+256
+00:17:36,830 --> 00:17:38,690
+And finally when I get all the
+way down to the end, and I
+
+257
+00:17:38,690 --> 00:17:41,672
+only have this end
+of List pointer.
+
+258
+00:17:41,672 --> 00:17:43,640
+All right, this thing whose
+name is nil-- well I just
+
+259
+00:17:43,640 --> 00:17:45,455
+returned an end of
+List pointer.
+
+260
+00:17:45,455 --> 00:17:47,700
+So there's a recursive strategy
+for doing that.
+
+261
+00:17:47,700 --> 00:17:51,180
+Here's the actual procedure
+that does that.
+
+262
+00:17:51,180 --> 00:17:53,810
+Right, this is an example of
+the general strategy of
+
+263
+00:17:53,810 --> 00:17:56,800
+cdr-ing down a List and
+so called cons-ing
+
+264
+00:17:56,800 --> 00:17:58,310
+up the result, right.
+
+265
+00:17:58,310 --> 00:18:06,090
+So to Scale a List l by some
+scale factor s, what do I do?
+
+266
+00:18:06,090 --> 00:18:10,560
+Well there's a test, and List
+has the predicate called null.
+
+267
+00:18:10,560 --> 00:18:14,060
+Null means is this thing the
+end of List pointer, or
+
+268
+00:18:14,060 --> 00:18:16,700
+another way to think of that is
+are there any elements in
+
+269
+00:18:16,700 --> 00:18:17,810
+this List, right.
+
+270
+00:18:17,810 --> 00:18:20,820
+But in any case if I'm looking
+at the end of List pointer,
+
+271
+00:18:20,820 --> 00:18:23,640
+then I just return the
+end of List pointer.
+
+272
+00:18:23,640 --> 00:18:32,290
+I just return nil, otherwise I
+cons together the result of
+
+273
+00:18:32,290 --> 00:18:35,850
+doing what I'm going to do to
+the first element in the List,
+
+274
+00:18:35,850 --> 00:18:40,920
+namely taking the car of l and
+multiplying it by s, and I
+
+275
+00:18:40,920 --> 00:18:50,240
+cons that onto recursively
+scaling the rest of the List.
+
+276
+00:18:50,240 --> 00:18:53,730
+OK, so again, the general idea
+is that you recursively do
+
+277
+00:18:53,730 --> 00:18:56,740
+something to the rest of the
+List, to the cdr of the List,
+
+278
+00:18:56,740 --> 00:18:59,560
+and then you cons that onto
+actually doing something to
+
+279
+00:18:59,560 --> 00:19:02,230
+the first element of the List.
+When you get down to the end
+
+280
+00:19:02,230 --> 00:19:07,810
+here, you return the end of
+List pointer, and that's a
+
+281
+00:19:07,810 --> 00:19:16,400
+general pattern for doing
+something to a List. Well of
+
+282
+00:19:16,400 --> 00:19:19,540
+course you should know by now
+that the very fact that
+
+283
+00:19:19,540 --> 00:19:21,190
+there's a general pattern there
+means I shouldn't be
+
+284
+00:19:21,190 --> 00:19:23,140
+writing this procedure at all.
+
+285
+00:19:23,140 --> 00:19:25,500
+What I should do is write a
+procedure that's the general
+
+286
+00:19:25,500 --> 00:19:28,350
+pattern itself that says, do
+something to everything in the
+
+287
+00:19:28,350 --> 00:19:30,870
+List and define this thing
+in terms of that.
+
+288
+00:19:30,870 --> 00:19:33,050
+Right, make some higher order
+procedure, and here's the
+
+289
+00:19:33,050 --> 00:19:34,390
+higher order procedure
+that does that.
+
+290
+00:19:34,390 --> 00:19:40,100
+It's called MAP, and what MAP
+does is it takes a List, takes
+
+291
+00:19:40,100 --> 00:19:45,700
+a List l, and it takes a
+procedure p, and it returns
+
+292
+00:19:45,700 --> 00:19:49,840
+the List of the elements gotten
+by applying p to each
+
+293
+00:19:49,840 --> 00:19:53,445
+successive element in the List.
+All right, so p to v1, p
+
+294
+00:19:53,445 --> 00:19:56,480
+to v2, p of en.
+
+295
+00:19:56,480 --> 00:19:59,670
+Right, so I think of taking this
+List and transforming it
+
+296
+00:19:59,670 --> 00:20:02,720
+by applying p to each element.
+
+297
+00:20:02,720 --> 00:20:06,200
+And you see all this procedure
+is is exactly the general
+
+298
+00:20:06,200 --> 00:20:07,030
+strategy I said.
+
+299
+00:20:07,030 --> 00:20:09,370
+Instead of multiply by 10,
+it's do the procedure.
+
+300
+00:20:09,370 --> 00:20:13,150
+If the List is empty,
+return nil.
+
+301
+00:20:13,150 --> 00:20:17,240
+Otherwise, apply p to the first
+element of the List.
+
+302
+00:20:17,240 --> 00:20:21,990
+Right, apply p to car of l, and
+cons that onto the result
+
+303
+00:20:21,990 --> 00:20:26,450
+of applying p to everything in
+the cdr of the List, so that's
+
+304
+00:20:26,450 --> 00:20:30,110
+a general procedure
+called MAP.
+
+305
+00:20:30,110 --> 00:20:39,590
+And I could define Scale-List
+in terms of MAP.
+
+306
+00:20:39,590 --> 00:20:43,265
+Let me show you that first.
+
+307
+00:20:43,265 --> 00:20:46,650
+But I could say Scale-List is
+another way to define it is
+
+308
+00:20:46,650 --> 00:20:53,950
+just MAP along the List by the
+procedure, which takes an item
+
+309
+00:20:53,950 --> 00:20:55,430
+and multiplies it by s.
+
+310
+00:20:55,430 --> 00:20:58,208
+
+
+311
+00:20:58,208 --> 00:21:01,260
+Right, so this is really the
+way I should think about
+
+312
+00:21:01,260 --> 00:21:04,640
+scaling the List, build that
+actual recursion into the
+
+313
+00:21:04,640 --> 00:21:07,570
+general strategy, not to every
+particular procedure I write.
+
+314
+00:21:07,570 --> 00:21:09,900
+And of course, one of the values
+of doing this is that
+
+315
+00:21:09,900 --> 00:21:11,962
+you start to see commonality.
+
+316
+00:21:11,962 --> 00:21:16,420
+Right, again you're capturing
+general patterns of usage.
+
+317
+00:21:16,420 --> 00:21:22,610
+For instance, if I said MAP,
+the square procedure, down
+
+318
+00:21:22,610 --> 00:21:32,690
+this List 1-TO-4, then I'd end
+up with 1, 4, 9 and 16.
+
+319
+00:21:32,690 --> 00:21:42,710
+Right, or if I said MAP down
+this List, lambda of x plus
+
+320
+00:21:42,710 --> 00:21:51,020
+x10, if I MAP that down 1-TO-4,
+then I'd get the List
+
+321
+00:21:51,020 --> 00:21:55,020
+where everything had 10 added
+to it: right, so I'd get 11,
+
+322
+00:21:55,020 --> 00:22:00,400
+12, 13, 14.
+
+323
+00:22:00,400 --> 00:22:03,480
+And you can see that's going
+to be a very, very common
+
+324
+00:22:03,480 --> 00:22:08,760
+idea: doing something to every
+element in the List.
+
+325
+00:22:08,760 --> 00:22:11,240
+One thing you might think about
+is writing MAP in an
+
+326
+00:22:11,240 --> 00:22:12,350
+iterative style.
+
+327
+00:22:12,350 --> 00:22:15,460
+The one I wrote happens to
+evolve a recursive process,
+
+328
+00:22:15,460 --> 00:22:18,050
+but we could just as easily have
+made one that evolves an
+
+329
+00:22:18,050 --> 00:22:19,390
+iterative process.
+
+330
+00:22:19,390 --> 00:22:21,610
+But see the interesting thing
+about it is that once you
+
+331
+00:22:21,610 --> 00:22:24,270
+start thinking in
+terms of MAP--
+
+332
+00:22:24,270 --> 00:22:27,170
+see, once you say scale is just
+MAP, you stop thinking
+
+333
+00:22:27,170 --> 00:22:29,200
+about whether it's iterative
+or recursive, and you just
+
+334
+00:22:29,200 --> 00:22:32,380
+say, well there's this
+aggregate, there's this List,
+
+335
+00:22:32,380 --> 00:22:34,490
+and what I do is transform every
+item in the List, and I
+
+336
+00:22:34,490 --> 00:22:37,360
+stop thinking about the
+particular control
+
+337
+00:22:37,360 --> 00:22:39,050
+structure in order.
+
+338
+00:22:39,050 --> 00:22:45,190
+That's a very, very important
+idea, and it, I guess it
+
+339
+00:22:45,190 --> 00:22:46,530
+really comes out of APL.
+
+340
+00:22:46,530 --> 00:22:49,370
+It's, sort of, the really
+important idea in APL that you
+
+341
+00:22:49,370 --> 00:22:52,020
+stop thinking about control
+structures, and you start
+
+342
+00:22:52,020 --> 00:22:55,580
+thinking about operations on
+aggregates, and then about
+
+343
+00:22:55,580 --> 00:22:58,330
+halfway through this course,
+we'll see when we talk about
+
+344
+00:22:58,330 --> 00:23:00,940
+something called stream
+processing, how that view of
+
+345
+00:23:00,940 --> 00:23:02,670
+the world really comes
+into its glory.
+
+346
+00:23:02,670 --> 00:23:05,400
+This is just us a, sort
+of, cute idea.
+
+347
+00:23:05,400 --> 00:23:09,520
+But we'll see much more
+applications of that later on.
+
+348
+00:23:09,520 --> 00:23:13,560
+Well let me mention that there's
+something that's very
+
+349
+00:23:13,560 --> 00:23:17,680
+similar to MAP that's also a
+useful idea, and that's--
+
+350
+00:23:17,680 --> 00:23:23,130
+see, MAP says I take a List, I
+apply something to each item,
+
+351
+00:23:23,130 --> 00:23:26,220
+and I return a List of the
+successive values.
+
+352
+00:23:26,220 --> 00:23:28,200
+There's another thing I might
+do, which is very, very
+
+353
+00:23:28,200 --> 00:23:32,850
+similar, which is take a List
+and some action you want to do
+
+354
+00:23:32,850 --> 00:23:36,470
+and then do it to each item
+in the List in sequence.
+
+355
+00:23:36,470 --> 00:23:38,240
+Don't make a List of the
+values, just do this
+
+356
+00:23:38,240 --> 00:23:40,810
+particular action, and that's
+something that's
+
+357
+00:23:40,810 --> 00:23:45,040
+very much like MAP.
+
+358
+00:23:45,040 --> 00:23:49,130
+It's called for-each, and
+for-each takes a procedure and
+
+359
+00:23:49,130 --> 00:23:52,970
+a List, and what it's going to
+do is do something to every
+
+360
+00:23:52,970 --> 00:23:56,830
+item in the List. So basically
+what it does: it says if the
+
+361
+00:23:56,830 --> 00:24:02,250
+List is not empty, right, if
+the List is not null, then
+
+362
+00:24:02,250 --> 00:24:05,830
+what I do is, I apply my
+procedure to the first item in
+
+363
+00:24:05,830 --> 00:24:12,130
+the List, and then I do this
+thing to the rest of the List.
+
+364
+00:24:12,130 --> 00:24:15,610
+I apply for-each to the
+cdr of the List.
+
+365
+00:24:15,610 --> 00:24:17,660
+All right, so I do it to the
+first of the List, do it to
+
+366
+00:24:17,660 --> 00:24:20,930
+the rest of the List, and of
+course, when I call it
+
+367
+00:24:20,930 --> 00:24:22,920
+recursively, that's going to do
+it to the rest of the rest
+
+368
+00:24:22,920 --> 00:24:24,050
+of the List and so on.
+
+369
+00:24:24,050 --> 00:24:27,540
+And finally, when I get done, I
+have to just do something to
+
+370
+00:24:27,540 --> 00:24:30,930
+say I'm done, so we'll return
+the message "done." So that's
+
+371
+00:24:30,930 --> 00:24:32,980
+very, very similar to MAP.
+
+372
+00:24:32,980 --> 00:24:35,680
+It's mostly different
+in what it returns.
+
+373
+00:24:35,680 --> 00:24:38,920
+And so for example, if I had
+some procedure that printed
+
+374
+00:24:38,920 --> 00:24:42,030
+things on the screen, if I
+wanted to print everything in
+
+375
+00:24:42,030 --> 00:24:47,160
+the List, I could say for-each,
+print this List. Or
+
+376
+00:24:47,160 --> 00:24:50,660
+if I had a List of figures, and
+I wanted to draw them on
+
+377
+00:24:50,660 --> 00:24:53,900
+the display, I could say
+for-each, display on the
+
+378
+00:24:53,900 --> 00:24:55,150
+screen this figure.
+
+379
+00:24:55,150 --> 00:24:57,750
+
+
+380
+00:24:57,750 --> 00:25:00,970
+Let's take questions.
+
+381
+00:25:00,970 --> 00:25:03,810
+AUDIENCE: Does it create a new
+copy with something done to
+
+382
+00:25:03,810 --> 00:25:06,744
+it, unless you explicitly
+tell it to do that?
+
+383
+00:25:06,744 --> 00:25:08,010
+Is that correct?
+
+384
+00:25:08,010 --> 00:25:10,030
+PROFESSOR: Right.
+
+385
+00:25:10,030 --> 00:25:10,980
+Yeah, that's right.
+
+386
+00:25:10,980 --> 00:25:14,020
+For-each does not create
+a List. It just
+
+387
+00:25:14,020 --> 00:25:15,350
+sort of does something.
+
+388
+00:25:15,350 --> 00:25:18,180
+So if you have a bunch of things
+you want to do and
+
+389
+00:25:18,180 --> 00:25:19,720
+you're not worried about
+values like printing
+
+390
+00:25:19,720 --> 00:25:22,030
+something, or drawing something
+on the screen, or
+
+391
+00:25:22,030 --> 00:25:24,610
+ringing the bell on the
+terminal, or for something,
+
+392
+00:25:24,610 --> 00:25:26,760
+you can say for-each, you know,
+do this for-each of
+
+393
+00:25:26,760 --> 00:25:29,770
+those things in the List,
+whereas MAP actually builds
+
+394
+00:25:29,770 --> 00:25:31,780
+you this new collection
+of values that you
+
+395
+00:25:31,780 --> 00:25:32,570
+might want to use.
+
+396
+00:25:32,570 --> 00:25:34,380
+It's just a subtle difference
+between them.
+
+397
+00:25:34,380 --> 00:25:37,590
+AUDIENCE: Could you write MAP
+using for-each, so that you
+
+398
+00:25:37,590 --> 00:25:39,640
+did some sort of cons or
+something to build
+
+399
+00:25:39,640 --> 00:25:41,520
+the List back up?
+
+400
+00:25:41,520 --> 00:25:42,510
+PROFESSOR: Well, sort of.
+
+401
+00:25:42,510 --> 00:25:44,570
+I mean, I probably could.
+
+402
+00:25:44,570 --> 00:25:48,810
+I can't think of how to do it
+right offhand, but yeah, I
+
+403
+00:25:48,810 --> 00:25:51,380
+could arrange something.
+
+404
+00:25:51,380 --> 00:25:52,830
+AUDIENCE: The vital difference
+between MAP and for-each is
+
+405
+00:25:52,830 --> 00:25:57,320
+one is recursive and the other
+is not in the sense you
+
+406
+00:25:57,320 --> 00:26:01,570
+defined early yesterday,
+I believe.
+
+407
+00:26:01,570 --> 00:26:03,660
+PROFESSOR: Yeah, about MAP and
+for-each and recursion.
+
+408
+00:26:03,660 --> 00:26:05,390
+Yeah, that's a good point.
+
+409
+00:26:05,390 --> 00:26:09,420
+
+
+410
+00:26:09,420 --> 00:26:11,615
+For the MAP procedure I
+wrote, that happens to
+
+411
+00:26:11,615 --> 00:26:13,880
+be a recursive process.
+
+412
+00:26:13,880 --> 00:26:16,130
+And the reason for that is that
+when you've done this
+
+413
+00:26:16,130 --> 00:26:19,000
+thing to the rest of the List,
+you're waiting for that value
+
+414
+00:26:19,000 --> 00:26:21,830
+so that you can stick it on to
+the beginning of the List,
+
+415
+00:26:21,830 --> 00:26:23,340
+whereas for-each doesn't
+really have any
+
+416
+00:26:23,340 --> 00:26:24,740
+values to wait for.
+
+417
+00:26:24,740 --> 00:26:26,680
+So that turns out to be
+an iterative process.
+
+418
+00:26:26,680 --> 00:26:27,590
+That's not fundamental.
+
+419
+00:26:27,590 --> 00:26:30,920
+I could have defined MAP so
+that it's evolved by an
+
+420
+00:26:30,920 --> 00:26:31,770
+iterative process.
+
+421
+00:26:31,770 --> 00:26:33,670
+I just didn't happen to.
+
+422
+00:26:33,670 --> 00:26:37,780
+AUDIENCE: If you were to cons
+for each with a List that had
+
+423
+00:26:37,780 --> 00:26:43,210
+embedded Lists, I imagine
+it would work, right?
+
+424
+00:26:43,210 --> 00:26:47,300
+It would give you the internal
+elements of each of those
+
+425
+00:26:47,300 --> 00:26:48,940
+internal Lists?
+
+426
+00:26:48,940 --> 00:26:50,430
+PROFESSOR: OK, the question
+is if I [UNINTELLIGIBLE]
+
+427
+00:26:50,430 --> 00:26:54,420
+for each or MAP, for that
+matter, with a List that had
+
+428
+00:26:54,420 --> 00:26:56,406
+Lists in it--
+
+429
+00:26:56,406 --> 00:26:59,430
+although we haven't really
+looked at that yet--
+
+430
+00:26:59,430 --> 00:27:01,310
+would that work.
+
+431
+00:27:01,310 --> 00:27:04,610
+The answer is yes in the sense
+I mean work and no in the
+
+432
+00:27:04,610 --> 00:27:09,140
+sense that you mean work,
+because all that--
+
+433
+00:27:09,140 --> 00:27:16,190
+see if I give you a List, where
+hanging off here is, you
+
+434
+00:27:16,190 --> 00:27:19,700
+know, is something that's not
+a number, maybe another List
+
+435
+00:27:19,700 --> 00:27:22,670
+or you know, another cons or
+something, for-each just says
+
+436
+00:27:22,670 --> 00:27:25,240
+do something to each item in
+this List. It goes down
+
+437
+00:27:25,240 --> 00:27:26,965
+successively looking
+at the cdrs.
+
+438
+00:27:26,965 --> 00:27:27,220
+AUDIENCE: OK.
+
+439
+00:27:27,220 --> 00:27:29,140
+PROFESSOR: And as far as it's
+concerned, the first item in
+
+440
+00:27:29,140 --> 00:27:30,830
+this List is whatever
+is hanging off here.
+
+441
+00:27:30,830 --> 00:27:31,830
+AUDIENCE: Mhm.
+
+442
+00:27:31,830 --> 00:27:33,780
+PROFESSOR: That might or might
+not be the right thing.
+
+443
+00:27:33,780 --> 00:27:35,670
+AUDIENCE: So it wouldn't
+go down into the--
+
+444
+00:27:35,670 --> 00:27:37,030
+PROFESSOR: Absolutely not.
+
+445
+00:27:37,030 --> 00:27:38,380
+I could certainly write
+something else.
+
+446
+00:27:38,380 --> 00:27:40,930
+There's another, what you're
+looking for is a common
+
+447
+00:27:40,930 --> 00:27:43,600
+pattern of usage called tree
+recursion, where you take a
+
+448
+00:27:43,600 --> 00:27:46,523
+List, and you actually go all
+the way down to the what's
+
+449
+00:27:46,523 --> 00:27:48,140
+called the leaves of the tree.
+
+450
+00:27:48,140 --> 00:27:50,140
+And you could write such a
+thing, but that's not for-each
+
+451
+00:27:50,140 --> 00:27:52,420
+and it's not MAP.
+
+452
+00:27:52,420 --> 00:27:53,590
+Remember, these things
+are really
+
+453
+00:27:53,590 --> 00:27:55,492
+being very simple minded.
+
+454
+00:27:55,492 --> 00:27:57,390
+OK, no more questions?
+
+455
+00:27:57,390 --> 00:27:58,998
+All right, let's break.
+
+456
+00:27:58,998 --> 00:28:42,480
+[MUSIC PLAYING]
+
+457
+00:28:42,480 --> 00:28:46,220
+PROFESSOR: What I'd like to do
+now is spend the rest of this
+
+458
+00:28:46,220 --> 00:28:50,960
+time talking about one example,
+and this example, I
+
+459
+00:28:50,960 --> 00:28:53,510
+think, pretty much summarizes
+everything that we've done up
+
+460
+00:28:53,510 --> 00:28:58,050
+until now: all right, and that's
+List structure and
+
+461
+00:28:58,050 --> 00:29:02,360
+issues of abstraction, and
+representation and capturing
+
+462
+00:29:02,360 --> 00:29:05,620
+commonality with higher order
+procedures, and also is going
+
+463
+00:29:05,620 --> 00:29:09,290
+to introduce something we
+haven't really talked about a
+
+464
+00:29:09,290 --> 00:29:13,160
+lot yet-- what I said is the
+major third theme in this
+
+465
+00:29:13,160 --> 00:29:17,190
+course: meta-linguistic
+abstraction, which is the idea
+
+466
+00:29:17,190 --> 00:29:20,930
+that one of the ways of
+tackling complexity in
+
+467
+00:29:20,930 --> 00:29:27,750
+engineering design is to build
+a suitable powerful language.
+
+468
+00:29:27,750 --> 00:29:31,370
+You might recall what I said was
+pretty much the very most
+
+469
+00:29:31,370 --> 00:29:33,620
+important thing that we're
+going to tell you in this
+
+470
+00:29:33,620 --> 00:29:39,010
+course is that when you think
+about a language, you think
+
+471
+00:29:39,010 --> 00:29:43,470
+about it in terms of what are
+the primitives; what are the
+
+472
+00:29:43,470 --> 00:29:46,225
+means of combination--
+
+473
+00:29:46,225 --> 00:29:49,560
+
+
+474
+00:29:49,560 --> 00:29:52,310
+right, what are the things that
+allow you to build bigger
+
+475
+00:29:52,310 --> 00:29:54,945
+things; and then what are the
+means of abstraction.
+
+476
+00:29:54,945 --> 00:30:01,170
+
+
+477
+00:30:01,170 --> 00:30:05,800
+How do you take those bigger
+things that you've built and
+
+478
+00:30:05,800 --> 00:30:09,620
+put black boxes around them and
+use them as elements in
+
+479
+00:30:09,620 --> 00:30:12,846
+making something even
+more complicated?
+
+480
+00:30:12,846 --> 00:30:18,170
+Now the particular language I'm
+going to talk about is an
+
+481
+00:30:18,170 --> 00:30:21,675
+example that was made up
+by a friend of ours
+
+482
+00:30:21,675 --> 00:30:22,925
+called Peter Henderson.
+
+483
+00:30:22,925 --> 00:30:28,130
+
+
+484
+00:30:28,130 --> 00:30:29,800
+Peter Henderson is
+at the University
+
+485
+00:30:29,800 --> 00:30:32,870
+of Stirling in Scotland.
+
+486
+00:30:32,870 --> 00:30:39,170
+And what this language is about
+is making figures that
+
+487
+00:30:39,170 --> 00:30:42,090
+sort of look like this.
+
+488
+00:30:42,090 --> 00:30:49,470
+This is this is a woodcut by
+Escher called "Square Limit."
+
+489
+00:30:49,470 --> 00:30:52,860
+You, sort of, see it has this
+complicated, kind of,
+
+490
+00:30:52,860 --> 00:30:59,170
+recursive, sort of, recursive
+kind of figure, where there's
+
+491
+00:30:59,170 --> 00:31:02,060
+this fish pattern in the middle
+and things sort of
+
+492
+00:31:02,060 --> 00:31:04,570
+bleed out smaller and smaller
+in self similar ways.
+
+493
+00:31:04,570 --> 00:31:08,610
+
+
+494
+00:31:08,610 --> 00:31:11,450
+Anyway, Peter Henderson's
+language was for describing
+
+495
+00:31:11,450 --> 00:31:15,990
+figures that look like that and
+designing new ones that
+
+496
+00:31:15,990 --> 00:31:20,240
+look like that and drawing
+them on a display screen.
+
+497
+00:31:20,240 --> 00:31:26,930
+There's another theme that we'll
+see illustrated by this
+
+498
+00:31:26,930 --> 00:31:31,030
+example, and that's the issue
+of what Gerry and I have
+
+499
+00:31:31,030 --> 00:31:34,300
+already mentioned a lot: that
+there's no real difference, in
+
+500
+00:31:34,300 --> 00:31:37,340
+some sense, between procedures
+and data.
+
+501
+00:31:37,340 --> 00:31:41,820
+And anyway I hope by the end of
+this morning, if you're not
+
+502
+00:31:41,820 --> 00:31:45,470
+already, you will be completely
+confused about what
+
+503
+00:31:45,470 --> 00:31:47,715
+the difference between
+procedures and data are, if
+
+504
+00:31:47,715 --> 00:31:51,190
+you're not confused about
+that already.
+
+505
+00:31:51,190 --> 00:31:55,370
+Well in any case, let's start
+describing Peter's language.
+
+506
+00:31:55,370 --> 00:31:58,410
+I should start by telling you
+what the primitives are.
+
+507
+00:31:58,410 --> 00:31:59,690
+This language is very
+simple because
+
+508
+00:31:59,690 --> 00:32:00,940
+there's only one primitive.
+
+509
+00:32:00,940 --> 00:32:03,380
+
+
+510
+00:32:03,380 --> 00:32:07,480
+A primitive is not quite
+what you think it is.
+
+511
+00:32:07,480 --> 00:32:09,970
+There's only one primitive
+called a picture, and a
+
+512
+00:32:09,970 --> 00:32:12,200
+picture is not quite what
+you think it is.
+
+513
+00:32:12,200 --> 00:32:13,950
+Here's an example.
+
+514
+00:32:13,950 --> 00:32:15,220
+This is a picture of George.
+
+515
+00:32:15,220 --> 00:32:18,980
+
+
+516
+00:32:18,980 --> 00:32:23,990
+The idea is that a picture in
+this language is going to be
+
+517
+00:32:23,990 --> 00:32:30,640
+something that draws a figure
+scaled to fit a rectangle that
+
+518
+00:32:30,640 --> 00:32:33,030
+you specify.
+
+519
+00:32:33,030 --> 00:32:34,200
+So here you see in [? Saint ?]
+
+520
+00:32:34,200 --> 00:32:34,570
+[? Lawrence's ?]
+
+521
+00:32:34,570 --> 00:32:37,070
+outline of a rectangle, that's
+not really part of the
+
+522
+00:32:37,070 --> 00:32:43,210
+picture, but the picture--
+
+523
+00:32:43,210 --> 00:32:45,270
+you'll give it a rectangle, and
+it will draw this figure
+
+524
+00:32:45,270 --> 00:32:47,100
+scaled to fit the rectangle.
+
+525
+00:32:47,100 --> 00:32:50,930
+So for example, there's
+George, and here,
+
+526
+00:32:50,930 --> 00:32:52,840
+this is also George.
+
+527
+00:32:52,840 --> 00:32:55,480
+It's the same picture,
+right, just scaled to
+
+528
+00:32:55,480 --> 00:32:57,920
+fit a different rectangle.
+
+529
+00:32:57,920 --> 00:32:59,290
+Here's George as a fat kid.
+
+530
+00:32:59,290 --> 00:33:02,400
+
+
+531
+00:33:02,400 --> 00:33:03,920
+That's the same George.
+
+532
+00:33:03,920 --> 00:33:05,260
+It's all the same figure.
+
+533
+00:33:05,260 --> 00:33:07,810
+All of these three things
+are the same
+
+534
+00:33:07,810 --> 00:33:09,670
+picture in this language.
+
+535
+00:33:09,670 --> 00:33:12,900
+I'm just giving it different
+rectangles to scale itself in.
+
+536
+00:33:12,900 --> 00:33:16,300
+
+
+537
+00:33:16,300 --> 00:33:19,150
+OK, those are the primitives.
+
+538
+00:33:19,150 --> 00:33:21,420
+That is the primitive.
+
+539
+00:33:21,420 --> 00:33:24,440
+Now let's start talking about
+the means of combination and
+
+540
+00:33:24,440 --> 00:33:25,960
+the operations.
+
+541
+00:33:25,960 --> 00:33:31,080
+There is, for example, an
+operation called Rotate.
+
+542
+00:33:31,080 --> 00:33:35,900
+And what Rotate does is, if I
+have a picture, say a picture
+
+543
+00:33:35,900 --> 00:33:42,080
+that draws an "A" in some
+rectangle that I give it, the
+
+544
+00:33:42,080 --> 00:33:43,080
+Rotate of that--
+
+545
+00:33:43,080 --> 00:33:47,490
+say the Rotate by 90 degrees
+would, if I give it a
+
+546
+00:33:47,490 --> 00:33:52,850
+rectangle, draw the same image,
+but again, scaled to
+
+547
+00:33:52,850 --> 00:33:54,100
+fit that rectangle.
+
+548
+00:33:54,100 --> 00:33:56,160
+
+
+549
+00:33:56,160 --> 00:33:58,400
+So that's Rotate
+by 90 degrees.
+
+550
+00:33:58,400 --> 00:34:00,700
+There's another operation called
+Flip that can flip
+
+551
+00:34:00,700 --> 00:34:04,351
+something, either horizontally
+or vertically.
+
+552
+00:34:04,351 --> 00:34:06,450
+All right, so those are, sort
+of, operations, or you can
+
+553
+00:34:06,450 --> 00:34:11,010
+think of those as means of
+combination of one element.
+
+554
+00:34:11,010 --> 00:34:12,880
+I can put things together.
+
+555
+00:34:12,880 --> 00:34:17,350
+There's a means of combination
+called Beside, and what Beside
+
+556
+00:34:17,350 --> 00:34:24,525
+does: it'll take two pictures,
+let's say A and B--
+
+557
+00:34:24,525 --> 00:34:29,489
+
+
+558
+00:34:29,489 --> 00:34:31,230
+and by picture I mean something
+that's going to draw
+
+559
+00:34:31,230 --> 00:34:34,159
+an image in a specified
+rectangle--
+
+560
+00:34:34,159 --> 00:34:38,159
+and what Beside will do--
+
+561
+00:34:38,159 --> 00:34:42,719
+I have to say, Beside of A and
+B, the side of two pictures
+
+562
+00:34:42,719 --> 00:34:45,590
+and some number, s.
+
+563
+00:34:45,590 --> 00:34:47,639
+And s will be a number
+between zero and one.
+
+564
+00:34:47,639 --> 00:34:50,960
+
+
+565
+00:34:50,960 --> 00:34:52,620
+And Beside will draw a picture
+that looks like this.
+
+566
+00:34:52,620 --> 00:34:55,100
+It will take the rectangle
+you give it and
+
+567
+00:34:55,100 --> 00:34:56,480
+scale its base by s.
+
+568
+00:34:56,480 --> 00:34:57,730
+Say s is 0.5.
+
+569
+00:34:57,730 --> 00:35:00,240
+
+
+570
+00:35:00,240 --> 00:35:04,980
+And then over here
+it will draw--
+
+571
+00:35:04,980 --> 00:35:12,070
+it'll put the first picture,
+and over here it'll put the
+
+572
+00:35:12,070 --> 00:35:14,100
+second picture.
+
+573
+00:35:14,100 --> 00:35:17,250
+Or for instance if I gave it a
+different value of s, if I
+
+574
+00:35:17,250 --> 00:35:27,390
+said Beside with a 0.25, it
+would do the same thing,
+
+575
+00:35:27,390 --> 00:35:28,640
+except the A would
+be much skinnier.
+
+576
+00:35:28,640 --> 00:35:32,230
+
+
+577
+00:35:32,230 --> 00:35:38,230
+So it would draw something
+like that.
+
+578
+00:35:38,230 --> 00:35:41,110
+So there's a means of
+combination Beside, and
+
+579
+00:35:41,110 --> 00:35:43,410
+similarly there's an Above,
+which does the same thing
+
+580
+00:35:43,410 --> 00:35:45,230
+except it puts them vertically
+instead of horizontally.
+
+581
+00:35:45,230 --> 00:35:47,990
+
+
+582
+00:35:47,990 --> 00:35:50,470
+Well let's look at that.
+
+583
+00:35:50,470 --> 00:35:58,830
+All right, there's George and
+his kid brother, which is,
+
+584
+00:35:58,830 --> 00:36:10,630
+right, constructed by taking
+George and putting him Beside
+
+585
+00:36:10,630 --> 00:36:11,760
+the Above--
+
+586
+00:36:11,760 --> 00:36:13,440
+taking the empty picture, and
+there's a thing called the
+
+587
+00:36:13,440 --> 00:36:16,650
+empty picture, which does
+the obvious thing--
+
+588
+00:36:16,650 --> 00:36:19,515
+putting the empty picture above
+a copy of George, and
+
+589
+00:36:19,515 --> 00:36:21,100
+then putting that whole
+thing Beside George.
+
+590
+00:36:21,100 --> 00:36:28,900
+
+
+591
+00:36:28,900 --> 00:36:38,230
+Here's something called P which
+is, again, George Beside
+
+592
+00:36:38,230 --> 00:36:42,550
+Flipping George, I think,
+horizontally in this case, and
+
+593
+00:36:42,550 --> 00:36:46,400
+then Rotating the whole result
+180 degrees and putting them
+
+594
+00:36:46,400 --> 00:36:50,510
+Beside one another with the
+basic rectangle divided at
+
+595
+00:36:50,510 --> 00:36:59,320
+0.5, right, and I can call that
+P. And then I can take P,
+
+596
+00:36:59,320 --> 00:37:04,100
+and put it above the Flipped
+copy of itself, and I can call
+
+597
+00:37:04,100 --> 00:37:09,650
+that Q.
+
+598
+00:37:09,650 --> 00:37:15,570
+Notice how rapidly that we've
+built up complexity, just in,
+
+599
+00:37:15,570 --> 00:37:18,640
+you know, 15 seconds, you've
+gotten from George to that
+
+600
+00:37:18,640 --> 00:37:22,260
+thing Q. Why is that?
+
+601
+00:37:22,260 --> 00:37:26,100
+How are how we able to
+do that so fast?
+
+602
+00:37:26,100 --> 00:37:28,670
+The answer is the closure
+property.
+
+603
+00:37:28,670 --> 00:37:31,810
+See, it's the fact that when
+I take a picture and put it
+
+604
+00:37:31,810 --> 00:37:35,560
+Beside another picture, that's
+then, again, a picture that I
+
+605
+00:37:35,560 --> 00:37:39,090
+can go and Rotate and Flip or
+put Above something else.
+
+606
+00:37:39,090 --> 00:37:41,645
+Right, and when I take that
+element P, which is the Beside
+
+607
+00:37:41,645 --> 00:37:43,450
+or the Flip or the Rotate
+of something,
+
+608
+00:37:43,450 --> 00:37:45,560
+that's, again, a picture.
+
+609
+00:37:45,560 --> 00:37:49,420
+Right, the world of pictures is
+closed under those means of
+
+610
+00:37:49,420 --> 00:37:50,830
+combination.
+
+611
+00:37:50,830 --> 00:37:53,570
+So whenever I have something,
+I can turn right around and
+
+612
+00:37:53,570 --> 00:37:56,480
+use that as an element
+in something else.
+
+613
+00:37:56,480 --> 00:37:59,010
+So maybe better than List and
+segments, that just gives you
+
+614
+00:37:59,010 --> 00:38:02,020
+an image for how fast you can
+build up complexity, because
+
+615
+00:38:02,020 --> 00:38:03,270
+operations are closed.
+
+616
+00:38:03,270 --> 00:38:07,500
+
+
+617
+00:38:07,500 --> 00:38:12,440
+OK, well before we go on with
+building more things, let's
+
+618
+00:38:12,440 --> 00:38:14,345
+talk about how this language
+is actually implemented.
+
+619
+00:38:14,345 --> 00:38:17,200
+
+
+620
+00:38:17,200 --> 00:38:23,270
+The basic element that sits
+under the table here is a
+
+621
+00:38:23,270 --> 00:38:27,610
+thing called a rectangle, and
+what a rectangle is going to
+
+622
+00:38:27,610 --> 00:38:36,900
+be, it's a thing that specified
+by an origin that's
+
+623
+00:38:36,900 --> 00:38:38,910
+going to be some vector
+that says where
+
+624
+00:38:38,910 --> 00:38:40,390
+the rectangle starts.
+
+625
+00:38:40,390 --> 00:38:44,020
+And then there's going to be
+some other vector that I'm
+
+626
+00:38:44,020 --> 00:38:49,020
+going to call the horizontal
+part of the rectangle, and
+
+627
+00:38:49,020 --> 00:38:57,650
+another picture called the
+
+628
+00:38:57,650 --> 00:39:00,640
+vertical part of the rectangle.
+
+629
+00:39:00,640 --> 00:39:03,790
+And those three pieces are the
+elements: where the lower
+
+630
+00:39:03,790 --> 00:39:08,200
+vertex is, how you get to the
+next vertex over here, and how
+
+631
+00:39:08,200 --> 00:39:09,630
+you get to the vertex
+over there.
+
+632
+00:39:09,630 --> 00:39:11,590
+The three vectors specify
+a rectangle.
+
+633
+00:39:11,590 --> 00:39:16,080
+
+
+634
+00:39:16,080 --> 00:39:18,380
+Now to actually build
+rectangles, what I'll assume
+
+635
+00:39:18,380 --> 00:39:23,380
+is that we have a constructor
+called "make rectangle," or
+
+636
+00:39:23,380 --> 00:39:37,910
+"make-rect," and selectors for
+horiz and vert and origin that
+
+637
+00:39:37,910 --> 00:39:39,720
+get out the pieces of
+that rectangle.
+
+638
+00:39:39,720 --> 00:39:42,500
+And well, you know a lot of
+ways you can do this now.
+
+639
+00:39:42,500 --> 00:39:47,190
+You can do it by using pairs in
+some way or other standard
+
+640
+00:39:47,190 --> 00:39:47,670
+List or not.
+
+641
+00:39:47,670 --> 00:39:50,130
+But in any case, the
+implementation of these
+
+642
+00:39:50,130 --> 00:39:51,320
+things, that's George's
+problem.
+
+643
+00:39:51,320 --> 00:39:53,300
+It's just a data representation
+problem.
+
+644
+00:39:53,300 --> 00:39:55,500
+So let's assume we have these
+rectangles to work with.
+
+645
+00:39:55,500 --> 00:39:58,902
+
+
+646
+00:39:58,902 --> 00:40:00,152
+OK.
+
+647
+00:40:00,152 --> 00:40:02,310
+
+
+648
+00:40:02,310 --> 00:40:05,090
+Now the idea of this, remember
+what's got to happen.
+
+649
+00:40:05,090 --> 00:40:10,250
+Somehow we have to worry about
+taking the figure and scaling
+
+650
+00:40:10,250 --> 00:40:15,260
+it to fit some rectangle that
+you give it, that's the basic
+
+651
+00:40:15,260 --> 00:40:18,340
+thing you have to arrange, that
+these pictures can do.
+
+652
+00:40:18,340 --> 00:40:22,440
+
+
+653
+00:40:22,440 --> 00:40:23,460
+How do we think about that?
+
+654
+00:40:23,460 --> 00:40:26,010
+Well, one way to think about
+that is that any time I give
+
+655
+00:40:26,010 --> 00:40:40,050
+you a rectangle, that defines,
+in some sense, a
+
+656
+00:40:40,050 --> 00:40:43,340
+transformation from
+the standard
+
+657
+00:40:43,340 --> 00:40:45,685
+square into that rectangle.
+
+658
+00:40:45,685 --> 00:40:46,960
+Let me say what I mean.
+
+659
+00:40:46,960 --> 00:40:49,540
+By the standard square, I'll
+mean something, which is a
+
+660
+00:40:49,540 --> 00:40:58,420
+square whose coordinates are
+0,0, and 1,0, and 0,1 and 1,1.
+
+661
+00:40:58,420 --> 00:41:01,830
+
+
+662
+00:41:01,830 --> 00:41:04,590
+And there's some sort of
+the obvious scaling
+
+663
+00:41:04,590 --> 00:41:10,180
+transformation, which maps this
+to that and this to that,
+
+664
+00:41:10,180 --> 00:41:11,920
+and sort of, stretches
+everything uniformly.
+
+665
+00:41:11,920 --> 00:41:22,755
+So we take a line segment like
+this and end up mapping it to
+
+666
+00:41:22,755 --> 00:41:31,390
+a line segment like that, so
+some point xy goes to some
+
+667
+00:41:31,390 --> 00:41:33,000
+other point up there.
+
+668
+00:41:33,000 --> 00:41:36,870
+And although it's not important,
+with a little
+
+669
+00:41:36,870 --> 00:41:39,190
+vector algebra, you could
+write that formula.
+
+670
+00:41:39,190 --> 00:41:43,670
+The thing that xy goes to, the
+point that xy goes to is
+
+671
+00:41:43,670 --> 00:41:48,950
+gotten by taking the origin of
+the rectangle and then adding
+
+672
+00:41:48,950 --> 00:41:51,280
+that as a vector to--
+
+673
+00:41:51,280 --> 00:41:54,300
+well, take x, the x coordinate,
+which is something
+
+674
+00:41:54,300 --> 00:42:01,030
+between zero and one, multiply
+that by the horizontal vector
+
+675
+00:42:01,030 --> 00:42:09,670
+of the rectangle; and take the
+y coordinate, which is also
+
+676
+00:42:09,670 --> 00:42:14,460
+something between zero and one
+and multiply that by the
+
+677
+00:42:14,460 --> 00:42:16,690
+vertical vector of
+the rectangle.
+
+678
+00:42:16,690 --> 00:42:19,280
+That's just a little
+linear algebra.
+
+679
+00:42:19,280 --> 00:42:22,600
+Anyway, that's the formula,
+which is the right obvious
+
+680
+00:42:22,600 --> 00:42:26,100
+transformation that takes things
+into the unit square,
+
+681
+00:42:26,100 --> 00:42:27,760
+into the interior of
+that rectangle.
+
+682
+00:42:27,760 --> 00:42:31,790
+
+
+683
+00:42:31,790 --> 00:42:35,200
+OK well, let's actually look
+at that as a procedure.
+
+684
+00:42:35,200 --> 00:42:39,830
+So what we want is the thing
+which tells us that particular
+
+685
+00:42:39,830 --> 00:42:44,070
+transformation that a
+rectangle defines.
+
+686
+00:42:44,070 --> 00:42:45,860
+So here's the procedure.
+
+687
+00:42:45,860 --> 00:42:48,010
+I'll call it coordinate-map.
+
+688
+00:42:48,010 --> 00:42:51,180
+Coordinate-map is the thing that
+takes as its argument a
+
+689
+00:42:51,180 --> 00:42:57,605
+rectangle and returns for you
+a procedure on points.
+
+690
+00:42:57,605 --> 00:43:00,690
+
+
+691
+00:43:00,690 --> 00:43:03,600
+Right, so for each rectangle you
+get a way of transforming
+
+692
+00:43:03,600 --> 00:43:07,310
+a point xy into that
+rectangle.
+
+693
+00:43:07,310 --> 00:43:08,020
+And how do you get it?
+
+694
+00:43:08,020 --> 00:43:08,750
+Well I just--
+
+695
+00:43:08,750 --> 00:43:10,890
+writing in List what I wrote
+there on the blackboard--
+
+696
+00:43:10,890 --> 00:43:18,300
+I add to the origin
+of the rectangle
+
+697
+00:43:18,300 --> 00:43:20,540
+the result of adding--
+
+698
+00:43:20,540 --> 00:43:26,080
+I take the horizontal part of
+the rectangle; I scale that by
+
+699
+00:43:26,080 --> 00:43:29,880
+the x coordinate of the point.
+
+700
+00:43:29,880 --> 00:43:33,750
+I take the vertical vector
+of the rectangle.
+
+701
+00:43:33,750 --> 00:43:37,720
+I scale that by the y coordinate
+of the point, and
+
+702
+00:43:37,720 --> 00:43:40,380
+then add all those
+three things up.
+
+703
+00:43:40,380 --> 00:43:41,320
+That's the procedure.
+
+704
+00:43:41,320 --> 00:43:44,045
+That is the procedure that I'm
+going to apply to a point.
+
+705
+00:43:44,045 --> 00:43:46,890
+
+
+706
+00:43:46,890 --> 00:43:53,170
+And this whole thing is
+generated for each rectangle.
+
+707
+00:43:53,170 --> 00:43:55,900
+So any rectangle defines a
+coordinate MAP, which is a
+
+708
+00:43:55,900 --> 00:43:59,370
+procedure on points.
+
+709
+00:43:59,370 --> 00:44:00,620
+OK.
+
+710
+00:44:00,620 --> 00:44:06,720
+
+
+711
+00:44:06,720 --> 00:44:12,020
+All right, so for example,
+George here, my original
+
+712
+00:44:12,020 --> 00:44:14,900
+George, might have been
+something that I specified by
+
+713
+00:44:14,900 --> 00:44:20,970
+segments in the unit square, and
+then for each rectangle I
+
+714
+00:44:20,970 --> 00:44:27,600
+give this thing, I'm going to
+draw those segments inside
+
+715
+00:44:27,600 --> 00:44:28,180
+that rectangle.
+
+716
+00:44:28,180 --> 00:44:30,630
+How actually do I do that?
+
+717
+00:44:30,630 --> 00:44:35,820
+Well I take each segment in my
+original reference George that
+
+718
+00:44:35,820 --> 00:44:40,080
+was specified, and to each of
+the end points of those
+
+719
+00:44:40,080 --> 00:44:42,490
+segments, I applied the
+coordinate MAP of the
+
+720
+00:44:42,490 --> 00:44:44,440
+particular rectangle I
+want to draw it in.
+
+721
+00:44:44,440 --> 00:44:47,530
+So for example, this lower
+rectangle, this George as a
+
+722
+00:44:47,530 --> 00:44:51,370
+fat kid rectangle, has
+its coordinate MAP.
+
+723
+00:44:51,370 --> 00:44:56,310
+And if I want to draw this
+image, what I do is for each
+
+724
+00:44:56,310 --> 00:45:01,500
+segment here, say for this
+segment, I transformed that
+
+725
+00:45:01,500 --> 00:45:04,600
+point by the coordinate MAP,
+transform that point by the
+
+726
+00:45:04,600 --> 00:45:04,990
+coordinate MAP.
+
+727
+00:45:04,990 --> 00:45:07,890
+That will give me this point
+and that point and draw the
+
+728
+00:45:07,890 --> 00:45:10,150
+segment between them.
+
+729
+00:45:10,150 --> 00:45:12,970
+Right, that's the idea.
+
+730
+00:45:12,970 --> 00:45:14,570
+Right, and if I give it a
+different rectangle like this
+
+731
+00:45:14,570 --> 00:45:16,200
+one, that's a different
+coordinate MAP, so I get a
+
+732
+00:45:16,200 --> 00:45:19,281
+different image of those
+line segments.
+
+733
+00:45:19,281 --> 00:45:22,500
+Well how do we actually get
+a picture to start with?
+
+734
+00:45:22,500 --> 00:45:25,250
+I can build a picture to start
+with out of a List of line
+
+735
+00:45:25,250 --> 00:45:27,750
+segments initially.
+
+736
+00:45:27,750 --> 00:45:31,680
+Here's a procedure that builds
+what I'll call a primitive
+
+737
+00:45:31,680 --> 00:45:35,570
+picture, meaning one I, sort of,
+got that didn't come out
+
+738
+00:45:35,570 --> 00:45:37,680
+of Beside or Rotate
+or something.
+
+739
+00:45:37,680 --> 00:45:43,270
+It starts with a List of
+line segments, and now
+
+740
+00:45:43,270 --> 00:45:44,090
+it does what I said.
+
+741
+00:45:44,090 --> 00:45:45,600
+What's a picture have to be?
+
+742
+00:45:45,600 --> 00:45:48,790
+First of all it's a procedure
+that's defined on rectangles.
+
+743
+00:45:48,790 --> 00:45:52,060
+
+
+744
+00:45:52,060 --> 00:45:53,190
+What does it do?
+
+745
+00:45:53,190 --> 00:45:54,880
+It says for each--
+
+746
+00:45:54,880 --> 00:45:57,480
+this is going to be a List
+of line segments--
+
+747
+00:45:57,480 --> 00:46:02,510
+for each segment, for each s,
+which is a segment in this
+
+748
+00:46:02,510 --> 00:46:07,410
+List of segments, well
+it draws a line.
+
+749
+00:46:07,410 --> 00:46:10,690
+What line does it draw?
+
+750
+00:46:10,690 --> 00:46:16,230
+It gets the start point of that
+segment, transforms that
+
+751
+00:46:16,230 --> 00:46:19,920
+by the coordinate MAP
+of the rectangle.
+
+752
+00:46:19,920 --> 00:46:21,830
+That's the first new point
+it wants to do.
+
+753
+00:46:21,830 --> 00:46:24,160
+Then it takes the endpoint of
+the segment, transforms that
+
+754
+00:46:24,160 --> 00:46:27,310
+by the coordinate MAP of the
+rectangle, and then draws a
+
+755
+00:46:27,310 --> 00:46:27,990
+line between.
+
+756
+00:46:27,990 --> 00:46:30,180
+Let's assume drawline is some
+primitive that's built into
+
+757
+00:46:30,180 --> 00:46:34,250
+the system that actually draws
+a line on the display.
+
+758
+00:46:34,250 --> 00:46:35,980
+All right, so it transforms
+the endpoints by the
+
+759
+00:46:35,980 --> 00:46:37,670
+coordinate MAP of the rectangle,
+draws a line
+
+760
+00:46:37,670 --> 00:46:43,110
+between them, does that
+for each s in
+
+761
+00:46:43,110 --> 00:46:46,220
+this List of segments.
+
+762
+00:46:46,220 --> 00:46:49,000
+And now remember again, a
+picture is a procedure that
+
+763
+00:46:49,000 --> 00:46:51,550
+takes a rectangle as argument.
+
+764
+00:46:51,550 --> 00:46:53,610
+So when you hand it a rectangle,
+this is what it
+
+765
+00:46:53,610 --> 00:46:57,140
+does: draws those lines.
+
+766
+00:46:57,140 --> 00:46:59,690
+All right, so there's--
+
+767
+00:46:59,690 --> 00:47:01,260
+how would I actually
+use this thing?
+
+768
+00:47:01,260 --> 00:47:03,325
+Let's make it a little
+bit more concrete.
+
+769
+00:47:03,325 --> 00:47:05,890
+
+
+770
+00:47:05,890 --> 00:47:21,070
+Right, I would say for instance,
+define R to be
+
+771
+00:47:21,070 --> 00:47:26,520
+make-rectangle of some stuff,
+and I'd have to specify some
+
+772
+00:47:26,520 --> 00:47:30,080
+vectors here using
+make-vector.
+
+773
+00:47:30,080 --> 00:47:45,010
+And then I could say, define
+say, G to be make-picture, and
+
+774
+00:47:45,010 --> 00:47:47,100
+then some stuff.
+
+775
+00:47:47,100 --> 00:47:51,540
+And what I'd have to specify
+here is a List of line
+
+776
+00:47:51,540 --> 00:47:55,250
+segments, right, using
+make segment.
+
+777
+00:47:55,250 --> 00:47:57,480
+Make-segment might be made out
+of vectors, and vectors might
+
+778
+00:47:57,480 --> 00:47:59,610
+be made out of points.
+
+779
+00:47:59,610 --> 00:48:03,970
+And then if I actually wanted to
+see the image of G inside a
+
+780
+00:48:03,970 --> 00:48:10,280
+rectangle, well a picture is
+a procedure that takes a
+
+781
+00:48:10,280 --> 00:48:11,940
+rectangle as argument.
+
+782
+00:48:11,940 --> 00:48:18,720
+So if I then called G with an
+input of R, that would cause
+
+783
+00:48:18,720 --> 00:48:22,520
+whatever image G is worrying
+about to be drawn inside the
+
+784
+00:48:22,520 --> 00:48:26,722
+rectangle R. Right, so that's
+how you'd use that.
+
+785
+00:48:26,722 --> 00:49:08,072
+[MUSIC PLAYING]
+
+786
+00:49:08,072 --> 00:49:12,530
+PROFESSOR: Well why is it that
+I say this example is nice?
+
+787
+00:49:12,530 --> 00:49:13,680
+You probably don't
+think it's nice.
+
+788
+00:49:13,680 --> 00:49:15,540
+You probably think it's
+more weird than nice.
+
+789
+00:49:15,540 --> 00:49:18,740
+Right, representing these
+pictures as procedures, which
+
+790
+00:49:18,740 --> 00:49:21,430
+do complicated things
+with rectangles.
+
+791
+00:49:21,430 --> 00:49:22,680
+So why is it nice?
+
+792
+00:49:22,680 --> 00:49:25,460
+
+
+793
+00:49:25,460 --> 00:49:29,070
+The reason it's nice is that
+once you've implemented the
+
+794
+00:49:29,070 --> 00:49:32,670
+primitives in this way, the
+means of combination just fall
+
+795
+00:49:32,670 --> 00:49:36,390
+out by implementing
+procedures.
+
+796
+00:49:36,390 --> 00:49:37,400
+Let me show you what I mean.
+
+797
+00:49:37,400 --> 00:49:38,650
+Suppose we want to
+implement Beside.
+
+798
+00:49:38,650 --> 00:49:41,980
+
+
+799
+00:49:41,980 --> 00:49:44,040
+So I'd like to--
+
+800
+00:49:44,040 --> 00:49:46,310
+suppose I've got a picture.
+
+801
+00:49:46,310 --> 00:49:47,620
+Let's call it P1.
+
+802
+00:49:47,620 --> 00:49:49,500
+P1 is going to be-- and
+now remember what a
+
+803
+00:49:49,500 --> 00:49:50,780
+picture really is.
+
+804
+00:49:50,780 --> 00:49:56,800
+It's a thing that if you can
+hand it some rectangle, it
+
+805
+00:49:56,800 --> 00:50:00,920
+will cause an image to be drawn
+in whatever rectangle
+
+806
+00:50:00,920 --> 00:50:03,520
+you hand it.
+
+807
+00:50:03,520 --> 00:50:08,210
+And suppose P2 two is some other
+picture, and you hand
+
+808
+00:50:08,210 --> 00:50:09,570
+that a rectangle.
+
+809
+00:50:09,570 --> 00:50:11,220
+And whatever rectangle
+you hand it,
+
+810
+00:50:11,220 --> 00:50:12,470
+it draws some picture.
+
+811
+00:50:12,470 --> 00:50:14,920
+
+
+812
+00:50:14,920 --> 00:50:25,230
+And now if I'd like to implement
+Beside of P1 and P2
+
+813
+00:50:25,230 --> 00:50:28,380
+with a scale factor A, well
+what does that have to be?
+
+814
+00:50:28,380 --> 00:50:29,950
+That's got to be picture.
+
+815
+00:50:29,950 --> 00:50:32,440
+It's got to be a thing that you
+hand it a rectangle, and
+
+816
+00:50:32,440 --> 00:50:34,800
+it draws something in
+that rectangle.
+
+817
+00:50:34,800 --> 00:50:38,350
+So if hand Beside
+this rectangle--
+
+818
+00:50:38,350 --> 00:50:41,206
+let's hand it a rectangle.
+
+819
+00:50:41,206 --> 00:50:42,860
+Well what's it going to do?
+
+820
+00:50:42,860 --> 00:50:45,900
+it's going to take this
+rectangle and split it into
+
+821
+00:50:45,900 --> 00:50:53,470
+two at a ratio of A and one
+minus A. And it will say, oh
+
+822
+00:50:53,470 --> 00:50:54,895
+sure, now I've got
+two rectangles.
+
+823
+00:50:54,895 --> 00:51:02,370
+
+
+824
+00:51:02,370 --> 00:51:05,560
+And now it goes off to P1 and
+says P1, well draw yourself in
+
+825
+00:51:05,560 --> 00:51:10,220
+this rectangle, and goes off
+to P2, and says, P2, fine,
+
+826
+00:51:10,220 --> 00:51:13,490
+draw yourself in
+this rectangle.
+
+827
+00:51:13,490 --> 00:51:15,690
+The only computation it has to
+do is figure out what these
+
+828
+00:51:15,690 --> 00:51:17,550
+rectangles are.
+
+829
+00:51:17,550 --> 00:51:21,660
+Remember a rectangle is
+specified by an origin and a
+
+830
+00:51:21,660 --> 00:51:24,480
+horizontal vector and a vertical
+vector, so it's got
+
+831
+00:51:24,480 --> 00:51:27,400
+to figure out what
+these things are.
+
+832
+00:51:27,400 --> 00:51:30,740
+So for this first rectangle, the
+origin turns out to be the
+
+833
+00:51:30,740 --> 00:51:34,370
+origin of the original
+rectangle, and the vertical
+
+834
+00:51:34,370 --> 00:51:36,810
+vector is the same as the
+vertical vector of the
+
+835
+00:51:36,810 --> 00:51:38,930
+original rectangle.
+
+836
+00:51:38,930 --> 00:51:43,510
+The horizontal vector is the
+horizontal vector of the
+
+837
+00:51:43,510 --> 00:51:47,740
+original rectangle
+scaled by A. And
+
+838
+00:51:47,740 --> 00:51:49,680
+that's the first rectangle.
+
+839
+00:51:49,680 --> 00:51:55,390
+The second rectangle, the origin
+is the original origin
+
+840
+00:51:55,390 --> 00:52:01,910
+plus that horizontal vector
+scaled by A. The horizontal
+
+841
+00:52:01,910 --> 00:52:05,060
+vector of the second rectangle
+is the rest of the horizontal
+
+842
+00:52:05,060 --> 00:52:10,780
+vector of the first one, which
+is 1 minus A times the
+
+843
+00:52:10,780 --> 00:52:15,660
+original H, and the vertical
+vector is still v. But
+
+844
+00:52:15,660 --> 00:52:17,570
+basically it goes and
+constructs these two
+
+845
+00:52:17,570 --> 00:52:19,890
+rectangles, and the important
+point is having constructed
+
+846
+00:52:19,890 --> 00:52:22,940
+the rectangles, it says OK,
+p1, you draw yourself in
+
+847
+00:52:22,940 --> 00:52:25,080
+there, and p2, you draw yourself
+in there, and that's
+
+848
+00:52:25,080 --> 00:52:27,480
+all Beside has to do.
+
+849
+00:52:27,480 --> 00:52:29,115
+All right, let's look at
+that piece of code.
+
+850
+00:52:29,115 --> 00:52:34,500
+
+
+851
+00:52:34,500 --> 00:52:45,420
+Beside of a picture and another
+picture with some
+
+852
+00:52:45,420 --> 00:52:51,030
+scaling ratio is first of all,
+since it's a picture, a
+
+853
+00:52:51,030 --> 00:52:55,590
+procedure that's going to take
+a rectangle as argument.
+
+854
+00:52:55,590 --> 00:52:57,050
+What's it going to do?
+
+855
+00:52:57,050 --> 00:53:00,650
+It says, p1 draw yourself in
+some rectangle and p2 draw
+
+856
+00:53:00,650 --> 00:53:03,190
+yourself in some other
+rectangle.
+
+857
+00:53:03,190 --> 00:53:04,530
+And now what are those
+rectangles?
+
+858
+00:53:04,530 --> 00:53:05,550
+Well here's the computation.
+
+859
+00:53:05,550 --> 00:53:08,680
+It makes a rectangle, and this
+is the algebra I just did on
+
+860
+00:53:08,680 --> 00:53:11,140
+the board: the origin,
+something; the horizontal
+
+861
+00:53:11,140 --> 00:53:13,030
+vector, something; and the
+vertical vector, something.
+
+862
+00:53:13,030 --> 00:53:17,790
+And for p2, the rectangle it
+wants has some other origin
+
+863
+00:53:17,790 --> 00:53:19,820
+and horizontal vector
+and vertical vector.
+
+864
+00:53:19,820 --> 00:53:23,330
+But the important point is that
+all it's saying is, p1,
+
+865
+00:53:23,330 --> 00:53:25,990
+go do your thing in one
+rectangle, and p2, go do your
+
+866
+00:53:25,990 --> 00:53:27,890
+thing in another rectangle.
+
+867
+00:53:27,890 --> 00:53:30,920
+That's all the Beside
+has to do.
+
+868
+00:53:30,920 --> 00:53:37,060
+OK, similarly Rotate--
+
+869
+00:53:37,060 --> 00:53:44,180
+see if I have this picture A,
+and I want to look at say
+
+870
+00:53:44,180 --> 00:53:51,050
+rotating A by 90 degrees, what
+that should mean is, well take
+
+871
+00:53:51,050 --> 00:53:57,010
+this rectangle, which is origin
+and horizontal vector
+
+872
+00:53:57,010 --> 00:54:01,570
+and vertical vector, and now
+pretend that it's really the
+
+873
+00:54:01,570 --> 00:54:05,710
+rectangle that looks like this,
+which has an origin and
+
+874
+00:54:05,710 --> 00:54:09,690
+a horizontal vector up here, and
+a vertical vector there,
+
+875
+00:54:09,690 --> 00:54:13,620
+and now draw yourself with
+respect to that rectangle.
+
+876
+00:54:13,620 --> 00:54:17,120
+Let me show you that
+as a procedure.
+
+877
+00:54:17,120 --> 00:54:21,570
+All right, so we'll Rotate 90 of
+the picture, because again,
+
+878
+00:54:21,570 --> 00:54:24,870
+a procedure for rectangle, which
+says, OK picture, draw
+
+879
+00:54:24,870 --> 00:54:29,190
+yourself in some rectangle; and
+then this algebra is the
+
+880
+00:54:29,190 --> 00:54:30,580
+transformation on
+the rectangle.
+
+881
+00:54:30,580 --> 00:54:33,370
+It's the one which makes it
+look like the rectangle is
+
+882
+00:54:33,370 --> 00:54:35,220
+sideways, the origin is
+someplace else and the
+
+883
+00:54:35,220 --> 00:54:37,670
+vertical vector is someplace
+else, and the horizontal
+
+884
+00:54:37,670 --> 00:54:38,965
+vector is someplace else,
+and vertical vector
+
+885
+00:54:38,965 --> 00:54:41,704
+is someplace else.
+
+886
+00:54:41,704 --> 00:54:43,117
+OK?
+
+887
+00:54:43,117 --> 00:54:44,367
+OK.
+
+888
+00:54:44,367 --> 00:54:46,890
+
+
+889
+00:54:46,890 --> 00:54:50,810
+OK, again notice, the crucial
+thing that's going on here is
+
+890
+00:54:50,810 --> 00:54:57,080
+you're using the representation
+of pictures as
+
+891
+00:54:57,080 --> 00:55:01,910
+procedures to automatically
+get the closure property,
+
+892
+00:55:01,910 --> 00:55:05,320
+because what happens is, Beside
+just has this thing p1.
+
+893
+00:55:05,320 --> 00:55:08,430
+Beside doesn't care if that's
+a primitive picture or it's
+
+894
+00:55:08,430 --> 00:55:11,760
+line segments or if p1 is,
+itself, the result of doing
+
+895
+00:55:11,760 --> 00:55:12,950
+Aboves or Besides or Rotates.
+
+896
+00:55:12,950 --> 00:55:17,380
+All Beside has to know about,
+say, p1 is that if you hand p1
+
+897
+00:55:17,380 --> 00:55:21,070
+a rectangle, it will cause
+something to be drawn.
+
+898
+00:55:21,070 --> 00:55:23,550
+And above that level, Beside
+just doesn't--
+
+899
+00:55:23,550 --> 00:55:27,321
+it's none of its business how p1
+accomplishes that drawing.
+
+900
+00:55:27,321 --> 00:55:31,140
+All right, so you're using the
+procedural representation to
+
+901
+00:55:31,140 --> 00:55:32,390
+ensure this closure.
+
+902
+00:55:32,390 --> 00:55:34,440
+
+
+903
+00:55:34,440 --> 00:55:35,830
+OK.
+
+904
+00:55:35,830 --> 00:55:40,010
+So implementing pictures as
+procedures makes these means
+
+905
+00:55:40,010 --> 00:55:43,090
+of combination, you know, both
+pretty simple and also, I
+
+906
+00:55:43,090 --> 00:55:46,040
+think, elegant.
+
+907
+00:55:46,040 --> 00:55:49,370
+But that's not the
+real punchline.
+
+908
+00:55:49,370 --> 00:55:52,030
+The real punchline comes when
+you look at the means of
+
+909
+00:55:52,030 --> 00:55:54,870
+abstraction in this language.
+
+910
+00:55:54,870 --> 00:55:56,300
+Because what have we done?
+
+911
+00:55:56,300 --> 00:56:02,760
+We've implemented the means of
+combination themselves as
+
+912
+00:56:02,760 --> 00:56:04,010
+procedures.
+
+913
+00:56:04,010 --> 00:56:05,950
+
+
+914
+00:56:05,950 --> 00:56:08,870
+And what that means is that when
+we go to abstract in this
+
+915
+00:56:08,870 --> 00:56:14,890
+language, everything that List
+supplies us for manipulating
+
+916
+00:56:14,890 --> 00:56:20,600
+procedures is automatically
+available to do things in this
+
+917
+00:56:20,600 --> 00:56:22,010
+picture language.
+
+918
+00:56:22,010 --> 00:56:25,520
+The technical term I want to
+say is not only is this
+
+919
+00:56:25,520 --> 00:56:29,900
+language implemented in List,
+obviously it is, but the
+
+920
+00:56:29,900 --> 00:56:39,890
+language is nicely embedded
+in List. What I mean is by
+
+921
+00:56:39,890 --> 00:56:44,800
+embedding the language in this
+way, all the power of List is
+
+922
+00:56:44,800 --> 00:56:47,680
+automatically available
+as an extension to
+
+923
+00:56:47,680 --> 00:56:49,880
+whatever you want to do.
+
+924
+00:56:49,880 --> 00:56:52,030
+And what do I mean by that?
+
+925
+00:56:52,030 --> 00:56:57,410
+Example: say, suppose I want
+to make a thing that takes
+
+926
+00:56:57,410 --> 00:57:06,090
+four pictures A, B, C and D, and
+makes a configuration that
+
+927
+00:57:06,090 --> 00:57:07,340
+looks like this.
+
+928
+00:57:07,340 --> 00:57:12,870
+
+
+929
+00:57:12,870 --> 00:57:14,670
+Well you might call that, you
+know, four pictures or
+
+930
+00:57:14,670 --> 00:57:17,110
+something, four-pict
+configuration.
+
+931
+00:57:17,110 --> 00:57:17,740
+How do I do that?
+
+932
+00:57:17,740 --> 00:57:18,700
+Well I can obviously do that.
+
+933
+00:57:18,700 --> 00:57:26,140
+I just write a procedure that
+takes B above D and A above C
+
+934
+00:57:26,140 --> 00:57:28,350
+and puts those things
+beside each other.
+
+935
+00:57:28,350 --> 00:57:31,150
+So I automatically have List's
+ability to do procedure
+
+936
+00:57:31,150 --> 00:57:33,090
+composition.
+
+937
+00:57:33,090 --> 00:57:34,960
+And I didn't have to make
+that specifically
+
+938
+00:57:34,960 --> 00:57:35,790
+in the picture language.
+
+939
+00:57:35,790 --> 00:57:38,710
+It's automatic from the fact
+that the means of combination
+
+940
+00:57:38,710 --> 00:57:41,100
+are themselves procedures.
+
+941
+00:57:41,100 --> 00:57:43,570
+Or suppose I wanted to do
+something a little bit more
+
+942
+00:57:43,570 --> 00:57:44,200
+complicated.
+
+943
+00:57:44,200 --> 00:57:46,670
+I wanted to put in a parameter
+so that for each of these, I
+
+944
+00:57:46,670 --> 00:57:50,530
+could independently specify
+a rotation by 90 degrees.
+
+945
+00:57:50,530 --> 00:57:53,200
+That's just putting a parameter
+in the procedure.
+
+946
+00:57:53,200 --> 00:57:55,430
+It's automatically there.
+
+947
+00:57:55,430 --> 00:57:58,470
+Right, it automatically comes
+from the embedding.
+
+948
+00:57:58,470 --> 00:58:04,850
+Or even more, suppose I wanted
+to, you know, use recursion.
+
+949
+00:58:04,850 --> 00:58:09,560
+Let's look at a recursive
+means of
+
+950
+00:58:09,560 --> 00:58:10,740
+combination on pictures.
+
+951
+00:58:10,740 --> 00:58:12,620
+I could say define--
+
+952
+00:58:12,620 --> 00:58:14,890
+let's see if you can figure out
+what this one is-- suppose
+
+953
+00:58:14,890 --> 00:58:22,990
+I say define what it means
+to right-push a picture,
+
+954
+00:58:22,990 --> 00:58:28,770
+right-push a picture and some
+integer N and some scale
+
+955
+00:58:28,770 --> 00:58:40,000
+factor A. I'll define this to
+say if N equals 0, then the
+
+956
+00:58:40,000 --> 00:58:42,340
+answer is the picture.
+
+957
+00:58:42,340 --> 00:58:49,724
+Otherwise I'm going to put--
+
+958
+00:58:49,724 --> 00:58:59,080
+oops, name change: P. Otherwise,
+I'm going to take P
+
+959
+00:58:59,080 --> 00:59:09,460
+and put it beside the results of
+recursively right-pushing P
+
+960
+00:59:09,460 --> 00:59:25,660
+with N minus 1 and A and use a
+scale factor of A. OK, so if
+
+961
+00:59:25,660 --> 00:59:31,080
+N0 , it's P. Otherwise I put P
+with a scale factor of A--
+
+962
+00:59:31,080 --> 00:59:33,610
+I'm sorry I didn't align
+this right--
+
+963
+00:59:33,610 --> 00:59:37,070
+recursively beside the result of
+right-pushing P, N minus 1
+
+964
+00:59:37,070 --> 00:59:38,550
+times with a scale
+factor of A.
+
+965
+00:59:38,550 --> 00:59:43,860
+There's a recursive means
+of combination.
+
+966
+00:59:43,860 --> 00:59:44,790
+What's that look like?
+
+967
+00:59:44,790 --> 00:59:46,060
+Well, here's what
+it looks like.
+
+968
+00:59:46,060 --> 00:59:54,250
+There's George right-pushed
+against himself twice with a
+
+969
+00:59:54,250 --> 00:59:59,520
+scale factor of 0.75.
+
+970
+00:59:59,520 --> 01:00:00,020
+OK.
+
+971
+01:00:00,020 --> 01:00:00,850
+Where'd that come from?
+
+972
+01:00:00,850 --> 01:00:02,260
+How did I get all this
+fancy recursion?
+
+973
+01:00:02,260 --> 01:00:02,960
+And the answer is just
+
+974
+01:00:02,960 --> 01:00:05,240
+automatic, absolutely automatic.
+
+975
+01:00:05,240 --> 01:00:08,370
+Since these are procedures, the
+embedding says, well sure,
+
+976
+01:00:08,370 --> 01:00:10,440
+I can define recursive
+procedures.
+
+977
+01:00:10,440 --> 01:00:13,830
+I didn't have to arrange that.
+
+978
+01:00:13,830 --> 01:00:15,320
+And of course, we can
+do more complicated
+
+979
+01:00:15,320 --> 01:00:16,440
+things of the same sort.
+
+980
+01:00:16,440 --> 01:00:18,240
+I could make something
+that does an up-push.
+
+981
+01:00:18,240 --> 01:00:21,740
+Right, that sort of goes like
+this, by recursively putting
+
+982
+01:00:21,740 --> 01:00:22,670
+something above.
+
+983
+01:00:22,670 --> 01:00:25,730
+Or I could make something
+that, sort
+
+984
+01:00:25,730 --> 01:00:26,590
+of, was this scheme.
+
+985
+01:00:26,590 --> 01:00:33,430
+I might start out with a picture
+and then, sort of,
+
+986
+01:00:33,430 --> 01:00:38,250
+recursively both push it aside
+and above, and that might put
+
+987
+01:00:38,250 --> 01:00:39,420
+something there.
+
+988
+01:00:39,420 --> 01:00:42,590
+And then up here I put the same
+recursive thing, and I
+
+989
+01:00:42,590 --> 01:00:45,220
+might end up with something
+like this.
+
+990
+01:00:45,220 --> 01:00:49,650
+Right, so there's a procedure
+that's a little bit more
+
+991
+01:00:49,650 --> 01:00:53,800
+complicated than right-push
+but not much.
+
+992
+01:00:53,800 --> 01:00:56,670
+I just do an Above
+and a Beside,
+
+993
+01:00:56,670 --> 01:00:57,920
+rather than just a Beside.
+
+994
+01:00:57,920 --> 01:01:01,380
+
+
+995
+01:01:01,380 --> 01:01:05,780
+Now if I take that and apply
+that with the idea of putting
+
+996
+01:01:05,780 --> 01:01:09,500
+four pictures together, which I
+can surely do; and I go and
+
+997
+01:01:09,500 --> 01:01:16,460
+I apply that to Q, which we
+defined before, right, what I
+
+998
+01:01:16,460 --> 01:01:22,310
+end up with this is this thing,
+which is, sort of, the
+
+999
+01:01:22,310 --> 01:01:25,045
+square limit of Q, done twice.
+
+1000
+01:01:25,045 --> 01:01:27,970
+
+
+1001
+01:01:27,970 --> 01:01:31,960
+Right, and then we can compare
+that with Escher's "Square
+
+1002
+01:01:31,960 --> 01:01:35,110
+Limit." And you see, it's
+sort of the same idea.
+
+1003
+01:01:35,110 --> 01:01:37,040
+Escher's is, of course,
+much, much prettier.
+
+1004
+01:01:37,040 --> 01:01:43,250
+If we go back and look at
+George, right, if we go look
+
+1005
+01:01:43,250 --> 01:01:44,340
+at George here--
+
+1006
+01:01:44,340 --> 01:01:47,970
+see, I started with a fairly
+arbitrary design, this picture
+
+1007
+01:01:47,970 --> 01:01:51,170
+of George and did
+things with it.
+
+1008
+01:01:51,170 --> 01:01:54,420
+Right, whereas if we go look at
+the Escher picture, right,
+
+1009
+01:01:54,420 --> 01:01:56,200
+the Escher picture is not
+an arbitrary design.
+
+1010
+01:01:56,200 --> 01:01:59,130
+It's this very, very clever
+thing, so that when you take
+
+1011
+01:01:59,130 --> 01:02:03,590
+this fish body and Rotate it and
+shrink it down, it bleeds
+
+1012
+01:02:03,590 --> 01:02:04,990
+into the next one
+really nicely.
+
+1013
+01:02:04,990 --> 01:02:07,620
+
+
+1014
+01:02:07,620 --> 01:02:10,320
+And of course with George,
+I didn't really do
+
+1015
+01:02:10,320 --> 01:02:12,140
+anything like that.
+
+1016
+01:02:12,140 --> 01:02:16,300
+So if we look at George, right,
+there's a little bit of
+
+1017
+01:02:16,300 --> 01:02:18,670
+match up, but not very nice,
+and it's pretty arbitrary.
+
+1018
+01:02:18,670 --> 01:02:23,710
+One very nice project, by the
+way, would be to write a
+
+1019
+01:02:23,710 --> 01:02:27,120
+procedure that could take some
+basic figure like this George
+
+1020
+01:02:27,120 --> 01:02:30,050
+thing and start moving the ends
+of the lines around, so
+
+1021
+01:02:30,050 --> 01:02:33,170
+you got a really nice one when
+you went and did that "Square
+
+1022
+01:02:33,170 --> 01:02:34,720
+Limit" process.
+
+1023
+01:02:34,720 --> 01:02:38,360
+That'd be a really nice
+thing to think about.
+
+1024
+01:02:38,360 --> 01:02:39,710
+Well so, we can combine
+things.
+
+1025
+01:02:39,710 --> 01:02:40,980
+We can recursive procedures.
+
+1026
+01:02:40,980 --> 01:02:44,680
+We can do all kinds of things,
+and that's all automatic.
+
+1027
+01:02:44,680 --> 01:02:47,050
+Right, the important point, the
+difference between merely
+
+1028
+01:02:47,050 --> 01:02:49,370
+implementing something in
+a language and embedding
+
+1029
+01:02:49,370 --> 01:02:51,570
+something in the language, so
+that you don't lose the
+
+1030
+01:02:51,570 --> 01:02:53,280
+original power of the language,
+and what List is
+
+1031
+01:02:53,280 --> 01:02:56,680
+great at, see List is a lousy
+language for doing any
+
+1032
+01:02:56,680 --> 01:02:57,600
+particular problem.
+
+1033
+01:02:57,600 --> 01:03:00,260
+What it's good for is figuring
+out the right language that
+
+1034
+01:03:00,260 --> 01:03:04,000
+you want and embedding that in
+List. That's the real power of
+
+1035
+01:03:04,000 --> 01:03:05,980
+this approach to design.
+
+1036
+01:03:05,980 --> 01:03:06,880
+Of course, we can go further.
+
+1037
+01:03:06,880 --> 01:03:10,970
+See, you saw the other thing
+that we can do in List is
+
+1038
+01:03:10,970 --> 01:03:16,800
+capture general methods of doing
+things as higher order
+
+1039
+01:03:16,800 --> 01:03:19,090
+procedures.
+
+1040
+01:03:19,090 --> 01:03:21,800
+And you probably just from me
+drawing it got the idea that
+
+1041
+01:03:21,800 --> 01:03:25,600
+right-push and the analogous
+thing where you push something
+
+1042
+01:03:25,600 --> 01:03:31,570
+up and up and up and up and this
+corner push thing are all
+
+1043
+01:03:31,570 --> 01:03:34,690
+generalizations of a common
+kind of idea.
+
+1044
+01:03:34,690 --> 01:03:38,210
+So just to illustrate and give
+you practice in looking at a
+
+1045
+01:03:38,210 --> 01:03:41,340
+fairly convoluted use of higher
+order procedures, let
+
+1046
+01:03:41,340 --> 01:03:45,280
+me show you the general idea
+of pushing some means of
+
+1047
+01:03:45,280 --> 01:03:48,510
+combination to recursively
+repeat it.
+
+1048
+01:03:48,510 --> 01:03:51,240
+So here's a good one
+to puzzle out.
+
+1049
+01:03:51,240 --> 01:03:59,550
+We'll define it what it means
+to push using a means of
+
+1050
+01:03:59,550 --> 01:04:01,800
+combination.
+
+1051
+01:04:01,800 --> 01:04:05,582
+Comb is going to be something
+like the Beside or Above.
+
+1052
+01:04:05,582 --> 01:04:07,240
+Well what's that going to be.
+
+1053
+01:04:07,240 --> 01:04:10,540
+That's going to be a procedure,
+remember what
+
+1054
+01:04:10,540 --> 01:04:13,480
+Beside actually was, right.
+
+1055
+01:04:13,480 --> 01:04:18,700
+It took a picture, took two
+pictures and a scale factor.
+
+1056
+01:04:18,700 --> 01:04:21,740
+Using that I produced something
+that took a level
+
+1057
+01:04:21,740 --> 01:04:24,800
+number and a picture and a scale
+factor, that I called
+
+1058
+01:04:24,800 --> 01:04:26,310
+right-push.
+
+1059
+01:04:26,310 --> 01:04:27,700
+So this is going to be something
+that takes a
+
+1060
+01:04:27,700 --> 01:04:32,700
+picture, a level number and
+a scale factor, and
+
+1061
+01:04:32,700 --> 01:04:33,950
+it's going to say--
+
+1062
+01:04:33,950 --> 01:04:36,320
+
+
+1063
+01:04:36,320 --> 01:04:39,520
+I'm going to do some
+repeated operation.
+
+1064
+01:04:39,520 --> 01:04:46,100
+I'm going to repeatedly apply
+the procedure which takes a
+
+1065
+01:04:46,100 --> 01:04:53,540
+picture and applies the means of
+combination to the picture
+
+1066
+01:04:53,540 --> 01:04:58,160
+and the original picture and the
+one I took in here and the
+
+1067
+01:04:58,160 --> 01:05:06,100
+scale factor, and I do the
+thing which repeats this
+
+1068
+01:05:06,100 --> 01:05:15,370
+procedure N times, and I apply
+that whole thing to my
+
+1069
+01:05:15,370 --> 01:05:16,620
+original picture.
+
+1070
+01:05:16,620 --> 01:05:19,600
+
+
+1071
+01:05:19,600 --> 01:05:23,390
+Repeated here, in case you
+haven't seen it, is another
+
+1072
+01:05:23,390 --> 01:05:29,660
+higher order procedure that
+takes a procedure and a number
+
+1073
+01:05:29,660 --> 01:05:32,510
+and returns for you another
+procedure that applies this
+
+1074
+01:05:32,510 --> 01:05:36,150
+procedure N times.
+
+1075
+01:05:36,150 --> 01:05:38,690
+And I think some of you have
+already written repeated as an
+
+1076
+01:05:38,690 --> 01:05:41,520
+exercise, but if you haven't,
+it's a very good exercise in
+
+1077
+01:05:41,520 --> 01:05:43,910
+thinking about higher
+order procedures.
+
+1078
+01:05:43,910 --> 01:05:46,320
+But in any case, the result of
+this repeated is what I apply
+
+1079
+01:05:46,320 --> 01:05:47,570
+to picture.
+
+1080
+01:05:47,570 --> 01:05:49,510
+
+
+1081
+01:05:49,510 --> 01:05:52,880
+And having done that, that's
+going to capture--
+
+1082
+01:05:52,880 --> 01:05:56,700
+that is the thing, the way I got
+from the idea of Beside to
+
+1083
+01:05:56,700 --> 01:06:00,760
+the idea of right-push So having
+done that, I could say
+
+1084
+01:06:00,760 --> 01:06:12,790
+define right-push to
+be push of Beside.
+
+1085
+01:06:12,790 --> 01:06:17,640
+
+
+1086
+01:06:17,640 --> 01:06:20,770
+Or if I say, define up-push to
+be push of Beside, I'd get the
+
+1087
+01:06:20,770 --> 01:06:23,480
+analogous thing or define
+corner-push to be push of some
+
+1088
+01:06:23,480 --> 01:06:25,745
+appropriate thing that did both
+the Beside and Above, or
+
+1089
+01:06:25,745 --> 01:06:28,340
+I could push anything.
+
+1090
+01:06:28,340 --> 01:06:31,660
+Anyway this is, if you're having
+trouble with lambdas,
+
+1091
+01:06:31,660 --> 01:06:33,840
+this is an excellent exercise
+in figuring
+
+1092
+01:06:33,840 --> 01:06:36,100
+out what this means.
+
+1093
+01:06:36,100 --> 01:06:42,190
+OK, well there's a lot to
+learn from this example.
+
+1094
+01:06:42,190 --> 01:06:46,040
+The main point I've been
+dwelling on is the notion of
+
+1095
+01:06:46,040 --> 01:06:50,760
+nicely embedding a language
+inside another language.
+
+1096
+01:06:50,760 --> 01:06:54,700
+Right, so that all the power of
+this language like List of
+
+1097
+01:06:54,700 --> 01:06:57,270
+the surrounding language is
+still accessible to you and
+
+1098
+01:06:57,270 --> 01:06:59,270
+appears as a natural
+extension of the
+
+1099
+01:06:59,270 --> 01:07:01,000
+language that you built.
+
+1100
+01:07:01,000 --> 01:07:06,140
+That's one thing that this
+example shows very well.
+
+1101
+01:07:06,140 --> 01:07:07,990
+OK.
+
+1102
+01:07:07,990 --> 01:07:10,960
+Another thing is, if you go
+back and think about that,
+
+1103
+01:07:10,960 --> 01:07:12,180
+what's procedures
+and what's data.
+
+1104
+01:07:12,180 --> 01:07:15,320
+You know, by the time we
+get up to here, my God,
+
+1105
+01:07:15,320 --> 01:07:16,190
+what's going on.
+
+1106
+01:07:16,190 --> 01:07:18,620
+I mean, this is some procedure,
+and it takes a
+
+1107
+01:07:18,620 --> 01:07:20,380
+picture and an argument,
+and what's a picture.
+
+1108
+01:07:20,380 --> 01:07:22,700
+Well, a picture itself, as you
+remember, was a procedure, and
+
+1109
+01:07:22,700 --> 01:07:23,630
+that took a rectangle.
+
+1110
+01:07:23,630 --> 01:07:26,090
+And a rectangle is
+some abstraction.
+
+1111
+01:07:26,090 --> 01:07:31,300
+And I hope now that by now
+you're completely lost as to
+
+1112
+01:07:31,300 --> 01:07:32,580
+the question of what
+in the system is
+
+1113
+01:07:32,580 --> 01:07:33,590
+procedure and what's data.
+
+1114
+01:07:33,590 --> 01:07:35,500
+You see, there isn't
+any difference.
+
+1115
+01:07:35,500 --> 01:07:38,020
+There really isn't.
+
+1116
+01:07:38,020 --> 01:07:39,850
+And you might think of a
+picture sometimes as a
+
+1117
+01:07:39,850 --> 01:07:42,790
+procedure and sometimes as data,
+but that's just, sort
+
+1118
+01:07:42,790 --> 01:07:44,860
+of, you know, making you
+feel comfortable.
+
+1119
+01:07:44,860 --> 01:07:48,640
+It's really both in some sense
+or neither in some sense.
+
+1120
+01:07:48,640 --> 01:07:56,370
+OK, there's a more general point
+about the structure of
+
+1121
+01:07:56,370 --> 01:08:03,510
+the system as creating a
+language, viewing the
+
+1122
+01:08:03,510 --> 01:08:08,030
+engineering design process as
+one of creating language or
+
+1123
+01:08:08,030 --> 01:08:12,730
+rather one of creating
+a sort of sequence
+
+1124
+01:08:12,730 --> 01:08:14,830
+of layers of language.
+
+1125
+01:08:14,830 --> 01:08:18,010
+You see, there's this
+methodology, or maybe I should
+
+1126
+01:08:18,010 --> 01:08:22,460
+say mythology, that's, sort
+of, charitably called
+
+1127
+01:08:22,460 --> 01:08:24,989
+software, quote, engineering.
+
+1128
+01:08:24,989 --> 01:08:27,090
+All right, and what does it say,
+it's says well, you go
+
+1129
+01:08:27,090 --> 01:08:29,140
+and you figure out your task,
+and you figure out exactly
+
+1130
+01:08:29,140 --> 01:08:30,520
+what you want to do.
+
+1131
+01:08:30,520 --> 01:08:32,080
+And once you figure out exactly
+what you want to do,
+
+1132
+01:08:32,080 --> 01:08:34,490
+you find out that it breaks out
+into three sub-tasks, and
+
+1133
+01:08:34,490 --> 01:08:36,710
+you go and you start working
+on-- and you work on this
+
+1134
+01:08:36,710 --> 01:08:38,770
+sub-task, and you figure out
+exactly what that is.
+
+1135
+01:08:38,770 --> 01:08:40,649
+And you find out that that
+breaks down into three
+
+1136
+01:08:40,649 --> 01:08:43,380
+sub-tasks, and you specify them
+completely, and you go
+
+1137
+01:08:43,380 --> 01:08:45,920
+and you work on those two, and
+you work on this sub-one, and
+
+1138
+01:08:45,920 --> 01:08:47,229
+you specify that exactly.
+
+1139
+01:08:47,229 --> 01:08:48,990
+And then finally when you're
+done, you come back way up
+
+1140
+01:08:48,990 --> 01:08:51,779
+here, and you work on your
+second sub-task, and specify
+
+1141
+01:08:51,779 --> 01:08:53,370
+that out and work it out.
+
+1142
+01:08:53,370 --> 01:08:55,490
+And then you end up with--
+
+1143
+01:08:55,490 --> 01:08:57,680
+you end up at the end with
+this beautiful edifice.
+
+1144
+01:08:57,680 --> 01:09:03,120
+Right, you end up with a
+marvelous tree, where you've
+
+1145
+01:09:03,120 --> 01:09:05,590
+broken your task into sub-tasks
+and broken each of
+
+1146
+01:09:05,590 --> 01:09:07,260
+these into sub-tasks
+and broken those
+
+1147
+01:09:07,260 --> 01:09:10,370
+into sub-tasks, right.
+
+1148
+01:09:10,370 --> 01:09:15,200
+And each of these nodes is
+exactly and precisely defined
+
+1149
+01:09:15,200 --> 01:09:17,779
+to do the wonderful, beautiful
+task to make it fit into the
+
+1150
+01:09:17,779 --> 01:09:19,180
+whole edifice, right.
+
+1151
+01:09:19,180 --> 01:09:21,080
+That's this mythology.
+
+1152
+01:09:21,080 --> 01:09:23,970
+See only a computer scientist
+could possibly believe that
+
+1153
+01:09:23,970 --> 01:09:28,220
+you build a complex system
+like that, right.
+
+1154
+01:09:28,220 --> 01:09:32,700
+Contrast that with this
+Henderson example.
+
+1155
+01:09:32,700 --> 01:09:35,319
+It didn't work like that.
+
+1156
+01:09:35,319 --> 01:09:37,359
+What happened was that
+there was a sequence
+
+1157
+01:09:37,359 --> 01:09:41,319
+of layers of language.
+
+1158
+01:09:41,319 --> 01:09:41,990
+What happened?
+
+1159
+01:09:41,990 --> 01:09:47,770
+There was a layer of a thing
+that allowed us to build
+
+1160
+01:09:47,770 --> 01:09:49,020
+primitive pictures.
+
+1161
+01:09:49,020 --> 01:09:51,569
+
+
+1162
+01:09:51,569 --> 01:09:56,440
+There's primitive pictures
+and that was a language.
+
+1163
+01:09:56,440 --> 01:09:57,530
+I didn't say much about it.
+
+1164
+01:09:57,530 --> 01:09:59,900
+We talked about how to construct
+George, but that was
+
+1165
+01:09:59,900 --> 01:10:01,950
+a language where you talked
+about vectors and line
+
+1166
+01:10:01,950 --> 01:10:06,520
+segments and points and where
+they sat in the unit square.
+
+1167
+01:10:06,520 --> 01:10:12,000
+And then on top of that,
+right, on top of that--
+
+1168
+01:10:12,000 --> 01:10:13,850
+so this is the language
+of primitive pictures.
+
+1169
+01:10:13,850 --> 01:10:17,100
+
+
+1170
+01:10:17,100 --> 01:10:19,240
+Right, talking about line
+segments in particular
+
+1171
+01:10:19,240 --> 01:10:21,620
+pictures in the unit square.
+
+1172
+01:10:21,620 --> 01:10:24,110
+On top of that was
+a whole language.
+
+1173
+01:10:24,110 --> 01:10:33,110
+There was a language of
+geometric combinators, a
+
+1174
+01:10:33,110 --> 01:10:41,340
+language of geometric positions,
+which talks about
+
+1175
+01:10:41,340 --> 01:10:48,240
+things like Above and Beside
+and right-push and Rotate.
+
+1176
+01:10:48,240 --> 01:10:53,600
+And those things, sort of,
+happened with reference to the
+
+1177
+01:10:53,600 --> 01:10:55,470
+things that are talked about
+in this language.
+
+1178
+01:10:55,470 --> 01:10:58,640
+
+
+1179
+01:10:58,640 --> 01:11:03,070
+And then if we like, we saw that
+above that there was sort
+
+1180
+01:11:03,070 --> 01:11:14,810
+of a language of schemes
+of combination.
+
+1181
+01:11:14,810 --> 01:11:21,410
+
+
+1182
+01:11:21,410 --> 01:11:25,930
+For example, push, which talked
+about repeatedly doing
+
+1183
+01:11:25,930 --> 01:11:28,540
+something over with
+a scale factor.
+
+1184
+01:11:28,540 --> 01:11:31,130
+And the things that were being
+discussed in that language
+
+1185
+01:11:31,130 --> 01:11:36,280
+were, sort of, the things
+that happened down here.
+
+1186
+01:11:36,280 --> 01:11:41,310
+So what you have is, at each
+level, the objects that are
+
+1187
+01:11:41,310 --> 01:11:46,090
+being talked about are the
+things that were erected at
+
+1188
+01:11:46,090 --> 01:11:48,270
+the previous level.
+
+1189
+01:11:48,270 --> 01:11:53,270
+What's the difference between
+this thing and this thing?
+
+1190
+01:11:53,270 --> 01:11:59,890
+The answer is that over here in
+the tree, each node, and in
+
+1191
+01:11:59,890 --> 01:12:03,610
+fact, each decomposition down
+here, is being designed to do
+
+1192
+01:12:03,610 --> 01:12:09,640
+a specific task, whereas in
+the other scheme, what you
+
+1193
+01:12:09,640 --> 01:12:13,900
+have is a full range
+of linguistic
+
+1194
+01:12:13,900 --> 01:12:15,940
+power at each level.
+
+1195
+01:12:15,940 --> 01:12:21,340
+See what's happening there, at
+any level, it's not being set
+
+1196
+01:12:21,340 --> 01:12:23,310
+up to do a particular task.
+
+1197
+01:12:23,310 --> 01:12:27,710
+It's being set up to talk about
+a whole range of things.
+
+1198
+01:12:27,710 --> 01:12:31,810
+The consequence of that for
+design is that something
+
+1199
+01:12:31,810 --> 01:12:36,620
+that's designed in that method
+is likely to be more robust,
+
+1200
+01:12:36,620 --> 01:12:40,470
+where by robust, I mean that if
+you go and make some change
+
+1201
+01:12:40,470 --> 01:12:46,820
+in your description, it's more
+likely to be captured by a
+
+1202
+01:12:46,820 --> 01:12:51,070
+corresponding change, in the
+way that the language is
+
+1203
+01:12:51,070 --> 01:12:55,460
+implemented at the next level
+up, right, because you've made
+
+1204
+01:12:55,460 --> 01:12:56,660
+these levels full.
+
+1205
+01:12:56,660 --> 01:12:59,980
+So you're not talking about a
+particular thing like Beside.
+
+1206
+01:12:59,980 --> 01:13:02,880
+You've given yourself a whole
+vocabulary to express things
+
+1207
+01:13:02,880 --> 01:13:06,540
+of that sort, so if you go and
+change your specifications a
+
+1208
+01:13:06,540 --> 01:13:09,580
+little bit, it's more likely
+that your methodology will
+
+1209
+01:13:09,580 --> 01:13:13,680
+able to adapt to capture that
+change, whereas a design like
+
+1210
+01:13:13,680 --> 01:13:15,770
+this is not going to be robust,
+because if I go and
+
+1211
+01:13:15,770 --> 01:13:18,310
+change something that's in here,
+that might affect the
+
+1212
+01:13:18,310 --> 01:13:20,840
+entire way that I decomposed
+everything down,
+
+1213
+01:13:20,840 --> 01:13:23,240
+further down the tree.
+
+1214
+01:13:23,240 --> 01:13:26,350
+Right, so very big difference
+in outlook in decomposition,
+
+1215
+01:13:26,350 --> 01:13:28,590
+levels of language
+rather than, sort
+
+1216
+01:13:28,590 --> 01:13:30,580
+of, a strict hierarchy.
+
+1217
+01:13:30,580 --> 01:13:33,750
+Not only that, but when you have
+levels of language you've
+
+1218
+01:13:33,750 --> 01:13:37,390
+given yourself a different
+vocabularies for talking about
+
+1219
+01:13:37,390 --> 01:13:38,780
+the design at different
+levels.
+
+1220
+01:13:38,780 --> 01:13:42,260
+So if we go back and look at
+George one last time, if I
+
+1221
+01:13:42,260 --> 01:13:46,610
+wanted to change this picture
+George, see suddenly I have a
+
+1222
+01:13:46,610 --> 01:13:48,800
+whole different ways of
+describing the change.
+
+1223
+01:13:48,800 --> 01:13:52,320
+Like for example, I may want to
+go to the basic primitive
+
+1224
+01:13:52,320 --> 01:13:57,640
+design and move the endpoint
+of some vector.
+
+1225
+01:13:57,640 --> 01:14:01,140
+That's a change that I would
+discuss at the lowest level.
+
+1226
+01:14:01,140 --> 01:14:03,420
+I would say the endpoint
+is somewhere else.
+
+1227
+01:14:03,420 --> 01:14:05,440
+Or I might come up and say, well
+the next thing I wanted
+
+1228
+01:14:05,440 --> 01:14:10,320
+to do, this little replicated
+element, I might want to do by
+
+1229
+01:14:10,320 --> 01:14:10,990
+something else.
+
+1230
+01:14:10,990 --> 01:14:13,740
+I might want to put a scale
+factor in that Beside.
+
+1231
+01:14:13,740 --> 01:14:17,850
+That's a change that I would
+discuss at the next level of
+
+1232
+01:14:17,850 --> 01:14:19,350
+design, the level
+of combinators.
+
+1233
+01:14:19,350 --> 01:14:22,580
+Or I might want to say, I might
+want to change the basic
+
+1234
+01:14:22,580 --> 01:14:27,510
+way that I took this pattern
+and made some recursive
+
+1235
+01:14:27,510 --> 01:14:29,400
+decomposition, maybe not
+bleeding out toward the
+
+1236
+01:14:29,400 --> 01:14:30,960
+corners or something else.
+
+1237
+01:14:30,960 --> 01:14:33,150
+That would be a change
+that I would discuss
+
+1238
+01:14:33,150 --> 01:14:34,260
+at the highest level.
+
+1239
+01:14:34,260 --> 01:14:36,700
+And because I've structured the
+system to be this way, I
+
+1240
+01:14:36,700 --> 01:14:39,120
+have all these vocabularies for
+talking about change in
+
+1241
+01:14:39,120 --> 01:14:41,580
+different ways and a lot of
+flexibility to decide which
+
+1242
+01:14:41,580 --> 01:14:42,830
+one's appropriate.
+
+1243
+01:14:42,830 --> 01:14:44,810
+
+
+1244
+01:14:44,810 --> 01:14:48,370
+OK, well that's sort of a big
+point about the difference in
+
+1245
+01:14:48,370 --> 01:14:51,470
+software methodology that comes
+out from List, and it
+
+1246
+01:14:51,470 --> 01:14:54,840
+all comes, again, out of the
+notion that really, the design
+
+1247
+01:14:54,840 --> 01:14:58,430
+process is not so much
+implementing programs as
+
+1248
+01:14:58,430 --> 01:14:59,370
+implementing languages.
+
+1249
+01:14:59,370 --> 01:15:02,870
+And that's really the powerful
+of List. OK, thank you.
+
+1250
+01:15:02,870 --> 01:15:04,480
+Let's take a break.
+
+1251
+01:15:04,480 --> 01:15:34,591
+
