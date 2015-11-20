@@ -1,0 +1,5278 @@
+1
+00:00:00,000 --> 00:00:14,550
+[MUSIC PLAYING BY J.S. BACH]
+
+2
+00:00:14,550 --> 00:00:16,320
+PROFESSOR: Hi.
+
+3
+00:00:16,320 --> 00:00:20,050
+You've seen that the job of
+a programmer is to design
+
+4
+00:00:20,050 --> 00:00:24,070
+processes that accomplish
+particular goals, such as
+
+5
+00:00:24,070 --> 00:00:27,050
+finding the square roots of
+numbers or other sorts of
+
+6
+00:00:27,050 --> 00:00:28,830
+things you might want to do.
+
+7
+00:00:28,830 --> 00:00:32,080
+We haven't introduced
+anything else yet.
+
+8
+00:00:32,080 --> 00:00:34,370
+Of course, the way in which a
+programmer does this is by
+
+9
+00:00:34,370 --> 00:00:39,440
+constructing spells, which are
+constructed out of procedures
+
+10
+00:00:39,440 --> 00:00:41,050
+and expressions.
+
+11
+00:00:41,050 --> 00:00:46,000
+And that these spells are
+somehow direct a process to
+
+12
+00:00:46,000 --> 00:00:49,190
+accomplish the goal that was
+intended by the programmer.
+
+13
+00:00:49,190 --> 00:00:51,670
+In order for the programmer to
+do this effectively, he has to
+
+14
+00:00:51,670 --> 00:00:54,330
+understand the relationship
+between the particular things
+
+15
+00:00:54,330 --> 00:00:56,830
+that he writes, these particular
+spells, and the
+
+16
+00:00:56,830 --> 00:01:01,630
+behavior of the process that
+he's attempting to control.
+
+17
+00:01:01,630 --> 00:01:03,560
+So what we're doing this
+lecture is attempt to
+
+18
+00:01:03,560 --> 00:01:07,630
+establish that connection in
+as clear a way as possible.
+
+19
+00:01:07,630 --> 00:01:10,450
+What we will particularly do is
+understand how particular
+
+20
+00:01:10,450 --> 00:01:15,300
+patterns of procedures and
+expressions cause particular
+
+21
+00:01:15,300 --> 00:01:17,230
+patterns of execution,
+particular
+
+22
+00:01:17,230 --> 00:01:19,050
+behaviors from the processes.
+
+23
+00:01:19,050 --> 00:01:22,420
+
+
+24
+00:01:22,420 --> 00:01:24,190
+Let's get down to that.
+
+25
+00:01:24,190 --> 00:01:28,240
+I'm going to start with
+a very simple program.
+
+26
+00:01:28,240 --> 00:01:29,680
+This is a program to compute
+the sum of the
+
+27
+00:01:29,680 --> 00:01:33,630
+squares of two numbers.
+
+28
+00:01:33,630 --> 00:01:45,970
+And we'll define the sum of the
+squares of x and y to be
+
+29
+00:01:45,970 --> 00:01:49,835
+the sum of the square of x--
+
+30
+00:01:49,835 --> 00:01:51,460
+I'm going to write
+it that way--
+
+31
+00:01:51,460 --> 00:02:08,690
+and the square of y where
+the square of x is the
+
+32
+00:02:08,690 --> 00:02:10,830
+product of x and x.
+
+33
+00:02:10,830 --> 00:02:14,220
+
+
+34
+00:02:14,220 --> 00:02:17,670
+Now, supposing I were to say
+something to this, like, to
+
+35
+00:02:17,670 --> 00:02:20,845
+the system after having defined
+these things, of the
+
+36
+00:02:20,845 --> 00:02:26,420
+form, the sum of the squares of
+3 and 4, I am hoping that I
+
+37
+00:02:26,420 --> 00:02:29,310
+will get out a 25.
+
+38
+00:02:29,310 --> 00:02:33,090
+Because the square of 3 is 9,
+and the square of 4 is 16, and
+
+39
+00:02:33,090 --> 00:02:34,900
+25 is the sum of those.
+
+40
+00:02:34,900 --> 00:02:36,720
+But how does that happen?
+
+41
+00:02:36,720 --> 00:02:39,730
+If we're going to understand
+processes and how we control
+
+42
+00:02:39,730 --> 00:02:43,910
+them, then we have to have a
+mapping from the mechanisms of
+
+43
+00:02:43,910 --> 00:02:49,540
+this procedure into the way in
+which these processes behave.
+
+44
+00:02:49,540 --> 00:02:52,380
+What we're going to have is
+a formal, or semi-formal,
+
+45
+00:02:52,380 --> 00:02:56,180
+mechanical model whereby you
+understand how a machine
+
+46
+00:02:56,180 --> 00:02:57,920
+could, in fact, in principle,
+do this.
+
+47
+00:02:57,920 --> 00:03:00,660
+Whether or not the actual
+machine really does what I'm
+
+48
+00:03:00,660 --> 00:03:01,860
+about to tell you is completely
+
+49
+00:03:01,860 --> 00:03:03,840
+irrelevant at this moment.
+
+50
+00:03:03,840 --> 00:03:06,290
+In fact, this is an engineering
+model in the same
+
+51
+00:03:06,290 --> 00:03:09,600
+way that, electrical resistor,
+we write down a model v equals
+
+52
+00:03:09,600 --> 00:03:12,330
+i r, it's approximately true.
+
+53
+00:03:12,330 --> 00:03:13,880
+It's not really true.
+
+54
+00:03:13,880 --> 00:03:16,860
+If I put up current through
+the resistor it goes boom.
+
+55
+00:03:16,860 --> 00:03:20,410
+So the voltage is not always
+proportional to the current,
+
+56
+00:03:20,410 --> 00:03:24,200
+but for some purposes the
+model is appropriate.
+
+57
+00:03:24,200 --> 00:03:26,640
+In particular, the model we're
+going to describe right now,
+
+58
+00:03:26,640 --> 00:03:29,770
+which I call the substitution
+model, is the simplest model
+
+59
+00:03:29,770 --> 00:03:32,700
+that we have for understanding
+how procedures work and how
+
+60
+00:03:32,700 --> 00:03:34,310
+processes work.
+
+61
+00:03:34,310 --> 00:03:36,350
+How procedures yield
+processes.
+
+62
+00:03:36,350 --> 00:03:39,150
+And that substitution model will
+be accurate for most of
+
+63
+00:03:39,150 --> 00:03:41,790
+the things we'll be dealing
+with in the next few days.
+
+64
+00:03:41,790 --> 00:03:45,240
+But eventually, it will become
+impossible to sustain the
+
+65
+00:03:45,240 --> 00:03:47,060
+illusion that that's the way the
+machine works, and we'll
+
+66
+00:03:47,060 --> 00:03:50,490
+go to other more specific and
+particular models that will
+
+67
+00:03:50,490 --> 00:03:53,590
+show more detail.
+
+68
+00:03:53,590 --> 00:03:58,200
+OK, well, the first thing, of
+course, is we say, what are
+
+69
+00:03:58,200 --> 00:03:59,170
+the things we have here?
+
+70
+00:03:59,170 --> 00:04:00,550
+We have some cryptic symbols.
+
+71
+00:04:00,550 --> 00:04:04,350
+And these cryptic symbols
+are made out of pieces.
+
+72
+00:04:04,350 --> 00:04:05,990
+There are kinds of
+expressions.
+
+73
+00:04:05,990 --> 00:04:07,410
+So let's write down
+here the kinds of
+
+74
+00:04:07,410 --> 00:04:08,660
+expressions there are.
+
+75
+00:04:08,660 --> 00:04:17,890
+
+
+76
+00:04:17,890 --> 00:04:20,295
+And we have-- and so far I
+see things like numbers.
+
+77
+00:04:20,295 --> 00:04:25,370
+
+
+78
+00:04:25,370 --> 00:04:28,030
+I see things like symbols
+like that.
+
+79
+00:04:28,030 --> 00:04:32,160
+
+
+80
+00:04:32,160 --> 00:04:35,430
+We have seen things before like
+lambda expressions, but
+
+81
+00:04:35,430 --> 00:04:36,190
+they're not here.
+
+82
+00:04:36,190 --> 00:04:37,180
+I'm going to leave them out.
+
+83
+00:04:37,180 --> 00:04:39,650
+Lambda expressions, we'll
+worry about them later.
+
+84
+00:04:39,650 --> 00:04:44,630
+
+
+85
+00:04:44,630 --> 00:04:45,880
+Things like definitions.
+
+86
+00:04:45,880 --> 00:04:51,900
+
+
+87
+00:04:51,900 --> 00:04:53,150
+Things like conditionals.
+
+88
+00:04:53,150 --> 00:04:58,410
+
+
+89
+00:04:58,410 --> 00:05:00,155
+And finally, things
+like combinations.
+
+90
+00:05:00,155 --> 00:05:07,040
+
+
+91
+00:05:07,040 --> 00:05:10,470
+These kinds of expressions
+are--
+
+92
+00:05:10,470 --> 00:05:12,880
+I'll worry about later--
+
+93
+00:05:12,880 --> 00:05:16,030
+these are special forms.
+There are particular
+
+94
+00:05:16,030 --> 00:05:17,670
+rules for each of these.
+
+95
+00:05:17,670 --> 00:05:19,950
+I'm going to tell you, however,
+the rules for doing a
+
+96
+00:05:19,950 --> 00:05:21,120
+general case.
+
+97
+00:05:21,120 --> 00:05:23,510
+How does one evaluate
+a combination?
+
+98
+00:05:23,510 --> 00:05:25,820
+Because, in fact, over here,
+all I really have are
+
+99
+00:05:25,820 --> 00:05:29,180
+combinations and some
+symbols and numbers.
+
+100
+00:05:29,180 --> 00:05:31,290
+And the simple things like
+a number, well, it
+
+101
+00:05:31,290 --> 00:05:33,370
+will evaluate to itself.
+
+102
+00:05:33,370 --> 00:05:35,180
+In the model I will
+have for you, the
+
+103
+00:05:35,180 --> 00:05:37,170
+symbols will disappear.
+
+104
+00:05:37,170 --> 00:05:40,220
+They won't be there at the time
+when you need them, when
+
+105
+00:05:40,220 --> 00:05:41,680
+you need to get at them.
+
+106
+00:05:41,680 --> 00:05:44,000
+So the only thing I really have
+to explain to you is, how
+
+107
+00:05:44,000 --> 00:05:45,250
+do we evaluate combinations?
+
+108
+00:05:45,250 --> 00:05:48,350
+
+
+109
+00:05:48,350 --> 00:05:50,340
+OK, let's see.
+
+110
+00:05:50,340 --> 00:05:54,430
+So first I want to get
+the first slide.
+
+111
+00:05:54,430 --> 00:05:58,450
+Here is the rule for evaluating
+an application.
+
+112
+00:05:58,450 --> 00:06:01,430
+
+
+113
+00:06:01,430 --> 00:06:07,030
+What we have is a rule that
+says, to evaluate a
+
+114
+00:06:07,030 --> 00:06:08,530
+combination, there are
+two parts, three
+
+115
+00:06:08,530 --> 00:06:09,740
+parts to the rule.
+
+116
+00:06:09,740 --> 00:06:12,390
+The combination has
+several parts.
+
+117
+00:06:12,390 --> 00:06:16,630
+It has operators and
+it has operands.
+
+118
+00:06:16,630 --> 00:06:20,180
+The operator returns
+into a procedure.
+
+119
+00:06:20,180 --> 00:06:22,480
+If we evaluate the operator,
+we will get a procedure.
+
+120
+00:06:22,480 --> 00:06:25,330
+And you saw, for example, how
+I'll type at the machine and
+
+121
+00:06:25,330 --> 00:06:28,880
+out came compound procedure
+something or other.
+
+122
+00:06:28,880 --> 00:06:31,940
+And the operands produce
+arguments.
+
+123
+00:06:31,940 --> 00:06:35,690
+Once we've gotten the operator
+evaluated to get a procedure,
+
+124
+00:06:35,690 --> 00:06:38,050
+and the argument is evaluated
+to get argument--
+
+125
+00:06:38,050 --> 00:06:39,550
+the operand's value
+to get arguments--
+
+126
+00:06:39,550 --> 00:06:43,320
+we apply the procedure to these
+arguments by copying the
+
+127
+00:06:43,320 --> 00:06:46,000
+body of the procedure, which
+is the expression that the
+
+128
+00:06:46,000 --> 00:06:47,800
+procedure is defined
+in terms of.
+
+129
+00:06:47,800 --> 00:06:49,500
+What is it supposed to do?
+
+130
+00:06:49,500 --> 00:06:53,060
+Substituting the argument
+supplied for the formal
+
+131
+00:06:53,060 --> 00:06:56,120
+parameters of the procedure,
+the formal parameters being
+
+132
+00:06:56,120 --> 00:06:59,100
+the names defined by the
+declaration of the procedure.
+
+133
+00:06:59,100 --> 00:07:02,700
+Then we evaluate the resulting
+new body, the body resulting
+
+134
+00:07:02,700 --> 00:07:07,350
+from copying the old body with
+the substitutions made.
+
+135
+00:07:07,350 --> 00:07:10,900
+It's a very simple rule, and
+we're going to do it very
+
+136
+00:07:10,900 --> 00:07:12,300
+formally for a little while.
+
+137
+00:07:12,300 --> 00:07:15,620
+Because for the next few
+lectures, what I want you to
+
+138
+00:07:15,620 --> 00:07:18,330
+do is to say, if I don't
+understand something, if I
+
+139
+00:07:18,330 --> 00:07:21,260
+don't understand something, be
+very mechanical and do this.
+
+140
+00:07:21,260 --> 00:07:23,890
+
+
+141
+00:07:23,890 --> 00:07:26,360
+So let's see.
+
+142
+00:07:26,360 --> 00:07:28,590
+Let's consider a particular
+evaluation, the one we were
+
+143
+00:07:28,590 --> 00:07:29,550
+talking about before.
+
+144
+00:07:29,550 --> 00:07:33,330
+The sum of the squares
+of 3 and 4.
+
+145
+00:07:33,330 --> 00:07:35,900
+
+
+146
+00:07:35,900 --> 00:07:37,010
+What does that mean?
+
+147
+00:07:37,010 --> 00:07:38,600
+It says, take--
+
+148
+00:07:38,600 --> 00:07:41,470
+well, I could find out what's
+on the square-- it's some
+
+149
+00:07:41,470 --> 00:07:43,500
+procedure, and I'm not going
+to worry about the
+
+150
+00:07:43,500 --> 00:07:44,870
+representation, and I'm not
+going to write it on the
+
+151
+00:07:44,870 --> 00:07:46,800
+blackboard for you.
+
+152
+00:07:46,800 --> 00:07:50,650
+And I have that 3 represents
+some number, but if I have to
+
+153
+00:07:50,650 --> 00:07:52,690
+repeat that number, I can't
+tell you the number.
+
+154
+00:07:52,690 --> 00:07:54,580
+The number itself is some
+abstract thing.
+
+155
+00:07:54,580 --> 00:07:56,670
+There's a numeral which
+represents it, which I'll call
+
+156
+00:07:56,670 --> 00:07:59,680
+3, and I'll use that
+in my substitution.
+
+157
+00:07:59,680 --> 00:08:01,880
+And 4 is also a number.
+
+158
+00:08:01,880 --> 00:08:07,420
+I'm going to substitute 3 for
+x and 4 for y in the body of
+
+159
+00:08:07,420 --> 00:08:09,540
+this procedure that
+you see over here.
+
+160
+00:08:09,540 --> 00:08:11,560
+Here's the body of
+the procedure.
+
+161
+00:08:11,560 --> 00:08:13,300
+It corresponds to this
+
+162
+00:08:13,300 --> 00:08:14,860
+combination, which is an addition.
+
+163
+00:08:14,860 --> 00:08:17,500
+
+
+164
+00:08:17,500 --> 00:08:21,210
+So what that reduces to, as a
+reduction step, we call it, is
+
+165
+00:08:21,210 --> 00:08:30,450
+the sum of the square of
+3 and the square of 4.
+
+166
+00:08:30,450 --> 00:08:34,200
+Now, what's the next step
+I have to do here?
+
+167
+00:08:34,200 --> 00:08:36,100
+I say, well, I have
+to evaluate this.
+
+168
+00:08:36,100 --> 00:08:40,299
+According to my rule, which you
+just saw on that overhead
+
+169
+00:08:40,299 --> 00:08:44,430
+or slide, what we had
+was that we have to
+
+170
+00:08:44,430 --> 00:08:46,260
+evaluate the operands--
+
+171
+00:08:46,260 --> 00:08:48,220
+and here are the operands,
+here's one and
+
+172
+00:08:48,220 --> 00:08:49,120
+here's the next operand--
+
+173
+00:08:49,120 --> 00:08:51,060
+and how we have to evaluate
+procedure.
+
+174
+00:08:51,060 --> 00:08:52,830
+The order doesn't matter.
+
+175
+00:08:52,830 --> 00:08:56,810
+And then we're going to apply
+the procedure, which is plus,
+
+176
+00:08:56,810 --> 00:08:59,830
+and magically somehow that's
+going to produce the answer.
+
+177
+00:08:59,830 --> 00:09:02,500
+I'm not to open up plus
+and look inside of it.
+
+178
+00:09:02,500 --> 00:09:05,380
+However, in order to evaluate
+the operand, let's pick some
+
+179
+00:09:05,380 --> 00:09:06,780
+arbitrary order and do them.
+
+180
+00:09:06,780 --> 00:09:08,540
+I'm going to go from
+right to left.
+
+181
+00:09:08,540 --> 00:09:10,530
+Well, in order to evaluate
+this operand, I have to
+
+182
+00:09:10,530 --> 00:09:14,350
+evaluate the parts of
+it by the same rule.
+
+183
+00:09:14,350 --> 00:09:16,260
+And the parts are I have to find
+out what square is-- it's
+
+184
+00:09:16,260 --> 00:09:19,580
+some procedure, which has
+a formal parameter x.
+
+185
+00:09:19,580 --> 00:09:25,510
+And also, I have an operand
+which is 4, which I have to
+
+186
+00:09:25,510 --> 00:09:28,710
+substitute for x in the
+body of square.
+
+187
+00:09:28,710 --> 00:09:32,170
+So the next step is basically to
+say that this is the sum of
+
+188
+00:09:32,170 --> 00:09:40,990
+the square of 3 and the
+product of 4 and 4.
+
+189
+00:09:40,990 --> 00:09:44,460
+Of course, I could open up
+asterisk if I liked--
+
+190
+00:09:44,460 --> 00:09:46,920
+the multiplication operation--
+
+191
+00:09:46,920 --> 00:09:47,900
+but I'm not going to do that.
+
+192
+00:09:47,900 --> 00:09:50,610
+I'm going to consider
+that primitive.
+
+193
+00:09:50,610 --> 00:09:53,320
+And, of course, at any level of
+detail, if you look inside
+
+194
+00:09:53,320 --> 00:09:55,540
+this machine, you're going to
+find that there's multiple
+
+195
+00:09:55,540 --> 00:09:58,250
+levels below that that
+you don't know about.
+
+196
+00:09:58,250 --> 00:09:59,620
+But one of the things we
+have to learn how to
+
+197
+00:09:59,620 --> 00:10:02,520
+do is ignore details.
+
+198
+00:10:02,520 --> 00:10:04,960
+The key to understanding
+complicated things is to know
+
+199
+00:10:04,960 --> 00:10:07,710
+what not to look at and
+what not compute
+
+200
+00:10:07,710 --> 00:10:09,500
+and what not to think.
+
+201
+00:10:09,500 --> 00:10:12,380
+So we're going to stop this
+one here and say, oh, yes,
+
+202
+00:10:12,380 --> 00:10:14,510
+this is the product
+of two things.
+
+203
+00:10:14,510 --> 00:10:15,930
+We're going to do it now.
+
+204
+00:10:15,930 --> 00:10:19,220
+So this is nothing more
+than the sum of the
+
+205
+00:10:19,220 --> 00:10:23,340
+square of 3 and 16.
+
+206
+00:10:23,340 --> 00:10:27,910
+And now I have another thing I
+have to evaluate, but that
+
+207
+00:10:27,910 --> 00:10:29,430
+square of 3, well, it's
+the same thing.
+
+208
+00:10:29,430 --> 00:10:36,910
+That's the sum of the product
+of 3 and 3 and 16, which is
+
+209
+00:10:36,910 --> 00:10:44,830
+the sum of 9 and 16,
+which is 25.
+
+210
+00:10:44,830 --> 00:10:49,366
+So now you see the basic method
+of doing substitutions.
+
+211
+00:10:49,366 --> 00:10:54,980
+And I warn you that this is not
+a perfect description of
+
+212
+00:10:54,980 --> 00:10:57,200
+what the computer does.
+
+213
+00:10:57,200 --> 00:11:00,800
+But it's a good enough
+description for the problems
+
+214
+00:11:00,800 --> 00:11:03,090
+that we're going to have in the
+next few lectures that you
+
+215
+00:11:03,090 --> 00:11:05,220
+should think about
+this religiously.
+
+216
+00:11:05,220 --> 00:11:07,880
+And this is how the machine
+works for now.
+
+217
+00:11:07,880 --> 00:11:09,130
+Later we'll get more detailed.
+
+218
+00:11:09,130 --> 00:11:12,090
+
+
+219
+00:11:12,090 --> 00:11:14,500
+Now, of course, I made a
+specific choice of the order
+
+220
+00:11:14,500 --> 00:11:15,780
+of evaluation here.
+
+221
+00:11:15,780 --> 00:11:17,180
+There are other possibilities.
+
+222
+00:11:17,180 --> 00:11:21,360
+If we go back to the telestrator
+here and look at
+
+223
+00:11:21,360 --> 00:11:25,130
+the substitution rule, we see
+that I evaluated the operator
+
+224
+00:11:25,130 --> 00:11:27,910
+to get the procedures, and I
+evaluated the operands to get
+
+225
+00:11:27,910 --> 00:11:31,110
+the arguments first, before
+I do the application.
+
+226
+00:11:31,110 --> 00:11:33,320
+It's entirely possible, and
+there are alternate rules
+
+227
+00:11:33,320 --> 00:11:36,570
+called normal order evaluation
+whereby you can do the
+
+228
+00:11:36,570 --> 00:11:41,150
+substitution of the expressions
+which are the
+
+229
+00:11:41,150 --> 00:11:44,580
+operands for the formal
+parameters inside the body
+
+230
+00:11:44,580 --> 00:11:48,880
+first. And you'll get also
+the same answer.
+
+231
+00:11:48,880 --> 00:11:50,970
+But right now, for concreteness,
+and because this
+
+232
+00:11:50,970 --> 00:11:53,780
+is the way our machine really
+does it, I'm going to give you
+
+233
+00:11:53,780 --> 00:11:56,510
+this rule, which has
+a particular order.
+
+234
+00:11:56,510 --> 00:11:58,440
+But that order is to some
+extent arbitrary, too.
+
+235
+00:11:58,440 --> 00:12:01,110
+
+
+236
+00:12:01,110 --> 00:12:03,110
+In the long run, there are some
+reasons why you might
+
+237
+00:12:03,110 --> 00:12:04,920
+pick one order or another,
+and we'll get to that
+
+238
+00:12:04,920 --> 00:12:06,170
+later in the subject.
+
+239
+00:12:06,170 --> 00:12:12,320
+
+
+240
+00:12:12,320 --> 00:12:15,500
+OK, well now the only other
+thing I have to tell you about
+
+241
+00:12:15,500 --> 00:12:17,530
+just to understand what's going
+on is let's look at the
+
+242
+00:12:17,530 --> 00:12:19,840
+rule for conditionals.
+
+243
+00:12:19,840 --> 00:12:27,200
+Conditionals are very simple,
+and I'd like to examine this.
+
+244
+00:12:27,200 --> 00:12:32,490
+A conditional is something
+that is if-- there's also
+
+245
+00:12:32,490 --> 00:12:33,720
+cond, of course--
+
+246
+00:12:33,720 --> 00:12:35,980
+but I'm going to give names to
+the parts of the expression.
+
+247
+00:12:35,980 --> 00:12:39,340
+There's a predicate, which
+is a thing that is
+
+248
+00:12:39,340 --> 00:12:40,900
+either true or false.
+
+249
+00:12:40,900 --> 00:12:46,920
+And there's a consequent, which
+is the thing you do if
+
+250
+00:12:46,920 --> 00:12:48,370
+the predicate is true.
+
+251
+00:12:48,370 --> 00:12:53,970
+And there's an alternative,
+which is the thing you do if
+
+252
+00:12:53,970 --> 00:12:55,470
+the predicate is false.
+
+253
+00:12:55,470 --> 00:13:00,202
+It's important, by the way, to
+get names for, to get names
+
+254
+00:13:00,202 --> 00:13:03,810
+for, the parts of things, or
+the parts of expressions.
+
+255
+00:13:03,810 --> 00:13:06,410
+One of the things that every
+sorcerer will tell you is if
+
+256
+00:13:06,410 --> 00:13:10,350
+you have the name of a spirit,
+you have power over it.
+
+257
+00:13:10,350 --> 00:13:12,320
+So you have to learn these names
+so that we can discuss
+
+258
+00:13:12,320 --> 00:13:13,790
+these things.
+
+259
+00:13:13,790 --> 00:13:16,570
+So here we have a predicate,
+a consequent, and an
+
+260
+00:13:16,570 --> 00:13:17,860
+alternative.
+
+261
+00:13:17,860 --> 00:13:21,830
+And, using such words, we see
+that an if expression, the
+
+262
+00:13:21,830 --> 00:13:25,160
+problems you evaluate to the
+predicate expression, if that
+
+263
+00:13:25,160 --> 00:13:29,630
+yields true, then you then go on
+to evaluate the consequent.
+
+264
+00:13:29,630 --> 00:13:31,975
+Otherwise, you evaluate the
+alternative expression.
+
+265
+00:13:31,975 --> 00:13:34,880
+
+
+266
+00:13:34,880 --> 00:13:39,290
+So I'd like to illustrate that
+now in the context of a
+
+267
+00:13:39,290 --> 00:13:43,600
+particular little program.
+
+268
+00:13:43,600 --> 00:13:44,620
+Going to write down a
+program which we're
+
+269
+00:13:44,620 --> 00:13:45,870
+going to see many times.
+
+270
+00:13:45,870 --> 00:13:51,770
+
+
+271
+00:13:51,770 --> 00:13:58,380
+This is the sum of x and y done
+by what's called Peano
+
+272
+00:13:58,380 --> 00:14:00,140
+arithmetic, which is all we're
+doing is incrementing and
+
+273
+00:14:00,140 --> 00:14:01,510
+decrementing.
+
+274
+00:14:01,510 --> 00:14:03,070
+And we're going to see this
+for a little bit.
+
+275
+00:14:03,070 --> 00:14:06,240
+It's a very important program.
+
+276
+00:14:06,240 --> 00:14:12,190
+If x equals o, then
+the result is y.
+
+277
+00:14:12,190 --> 00:14:17,980
+Otherwise, this is the sum of
+the decrement of x and the
+
+278
+00:14:17,980 --> 00:14:20,590
+increment of y.
+
+279
+00:14:20,590 --> 00:14:23,720
+
+
+280
+00:14:23,720 --> 00:14:28,000
+We're going to look at this
+a lot more in the future.
+
+281
+00:14:28,000 --> 00:14:29,360
+Let's look at the overhead.
+
+282
+00:14:29,360 --> 00:14:31,830
+So here we have this procedure,
+and we're going to
+
+283
+00:14:31,830 --> 00:14:33,930
+look at how we do the
+substitutions, the sequence of
+
+284
+00:14:33,930 --> 00:14:36,110
+substitutions.
+
+285
+00:14:36,110 --> 00:14:38,370
+Well, I'm going to try and
+add together 3 and 4.
+
+286
+00:14:38,370 --> 00:14:40,950
+Well, using the first rule
+that I showed you, we
+
+287
+00:14:40,950 --> 00:14:44,840
+substitute 3 for x and
+4 four y in the
+
+288
+00:14:44,840 --> 00:14:45,980
+body of this procedure.
+
+289
+00:14:45,980 --> 00:14:49,000
+The body of the procedure is the
+thing that begins with if
+
+290
+00:14:49,000 --> 00:14:51,410
+and finishes over here.
+
+291
+00:14:51,410 --> 00:14:54,025
+So what we get is, of course,
+if 3 is 0, then
+
+292
+00:14:54,025 --> 00:14:56,010
+the result is 4.
+
+293
+00:14:56,010 --> 00:14:58,960
+Otherwise, it's the sum of the
+decrement of 3 and the
+
+294
+00:14:58,960 --> 00:15:01,360
+increment of 4.
+
+295
+00:15:01,360 --> 00:15:03,320
+But I'm not going to worry
+about these yet
+
+296
+00:15:03,320 --> 00:15:05,610
+because 3 is not 0.
+
+297
+00:15:05,610 --> 00:15:08,310
+So the answer is not 4.
+
+298
+00:15:08,310 --> 00:15:12,250
+Therefore, this if reduces
+to an evaluation of the
+
+299
+00:15:12,250 --> 00:15:14,550
+expression, the sum to the
+decrement of 3 and the
+
+300
+00:15:14,550 --> 00:15:16,860
+increment of 4.
+
+301
+00:15:16,860 --> 00:15:19,540
+Continuing with my evaluation,
+the increment I presume to be
+
+302
+00:15:19,540 --> 00:15:23,010
+primitive, and so
+I get a 5 there.
+
+303
+00:15:23,010 --> 00:15:26,090
+OK, and then the decrement is
+also primitive, and I get a 2.
+
+304
+00:15:26,090 --> 00:15:28,560
+And so I change the problem
+into a simpler problem.
+
+305
+00:15:28,560 --> 00:15:33,480
+Instead of adding 3 to
+4, I'm adding 2 to 5.
+
+306
+00:15:33,480 --> 00:15:35,380
+The reason why this is a simpler
+problem is because I'm
+
+307
+00:15:35,380 --> 00:15:40,540
+counting down on x, and
+eventually, then, x will be 0.
+
+308
+00:15:40,540 --> 00:15:43,480
+
+
+309
+00:15:43,480 --> 00:15:46,090
+So, so much for the
+substitution rule.
+
+310
+00:15:46,090 --> 00:15:49,240
+In general, I'm not going to
+write down intermediate steps
+
+311
+00:15:49,240 --> 00:15:52,160
+when using substitutions having
+to do with ifs, because
+
+312
+00:15:52,160 --> 00:15:55,520
+they just expand things
+to become complicated.
+
+313
+00:15:55,520 --> 00:15:58,160
+What we will be doing is saying,
+oh, yes, the sum of 3
+
+314
+00:15:58,160 --> 00:16:02,463
+and 4 results in the sum of 2
+and 5 and reduces to the sum
+
+315
+00:16:02,463 --> 00:16:07,100
+of 2 and 5, which, in fact,
+reduces to the sum of 1 and 6,
+
+316
+00:16:07,100 --> 00:16:11,410
+which reduces to the sum of
+0 and 7 over here, which
+
+317
+00:16:11,410 --> 00:16:14,130
+reduces to a 7.
+
+318
+00:16:14,130 --> 00:16:16,550
+That's what we're going
+to be seeing.
+
+319
+00:16:16,550 --> 00:16:20,600
+Are there any questions for
+the first segment yet?
+
+320
+00:16:20,600 --> 00:16:21,942
+Yes?
+
+321
+00:16:21,942 --> 00:16:24,858
+STUDENT: You're using 1
+plus and minus 1 plus.
+
+322
+00:16:24,858 --> 00:16:25,830
+Are those primitive
+operations?
+
+323
+00:16:25,830 --> 00:16:26,810
+PROFESSOR: Yes.
+
+324
+00:16:26,810 --> 00:16:29,370
+One of the things you're going
+to be seeing in this subject
+
+325
+00:16:29,370 --> 00:16:33,360
+is I'm going to, without
+thinking about it, introduce
+
+326
+00:16:33,360 --> 00:16:36,180
+more and more primitive
+operations.
+
+327
+00:16:36,180 --> 00:16:38,400
+There's presumably some large
+library of primitive
+
+328
+00:16:38,400 --> 00:16:39,830
+operations somewhere.
+
+329
+00:16:39,830 --> 00:16:41,620
+But it doesn't matter that
+they're primitive--
+
+330
+00:16:41,620 --> 00:16:43,860
+there may be some manual
+that lists them all.
+
+331
+00:16:43,860 --> 00:16:45,900
+If I tell you what they do,
+you say, oh, yes, I
+
+332
+00:16:45,900 --> 00:16:46,960
+know what they do.
+
+333
+00:16:46,960 --> 00:16:49,070
+So one of them is the
+decrementor--
+
+334
+00:16:49,070 --> 00:16:50,960
+minus 1 plus-- and the
+other operation is
+
+335
+00:16:50,960 --> 00:16:53,310
+increment, which is 1 plus.
+
+336
+00:16:53,310 --> 00:16:53,840
+Thank you.
+
+337
+00:16:53,840 --> 00:16:55,662
+That's the end of the
+first segment.
+
+338
+00:16:55,662 --> 00:17:19,230
+[MUSIC PLAYING BY J.S. BACH]
+
+339
+00:17:19,230 --> 00:17:22,079
+PROFESSOR: Now that we have a
+reasonably mechanical way of
+
+340
+00:17:22,079 --> 00:17:28,349
+understanding how a program
+made out of procedures and
+
+341
+00:17:28,349 --> 00:17:32,390
+expressions evolves a process,
+I'd like to develop some
+
+342
+00:17:32,390 --> 00:17:36,920
+intuition about how particular
+programs evolve particular
+
+343
+00:17:36,920 --> 00:17:39,930
+processes, what the shapes of
+programs have to be in order
+
+344
+00:17:39,930 --> 00:17:42,940
+to get particular shaped
+processes.
+
+345
+00:17:42,940 --> 00:17:47,110
+This is a question about,
+really, pre-visualizing.
+
+346
+00:17:47,110 --> 00:17:49,230
+That's a word from
+photography.
+
+347
+00:17:49,230 --> 00:17:53,140
+I used to be interested in
+photography a lot, and one of
+
+348
+00:17:53,140 --> 00:17:55,140
+the things you discover when
+you start trying to learn
+
+349
+00:17:55,140 --> 00:17:57,330
+about photography is that you
+say, gee, I'd like to be a
+
+350
+00:17:57,330 --> 00:17:58,910
+creative photographer.
+
+351
+00:17:58,910 --> 00:18:01,820
+Now, I know the rules, I push
+buttons, and I adjust the
+
+352
+00:18:01,820 --> 00:18:03,430
+aperture and things like that.
+
+353
+00:18:03,430 --> 00:18:06,710
+But the key to being a creative
+person, partly, is to
+
+354
+00:18:06,710 --> 00:18:09,595
+be able to do analysis
+at some level.
+
+355
+00:18:09,595 --> 00:18:13,880
+To say, how do I know what it
+is that I'm going to get on
+
+356
+00:18:13,880 --> 00:18:17,170
+the film before I
+push the button.
+
+357
+00:18:17,170 --> 00:18:23,060
+Can I imagine in my mind the
+resulting image very precisely
+
+358
+00:18:23,060 --> 00:18:28,300
+and clearly as a consequence of
+the particular framing, of
+
+359
+00:18:28,300 --> 00:18:32,620
+the aperture I choose, of the
+focus, and things like that?
+
+360
+00:18:32,620 --> 00:18:35,755
+That's part of the art of doing
+this sort of thing.
+
+361
+00:18:35,755 --> 00:18:39,230
+And learning a lot
+of that involves
+
+362
+00:18:39,230 --> 00:18:40,970
+things like test strips.
+
+363
+00:18:40,970 --> 00:18:44,950
+You take very simple images that
+have varying degrees of
+
+364
+00:18:44,950 --> 00:18:47,870
+density in them, for example,
+and examine what those look
+
+365
+00:18:47,870 --> 00:18:51,630
+like on a piece of paper when
+you print them out.
+
+366
+00:18:51,630 --> 00:18:54,270
+You find out what is the range
+of contrasts that you can
+
+367
+00:18:54,270 --> 00:18:55,850
+actually see.
+
+368
+00:18:55,850 --> 00:18:58,650
+And what, in a real scene,
+would correspond to the
+
+369
+00:18:58,650 --> 00:19:02,790
+various levels and zones
+that you have of
+
+370
+00:19:02,790 --> 00:19:05,440
+density in an image.
+
+371
+00:19:05,440 --> 00:19:08,410
+Well, today I want to look at
+some very particular test
+
+372
+00:19:08,410 --> 00:19:12,000
+strips, and I suppose one of
+them I see here is up on the
+
+373
+00:19:12,000 --> 00:19:14,880
+telestrator, so we should
+switch to that.
+
+374
+00:19:14,880 --> 00:19:19,350
+There's a very important, very
+important pair of programs for
+
+375
+00:19:19,350 --> 00:19:24,500
+understanding what's going on in
+the evolution of a process
+
+376
+00:19:24,500 --> 00:19:27,320
+by the execution of a program.
+
+377
+00:19:27,320 --> 00:19:29,090
+What we have here are
+two procedures
+
+378
+00:19:29,090 --> 00:19:30,340
+that are almost identical.
+
+379
+00:19:30,340 --> 00:19:32,820
+
+
+380
+00:19:32,820 --> 00:19:35,440
+Almost no difference between
+them at all.
+
+381
+00:19:35,440 --> 00:19:38,860
+It's a few characters that
+distinguish them.
+
+382
+00:19:38,860 --> 00:19:42,140
+These are two ways of adding
+numbers together.
+
+383
+00:19:42,140 --> 00:19:48,660
+The first one, which you see
+here, the first one is the sum
+
+384
+00:19:48,660 --> 00:19:50,880
+of two numbers-- just
+what we did before--
+
+385
+00:19:50,880 --> 00:19:52,580
+is, if the first one is
+0, it's the answer
+
+386
+00:19:52,580 --> 00:19:53,600
+of the second one.
+
+387
+00:19:53,600 --> 00:19:56,480
+Otherwise, it's the sum of the
+decrement of the first and the
+
+388
+00:19:56,480 --> 00:19:57,960
+increment of the second.
+
+389
+00:19:57,960 --> 00:20:04,480
+And you may think of that
+as having two piles.
+
+390
+00:20:04,480 --> 00:20:06,280
+And the way I'm adding these
+numbers together to make a
+
+391
+00:20:06,280 --> 00:20:10,560
+third pile is by moving marbles
+from one to the other.
+
+392
+00:20:10,560 --> 00:20:11,640
+Nothing more than that.
+
+393
+00:20:11,640 --> 00:20:13,520
+And eventually, when I run
+out of one, then the
+
+394
+00:20:13,520 --> 00:20:15,650
+other is the sum.
+
+395
+00:20:15,650 --> 00:20:20,690
+However, the second procedure
+here doesn't do it that way.
+
+396
+00:20:20,690 --> 00:20:22,960
+It says if the first number
+is 0, then the
+
+397
+00:20:22,960 --> 00:20:24,330
+answer is the second.
+
+398
+00:20:24,330 --> 00:20:28,550
+Otherwise, it's the increment of
+the sum of the decrement of
+
+399
+00:20:28,550 --> 00:20:31,360
+the first number
+and the second.
+
+400
+00:20:31,360 --> 00:20:35,930
+So what this says is add
+together the decrement of the
+
+401
+00:20:35,930 --> 00:20:38,870
+first number and the second-- a
+simpler problem, no doubt--
+
+402
+00:20:38,870 --> 00:20:43,190
+and then change that result
+to increment it.
+
+403
+00:20:43,190 --> 00:20:45,900
+And so this means that if you
+think about this in terms of
+
+404
+00:20:45,900 --> 00:20:49,320
+piles, it means I'm holding
+in my hand the
+
+405
+00:20:49,320 --> 00:20:52,120
+things to be added later.
+
+406
+00:20:52,120 --> 00:20:53,990
+And then I'm going
+to add them in.
+
+407
+00:20:53,990 --> 00:20:57,710
+As I slowly decrease one pile
+to 0, I've got what's left
+
+408
+00:20:57,710 --> 00:21:00,330
+here, and then I'm going
+to add them back.
+
+409
+00:21:00,330 --> 00:21:02,360
+Two different ways of adding.
+
+410
+00:21:02,360 --> 00:21:05,270
+The nice thing about these two
+programs is that they're
+
+411
+00:21:05,270 --> 00:21:06,580
+almost identical.
+
+412
+00:21:06,580 --> 00:21:09,530
+The only thing is where
+I put the increment.
+
+413
+00:21:09,530 --> 00:21:11,860
+A couple of characters
+moved around.
+
+414
+00:21:11,860 --> 00:21:15,370
+Now I want to understand the
+kind of behavior we're going
+
+415
+00:21:15,370 --> 00:21:18,200
+to get from each of these
+programs. Just to get them
+
+416
+00:21:18,200 --> 00:21:19,670
+firmly in your mind--
+
+417
+00:21:19,670 --> 00:21:22,120
+I usually don't want to
+be this careful--
+
+418
+00:21:22,120 --> 00:21:24,490
+but just to get them firmly in
+your mind, I'm going to write
+
+419
+00:21:24,490 --> 00:21:26,155
+the programs again on the
+blackboard, and then I'm going
+
+420
+00:21:26,155 --> 00:21:28,150
+to evolve a process.
+
+421
+00:21:28,150 --> 00:21:29,350
+And you're going to
+see what happens.
+
+422
+00:21:29,350 --> 00:21:31,910
+We're going to look at the
+shape of the process as a
+
+423
+00:21:31,910 --> 00:21:34,390
+consequence of the program.
+
+424
+00:21:34,390 --> 00:21:44,170
+So the program we started with
+is this: the sum of x and y
+
+425
+00:21:44,170 --> 00:21:51,160
+says if x is 0, then
+the result is y.
+
+426
+00:21:51,160 --> 00:21:56,090
+Otherwise, it's the sum of the
+decrement of x and the
+
+427
+00:21:56,090 --> 00:21:58,630
+increment of y.
+
+428
+00:21:58,630 --> 00:22:01,740
+
+
+429
+00:22:01,740 --> 00:22:07,080
+Now, supposing we wish to do
+this addition of 3 and 4, the
+
+430
+00:22:07,080 --> 00:22:10,900
+sum of 3 and 4, well,
+what is that?
+
+431
+00:22:10,900 --> 00:22:14,580
+It says that I have to
+substitute the arguments for
+
+432
+00:22:14,580 --> 00:22:17,750
+the formal parameters
+in the body.
+
+433
+00:22:17,750 --> 00:22:19,940
+I'm doing that in my mind.
+
+434
+00:22:19,940 --> 00:22:22,830
+And I say, oh, yes, 3 is
+substituted for x, but 3 is
+
+435
+00:22:22,830 --> 00:22:28,650
+not 0, so I'm going to go
+directly to this part and
+
+436
+00:22:28,650 --> 00:22:30,710
+write down the simplified
+consequent here.
+
+437
+00:22:30,710 --> 00:22:33,420
+Because I'm really interested
+in the behavior of addition.
+
+438
+00:22:33,420 --> 00:22:34,400
+Well, what is that?
+
+439
+00:22:34,400 --> 00:22:38,460
+That therefore turns into
+the sum of 2 and 5.
+
+440
+00:22:38,460 --> 00:22:41,750
+In other words, I've reduced
+this problem to this problem.
+
+441
+00:22:41,750 --> 00:22:48,450
+Then I reduce this problem to
+the sum of 1 and 6, and then,
+
+442
+00:22:48,450 --> 00:22:53,390
+going around again once, I
+get the sum of 0 and 7.
+
+443
+00:22:53,390 --> 00:22:57,110
+And that's one where x equals 0
+so the result is y, and so I
+
+444
+00:22:57,110 --> 00:23:00,260
+write down here a 7.
+
+445
+00:23:00,260 --> 00:23:03,790
+So this is the behavior of the
+process evolved by trying to
+
+446
+00:23:03,790 --> 00:23:07,410
+add together 3 and 4
+with this program.
+
+447
+00:23:07,410 --> 00:23:20,060
+For the other program, which
+is over here, I will define
+
+448
+00:23:20,060 --> 00:23:23,376
+the sum of x and y.
+
+449
+00:23:23,376 --> 00:23:24,626
+And what is it?
+
+450
+00:23:24,626 --> 00:23:27,260
+
+
+451
+00:23:27,260 --> 00:23:32,100
+If x is 0, then the result
+is y-- almost the same--
+
+452
+00:23:32,100 --> 00:23:36,200
+otherwise the increment
+of the sum of the
+
+453
+00:23:36,200 --> 00:23:40,550
+decrement of x and y.
+
+454
+00:23:40,550 --> 00:23:47,770
+
+
+455
+00:23:47,770 --> 00:23:49,020
+No.
+
+456
+00:23:49,020 --> 00:23:53,330
+
+
+457
+00:23:53,330 --> 00:23:56,490
+I don't have my balancer
+in front of me.
+
+458
+00:23:56,490 --> 00:23:59,060
+OK, well, let's do it now.
+
+459
+00:23:59,060 --> 00:24:01,560
+The sum of 3 and 4.
+
+460
+00:24:01,560 --> 00:24:03,660
+Well, this is actually a little
+more interesting.
+
+461
+00:24:03,660 --> 00:24:07,930
+Of course, 3 is not 0 as before,
+so that results in the
+
+462
+00:24:07,930 --> 00:24:14,240
+increment of the sum of the
+decrement of x, which is 2 and
+
+463
+00:24:14,240 --> 00:24:23,240
+4, which is the increment
+of the sum of 1 and--
+
+464
+00:24:23,240 --> 00:24:26,000
+whoops: the increment
+of the increment.
+
+465
+00:24:26,000 --> 00:24:30,040
+What I have to do now is compute
+what this means.
+
+466
+00:24:30,040 --> 00:24:31,310
+I have to evaluate this.
+
+467
+00:24:31,310 --> 00:24:33,530
+Or what that is, the result
+of substituting 2 and
+
+468
+00:24:33,530 --> 00:24:35,690
+4 for x and y here.
+
+469
+00:24:35,690 --> 00:24:44,810
+But that is the increment of the
+sum of 1 and 4, which is--
+
+470
+00:24:44,810 --> 00:24:47,820
+well, now I have
+to expand this.
+
+471
+00:24:47,820 --> 00:24:52,520
+Ah, but that's the increment
+of the increment of the
+
+472
+00:24:52,520 --> 00:24:56,520
+increment of the
+sum of 0 and 4.
+
+473
+00:24:56,520 --> 00:25:00,050
+
+
+474
+00:25:00,050 --> 00:25:03,190
+Ah, but now I'm beginning
+to find things I can do.
+
+475
+00:25:03,190 --> 00:25:07,430
+The increment of the increment
+of the increment of-- well,
+
+476
+00:25:07,430 --> 00:25:08,850
+the sum of 0 and 4 is 4.
+
+477
+00:25:08,850 --> 00:25:12,430
+
+
+478
+00:25:12,430 --> 00:25:14,235
+The increment of 4 is 5.
+
+479
+00:25:14,235 --> 00:25:20,880
+So this is the increment of the
+increment of 5, which is
+
+480
+00:25:20,880 --> 00:25:26,112
+the increment of
+6, which is 7.
+
+481
+00:25:26,112 --> 00:25:29,960
+Two different ways of
+computing sums.
+
+482
+00:25:29,960 --> 00:25:31,430
+Now, let's see.
+
+483
+00:25:31,430 --> 00:25:34,250
+These processes have very
+different shapes.
+
+484
+00:25:34,250 --> 00:25:36,760
+I want you to feel
+these shapes.
+
+485
+00:25:36,760 --> 00:25:40,740
+It's the feeling for the
+shapes that matters.
+
+486
+00:25:40,740 --> 00:25:43,000
+What's some things we
+can see about this?
+
+487
+00:25:43,000 --> 00:25:45,650
+Well, somehow this is
+sort of straight.
+
+488
+00:25:45,650 --> 00:25:47,750
+It goes this way-- straight.
+
+489
+00:25:47,750 --> 00:25:54,130
+This right edge doesn't vary
+particularly in size.
+
+490
+00:25:54,130 --> 00:25:57,610
+Whereas this one, I see that
+this thing gets bigger and
+
+491
+00:25:57,610 --> 00:25:58,860
+then it gets smaller.
+
+492
+00:25:58,860 --> 00:26:01,240
+
+
+493
+00:26:01,240 --> 00:26:03,110
+So I don't know what
+that means yet,
+
+494
+00:26:03,110 --> 00:26:04,080
+but what are we seeing?
+
+495
+00:26:04,080 --> 00:26:09,170
+We're seeing here that somehow
+these increments are expanding
+
+496
+00:26:09,170 --> 00:26:13,070
+out and then contracting back.
+
+497
+00:26:13,070 --> 00:26:16,470
+I'm building up a bunch
+of them to do later.
+
+498
+00:26:16,470 --> 00:26:18,960
+I can't do them now.
+
+499
+00:26:18,960 --> 00:26:21,770
+There's things to be deferred.
+
+500
+00:26:21,770 --> 00:26:23,000
+Well, let's see.
+
+501
+00:26:23,000 --> 00:26:24,830
+I can imagine an abstract
+machine.
+
+502
+00:26:24,830 --> 00:26:26,680
+There's some physical machine,
+perhaps, that could be built
+
+503
+00:26:26,680 --> 00:26:29,260
+to do it, which, in fact,
+executes these programs
+
+504
+00:26:29,260 --> 00:26:31,730
+exactly as I tell you,
+substituting character strings
+
+505
+00:26:31,730 --> 00:26:34,540
+in like this.
+
+506
+00:26:34,540 --> 00:26:37,910
+Such a machine, the number of
+such steps is an approximation
+
+507
+00:26:37,910 --> 00:26:40,040
+of the amount of
+time it takes.
+
+508
+00:26:40,040 --> 00:26:41,290
+So this way is time.
+
+509
+00:26:41,290 --> 00:26:45,510
+
+
+510
+00:26:45,510 --> 00:26:48,890
+And the width of the thing is
+how much I have to remember in
+
+511
+00:26:48,890 --> 00:26:50,150
+order to continue the process.
+
+512
+00:26:50,150 --> 00:26:51,400
+And this much is space.
+
+513
+00:26:51,400 --> 00:26:53,920
+
+
+514
+00:26:53,920 --> 00:26:58,800
+And what we see here is a
+process that takes a time
+
+515
+00:26:58,800 --> 00:27:02,710
+which is proportional
+to the argument x.
+
+516
+00:27:02,710 --> 00:27:05,820
+Because if I made x larger by 1,
+then I'd had an extra line.
+
+517
+00:27:05,820 --> 00:27:08,810
+
+
+518
+00:27:08,810 --> 00:27:12,080
+So this is a process which
+is space-- sorry--
+
+519
+00:27:12,080 --> 00:27:14,640
+time.
+
+520
+00:27:14,640 --> 00:27:20,630
+The time of this process is
+what we say order of x.
+
+521
+00:27:20,630 --> 00:27:24,390
+That means it is proportional
+to x by some constant of
+
+522
+00:27:24,390 --> 00:27:26,430
+proportionality, and I'm not
+particularly interested in
+
+523
+00:27:26,430 --> 00:27:28,580
+what the constant is.
+
+524
+00:27:28,580 --> 00:27:31,360
+The other thing we see here is
+that the amount of space this
+
+525
+00:27:31,360 --> 00:27:35,150
+takes up is constant, it's
+proportional to 1.
+
+526
+00:27:35,150 --> 00:27:42,070
+So the space complexity
+of this is order of 1.
+
+527
+00:27:42,070 --> 00:27:44,180
+We have a name for
+such a process.
+
+528
+00:27:44,180 --> 00:27:45,950
+Such a process is called
+an iteration.
+
+529
+00:27:45,950 --> 00:27:51,000
+
+
+530
+00:27:51,000 --> 00:27:55,390
+And what matters here is not
+that some particular machine I
+
+531
+00:27:55,390 --> 00:27:58,590
+designed here and talked to
+you about and called a
+
+532
+00:27:58,590 --> 00:28:00,240
+substitution machine
+or whatever--
+
+533
+00:28:00,240 --> 00:28:01,480
+substitution model--
+
+534
+00:28:01,480 --> 00:28:04,550
+managed to do this in
+constant space.
+
+535
+00:28:04,550 --> 00:28:07,140
+What really matters is this
+tells us a bound.
+
+536
+00:28:07,140 --> 00:28:09,680
+Any machine could do this
+in constant space.
+
+537
+00:28:09,680 --> 00:28:13,275
+This algorithm represented by
+this procedure is executable
+
+538
+00:28:13,275 --> 00:28:15,250
+in constant space.
+
+539
+00:28:15,250 --> 00:28:18,330
+Now, of course, the model is
+ignoring some things, standard
+
+540
+00:28:18,330 --> 00:28:19,120
+sorts of things.
+
+541
+00:28:19,120 --> 00:28:22,390
+Like numbers that are bigger
+take up more space and so on.
+
+542
+00:28:22,390 --> 00:28:23,990
+But that's a level of
+abstraction at which I'm
+
+543
+00:28:23,990 --> 00:28:24,360
+cutting off.
+
+544
+00:28:24,360 --> 00:28:25,290
+How do you represent numbers?
+
+545
+00:28:25,290 --> 00:28:28,090
+I'm considering every number
+to be the same size.
+
+546
+00:28:28,090 --> 00:28:30,540
+And numbers grow slowly for the
+amount of space they take
+
+547
+00:28:30,540 --> 00:28:34,240
+up and their size.
+
+548
+00:28:34,240 --> 00:28:38,000
+Now, this algorithm is different
+in its complexity.
+
+549
+00:28:38,000 --> 00:28:42,850
+As we can see here, this
+algorithm has a time
+
+550
+00:28:42,850 --> 00:28:48,220
+complexity which is also
+proportional to the input
+
+551
+00:28:48,220 --> 00:28:49,460
+argument x.
+
+552
+00:28:49,460 --> 00:28:53,040
+That's because if I were to add
+1 to 3, if I made a larger
+
+553
+00:28:53,040 --> 00:28:56,170
+problem, which is larger by 1
+here, then I'd add a line at
+
+554
+00:28:56,170 --> 00:28:57,670
+the top and I'd add a
+line at the bottom.
+
+555
+00:28:57,670 --> 00:29:00,650
+
+
+556
+00:29:00,650 --> 00:29:03,300
+And the fact that it's a
+constant amount, like this is
+
+557
+00:29:03,300 --> 00:29:05,420
+twice as many lines as that,
+is not interesting at the
+
+558
+00:29:05,420 --> 00:29:08,030
+level of detail I'm talking
+about right now.
+
+559
+00:29:08,030 --> 00:29:13,020
+So this is a time complexity
+order of the input argument x.
+
+560
+00:29:13,020 --> 00:29:18,500
+And space complexity, well,
+this is more interesting.
+
+561
+00:29:18,500 --> 00:29:21,130
+I happen to have some overhead,
+which you see over
+
+562
+00:29:21,130 --> 00:29:23,670
+here, which is constant
+approximately.
+
+563
+00:29:23,670 --> 00:29:24,620
+Constant overhead.
+
+564
+00:29:24,620 --> 00:29:27,240
+But then I have something which
+increases and decreases
+
+565
+00:29:27,240 --> 00:29:29,950
+and is proportional to
+the input argument x.
+
+566
+00:29:29,950 --> 00:29:31,350
+The input argument x is 3.
+
+567
+00:29:31,350 --> 00:29:34,590
+That's why there are three
+deferred increments sitting
+
+568
+00:29:34,590 --> 00:29:36,700
+around here.
+
+569
+00:29:36,700 --> 00:29:37,720
+See?
+
+570
+00:29:37,720 --> 00:29:42,060
+So the space complexity
+here is also order x.
+
+571
+00:29:42,060 --> 00:29:44,835
+And this kind of process, named
+for the kind of process,
+
+572
+00:29:44,835 --> 00:29:46,085
+this is a recursion.
+
+573
+00:29:46,085 --> 00:29:50,770
+
+
+574
+00:29:50,770 --> 00:29:56,020
+A linear recursion, I will call
+it, because of the fact
+
+575
+00:29:56,020 --> 00:29:57,920
+that it's proportional to
+the input argument in
+
+576
+00:29:57,920 --> 00:29:59,170
+both time and space.
+
+577
+00:29:59,170 --> 00:30:01,560
+
+
+578
+00:30:01,560 --> 00:30:03,225
+This could have been
+a linear iteration.
+
+579
+00:30:03,225 --> 00:30:13,960
+
+
+580
+00:30:13,960 --> 00:30:16,740
+So then what's the essence
+of this matter?
+
+581
+00:30:16,740 --> 00:30:19,100
+This matter isn't so obvious.
+
+582
+00:30:19,100 --> 00:30:21,320
+Maybe there are other models by
+which we can describe the
+
+583
+00:30:21,320 --> 00:30:23,780
+differences between iterative
+and recursive processes.
+
+584
+00:30:23,780 --> 00:30:25,520
+Because this is hard now.
+
+585
+00:30:25,520 --> 00:30:27,975
+Remember, we have-- those are
+both recursive definitions.
+
+586
+00:30:27,975 --> 00:30:32,020
+What we're seeing there are both
+recursive definitions,
+
+587
+00:30:32,020 --> 00:30:34,170
+definitions that refer to the
+thing being defined in the
+
+588
+00:30:34,170 --> 00:30:35,330
+definition.
+
+589
+00:30:35,330 --> 00:30:37,770
+But they lead to different
+shape processes.
+
+590
+00:30:37,770 --> 00:30:42,220
+There's nothing special about
+the fact that the definition
+
+591
+00:30:42,220 --> 00:30:46,140
+is recursive that leads to
+a recursive process.
+
+592
+00:30:46,140 --> 00:30:48,770
+OK.
+
+593
+00:30:48,770 --> 00:30:50,210
+Let's think of another model.
+
+594
+00:30:50,210 --> 00:30:52,940
+I'm going to talk to you
+about bureaucracy.
+
+595
+00:30:52,940 --> 00:30:54,730
+Bureaucracy is sort
+of interesting.
+
+596
+00:30:54,730 --> 00:31:00,076
+Here we see on a slide
+an iteration.
+
+597
+00:31:00,076 --> 00:31:04,220
+An iteration is sort of
+a fun kind of process.
+
+598
+00:31:04,220 --> 00:31:06,150
+Imagine that there's a
+fellow called GJS--
+
+599
+00:31:06,150 --> 00:31:08,140
+that stands for me--
+
+600
+00:31:08,140 --> 00:31:13,240
+and he's got a problem: he wants
+to add together 3 and 4.
+
+601
+00:31:13,240 --> 00:31:16,176
+This fella here wants to
+add together 3 and 4.
+
+602
+00:31:16,176 --> 00:31:18,850
+Well, the way he's going to do
+it-- he's lazy-- is he's going
+
+603
+00:31:18,850 --> 00:31:21,420
+to find somebody else
+to help him do it.
+
+604
+00:31:21,420 --> 00:31:22,340
+They way he finds someone
+else to--
+
+605
+00:31:22,340 --> 00:31:25,300
+he finds someone else to help
+him do it and says, well, give
+
+606
+00:31:25,300 --> 00:31:28,040
+me the answer to 3 and 4 and
+return the result to me.
+
+607
+00:31:28,040 --> 00:31:32,040
+He makes a little piece of paper
+and says, here, here's a
+
+608
+00:31:32,040 --> 00:31:33,140
+piece of paper-- you go ahead
+and solve this problem and
+
+609
+00:31:33,140 --> 00:31:35,310
+give the result back to me.
+
+610
+00:31:35,310 --> 00:31:38,370
+And this guy, of course,
+is lazy, too.
+
+611
+00:31:38,370 --> 00:31:41,310
+He doesn't want to see this
+piece of paper again.
+
+612
+00:31:41,310 --> 00:31:46,550
+He says, oh, yes, produce a new
+problem, which is the sum
+
+613
+00:31:46,550 --> 00:31:50,420
+of 2 ad 5, and return the
+result back to GJS.
+
+614
+00:31:50,420 --> 00:31:52,290
+I don't want to see it again.
+
+615
+00:31:52,290 --> 00:31:56,130
+This guy does not want to
+see this piece of paper.
+
+616
+00:31:56,130 --> 00:32:01,070
+And then this fellow makes a
+new problem, which is the
+
+617
+00:32:01,070 --> 00:32:04,120
+addition of the sum of 1 and
+6, and he give it to this
+
+618
+00:32:04,120 --> 00:32:08,440
+fella and says, produce that
+answer and returned it to GJS.
+
+619
+00:32:08,440 --> 00:32:11,270
+And that produces a problem,
+which is to add together 0 and
+
+620
+00:32:11,270 --> 00:32:14,190
+7, and give the result to GJS.
+
+621
+00:32:14,190 --> 00:32:16,650
+This fella finally just says,
+oh, yeah, the answer is 7, and
+
+622
+00:32:16,650 --> 00:32:18,480
+sends it back to GJS.
+
+623
+00:32:18,480 --> 00:32:20,160
+That's what an iteration is.
+
+624
+00:32:20,160 --> 00:32:22,680
+By contrast, a recursion
+is a slightly
+
+625
+00:32:22,680 --> 00:32:23,930
+different kind of process.
+
+626
+00:32:23,930 --> 00:32:26,390
+
+
+627
+00:32:26,390 --> 00:32:28,520
+This one involves more
+bureaucracy.
+
+628
+00:32:28,520 --> 00:32:30,150
+It keeps more people busy.
+
+629
+00:32:30,150 --> 00:32:32,680
+It keeps more people employed.
+
+630
+00:32:32,680 --> 00:32:35,850
+Perhaps it's better
+for that reason.
+
+631
+00:32:35,850 --> 00:32:38,860
+But here it is: I want the
+answer to the problem 3 and 4.
+
+632
+00:32:38,860 --> 00:32:40,780
+So I make a piece of paper that
+says, give the result
+
+633
+00:32:40,780 --> 00:32:43,260
+back to me.
+
+634
+00:32:43,260 --> 00:32:44,670
+Give it to this fella.
+
+635
+00:32:44,670 --> 00:32:48,050
+This fellow says, oh, yes, I
+will remember that I have to
+
+636
+00:32:48,050 --> 00:32:51,550
+add later, and I want to get the
+answer the problem 2 plus
+
+637
+00:32:51,550 --> 00:32:55,980
+4, give that one to Harry,
+and have the results
+
+638
+00:32:55,980 --> 00:32:56,710
+sent back to me--
+
+639
+00:32:56,710 --> 00:32:58,830
+I'm Joe.
+
+640
+00:32:58,830 --> 00:33:01,800
+When the answer comes back from
+Harry, which is a 6, I
+
+641
+00:33:01,800 --> 00:33:07,600
+will then do the increment and
+give that 7 back to GJS.
+
+642
+00:33:07,600 --> 00:33:10,240
+So there are more pieces of
+paper outstanding in the
+
+643
+00:33:10,240 --> 00:33:12,600
+recursive process than
+the iteration.
+
+644
+00:33:12,600 --> 00:33:16,890
+
+
+645
+00:33:16,890 --> 00:33:19,850
+There's another way to think
+about what an iteration is and
+
+646
+00:33:19,850 --> 00:33:21,780
+the difference between an
+iteration and a recursion.
+
+647
+00:33:21,780 --> 00:33:27,090
+You see, the question is, how
+much stuff is under the table?
+
+648
+00:33:27,090 --> 00:33:28,650
+If I were to stop--
+
+649
+00:33:28,650 --> 00:33:32,250
+supposing I were to kill this
+computer right now, OK?
+
+650
+00:33:32,250 --> 00:33:37,040
+And at this point I lose the
+state of affairs, well, I
+
+651
+00:33:37,040 --> 00:33:40,340
+could continue the computation
+from this point but everything
+
+652
+00:33:40,340 --> 00:33:43,860
+I need to continue the
+computation is in the
+
+653
+00:33:43,860 --> 00:33:48,050
+valuables that were defined
+in the procedure that the
+
+654
+00:33:48,050 --> 00:33:49,300
+programmer wrote for me.
+
+655
+00:33:49,300 --> 00:33:53,080
+An iteration is a system that
+has all of its state in
+
+656
+00:33:53,080 --> 00:33:54,330
+explicit variables.
+
+657
+00:33:54,330 --> 00:33:56,990
+
+
+658
+00:33:56,990 --> 00:34:01,290
+Whereas the recursion is
+not quite the same.
+
+659
+00:34:01,290 --> 00:34:05,820
+If I were to lose this pile of
+junk over here, and all I was
+
+660
+00:34:05,820 --> 00:34:08,070
+left with was the sum of 1
+and 4, that's not enough
+
+661
+00:34:08,070 --> 00:34:11,290
+information to continue the
+process of computing out the 7
+
+662
+00:34:11,290 --> 00:34:14,870
+from the original problem of
+adding together 3 of 4.
+
+663
+00:34:14,870 --> 00:34:20,570
+Besides the information that's
+in the variables of the formal
+
+664
+00:34:20,570 --> 00:34:24,190
+parameters of the program,
+there is also information
+
+665
+00:34:24,190 --> 00:34:27,360
+under the table belonging to
+the computer, which is what
+
+666
+00:34:27,360 --> 00:34:30,440
+things have been deferred
+for later.
+
+667
+00:34:30,440 --> 00:34:33,500
+And, of course, there's a
+physical analogy to this,
+
+668
+00:34:33,500 --> 00:34:38,300
+which is in differential
+equations, for example, when
+
+669
+00:34:38,300 --> 00:34:42,300
+we talk about something
+like drawing a circle.
+
+670
+00:34:42,300 --> 00:34:45,920
+Try to draw a circle, you make
+that out of a differential
+
+671
+00:34:45,920 --> 00:34:51,940
+equation which says the change
+in my state as a function of
+
+672
+00:34:51,940 --> 00:34:53,190
+my current state.
+
+673
+00:34:53,190 --> 00:34:55,830
+So if my current state
+corresponds to particular
+
+674
+00:34:55,830 --> 00:35:00,020
+values of y and x, then I can
+compute from them a derivative
+
+675
+00:35:00,020 --> 00:35:03,480
+which says how the state
+must change.
+
+676
+00:35:03,480 --> 00:35:09,470
+And, in fact, you can see this
+was a circle because if I
+
+677
+00:35:09,470 --> 00:35:15,510
+happen to be, say, at this place
+over here, at 1, 0, for
+
+678
+00:35:15,510 --> 00:35:21,240
+example, on this graph, then it
+means that the derivative
+
+679
+00:35:21,240 --> 00:35:23,620
+of y is x, which we
+see over here.
+
+680
+00:35:23,620 --> 00:35:26,140
+That's 1, so I'm going up.
+
+681
+00:35:26,140 --> 00:35:29,075
+And the derivative of
+x is minus y, which
+
+682
+00:35:29,075 --> 00:35:31,510
+means I'm going backwards.
+
+683
+00:35:31,510 --> 00:35:33,580
+I'm actually doing nothing at
+this point, then I start going
+
+684
+00:35:33,580 --> 00:35:37,920
+backwards as y increases.
+
+685
+00:35:37,920 --> 00:35:40,090
+So that's how you
+make a circle.
+
+686
+00:35:40,090 --> 00:35:43,960
+And the interesting thing to see
+is a little program that
+
+687
+00:35:43,960 --> 00:35:45,400
+will draw a circle
+by this method.
+
+688
+00:35:45,400 --> 00:35:47,675
+Actually, this won't draw a
+circle because it's a forward
+
+689
+00:35:47,675 --> 00:35:49,230
+oil or integrator and
+will eventually
+
+690
+00:35:49,230 --> 00:35:51,090
+spiral out and all that.
+
+691
+00:35:51,090 --> 00:35:52,200
+But it'll draw a circle
+for a while
+
+692
+00:35:52,200 --> 00:35:54,240
+before it starts spiraling.
+
+693
+00:35:54,240 --> 00:35:58,050
+However, what we see here is two
+state variables, x and y.
+
+694
+00:35:58,050 --> 00:36:01,120
+And there's an iteration that
+says, in order to circle,
+
+695
+00:36:01,120 --> 00:36:03,920
+given an x and y, what I want
+is to circle with the next
+
+696
+00:36:03,920 --> 00:36:08,260
+values of x and y being the old
+value of x decrement by y
+
+697
+00:36:08,260 --> 00:36:14,140
+times dt where dt is the time
+step and the old value of y
+
+698
+00:36:14,140 --> 00:36:17,560
+being implemented by x times dt,
+giving me the new values
+
+699
+00:36:17,560 --> 00:36:18,810
+of x and y.
+
+700
+00:36:18,810 --> 00:36:21,390
+
+
+701
+00:36:21,390 --> 00:36:25,360
+So now you have a feeling for
+at least two different kinds
+
+702
+00:36:25,360 --> 00:36:28,900
+of processes that can
+be evolved by
+
+703
+00:36:28,900 --> 00:36:30,150
+almost the same program.
+
+704
+00:36:30,150 --> 00:36:32,600
+
+
+705
+00:36:32,600 --> 00:36:34,630
+And with a little bit of
+perturbation analysis like
+
+706
+00:36:34,630 --> 00:36:37,320
+this, how you change a program
+a little bit and see how the
+
+707
+00:36:37,320 --> 00:36:41,940
+process changes, that's how
+we get some intuition.
+
+708
+00:36:41,940 --> 00:36:44,320
+Pretty soon we're going to use
+that intuition to build big,
+
+709
+00:36:44,320 --> 00:36:45,060
+hairy, complicated
+
+710
+00:36:45,060 --> 00:36:47,627
+systems. Thank you.
+
+711
+00:36:47,627 --> 00:37:06,513
+[MUSIC PLAYING BY J.S. BACH]
+
+712
+00:37:06,513 --> 00:37:09,100
+PROFESSOR: Well, you've just
+seen a simple perturbational
+
+713
+00:37:09,100 --> 00:37:13,690
+analysis of some programs. I
+took a program that was very
+
+714
+00:37:13,690 --> 00:37:16,580
+similar to another program and
+looked at them both and saw
+
+715
+00:37:16,580 --> 00:37:18,540
+how they evolved processes.
+
+716
+00:37:18,540 --> 00:37:20,580
+I want to show you some variety
+by showing you some
+
+717
+00:37:20,580 --> 00:37:25,033
+other processes and shapes they
+may have. Again, we're
+
+718
+00:37:25,033 --> 00:37:27,140
+going to take very simple
+things, programs that you
+
+719
+00:37:27,140 --> 00:37:29,070
+wouldn't want to ever write.
+
+720
+00:37:29,070 --> 00:37:32,565
+They would be probably the worst
+way of computing some of
+
+721
+00:37:32,565 --> 00:37:34,080
+the things we're going
+to compute.
+
+722
+00:37:34,080 --> 00:37:36,040
+But I'm just going to show you
+these things for the purpose
+
+723
+00:37:36,040 --> 00:37:42,750
+of feeling out how to program
+represents itself as the rule
+
+724
+00:37:42,750 --> 00:37:46,486
+for the evolution
+of a process.
+
+725
+00:37:46,486 --> 00:37:50,770
+So let's consider a fun thing,
+the Fibonacci numbers.
+
+726
+00:37:50,770 --> 00:37:53,340
+You probably know about
+the Fibonacci numbers.
+
+727
+00:37:53,340 --> 00:37:57,740
+Somebody, I can't remember who,
+was interested in the
+
+728
+00:37:57,740 --> 00:38:00,035
+growth of piles of rabbits.
+
+729
+00:38:00,035 --> 00:38:03,670
+And for some reason or other,
+the piles of rabbits tend to
+
+730
+00:38:03,670 --> 00:38:05,870
+grow exponentially,
+as we know.
+
+731
+00:38:05,870 --> 00:38:09,700
+And we have a nice model for
+this process, is that we start
+
+732
+00:38:09,700 --> 00:38:13,750
+with two numbers, 0 and 1.
+
+733
+00:38:13,750 --> 00:38:16,000
+And then every number
+after this is the
+
+734
+00:38:16,000 --> 00:38:18,040
+sum of the two previous.
+
+735
+00:38:18,040 --> 00:38:20,240
+So we have here a 1.
+
+736
+00:38:20,240 --> 00:38:22,760
+Then the sum of these
+two is 2.
+
+737
+00:38:22,760 --> 00:38:24,570
+The sum of those two is 3.
+
+738
+00:38:24,570 --> 00:38:26,465
+The sum of those two is 5.
+
+739
+00:38:26,465 --> 00:38:28,640
+The sum of those two is 8.
+
+740
+00:38:28,640 --> 00:38:31,650
+The sum of those two is 13.
+
+741
+00:38:31,650 --> 00:38:34,800
+This is 21.
+
+742
+00:38:34,800 --> 00:38:36,940
+34.
+
+743
+00:38:36,940 --> 00:38:38,160
+55.
+
+744
+00:38:38,160 --> 00:38:40,640
+Et cetera.
+
+745
+00:38:40,640 --> 00:38:43,170
+If we start numbering these
+numbers, say this is the
+
+746
+00:38:43,170 --> 00:38:46,280
+zeroth one, the first one, the
+second one, the third one, the
+
+747
+00:38:46,280 --> 00:38:47,780
+fourth one, et cetera.
+
+748
+00:38:47,780 --> 00:38:51,850
+This is the 10th one, the
+10th Fibonacci number.
+
+749
+00:38:51,850 --> 00:38:56,010
+These numbers grow very fast.
+Just like rabbits.
+
+750
+00:38:56,010 --> 00:38:59,750
+Why rabbits grow this way I'm
+not going to hazard a guess.
+
+751
+00:38:59,750 --> 00:39:02,550
+Now, I'm going to try to write
+for you the very simplest
+
+752
+00:39:02,550 --> 00:39:05,740
+program that computes
+Fibonacci numbers.
+
+753
+00:39:05,740 --> 00:39:08,300
+
+
+754
+00:39:08,300 --> 00:39:13,375
+What I want is a program that,
+given an n, will produce for
+
+755
+00:39:13,375 --> 00:39:14,625
+me Fibonacci event.
+
+756
+00:39:14,625 --> 00:39:18,220
+
+
+757
+00:39:18,220 --> 00:39:19,470
+OK?
+
+758
+00:39:19,470 --> 00:39:21,830
+
+
+759
+00:39:21,830 --> 00:39:23,080
+I'll write it right here.
+
+760
+00:39:23,080 --> 00:39:28,240
+
+
+761
+00:39:28,240 --> 00:39:33,275
+I want the Fibonacci of n, which
+means the-- this is the
+
+762
+00:39:33,275 --> 00:39:36,066
+n, and this is Fibonacci of n.
+
+763
+00:39:36,066 --> 00:39:38,160
+And here's the story.
+
+764
+00:39:38,160 --> 00:39:45,330
+If n is less than 2, then
+the result is n.
+
+765
+00:39:45,330 --> 00:39:47,260
+Because that's what these are.
+
+766
+00:39:47,260 --> 00:39:49,090
+That's how you start it up.
+
+767
+00:39:49,090 --> 00:39:58,870
+Otherwise, the result is the
+sum of Fib of n minus 1 and
+
+768
+00:39:58,870 --> 00:40:01,344
+the Fibonacci number,
+n minus 2.
+
+769
+00:40:01,344 --> 00:40:10,540
+
+
+770
+00:40:10,540 --> 00:40:13,620
+So this is a very simple, direct
+specification of the
+
+771
+00:40:13,620 --> 00:40:16,765
+description of Fibonacci numbers
+that I gave you when I
+
+772
+00:40:16,765 --> 00:40:18,460
+introduced those numbers.
+
+773
+00:40:18,460 --> 00:40:21,670
+It represents the recurrence
+relation in the simplest
+
+774
+00:40:21,670 --> 00:40:23,650
+possible way.
+
+775
+00:40:23,650 --> 00:40:24,920
+Now, how do we use
+such a thing?
+
+776
+00:40:24,920 --> 00:40:27,230
+Let's draw this process.
+
+777
+00:40:27,230 --> 00:40:29,610
+Let's figure out
+what this does.
+
+778
+00:40:29,610 --> 00:40:31,620
+Let's consider something very
+simple by computing
+
+779
+00:40:31,620 --> 00:40:32,870
+Fibonacci of 4.
+
+780
+00:40:32,870 --> 00:40:35,679
+
+
+781
+00:40:35,679 --> 00:40:39,070
+To compute Fibonacci
+of 4, what do I do?
+
+782
+00:40:39,070 --> 00:40:41,080
+Well, it says I have--
+
+783
+00:40:41,080 --> 00:40:43,070
+it's not less than 2.
+
+784
+00:40:43,070 --> 00:40:45,500
+Therefore it's the sum
+of two things.
+
+785
+00:40:45,500 --> 00:40:47,430
+Well, in order to compute that
+I have to compute, then,
+
+786
+00:40:47,430 --> 00:40:52,860
+Fibonacci of 3 and
+Fibonacci of 2.
+
+787
+00:40:52,860 --> 00:40:57,200
+
+
+788
+00:40:57,200 --> 00:41:00,940
+In order to compute Fibonacci
+of 3, I have to compute
+
+789
+00:41:00,940 --> 00:41:04,340
+Fibonacci of 2 and
+Fibonacci of 1.
+
+790
+00:41:04,340 --> 00:41:08,000
+
+
+791
+00:41:08,000 --> 00:41:10,730
+In order to compute Fibonacci
+of 2, I have to compute
+
+792
+00:41:10,730 --> 00:41:12,090
+Fibonacci of 1 and
+Fibonacci of 0.
+
+793
+00:41:12,090 --> 00:41:16,890
+
+
+794
+00:41:16,890 --> 00:41:20,010
+In order to compute Fibonacci
+of 1, well, the answer is 1.
+
+795
+00:41:20,010 --> 00:41:26,070
+That's from the base case
+of this recursion.
+
+796
+00:41:26,070 --> 00:41:28,923
+And in order to compute
+Fibonacci of 0, well, that
+
+797
+00:41:28,923 --> 00:41:30,480
+answer is 0, from
+the same base.
+
+798
+00:41:30,480 --> 00:41:33,200
+And here is a 1.
+
+799
+00:41:33,200 --> 00:41:38,238
+And Fibonacci of 2 is really
+the sum of Fibonacci of 1.
+
+800
+00:41:38,238 --> 00:41:43,023
+And Fib of 0, in order to
+compute that, I get a 1, and
+
+801
+00:41:43,023 --> 00:41:44,273
+here I've got a 0.
+
+802
+00:41:44,273 --> 00:41:47,010
+
+
+803
+00:41:47,010 --> 00:41:50,310
+I've built a tree.
+
+804
+00:41:50,310 --> 00:41:53,700
+Now, we can observe some
+things about this tree.
+
+805
+00:41:53,700 --> 00:41:56,340
+We can see why this is an
+extremely bad way to compute
+
+806
+00:41:56,340 --> 00:41:58,420
+Fibonacci numbers.
+
+807
+00:41:58,420 --> 00:41:59,960
+Because in order to compute
+Fibonacci of 4, I had to
+
+808
+00:41:59,960 --> 00:42:03,045
+compute Fibonacci of
+2's sub-tree twice.
+
+809
+00:42:03,045 --> 00:42:07,670
+
+
+810
+00:42:07,670 --> 00:42:10,326
+In fact, in order way to add one
+more, supposing I want to
+
+811
+00:42:10,326 --> 00:42:13,940
+do Fibonacci of 5, what I really
+have to do then is
+
+812
+00:42:13,940 --> 00:42:18,100
+compute Fibonacci of 4
+plus Fibonacci of 3.
+
+813
+00:42:18,100 --> 00:42:21,045
+But Fibonacci of 3's sub-tree
+has already been built.
+
+814
+00:42:21,045 --> 00:42:24,870
+
+
+815
+00:42:24,870 --> 00:42:27,700
+This is a prescription
+for a process that's
+
+816
+00:42:27,700 --> 00:42:30,570
+exponential in time.
+
+817
+00:42:30,570 --> 00:42:33,740
+To add 1, I have to multiply by
+something because I take a
+
+818
+00:42:33,740 --> 00:42:38,350
+proportion of the existing thing
+and add it to itself to
+
+819
+00:42:38,350 --> 00:42:39,880
+add one more step.
+
+820
+00:42:39,880 --> 00:42:48,270
+So this is a thing whose time
+complexity is order of--
+
+821
+00:42:48,270 --> 00:42:50,520
+actually, it turns out
+to be Fibonacci--
+
+822
+00:42:50,520 --> 00:42:51,770
+of n.
+
+823
+00:42:51,770 --> 00:42:56,230
+
+
+824
+00:42:56,230 --> 00:43:01,130
+There's a thing that grows
+exactly at Fibonacci numbers.
+
+825
+00:43:01,130 --> 00:43:02,620
+It's a horrible thing.
+
+826
+00:43:02,620 --> 00:43:03,640
+You wouldn't want to do it.
+
+827
+00:43:03,640 --> 00:43:06,170
+The reason why the time has to
+grow that way is because we're
+
+828
+00:43:06,170 --> 00:43:07,110
+presuming in the model--
+
+829
+00:43:07,110 --> 00:43:09,220
+the substitution model that I
+gave you, which I'm not doing
+
+830
+00:43:09,220 --> 00:43:14,130
+formally here, I sort of now
+spit it out in a simple way--
+
+831
+00:43:14,130 --> 00:43:17,880
+but presuming that everything
+is done sequentially.
+
+832
+00:43:17,880 --> 00:43:19,810
+That every one of these
+nodes in this
+
+833
+00:43:19,810 --> 00:43:21,350
+tree has to be examined.
+
+834
+00:43:21,350 --> 00:43:24,740
+
+
+835
+00:43:24,740 --> 00:43:27,350
+And so since the number of
+nodes in this tree grows
+
+836
+00:43:27,350 --> 00:43:29,960
+exponentially, because I add a
+proportion of the existing
+
+837
+00:43:29,960 --> 00:43:35,820
+nodes to the nodes I already
+have to add 1, then I know
+
+838
+00:43:35,820 --> 00:43:38,860
+I've got an exponential
+explosion here.
+
+839
+00:43:38,860 --> 00:43:40,610
+Now, let's see if we can
+think of how much
+
+840
+00:43:40,610 --> 00:43:41,860
+space this takes up.
+
+841
+00:43:41,860 --> 00:43:44,520
+
+
+842
+00:43:44,520 --> 00:43:46,140
+Well, it's not so bad.
+
+843
+00:43:46,140 --> 00:43:48,020
+It depends on how much we have
+to remember in order to
+
+844
+00:43:48,020 --> 00:43:50,220
+continue this thing running.
+
+845
+00:43:50,220 --> 00:43:51,650
+Well, that's not so hard.
+
+846
+00:43:51,650 --> 00:43:54,815
+It says, gee, in order to know
+where I am in this tree, I
+
+847
+00:43:54,815 --> 00:43:56,760
+have to have a path
+back to the root.
+
+848
+00:43:56,760 --> 00:43:59,210
+In other words, in order to--
+let's consider the path I
+
+849
+00:43:59,210 --> 00:44:00,795
+would have to execute this.
+
+850
+00:44:00,795 --> 00:44:03,190
+I'd say, oh, yes, I'm going
+to go down here.
+
+851
+00:44:03,190 --> 00:44:04,950
+I don't care which
+direction I go.
+
+852
+00:44:04,950 --> 00:44:06,265
+I have to do this.
+
+853
+00:44:06,265 --> 00:44:06,935
+I have to then do this.
+
+854
+00:44:06,935 --> 00:44:09,300
+I have to traverse this tree
+in a sort of funny way.
+
+855
+00:44:09,300 --> 00:44:12,040
+
+
+856
+00:44:12,040 --> 00:44:13,290
+I'm going to walk this
+nice little path.
+
+857
+00:44:13,290 --> 00:44:15,740
+I come back to here.
+
+858
+00:44:15,740 --> 00:44:18,050
+Well, I've got to remember where
+I'm going to be next.
+
+859
+00:44:18,050 --> 00:44:20,110
+I've got to keep that in mind.
+
+860
+00:44:20,110 --> 00:44:21,240
+So I have to know
+what I've done.
+
+861
+00:44:21,240 --> 00:44:22,740
+I have to know what's left.
+
+862
+00:44:22,740 --> 00:44:26,793
+In order to compute Fibonacci of
+4, at some point I'm going
+
+863
+00:44:26,793 --> 00:44:28,580
+to have to be down here.
+
+864
+00:44:28,580 --> 00:44:32,170
+And I have to remember that I
+have to go back and then go
+
+865
+00:44:32,170 --> 00:44:33,750
+back to here to do
+an addition.
+
+866
+00:44:33,750 --> 00:44:35,200
+And then go back to here to do
+an addition to something I
+
+867
+00:44:35,200 --> 00:44:38,060
+haven't touched yet.
+
+868
+00:44:38,060 --> 00:44:40,390
+The amount of space that
+takes up is the
+
+869
+00:44:40,390 --> 00:44:42,800
+path, the longest path.
+
+870
+00:44:42,800 --> 00:44:45,920
+How long it is.
+
+871
+00:44:45,920 --> 00:44:48,360
+And that grows as n.
+
+872
+00:44:48,360 --> 00:44:50,550
+So the space--
+
+873
+00:44:50,550 --> 00:44:53,040
+because that's the length
+of the deepest
+
+874
+00:44:53,040 --> 00:44:54,660
+line through the tree--
+
+875
+00:44:54,660 --> 00:44:59,210
+the space is order of n.
+
+876
+00:44:59,210 --> 00:45:00,460
+It's a pretty bad process.
+
+877
+00:45:00,460 --> 00:45:09,010
+
+
+878
+00:45:09,010 --> 00:45:13,930
+Now, one thing I want to see
+from this is a feeling of
+
+879
+00:45:13,930 --> 00:45:15,660
+what's going on here.
+
+880
+00:45:15,660 --> 00:45:17,460
+Why are there--
+
+881
+00:45:17,460 --> 00:45:20,712
+how is this program related
+to this process?
+
+882
+00:45:20,712 --> 00:45:22,150
+Well, what are we seeing here?
+
+883
+00:45:22,150 --> 00:45:25,110
+There really are only
+two sorts of things
+
+884
+00:45:25,110 --> 00:45:27,460
+this program does.
+
+885
+00:45:27,460 --> 00:45:29,950
+This program consists of
+two rules, if you will.
+
+886
+00:45:29,950 --> 00:45:36,100
+One rule that says Fibonacci of
+n is this sum that you see
+
+887
+00:45:36,100 --> 00:45:42,120
+over here, which is a node
+that's shaped like this.
+
+888
+00:45:42,120 --> 00:45:45,165
+It says that I break up
+something into two parts.
+
+889
+00:45:45,165 --> 00:45:48,340
+
+
+890
+00:45:48,340 --> 00:45:52,890
+Under some condition over here
+that n is greater than 2, then
+
+891
+00:45:52,890 --> 00:45:56,880
+the node breaks up
+into two parts.
+
+892
+00:45:56,880 --> 00:45:57,920
+Less than 2.
+
+893
+00:45:57,920 --> 00:45:58,390
+No.
+
+894
+00:45:58,390 --> 00:46:00,704
+Greater than 2.
+
+895
+00:46:00,704 --> 00:46:01,830
+Yes.
+
+896
+00:46:01,830 --> 00:46:04,700
+The other possibility is
+that I have a reduction
+
+897
+00:46:04,700 --> 00:46:05,950
+that looks like this.
+
+898
+00:46:05,950 --> 00:46:08,780
+
+
+899
+00:46:08,780 --> 00:46:10,950
+And that's this case.
+
+900
+00:46:10,950 --> 00:46:14,470
+If it's less than 2, the
+answer is n itself.
+
+901
+00:46:14,470 --> 00:46:16,990
+So what we're seeing here is
+that the process that got
+
+902
+00:46:16,990 --> 00:46:22,210
+built locally at every place is
+an instance of this rule.
+
+903
+00:46:22,210 --> 00:46:24,130
+Here's one instance
+of the rule.
+
+904
+00:46:24,130 --> 00:46:26,350
+Here is another instance
+of the rule.
+
+905
+00:46:26,350 --> 00:46:28,460
+And the reason why people think
+of programming as being
+
+906
+00:46:28,460 --> 00:46:32,230
+hard, of course, is because
+you're writing down a general
+
+907
+00:46:32,230 --> 00:46:37,310
+rule, which is going to be used
+for lots of instances,
+
+908
+00:46:37,310 --> 00:46:39,710
+that a particular instance--
+
+909
+00:46:39,710 --> 00:46:43,900
+it's going to control each
+particular instance for you.
+
+910
+00:46:43,900 --> 00:46:46,820
+You've got to write down
+something that's a general in
+
+911
+00:46:46,820 --> 00:46:48,400
+terms of variables, and you
+have to think of all the
+
+912
+00:46:48,400 --> 00:46:50,640
+things that could possibly fit
+in those variables, and all
+
+913
+00:46:50,640 --> 00:46:53,600
+those have to lead to the
+process you want to work.
+
+914
+00:46:53,600 --> 00:46:57,770
+Locally, you have to break up
+your process into things that
+
+915
+00:46:57,770 --> 00:46:59,490
+can be represented in
+terms of these very
+
+916
+00:46:59,490 --> 00:47:00,740
+specific local rules.
+
+917
+00:47:00,740 --> 00:47:03,540
+
+
+918
+00:47:03,540 --> 00:47:05,030
+Well, let's see.
+
+919
+00:47:05,030 --> 00:47:08,190
+Fibonaccis are, of course,
+not much fun.
+
+920
+00:47:08,190 --> 00:47:09,180
+Yes, they are.
+
+921
+00:47:09,180 --> 00:47:12,820
+You get something called the
+golden ratio, and we may even
+
+922
+00:47:12,820 --> 00:47:15,420
+see a lot of that some time.
+
+923
+00:47:15,420 --> 00:47:16,840
+Well, let's talk about
+another thing.
+
+924
+00:47:16,840 --> 00:47:20,310
+There's a famous game called the
+Towers of Hanoi, because I
+
+925
+00:47:20,310 --> 00:47:24,170
+want to teach you how to think
+about these recursively.
+
+926
+00:47:24,170 --> 00:47:29,700
+The problem is this one: I have
+a bunch of disks, I have
+
+927
+00:47:29,700 --> 00:47:34,130
+a bunch of spikes, and it's
+rumored that somewhere in the
+
+928
+00:47:34,130 --> 00:47:38,420
+Orient there is a 64-high tower,
+and the job of various
+
+929
+00:47:38,420 --> 00:47:41,320
+monks or something is to move
+these spikes in some
+
+930
+00:47:41,320 --> 00:47:43,860
+complicated pattern
+so eventually--
+
+931
+00:47:43,860 --> 00:47:45,220
+these disks--
+
+932
+00:47:45,220 --> 00:47:49,450
+so eventually I moved all
+of the disks from one
+
+933
+00:47:49,450 --> 00:47:50,555
+spike to the other.
+
+934
+00:47:50,555 --> 00:47:54,000
+And if it's 64 high, and it's
+going to take 2 to the 64th
+
+935
+00:47:54,000 --> 00:47:57,746
+moves, then it's a long time.
+
+936
+00:47:57,746 --> 00:48:03,820
+They claim that the universe
+ends when this is done.
+
+937
+00:48:03,820 --> 00:48:05,630
+Well, let's see.
+
+938
+00:48:05,630 --> 00:48:08,830
+The way in which you would
+construct a recursive process
+
+939
+00:48:08,830 --> 00:48:11,990
+is by wishful thinking.
+
+940
+00:48:11,990 --> 00:48:14,600
+You have to believe.
+
+941
+00:48:14,600 --> 00:48:15,610
+So, the idea.
+
+942
+00:48:15,610 --> 00:48:20,360
+Supposing I want to move this
+pile from here to here, from
+
+943
+00:48:20,360 --> 00:48:25,400
+spike one to spike two, well,
+that's not so hard.
+
+944
+00:48:25,400 --> 00:48:28,470
+See, supposing somehow, by some
+magic-- because I've got
+
+945
+00:48:28,470 --> 00:48:29,310
+a simpler problem--
+
+946
+00:48:29,310 --> 00:48:31,240
+I move a three-high
+pile to here--
+
+947
+00:48:31,240 --> 00:48:32,070
+I can only move one
+disk at a time, so
+
+948
+00:48:32,070 --> 00:48:33,900
+identifying how I did it.
+
+949
+00:48:33,900 --> 00:48:37,910
+But supposing I could do that,
+well, then I could just pick
+
+950
+00:48:37,910 --> 00:48:41,500
+up this disk and move it here.
+
+951
+00:48:41,500 --> 00:48:42,980
+And now I have a
+simple problem.
+
+952
+00:48:42,980 --> 00:48:44,110
+I have to move a three-high
+tower to
+
+953
+00:48:44,110 --> 00:48:46,220
+here, which is no problem.
+
+954
+00:48:46,220 --> 00:48:48,860
+So by two moves of a three high
+tower plus one move of a
+
+955
+00:48:48,860 --> 00:48:53,140
+single object, I can move the
+tower from here to here.
+
+956
+00:48:53,140 --> 00:48:55,680
+
+
+957
+00:48:55,680 --> 00:48:57,530
+Now, whether or not--
+
+958
+00:48:57,530 --> 00:49:02,730
+this is not obvious in any
+deep way that this works.
+
+959
+00:49:02,730 --> 00:49:04,300
+And why?
+
+960
+00:49:04,300 --> 00:49:07,320
+Now, why is it the case that I
+can presume, maybe, that I can
+
+961
+00:49:07,320 --> 00:49:08,570
+move the three-high tower?
+
+962
+00:49:08,570 --> 00:49:11,430
+
+
+963
+00:49:11,430 --> 00:49:14,550
+Well, the answer is because I'm
+always counting down, and
+
+964
+00:49:14,550 --> 00:49:16,840
+eventually I get down to
+zero-high tower, and a
+
+965
+00:49:16,840 --> 00:49:20,070
+zero-high tower requires
+no moves.
+
+966
+00:49:20,070 --> 00:49:24,060
+So let's write the algorithm
+for that.
+
+967
+00:49:24,060 --> 00:49:26,670
+Very easy.
+
+968
+00:49:26,670 --> 00:49:29,260
+I'm going to label these towers
+with numbers, but it
+
+969
+00:49:29,260 --> 00:49:31,120
+doesn't matter what they're
+labelled with.
+
+970
+00:49:31,120 --> 00:49:35,020
+And the problem is to move an
+n-high tower from a spike
+
+971
+00:49:35,020 --> 00:49:37,785
+called From to a spike called
+To with a particular spike
+
+972
+00:49:37,785 --> 00:49:39,968
+called Spare.
+
+973
+00:49:39,968 --> 00:49:41,414
+That's what we're going to do.
+
+974
+00:49:41,414 --> 00:49:50,240
+
+
+975
+00:49:50,240 --> 00:49:53,070
+Using the algorithm I informally
+described to you,
+
+976
+00:49:53,070 --> 00:50:02,532
+move of a n-high tower from
+From to To with a Spare.
+
+977
+00:50:02,532 --> 00:50:06,300
+
+
+978
+00:50:06,300 --> 00:50:11,540
+Well, I've got two cases, and
+this is a case analysis, just
+
+979
+00:50:11,540 --> 00:50:14,840
+like it is in all the other
+things we've done.
+
+980
+00:50:14,840 --> 00:50:20,285
+
+
+981
+00:50:20,285 --> 00:50:23,160
+If n is 0, then--
+
+982
+00:50:23,160 --> 00:50:24,600
+I'm going to put out
+some answers--
+
+983
+00:50:24,600 --> 00:50:26,870
+Done, we'll say.
+
+984
+00:50:26,870 --> 00:50:29,530
+I don't know what that means.
+
+985
+00:50:29,530 --> 00:50:32,200
+Because we'll never use that
+answer for anything.
+
+986
+00:50:32,200 --> 00:50:34,350
+We're going to do these moves.
+
+987
+00:50:34,350 --> 00:50:36,640
+Else.
+
+988
+00:50:36,640 --> 00:50:37,890
+I'm going to do a move.
+
+989
+00:50:37,890 --> 00:50:40,250
+
+
+990
+00:50:40,250 --> 00:50:44,495
+Move a tower of height
+less than n, the
+
+991
+00:50:44,495 --> 00:50:48,140
+decrement of n height.
+
+992
+00:50:48,140 --> 00:50:51,030
+Now, I'm going to move it
+to the Spare tower.
+
+993
+00:50:51,030 --> 00:50:55,220
+The whole idea now is to move
+this from here to here, to the
+
+994
+00:50:55,220 --> 00:50:57,550
+Spare tower-- so from
+From to Spare--
+
+995
+00:50:57,550 --> 00:51:03,050
+
+
+996
+00:51:03,050 --> 00:51:04,700
+using To as a spare tower.
+
+997
+00:51:04,700 --> 00:51:08,960
+
+
+998
+00:51:08,960 --> 00:51:14,680
+Later, somewhere later, I'm
+going to move that same n-high
+
+999
+00:51:14,680 --> 00:51:17,340
+tower, after I've done this.
+
+1000
+00:51:17,340 --> 00:51:21,650
+Going to move that same n minus
+one-high tower from the
+
+1001
+00:51:21,650 --> 00:51:24,750
+Spare tower to the To
+tower using the
+
+1002
+00:51:24,750 --> 00:51:26,380
+From tower as my spare.
+
+1003
+00:51:26,380 --> 00:51:29,390
+
+
+1004
+00:51:29,390 --> 00:51:40,410
+So the Spare tower to
+the To tower using
+
+1005
+00:51:40,410 --> 00:51:44,225
+the From as the spare.
+
+1006
+00:51:44,225 --> 00:51:48,780
+
+
+1007
+00:51:48,780 --> 00:51:51,670
+All I have to do now is when
+I've gotten it in this
+
+1008
+00:51:51,670 --> 00:51:56,600
+condition, between these two
+moves of a whole tower--
+
+1009
+00:51:56,600 --> 00:51:57,950
+I've got it into that
+condition--
+
+1010
+00:51:57,950 --> 00:52:03,100
+now I just have to
+move one disk.
+
+1011
+00:52:03,100 --> 00:52:04,543
+So I'm going to say that some
+things are printing a move and
+
+1012
+00:52:04,543 --> 00:52:05,793
+I don't care how it works.
+
+1013
+00:52:05,793 --> 00:52:11,680
+
+
+1014
+00:52:11,680 --> 00:52:13,660
+From the To.
+
+1015
+00:52:13,660 --> 00:52:17,890
+
+
+1016
+00:52:17,890 --> 00:52:20,410
+Now, you see the reason why I'm
+bringing this up at this
+
+1017
+00:52:20,410 --> 00:52:24,800
+moment is this is an almost
+identical program to this one
+
+1018
+00:52:24,800 --> 00:52:26,980
+in some sense.
+
+1019
+00:52:26,980 --> 00:52:29,810
+It's not computing the same
+mathematical quantity, it's
+
+1020
+00:52:29,810 --> 00:52:34,620
+not exactly the same tree, but
+it's going to produce a tree.
+
+1021
+00:52:34,620 --> 00:52:38,760
+The general way of making these
+moves is going to lead
+
+1022
+00:52:38,760 --> 00:52:41,760
+to an exponential tree.
+
+1023
+00:52:41,760 --> 00:52:43,060
+Well, let's do this four-high.
+
+1024
+00:52:43,060 --> 00:52:45,720
+
+
+1025
+00:52:45,720 --> 00:52:50,660
+I have my little crib sheet here
+otherwise I get confused.
+
+1026
+00:52:50,660 --> 00:52:54,720
+
+
+1027
+00:52:54,720 --> 00:52:57,320
+Well, what I'm going to put in
+is the question of move a
+
+1028
+00:52:57,320 --> 00:53:10,080
+tower of height four from one to
+spike two using spike three
+
+1029
+00:53:10,080 --> 00:53:11,980
+as a spare.
+
+1030
+00:53:11,980 --> 00:53:14,190
+That's all I'm really
+going to do.
+
+1031
+00:53:14,190 --> 00:53:15,550
+You know, let's just do it.
+
+1032
+00:53:15,550 --> 00:53:17,140
+I'm not going to worry
+about writing out
+
+1033
+00:53:17,140 --> 00:53:17,950
+the traits of this.
+
+1034
+00:53:17,950 --> 00:53:21,950
+You can do that yourself because
+it's very simple.
+
+1035
+00:53:21,950 --> 00:53:26,680
+I'm going to move disk
+one to disk three.
+
+1036
+00:53:26,680 --> 00:53:28,760
+And how do I get to move
+disk one to disk three?
+
+1037
+00:53:28,760 --> 00:53:29,530
+How do I know that?
+
+1038
+00:53:29,530 --> 00:53:32,790
+Well, I suppose I have to look
+at the trace a little bit.
+
+1039
+00:53:32,790 --> 00:53:33,810
+What am I doing here?
+
+1040
+00:53:33,810 --> 00:53:36,560
+Well, and this is not--
+n is not zero.
+
+1041
+00:53:36,560 --> 00:53:38,650
+So I'm going to look
+down here.
+
+1042
+00:53:38,650 --> 00:53:41,000
+This is going to require
+doing two moves.
+
+1043
+00:53:41,000 --> 00:53:42,320
+I'm only going to look
+at the first one.
+
+1044
+00:53:42,320 --> 00:53:43,570
+It's going to require moving--
+
+1045
+00:53:43,570 --> 00:53:47,860
+
+
+1046
+00:53:47,860 --> 00:53:49,010
+why do I have move tower?
+
+1047
+00:53:49,010 --> 00:53:52,910
+It makes it harder
+for me to move.
+
+1048
+00:53:52,910 --> 00:53:59,950
+I'm going to move a three-high
+tower from the from place,
+
+1049
+00:53:59,950 --> 00:54:04,750
+which is four, to the
+spare, which is two,
+
+1050
+00:54:04,750 --> 00:54:07,940
+using three as my--
+
+1051
+00:54:07,940 --> 00:54:15,220
+no, using from--
+
+1052
+00:54:15,220 --> 00:54:15,988
+STUDENT: [INAUDIBLE PHRASE].
+
+1053
+00:54:15,988 --> 00:54:16,944
+PROFESSOR: Yes.
+
+1054
+00:54:16,944 --> 00:54:18,370
+I'm sorry.
+
+1055
+00:54:18,370 --> 00:54:19,710
+From two--
+
+1056
+00:54:19,710 --> 00:54:26,230
+from one to three using
+two as my spare.
+
+1057
+00:54:26,230 --> 00:54:27,520
+That's right.
+
+1058
+00:54:27,520 --> 00:54:32,940
+And then there's another move
+over here afterwards.
+
+1059
+00:54:32,940 --> 00:54:37,790
+So now I say, oh, yes, that
+requires me moving a two-high
+
+1060
+00:54:37,790 --> 00:54:42,950
+tower from one to two using
+three as a spare.
+
+1061
+00:54:42,950 --> 00:54:45,760
+And so, are the same, and that's
+going to require me
+
+1062
+00:54:45,760 --> 00:54:52,470
+moving and one-high tower
+from one to three
+
+1063
+00:54:52,470 --> 00:54:53,720
+using two as a spare.
+
+1064
+00:54:53,720 --> 00:54:57,740
+
+
+1065
+00:54:57,740 --> 00:54:59,720
+Well, and then there's lots of
+other things to be done.
+
+1066
+00:54:59,720 --> 00:55:03,510
+
+
+1067
+00:55:03,510 --> 00:55:09,265
+So I move my one-high tower from
+one to three using two as
+
+1068
+00:55:09,265 --> 00:55:11,490
+a spare, which I didn't
+do anything with.
+
+1069
+00:55:11,490 --> 00:55:15,570
+Well, this thing just proceeds
+very simply.
+
+1070
+00:55:15,570 --> 00:55:17,652
+I move this from one to two.
+
+1071
+00:55:17,652 --> 00:55:21,500
+And I move this disk
+from three to two.
+
+1072
+00:55:21,500 --> 00:55:23,060
+And I don't really want
+to do it, but I
+
+1073
+00:55:23,060 --> 00:55:24,310
+move from one to three.
+
+1074
+00:55:24,310 --> 00:55:29,390
+Then I move two to one.
+
+1075
+00:55:29,390 --> 00:55:32,150
+Then I move two to three.
+
+1076
+00:55:32,150 --> 00:55:36,310
+Then one to three.
+
+1077
+00:55:36,310 --> 00:55:39,620
+One to two.
+
+1078
+00:55:39,620 --> 00:55:41,390
+Three to two.
+
+1079
+00:55:41,390 --> 00:55:44,055
+Three to one.
+
+1080
+00:55:44,055 --> 00:55:46,380
+This all got worked out
+beforehand, of course.
+
+1081
+00:55:46,380 --> 00:55:48,090
+Two to one.
+
+1082
+00:55:48,090 --> 00:55:50,810
+Three to two.
+
+1083
+00:55:50,810 --> 00:55:52,950
+One to three.
+
+1084
+00:55:52,950 --> 00:55:54,176
+STUDENT: [INAUDIBLE PHRASE].
+
+1085
+00:55:54,176 --> 00:55:55,650
+PROFESSOR: Oh, one to three.
+
+1086
+00:55:55,650 --> 00:55:55,823
+Excuse me.
+
+1087
+00:55:55,823 --> 00:55:56,460
+Thank you.
+
+1088
+00:55:56,460 --> 00:55:59,020
+One to two.
+
+1089
+00:55:59,020 --> 00:56:00,850
+And then three to two.
+
+1090
+00:56:00,850 --> 00:56:02,100
+Whew.
+
+1091
+00:56:02,100 --> 00:56:04,250
+
+
+1092
+00:56:04,250 --> 00:56:07,920
+Now what I'd like you to think
+about, you just saw a
+
+1093
+00:56:07,920 --> 00:56:09,920
+recursive algorithm for doing
+this, and it takes exponential
+
+1094
+00:56:09,920 --> 00:56:11,040
+time, of course.
+
+1095
+00:56:11,040 --> 00:56:12,530
+Now, I don't know if there's
+any algorithm that doesn't
+
+1096
+00:56:12,530 --> 00:56:14,820
+take exponential time--
+it has to.
+
+1097
+00:56:14,820 --> 00:56:16,320
+As I'm doing one operation--
+
+1098
+00:56:16,320 --> 00:56:17,890
+I can only move one
+thing at a time--
+
+1099
+00:56:17,890 --> 00:56:18,590
+there's no algorithm
+that's not going to
+
+1100
+00:56:18,590 --> 00:56:20,570
+take exponential time.
+
+1101
+00:56:20,570 --> 00:56:24,420
+But can you write an iterative
+algorithm rather than a
+
+1102
+00:56:24,420 --> 00:56:25,670
+recursive algorithm
+for doing this?
+
+1103
+00:56:25,670 --> 00:56:28,740
+
+
+1104
+00:56:28,740 --> 00:56:30,700
+One of the sort of little things
+I like to think about.
+
+1105
+00:56:30,700 --> 00:56:33,590
+
+
+1106
+00:56:33,590 --> 00:56:38,970
+Can you write one that, in
+fact, doesn't break this
+
+1107
+00:56:38,970 --> 00:56:41,510
+problem into two sub-problems
+the way I described, but
+
+1108
+00:56:41,510 --> 00:56:45,250
+rather proceeds a step at a time
+using a more local rule?
+
+1109
+00:56:45,250 --> 00:56:48,160
+
+
+1110
+00:56:48,160 --> 00:56:50,660
+That might be fun.
+
+1111
+00:56:50,660 --> 00:56:52,025
+Thank you so much for
+the third segment.
+
+1112
+00:56:52,025 --> 00:56:56,310
+
+
+1113
+00:56:56,310 --> 00:56:57,910
+Are there questions?
+
+1114
+00:56:57,910 --> 00:57:01,670
+STUDENT: [INAUDIBLE] a way to
+reduce a tree or recursion
+
+1115
+00:57:01,670 --> 00:57:06,970
+problem, how do you save the
+immediate work you have done
+
+1116
+00:57:06,970 --> 00:57:08,985
+in computing the Fibonacci
+number?
+
+1117
+00:57:08,985 --> 00:57:12,760
+PROFESSOR: Oh, well, in fact,
+one of the ways to do is what
+
+1118
+00:57:12,760 --> 00:57:13,890
+you just said.
+
+1119
+00:57:13,890 --> 00:57:16,480
+You said, I save the
+intermediate work.
+
+1120
+00:57:16,480 --> 00:57:16,960
+OK?
+
+1121
+00:57:16,960 --> 00:57:19,310
+Well, let me tell you--
+
+1122
+00:57:19,310 --> 00:57:21,010
+this, again, we'll see later--
+
+1123
+00:57:21,010 --> 00:57:24,710
+but suppose it's the case that
+anytime I compute anything,
+
+1124
+00:57:24,710 --> 00:57:28,240
+any one of these Fibonacci
+numbers, I remember the table
+
+1125
+00:57:28,240 --> 00:57:32,790
+that takes only linear time
+to look up the answer.
+
+1126
+00:57:32,790 --> 00:57:35,180
+Then if I ever see it again,
+instead of doing the
+
+1127
+00:57:35,180 --> 00:57:37,050
+expansional tree,
+I look it up.
+
+1128
+00:57:37,050 --> 00:57:39,820
+I've just transformed my problem
+into a problem that's
+
+1129
+00:57:39,820 --> 00:57:41,380
+much simpler.
+
+1130
+00:57:41,380 --> 00:57:44,380
+Now, of course, there are the
+way to do this, as well.
+
+1131
+00:57:44,380 --> 00:57:47,240
+That one's called memoization,
+and you'll see it sometime
+
+1132
+00:57:47,240 --> 00:57:48,280
+later in this term.
+
+1133
+00:57:48,280 --> 00:57:53,890
+But I suppose there's a very
+simple linear time, and, in
+
+1134
+00:57:53,890 --> 00:57:57,110
+fact, iterative model for
+computing Fibonaccis, and
+
+1135
+00:57:57,110 --> 00:58:00,320
+that's another thing you should
+sit down and work out.
+
+1136
+00:58:00,320 --> 00:58:01,340
+That's important.
+
+1137
+00:58:01,340 --> 00:58:05,560
+It's important to see
+how to do this.
+
+1138
+00:58:05,560 --> 00:58:07,310
+I want you to practice.
+
+1139
+00:58:07,310 --> 00:58:19,540
+

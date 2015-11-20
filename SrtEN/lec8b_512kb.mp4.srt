@@ -1,0 +1,5871 @@
+0
+00:00:00,000 --> 00:00:18,910
+
+
+1
+00:00:18,910 --> 00:00:20,900
+PROFESSOR: All right, well,
+we've seen how the query
+
+2
+00:00:20,900 --> 00:00:22,502
+language works.
+
+3
+00:00:22,502 --> 00:00:26,280
+Now, let's talk about how
+it's implemented.
+
+4
+00:00:26,280 --> 00:00:29,470
+You already pretty much can
+guess what's going on there.
+
+5
+00:00:29,470 --> 00:00:32,810
+At the bottom of it, there's
+a pattern matcher.
+
+6
+00:00:32,810 --> 00:00:35,180
+And we looked at a pattern
+matcher when we did the
+
+7
+00:00:35,180 --> 00:00:38,110
+rule-based control language.
+
+8
+00:00:38,110 --> 00:00:41,520
+Just to remind you, here are
+some sample patterns.
+
+9
+00:00:41,520 --> 00:00:45,010
+This is a pattern that will
+match any list of three things
+
+10
+00:00:45,010 --> 00:00:48,930
+of which the first is a and the
+second is c and the middle
+
+11
+00:00:48,930 --> 00:00:50,650
+one can be anything.
+
+12
+00:00:50,650 --> 00:00:52,310
+So in this little
+pattern-matching syntax,
+
+13
+00:00:52,310 --> 00:00:54,050
+there's only one distinction
+you make.
+
+14
+00:00:54,050 --> 00:00:57,830
+There's either literal things
+or variables, and variables
+
+15
+00:00:57,830 --> 00:00:59,080
+begin with question mark.
+
+16
+00:00:59,080 --> 00:01:01,370
+
+
+17
+00:01:01,370 --> 00:01:04,900
+So this matches any list of
+three things of which the
+
+18
+00:01:04,900 --> 00:01:06,500
+first is a and the
+second is c.
+
+19
+00:01:06,500 --> 00:01:11,010
+This one matches any list of
+three things of which the
+
+20
+00:01:11,010 --> 00:01:12,530
+first is the symbol job.
+
+21
+00:01:12,530 --> 00:01:14,210
+The second can be anything.
+
+22
+00:01:14,210 --> 00:01:16,750
+And the third is a list of two
+things of which the first is
+
+23
+00:01:16,750 --> 00:01:20,480
+the symbol computer and the
+second can be anything.
+
+24
+00:01:20,480 --> 00:01:25,100
+And this one, this next one
+matches any list of three
+
+25
+00:01:25,100 --> 00:01:29,120
+things, and the only difference
+is, here, the third
+
+26
+00:01:29,120 --> 00:01:32,280
+list, the first is the symbol
+computer, and then there's
+
+27
+00:01:32,280 --> 00:01:36,430
+some rest of the list. So this
+means two elements and this
+
+28
+00:01:36,430 --> 00:01:37,860
+means arbitrary number.
+
+29
+00:01:37,860 --> 00:01:39,996
+And our language implementation
+isn't even
+
+30
+00:01:39,996 --> 00:01:42,310
+going to have to worry about
+implementing this dot because
+
+31
+00:01:42,310 --> 00:01:44,050
+that's automatically done
+by Lisp's reader.
+
+32
+00:01:44,050 --> 00:01:48,340
+
+
+33
+00:01:48,340 --> 00:01:50,310
+Remember matchers also have
+some consistency in them.
+
+34
+00:01:50,310 --> 00:01:53,010
+This match is a list of
+three things of which
+
+35
+00:01:53,010 --> 00:01:54,430
+the first is a.
+
+36
+00:01:54,430 --> 00:01:56,280
+And the second and third can be
+anything, but they have to
+
+37
+00:01:56,280 --> 00:01:57,940
+be the same thing.
+
+38
+00:01:57,940 --> 00:01:59,600
+They're both called x.
+
+39
+00:01:59,600 --> 00:02:02,730
+And this matches a list of four
+things of which the first
+
+40
+00:02:02,730 --> 00:02:05,590
+is the fourth and the second
+is the same as the third.
+
+41
+00:02:05,590 --> 00:02:09,685
+And this last one matches any
+list that begins with a.
+
+42
+00:02:09,685 --> 00:02:14,040
+The first thing is a, and the
+rest can be anything.
+
+43
+00:02:14,040 --> 00:02:16,750
+So that's just a review of
+pattern matcher syntax that
+
+44
+00:02:16,750 --> 00:02:18,780
+you've already seen.
+
+45
+00:02:18,780 --> 00:02:21,490
+And remember, that's implemented
+by some procedure
+
+46
+00:02:21,490 --> 00:02:22,740
+called match.
+
+47
+00:02:22,740 --> 00:02:24,870
+
+
+48
+00:02:24,870 --> 00:02:35,695
+And match takes a pattern and
+some data and a dictionary.
+
+49
+00:02:35,695 --> 00:02:43,200
+
+
+50
+00:02:43,200 --> 00:02:50,470
+And match asks the question is
+there any way to match this
+
+51
+00:02:50,470 --> 00:02:55,170
+pattern against this data object
+subject to the bindings
+
+52
+00:02:55,170 --> 00:02:58,160
+that are already in
+this dictionary?
+
+53
+00:02:58,160 --> 00:03:03,200
+So, for instance, if we're going
+to match the pattern x,
+
+54
+00:03:03,200 --> 00:03:18,080
+y, y, x against the data a, b,
+b, a subject to a dictionary,
+
+55
+00:03:18,080 --> 00:03:22,010
+that says x equals a.
+
+56
+00:03:22,010 --> 00:03:25,260
+Then the matcher would say,
+yes, that's consistent.
+
+57
+00:03:25,260 --> 00:03:28,410
+These match, and it's consistent
+with what's in the
+
+58
+00:03:28,410 --> 00:03:30,320
+dictionary to say
+that x equals a.
+
+59
+00:03:30,320 --> 00:03:34,810
+And the result of the match is
+the extended dictionary that
+
+60
+00:03:34,810 --> 00:03:39,490
+says x equals a and
+y equals b.
+
+61
+00:03:39,490 --> 00:03:42,860
+So a matcher takes in pattern
+data dictionary, puts out an
+
+62
+00:03:42,860 --> 00:03:45,590
+extended dictionary if it
+matches, or if it doesn't
+
+63
+00:03:45,590 --> 00:03:46,840
+match, says that it fails.
+
+64
+00:03:46,840 --> 00:03:51,620
+So, for example, if I use the
+same pattern here, if I say
+
+65
+00:03:51,620 --> 00:04:02,450
+this x, y, y, x match a, b, b, a
+with the dictionary y equals
+
+66
+00:04:02,450 --> 00:04:06,665
+a, then the matcher would
+put out fail.
+
+67
+00:04:06,665 --> 00:04:12,150
+
+
+68
+00:04:12,150 --> 00:04:15,100
+Well, you've already seen the
+code for a pattern matcher so
+
+69
+00:04:15,100 --> 00:04:19,040
+I'm not going to go over it, but
+it's the same thing we've
+
+70
+00:04:19,040 --> 00:04:21,190
+been doing before.
+
+71
+00:04:21,190 --> 00:04:23,220
+You saw that in the system
+on rule-based control.
+
+72
+00:04:23,220 --> 00:04:24,950
+It's essentially the
+same matcher.
+
+73
+00:04:24,950 --> 00:04:28,415
+In fact, I think the syntax is
+a little bit simpler because
+
+74
+00:04:28,415 --> 00:04:30,490
+we're not worrying about
+arbitrary constants and
+
+75
+00:04:30,490 --> 00:04:31,400
+expressions and things.
+
+76
+00:04:31,400 --> 00:04:32,690
+There's just variables
+and constants.
+
+77
+00:04:32,690 --> 00:04:35,790
+
+
+78
+00:04:35,790 --> 00:04:39,610
+OK, well, given that, what's
+a primitive query?
+
+79
+00:04:39,610 --> 00:04:42,970
+
+
+80
+00:04:42,970 --> 00:04:46,720
+Primitive query is going to be
+a rather complicated thing.
+
+81
+00:04:46,720 --> 00:04:48,100
+It's going to be--
+
+82
+00:04:48,100 --> 00:05:03,490
+let's think about the query
+job of x is d dot y.
+
+83
+00:05:03,490 --> 00:05:06,850
+
+
+84
+00:05:06,850 --> 00:05:09,400
+That's a query we
+might type in.
+
+85
+00:05:09,400 --> 00:05:11,095
+That's going to be implemented
+in the system.
+
+86
+00:05:11,095 --> 00:05:14,270
+
+
+87
+00:05:14,270 --> 00:05:15,700
+We'll think of it as
+this little box.
+
+88
+00:05:15,700 --> 00:05:18,880
+Here's the primitive query.
+
+89
+00:05:18,880 --> 00:05:32,070
+What this little box is going
+to do is take in two streams
+
+90
+00:05:32,070 --> 00:05:34,030
+and put out a stream.
+
+91
+00:05:34,030 --> 00:05:37,310
+So the shape of a primitive
+query is that it's a thing
+
+92
+00:05:37,310 --> 00:05:41,120
+where two streams come in
+and one stream goes out.
+
+93
+00:05:41,120 --> 00:05:43,240
+What these streams are
+going to be is
+
+94
+00:05:43,240 --> 00:05:45,925
+down here is the database.
+
+95
+00:05:45,925 --> 00:05:51,600
+
+
+96
+00:05:51,600 --> 00:05:56,180
+So we imagine all the things
+in the database sort of
+
+97
+00:05:56,180 --> 00:06:00,330
+sitting there in a stream and
+this thing sucks on them.
+
+98
+00:06:00,330 --> 00:06:02,800
+So what are some things that
+might be in the database?
+
+99
+00:06:02,800 --> 00:06:22,440
+Oh, job of Alyssa is
+something and some
+
+100
+00:06:22,440 --> 00:06:25,770
+other job is something.
+
+101
+00:06:25,770 --> 00:06:29,800
+So imagine all of the facts in
+the database sitting there in
+
+102
+00:06:29,800 --> 00:06:32,040
+the stream.
+
+103
+00:06:32,040 --> 00:06:33,400
+That's what comes in here.
+
+104
+00:06:33,400 --> 00:06:38,510
+What comes in here is a stream
+of dictionaries.
+
+105
+00:06:38,510 --> 00:06:48,855
+So one particular dictionary
+might say y equals programmer.
+
+106
+00:06:48,855 --> 00:06:55,470
+
+
+107
+00:06:55,470 --> 00:06:59,170
+Now, what the query does when
+it gets in a dictionary from
+
+108
+00:06:59,170 --> 00:07:06,090
+this stream, it finds all
+possible ways of matching the
+
+109
+00:07:06,090 --> 00:07:11,390
+query against whatever is coming
+in from the database.
+
+110
+00:07:11,390 --> 00:07:15,420
+It looks at the query as a
+pattern, matches it against
+
+111
+00:07:15,420 --> 00:07:20,870
+any fact from the database or
+all possible ways of finding
+
+112
+00:07:20,870 --> 00:07:24,830
+and matching the database with
+respect to this dictionary
+
+113
+00:07:24,830 --> 00:07:27,550
+that's coming in.
+
+114
+00:07:27,550 --> 00:07:30,940
+So for each fact in the
+database, it calls the matcher
+
+115
+00:07:30,940 --> 00:07:35,110
+using the pattern, fact,
+and dictionary.
+
+116
+00:07:35,110 --> 00:07:38,950
+And every time it gets a good
+match, it puts out the
+
+117
+00:07:38,950 --> 00:07:40,420
+extended dictionary.
+
+118
+00:07:40,420 --> 00:07:44,610
+So, for example, if this one
+comes in and it finds a match,
+
+119
+00:07:44,610 --> 00:07:48,710
+out will come a dictionary that
+in this case will have y
+
+120
+00:07:48,710 --> 00:07:52,970
+equals programmer and
+x equals something.
+
+121
+00:07:52,970 --> 00:07:56,740
+
+
+122
+00:07:56,740 --> 00:07:59,410
+y is programmer, x is
+something, and d
+
+123
+00:07:59,410 --> 00:08:01,430
+is whatever it found.
+
+124
+00:08:01,430 --> 00:08:03,520
+And that's all.
+
+125
+00:08:03,520 --> 00:08:07,240
+And, of course, it's going to
+try this for every fact in the
+
+126
+00:08:07,240 --> 00:08:07,980
+dictionary.
+
+127
+00:08:07,980 --> 00:08:09,250
+So it might find lots of them.
+
+128
+00:08:09,250 --> 00:08:14,110
+It might find another one that
+says y equals programmer and x
+
+129
+00:08:14,110 --> 00:08:16,355
+equals, and d equals.
+
+130
+00:08:16,355 --> 00:08:20,040
+
+
+131
+00:08:20,040 --> 00:08:22,750
+So for one frame coming
+in, it might put out--
+
+132
+00:08:22,750 --> 00:08:24,600
+for one dictionary coming in,
+it might put out a lot of
+
+133
+00:08:24,600 --> 00:08:30,470
+dictionaries, or it might
+put out none.
+
+134
+00:08:30,470 --> 00:08:34,620
+It might have something
+that wouldn't match
+
+135
+00:08:34,620 --> 00:08:39,320
+like x equals FOO.
+
+136
+00:08:39,320 --> 00:08:42,730
+This one might not match
+anything in which case nothing
+
+137
+00:08:42,730 --> 00:08:47,510
+will go into this stream
+corresponding to this frame.
+
+138
+00:08:47,510 --> 00:08:53,560
+Or what you might do is put in
+an empty frame, and an empty
+
+139
+00:08:53,560 --> 00:08:55,905
+frame says try matching
+all ways--
+
+140
+00:08:55,905 --> 00:08:59,930
+
+
+141
+00:08:59,930 --> 00:09:02,880
+find all possible ways of
+matching the query against
+
+142
+00:09:02,880 --> 00:09:05,470
+something in the database
+subject to no previous
+
+143
+00:09:05,470 --> 00:09:07,570
+restrictions.
+
+144
+00:09:07,570 --> 00:09:10,620
+And if you think about what that
+means, that's just the
+
+145
+00:09:10,620 --> 00:09:13,980
+computation that's done when you
+type in a query right off.
+
+146
+00:09:13,980 --> 00:09:16,650
+It tries to find all matches.
+
+147
+00:09:16,650 --> 00:09:19,370
+So a primitive query sets
+up this mechanism.
+
+148
+00:09:19,370 --> 00:09:23,920
+And what the language does, when
+you type in the query at
+
+149
+00:09:23,920 --> 00:09:27,440
+the top level, it takes this
+mechanism, feeds in one single
+
+150
+00:09:27,440 --> 00:09:33,130
+empty dictionary, and then for
+each thing that comes out
+
+151
+00:09:33,130 --> 00:09:39,330
+takes the original query and
+instantiates the result with
+
+152
+00:09:39,330 --> 00:09:41,810
+all the different dictionaries,
+producing a new
+
+153
+00:09:41,810 --> 00:09:44,990
+stream of instantiated
+patterns here.
+
+154
+00:09:44,990 --> 00:09:48,170
+And that's what gets printed
+on the terminal.
+
+155
+00:09:48,170 --> 00:09:53,510
+That's the basic mechanism
+going on there.
+
+156
+00:09:53,510 --> 00:09:56,870
+Well, why is that
+so complicated?
+
+157
+00:09:56,870 --> 00:10:00,310
+You probably can think of a lot
+simpler ways to arrange
+
+158
+00:10:00,310 --> 00:10:03,010
+this match for a primitive query
+rather than having all
+
+159
+00:10:03,010 --> 00:10:04,725
+of these streams floating
+around.
+
+160
+00:10:04,725 --> 00:10:07,290
+And the answer is--
+
+161
+00:10:07,290 --> 00:10:10,860
+you probably guess already.
+
+162
+00:10:10,860 --> 00:10:15,660
+The answer is this thing extends
+elegantly to implement
+
+163
+00:10:15,660 --> 00:10:17,790
+the means of combination.
+
+164
+00:10:17,790 --> 00:10:22,470
+So, for instance, suppose I
+don't only want to do this.
+
+165
+00:10:22,470 --> 00:10:27,230
+I don't want to say who to be
+everybody's job description.
+
+166
+00:10:27,230 --> 00:10:39,140
+Suppose I want to say AND the
+job of x is d dot y and the
+
+167
+00:10:39,140 --> 00:10:48,800
+supervisor of x is z.
+
+168
+00:10:48,800 --> 00:10:52,550
+Now, supervisor of x is z is
+going to be another primitive
+
+169
+00:10:52,550 --> 00:10:57,830
+query that has the same shape
+to take in a stream of data
+
+170
+00:10:57,830 --> 00:11:02,570
+objects, a stream of initial
+dictionaries, which are the
+
+171
+00:11:02,570 --> 00:11:05,930
+restrictions to try and use when
+you match, and it's going
+
+172
+00:11:05,930 --> 00:11:08,700
+to put out a stream
+of dictionaries.
+
+173
+00:11:08,700 --> 00:11:11,680
+So that's what this primitive
+query looks like.
+
+174
+00:11:11,680 --> 00:11:12,910
+And how do I implement
+the AND?
+
+175
+00:11:12,910 --> 00:11:13,450
+Well, it's simple.
+
+176
+00:11:13,450 --> 00:11:14,880
+I just hook them together.
+
+177
+00:11:14,880 --> 00:11:17,790
+I take the output of this one,
+and I put that to the
+
+178
+00:11:17,790 --> 00:11:19,830
+input of that one.
+
+179
+00:11:19,830 --> 00:11:21,545
+And I take the dictionary
+here and I fan it out.
+
+180
+00:11:21,545 --> 00:11:26,570
+
+
+181
+00:11:26,570 --> 00:11:29,610
+And then you see how that's
+going to work, because what's
+
+182
+00:11:29,610 --> 00:11:32,820
+going to happen is a frame will
+now come in here, which
+
+183
+00:11:32,820 --> 00:11:37,920
+has a binding for x, y, and d.
+
+184
+00:11:37,920 --> 00:11:40,030
+And then when this one gets
+it, it'll say, oh, gee,
+
+185
+00:11:40,030 --> 00:11:45,530
+subject to these restrictions,
+which now already have values
+
+186
+00:11:45,530 --> 00:11:52,340
+in the dictionary for y and
+x and d, it looks in the
+
+187
+00:11:52,340 --> 00:11:56,080
+database and says, gee, can I
+find any supervisor facts?
+
+188
+00:11:56,080 --> 00:12:00,120
+And if it finds any, out will
+come dictionaries which have
+
+189
+00:12:00,120 --> 00:12:09,340
+bindings for y and x
+and d and z now.
+
+190
+00:12:09,340 --> 00:12:12,070
+
+
+191
+00:12:12,070 --> 00:12:16,430
+And then notice that because the
+frames coming in here have
+
+192
+00:12:16,430 --> 00:12:19,440
+these restrictions, that's the
+thing that assures that when
+
+193
+00:12:19,440 --> 00:12:26,470
+you do the AND, this x will mean
+the same thing as that x.
+
+194
+00:12:26,470 --> 00:12:30,520
+Because by the time something
+comes floating in here, x has
+
+195
+00:12:30,520 --> 00:12:34,460
+a value that you have to match
+against consistently.
+
+196
+00:12:34,460 --> 00:12:36,250
+And then you remember from the
+code from the matcher, there
+
+197
+00:12:36,250 --> 00:12:38,570
+was something in the way the
+matcher did dictionaries that
+
+198
+00:12:38,570 --> 00:12:40,710
+arrange consistent matches.
+
+199
+00:12:40,710 --> 00:12:44,260
+So there's AND.
+
+200
+00:12:44,260 --> 00:12:48,570
+The important point to notice
+is the general shape.
+
+201
+00:12:48,570 --> 00:12:52,600
+Look at what happened: the AND
+of two queries, say, P and Q.
+
+202
+00:12:52,600 --> 00:13:00,465
+Here's P and Q. The AND
+of two queries, well,
+
+203
+00:13:00,465 --> 00:13:01,190
+it looks like this.
+
+204
+00:13:01,190 --> 00:13:05,120
+Each query takes in a stream
+from the database, a stream of
+
+205
+00:13:05,120 --> 00:13:10,230
+inputs, and puts out a
+stream of outputs.
+
+206
+00:13:10,230 --> 00:13:14,320
+And the important point to
+notice is that if I draw a box
+
+207
+00:13:14,320 --> 00:13:26,500
+around this thing and say this
+is AND of P and Q, then that
+
+208
+00:13:26,500 --> 00:13:32,360
+box has exactly the same
+overall shape.
+
+209
+00:13:32,360 --> 00:13:34,200
+It's something that takes in
+a stream from the database.
+
+210
+00:13:34,200 --> 00:13:37,020
+Here it's going to get fanned
+out inside, but from the
+
+211
+00:13:37,020 --> 00:13:38,160
+outside you don't see that.
+
+212
+00:13:38,160 --> 00:13:42,230
+It takes an input stream and
+puts out an output stream.
+
+213
+00:13:42,230 --> 00:13:43,570
+So this is AND.
+
+214
+00:13:43,570 --> 00:13:46,020
+And then similarly, OR
+would look like this.
+
+215
+00:13:46,020 --> 00:13:48,030
+OR would--
+
+216
+00:13:48,030 --> 00:13:49,840
+although I didn't show
+you examples of OR.
+
+217
+00:13:49,840 --> 00:13:55,970
+OR would say can I find all ways
+of matching P or Q. So I
+
+218
+00:13:55,970 --> 00:13:58,070
+have P and Q. Each will
+have their shape.
+
+219
+00:13:58,070 --> 00:14:04,460
+
+
+220
+00:14:04,460 --> 00:14:08,720
+And the way OR is implemented
+is I'll
+
+221
+00:14:08,720 --> 00:14:12,500
+take my database stream.
+
+222
+00:14:12,500 --> 00:14:13,490
+I'll fan it out.
+
+223
+00:14:13,490 --> 00:14:19,870
+I'll put one into P and one into
+Q. I'll take my initial
+
+224
+00:14:19,870 --> 00:14:21,980
+query stream coming
+in and fan it out.
+
+225
+00:14:21,980 --> 00:14:26,750
+
+
+226
+00:14:26,750 --> 00:14:29,460
+So I'll look at all the answers
+I might get from P and
+
+227
+00:14:29,460 --> 00:14:32,950
+all the answers I might get
+from Q, and I'll put them
+
+228
+00:14:32,950 --> 00:14:35,280
+through some sort of thing that
+appends them or merges
+
+229
+00:14:35,280 --> 00:14:41,080
+the result into one stream, and
+that's what will come out.
+
+230
+00:14:41,080 --> 00:14:48,240
+And this whole thing from
+the outside is OR.
+
+231
+00:14:48,240 --> 00:14:52,350
+
+
+232
+00:14:52,350 --> 00:14:55,540
+And again, you see it has the
+same overall shape when looked
+
+233
+00:14:55,540 --> 00:14:56,790
+at from the outside.
+
+234
+00:14:56,790 --> 00:15:01,000
+
+
+235
+00:15:01,000 --> 00:15:02,020
+What's NOT?
+
+236
+00:15:02,020 --> 00:15:04,310
+NOT works kind of
+the same way.
+
+237
+00:15:04,310 --> 00:15:14,690
+If I have some query P, I take
+the primitive query for P.
+
+238
+00:15:14,690 --> 00:15:19,600
+Here, I'm going to implement NOT
+P. And NOT's just going to
+
+239
+00:15:19,600 --> 00:15:20,720
+act as a filter.
+
+240
+00:15:20,720 --> 00:15:27,050
+I'll take in the database and
+my original stream of
+
+241
+00:15:27,050 --> 00:15:32,210
+dictionaries coming in, and what
+NOT P will do is it will
+
+242
+00:15:32,210 --> 00:15:39,020
+filter these guys.
+
+243
+00:15:39,020 --> 00:15:41,850
+And the way it will filter it,
+it will say when I get in a
+
+244
+00:15:41,850 --> 00:15:45,540
+dictionary here, I'll find all
+the matches, and if I find
+
+245
+00:15:45,540 --> 00:15:47,460
+any, I'll throw it away.
+
+246
+00:15:47,460 --> 00:15:49,670
+And if I don't find any matches
+to something coming in
+
+247
+00:15:49,670 --> 00:15:52,500
+here, I'll just pass
+that through, so
+
+248
+00:15:52,500 --> 00:15:55,560
+NOT is a pure filter.
+
+249
+00:15:55,560 --> 00:15:56,890
+So AND is--
+
+250
+00:15:56,890 --> 00:15:59,090
+think of these sort
+of electoral
+
+251
+00:15:59,090 --> 00:15:59,980
+resistors or something.
+
+252
+00:15:59,980 --> 00:16:04,960
+AND is series combination and
+OR is parallel combination.
+
+253
+00:16:04,960 --> 00:16:06,780
+And then NOT is not going
+to extend any
+
+254
+00:16:06,780 --> 00:16:07,460
+dictionaries at all.
+
+255
+00:16:07,460 --> 00:16:08,750
+It's just going to filter it.
+
+256
+00:16:08,750 --> 00:16:10,220
+It's going to throw away
+the ones for which it
+
+257
+00:16:10,220 --> 00:16:12,640
+finds a way to match.
+
+258
+00:16:12,640 --> 00:16:14,540
+And list value is sort
+of the same way.
+
+259
+00:16:14,540 --> 00:16:16,600
+The filter's a little
+more complicated.
+
+260
+00:16:16,600 --> 00:16:19,640
+It applies to predicate.
+
+261
+00:16:19,640 --> 00:16:22,610
+The major point to notice here,
+and it's a major point
+
+262
+00:16:22,610 --> 00:16:24,980
+we've looked at before, is
+this idea of closure.
+
+263
+00:16:24,980 --> 00:16:28,490
+
+
+264
+00:16:28,490 --> 00:16:32,280
+The things that we build as a
+means of combination have the
+
+265
+00:16:32,280 --> 00:16:36,470
+same overall structure
+as the primitive
+
+266
+00:16:36,470 --> 00:16:39,750
+things that we're combining.
+
+267
+00:16:39,750 --> 00:16:42,950
+So the AND of two things when
+looked at from the outside has
+
+268
+00:16:42,950 --> 00:16:44,630
+the same shape.
+
+269
+00:16:44,630 --> 00:16:48,790
+And what that means is that this
+box here could be an AND
+
+270
+00:16:48,790 --> 00:16:51,560
+or an OR or a NOT or something
+because it has the same shape
+
+271
+00:16:51,560 --> 00:16:54,950
+to interface to the
+larger things.
+
+272
+00:16:54,950 --> 00:16:57,370
+It's the same thing that allowed
+us to get complexity
+
+273
+00:16:57,370 --> 00:17:00,980
+in the Escher picture language
+or allows you to immediately
+
+274
+00:17:00,980 --> 00:17:04,170
+build up these complicated
+structures just out of pairs.
+
+275
+00:17:04,170 --> 00:17:06,280
+It's closure.
+
+276
+00:17:06,280 --> 00:17:10,920
+And that's the thing that
+allowed me to do what by now
+
+277
+00:17:10,920 --> 00:17:12,829
+you took for granted when I
+said, gee, there's a query
+
+278
+00:17:12,829 --> 00:17:15,369
+which is AND of job and salary,
+and I said, oh,
+
+279
+00:17:15,369 --> 00:17:17,190
+there's another one,
+which is AND of
+
+280
+00:17:17,190 --> 00:17:19,260
+job, a NOT of something.
+
+281
+00:17:19,260 --> 00:17:22,185
+The fact that I can do that is
+a direct consequence of this
+
+282
+00:17:22,185 --> 00:17:25,230
+closure principle.
+
+283
+00:17:25,230 --> 00:17:29,520
+OK, let's break and
+then we'll go on.
+
+284
+00:17:29,520 --> 00:17:30,710
+AUDIENCE: Where does the
+dictionary come from?
+
+285
+00:17:30,710 --> 00:17:35,140
+PROFESSOR: The dictionary
+comes initially from
+
+286
+00:17:35,140 --> 00:17:36,030
+what you type in.
+
+287
+00:17:36,030 --> 00:17:40,390
+So when you start this up, the
+first thing it does is set up
+
+288
+00:17:40,390 --> 00:17:41,090
+this whole structure.
+
+289
+00:17:41,090 --> 00:17:45,000
+It puts in one empty
+dictionary.
+
+290
+00:17:45,000 --> 00:17:48,560
+And if all you have is one
+primitive query, then what
+
+291
+00:17:48,560 --> 00:17:50,330
+will come out is a bunch
+of dictionaries with
+
+292
+00:17:50,330 --> 00:17:52,310
+things filled in.
+
+293
+00:17:52,310 --> 00:17:55,330
+The general situation that I
+have here is when this is in
+
+294
+00:17:55,330 --> 00:17:59,710
+the middle of some nest
+of combined things.
+
+295
+00:17:59,710 --> 00:18:02,380
+
+
+296
+00:18:02,380 --> 00:18:03,790
+Let's look at the picture
+over here.
+
+297
+00:18:03,790 --> 00:18:06,730
+This supervisor query gets
+in some dictionary.
+
+298
+00:18:06,730 --> 00:18:08,730
+Where did this one come from?
+
+299
+00:18:08,730 --> 00:18:13,480
+This dictionary came from the
+fact that I'm looking at the
+
+300
+00:18:13,480 --> 00:18:16,260
+output of this primitive
+query.
+
+301
+00:18:16,260 --> 00:18:20,370
+So maybe to be very specific,
+if I literally typed in just
+
+302
+00:18:20,370 --> 00:18:23,820
+this query at the top level,
+this AND, what would actually
+
+303
+00:18:23,820 --> 00:18:26,400
+happen is it would build this
+structure and start up this
+
+304
+00:18:26,400 --> 00:18:31,770
+whole thing with one
+empty dictionary.
+
+305
+00:18:31,770 --> 00:18:33,850
+And now this one would process,
+and a whole bunch of
+
+306
+00:18:33,850 --> 00:18:38,640
+dictionaries would come out with
+x, y's and d's in them.
+
+307
+00:18:38,640 --> 00:18:40,190
+Run it through this one.
+
+308
+00:18:40,190 --> 00:18:42,160
+So now that's the input
+to this one.
+
+309
+00:18:42,160 --> 00:18:45,040
+This one would now put
+out some other stuff.
+
+310
+00:18:45,040 --> 00:18:50,110
+And if this itself were buried
+in some larger thing, like an
+
+311
+00:18:50,110 --> 00:18:54,860
+OR of something, then
+that would go feed
+
+312
+00:18:54,860 --> 00:18:56,110
+into the next one.
+
+313
+00:18:56,110 --> 00:18:58,560
+
+
+314
+00:18:58,560 --> 00:19:00,780
+So you initially get only one
+empty dictionary when you
+
+315
+00:19:00,780 --> 00:19:03,380
+start it, but as you're in the
+middle of processing these
+
+316
+00:19:03,380 --> 00:19:05,640
+compounds things, that's where
+these cascades of dictionaries
+
+317
+00:19:05,640 --> 00:19:07,660
+start getting generated.
+
+318
+00:19:07,660 --> 00:19:11,030
+AUDIENCE: Dictionaries only
+come about as a result of
+
+319
+00:19:11,030 --> 00:19:12,280
+using the queries?
+
+320
+00:19:12,280 --> 00:19:15,120
+
+
+321
+00:19:15,120 --> 00:19:18,280
+Or do they become--
+
+322
+00:19:18,280 --> 00:19:23,220
+do they stay someplace in space
+like the database does?
+
+323
+00:19:23,220 --> 00:19:24,980
+Are these temporary items?
+
+324
+00:19:24,980 --> 00:19:28,030
+PROFESSOR: They're created
+temporarily in the matcher.
+
+325
+00:19:28,030 --> 00:19:29,880
+Really, they're someplace
+in storage.
+
+326
+00:19:29,880 --> 00:19:32,430
+Initially, someone creates
+a thing called the empty
+
+327
+00:19:32,430 --> 00:19:36,740
+dictionary that gets initially
+fed to this match procedure,
+
+328
+00:19:36,740 --> 00:19:39,150
+and then the match procedure
+builds some dictionaries, and
+
+329
+00:19:39,150 --> 00:19:40,950
+they get passed on and on.
+
+330
+00:19:40,950 --> 00:19:43,526
+AUDIENCE: OK, so they'll
+go way after the match?
+
+331
+00:19:43,526 --> 00:19:44,680
+PROFESSOR: They'll go
+away when no one
+
+332
+00:19:44,680 --> 00:19:45,930
+needs them again, yeah.
+
+333
+00:19:45,930 --> 00:19:51,900
+
+
+334
+00:19:51,900 --> 00:19:54,230
+AUDIENCE: It appears that the
+AND performs some redundant
+
+335
+00:19:54,230 --> 00:19:56,050
+searches of the database.
+
+336
+00:19:56,050 --> 00:19:58,660
+If the first clause matched,
+let's say, the third element
+
+337
+00:19:58,660 --> 00:20:01,820
+and not on the first two
+elements, the second clause is
+
+338
+00:20:01,820 --> 00:20:04,890
+going to look at those first two
+elements again, discarding
+
+339
+00:20:04,890 --> 00:20:06,700
+them because they don't match.
+
+340
+00:20:06,700 --> 00:20:10,000
+The match is already
+in the dictionary.
+
+341
+00:20:10,000 --> 00:20:12,920
+Would it makes sense to carry
+the data element from the
+
+342
+00:20:12,920 --> 00:20:14,450
+database along with
+the dictionary?
+
+343
+00:20:14,450 --> 00:20:17,120
+
+
+344
+00:20:17,120 --> 00:20:18,550
+PROFESSOR: Well, in general,
+there are other ways to
+
+345
+00:20:18,550 --> 00:20:21,220
+arrange this search, and
+there's some analysis
+
+346
+00:20:21,220 --> 00:20:21,740
+that you can do.
+
+347
+00:20:21,740 --> 00:20:24,600
+I think there's a problem in the
+book, which talks about a
+
+348
+00:20:24,600 --> 00:20:27,680
+different way that you can
+cascade AND to eliminate
+
+349
+00:20:27,680 --> 00:20:29,850
+various kinds of redundancies.
+
+350
+00:20:29,850 --> 00:20:31,380
+This one is meant to be--
+
+351
+00:20:31,380 --> 00:20:33,910
+was mainly meant to be very
+simple so you can see how they
+
+352
+00:20:33,910 --> 00:20:34,650
+fit together.
+
+353
+00:20:34,650 --> 00:20:35,380
+But you're quite right.
+
+354
+00:20:35,380 --> 00:20:38,370
+There are redundancies here
+that you can get rid of.
+
+355
+00:20:38,370 --> 00:20:41,190
+That's another reason why this
+language is somewhat slow.
+
+356
+00:20:41,190 --> 00:20:42,930
+There are a lot smarter
+things you can do.
+
+357
+00:20:42,930 --> 00:20:45,590
+We're just trying to show you
+a very simple, in principle,
+
+358
+00:20:45,590 --> 00:20:46,840
+implementation.
+
+359
+00:20:46,840 --> 00:20:51,220
+
+
+360
+00:20:51,220 --> 00:20:53,716
+AUDIENCE: Did you model this
+language on Prolog, or did it
+
+361
+00:20:53,716 --> 00:20:55,150
+just come out looking
+like Prolog?
+
+362
+00:20:55,150 --> 00:21:04,960
+
+
+363
+00:21:04,960 --> 00:21:06,380
+PROFESSOR: Well, Jerry insulted
+a whole bunch of
+
+364
+00:21:06,380 --> 00:21:08,750
+people yesterday, so I might
+as well say that the MIT
+
+365
+00:21:08,750 --> 00:21:11,460
+attitude towards Prolog is
+something that people did in
+
+366
+00:21:11,460 --> 00:21:15,030
+about 1971 and decided that it
+wasn't really the right thing
+
+367
+00:21:15,030 --> 00:21:16,120
+and stopped.
+
+368
+00:21:16,120 --> 00:21:22,640
+So we modeled this on the sort
+of natural way that this thing
+
+369
+00:21:22,640 --> 00:21:26,655
+was done in about 1971, except
+at that point, we didn't do it
+
+370
+00:21:26,655 --> 00:21:33,020
+with streams. After we were
+using it for about six months,
+
+371
+00:21:33,020 --> 00:21:35,360
+we discovered that it had all
+these problems, some of which
+
+372
+00:21:35,360 --> 00:21:37,330
+I'll talk about later.
+
+373
+00:21:37,330 --> 00:21:40,310
+And we said, gee, Prolog must
+have fixed those, and then we
+
+374
+00:21:40,310 --> 00:21:41,250
+found out that it didn't.
+
+375
+00:21:41,250 --> 00:21:43,460
+So this does about the
+same thing as Prolog.
+
+376
+00:21:43,460 --> 00:21:44,950
+AUDIENCE: Does Prolog
+use streams?
+
+377
+00:21:44,950 --> 00:21:46,200
+PROFESSOR: No.
+
+378
+00:21:46,200 --> 00:21:48,540
+
+
+379
+00:21:48,540 --> 00:21:51,040
+In how it behaves, it behaves
+a lot like Prolog.
+
+380
+00:21:51,040 --> 00:21:53,800
+Prolog uses a backtracking
+strategy.
+
+381
+00:21:53,800 --> 00:21:55,910
+But the other thing that's
+really good about Prolog that
+
+382
+00:21:55,910 --> 00:21:59,950
+makes it a usable thing is that
+there's a really very,
+
+383
+00:21:59,950 --> 00:22:04,830
+very well-engineered compiler
+technology that makes it run
+
+384
+00:22:04,830 --> 00:22:09,260
+fast. So although you saw the
+merge spitting out these
+
+385
+00:22:09,260 --> 00:22:13,080
+answers very, very slowly, a
+real Prolog will run very,
+
+386
+00:22:13,080 --> 00:22:16,800
+very fast. Because even though
+it's sort of doing this, the
+
+387
+00:22:16,800 --> 00:22:19,600
+real work that went into
+Prolog is a very, very
+
+388
+00:22:19,600 --> 00:22:20,850
+excellent compiler effort.
+
+389
+00:22:20,850 --> 00:22:24,460
+
+
+390
+00:22:24,460 --> 00:22:25,710
+Let's take a break.
+
+391
+00:22:25,710 --> 00:23:16,650
+
+
+392
+00:23:16,650 --> 00:23:20,410
+We've looked at the primitive
+queries and the ways that
+
+393
+00:23:20,410 --> 00:23:24,300
+streams are used to implement
+the means of combination: AND
+
+394
+00:23:24,300 --> 00:23:26,950
+and OR and NOT.
+
+395
+00:23:26,950 --> 00:23:29,580
+Now, let go on to the means
+of abstraction.
+
+396
+00:23:29,580 --> 00:23:31,280
+Remember, the means of
+abstraction in this
+
+397
+00:23:31,280 --> 00:23:32,570
+language are rules.
+
+398
+00:23:32,570 --> 00:23:35,150
+
+
+399
+00:23:35,150 --> 00:23:42,580
+So z is a boss in division d
+if there's some x who has a
+
+400
+00:23:42,580 --> 00:23:48,900
+job in division d and z is
+the supervisor of x.
+
+401
+00:23:48,900 --> 00:23:52,260
+That's what it means for
+someone to be a boss.
+
+402
+00:23:52,260 --> 00:23:54,780
+And in effect, if you think
+about what we're doing with
+
+403
+00:23:54,780 --> 00:23:58,660
+relation to this, there's the
+query we wrote-- the job of x
+
+404
+00:23:58,660 --> 00:24:02,150
+is in d and the supervisor
+of x is z--
+
+405
+00:24:02,150 --> 00:24:05,330
+what we in effect want to do
+is take this whole mess and
+
+406
+00:24:05,330 --> 00:24:24,070
+draw a box around it and say
+this whole thing inside the
+
+407
+00:24:24,070 --> 00:24:33,900
+box is boss of z
+in division d.
+
+408
+00:24:33,900 --> 00:24:35,250
+That's in effect what
+we want to do.
+
+409
+00:24:35,250 --> 00:24:38,720
+
+
+410
+00:24:38,720 --> 00:24:45,690
+So, for instance, if we've
+done that, and we want to
+
+411
+00:24:45,690 --> 00:24:49,410
+check whether or not it's true
+that Ben Bitdiddle is a boss
+
+412
+00:24:49,410 --> 00:25:00,730
+in the computer division, so if
+I want to say boss of Ben
+
+413
+00:25:00,730 --> 00:25:05,850
+Bitdiddle in the computer
+division, imagine typing that
+
+414
+00:25:05,850 --> 00:25:10,860
+in as query to the system, in
+effect what we want to do is
+
+415
+00:25:10,860 --> 00:25:28,920
+set up a dictionary here, which
+has z to Ben Bitdiddle
+
+416
+00:25:28,920 --> 00:25:33,045
+and d to computer.
+
+417
+00:25:33,045 --> 00:25:37,340
+
+
+418
+00:25:37,340 --> 00:25:38,720
+Where did that dictionary
+come from?
+
+419
+00:25:38,720 --> 00:25:40,710
+Let's look at the slide
+for one second.
+
+420
+00:25:40,710 --> 00:25:44,750
+That dictionary came from
+matching the query that said
+
+421
+00:25:44,750 --> 00:25:47,720
+boss of Ben Bitdiddle and
+computer onto the conclusion
+
+422
+00:25:47,720 --> 00:25:51,650
+of the rule: boss of z and d.
+
+423
+00:25:51,650 --> 00:25:54,190
+So we match the query to the
+conclusion of the rule.
+
+424
+00:25:54,190 --> 00:26:00,330
+That gives us a dictionary, and
+that's the thing that we
+
+425
+00:26:00,330 --> 00:26:03,180
+would now like to put into
+this whole big thing and
+
+426
+00:26:03,180 --> 00:26:06,670
+process and see if anything
+comes out the other side.
+
+427
+00:26:06,670 --> 00:26:11,330
+If anything comes out,
+it'll be true.
+
+428
+00:26:11,330 --> 00:26:12,370
+That's the basic idea.
+
+429
+00:26:12,370 --> 00:26:17,020
+So in general, the way we
+implement a rule is we match
+
+430
+00:26:17,020 --> 00:26:21,860
+the conclusion of the rule
+against something we might
+
+431
+00:26:21,860 --> 00:26:23,580
+want to check it's true.
+
+432
+00:26:23,580 --> 00:26:26,790
+That match gives us a
+dictionary, and with respect
+
+433
+00:26:26,790 --> 00:26:36,470
+to that dictionary, we process
+the body of the rule.
+
+434
+00:26:36,470 --> 00:26:40,110
+Well, that's really all
+there is, except for
+
+435
+00:26:40,110 --> 00:26:43,070
+two technical points.
+
+436
+00:26:43,070 --> 00:26:46,580
+The first technical point is
+that I might have said
+
+437
+00:26:46,580 --> 00:26:47,510
+something else.
+
+438
+00:26:47,510 --> 00:26:52,490
+I might have said who's the boss
+in the computer division?
+
+439
+00:26:52,490 --> 00:26:56,270
+So I might say boss of who
+in computer division.
+
+440
+00:26:56,270 --> 00:27:00,329
+
+
+441
+00:27:00,329 --> 00:27:03,920
+And if I did that, what I would
+really like to do in
+
+442
+00:27:03,920 --> 00:27:09,280
+effect is start up this
+dictionary with a match that
+
+443
+00:27:09,280 --> 00:27:17,370
+sort of says, well, d
+is computer and z is
+
+444
+00:27:17,370 --> 00:27:18,620
+whatever who is.
+
+445
+00:27:18,620 --> 00:27:21,700
+
+
+446
+00:27:21,700 --> 00:27:23,220
+And our matcher won't
+quite do that.
+
+447
+00:27:23,220 --> 00:27:28,580
+That's not quite matching
+a pattern against data.
+
+448
+00:27:28,580 --> 00:27:31,310
+It's matching two patterns and
+saying are they consistent or
+
+449
+00:27:31,310 --> 00:27:33,480
+not or what ways make
+them consistent.
+
+450
+00:27:33,480 --> 00:27:35,940
+In other words, what we need
+is not quite a pattern
+
+451
+00:27:35,940 --> 00:27:38,450
+matcher, but something
+a little bit more
+
+452
+00:27:38,450 --> 00:27:39,740
+general called a unifier.
+
+453
+00:27:39,740 --> 00:27:44,420
+
+
+454
+00:27:44,420 --> 00:27:47,190
+And a unifier is a slight
+generalization
+
+455
+00:27:47,190 --> 00:27:49,530
+of a pattern matcher.
+
+456
+00:27:49,530 --> 00:27:55,390
+What a unifier does is take two
+patterns and say what's
+
+457
+00:27:55,390 --> 00:27:59,020
+the most general thing you can
+substitute for the variables
+
+458
+00:27:59,020 --> 00:28:04,060
+in those two patterns to make
+them satisfy the pattern
+
+459
+00:28:04,060 --> 00:28:05,680
+simultaneously?
+
+460
+00:28:05,680 --> 00:28:08,900
+Let me give you an example.
+
+461
+00:28:08,900 --> 00:28:13,940
+If I have the pattern
+two-element list, which is x
+
+462
+00:28:13,940 --> 00:28:18,220
+and x, so I have a two-element
+list where both elements are
+
+463
+00:28:18,220 --> 00:28:20,670
+the same and otherwise I don't
+care what they are, and I
+
+464
+00:28:20,670 --> 00:28:23,790
+unify that against the pattern
+that says there's a
+
+465
+00:28:23,790 --> 00:28:27,010
+two-element list, and the first
+one is a and something
+
+466
+00:28:27,010 --> 00:28:33,830
+in c and the second one is a
+and b and z, then what the
+
+467
+00:28:33,830 --> 00:28:36,960
+unifier should tell me is, oh
+yeah, in that dictionary, x
+
+468
+00:28:36,960 --> 00:28:43,440
+has to be a, b, c, and y has
+to be d and z has to be c.
+
+469
+00:28:43,440 --> 00:28:45,660
+Those are the restrictions I'd
+have to put on the values of
+
+470
+00:28:45,660 --> 00:28:48,880
+x, y, and z to make these two
+unify, or in other words, to
+
+471
+00:28:48,880 --> 00:28:55,420
+make this match x and
+make this match x.
+
+472
+00:28:55,420 --> 00:28:58,540
+The unifier should be
+able to deduce that.
+
+473
+00:28:58,540 --> 00:28:59,730
+But the unifier may--
+
+474
+00:28:59,730 --> 00:29:01,080
+there are more complicated
+things.
+
+475
+00:29:01,080 --> 00:29:03,810
+I might have said something a
+little bit more complicated.
+
+476
+00:29:03,810 --> 00:29:07,170
+I might have said there's a list
+with two elements, and
+
+477
+00:29:07,170 --> 00:29:10,080
+they're both the same, and
+they should unify against
+
+478
+00:29:10,080 --> 00:29:12,650
+something of this form.
+
+479
+00:29:12,650 --> 00:29:16,890
+And the unifier should be able
+to deduce from that.
+
+480
+00:29:16,890 --> 00:29:19,570
+Like that y would have to be
+b. y would have to be b.
+
+481
+00:29:19,570 --> 00:29:24,340
+Because these two are the same,
+so y's got to be b.
+
+482
+00:29:24,340 --> 00:29:28,940
+And v here would have to be a.
+
+483
+00:29:28,940 --> 00:29:31,450
+And z and w can be anything,
+but they have
+
+484
+00:29:31,450 --> 00:29:32,700
+to be the same thing.
+
+485
+00:29:32,700 --> 00:29:35,710
+
+
+486
+00:29:35,710 --> 00:29:40,680
+And x would have to be b,
+followed by a, followed by
+
+487
+00:29:40,680 --> 00:29:44,680
+whatever w is or whatever
+z is, which is the same.
+
+488
+00:29:44,680 --> 00:29:48,260
+So you see, the unifier somehow
+has to deduce things
+
+489
+00:29:48,260 --> 00:29:50,880
+to unify these patterns.
+
+490
+00:29:50,880 --> 00:29:52,880
+So you might think there's some
+kind of magic deduction
+
+491
+00:29:52,880 --> 00:29:55,850
+going on, but there's not.
+
+492
+00:29:55,850 --> 00:29:59,100
+A unifier is basically a very
+simple modification of a
+
+493
+00:29:59,100 --> 00:30:00,150
+pattern matcher.
+
+494
+00:30:00,150 --> 00:30:02,530
+And if you look in the book,
+you'll see something like
+
+495
+00:30:02,530 --> 00:30:05,350
+three or four lines of code
+added to the pattern matcher
+
+496
+00:30:05,350 --> 00:30:08,280
+you just saw to handle
+the symmetric case.
+
+497
+00:30:08,280 --> 00:30:11,920
+Remember, the pattern matcher
+has a place where it says is
+
+498
+00:30:11,920 --> 00:30:14,980
+this variable matching
+a constant.
+
+499
+00:30:14,980 --> 00:30:16,420
+And if so, it checks
+in the dictionary.
+
+500
+00:30:16,420 --> 00:30:18,970
+There's only one other clause in
+the unifier, which says is
+
+501
+00:30:18,970 --> 00:30:22,760
+this variable matching a
+variable, in which case you go
+
+502
+00:30:22,760 --> 00:30:24,740
+look in the dictionary and see
+if that's consistent with
+
+503
+00:30:24,740 --> 00:30:27,030
+what's in the dictionary.
+
+504
+00:30:27,030 --> 00:30:31,450
+So all the, quote, deduction
+that's in this language, if
+
+505
+00:30:31,450 --> 00:30:33,780
+you sort of look at it, sort
+of sits in the rule
+
+506
+00:30:33,780 --> 00:30:37,220
+applications, which, if you
+look at that, sits in the
+
+507
+00:30:37,220 --> 00:30:42,500
+unifier, which, if you look at
+that under a microscope, sits
+
+508
+00:30:42,500 --> 00:30:45,260
+essentially in the
+pattern matcher.
+
+509
+00:30:45,260 --> 00:30:47,410
+There's no magic at all
+going on in there.
+
+510
+00:30:47,410 --> 00:30:51,930
+And the, quote, deduction that
+you see is just the fact that
+
+511
+00:30:51,930 --> 00:30:54,610
+there's this recursion,
+which is unwinding the
+
+512
+00:30:54,610 --> 00:30:56,030
+matches bit by bit.
+
+513
+00:30:56,030 --> 00:30:58,670
+So it looks like this thing is
+being very clever, but in
+
+514
+00:30:58,670 --> 00:31:02,140
+fact, it's not being
+very clever at all.
+
+515
+00:31:02,140 --> 00:31:03,420
+There are cases where a unifier
+
+516
+00:31:03,420 --> 00:31:04,880
+might have to be clever.
+
+517
+00:31:04,880 --> 00:31:06,130
+Let me show you one more.
+
+518
+00:31:06,130 --> 00:31:11,070
+
+
+519
+00:31:11,070 --> 00:31:17,530
+Suppose I want to unify a list
+of two elements, x and x, with
+
+520
+00:31:17,530 --> 00:31:24,370
+a thing that says it's y
+followed by a dot y.
+
+521
+00:31:24,370 --> 00:31:27,120
+Now, if you think of what that
+would have to mean, it would
+
+522
+00:31:27,120 --> 00:31:32,230
+have to mean that x had better
+be the same as y, but also x
+
+523
+00:31:32,230 --> 00:31:35,160
+had better be the same as a list
+whose first element is a
+
+524
+00:31:35,160 --> 00:31:37,330
+and whose rest is y.
+
+525
+00:31:37,330 --> 00:31:42,460
+And if you think about what that
+would have to mean, it
+
+526
+00:31:42,460 --> 00:31:44,710
+would have to mean that y is
+the infinite list of a's.
+
+527
+00:31:44,710 --> 00:31:47,500
+
+
+528
+00:31:47,500 --> 00:31:53,100
+In some sense, in order to do
+that unification, I have to
+
+529
+00:31:53,100 --> 00:32:01,840
+solve the fixed-point equation
+cons of a to y is equal to y.
+
+530
+00:32:01,840 --> 00:32:04,570
+
+
+531
+00:32:04,570 --> 00:32:07,290
+And in general, I wrote
+a very simple one.
+
+532
+00:32:07,290 --> 00:32:11,260
+Really doing unification might
+have to solve an arbitrary
+
+533
+00:32:11,260 --> 00:32:15,530
+fixed-point equation:
+f of y equals y.
+
+534
+00:32:15,530 --> 00:32:18,750
+And basically, you can't do that
+and make the thing finite
+
+535
+00:32:18,750 --> 00:32:20,570
+all the time.
+
+536
+00:32:20,570 --> 00:32:25,140
+So how does the logic language
+handle that?
+
+537
+00:32:25,140 --> 00:32:26,850
+The answer is it doesn't.
+
+538
+00:32:26,850 --> 00:32:28,730
+It just punts.
+
+539
+00:32:28,730 --> 00:32:32,280
+And there's a little check in
+the unifier, which says, oh,
+
+540
+00:32:32,280 --> 00:32:35,520
+is this one of the hard cases
+which when I go to match
+
+541
+00:32:35,520 --> 00:32:38,650
+things would involve solving
+a fixed-point equation?
+
+542
+00:32:38,650 --> 00:32:42,840
+And in this case, I will
+throw up my hands.
+
+543
+00:32:42,840 --> 00:32:47,990
+And if that check were not in
+there, what would happen?
+
+544
+00:32:47,990 --> 00:32:50,590
+In most cases is that the
+unifier would just go into an
+
+545
+00:32:50,590 --> 00:32:53,740
+infinite loop.
+
+546
+00:32:53,740 --> 00:32:56,800
+And other logic programming
+languages work like that.
+
+547
+00:32:56,800 --> 00:32:58,220
+So there's really no magic.
+
+548
+00:32:58,220 --> 00:33:00,100
+The easy case is done
+in a matcher.
+
+549
+00:33:00,100 --> 00:33:02,960
+The hard case is not
+done at all.
+
+550
+00:33:02,960 --> 00:33:05,115
+And that's about the state
+of this technology.
+
+551
+00:33:05,115 --> 00:33:12,840
+
+
+552
+00:33:12,840 --> 00:33:15,250
+Let me just say again formally
+how rules work now that I
+
+553
+00:33:15,250 --> 00:33:17,390
+talked about unifiers.
+
+554
+00:33:17,390 --> 00:33:25,260
+So the official definition is
+that to apply a rule, we--
+
+555
+00:33:25,260 --> 00:33:28,270
+well, let's start using some
+words we've used before.
+
+556
+00:33:28,270 --> 00:33:33,280
+Let's talk about sticking
+dictionaries into these big
+
+557
+00:33:33,280 --> 00:33:40,090
+boxes of query things as
+evaluating these large queries
+
+558
+00:33:40,090 --> 00:33:43,850
+relative to an environment
+or a frame.
+
+559
+00:33:43,850 --> 00:33:45,350
+So when you think of that
+dictionary, what's the
+
+560
+00:33:45,350 --> 00:33:46,720
+dictionary after all?
+
+561
+00:33:46,720 --> 00:33:48,180
+It's a bunch of meanings
+for symbols.
+
+562
+00:33:48,180 --> 00:33:51,800
+That's what we've been calling
+frames or environments.
+
+563
+00:33:51,800 --> 00:33:55,430
+What does it mean to do some
+processing relevant to an
+
+564
+00:33:55,430 --> 00:33:55,970
+environment?
+
+565
+00:33:55,970 --> 00:33:58,310
+That's what we've been
+calling evaluation.
+
+566
+00:33:58,310 --> 00:34:03,030
+So we can say the way that you
+apply a rule is to evaluate
+
+567
+00:34:03,030 --> 00:34:07,730
+the rule body relative to an
+environment that's formed by
+
+568
+00:34:07,730 --> 00:34:13,230
+unifying the rule conclusion
+with the given query.
+
+569
+00:34:13,230 --> 00:34:16,340
+And the thing I want you to
+notice is the complete formal
+
+570
+00:34:16,340 --> 00:34:20,760
+similarity to the net of
+circular evaluator or the
+
+571
+00:34:20,760 --> 00:34:21,630
+substitution model.
+
+572
+00:34:21,630 --> 00:34:27,100
+To apply a procedure, we
+evaluate the procedure body
+
+573
+00:34:27,100 --> 00:34:31,040
+relative to an environment
+that's formed by blinding the
+
+574
+00:34:31,040 --> 00:34:34,560
+procedure parameters
+to the arguments.
+
+575
+00:34:34,560 --> 00:34:36,760
+There's a complete formal
+similarity here between the
+
+576
+00:34:36,760 --> 00:34:40,870
+rules, rule application, and
+procedure application even
+
+577
+00:34:40,870 --> 00:34:43,650
+though these things are
+very, very different.
+
+578
+00:34:43,650 --> 00:34:47,290
+And again, you have the
+EVAL APPLY loop.
+
+579
+00:34:47,290 --> 00:34:49,445
+EVAL and APPLY.
+
+580
+00:34:49,445 --> 00:34:53,360
+
+
+581
+00:34:53,360 --> 00:34:57,050
+So in general, I might be
+processing some combined
+
+582
+00:34:57,050 --> 00:35:01,050
+expression that will turn into a
+rule application, which will
+
+583
+00:35:01,050 --> 00:35:03,090
+generate some dictionaries or
+frames or environments--
+
+584
+00:35:03,090 --> 00:35:05,360
+whatever you want to call them--
+from match, which will
+
+585
+00:35:05,360 --> 00:35:08,660
+then be the input to some big
+compound thing like this.
+
+586
+00:35:08,660 --> 00:35:13,580
+This has pieces of it and may
+have other rule applications.
+
+587
+00:35:13,580 --> 00:35:16,220
+And you have essentially the
+same cycle even though there's
+
+588
+00:35:16,220 --> 00:35:19,680
+nothing here at all that
+looks like procedures.
+
+589
+00:35:19,680 --> 00:35:22,120
+It really has to do with the
+fact you've built a language
+
+590
+00:35:22,120 --> 00:35:24,150
+whose means of combination
+and abstraction
+
+591
+00:35:24,150 --> 00:35:25,490
+unwind in certain ways.
+
+592
+00:35:25,490 --> 00:35:28,770
+
+
+593
+00:35:28,770 --> 00:35:33,840
+And then in general, what
+happens at the very top level,
+
+594
+00:35:33,840 --> 00:35:37,280
+you might have rules in your
+database also, so things in
+
+595
+00:35:37,280 --> 00:35:40,460
+this database might be rules.
+
+596
+00:35:40,460 --> 00:35:42,920
+There are ways to check
+that things are true.
+
+597
+00:35:42,920 --> 00:35:46,750
+So it might come in here and
+have to do a rule check.
+
+598
+00:35:46,750 --> 00:35:48,580
+And then there's some control
+structure which says, well,
+
+599
+00:35:48,580 --> 00:35:50,130
+you look at some rules, and
+you look at some data
+
+600
+00:35:50,130 --> 00:35:51,965
+elements, and you look at some
+rules and data elements, and
+
+601
+00:35:51,965 --> 00:35:53,350
+these fan out and out and out.
+
+602
+00:35:53,350 --> 00:35:56,520
+So it becomes essentially
+impossible to say what order
+
+603
+00:35:56,520 --> 00:35:59,300
+it's looking at these things in,
+whether it's breadth first
+
+604
+00:35:59,300 --> 00:36:00,245
+or depth first or anything.
+
+605
+00:36:00,245 --> 00:36:03,650
+And it's even more impossible
+because the actual order is
+
+606
+00:36:03,650 --> 00:36:08,900
+somehow buried in the delays of
+the streams. So what's very
+
+607
+00:36:08,900 --> 00:36:11,270
+hard to tell from this is the
+order in which it's scanned.
+
+608
+00:36:11,270 --> 00:36:13,330
+But what's true, because you're
+looking at the stream
+
+609
+00:36:13,330 --> 00:36:15,820
+view, is that all of them
+eventually get looked at.
+
+610
+00:36:15,820 --> 00:36:24,980
+
+
+611
+00:36:24,980 --> 00:36:28,150
+Let me just mention one tiny
+technical problem.
+
+612
+00:36:28,150 --> 00:36:37,530
+
+
+613
+00:36:37,530 --> 00:36:44,960
+Suppose I tried saying boss of
+y is computer, then a funny
+
+614
+00:36:44,960 --> 00:36:45,780
+thing would happen.
+
+615
+00:36:45,780 --> 00:36:53,680
+As I stuck a dictionary with
+y in here, I might get--
+
+616
+00:36:53,680 --> 00:36:59,350
+this y is not the same as that
+y, which was the other piece
+
+617
+00:36:59,350 --> 00:37:01,580
+of somebody's job description.
+
+618
+00:37:01,580 --> 00:37:04,380
+So if I really only did
+literally what I said, we'd
+
+619
+00:37:04,380 --> 00:37:09,990
+get some variable conflict
+problems. So I lied to you a
+
+620
+00:37:09,990 --> 00:37:10,930
+little bit.
+
+621
+00:37:10,930 --> 00:37:12,900
+Notice that problem is
+exactly a problem
+
+622
+00:37:12,900 --> 00:37:14,360
+we've run into before.
+
+623
+00:37:14,360 --> 00:37:20,505
+It is precisely the need for
+local variables in a language.
+
+624
+00:37:20,505 --> 00:37:22,490
+When I have the sum of
+squares, that x had
+
+625
+00:37:22,490 --> 00:37:24,960
+better not be that x.
+
+626
+00:37:24,960 --> 00:37:28,620
+That's exactly the same
+as this y had
+
+627
+00:37:28,620 --> 00:37:31,800
+better not be that y.
+
+628
+00:37:31,800 --> 00:37:33,100
+And we know how to solve that.
+
+629
+00:37:33,100 --> 00:37:34,730
+That was this whole environment
+model, and we
+
+630
+00:37:34,730 --> 00:37:37,710
+built chains of frames and all
+sorts of things like that.
+
+631
+00:37:37,710 --> 00:37:39,270
+There's a much more brutal
+way to solve it.
+
+632
+00:37:39,270 --> 00:37:41,730
+In the query language, we
+didn't even do that.
+
+633
+00:37:41,730 --> 00:37:43,540
+We did something completely
+brutal.
+
+634
+00:37:43,540 --> 00:37:48,520
+We said every time you apply a
+rule, rename consistently all
+
+635
+00:37:48,520 --> 00:37:51,100
+the variables in the rule to
+some new unique names that
+
+636
+00:37:51,100 --> 00:37:55,720
+won't conflict with anything.
+
+637
+00:37:55,720 --> 00:37:58,150
+That's conceptually simpler,
+but really brutal and not
+
+638
+00:37:58,150 --> 00:37:59,970
+particularly efficient.
+
+639
+00:37:59,970 --> 00:38:03,700
+But notice, we could have
+gotten rid of all of our
+
+640
+00:38:03,700 --> 00:38:08,030
+environment structures if we
+defined for procedures in Lisp
+
+641
+00:38:08,030 --> 00:38:09,180
+the same thing.
+
+642
+00:38:09,180 --> 00:38:10,580
+If every time we applied
+a procedure and did the
+
+643
+00:38:10,580 --> 00:38:13,410
+substitution model we renamed
+all the variables in the
+
+644
+00:38:13,410 --> 00:38:15,830
+procedure, then we never would
+have had to worry about local
+
+645
+00:38:15,830 --> 00:38:19,040
+variables because they
+would never arise.
+
+646
+00:38:19,040 --> 00:38:21,240
+OK, well, that would be
+inefficient, and it's
+
+647
+00:38:21,240 --> 00:38:23,870
+inefficient here in the query
+language, too, but we did it
+
+648
+00:38:23,870 --> 00:38:25,610
+to keep it simple.
+
+649
+00:38:25,610 --> 00:38:26,860
+Let's break for questions.
+
+650
+00:38:26,860 --> 00:38:30,880
+
+
+651
+00:38:30,880 --> 00:38:34,870
+AUDIENCE: When you started this
+section, you emphasized
+
+652
+00:38:34,870 --> 00:38:40,390
+how powerful our APPLY EVAL
+model was that we could use it
+
+653
+00:38:40,390 --> 00:38:41,170
+for any language.
+
+654
+00:38:41,170 --> 00:38:42,790
+And then you say we're going to
+have this language which is
+
+655
+00:38:42,790 --> 00:38:43,950
+so different.
+
+656
+00:38:43,950 --> 00:38:46,440
+It turns out that this language,
+as you just pointed
+
+657
+00:38:46,440 --> 00:38:47,880
+out, is very much the same.
+
+658
+00:38:47,880 --> 00:38:49,710
+I'm wondering if you're arguing
+that all languages end
+
+659
+00:38:49,710 --> 00:38:53,810
+up coming down to this you can
+apply a rule or apply a
+
+660
+00:38:53,810 --> 00:38:57,030
+procedure or some
+kind of apply?
+
+661
+00:38:57,030 --> 00:38:59,150
+PROFESSOR: I would say that
+pretty much any language where
+
+662
+00:38:59,150 --> 00:39:03,210
+you really are building up these
+means of combination and
+
+663
+00:39:03,210 --> 00:39:06,120
+giving them simpler names and
+you're saying anything of the
+
+664
+00:39:06,120 --> 00:39:10,430
+sort, like here's a general kind
+of expression, like how
+
+665
+00:39:10,430 --> 00:39:13,180
+to square something, almost
+anything that you
+
+666
+00:39:13,180 --> 00:39:14,880
+would call a procedure.
+
+667
+00:39:14,880 --> 00:39:16,360
+If that's got to have
+parts, you have to
+
+668
+00:39:16,360 --> 00:39:18,020
+unwind those parts.
+
+669
+00:39:18,020 --> 00:39:20,830
+You have to have some kind of
+organization which says when I
+
+670
+00:39:20,830 --> 00:39:24,892
+look at the abstract variables
+or tags or whatever you want
+
+671
+00:39:24,892 --> 00:39:28,490
+to call them that might stand
+for particular things, you
+
+672
+00:39:28,490 --> 00:39:29,720
+have to keep track of that,
+and that's going to be
+
+673
+00:39:29,720 --> 00:39:31,720
+something like an environment.
+
+674
+00:39:31,720 --> 00:39:34,670
+And then if you say this part
+can have parts which I have to
+
+675
+00:39:34,670 --> 00:39:37,440
+unwind, you've got to have
+something like this cycle.
+
+676
+00:39:37,440 --> 00:39:39,970
+
+
+677
+00:39:39,970 --> 00:39:44,000
+And lots and lots of languages
+have that character when they
+
+678
+00:39:44,000 --> 00:39:45,590
+sort of get put together
+in this way.
+
+679
+00:39:45,590 --> 00:39:47,610
+This language again really is
+different because there's
+
+680
+00:39:47,610 --> 00:39:50,690
+nothing like procedures
+on the outside.
+
+681
+00:39:50,690 --> 00:39:52,080
+When you go below the surface
+and you see the
+
+682
+00:39:52,080 --> 00:39:54,870
+implementation, of course, it
+starts looking the same.
+
+683
+00:39:54,870 --> 00:39:56,950
+But from the outside, it's a
+very different world view.
+
+684
+00:39:56,950 --> 00:39:58,650
+You're not computing functions
+of inputs.
+
+685
+00:39:58,650 --> 00:40:03,970
+
+
+686
+00:40:03,970 --> 00:40:07,920
+AUDIENCE: You mentioned earlier
+that when you build
+
+687
+00:40:07,920 --> 00:40:10,660
+all of these rules in pattern
+matcher and with the delayed
+
+688
+00:40:10,660 --> 00:40:13,900
+action of streams, you really
+have no way to know in what
+
+689
+00:40:13,900 --> 00:40:15,495
+order things are evaluated.
+
+690
+00:40:15,495 --> 00:40:15,940
+PROFESSOR: Right.
+
+691
+00:40:15,940 --> 00:40:19,470
+AUDIENCE: And that would
+indicate then that you should
+
+692
+00:40:19,470 --> 00:40:21,850
+only express declarative
+knowledge that's true for
+
+693
+00:40:21,850 --> 00:40:23,950
+all-time, no-time sequence
+built into it.
+
+694
+00:40:23,950 --> 00:40:27,440
+Otherwise, these things
+get all--
+
+695
+00:40:27,440 --> 00:40:28,490
+PROFESSOR: Yes.
+
+696
+00:40:28,490 --> 00:40:28,820
+Yes.
+
+697
+00:40:28,820 --> 00:40:32,100
+The question is this really is
+set up for doing declarative
+
+698
+00:40:32,100 --> 00:40:37,190
+knowledge, and as I presented
+it-- and I'll show you some of
+
+699
+00:40:37,190 --> 00:40:40,830
+the ugly warts under this
+after the break.
+
+700
+00:40:40,830 --> 00:40:43,070
+As I presented it, it's
+just doing logic.
+
+701
+00:40:43,070 --> 00:40:45,720
+And in principle, if it were
+logic, it wouldn't matter what
+
+702
+00:40:45,720 --> 00:40:48,840
+order it's getting done.
+
+703
+00:40:48,840 --> 00:40:52,840
+And it's quite true when you
+start doing things where you
+
+704
+00:40:52,840 --> 00:40:55,380
+have side effects like adding
+things to the database and
+
+705
+00:40:55,380 --> 00:40:59,990
+taking things out, and we'll see
+some others, you use that
+
+706
+00:40:59,990 --> 00:41:01,290
+kind of control.
+
+707
+00:41:01,290 --> 00:41:02,940
+So, for example, contrasting
+with Prolog.
+
+708
+00:41:02,940 --> 00:41:05,720
+Say Prolog has various features
+where you really
+
+709
+00:41:05,720 --> 00:41:09,640
+exploit the order
+of evaluation.
+
+710
+00:41:09,640 --> 00:41:11,770
+And people write Prolog
+programs that way.
+
+711
+00:41:11,770 --> 00:41:14,420
+That turns out to be very
+complicated in Prolog,
+
+712
+00:41:14,420 --> 00:41:15,940
+although if you're
+an expert Prolog
+
+713
+00:41:15,940 --> 00:41:18,590
+programmer, you can do it.
+
+714
+00:41:18,590 --> 00:41:20,210
+However, here I don't think
+you can do it at all.
+
+715
+00:41:20,210 --> 00:41:22,890
+It's very complicated because
+you really are giving up
+
+716
+00:41:22,890 --> 00:41:27,150
+control over any prearranged
+order of trying things.
+
+717
+00:41:27,150 --> 00:41:29,210
+AUDIENCE: Now, that would
+indicate then that you have a
+
+718
+00:41:29,210 --> 00:41:30,670
+functional mapping.
+
+719
+00:41:30,670 --> 00:41:34,870
+And when you started out this
+lecture, you said that we
+
+720
+00:41:34,870 --> 00:41:36,635
+express the declarative
+knowledge which is a relation,
+
+721
+00:41:36,635 --> 00:41:38,810
+and we don't talk about the
+inputs and the outputs.
+
+722
+00:41:38,810 --> 00:41:41,390
+
+
+723
+00:41:41,390 --> 00:41:43,370
+PROFESSOR: Well, there's a
+pun on functional, right?
+
+724
+00:41:43,370 --> 00:41:46,560
+There's function in the sense
+of no side effects and not
+
+725
+00:41:46,560 --> 00:41:48,700
+depending on what order
+is going on.
+
+726
+00:41:48,700 --> 00:41:50,720
+And then there's functional in
+the sense of mathematical
+
+727
+00:41:50,720 --> 00:41:52,220
+function, which means
+input and output.
+
+728
+00:41:52,220 --> 00:41:56,510
+And it's just that pun that
+you're making, I think.
+
+729
+00:41:56,510 --> 00:41:58,520
+AUDIENCE: I'm a little unclear
+on what you're doing with
+
+730
+00:41:58,520 --> 00:42:01,270
+these two statements, the
+two boss statements.
+
+731
+00:42:01,270 --> 00:42:06,416
+Is the first one building up
+the database and the second
+
+732
+00:42:06,416 --> 00:42:09,150
+one a query or--
+
+733
+00:42:09,150 --> 00:42:12,440
+PROFESSOR: OK, I'm sorry.
+
+734
+00:42:12,440 --> 00:42:14,130
+What I meant here, if I
+type something like
+
+735
+00:42:14,130 --> 00:42:16,200
+this in as a query--
+
+736
+00:42:16,200 --> 00:42:19,470
+I should have given an example
+way at the very beginning.
+
+737
+00:42:19,470 --> 00:42:25,100
+If I type in job, Ben Bitdiddle,
+computer wizard,
+
+738
+00:42:25,100 --> 00:42:28,570
+what the processing will do is
+if it finds a match, it'll
+
+739
+00:42:28,570 --> 00:42:31,600
+find a match to that exact
+thing, and it'll type out a
+
+740
+00:42:31,600 --> 00:42:34,220
+job, Ben Bitdiddle,
+computer wizard.
+
+741
+00:42:34,220 --> 00:42:37,400
+If it doesn't find a match,
+it won't find anything.
+
+742
+00:42:37,400 --> 00:42:40,100
+So what I should have said is
+the way you use the query
+
+743
+00:42:40,100 --> 00:42:43,610
+language to check whether
+something is true, remember,
+
+744
+00:42:43,610 --> 00:42:45,130
+that's one of the things
+you want to do in logic
+
+745
+00:42:45,130 --> 00:42:47,990
+programming, is you type in
+your query and either that
+
+746
+00:42:47,990 --> 00:42:50,680
+comes out or it doesn't.
+
+747
+00:42:50,680 --> 00:42:52,940
+So what I was trying to
+illustrate here, I wanted to
+
+748
+00:42:52,940 --> 00:42:55,220
+start with a very simple
+example before
+
+749
+00:42:55,220 --> 00:42:57,480
+talking about unifiers.
+
+750
+00:42:57,480 --> 00:43:00,260
+So what I should have said, if I
+just wanted to check whether
+
+751
+00:43:00,260 --> 00:43:02,820
+this is true, I could type that
+in and see if anything
+
+752
+00:43:02,820 --> 00:43:04,854
+came out
+
+753
+00:43:04,854 --> 00:43:06,290
+AUDIENCE: And then
+the second one--
+
+754
+00:43:06,290 --> 00:43:07,830
+PROFESSOR: The second one
+would be a real query.
+
+755
+00:43:07,830 --> 00:43:10,770
+AUDIENCE: A real query, yeah.
+
+756
+00:43:10,770 --> 00:43:12,380
+PROFESSOR: What would come out,
+see, it would go in here
+
+757
+00:43:12,380 --> 00:43:17,480
+say with FOO, and in would go
+frame that says z is bound to
+
+758
+00:43:17,480 --> 00:43:19,560
+who and d is bound
+to computer.
+
+759
+00:43:19,560 --> 00:43:21,400
+And this will pass through, and
+then by the time it got
+
+760
+00:43:21,400 --> 00:43:23,250
+out of here, who would
+pick up a binding.
+
+761
+00:43:23,250 --> 00:43:26,950
+
+
+762
+00:43:26,950 --> 00:43:31,950
+AUDIENCE: On the unifying thing
+there, I still am not
+
+763
+00:43:31,950 --> 00:43:36,460
+sure what happens
+with who and z.
+
+764
+00:43:36,460 --> 00:43:37,850
+If the unifying--
+
+765
+00:43:37,850 --> 00:43:39,490
+the rule here says--
+
+766
+00:43:39,490 --> 00:43:42,070
+
+
+767
+00:43:42,070 --> 00:43:44,920
+OK, so you say that you can't
+make question mark equal to
+
+768
+00:43:44,920 --> 00:43:46,260
+question mark who.
+
+769
+00:43:46,260 --> 00:43:46,410
+PROFESSOR: Right.
+
+770
+00:43:46,410 --> 00:43:48,360
+That's what the matcher
+can't do.
+
+771
+00:43:48,360 --> 00:43:52,550
+But what this will mean to a
+unifier is that there's an
+
+772
+00:43:52,550 --> 00:43:53,800
+environment with three
+variables.
+
+773
+00:43:53,800 --> 00:43:56,690
+
+
+774
+00:43:56,690 --> 00:43:58,520
+d here is computer.
+
+775
+00:43:58,520 --> 00:44:01,830
+z is whatever who is.
+
+776
+00:44:01,830 --> 00:44:09,180
+So if later on in the matcher
+routine it said, for example,
+
+777
+00:44:09,180 --> 00:44:14,110
+who has to be 3, then when I
+looked up in the dictionary,
+
+778
+00:44:14,110 --> 00:44:18,360
+it will say, oh, z is 3 because
+it's the same as who.
+
+779
+00:44:18,360 --> 00:44:20,500
+And that's in some sense the
+only thing you need to do to
+
+780
+00:44:20,500 --> 00:44:22,640
+extend the unifier
+to a matcher.
+
+781
+00:44:22,640 --> 00:44:23,830
+AUDIENCE: OK, because it looked
+like when you were
+
+782
+00:44:23,830 --> 00:44:26,000
+telling how to unify it, it
+looked like you would put the
+
+783
+00:44:26,000 --> 00:44:27,955
+things together in such a way
+that you'd actually solve and
+
+784
+00:44:27,955 --> 00:44:29,770
+have a value for both of them.
+
+785
+00:44:29,770 --> 00:44:32,230
+And what it looks like now is
+that you're actually pass a
+
+786
+00:44:32,230 --> 00:44:34,860
+dictionary with two variables
+and the variables are linked.
+
+787
+00:44:34,860 --> 00:44:35,130
+PROFESSOR: Right.
+
+788
+00:44:35,130 --> 00:44:37,580
+It only looks like you're
+solving for both of them
+
+789
+00:44:37,580 --> 00:44:40,540
+because you're sort of looking
+at the whole solution at once.
+
+790
+00:44:40,540 --> 00:44:42,790
+If you sort of watch the thing
+getting built up recursively,
+
+791
+00:44:42,790 --> 00:44:44,980
+it's merely this.
+
+792
+00:44:44,980 --> 00:44:46,620
+AUDIENCE: OK, so you
+do pass off that
+
+793
+00:44:46,620 --> 00:44:48,400
+dictionary with two variables?
+
+794
+00:44:48,400 --> 00:44:49,110
+PROFESSOR: That's right.
+
+795
+00:44:49,110 --> 00:44:50,190
+AUDIENCE: And link?
+
+796
+00:44:50,190 --> 00:44:50,560
+PROFESSOR: Right.
+
+797
+00:44:50,560 --> 00:44:54,055
+It just looks like an
+ordinary dictionary.
+
+798
+00:44:54,055 --> 00:44:57,450
+AUDIENCE: When you're talking
+about the unifier, is it that
+
+799
+00:44:57,450 --> 00:45:02,785
+there are some cases or some
+points that you are not able
+
+800
+00:45:02,785 --> 00:45:04,725
+to use by them?
+
+801
+00:45:04,725 --> 00:45:05,220
+PROFESSOR: Right.
+
+802
+00:45:05,220 --> 00:45:10,100
+AUDIENCE: Can you just by
+building the rules or writing
+
+803
+00:45:10,100 --> 00:45:15,582
+the forms know in advance if
+you are going to be able to
+
+804
+00:45:15,582 --> 00:45:18,540
+solve to get the unification
+or not?
+
+805
+00:45:18,540 --> 00:45:23,560
+Can you add some properties
+either to the rules itself or
+
+806
+00:45:23,560 --> 00:45:26,730
+to the formula that you're
+writing so that you avoid the
+
+807
+00:45:26,730 --> 00:45:30,090
+problem of not finding
+unification?
+
+808
+00:45:30,090 --> 00:45:32,870
+PROFESSOR: I mean, you can
+agree, I think, to write in a
+
+809
+00:45:32,870 --> 00:45:35,390
+fairly restricted way where
+you won't run into it.
+
+810
+00:45:35,390 --> 00:45:36,870
+See, because what
+you're getting--
+
+811
+00:45:36,870 --> 00:45:39,760
+see, the place where you get
+into problems is when you--
+
+812
+00:45:39,760 --> 00:45:45,020
+well, again, you're trying to
+match things like that against
+
+813
+00:45:45,020 --> 00:45:47,600
+things where these
+have structure,
+
+814
+00:45:47,600 --> 00:45:55,300
+where a, y, b, y something.
+
+815
+00:45:55,300 --> 00:45:58,980
+
+
+816
+00:45:58,980 --> 00:46:00,570
+So this is the kind of
+place where you're
+
+817
+00:46:00,570 --> 00:46:03,070
+going to get into trouble.
+
+818
+00:46:03,070 --> 00:46:06,370
+AUDIENCE: So you can do
+that syntactically?
+
+819
+00:46:06,370 --> 00:46:09,320
+PROFESSOR: So you can kind of
+watch your rules in the kinds
+
+820
+00:46:09,320 --> 00:46:11,561
+of things that your writing.
+
+821
+00:46:11,561 --> 00:46:14,460
+AUDIENCE: So that's the problem
+that the builder of
+
+822
+00:46:14,460 --> 00:46:16,310
+the database has to
+be concerned?
+
+823
+00:46:16,310 --> 00:46:17,560
+PROFESSOR: That's a problem.
+
+824
+00:46:17,560 --> 00:46:19,930
+
+
+825
+00:46:19,930 --> 00:46:21,580
+It's a problem either-- not
+quite the builder of the
+
+826
+00:46:21,580 --> 00:46:24,270
+database, the person who is
+expressing the rules, or the
+
+827
+00:46:24,270 --> 00:46:25,800
+builder of the database.
+
+828
+00:46:25,800 --> 00:46:29,230
+What the unifier actually does
+is you can check at the next
+
+829
+00:46:29,230 --> 00:46:32,710
+level down when you actually get
+to the unifier and you'll
+
+830
+00:46:32,710 --> 00:46:34,940
+see in the code where it looks
+up in the dictionary.
+
+831
+00:46:34,940 --> 00:46:37,260
+If it sort of says what
+does y have to be?
+
+832
+00:46:37,260 --> 00:46:40,690
+Oh, does y have to be something
+that contains a y as
+
+833
+00:46:40,690 --> 00:46:41,960
+its expression?
+
+834
+00:46:41,960 --> 00:46:45,120
+At that point, the unifier and
+say, oh my God, I'm trying to
+
+835
+00:46:45,120 --> 00:46:46,240
+solve a fixed-point equation.
+
+836
+00:46:46,240 --> 00:46:49,220
+I'll give it up here.
+
+837
+00:46:49,220 --> 00:46:50,940
+AUDIENCE: You make the
+distinction between the rules
+
+838
+00:46:50,940 --> 00:46:51,910
+in the database.
+
+839
+00:46:51,910 --> 00:46:56,950
+Are the rules added
+to the database?
+
+840
+00:46:56,950 --> 00:46:57,870
+PROFESSOR: Yes.
+
+841
+00:46:57,870 --> 00:46:58,870
+Yes, I should have said that.
+
+842
+00:46:58,870 --> 00:47:01,540
+One way to think about rules
+is that they're just other
+
+843
+00:47:01,540 --> 00:47:03,890
+things in the database.
+
+844
+00:47:03,890 --> 00:47:06,050
+So if you want to check the
+things that have to be checked
+
+845
+00:47:06,050 --> 00:47:08,935
+in the database, they're kind
+of virtual facts that are in
+
+846
+00:47:08,935 --> 00:47:09,445
+the database.
+
+847
+00:47:09,445 --> 00:47:12,510
+AUDIENCE: But in that
+explanation, you made the
+
+848
+00:47:12,510 --> 00:47:18,230
+differentiation between database
+and the rules itself.
+
+849
+00:47:18,230 --> 00:47:20,490
+PROFESSOR: Yeah, I probably
+should not have done that.
+
+850
+00:47:20,490 --> 00:47:22,440
+The only reason to do that
+is in terms of the
+
+851
+00:47:22,440 --> 00:47:23,540
+implementation.
+
+852
+00:47:23,540 --> 00:47:25,220
+When you look at the
+implementation, there's a part
+
+853
+00:47:25,220 --> 00:47:28,120
+which says check either
+primitive assertions in the
+
+854
+00:47:28,120 --> 00:47:30,470
+database or check rules.
+
+855
+00:47:30,470 --> 00:47:33,510
+And then the real reason why
+you can't tell what order
+
+856
+00:47:33,510 --> 00:47:38,010
+things are going to come out
+in and is that the rules
+
+857
+00:47:38,010 --> 00:47:42,240
+database and the data database
+sort of get merged in a kind
+
+858
+00:47:42,240 --> 00:47:44,600
+of delayed evaluation way.
+
+859
+00:47:44,600 --> 00:47:46,320
+And so that's what makes the
+order very complicated.
+
+860
+00:47:46,320 --> 00:47:55,440
+
+
+861
+00:47:55,440 --> 00:47:56,690
+OK, let's break.
+
+862
+00:47:56,690 --> 00:48:33,160
+
+
+863
+00:48:33,160 --> 00:48:35,520
+We've just seen how the
+logic language works
+
+864
+00:48:35,520 --> 00:48:37,230
+and how rules work.
+
+865
+00:48:37,230 --> 00:48:40,120
+Now, let's turn to a more
+profound question.
+
+866
+00:48:40,120 --> 00:48:43,180
+What do these things mean?
+
+867
+00:48:43,180 --> 00:48:47,240
+That brings us to the subtlest,
+most devious part of
+
+868
+00:48:47,240 --> 00:48:51,420
+this whole query language
+business, and that is that
+
+869
+00:48:51,420 --> 00:48:53,570
+it's not quite what
+it seems to be.
+
+870
+00:48:53,570 --> 00:48:59,750
+AND and OR and NOT and the
+logical implication of rules
+
+871
+00:48:59,750 --> 00:49:05,400
+are not really the AND and
+OR and NOT and logical
+
+872
+00:49:05,400 --> 00:49:07,690
+implication of logic.
+
+873
+00:49:07,690 --> 00:49:09,910
+Let me give you an
+example of that.
+
+874
+00:49:09,910 --> 00:49:12,960
+Certainly, if we have two things
+in logic, it ought to
+
+875
+00:49:12,960 --> 00:49:22,225
+be the case that AND of P and Q
+is the same as AND of Q and
+
+876
+00:49:22,225 --> 00:49:28,920
+P and that OR of P and Q is the
+same as OR of Q and P. But
+
+877
+00:49:28,920 --> 00:49:30,100
+let's look here.
+
+878
+00:49:30,100 --> 00:49:32,180
+Here's an example.
+
+879
+00:49:32,180 --> 00:49:38,200
+Let's talk about somebody
+outranking somebody else in
+
+880
+00:49:38,200 --> 00:49:40,140
+our little database
+organization.
+
+881
+00:49:40,140 --> 00:49:47,890
+We'll say s is outranked by b or
+if either the supervisor of
+
+882
+00:49:47,890 --> 00:49:51,100
+this is b or there's some middle
+manager here, that
+
+883
+00:49:51,100 --> 00:49:55,640
+supervisor of s is m, and
+m is outranked by b.
+
+884
+00:49:55,640 --> 00:49:59,830
+
+
+885
+00:49:59,830 --> 00:50:02,310
+So there's one way to define
+rule outranked by.
+
+886
+00:50:02,310 --> 00:50:06,300
+Or we can write exactly the
+same thing, except at the
+
+887
+00:50:06,300 --> 00:50:11,630
+bottom here, we reversed the
+order of these two clauses.
+
+888
+00:50:11,630 --> 00:50:14,180
+And certainly if this were
+logic, those ought to mean the
+
+889
+00:50:14,180 --> 00:50:16,690
+same thing.
+
+890
+00:50:16,690 --> 00:50:20,060
+However, in our particular
+implementation, if you say
+
+891
+00:50:20,060 --> 00:50:23,800
+something like who's outranked
+by Ben Bitdiddle, what you'll
+
+892
+00:50:23,800 --> 00:50:27,870
+find is that this rule will
+work perfectly well and
+
+893
+00:50:27,870 --> 00:50:31,030
+generate answers, whereas
+this rule will go
+
+894
+00:50:31,030 --> 00:50:34,110
+into an infinite loop.
+
+895
+00:50:34,110 --> 00:50:37,230
+And the reason for that is that
+this will come in and
+
+896
+00:50:37,230 --> 00:50:39,400
+say, oh, who's outranked
+by Ben Bitdiddle?
+
+897
+00:50:39,400 --> 00:50:41,920
+
+
+898
+00:50:41,920 --> 00:50:45,790
+Find an s which is outranked
+by b, where b is Ben
+
+899
+00:50:45,790 --> 00:50:50,330
+Bitdiddle, which is going to
+happen in it a subproblem.
+
+900
+00:50:50,330 --> 00:50:55,710
+Oh gee, find an m such as m is
+outranked by Ben Bitdiddle
+
+901
+00:50:55,710 --> 00:50:58,560
+with no restrictions on m.
+
+902
+00:50:58,560 --> 00:51:01,910
+So this will say in order to
+solve this problem, I solve
+
+903
+00:51:01,910 --> 00:51:04,570
+exactly the same problem.
+
+904
+00:51:04,570 --> 00:51:06,010
+And then after I've solved
+that, I'll check for a
+
+905
+00:51:06,010 --> 00:51:08,000
+supervisory relationship.
+
+906
+00:51:08,000 --> 00:51:10,290
+Whereas this one won't get into
+that, because before it
+
+907
+00:51:10,290 --> 00:51:14,010
+tries to find this outranked by,
+it'll already have had a
+
+908
+00:51:14,010 --> 00:51:15,260
+restriction on m here.
+
+909
+00:51:15,260 --> 00:51:18,560
+
+
+910
+00:51:18,560 --> 00:51:21,190
+So these two things which ought
+to mean the same, in
+
+911
+00:51:21,190 --> 00:51:22,860
+fact, one goes into
+an infinite loop.
+
+912
+00:51:22,860 --> 00:51:26,720
+One does not.
+
+913
+00:51:26,720 --> 00:51:30,630
+That's a very extreme case of
+a general thing that you'll
+
+914
+00:51:30,630 --> 00:51:35,970
+find in logic programming that
+if you start changing the
+
+915
+00:51:35,970 --> 00:51:39,910
+order of the things in the
+ANDs or ORs, you'll find
+
+916
+00:51:39,910 --> 00:51:42,240
+tremendous differences
+in efficiency.
+
+917
+00:51:42,240 --> 00:51:45,860
+And we just saw an infinitely
+big difference in efficiency
+
+918
+00:51:45,860 --> 00:51:47,110
+and an infinite loop.
+
+919
+00:51:47,110 --> 00:51:49,190
+
+
+920
+00:51:49,190 --> 00:51:52,220
+And there are similar things
+having to do with the order in
+
+921
+00:51:52,220 --> 00:51:54,070
+which you enter rules.
+
+922
+00:51:54,070 --> 00:51:55,980
+The order in which it happens
+to look at rules in the
+
+923
+00:51:55,980 --> 00:51:59,140
+database may vastly change the
+efficiency with which it gets
+
+924
+00:51:59,140 --> 00:52:01,860
+out answers or, in fact, send
+it into an infinite loop for
+
+925
+00:52:01,860 --> 00:52:03,840
+some orderings.
+
+926
+00:52:03,840 --> 00:52:08,370
+And this whole thing has to do
+with the fact that you're
+
+927
+00:52:08,370 --> 00:52:10,950
+checking these rules
+in some order.
+
+928
+00:52:10,950 --> 00:52:13,690
+And some rules may lead to
+really long paths of
+
+929
+00:52:13,690 --> 00:52:15,180
+implication.
+
+930
+00:52:15,180 --> 00:52:16,440
+Others might not.
+
+931
+00:52:16,440 --> 00:52:18,480
+And you don't know a priori
+which ones are good and which
+
+932
+00:52:18,480 --> 00:52:19,300
+ones are bad.
+
+933
+00:52:19,300 --> 00:52:21,270
+And there's a whole bunch of
+research having to do with
+
+934
+00:52:21,270 --> 00:52:24,840
+that, mostly having to do with
+thinking about making parallel
+
+935
+00:52:24,840 --> 00:52:26,970
+implementations of logic
+programming languages.
+
+936
+00:52:26,970 --> 00:52:29,330
+And in some sense, what you'd
+like to do is check all rules
+
+937
+00:52:29,330 --> 00:52:31,870
+in parallel and whichever
+ones get answers,
+
+938
+00:52:31,870 --> 00:52:32,620
+you bubble them up.
+
+939
+00:52:32,620 --> 00:52:34,600
+And if some go down
+infinite deductive
+
+940
+00:52:34,600 --> 00:52:36,290
+changed, well, you just--
+
+941
+00:52:36,290 --> 00:52:38,440
+you know, memory is cheap and
+processors are cheap, and you
+
+942
+00:52:38,440 --> 00:52:40,550
+just let them buzz for as
+for as long as you want.
+
+943
+00:52:40,550 --> 00:52:43,510
+
+
+944
+00:52:43,510 --> 00:52:47,660
+There's a deeper problem,
+though, in comparing this
+
+945
+00:52:47,660 --> 00:52:50,870
+logic language to real logic.
+
+946
+00:52:50,870 --> 00:52:54,260
+The example I just showed you,
+it went into an infinite loop
+
+947
+00:52:54,260 --> 00:52:58,370
+maybe, but at least it didn't
+give the wrong answer.
+
+948
+00:52:58,370 --> 00:53:02,980
+There's an actual deeper
+problem when we start
+
+949
+00:53:02,980 --> 00:53:07,460
+comparing, seriously comparing
+this logic language with real
+
+950
+00:53:07,460 --> 00:53:09,490
+classical logic.
+
+951
+00:53:09,490 --> 00:53:14,030
+So let's sort of review
+real classical logic.
+
+952
+00:53:14,030 --> 00:53:22,140
+All humans are mortal.
+
+953
+00:53:22,140 --> 00:53:24,390
+That's pretty classical logic.
+
+954
+00:53:24,390 --> 00:53:26,410
+Then maybe we'll continue
+in the very
+
+955
+00:53:26,410 --> 00:53:29,120
+best classical tradition.
+
+956
+00:53:29,120 --> 00:53:31,010
+We'll say all--
+
+957
+00:53:31,010 --> 00:53:32,740
+let's make it really
+classical.
+
+958
+00:53:32,740 --> 00:53:41,690
+All Greeks are human, which
+has the syllogism that
+
+959
+00:53:41,690 --> 00:53:48,060
+Socrates is a Greek.
+
+960
+00:53:48,060 --> 00:53:49,210
+And then what do
+you write here?
+
+961
+00:53:49,210 --> 00:53:51,890
+I think three dots,
+classical logic.
+
+962
+00:53:51,890 --> 00:54:01,360
+Therefore, then the syllogism,
+Socrates is mortal.
+
+963
+00:54:01,360 --> 00:54:05,880
+So there's some real honest
+classical logic.
+
+964
+00:54:05,880 --> 00:54:12,570
+Let's compare that with our
+classical logic database.
+
+965
+00:54:12,570 --> 00:54:16,270
+So here's a classical
+logic database.
+
+966
+00:54:16,270 --> 00:54:18,030
+Socrates is a Greek.
+
+967
+00:54:18,030 --> 00:54:19,600
+Plato is a Greek.
+
+968
+00:54:19,600 --> 00:54:24,120
+Zeus is a Greek, and
+Zeus is a god.
+
+969
+00:54:24,120 --> 00:54:30,780
+And all humans are mortal.
+
+970
+00:54:30,780 --> 00:54:32,880
+To show that something is
+mortal, it's enough to show
+
+971
+00:54:32,880 --> 00:54:34,650
+that it's human.
+
+972
+00:54:34,650 --> 00:54:35,900
+All humans are fallible.
+
+973
+00:54:35,900 --> 00:54:38,900
+
+
+974
+00:54:38,900 --> 00:54:40,980
+And all Greeks are humans
+is not quite right.
+
+975
+00:54:40,980 --> 00:54:45,920
+This says that all Greeks who
+are not gods are human.
+
+976
+00:54:45,920 --> 00:54:47,820
+So to show something's human,
+it's enough to show it's a
+
+977
+00:54:47,820 --> 00:54:49,320
+Greek and not a god.
+
+978
+00:54:49,320 --> 00:54:54,470
+And the address of any Greek
+god is Mount Olympus.
+
+979
+00:54:54,470 --> 00:54:57,390
+So there's a little classical
+logic database.
+
+980
+00:54:57,390 --> 00:54:59,490
+And indeed, that would
+work fairly well.
+
+981
+00:54:59,490 --> 00:55:05,420
+If we type that in and say is
+Socrates mortal or Socrates
+
+982
+00:55:05,420 --> 00:55:06,910
+fallible or mortal?
+
+983
+00:55:06,910 --> 00:55:07,690
+It'll say yes.
+
+984
+00:55:07,690 --> 00:55:09,710
+Is Plato mortal and fallible.
+
+985
+00:55:09,710 --> 00:55:10,680
+It'll say yes.
+
+986
+00:55:10,680 --> 00:55:12,210
+If we say is Zeus mortal?
+
+987
+00:55:12,210 --> 00:55:14,900
+It won't find anything.
+
+988
+00:55:14,900 --> 00:55:16,640
+And it'll work perfectly well.
+
+989
+00:55:16,640 --> 00:55:20,120
+However, suppose we want
+to extend this.
+
+990
+00:55:20,120 --> 00:55:25,070
+Let's define what it means for
+someone to be a perfect being.
+
+991
+00:55:25,070 --> 00:55:27,020
+Let's say rule: a
+perfect being.
+
+992
+00:55:27,020 --> 00:55:34,050
+
+
+993
+00:55:34,050 --> 00:55:35,480
+And I think this is right.
+
+994
+00:55:35,480 --> 00:55:38,570
+If you're up on your medieval
+scholastic philosophy, I
+
+995
+00:55:38,570 --> 00:55:41,350
+believe that perfect beings
+are ones who were neither
+
+996
+00:55:41,350 --> 00:55:44,100
+mortal nor fallible.
+
+997
+00:55:44,100 --> 00:55:59,300
+AND NOT mortal x,
+NOT fallible x.
+
+998
+00:55:59,300 --> 00:56:03,340
+So we'll define this system
+to teach it what a
+
+999
+00:56:03,340 --> 00:56:05,790
+perfect being is.
+
+1000
+00:56:05,790 --> 00:56:09,110
+And now what we're going to do
+is he ask for the address of
+
+1001
+00:56:09,110 --> 00:56:11,750
+all the perfect beings.
+
+1002
+00:56:11,750 --> 00:56:23,680
+AND the address of x is
+y and x is perfect.
+
+1003
+00:56:23,680 --> 00:56:26,590
+And so what we're generating
+here is the world's most
+
+1004
+00:56:26,590 --> 00:56:32,050
+exclusive mailing list. For the
+address of all the perfect
+
+1005
+00:56:32,050 --> 00:56:33,830
+things, we might have
+typed this in.
+
+1006
+00:56:33,830 --> 00:56:36,240
+Or we might type in this.
+
+1007
+00:56:36,240 --> 00:56:52,140
+We'll say AND perfect of x and
+the address of x is y.
+
+1008
+00:56:52,140 --> 00:56:55,190
+Well, suppose we type all that
+in and we try this query.
+
+1009
+00:56:55,190 --> 00:56:57,650
+This query is going to
+give us an answer.
+
+1010
+00:56:57,650 --> 00:56:59,745
+This query will say, yeah,
+Mount Olympus.
+
+1011
+00:56:59,745 --> 00:57:04,230
+
+
+1012
+00:57:04,230 --> 00:57:06,740
+This query, in fact, is going
+to give us nothing.
+
+1013
+00:57:06,740 --> 00:57:11,640
+It will say no addresses
+of perfect beings.
+
+1014
+00:57:11,640 --> 00:57:12,510
+Now, why is that?
+
+1015
+00:57:12,510 --> 00:57:14,230
+Why is there a difference?
+
+1016
+00:57:14,230 --> 00:57:15,690
+This is not an infinite
+loop question.
+
+1017
+00:57:15,690 --> 00:57:19,145
+This is a different
+answer question.
+
+1018
+00:57:19,145 --> 00:57:21,790
+The reason is that if you
+remember the implementation of
+
+1019
+00:57:21,790 --> 00:57:25,880
+NOT, NOT acted as a filter.
+
+1020
+00:57:25,880 --> 00:57:29,040
+NOT said I'm going to take some
+possible dictionaries,
+
+1021
+00:57:29,040 --> 00:57:32,480
+some possible frames, some
+possible answers, and filter
+
+1022
+00:57:32,480 --> 00:57:35,070
+out the ones that happened to
+satisfy some condition, and
+
+1023
+00:57:35,070 --> 00:57:36,520
+that's how I implement NOT.
+
+1024
+00:57:36,520 --> 00:57:40,730
+If you think about what's going
+on here, I'll build this
+
+1025
+00:57:40,730 --> 00:57:46,470
+query box where the output of an
+address piece gets fed into
+
+1026
+00:57:46,470 --> 00:57:47,720
+a perfect piece.
+
+1027
+00:57:47,720 --> 00:57:50,290
+
+
+1028
+00:57:50,290 --> 00:57:52,880
+What will happen is the address
+piece will set up some
+
+1029
+00:57:52,880 --> 00:57:55,290
+things of everyone whose
+address I know.
+
+1030
+00:57:55,290 --> 00:57:59,880
+Those will get filtered by the
+NOTs inside perfect here.
+
+1031
+00:57:59,880 --> 00:58:03,230
+So it will throw out the ones
+which happened to be either
+
+1032
+00:58:03,230 --> 00:58:04,910
+mortal or fallible.
+
+1033
+00:58:04,910 --> 00:58:07,700
+In the other order what happens
+is I set this up,
+
+1034
+00:58:07,700 --> 00:58:09,520
+started up with an
+empty frame.
+
+1035
+00:58:09,520 --> 00:58:12,000
+The perfect in here doesn't find
+anything for the NOTs to
+
+1036
+00:58:12,000 --> 00:58:13,920
+filter, so nothing comes
+out here at all.
+
+1037
+00:58:13,920 --> 00:58:18,830
+
+
+1038
+00:58:18,830 --> 00:58:20,940
+And there's sort of nothing
+there that gets fed into the
+
+1039
+00:58:20,940 --> 00:58:21,940
+address thing.
+
+1040
+00:58:21,940 --> 00:58:24,260
+So here, I don't
+get an answer.
+
+1041
+00:58:24,260 --> 00:58:25,620
+And again, the reason
+for that is NOT
+
+1042
+00:58:25,620 --> 00:58:27,440
+isn't generating anything.
+
+1043
+00:58:27,440 --> 00:58:28,800
+NOT's only throwing
+out things.
+
+1044
+00:58:28,800 --> 00:58:31,160
+And if I never started up with
+anything, there's nothing for
+
+1045
+00:58:31,160 --> 00:58:32,020
+it to throw out.
+
+1046
+00:58:32,020 --> 00:58:33,770
+So out of this thing, I
+get the wrong answer.
+
+1047
+00:58:33,770 --> 00:58:37,200
+
+
+1048
+00:58:37,200 --> 00:58:37,970
+How can you fix that?
+
+1049
+00:58:37,970 --> 00:58:39,070
+Well, there are ways
+to fix that.
+
+1050
+00:58:39,070 --> 00:58:41,410
+So you might say, well,
+that's sort of stupid.
+
+1051
+00:58:41,410 --> 00:58:43,700
+Why are you just doing
+all your NOT
+
+1052
+00:58:43,700 --> 00:58:44,900
+stuff at the beginning?
+
+1053
+00:58:44,900 --> 00:58:48,220
+The right way to implement NOT
+is to realize that when you
+
+1054
+00:58:48,220 --> 00:58:51,360
+have conditions like NOT, you
+should generate all your
+
+1055
+00:58:51,360 --> 00:58:54,140
+answers first, and then with
+each of these dictionaries
+
+1056
+00:58:54,140 --> 00:58:58,560
+pass along until at the very
+end I'll do filtering.
+
+1057
+00:58:58,560 --> 00:59:01,560
+And there are implementations
+of logic languages that work
+
+1058
+00:59:01,560 --> 00:59:04,050
+like that that solve this
+particular problem.
+
+1059
+00:59:04,050 --> 00:59:06,660
+
+
+1060
+00:59:06,660 --> 00:59:10,030
+However, there's a more profound
+problem, which is
+
+1061
+00:59:10,030 --> 00:59:12,530
+which one of these is
+the right answer?
+
+1062
+00:59:12,530 --> 00:59:15,320
+Is it Mount Olympus
+or is it nothing?
+
+1063
+00:59:15,320 --> 00:59:19,420
+So you might say it's Mount
+Olympus, because after all,
+
+1064
+00:59:19,420 --> 00:59:23,220
+Zeus is in that database,
+and Zeus was
+
+1065
+00:59:23,220 --> 00:59:24,805
+neither mortal nor fallible.
+
+1066
+00:59:24,805 --> 00:59:29,550
+
+
+1067
+00:59:29,550 --> 00:59:43,310
+So you might say Zeus wants to
+satisfy NOT mortal Zeus or NOT
+
+1068
+00:59:43,310 --> 00:59:44,120
+fallible Zeus.
+
+1069
+00:59:44,120 --> 00:59:47,638
+But let's actually look
+at that database.
+
+1070
+00:59:47,638 --> 00:59:49,320
+Let's look at it.
+
+1071
+00:59:49,320 --> 00:59:51,275
+There's no way--
+
+1072
+00:59:51,275 --> 00:59:54,810
+how does it know that Zeus
+is not fallible?
+
+1073
+00:59:54,810 --> 00:59:57,930
+There's nothing in
+there about that.
+
+1074
+00:59:57,930 --> 00:59:59,410
+What's in there is that
+humans are fallible.
+
+1075
+00:59:59,410 --> 01:00:02,390
+
+
+1076
+01:00:02,390 --> 01:00:04,430
+How does it know that
+Zeus is not mortal?
+
+1077
+01:00:04,430 --> 01:00:07,980
+There's nothing in
+there about that.
+
+1078
+01:00:07,980 --> 01:00:12,000
+It just said I don't have
+any rule, which--
+
+1079
+01:00:12,000 --> 01:00:13,820
+the only way I can deduce
+something's mortal is if it's
+
+1080
+01:00:13,820 --> 01:00:16,690
+human, and that's all it really
+knows about mortal.
+
+1081
+01:00:16,690 --> 01:00:20,060
+And in fact, if you remember
+your classical mythology, you
+
+1082
+01:00:20,060 --> 01:00:25,300
+know that the Greek gods were
+not mortal but fallible.
+
+1083
+01:00:25,300 --> 01:00:30,850
+So the answer is not
+in the rules there.
+
+1084
+01:00:30,850 --> 01:00:32,100
+See, why does it deduce that?
+
+1085
+01:00:32,100 --> 01:00:34,710
+
+
+1086
+01:00:34,710 --> 01:00:37,330
+See, Socrates would certainly
+not have made
+
+1087
+01:00:37,330 --> 01:00:40,080
+this error of logic.
+
+1088
+01:00:40,080 --> 01:00:43,370
+What NOT needs in this
+language is not NOT.
+
+1089
+01:00:43,370 --> 01:00:44,930
+It's not the NOT of logic.
+
+1090
+01:00:44,930 --> 01:00:48,950
+What NOT needs in this language
+is not deducible from
+
+1091
+01:00:48,950 --> 01:00:55,140
+things in the database as
+opposed to not true.
+
+1092
+01:00:55,140 --> 01:00:57,300
+That's a very big difference.
+
+1093
+01:00:57,300 --> 01:00:59,250
+Subtle, but big.
+
+1094
+01:00:59,250 --> 01:01:03,080
+So, in fact, this is perfectly
+happy to say not anything that
+
+1095
+01:01:03,080 --> 01:01:04,610
+it doesn't know about.
+
+1096
+01:01:04,610 --> 01:01:06,900
+So if you ask it is it not
+true that Zeus likes
+
+1097
+01:01:06,900 --> 01:01:07,830
+chocolate ice cream?
+
+1098
+01:01:07,830 --> 01:01:10,251
+It will say sure,
+it's not true.
+
+1099
+01:01:10,251 --> 01:01:12,850
+Or anything else or anything
+it doesn't know about.
+
+1100
+01:01:12,850 --> 01:01:18,280
+NOT means not deducible from
+the things you've told me.
+
+1101
+01:01:18,280 --> 01:01:22,760
+In a world where you're
+identifying not deducible
+
+1102
+01:01:22,760 --> 01:01:25,800
+with, in fact, not true, this
+is called the closed world
+
+1103
+01:01:25,800 --> 01:01:27,050
+assumption.
+
+1104
+01:01:27,050 --> 01:01:36,870
+
+
+1105
+01:01:36,870 --> 01:01:38,320
+The closed world assumption.
+
+1106
+01:01:38,320 --> 01:01:43,550
+Anything that I cannot deduce
+from what I know
+
+1107
+01:01:43,550 --> 01:01:46,500
+is not true, right?
+
+1108
+01:01:46,500 --> 01:01:49,290
+If I don't know anything about
+x, the x isn't true.
+
+1109
+01:01:49,290 --> 01:01:51,420
+That's very dangerous.
+
+1110
+01:01:51,420 --> 01:01:52,860
+From a logical point of view,
+first of all, it doesn't
+
+1111
+01:01:52,860 --> 01:01:54,480
+really makes sense.
+
+1112
+01:01:54,480 --> 01:01:58,860
+Because if I don't know anything
+about x, I'm willing
+
+1113
+01:01:58,860 --> 01:02:00,240
+to say not x.
+
+1114
+01:02:00,240 --> 01:02:03,850
+But am I willing to
+say not not x?
+
+1115
+01:02:03,850 --> 01:02:04,500
+Well, sure, I don't
+know anything
+
+1116
+01:02:04,500 --> 01:02:06,470
+about that either maybe.
+
+1117
+01:02:06,470 --> 01:02:09,450
+So not not x is not necessarily
+the same as x and
+
+1118
+01:02:09,450 --> 01:02:13,120
+so on and so on and so on, so
+there's some sort of funny
+
+1119
+01:02:13,120 --> 01:02:15,970
+bias in there.
+
+1120
+01:02:15,970 --> 01:02:17,290
+So that's sort of funny.
+
+1121
+01:02:17,290 --> 01:02:22,840
+The second thing, if you start
+building up real reasoning
+
+1122
+01:02:22,840 --> 01:02:27,210
+programs based on this, think
+how dangerous that is.
+
+1123
+01:02:27,210 --> 01:02:33,420
+You're saying I know I'm in a
+position to deduce everything
+
+1124
+01:02:33,420 --> 01:02:37,780
+true that's relevant
+to this problem.
+
+1125
+01:02:37,780 --> 01:02:41,590
+I'm reasoning, and built into my
+reasoning mechanism is the
+
+1126
+01:02:41,590 --> 01:02:45,160
+assumption that anything that I
+don't know can't possibly be
+
+1127
+01:02:45,160 --> 01:02:48,860
+relevant to this
+problem, right?
+
+1128
+01:02:48,860 --> 01:02:52,350
+There are a lot of big
+organizations that work like
+
+1129
+01:02:52,350 --> 01:02:54,720
+that, right?
+
+1130
+01:02:54,720 --> 01:02:56,830
+Most corporate marketing
+divisions work like that.
+
+1131
+01:02:56,830 --> 01:03:00,560
+You know the consequences
+to that.
+
+1132
+01:03:00,560 --> 01:03:04,490
+So it's very dangerous to start
+really typing in these
+
+1133
+01:03:04,490 --> 01:03:08,750
+big logical implication systems
+and going on what they
+
+1134
+01:03:08,750 --> 01:03:10,500
+say, because they have
+this really limiting
+
+1135
+01:03:10,500 --> 01:03:12,600
+assumption built in.
+
+1136
+01:03:12,600 --> 01:03:14,905
+So you have to be very, very
+careful about that.
+
+1137
+01:03:14,905 --> 01:03:16,560
+And that's a deep problem.
+
+1138
+01:03:16,560 --> 01:03:19,570
+That's not a problem about we
+can make a little bit cleverer
+
+1139
+01:03:19,570 --> 01:03:22,360
+implementation and do the
+filters and organize the
+
+1140
+01:03:22,360 --> 01:03:23,840
+infinite loops to make
+them go away.
+
+1141
+01:03:23,840 --> 01:03:25,920
+It's a different kind
+of problem.
+
+1142
+01:03:25,920 --> 01:03:27,060
+It's a different semantics.
+
+1143
+01:03:27,060 --> 01:03:31,910
+So I think to wrap this up, it's
+fair to say that logic
+
+1144
+01:03:31,910 --> 01:03:34,650
+programming I think is a
+terrifically exciting idea,
+
+1145
+01:03:34,650 --> 01:03:38,010
+the idea that you can bridge
+this gap from the imperative
+
+1146
+01:03:38,010 --> 01:03:42,300
+to the declarative, that you
+can start talking about
+
+1147
+01:03:42,300 --> 01:03:46,900
+relations and really get
+tremendous power by going
+
+1148
+01:03:46,900 --> 01:03:48,570
+above the abstraction
+of what's my input
+
+1149
+01:03:48,570 --> 01:03:50,560
+and what's my output.
+
+1150
+01:03:50,560 --> 01:03:55,160
+And linked to logic, the problem
+is it's a goal that I
+
+1151
+01:03:55,160 --> 01:03:58,080
+think has yet to be realized.
+
+1152
+01:03:58,080 --> 01:04:02,740
+And probably one of the very
+most interesting research
+
+1153
+01:04:02,740 --> 01:04:06,530
+questions going on now in
+languages is how do you
+
+1154
+01:04:06,530 --> 01:04:09,460
+somehow make a real
+logic language?
+
+1155
+01:04:09,460 --> 01:04:11,940
+And secondly, how do you bridge
+the gap from this world
+
+1156
+01:04:11,940 --> 01:04:16,020
+of logic and relations to the
+worlds of more traditional
+
+1157
+01:04:16,020 --> 01:04:18,680
+languages and somehow combine
+the power of both.
+
+1158
+01:04:18,680 --> 01:04:19,930
+OK, let's break.
+
+1159
+01:04:19,930 --> 01:04:23,750
+
+
+1160
+01:04:23,750 --> 01:04:25,675
+AUDIENCE: Couldn't you solve
+that last problem by having
+
+1161
+01:04:25,675 --> 01:04:27,430
+the extra rules that imply it?
+
+1162
+01:04:27,430 --> 01:04:30,060
+The problem here is you have the
+definition of something,
+
+1163
+01:04:30,060 --> 01:04:32,210
+but you don't have the
+definition of its opposite.
+
+1164
+01:04:32,210 --> 01:04:35,890
+If you include in the database
+something that says something
+
+1165
+01:04:35,890 --> 01:04:38,780
+implies mortal x, something
+else implies not mortal x,
+
+1166
+01:04:38,780 --> 01:04:40,370
+haven't you basically
+solved the problem?
+
+1167
+01:04:40,370 --> 01:04:43,370
+
+
+1168
+01:04:43,370 --> 01:04:45,660
+PROFESSOR: But the issue
+is do you put a finite
+
+1169
+01:04:45,660 --> 01:04:46,910
+number of those in?
+
+1170
+01:04:46,910 --> 01:04:50,740
+
+
+1171
+01:04:50,740 --> 01:04:54,980
+AUDIENCE: If things are
+specified always in pairs--
+
+1172
+01:04:54,980 --> 01:04:55,970
+PROFESSOR: But the impression
+is then what do
+
+1173
+01:04:55,970 --> 01:04:57,220
+you do about deduction?
+
+1174
+01:04:57,220 --> 01:05:00,200
+
+
+1175
+01:05:00,200 --> 01:05:03,400
+You can't specify NOTs.
+
+1176
+01:05:03,400 --> 01:05:05,930
+But the problem is, in a big
+system, it turns out that
+
+1177
+01:05:05,930 --> 01:05:07,960
+might not be a finite
+number of things.
+
+1178
+01:05:07,960 --> 01:05:12,820
+
+
+1179
+01:05:12,820 --> 01:05:15,290
+There are also sort
+of two issues.
+
+1180
+01:05:15,290 --> 01:05:16,690
+Partly it might not be finite.
+
+1181
+01:05:16,690 --> 01:05:21,510
+Partly it might be that's
+not what you want.
+
+1182
+01:05:21,510 --> 01:05:23,790
+So a good example would be
+suppose I want to do
+
+1183
+01:05:23,790 --> 01:05:25,120
+connectivity.
+
+1184
+01:05:25,120 --> 01:05:28,050
+I want a reason about
+connectivity.
+
+1185
+01:05:28,050 --> 01:05:32,100
+And I'm going to tell you
+there's four things: a and b
+
+1186
+01:05:32,100 --> 01:05:35,480
+and c and d.
+
+1187
+01:05:35,480 --> 01:05:39,740
+And I'll tell you a is connected
+to b and c's
+
+1188
+01:05:39,740 --> 01:05:43,200
+connected to d.
+
+1189
+01:05:43,200 --> 01:05:45,260
+And now I'll tell you
+is a connected to d?
+
+1190
+01:05:45,260 --> 01:05:46,780
+That's the question.
+
+1191
+01:05:46,780 --> 01:05:49,360
+There's an example where I would
+like something like the
+
+1192
+01:05:49,360 --> 01:05:50,610
+closed world assumption.
+
+1193
+01:05:50,610 --> 01:05:54,200
+
+
+1194
+01:05:54,200 --> 01:05:57,630
+That's a tiny toy, but a lot of
+times, I want to be able to
+
+1195
+01:05:57,630 --> 01:05:59,800
+say something like anything
+that I haven't told you,
+
+1196
+01:05:59,800 --> 01:06:01,340
+assume is not true.
+
+1197
+01:06:01,340 --> 01:06:04,260
+
+
+1198
+01:06:04,260 --> 01:06:06,990
+So it's not as simple as you
+only want to put in explicit
+
+1199
+01:06:06,990 --> 01:06:09,470
+NOTs all over the place.
+
+1200
+01:06:09,470 --> 01:06:11,200
+It's that sometimes it
+really isn't clear
+
+1201
+01:06:11,200 --> 01:06:14,150
+what you even want.
+
+1202
+01:06:14,150 --> 01:06:17,160
+That having to specify both
+everything and not everything
+
+1203
+01:06:17,160 --> 01:06:20,960
+is too precise, and then you get
+down into problems there.
+
+1204
+01:06:20,960 --> 01:06:24,420
+But there are a lot of
+approaches that explicitly put
+
+1205
+01:06:24,420 --> 01:06:26,510
+in NOTs and reason
+based on that.
+
+1206
+01:06:26,510 --> 01:06:28,070
+So it's a very good idea.
+
+1207
+01:06:28,070 --> 01:06:31,620
+It's just that then it starts
+becoming a little cumbersome
+
+1208
+01:06:31,620 --> 01:06:33,490
+in the very large problems
+you'd like to use.
+
+1209
+01:06:33,490 --> 01:06:43,460
+
+
+1210
+01:06:43,460 --> 01:06:45,410
+AUDIENCE: I'm not sure how
+directly related to the
+
+1211
+01:06:45,410 --> 01:06:48,840
+argument this is, but one of
+your points was that one of
+
+1212
+01:06:48,840 --> 01:06:51,100
+the dangers of the closed rule
+is you never really know all
+
+1213
+01:06:51,100 --> 01:06:53,840
+the things that are there.
+
+1214
+01:06:53,840 --> 01:06:55,930
+You never really know
+all the parts to it.
+
+1215
+01:06:55,930 --> 01:06:58,160
+Isn't that a major problem
+with any programming?
+
+1216
+01:06:58,160 --> 01:07:01,110
+I always write programs where I
+assume that I've got all the
+
+1217
+01:07:01,110 --> 01:07:04,430
+cases, and so I check for them
+all or whatever, and somewhere
+
+1218
+01:07:04,430 --> 01:07:05,750
+down the road, I find
+out that I didn't
+
+1219
+01:07:05,750 --> 01:07:07,390
+check for one of them.
+
+1220
+01:07:07,390 --> 01:07:08,540
+PROFESSOR: Well, sure,
+it's true.
+
+1221
+01:07:08,540 --> 01:07:14,630
+But the problem here is it's
+that assumption which is the
+
+1222
+01:07:14,630 --> 01:07:16,610
+thing that you're making if you
+believe you're identifying
+
+1223
+01:07:16,610 --> 01:07:19,600
+this with logic.
+
+1224
+01:07:19,600 --> 01:07:20,510
+So you're quite right.
+
+1225
+01:07:20,510 --> 01:07:22,220
+It's a situation you're
+never in.
+
+1226
+01:07:22,220 --> 01:07:24,420
+The problem is if you're
+starting to believe that what
+
+1227
+01:07:24,420 --> 01:07:27,305
+this is doing is logic and you
+look at the rules you write
+
+1228
+01:07:27,305 --> 01:07:30,200
+down and say what can I deduce
+from them, you have to be very
+
+1229
+01:07:30,200 --> 01:07:33,470
+careful to remember that NOT
+means something else.
+
+1230
+01:07:33,470 --> 01:07:35,510
+And it means something else
+based on an assumption which
+
+1231
+01:07:35,510 --> 01:07:39,030
+is probably not true.
+
+1232
+01:07:39,030 --> 01:07:41,170
+AUDIENCE: Do I understand you
+correctly that you cannot fix
+
+1233
+01:07:41,170 --> 01:07:44,510
+this problem without killing
+off all possibilities of
+
+1234
+01:07:44,510 --> 01:07:47,990
+inference through
+altering NOT?
+
+1235
+01:07:47,990 --> 01:07:49,370
+PROFESSOR: No, that's
+not quite right.
+
+1236
+01:07:49,370 --> 01:07:50,620
+There are other--
+
+1237
+01:07:50,620 --> 01:07:52,710
+
+
+1238
+01:07:52,710 --> 01:07:56,340
+there are ways to do logic
+with real NOTs.
+
+1239
+01:07:56,340 --> 01:07:58,540
+There are actually
+ways to do that.
+
+1240
+01:07:58,540 --> 01:08:01,610
+But they're very inefficient
+as far as anybody knows.
+
+1241
+01:08:01,610 --> 01:08:02,860
+And they're much more--
+
+1242
+01:08:02,860 --> 01:08:05,390
+
+
+1243
+01:08:05,390 --> 01:08:09,240
+the, quote, inference in here is
+built into this unifier and
+
+1244
+01:08:09,240 --> 01:08:11,980
+this pattern matching
+unification algorithm.
+
+1245
+01:08:11,980 --> 01:08:16,590
+There are ways to automate
+real logical reasoning.
+
+1246
+01:08:16,590 --> 01:08:19,460
+But it's not based on that,
+and logic programming
+
+1247
+01:08:19,460 --> 01:08:21,420
+languages don't tend to do
+that because it's very
+
+1248
+01:08:21,420 --> 01:08:23,850
+inefficient as far
+as anybody knows.
+
+1249
+01:08:23,850 --> 01:08:29,390
+
+
+1250
+01:08:29,390 --> 01:08:30,640
+All right, thank you.
+
+1251
+01:08:30,640 --> 01:08:43,903
+
