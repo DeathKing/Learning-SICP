@@ -1,6 +1,6 @@
 ﻿1
 00:00:18,550 --> 00:00:22,230
-教授：上次Gerry教授揭晓了秘密
+上次Gerry教授揭晓了秘密
 
 2
 00:00:22,230 --> 00:00:26,350
@@ -597,215 +597,215 @@ CONS-stream把两个事物放在一起构造出一个流
 
 150
 00:17:32,300 --> 00:17:42,120
-OK, now that we have streams, we can start constructing the pieces of the language to operate on streams. And there are a whole bunch of very useful things that we could start making.
+好的，有了流之后，我们开始构建操作流的语言，有太多有用的东西了
 
 151
 00:17:42,120 --> 00:18:05,666
-For instance, we'll make our map box to take a stream, s, and a procedure, and to generate a new stream which has as its elements the procedure applied to all the successive elements of s.
+举例来说，我们构建自己的map-stream，以一个流s和一个过程作为参数，生成一个新的流，其中这个过程应用于所有s的后继节点
 
 152
 00:18:05,666 --> 00:18:07,400
-In fact, we've seen this before.
+我们以前见过类似的
 
 153
 00:18:07,400 --> 00:18:10,950
-This is the procedure map that we did with lists.
+就是我们以前操作列表的map
 
 154
 00:18:10,950 --> 00:18:14,650
-And you see it's exactly map, except we're testing for empty-stream.
+除了判断empty-stream的部分，完全就和map一样
 
 155
 00:18:14,650 --> 00:18:15,560
-Oh, I forgot to mention that.
+哦，我忘了说了
 
 156
 00:18:15,560 --> 00:18:20,510
-Empty-stream is like the null test. So if it's empty, we generate the empty stream.
+empty-stream?就和null?差不多，如果是空的，就生成一个空的流
 
 157
 00:18:20,510 --> 00:18:33,140
-Otherwise, we form a new stream whose first element is the procedure applied to the head of the stream, and whose rest is gotten by mapping along with the procedure down the tail of the stream.
+否则，就生成一个新的流，第一个元素是过程作用于流的HEAD的值，剩下的是map-stream对流的TAIL作用的结果
 
 158
 00:18:33,140 --> 00:18:37,030
-So that looks exactly like the map procedure we looked at before.
+看起来着实太像我们之前所讲的map了
 
 159
 00:18:37,030 --> 00:18:38,350
-Here's another useful thing.
+还有另一件事
 
 160
 00:18:38,350 --> 00:18:40,460
-Filter, this is our filter box.
+过滤器，就是那个用来过滤的盒子
 
 161
 00:18:40,460 --> 00:18:43,890
-We're going to have a predicate and a stream.
+以一个谓词和一个流作为参数
 
 162
 00:18:43,890 --> 00:18:50,160
-We're going to make a new stream that consists of all the elements of the original one that satisfy the predicate.
+生成一个新的流，包含了所有在流s中满足谓词pred的元素
 
 163
 00:18:50,160 --> 00:18:51,270
-That's case analysis.
+分条件来看
 
 164
 00:18:51,270 --> 00:18:56,280
-When there's nothing in the stream, we return the empty stream.
+当流s是空的，就返回一个空流
 
 165
 00:18:56,280 --> 00:19:00,060
-We test the predicate on the head of the stream.
+这里，用谓词来判断流的头元素
 
 166
 00:19:00,060 --> 00:19:08,220
-And if it's true, we add the head of the stream onto the result of filtering the tail of the stream.
+如果为真，就把这个元素和过滤流的尾元素得到的结果连接在一起
 
 167
 00:19:08,220 --> 00:19:13,500
-And otherwise, if that predicate was false, we just filter the tail of the stream.
+否则，如果谓词判断为假，就只返回过滤流的尾元素的结果
 
 168
 00:19:13,500 --> 00:19:16,595
-Right, so there's filter.
+这就是过滤器的原理
 
 169
 00:19:16,595 --> 00:19:18,560
-Let me run through a couple more rather quickly.
+剩下的我快速过一遍
 
 170
 00:19:18,560 --> 00:19:20,880
-They're all in the book and you can look at them.
+这些在书上都有，下去可以自己看
 
 171
 00:19:20,880 --> 00:19:22,110
-Let me just flash through.
+来马上过一遍
 
 172
 00:19:22,110 --> 00:19:23,260
-Here's accumulate.
+过程accumulate
 
 173
 00:19:23,260 --> 00:19:31,560
-Accumulate takes a way of combining things and an initial value in a stream and sticks them all together.
+accumulate以一种连接事物的方式，将初始值和流粘合在一起
 
 174
 00:19:31,560 --> 00:19:33,970
-If the stream's empty, it's just the initial value.
+如果流为空，返回初始值
 
 175
 00:19:33,970 --> 00:19:40,900
-Otherwise, we combine the head of the stream with the result of accumulating the tail of the stream starting from the initial value.
+否则，就连接流的头和accumulate流的尾的结果
 
 176
 00:19:40,900 --> 00:19:42,830
-So that's what I'd use to add up everything in the stream.
+这就是我把事物累积在一起的方法
 
 177
 00:19:42,830 --> 00:19:45,830
-I'd accumulate with plus.
+用加法来累积
 
 178
 00:19:45,830 --> 00:19:48,060
-How would I enumerate the leaves of a tree?
+如何枚举树上的叶子节点呢？
 
 179
 00:19:48,060 --> 00:19:56,640
-Well, if the tree is just a leaf itself, I make something which only has that node in it.
+如果这个树只是一个叶子节点，我就构造一个只是一个叶子节点的树
 
 180
 00:19:56,640 --> 00:20:04,340
-Otherwise, I append together the stuff of enumerating the left branch and the right branch.
+否则，就把左、右子树枚举的结果合并起来
 
 181
 00:20:04,340 --> 00:20:08,130
-And then append here is like the ordinary append on lists.
+就像之前对列表的操作一样
 
 182
 00:20:13,190 --> 00:20:13,850
-You can look at that.
+再来看这个
 
 183
 00:20:13,850 --> 00:20:19,150
-That's analogous to the ordinary procedure for appending two lists.
+和合并两个列表的操作太相似了
 
 184
 00:20:19,150 --> 00:20:21,810
-How would I enumerate an interval?
+如何枚举整数呢？
 
 185
 00:20:21,810 --> 00:20:28,106
-This will take two integers, low and high, and generate a stream of the integers going from low to high.
+两个参数，一个小的一个大的，生成一个包含从小到大所有整数的流
 
 186
 00:20:28,106 --> 00:20:31,890
-And we can make a whole bunch of pieces.
+由此，我们就可以构造这一整串的元件
 
 187
 00:20:31,890 --> 00:20:37,670
-So that's a little language of talking about streams. Once we have streams, we can build things for manipulating them.
+这就是我们说的用来操作流的语言，当我们有了流，就可以用操纵它们来做点事情
 
 188
 00:20:37,670 --> 00:20:40,200
-Again, we're making a language.
+又一次地，我们构建了新的语言
 
 189
 00:20:40,200 --> 00:20:43,060
-And now we can start expressing things in this language.
+现在，就用这种语言来描述上面的东西
 
 190
 00:20:43,060 --> 00:20:47,310
-Here's our original procedure for summing the odd squares in a tree.
+这是累加奇数平方的过程
 
 191
 00:20:47,310 --> 00:20:54,590
-And you'll notice it looks exactly now like the block diagram, like the signal processing block diagram.
+你会发现，看起来完全和用信号处理画出的块状图相吻合
 
 192
 00:20:54,590 --> 00:21:01,320
-So to sum the odd squares in a tree, we enumerate the leaves of the tree.
+要计算树上奇数平方和，先枚举树上的叶子结点
 
 193
 00:21:01,320 --> 00:21:04,830
-We filter that for oddness.
+过滤出奇数
 
 194
 00:21:04,830 --> 00:21:06,220
-We map that for squareness.
+用平方来映射
 
 195
 00:21:09,320 --> 00:21:14,760
-And we accumulate the result of that using addition, starting from 0.
+最后用加法来累积，初始值是0
 
 196
 00:21:14,760 --> 00:21:17,290
-So we can see the pieces that we wanted.
+这就是我们想要的
 
 197
 00:21:17,290 --> 00:21:22,050
-Similarly, the Fibonacci one, how do we get the odd Fibs?
+求奇数婓波那契数，和这个是相似地
 
 198
 00:21:22,050 --> 00:21:30,920
-Well, we enumerate the interval from 1 to n, we map along that, computing the Fibonacci of each one.
+从1到n枚举整数，用计算婓波那契数的过程作映射
 
 199
 00:21:30,920 --> 00:21:34,810
-We filter the result of those for oddness.
+过滤出奇数的部分
 
 200
 00:21:34,810 --> 00:21:43,650
-And we accumulate all of that stuff using CONS starting from the empty-list.
+最后用CONS连接起来，初始值是空列表
 
 201
 00:21:43,650 --> 00:21:47,680
-OK, what's the advantage of this?
+大功告成，这么做有什么优势呢？
 
 202
 00:21:47,680 --> 00:21:51,880
-Well, for one thing, we now have pieces that we can start mixing and matching.
+先是，这些构造出的元件可以随意的混合搭配
 
 203
 00:21:51,880 --> 00:22:06,210
