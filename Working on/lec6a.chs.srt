@@ -401,155 +401,155 @@
 
 101
 00:11:58,290 --> 00:12:03,340
-We'll accumulate them by sticking them together with addition starting from 0.
+我们通过从0开始的加法来累计它们
 
 102
 00:12:07,140 --> 00:12:08,210
-That's the first program.
+这是第一个程序
 
 103
 00:12:08,210 --> 00:12:11,780
-The second program, I can describe in a very, very similar way.
+第二个程序，也可以用一个非常非常相似的方法来描述
 
 104
 00:12:11,780 --> 00:12:19,080
-I'll say, we'll enumerate the numbers on this interval, for the interval 1 through n.
+枚举了从1到n的所有整数
 
 105
 00:12:22,500 --> 00:12:29,270
-We'll, for each one, compute the Fibonacci number, put them through a transducer.
+对于每个数，计算斐波那契数，通过一个转换器
 
 106
 00:12:29,270 --> 00:12:35,976
-We'll then take the result of that, and we'll filter it for oddness.
+对于输出的结果，再通过奇偶性进行过滤
 
 107
 00:12:35,976 --> 00:12:39,350
-And then we'll take those and put them into an accumulator.
+最后，我们将这些放入累积器
 
 108
 00:12:39,350 --> 00:12:47,110
-This time we'll build up a list, so we'll accumulate with CONS starting from the empty list.
+这里我们累积出一个列表，传递CONS方法，与空列表作为参数
 
 109
 00:12:47,110 --> 00:12:51,900
-So this way of looking at the program makes the two seem very, very similar.
+从这个角度来看，这两个程序真的是太相似了
 
 110
 00:12:51,900 --> 00:12:58,050
-The problem is that that commonality is completely obscured when we look at the procedures we wrote.
+问题在于两个程序的写法导致我们看不出其中的共性
 
 111
 00:12:58,050 --> 00:13:06,300
-Let's go back and look at some odd squares again, and say things like, where's the enumerator?
+我们回头再来看第一个奇数平方和的问题，问题来了，枚举器是什么？
 
 112
 00:13:06,300 --> 00:13:08,140
-Where's the enumerator in this program?
+程序中哪一部分有枚举的作用？
 
 113
 00:13:08,140 --> 00:13:11,230
-Well, it's not in one place.
+枚举不是仅仅在一个地方表现出来的
 
 114
 00:13:11,230 --> 00:13:17,160
-It's a little bit in this leaf-node test, which is going to stop.
+在叶子结点的判断处存在一部分
 
 115
 00:13:17,160 --> 00:13:20,630
-It's a little bit in the recursive structure of the thing itself.
+也下面的递归结构中也有体现
 
 116
 00:13:23,150 --> 00:13:24,120
-Where's the accumulator?
+累积器又在哪儿呢？
 
 117
 00:13:24,120 --> 00:13:25,680
-The accumulator isn't in one place either.
+和枚举器类似，也不是在一个地方
 
 118
 00:13:25,680 --> 00:13:32,180
-It's partly in this 0 and partly in this plus.
+它由 0 和 + 这两个地方体现出来
 
 119
 00:13:32,180 --> 00:13:34,510
-It's not there as a thing that we can look at.
+累积器的完整过程并不体在唯一一个地方
 
 120
 00:13:34,510 --> 00:13:44,470
-Similarly, if we look at odd Fibs, that's also, in some sense, an enumerator and an accumulator, but it looks very different.
+相似地，我们来观察奇数斐波那契数的例子，程序中也存在枚举器与累积器的含义，但是有些不同
 
 121
 00:13:44,470 --> 00:13:55,680
-Because partly, the enumerator is here in this greater than sign in the test. And partly it's in this whole recursive structure in the loop, and the way that we call it.
+枚举的含义部分的表现在 ( > k n) 的判断中，部分的表现在下面的递归调用中
 
 122
 00:13:55,680 --> 00:14:03,600
-And then similarly, that's also mixed up in there with the accumulator, which is partly over there and partly over there.
+同样地，累积的含义也被混杂在其中，比如在这里和那里
 
 123
 00:14:03,600 --> 00:14:14,360
-So these very, very natural pieces, these very natural boxes here don't appear in our programs. Because they're kind of mixed up.
+我们之前所画出的盒子在我们的程序中完全看不出来，因为它们混杂在一起了
 
 124
 00:14:14,360 --> 00:14:16,290
-The programs don't chop things up in the right way.
+因此，这些程序并没有很好的对问题进行划分
 
 125
 00:14:19,450 --> 00:14:31,060
-Going back to this fundamental principle of computer science that in order to control something, you need the name of it, we don't really have control over thinking about things this way because we don't have our hands in them explicitly.
+回到计算机科学的基本原理上来，为了控制某种东西，你需要给它命名，即使我们如此思考，我们也并没有完全地控制住它，因为我们没有明确地深入它的内部
 
 126
 00:14:31,060 --> 00:14:35,510
-We don't have a good language for talking about them.
+我们没有一个好的语言来说明
 
 127
 00:14:35,510 --> 00:14:44,515
-Well, let's invent an appropriate language in which we can build these pieces.
+好吧，我们来发明合适的语言来构造这些部分
 
 128
 00:14:44,515 --> 00:14:50,480
-The key to the language is these guys, is what is these things I called signals?
+这种语言的关键在于 这些叫作信号的东西到底是什么？
 
 129
 00:14:50,480 --> 00:14:53,320
-What are these things that are flying on the arrows between the boxes?
+这些沿着箭头传递的又是什么？
 
 130
 00:14:56,880 --> 00:15:07,980
-Well, those things are going to be data structures called streams. That's going to be the key to inventing this language.
+直接说明吧，这些东西将变成一种叫做流的数据结构，也是发明这个语言的关键
 
 131
 00:15:07,980 --> 00:15:08,600
-What's a stream?
+什么是流呢？
 
 132
 00:15:08,600 --> 00:15:12,220
-Well, a stream is, like anything else, a data abstraction.
+流，和其它的相似，是一种数据抽象
 
 133
 00:15:12,220 --> 00:15:16,870
-So I should tell you what its selectors and constructors are.
+所以，我先说明它的选择器与构造器分别是什么
 
 134
 00:15:16,870 --> 00:15:21,435
-For a stream, we're going to have one constructor that's called CONS-stream.
+构造器我们称其为CONS-stream
 
 135
 00:15:25,690 --> 00:15:32,040
-CONS-stream is going to put two things together to form a thing called a stream.
+CONS-stream把两个事物放在一起构造出一个流
 
 136
 00:15:32,040 --> 00:15:38,010
-And then to extract things from the stream, we're going to have a selector called the head of the stream.
+选择器叫作HEAD，用于从流中提取数据
 
 137
 00:15:38,010 --> 00:15:44,720
-So if I have a stream, I can take its head or I can take its tail.
+可以提取head，也要可以提取tail
 
 138
 00:15:44,720 --> 00:15:53,160
-And remember, I have to tell you George's contract here to tell you what the axioms are that relate these.
+我把我和George的约定告诉你，是想让你明确到底是什么相关的原则
 
 139
 00:15:53,160 --> 00:16:28,440
