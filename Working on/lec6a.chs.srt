@@ -1625,419 +1625,419 @@ fill-columns是用来说明如何在 k 列 size 行的棋盘上放置皇后
 
 407
 00:43:29,650 --> 00:43:35,600
-Well, by now you should be starting to get suspicious.
+现在你应该也开始怀疑了
 
 408
 00:43:35,600 --> 00:43:53,740
-See, I've showed your this simple, elegant way of putting programs together, very unlike these other traditional programs that sum the odd squares or compute the odd Fibonacci numbers.
+我已经展示了这种简单优雅的组合程序的方法，不像那些传统的累积奇数或者计算奇数的斐波那契数
 
 409
 00:43:53,740 --> 00:44:00,440
-Very unlike these programs that mix up the enumerator and the filter and the accumulator.
+也不像这些混合enumerator filter和accumulator的方法
 
 410
 00:44:00,440 --> 00:44:13,800
-And by mixing it up, we don't have all of these wonderful conceptual advantages of these streams pieces, these wonderful mix and match components for putting together lots and lots of programs.
+使用这种混合的方式来构建程序，我们并没有完全发挥流的这种概念性的优势
 
 411
 00:44:13,800 --> 00:44:18,340
-On the other hand, most of the programs you've seen look like these ugly ones.
+另一方面，不这样来组合的其它的程序都很丑陋
 
 412
 00:44:18,340 --> 00:44:19,460
-Why's that?
+为什么会这样？
 
 413
 00:44:19,460 --> 00:44:33,620
-Can it possibly be that computer scientists are so obtuse that they don't notice that if you'd merely did this thing, then you can get this great programming elegance?
+可能是计算机科学家没有注意到 你只做了这件事就在编程上获得了难得的优雅性？
 
 414
 00:44:33,620 --> 00:44:36,760
-There's got to be a catch.
+肯定有什么窍门
 
 415
 00:44:36,760 --> 00:44:39,510
-And it's actually pretty easy to see what the catch is.
+事实上这一窍门也很容易发现
 
 416
 00:44:39,510 --> 00:44:42,030
-Let's think about the following problem.
+我们来看看接下来的这个问题
 
 417
 00:44:42,030 --> 00:44:54,105
-Suppose I tell you to find the second prime between 10,000 and 1 million, or if your computer's larger, say between 10,000 and 100 billion, or something.
+假设我让你找到1,000到1,000,000这间的第二个素数，或者10,000到100,000,000的第二个素数或者什么之类的
 
 418
 00:44:54,105 --> 00:44:55,550
-And you say, oh, that's easy.
+可能你想，这很容易
 
 419
 00:44:55,550 --> 00:44:57,080
-I can do that with a stream.
+我可以用流来解决
 
 420
 00:44:57,080 --> 00:45:04,160
-All I do is I enumerate the interval from 10,000 to 1 million.
+我需要做的就是从10,000枚举到1,000,000
 
 421
 00:45:04,160 --> 00:45:06,800
-So I get all those integers from 10,000 to 1 million.
+从中挑出每一个数字
 
 422
 00:45:06,800 --> 00:45:11,762
-I filter them for prime-ness, so test all of them and see if they're prime.
+用检测素数性的谓词来过滤全部的数
 
 423
 00:45:11,762 --> 00:45:13,170
-And I take the second element.
+取出其中的第二个，就是我们想要的
 
 424
 00:45:13,170 --> 00:45:16,130
-That's the head of the tail.
+正是TAIL的HEAD
 
 425
 00:45:16,130 --> 00:45:17,380
-Well, that's clearly pretty ridiculous.
+这看起来非常的荒谬
 
 426
 00:45:21,660 --> 00:45:27,040
-We'd not even have room in the machine to store the integers in the first place, much less to test them.
+我们的机器都没有这么大的空间来存放这些整数，更别说来检测它们了
 
 427
 00:45:27,040 --> 00:45:29,810
-And then I only want the second one.
+然后我只取其中的第二个
 
 428
 00:45:29,810 --> 00:45:45,090
-See, the power of this traditional programming style is exactly its weakness, that we're mixing up the enumerating and the testing and the accumulating.
+看吧，这种组合enumerate，accumulate的编程方式很有威力，但也有弱点
 
 429
 00:45:45,090 --> 00:45:46,670
-So we don't do it all.
+所以关键在于，我们不需要做所有的事
 
 430
 00:45:46,670 --> 00:45:55,210
-So the very thing that makes it conceptually ugly is the very thing that makes it efficient.
+这个在概念上更加丑陋的东西使它更高效了
 
 431
 00:45:55,210 --> 00:45:57,800
-It's this mixing up.
+是这样来混合的
 
 432
 00:45:57,800 --> 00:46:00,420
-So it seems that all I've done this morning so far is just confuse you.
+我今天一早上所做的好像都是在迷惑你们一样
 
 433
 00:46:00,420 --> 00:46:05,840
-I showed you this wonderful way that programming might work, except that it doesn't.
+我给你们展示了这种优雅的编程方式，除了这个不行
 
 434
 00:46:05,840 --> 00:46:09,040
-Well, here's where the wonderful thing happens.
+不卖关子了，接下来，见证奇迹的时刻
 
 435
 00:46:09,040 --> 00:46:14,870
-It turns out in this game that we really can have our cake and eat it too.
+这个游戏里，我们有蛋糕，并且还可以吃它
 
 436
 00:46:14,870 --> 00:46:36,310
-And what I mean by that is that we really can write stream programs exactly like the ones I wrote and arrange things so that when the machine actually runs, it's as efficient as running this traditional programming style that mixes up the generation and the test.
+我的意思是，我们完全可以用流来这样的组织程序，当机器真正运行的时候，和那种生成与检测混合在一起的程序一样高效
 
 437
 00:46:36,310 --> 00:46:40,770
-Well, that sounds pretty magic.
+听起来不可思议
 
 438
 00:46:40,770 --> 00:46:43,690
-The key to this is that streams are not lists.
+关键在于，流不是列表
 
 439
 00:46:48,090 --> 00:46:52,115
-We'll see this carefully in a second, but for now, let's take a look at that slide again.
+一会儿我们就会看到，现在，先来看看幻灯片
 
 440
 00:46:52,115 --> 00:47:05,360
-The image you should have here of this signal processing system is that what's going to happen is there's this box that has the integers sitting in it.
+类比于信号处理系统，这个例子里是一些整数
 
 441
 00:47:05,360 --> 00:47:10,940
-And there's this filter that's connected to it and it's tugging on them.
+这里的filter和它连接在一起并且揪住了它们
 
 442
 00:47:10,940 --> 00:47:16,790
-And then there's someone who's tugging on this stuff saying what comes out of the filter.
+这里可以放置另外的东西来揪住filter的输出
 
 443
 00:47:16,790 --> 00:47:24,590
-And the image you should have is that someone says, well, what's the first prime, and tugs on this filter.
+想像这样的图景，有人想要得到第一个质数，从filter中揪出来
 
 444
 00:47:24,590 --> 00:47:28,020
-And the filter tugs on the integers.
+filter相继地去揪出一个整数来计算
 
 445
 00:47:28,020 --> 00:47:30,930
-And you look only at that much, and then say, oh, I really wanted the second one.
+看完这些之后，然后想，哦，想要第二个质数
 
 446
 00:47:30,930 --> 00:47:33,710
-What's the second prime?
+第二个是什么？
 
 447
 00:47:33,710 --> 00:47:40,500
-And that no computation gets done except when you tug on these things.
+当你不去尝试揪出东西时，就不会有计算发生
 
 448
 00:47:40,500 --> 00:47:41,410
-Let me try that again.
+我们再来试试
 
 449
 00:47:41,410 --> 00:47:43,815
-This is a little device.
+这是一个小设备
 
 450
 00:47:43,815 --> 00:47:49,830
-This is a little stream machine invented by Eric Grimson who's been teaching this course at MIT.
+Eric Grimson发明的，他曾经也在MIT教这门课
 
 451
 00:47:49,830 --> 00:47:54,780
-And the image is here's a stream of stuff, like a whole bunch of the integers.
+把这个比作流，就像一串整数一样
 
 452
 00:47:54,780 --> 00:47:58,700
-And here's some processing elements.
+这些是一些处理工序
 
 453
 00:47:58,700 --> 00:48:02,600
-And if, say, it's filter of filter of map, or something.
+就像是map，filter之类的东西
 
 454
 00:48:05,570 --> 00:48:12,670
-And if I really tried to implement that with streams as lists, what I'd say is, well, I've got this list of things, and now I do the first filter.
+如果我把流当作列表来演示这个过程，来看看，先进行第一个filter
 
 455
 00:48:12,670 --> 00:48:14,070
-So do all this processing.
+这些全都要处理
 
 456
 00:48:14,070 --> 00:48:19,610
-And I take this and I process and I process and I process and I process.
+针对这个流，不断的处理，处理
 
 457
 00:48:19,610 --> 00:48:21,910
-And now I'm got this new stream.
+然后得到一个新的流
 
 458
 00:48:21,910 --> 00:48:24,070
-Now I take that result in my hand someplace.
+结果现在在我的手上
 
 459
 00:48:24,070 --> 00:48:25,260
-And I put that through the second one.
+然后和第二个接通
 
 460
 00:48:25,260 --> 00:48:28,110
-And I process the whole thing.
+又处理了全部的流
 
 461
 00:48:28,110 --> 00:48:29,510
-And there's this new stream.
+得到一个新流
 
 462
 00:48:32,130 --> 00:48:36,360
-And then I take the result and I put it all the way through this one the same way.
+然后类似地，取这个结果，用相同的方式再次处理
 
 463
 00:48:36,360 --> 00:48:43,860
-That's what would happen to these stream programs if streams were just lists.
+如果把流仅仅当做列表的话，计算的过程就是这样的
 
 464
 00:48:43,860 --> 00:48:50,230
-But in fact, streams aren't lists, they're streams. And the image you should have is something a little bit more like this.
+但是事实上，流不是列表，流就是流。你应该这样来想像
 
 465
 00:48:50,230 --> 00:48:57,130
-I've got these gadgets connected up by this data that's flowing out of them.
+我把这些小玩意连接起来，数据在其中流动
 
 466
 00:48:59,960 --> 00:49:05,980
-And here's my original source of the streams. It might be starting to generate the integers.
+这里是流的来源，开始生成整数
 
 467
 00:49:05,980 --> 00:49:07,580
-And now, what happens if I want a result?
+如果我想要一个整数，会发生什么？
 
 468
 00:49:07,580 --> 00:49:10,200
-I tug on the end here.
+我揪住最后的这里
 
 469
 00:49:10,200 --> 00:49:13,090
-And this element says, gee, I need some more data.
+这个元素可能会说，哥们，我需要更多的数据
 
 470
 00:49:13,090 --> 00:49:15,830
-So this one comes here and tugs on that one.
+所以，这个到这里，又开始揪住那个
 
 471
 00:49:15,830 --> 00:49:17,890
-And it says, gee, I need some more data.
+同样说，哥们，给我来点数据
 
 472
 00:49:17,890 --> 00:49:21,640
-And this one tugs on this thing, which might be a filter, and says, gee, I need some more data.
+然后这个又揪住了下一个东西，可能是一个fiiler，哥们，来点数据啊
 
 473
 00:49:21,640 --> 00:49:25,780
-And only as much of this thing at the end here gets generated as I tugged.
+最后的这一点东西，只有在去揪它的时候才会生成
 
 474
 00:49:25,780 --> 00:49:30,760
-And only as much of this stuff goes through the processing units as I'm pulling on the end I need.
+只有我去揪住末尾这里的时候，才会有数据通过这些元件得到处理
 
 475
 00:49:30,760 --> 00:49:37,830
-That's the image you should have of the difference between implementing what we're actually going to do and if streams were lists.
+把流当作流和把流当作列表，就是这样的区别
 
 476
 00:49:40,600 --> 00:49:42,430
-Well, how do we make this thing?
+说了这么多，到底怎么来实现呢？
 
 477
 00:49:42,430 --> 00:49:43,400
-I hope you have the image.
+我希望你们这样来想
 
 478
 00:49:43,400 --> 00:49:44,947
-The trick is how to make it.
+窍门在于如何构造流
 
 479
 00:49:47,930 --> 00:49:56,920
-We want to arrange for a stream to be a data structure that computes itself incrementally, an on-demand data structure.
+我们想要把流组织成一种有需要时才会逐渐计算得到自身元素的数据结构
 
 480
 00:49:59,220 --> 00:50:04,490
-And the basic idea is, again, one of the very basic ideas that we're seeing throughout the whole course.
+基本思想在于，再次强调，这种思想贯穿整个课程
 
 481
 00:50:04,490 --> 00:50:09,240
-And that is that there's not a firm distinction between programs and data.
+那就是，数据与过程之间并没有绝对的界限
 
 482
 00:50:09,240 --> 00:50:16,810
-So what a stream is going to be is simultaneously this data structure that you think of, like the stream of the leaves of this tree.
+流会是这样的一种结构，你可以想象树的叶子的流
 
 483
 00:50:16,810 --> 00:50:23,550
-But at the same time, it's going to be a very clever procedure that has the method of computing in it.
+但是不得不说，其中包含着计算方法的过程着实很精妙
 
 484
 00:50:23,550 --> 00:50:25,930
-Well, let me try this.
+好吧，实际来看一下
 
 485
 00:50:25,930 --> 00:50:28,460
-It's going to turn out that we don't need any more mechanism.
+事实上我们不需要其它高深的原理
 
 486
 00:50:28,460 --> 00:50:35,460
-We already have everything we need simply from the fact that we know how to handle procedures as first-class objects.
+这个事实已经有了我们所需要的一切东西，那就是了解如何把过程作为一级对象来处理
 
 487
 00:50:35,460 --> 00:50:36,880
-Well, let's go back to the key.
+来看看这个关键之处
 
 488
 00:50:36,880 --> 00:50:39,030
-The key is, remember, we had these operations.
+关键是，记住，我们有实际的操作方法
 
 489
 00:50:39,030 --> 00:50:48,080
-CONS-stream and head and tail.
+CONS-STREAM HEAD TAIL
 
 490
 00:50:48,080 --> 00:50:55,080
-When I started, I said you can think about this as CONS and think about this as CAR and think about that as CDR, but it's not.
+一开始，你可以把这个想像成CONS，这个是CAR，这个是CDR，事实上没这么简单
 
 491
 00:50:55,080 --> 00:50:57,550
-Now, let's look at what they really are.
+现在我们来具体看看它们到底是什么
 
 492
 00:50:57,550 --> 00:51:19,540
-Well, CONS-stream of x and y is going to be an abbreviation for the following thing.
+(CONS-STREAM X Y) 是这个东西的缩写形式
 
 493
 00:51:19,540 --> 00:51:28,000
-CONS form a pair, ordinary CONS, of x to a thing called delay of y.
+(CONS X (DELAY Y))
 
 494
 00:51:31,188 --> 00:51:39,790
-And before I explain that, let me go and write the rest. The head of a stream is going to be just the CAR.
+在我具体解释清楚之前，先把剩下的写完，(HEAD S) 就是 (CAR S)
 
 495
 00:51:42,380 --> 00:51:56,120
-And the tail of a stream is going to be a thing called force the CDR of the stream.
+(TAIL S) 是 (FORCE (CDR S))
 
 496
 00:51:56,120 --> 00:51:58,060
-Now let me explain this.
+我来具体解释一下
 
 497
 00:51:58,060 --> 00:52:01,420
-Delay is going to be a special magic thing.
+DELAY看起来很神奇
 
 498
 00:52:01,420 --> 00:52:10,600
-What delay does is take an expression and produce a promise to compute that expression when you ask for it.
+DELAY所做是取一个表达式，然后做了一个约定，有需要的时候再来计算我
 
 499
 00:52:10,600 --> 00:52:11,980
-It doesn't do any computation here.
+这里并没有做实际的计算
 
 500
 00:52:11,980 --> 00:52:14,820
-It just gives you a rain check.
+只是一个延期的约定
 
 501
 00:52:14,820 --> 00:52:17,110
-It produces a promise.
+承诺要做这样的事
 
 502
 00:52:17,110 --> 00:52:25,360
-And CONS-stream says I'm going to put together in a pair x and a promise to compute y.
+CONS-STREAM所做的就是把X和一个计算Y的约定相组合
 
 503
 00:52:28,230 --> 00:52:31,840
-Now, if I want the head, that's just the CAR that I put in the pair.
+如果你想取头，就是序对的CAR
 
 504
 00:52:31,840 --> 00:52:39,110
-And the key is that the tail is going to be-- force calls in that promise.
+关键在于尾操作，对承诺进行FORCE调用
 
 505
 00:52:39,110 --> 00:52:44,610
-Tail says, well, take that promise and now call in that promise.
+TAIL会说，好吧，遵守承诺进行计算
 
 506
 00:52:44,610 --> 00:52:47,430
-And then we compute that thing.
+这才开始实际的计算
 
 507
 00:52:47,430 --> 00:52:48,740
-That's how this is going to work.
+这就是它的实际工作方式
 
 508
 00:52:48,740 --> 00:52:51,550
-That's what CONS-stream, head, and tail really are.
+这就是CONS-STREAM，HEAD，TAIL的真实面目了
 
 509
 00:52:54,196 --> 00:52:55,570
-Now, let's see how this works.
+具体演示一下
 
 510
 00:52:55,570 --> 00:52:58,410
-And we'll go through this fairly carefully.
+我会非常小心的过一遍
 
 511
 00:52:58,410 --> 00:53:08,650
