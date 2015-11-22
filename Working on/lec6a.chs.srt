@@ -1441,139 +1441,139 @@ safe要判断的是在剩下的皇后已经放置的情况下，再放置一个�
 
 361
 00:38:50,280 --> 00:39:01,030
-To solve the eight queens problem on a board of some specified size, we write a sub-procedure called fill-columns.
+在特定大小的棋盘解决八皇后问题，我们写一个子过程 fill-columns
 
 362
 00:39:01,030 --> 00:39:06,086
-Fill-columns is going to put down queens up through column k.
+这个过程把皇后一直放置到列k
 
 363
 00:39:06,086 --> 00:39:07,700
-And here's the pattern of the recursion.
+这是一个递归的模式
 
 364
 00:39:07,700 --> 00:39:12,990
-I'm going to call fill-columns with the size eventually.
+最后用棋盘具体的大小作为参数来调用fill-columns
 
 365
 00:39:12,990 --> 00:39:20,360
-So fill-columns says how to put down queens safely in the first k columns of this chess board with a size number of rows in it.
+fill-columns是用来说明如何在 k 列 size 行的棋盘上放置皇后
 
 366
 00:39:20,360 --> 00:39:23,940
-If k is equal to 0, well, then I don't have to put anything down.
+如果k是0，就不用做什么
 
 367
 00:39:23,940 --> 00:39:26,710
-So my solution is just an empty chess board.
+结果是一个空的棋盘
 
 368
 00:39:26,710 --> 00:39:28,070
-Otherwise, I'm going to do some stuff.
+否则就做点别的
 
 369
 00:39:28,070 --> 00:39:30,522
-And I'm going to use collect.
+这里将要使用collect
 
 370
 00:39:30,522 --> 00:39:31,772
-And here's the collect.
+这是collect
 
 371
 00:39:34,530 --> 00:39:41,910
-I find all ways to put down queens in the first k minus 1 columns.
+我找到了所有在前k-1列中放皇后的方法
 
 372
 00:39:41,910 --> 00:39:43,320
-And this was just what I set for.
+这是我设置的
 
 373
 00:39:43,320 --> 00:39:48,880
-Imagine I have this tree down to k minus 1 levels.
+想像这棵树下降直到k-1层
 
 374
 00:39:48,880 --> 00:39:54,130
-And then I find all ways of trying a row, that's just each of the possible rows.
+然后我尝试每一行
 
 375
 00:39:54,130 --> 00:39:58,040
-They're size rows, so that's enumerate interval.
+总行数就是size，枚举了所有行数
 
 376
 00:39:58,040 --> 00:40:08,950
-And now what I do is I collect together the new row I'm going to try and column k with the rest of the queens.
+现在要做的是，将第k列上所有的可能性与已经放置的皇后整合
 
 377
 00:40:08,950 --> 00:40:10,200
-I adjoin a position.
+整合在一起
 
 378
 00:40:10,200 --> 00:40:11,290
-This is George's problem.
+这是George的问题了
 
 379
 00:40:11,290 --> 00:40:13,640
-An adjoined position is like safe.
+像safe一样
 
 380
 00:40:13,640 --> 00:40:19,660
-It's a thing that takes a row and a column and the rest of the positions and makes a new position collection.
+我们要做的就是，拿一行，一列和剩下的位置，然后做一个新的位置集合
 
 381
 00:40:19,660 --> 00:40:34,620
-So I adjoin a position of a new row and a new column to the rest of the queens, where the rest of the queens runs through all possible ways of solving the problem in k minus 1 columns.
+我把第k列可放置的行的位置和剩下的皇后结合起来，而剩下的皇后都已经摆放好了
 
 382
 00:40:34,620 --> 00:40:43,240
-And the new row runs through all possible rows such that it was safe to put one there.
+新的行遍历了所有的可能性，过滤出安全的位置
 
 383
 00:40:43,240 --> 00:40:46,500
-And that's the whole program.
+这就是整个程序了
 
 384
 00:40:46,500 --> 00:40:49,840
-There's the whole procedure.
+整个过程
 
 385
 00:40:49,840 --> 00:40:56,680
-Not only that, that doesn't just solve the eight queens problem, it gives you all solutions to the eight queens problem.
+不只这样，不仅解决了八皇后问题，还顺便给出了所有的解
 
 386
 00:40:56,680 --> 00:40:58,480
-When you're done, you have a stream.
+运行结束之后，就得到一个流
 
 387
 00:40:58,480 --> 00:41:01,900
-And the elements of that stream are all possible ways of solving that problem.
+流中的元素是所有的解
 
 388
 00:41:05,310 --> 00:41:06,260
-Why is that simpler?
+为什么这个更简单一点呢？
 
 389
 00:41:06,260 --> 00:41:12,720
-Well, we threw away the whole idea that this is some process that happens in time with state.
+我们已经描述了整个想法，它是一些在时间中发生，有状态的过程
 
 390
 00:41:12,720 --> 00:41:14,420
-And we just said it's a whole collection of stuff.
+我们只说，这是这个东西的整个集合
 
 391
 00:41:14,420 --> 00:41:18,260
-And that's why it's simpler.
+这就是更加简单的原因
 
 392
 00:41:18,260 --> 00:41:20,110
-We've changed our view.
+我们已经转变了观念
 
 393
 00:41:20,110 --> 00:41:22,820
-Remember, that's where we started today.
+记住，这就是我们的开始
 
 394
 00:41:22,820 --> 00:41:26,230
-We've changed our view of what it is we're trying to model.
+我们转变了建模的观念
 
 395
 00:41:26,230 --> 00:41:31,750
