@@ -809,151 +809,151 @@ accumulate以一种连接事物的方式，将初始值和流粘合在一起
 
 203
 00:21:51,880 --> 00:22:06,210
-So for instance, if I wanted to change this, if I wanted to compute the squares of the integers and then filter them, all I need to do is pick up a standard piece like this in that square and put it in.
+举个例子，如果我把这里改变一下，想要计算整数的平方再进行过滤，我只需要简单的拿一个像square的元件放在这里就行
 
 204
 00:22:06,210 --> 00:22:18,030
-Or if we wanted to do this whole Fibonacci computation on the leaves of a tree rather than a sequence, all I need to do is replace this enumerator with that one.
+或者，我想计算整个树上的婓波那契数而不是树叶结点的序列，只需要替换这个枚举器
 
 205
 00:22:18,030 --> 00:22:38,130
-See, the advantage of this stream processing is that we're establishing-- this is one of the big themes of the course-- we're establishing conventional interfaces that allow us to glue things together.
+看，流处理的优势是，我们建立了 -- 这是课程中一个相对大一些的课题 -- 我们构造了合理的接口，还可以随意粘合起来
 
 206
 00:22:38,130 --> 00:22:45,750
-Things like map and filter are a standard set of components that we can start using for pasting together programs in all sorts of ways.
+像这样如map和filter的标准组件，我们可以拿过来随意组合去构造程序
 
 207
 00:22:45,750 --> 00:22:50,090
-It allows us to see the commonality of programs.
+还可以看到程序的共性
 
 208
 00:22:50,090 --> 00:22:53,860
-I just ought to mention, I've only showed you two procedures.
+我应该说一下，现在仅仅展示了两个过程而已
 
 209
 00:22:53,860 --> 00:23:01,410
-But let me emphasize that this way of putting things together with maps, filters, and accumulators is very, very general.
+强调一下，像这种把map，filter，accumulate组合起来构建程序的方式是非常非常通用的
 
 210
 00:23:01,410 --> 00:23:30,710
-It's the generate and test paradigm for programs. And as an example of that, Richard Waters, who was at MIT when he was a graduate student, as part of his thesis research went and analyzed a large chunk of the IBM scientific subroutine library, and discovered that about 60% of the programs in it could be expressed exactly in terms using no more than what we've put here-- map, filter, and accumulate.
+这是生成和测试程序的范式。举例来看，Richarc Waters，MIT的毕业生，开展过一项研究，他分析了IBM的科学计算程序库，发现其中60%的部分都可以用这样的范式来准确的表示出来，而且只用map，filter，accumulate这三个东西
 
 211
 00:23:30,710 --> 00:23:31,960
-All right, let's take a break.
+好，让我们休息一会
 
 212
 00:23:36,620 --> 00:23:37,870
-Questions?
+有问题吗？
 
 213
 00:23:40,470 --> 00:23:48,380
-AUDIENCE: It seems like the essence of this whole thing is just that you have a very uniform, simple data structure to work with, the stream.
+整件事情的本质好像只是因为你用了一个统一、简单的数据结构 -- 流
 
 214
 00:23:48,380 --> 00:23:48,920
-PROFESSOR: Right.
+嗯啊
 
 215
 00:23:48,920 --> 00:23:53,710
-The essence is that you, again, it's this sense of conventional interfaces.
+本质应该是，那些约定接口的定义 
 
 216
 00:23:53,710 --> 00:23:55,610
-So you can start putting a lot of things together.
+然后才可以把东西组合起来
 
 217
 00:23:55,610 --> 00:24:00,890
-And the stream is as you say, the uniform data structure that supports that.
+流只是，就像你说的，只是一种可以支持那样统一操作的数据结构而已
 
 218
 00:24:00,890 --> 00:24:03,600
-This is very much like APL, by the way.
+从某种程度来看，这非常像APL
 
 219
 00:24:03,600 --> 00:24:09,560
-APL is very much the same idea, except in APL, instead of this stream, you have arrays and vectors.
+APL有着相似的思想，除了在APL中，你可以不用流，用数组和向量也是可以的
 
 220
 00:24:09,560 --> 00:24:14,815
-And a lot of the power of APL is exactly the same reason of the power of this.
+而且APL的威力就在于此
 
 221
 00:24:19,910 --> 00:24:20,910
-OK, thank you.
+明白了，谢谢
 
 222
 00:24:20,910 --> 00:24:22,160
-Let's take a break.
+休息一下
 
 223
 00:24:57,470 --> 00:24:57,610
-All right.
+好的
 
 224
 00:24:57,610 --> 00:25:10,810
-We've been looking at ways of organizing computations using streams. What I want to do now is just show you two somewhat more complicated examples of that.
+我们已经见识过了如何用流来组织计算过程。下面我再举一些更复杂的例子
 
 225
 00:25:10,810 --> 00:25:16,810
-Let's start by thinking about the following kind of utility procedure that will come in useful.
+我们来思考一下这样一种有用的过程
 
 226
 00:25:16,810 --> 00:25:19,960
-Suppose I've got a stream.
+假如我有一个流
 
 227
 00:25:19,960 --> 00:25:23,730
-And the elements of this stream are themselves streams.
+流中的元素本身就是一个流
 
 228
 00:25:23,730 --> 00:25:26,530
-So the first thing might be 1, 2, 3.
+一开始是1，2，3
 
 229
 00:25:32,600 --> 00:25:33,880
-So I've got a stream.
+就是这个流
 
 230
 00:25:33,880 --> 00:25:40,100
-And each element of the stream is itself a stream.
+流中的元素也是一个流
 
 231
 00:25:40,100 --> 00:25:52,080
-And what I'd like to do is build a stream that collects together all of the elements, pulls all of the elements out of these sub-streams and strings them all together in one thing.
+现在我想用一个流把其中的所有元素都聚集在一起，即把所有元素从子流中提取出来最后放在一起
 
 232
 00:25:52,080 --> 00:25:56,960
-So just to show you the use of this language, how easy it is, call that flatten.
+只是想给你们展示一下这个语言其它的使用方式，很简单，把这个过程叫做flatten
 
 233
 00:25:56,960 --> 00:26:13,960
-And I can define to flatten this stream of streams. Well, what is that?
+现在来定义这个过程，去flatten流中的子流，这是到底是什么？
 
 234
 00:26:13,960 --> 00:26:16,240
-That's just an accumulation.
+也就是一个累积的过程
 
 235
 00:26:16,240 --> 00:26:26,450
-I want to accumulate using append, by successively appending.
+我想用append来做累积，连接地累积
 
 236
 00:26:26,450 --> 00:26:54,370
-So I accumulate using append streams, starting with the-empty-stream down that stream of streams.
+APPEND-STREAM作为组合过程，THE-EMPTY-STREAM为初始值，累积这个流
 
 237
 00:26:54,370 --> 00:27:00,830
-OK, so there's an example of how you can start using these higher order things to do some interesting operations.
+这就是一个明显的例子，你可以用高阶的东西去做更有趣的事情
 
 238
 00:27:00,830 --> 00:27:05,100
-In fact, there's another useful thing that I want to do.
+事实上，还有另外有用的东西
 
 239
 00:27:05,100 --> 00:27:21,840
-I want to define a procedure called flat-map, flat map of some function and a stream.
+定义一个过程flat-map，以一个过程和一个流作为参数
 
 240
 00:27:21,840 --> 00:27:25,720
@@ -961,187 +961,187 @@ And what this is going to do is f will be a stream of elements.
 
 241
 00:27:25,720 --> 00:27:31,950
-f is going to be a function that for each element in the stream produces another stream.
+f是一个过程，它操作一个流，生成另一个流
 
 242
 00:27:31,950 --> 00:27:36,000
-And what I want to do is take all of the elements and all of those streams and combine them together.
+我要做的是把所有的元素和所有的流合并起来
 
 243
 00:27:36,000 --> 00:27:51,350
-So that's just going to be the flatten of map f down s.
+所以就是 (FLATTEN (MAP F S))
 
 244
 00:27:51,350 --> 00:27:54,290
-Each time I apply f to an element of s, I get a stream.
+每次我调用F，就得到另一个流
 
 245
 00:27:54,290 --> 00:27:58,385
-If I map it all the way down, I get a stream of streams, and I'll flatten that.
+如果用F来映射S中的子流，我就得到另一个“流的流”，然后再进行flatten
 
 246
 00:27:58,385 --> 00:28:06,360
-Well, I want to use that to show you a new way to do a familiar kind of problem.
+好的，我想再使用这种方式来解决另一个大家很熟悉的问题
 
 247
 00:28:06,360 --> 00:28:14,190
-The problem's going to be like a lot of problems you've seen, although maybe not this particular one.
+这个问题和你以前看到过的许多问题一样，尽管不是很特别
 
 248
 00:28:14,190 --> 00:28:15,490
-I'm going to give you an integer, n.
+一个整数n
 
 249
 00:28:18,480 --> 00:28:51,910
-And the problem is going to be find all pairs and integers i and j, between 0 and i, with j less than i, up to n, such that i plus j is prime.
+找出所有的序对 ( i j )，0 < j < i <= n，并且 i + j 是一个质数
 
 250
 00:28:55,740 --> 00:29:06,640
-So for example, if n equals 6, let's make a little table here, i and j and i plus j.
+如果 n = 6，画一个小表格，这里 i，j，i + j
 
 251
 00:29:09,700 --> 00:29:15,520
-So for, say, i equals 2 and j equals 1, I'd get 3.
+I = 2，J = 1，I + J就是3
 
 252
 00:29:15,520 --> 00:29:21,210
-And for i equals 3, I could have j equals 2, and that would be 5.
+然后 I = 3，J = 2，I + J就是5
 
 253
 00:29:21,210 --> 00:29:28,400
-And 4 and 1 would be 5 and so on, up until i goes to 6.
+4，1，5也是一样的，等等，直到 I 到了6
 
 254
 00:29:28,400 --> 00:29:37,350
-And what I'd like to return is to produce a stream of all the triples like this, let's say i, j, and i plus j.
+我想要这个过程返回的是由这样的 I J I+J 三元组组成的流
 
 255
 00:29:37,350 --> 00:29:41,530
-So for each n, I want to generate this stream.
+对于整数n，我想得到一个这样流
 
 256
 00:29:41,530 --> 00:29:43,680
-OK, well, that's easy.
+好的，听起来很简单
 
 257
 00:29:43,680 --> 00:29:47,230
-Let's build it up.
+开始做做看
 
 258
 00:29:47,230 --> 00:29:50,150
-We start like this.
+先这样开始
 
 259
 00:29:50,150 --> 00:29:56,440
-We're going to say for each i, we're going to generate a stream.
+对于每一个整数 I，生成一个流
 
 260
 00:29:56,440 --> 00:30:00,660
-For each i in the interval 1 through n, we're going to generate a stream.
+i 从 1 取到 n，每个 i 都生成一个流
 
 261
 00:30:00,660 --> 00:30:02,230
-What's that stream going to be?
+这个流将会是什么样子？
 
 262
 00:30:02,230 --> 00:30:04,180
-We're going to start by generating all the pairs.
+先从生成所有的开始
 
 263
 00:30:04,180 --> 00:30:20,710
-So for each i, we're going to generate, for each j in the interval 1 to i minus 1, we'll generate the pair, or the list with two elements i and j.
+对于每个 i 来说，生成的结果是这样的：对于整数 j，1 <= j <= i - 1，生成 (i j) 的序对
 
 264
 00:30:23,780 --> 00:30:30,712
-So we map along the interval, generating the pairs.
+对于 j 的每个取值，都生成一个序对
 
 265
 00:30:30,712 --> 00:30:33,170
-And for each i, that generates a stream of pairs.
+对于每个 i，都生成一个序对的流
 
 266
 00:30:33,170 --> 00:30:34,590
-And we flatmap it.
+最后进行flatmap
 
 267
 00:30:34,590 --> 00:30:38,730
-Now we have all the pairs i and j, such that i is less than j.
+现在，我们就得到了所有满足要求的序对了
 
 268
 00:30:38,730 --> 00:30:39,850
-So that builds that.
+就是这样
 
 269
 00:30:39,850 --> 00:30:42,990
-Now we're got to test them.
+来测试一下
 
 270
 00:30:42,990 --> 00:30:51,660
-Well, we take that thing we just built, the flatmap, and we filter it to see whether the i-- see, we had an i and a j.
+刚才flatmap得到的结果，进行过滤
 
 271
 00:30:51,660 --> 00:31:02,070
-i was the first thing in the list, j was the second thing in the list. So we have a predicate which says in that list of two elements is the sum of the CAR and the CDR prime.
+i 是列表第一个元素，j 是第二个，这里的谓词用来检测 i + j 的值是否是质数
 
 272
 00:31:02,070 --> 00:31:06,540
-And we filter that collection of pairs we just built.
+用这个lambda对所有的序对进行过滤
 
 273
 00:31:06,540 --> 00:31:09,420
-So those are the pairs we want.
+剩下的就是我们想要的
 
 274
 00:31:09,420 --> 00:31:19,610
-Now we go ahead and we take the result of that filter and we map along it, generating the list i and j and i plus j.
+然后我们继续，把过滤得到的结果再次进行map操作，得到 i j i+j 的三元组
 
 275
 00:31:19,610 --> 00:31:22,910
-And that's our procedure prime-sum-pairs.
+这就是过程 prime-sum-pairs
 
 276
 00:31:22,910 --> 00:31:24,480
-And then just to flash it up, here's the whole procedure.
+最后只需要过一遍，这就是整个过程
 
 277
 00:31:27,945 --> 00:31:30,750
-A map, a filter, a flatmap.
+一个map，一个filter，一个flatmap
 
 278
 00:31:34,850 --> 00:31:37,120
-There's the whole thing, even though this isn't particularly readable.
+所有的东西都在这里了，尽管看起来可读性不是那么好
 
 279
 00:31:37,120 --> 00:31:40,000
-It's just expanding that flatmap.
+这只是flatmap的一个延伸
 
 280
 00:31:40,000 --> 00:31:54,200
-So there's an example which illustrates the general point that nested loops in this procedure start looking like compositions of flatmaps of flatmaps of flatmaps of maps and things.
+这个例子很好的体现了嵌套循环的要点。看起来就像map的flatmap的flatmap的flatmap
 
 281
 00:31:54,200 --> 00:32:03,230
-So not only can we enumerate individual things, but by using flatmaps, we can do what would correspond to nested loops in most other languages.
+所以我们不仅仅枚举单个个体，还要通过使用flatmap，达到像其它语言中嵌套循环的效果
 
 282
 00:32:03,230 --> 00:32:08,410
-Of course, it's pretty awful to keep writing these flatmaps of flatmaps of flatmaps.
+当然，一直写这些flatmap很烦人
 
 283
 00:32:08,410 --> 00:32:15,480
-Prime-sum-pairs you saw looked fairly complicated, even though the individual pieces were easy.
+尽管prime-sum-pairs其中单独的部分很容易，但整体看起来还是十分复杂
 
 284
 00:32:15,480 --> 00:32:21,040
-So what you can do, if you like, is introduced some syntactic sugar that's called collect.
+如果你喜欢，可以引进一个叫collect的语法糖
 
 285
 00:32:21,040 --> 00:32:26,160
-And collect is just an abbreviation for that nest of flatmaps and filters arranged in that particular way.
+collect只是一个对嵌套flatmap的缩写
 
 286
 00:32:26,160 --> 00:32:29,620
-Here's prime-sum-pairs again, written using collect.
+这里我们用collect把prime-sum-pairs写一遍
 
 287
 00:32:29,620 --> 00:32:58,040
