@@ -2041,135 +2041,135 @@ TAIL会说，好吧，遵守承诺进行计算
 
 511
 00:52:58,410 --> 00:53:08,650
-We're going to see how this works in this example of computing the second prime between 10,000 and a million.
+现在从计算10,000到1,000,1000中的第二个质数这个实例来看，那具体是怎么运行的
 
 512
 00:53:08,650 --> 00:53:11,610
-OK, so we start off and we have this expression.
+好的，我们从这个表达式开始
 
 513
 00:53:15,820 --> 00:53:26,710
-The second prime-- the head of the tail of the result of filtering for primality the integers between 10,000 and 1 million.
+第二个质数 -- 就是(HEAD (TAIL (FILTER (PRIME? (E-I 10000 1000000)))))
 
 514
 00:53:26,710 --> 00:53:28,400
-Now, what is that?
+这究竟是什么？
 
 515
 00:53:28,400 --> 00:53:40,250
-What that is, that interval between 10,000 and 1 million, well, if you trace through enumerate interval, there builds a CONS-stream.
+就是10,000至1,000,000之间到底是什么？好，如果你开始枚举之间的整数，就构造了一个流
 
 516
 00:53:40,250 --> 00:53:54,480
-And the CONS-stream is the CONS of 10,000 to a promise to compute the integers between 10,001 and 1 million.
+CONS-STREAM实际代换过来是(CONS 10000 (DELAY (E-I 10001 1000000)))
 
 517
 00:53:54,480 --> 00:53:55,750
-So that's what this expression is.
+这也就是上面这个表达式
 
 518
 00:53:55,750 --> 00:53:57,640
-Here I'm using the substitution model.
+现在我使用代换模型
 
 519
 00:53:57,640 --> 00:54:01,010
-And we can use the substitution model because we don't have side effects and state.
+我们可以用代换模型的原因是这里并没有涉及时间与状态的副作用
 
 520
 00:54:04,270 --> 00:54:08,380
-So I have CONS of 10,000 to a promise to compute the rest of the integers.
+这里还有一个计算10001至1000000的承诺
 
 521
 00:54:08,380 --> 00:54:09,850
-So only one integer, so far, got enumerated.
+所以到现在为止，只有一个整数被枚举了出来
 
 522
 00:54:14,380 --> 00:54:16,580
-Well, I'm going to filter that thing for primality.
+然后用filter去过滤
 
 523
 00:54:19,900 --> 00:54:22,360
-Again, you go back and look at the filter code.
+我们再来细看filter这个东西
 
 524
 00:54:22,360 --> 00:54:25,460
-What the filter will first do is test the head.
+filter首先测试 (HEAD S)
 
 525
 00:54:25,460 --> 00:54:33,500
-So in this case, the filter will test 10,000 and say, oh, 10,000's not prime.
+这里，测试到的是10,000，不是素数
 
 526
 00:54:33,500 --> 00:54:39,220
-Therefore, what I have to do recursively is filter the tail.
+然后就开始递归的过滤TAIL的部分
 
 527
 00:54:39,220 --> 00:54:46,340
-And what's the tail of it, well, that's the tail of this pair with a promise in it.
+TAIL是什么呢？就是那个继续计算的承诺
 
 528
 00:54:46,340 --> 00:54:49,680
-Tail now comes in and says, well, I'm going to force that.
+开始计算尾了，尾说，好，我履行承诺继续计算
 
 529
 00:54:49,680 --> 00:55:00,880
-I'm going to force that promise, which means now I'm going to compute the integers between 10,001 and 1 million.
+履行承诺的意思是继续枚举10,001到1,000,000之间的整数
 
 530
 00:55:00,880 --> 00:55:02,970
-OK, so this filter now is looking at that.
+现在看起来像是这样
 
 531
 00:55:07,810 --> 00:55:11,960
-That enumerate itself, well, now we're back in the original enumerate situation.
+现在，就又回到了最开始枚举的部分
 
 532
 00:55:11,960 --> 00:55:19,740
-The enumerate is the CONS of the first thing, 10,001, onto a promise to compute the rest.
+(CONS 10001 (DELAY (E-I 10002 1000000))))
 
 533
 00:55:19,740 --> 00:55:23,060
-So now the primality filter is going to go look at 10,001.
+现在filter又开始针对10,001进行过滤了
 
 534
 00:55:23,060 --> 00:55:25,120
-It's going to decide if it likes that or not.
+又要开始判断是不是质数
 
 535
 00:55:25,120 --> 00:55:27,550
-It turns out 10,001 isn't prime.
+结果不是
 
 536
 00:55:27,550 --> 00:55:29,610
-So it'll force it again and again and again.
+然后再继续履行承诺计算下去
 
 537
 00:55:32,920 --> 00:55:37,100
-And finally, I think the first prime it hits is 10,009.
+然后，我觉得第一个质数可能是10,009
 
 538
 00:55:37,100 --> 00:55:40,465
-And at that point, it'll stop.
+在这个点才停下来
 
 539
 00:55:40,465 --> 00:55:45,240
-And that will be the first prime, and then eventually, it'll need the second prime.
+这只是第一个质数，我们需要的是第二个
 
 540
 00:55:45,240 --> 00:55:47,030
-So at that point, it will go again.
+所以，又开始了
 
 541
 00:55:47,030 --> 00:55:53,130
-So you see what happens is that no more gets generated than you actually need.
+你会发现，你需要多少，它才生成多少，不多不少
 
 542
 00:55:56,690 --> 00:56:04,930
-That enumerator is not going to generate any more integers than the filter asks it for as it's pulling in things to check for primality.
+enumerator不会生成比filter的要求更多的数要它去过滤
 
 543
 00:56:04,930 --> 00:56:11,255
-And the filter is not going to generate any more stuff than you ask it for, which is the head of the tail.
+filter也不会生成比你的要求更多的东西
 
 544
 00:56:11,255 --> 00:56:28,160
