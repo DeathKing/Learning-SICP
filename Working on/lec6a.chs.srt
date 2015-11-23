@@ -2173,251 +2173,251 @@ filter也不会生成比你的要求更多的东西
 
 544
 00:56:11,255 --> 00:56:28,160
-You see, what's happened is we've put that mixing of generation and test into what actually happens in the computer, even though that's not apparently what's happening from looking at our programs.
+看吧，这样的程序实际运行起来就像是传统的那种程序一样，尽管外表看起来不像
 
 545
 00:56:28,160 --> 00:56:30,230
-OK, well, that seemed easy.
+一切都很简单
 
 546
 00:56:30,230 --> 00:56:33,326
-All of this mechanism got put into this magic delay.
+这种机制的所有神奇之处在于DELAY
 
 547
 00:56:33,326 --> 00:56:36,900
-So you're saying, gee, that must be where the magic is.
+所以你会想，啊，这肯定是最难以理解的地方
 
 548
 00:56:36,900 --> 00:56:39,070
-But see there's no magic there either.
+但是并不是
 
 549
 00:56:39,070 --> 00:56:40,610
-You know what delay is.
+其实你应该知道DELAY是什么
 
 550
 00:56:40,610 --> 00:56:56,490
-Delay on some expression is just an abbreviation for--  well, what's a promise to compute an expression?
+表达式的DELAY只是一个缩略词，那么，这个要履行计算的承诺到底是什么？
 
 551
 00:56:56,490 --> 00:57:03,000
-Lambda of nil, procedure of no arguments, which is that expression.
+(lambda () <exp>)，就这么简单
 
 552
 00:57:03,000 --> 00:57:03,930
-That's what a procedure is.
+这就是整个过程
 
 553
 00:57:03,930 --> 00:57:06,050
-It says I'm going to compute an expression.
+它的意思是，这个表达式将会被计算
 
 554
 00:57:06,050 --> 00:57:07,460
-What's force?
+FORCE又是什么？
 
 555
 00:57:07,460 --> 00:57:10,800
-How do I take up a promise?
+如何履行承诺？
 
 556
 00:57:10,800 --> 00:57:15,890
-Well, force of some procedure, a promise, is just run it.
+FORCE一些过程，只是简单地运行它们
 
 557
 00:57:18,710 --> 00:57:20,120
-Done.
+结束了，就是这样
 
 558
 00:57:20,120 --> 00:57:23,580
-So there's no magic there at all.
+并没有什么离奇
 
 559
 00:57:23,580 --> 00:57:26,440
-Well, what have we done?
+总结一下，我们都做了点什么？
 
 560
 00:57:26,440 --> 00:57:30,960
-We said the old style, traditional style of programming is more efficient.
+我们说，传统的编程方式更有效
 
 561
 00:57:30,960 --> 00:57:35,260
-And the stream thing is more perspicuous.
+使用流来编程，程序更为明晰
 
 562
 00:57:35,260 --> 00:57:43,350
-And we managed to make the stream procedures run like the other procedures by using delay.
+我们设法用DELAY，使流获得了和其它过程一样的运行效果
 
 563
 00:57:43,350 --> 00:57:54,440
-And the thing that delay did for us was to de-couple the apparent order of events in our programs from the actual order of events that happened in the machine.
+DELAY所做的就是，把我们程序中的事件顺序与实际发生在机器中的事件顺序分离开来
 
 564
 00:57:54,440 --> 00:57:56,540
-That's really what delay is doing.
+这就是DELAY的作用
 
 565
 00:57:56,540 --> 00:57:58,290
-That's exactly the whole point.
+也是全部的重点
 
 566
 00:57:58,290 --> 00:58:09,182
-We've given up the idea that our procedures, as they run, or as we look at them, mirror some clear notion of time.
+我们放弃了这种想法，即过程结构与实际运行映射出清晰的时间性
 
 567
 00:58:09,182 --> 00:58:16,690
-And by giving that up, we give delay the freedom to arrange the order of events in the computation the way it likes.
+放弃这种想法，我们给予DELAY以改变计算顺序的自由
 
 568
 00:58:16,690 --> 00:58:17,610
-That's the whole idea.
+整个思想就是这样
 
 569
 00:58:17,610 --> 00:58:24,200
-We de-couple the apparent order of events in our programs from the actual order of events in the computer.
+我们分离了程序表面上的顺序与实际运行的顺序
 
 570
 00:58:24,200 --> 00:58:25,770
-OK, well there's one more detail.
+对了，还有一个细节
 
 571
 00:58:25,770 --> 00:58:29,730
-It's just a technical detail, but it's actually an important one.
+一个技术性的细节，但是也非常重要
 
 572
 00:58:29,730 --> 00:58:39,320
-As you run through these recursive programs unwinding, you'll see a lot of things that look like tail of the tail of the tail.
+当你运行一些递归的过程时，就像(TAIL (TAIL (TAIL ... 这样
 
 573
 00:58:39,320 --> 00:58:43,860
-That's the kind of thing that would happen as I go CONSing down a stream all the way.
+它就会不断在流中通过CONS来计算构造新元素
 
 574
 00:58:43,860 --> 00:59:05,290
-And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
+每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
 
 575
 00:59:05,290 --> 00:59:20,390
-So there's one little hack to slightly change what delay is, and make it a thing which is-- I'll write it this way.
+我们把DELAY稍微改写一下，就可以让整件事变得 -- 我先写一下
 
 576
 00:59:20,390 --> 00:59:31,000
-The actual implementation, delay is an abbreviation for this thing, memo-proc of a procedure.
+(DELAY <exp>)的具体内容是(MEMO-PROC (lambda () <exp>))
 
 577
 00:59:31,000 --> 00:59:35,150
-Memo-proc is a special thing that transforms a procedure.
+MEMO-PROC改变一个过程
 
 578
 00:59:35,150 --> 00:59:44,806
-What it does is it takes a procedure of no arguments and it transforms it into a procedure that'll only have to do its computation once.
+取一个没有参数的过程，转变其为只需要执行一次计算的过程
 
 579
 00:59:44,806 --> 00:59:48,700
-And what I mean by that is, you give it a procedure.
+我们意思是，你给它一个过程
 
 580
 00:59:48,700 --> 01:00:02,360
-The result of memo-proc will be a new procedure, which the first time you call it, will run the original procedure, remember what result it got, and then from ever on after, when you call it, it just won't have to do the computation.
+MEMO-PROC的结果是一个新的过程，第一次运行的时候，它计算<exp>，记下来它的结果，从那之后，每次你再运行这个过程，就不用再计算了
 
 581
 01:00:02,360 --> 01:00:05,200
-It will have cached that result someplace.
+它会把结果存储在一个地方
 
 582
 01:00:05,200 --> 01:00:06,550
-And here's an implementation of memo-proc.
+可以这样来实现MEMO-PROC
 
 583
 01:00:11,210 --> 01:00:12,710
-Once you have the idea, it's easy to implement.
+一旦你了解怎么做，实现就很容易了
 
 584
 01:00:12,710 --> 01:00:17,390
-Memo-proc is this little thing that has two little flags in there.
+MEMO-PROC中，有两个标记变量
 
 585
 01:00:17,390 --> 01:00:20,320
-It says, have I already been run?
+一个是，记录是否运行过
 
 586
 01:00:20,320 --> 01:00:23,620
-And initially it says, no, I haven't already been run.
+初始值是NO，还没运行过
 
 587
 01:00:23,620 --> 01:00:29,070
-And what was the result I got the last time I was run?
+上一次运行后，它的结果是什么？
 
 588
 01:00:29,070 --> 01:00:34,360
-So memo-proc takes a procedure called proc, and it returns a new procedure of no arguments.
+MEMO-PROC取一个参数为PROC，返回一个没有参数的过程
 
 589
 01:00:34,360 --> 01:00:38,610
-Proc is supposed to be a procedure of no arguments.
+PROC也是一个没有参数的过程
 
 590
 01:00:38,610 --> 01:00:44,430
-And it says, oh, if I'm not already run, then I'm going to do a sequence of things.
+如果没有运行过，就做下面的事情
 
 591
 01:00:44,430 --> 01:00:48,450
-I'm going to compute proc, I'm going to save that.
+计算PROC，存储它的值
 
 592
 01:00:48,450 --> 01:00:51,140
-I'm going to stash that in the variable result.
+存储在变量RESULT中
 
 593
 01:00:51,140 --> 01:00:56,610
-I'm going to make a note to myself that I've already been run, and then I'll return the result.
+然后对already-run?赋值，提醒自己已经运行过了，最后返回result
 
 594
 01:00:56,610 --> 01:00:59,010
-So that's if you compute it if it's not already run.
+所以整件事即如果你没有运行过，就计算一次
 
 595
 01:00:59,010 --> 01:01:03,420
-If you call it and it's already been run, it just returns the result.
+如果已经运行过，直接返回结果就好了
 
 596
 01:01:03,420 --> 01:01:08,400
-So that's a little clever hack called memoization.
+这是一种叫“记忆化”的小技巧
 
 597
 01:01:08,400 --> 01:01:15,270
-And in this case, it short circuits having to re-compute the tail of the tail of the tail of the tail of the tail.
+这样的话，这一串东西就不会来反复的计算TAIL了
 
 598
 01:01:15,270 --> 01:01:17,810
-So there isn't even that kind of inefficiency.
+不再那样的没效率了
 
 599
 01:01:17,810 --> 01:01:24,210
-And in fact, the streams will run with pretty much the same efficiency as the other programs precisely.
+事实上，这样做甚至和传统的那种程序效率是一样的
 
 600
 01:01:24,210 --> 01:01:33,610
-And remember, again, the whole idea of this is that we've used the fact that there's no really good dividing line between procedures and data.
+记住，再次提醒，整个的思想在于，过程与数据之间没有一个明确的分界线
 
 601
 01:01:33,610 --> 01:01:38,760
-We've written data structures that, in fact, are sort of like procedures.
+这个数据结构看起来，有点像一个过程
 
 602
 01:01:38,760 --> 01:01:49,620
-And what that's allowed us to do is take an example of a common control structure, in this place iteration.
+它使我们可以在这里放置一个结构，不断的迭代计算自身
 
 603
 01:01:49,620 --> 01:01:55,496
-And we've built a data structure which, since itself is a procedure, kind of has this iteration control structure in it.
+我们构造的这个数据结构，其中有一个过程，这个过程可以通过迭代，产生新的结构
 
 604
 01:01:55,496 --> 01:01:58,650
-And that's really what streams are.
+这就是流的实质
 
 605
 01:01:58,650 --> 01:01:59,900
-OK, questions?
+好的，大家有什么问题吗？
 
 606
 01:02:03,950 --> 01:02:13,052
