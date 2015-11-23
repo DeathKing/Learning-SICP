@@ -2421,225 +2421,225 @@ PROC也是一个没有参数的过程
 
 606
 01:02:03,950 --> 01:02:13,052
-AUDIENCE: Your description of tail-tail-tail, if I understand it correctly, force is actually execution of a procedure, if it's done without this memo-proc thing.
+我是这样理解的，你刚才说(TAIL (TAIL (TAIL ...，没有没有MEMO-PROC的话，FORCE仅仅只是执行了一次过程而已
 
 607
 01:02:13,052 --> 01:02:16,380
-And you implied that memo-proc gets around that problem.
+你说使用那个MEMO-PROC就不会有那样的问题
 
 608
 01:02:16,380 --> 01:02:23,910
-Doesn't it only get around it if tail-tail-tail is always executing exactly the same-- PROFESSOR: Oh, that's-- sure.
+难道(TAIL (TAIL (TAIL ... 不是每次都在进行计算吗？ -- [教授]哦，对的
 
 609
 01:02:23,910 --> 01:02:26,050
-AUDIENCE: I guess I missed that point.
+我忘记说了
 
 610
 01:02:26,050 --> 01:02:26,540
-PROFESSOR: Oh, sure.
+你是对的
 
 611
 01:02:26,540 --> 01:02:31,290
-I mean the point is--  yeah.
+不小心漏掉了这点
 
 612
 01:02:31,290 --> 01:02:34,160
-I mean I have to do a computation to get the answer.
+我的意思是，不用重复计算也可以得到结果
 
 613
 01:02:34,160 --> 01:02:42,980
-But the point is, once I've found the tail of the stream, to get the tail of the tail, I shouldn't have had to re-compute the first tail.
+关键在于，一旦你计算过(TAIL STREAM)，当你计算(TAIL (TAIL STREAM))的时候，就不用再计算第一个TAIL了
 
 614
 01:02:42,980 --> 01:02:46,460
-See, and if I didn't use memo-proc, that re-computation would have been done.
+明白了吧，如果我没有用MEMO-PROC，还要再计算一遍(TAIL STREAM)
 
 615
 01:02:46,460 --> 01:02:47,710
-AUDIENCE: I understand now.
+明白了
 
 616
 01:02:50,830 --> 01:02:56,830
-AUDIENCE: In one of your examples, you mentioned that we were able to use the substitution model because there are no side effects.
+之前的例子中你提到过，我们可以使用代换模型因为这里没有副作用
 
 617
 01:02:56,830 --> 01:03:03,620
-What if we had a single processing unit-- if we had a side effect, if we had a state?
+如果流通过的一个处理单元 -- 如果有副作用呢？如果有了状态？
 
 618
 01:03:03,620 --> 01:03:09,120
-Could we still practically build the stream model?
+我们还可以用这种流的结构吗？
 
 619
 01:03:09,120 --> 01:03:09,530
-PROFESSOR: Maybe.
+可能吧
 
 620
 01:03:09,530 --> 01:03:10,540
-That's a hard question.
+很难说
 
 621
 01:03:10,540 --> 01:03:18,960
-I'm going to talk a little bit later about the places where substitution and side effects don't really mix very well.
+我可能会花很长时间来探讨代换模型和副作用无法共存
 
 622
 01:03:18,960 --> 01:03:25,170
-But in general, I think the answer is unless you're very careful, any amount of side effect is going to mess up everything.
+通常情况下，除非你非常小心，否则副作用会把一切弄的很糟糕
 
 623
 01:03:35,490 --> 01:03:39,410
-AUDIENCE: Sorry, I didn't quite understand the memo-proc operation.
+我不是很理解MEMO-PROC这个过程
 
 624
 01:03:39,410 --> 01:03:41,990
-When do you execute the lambda?
+当你执行lambda的时候
 
 625
 01:03:41,990 --> 01:03:47,600
-In other words, when memo-proc is executed, just this lambda expression is being generated.
+换句话说，当MEMO-PROC执行的时候，只生成了lambda表达式
 
 626
 01:03:47,600 --> 01:03:50,390
-But it's not clear to me when it's executed.
+但是我不太清楚是什么时候执行的
 
 627
 01:03:50,390 --> 01:03:51,350
-PROFESSOR: Right.
+好的
 
 628
 01:03:51,350 --> 01:03:57,930
-What memo-proc does-- remember, the thing that's going into memo-proc, the thing proc, is a procedure of no arguments.
+MEMO-PROC所做的 -- 作为MEMO-PROC参数是PROC，一个没有参数的过程
 
 629
 01:03:57,930 --> 01:04:00,390
-And someday, you're going to call it.
+某个时刻，你会调用到它
 
 630
 01:04:00,390 --> 01:04:06,620
-Memo-proc translates that procedure into another procedure of no arguments, which someday you're going to call.
+MEMO-PROC把一个过程转化为另一个过程，某个时刻你会调用到它
 
 631
 01:04:06,620 --> 01:04:09,890
-That's that lambda.
+就是这个lambda
 
 632
 01:04:09,890 --> 01:04:24,100
-So here, where I initially built as my tail of the stream, say, this procedure of no arguments, which someday I'll call.
+这里，当这一部分构造成为流的TAIL的时候，这个没有参数的过程，会在之后的某个时刻被调用到
 
 633
 01:04:24,100 --> 01:04:30,650
-Instead, I'm going to have the tail of the stream be memo-proc of it, which someday I'll call.
+相对应的，我把这一部分理解为是MEMO-PROC，某个时刻会被调用到的
 
 634
 01:04:30,650 --> 01:04:47,642
-So that lambda of nil, that gets called when you call the memo-proc, when you call the result of that memo-proc, which would be ordinarily when you would have called the original thing that you set it.
+所以这个lambda，会在你调用MEMO-PROC得到结果的时候被调用，正如你之前设置过的一样
 
 635
 01:04:47,642 --> 01:04:52,610
-AUDIENCE: OK, the reason I ask is I had a feeling that when you call memo-proc, you just return this lambda.
+我的意思是，你调用MEMO-PROC的时候，你只是返回了一个lambda
 
 636
 01:04:52,610 --> 01:04:53,770
-PROFESSOR: That's right.
+对啊
 
 637
 01:04:53,770 --> 01:04:58,100
-When you call memo-proc, you return the lambda.
+你调用MEMO-PROC的时候，返回了一个lambda
 
 638
 01:04:58,100 --> 01:05:02,270
-You never evaluate the expression at all, until the first time that you would have evaluated it.
+你也没有执行<exp>，直到你第一次需要执行它的时候
 
 639
 01:05:07,590 --> 01:05:14,240
-AUDIENCE: Do I understand it right that you actually have to build the list up, but the elements of the list don't get evaluated?
+我这样理解对吗？你构造了一个列表，其中的元素还没有被计算
 
 640
 01:05:14,240 --> 01:05:15,630
-The expressions don't get evaluated?
+表达式没有被计算？
 
 641
 01:05:15,630 --> 01:05:18,540
-But at each stage, you actually are building a list.
+但在在每一个阶段，你还是构造了列表
 
 642
 01:05:18,540 --> 01:05:20,700
-PROFESSOR: That's-- I really should have said this.
+嗯，我应该这样说
 
 643
 01:05:20,700 --> 01:05:22,270
-That's a really good point.
+这个问题不错
 
 644
 01:05:22,270 --> 01:05:23,660
-No, it's not quite right.
+但是，也不全对
 
 645
 01:05:23,660 --> 01:05:25,080
-Because what happens is this.
+因为实际发生的事情是这样的
 
 646
 01:05:25,080 --> 01:05:26,890
-Let me draw this as pairs.
+我先把这个画成序对
 
 647
 01:05:26,890 --> 01:05:32,740
-Suppose I'm going to make a big stream, like enumerate interval, 1 through 1 billion.
+假设我要构造一个特别大的流，比如枚举整数，从1到1,000,000,000
 
 648
 01:05:32,740 --> 01:05:43,045
-What that is, is a pair with a 1 and a promise.
+就是1，和一个计算的约定
 
 649
 01:05:46,520 --> 01:05:47,890
-That's exactly what it is.
+就是这样
 
 650
 01:05:47,890 --> 01:05:49,140
-Nothing got built up.
+什么都没有构造
 
 651
 01:05:51,600 --> 01:05:56,370
-When I go and force this, and say, what happens?
+当我继续的时候，FORCE这一部分，会发生什么？
 
 652
 01:05:56,370 --> 01:06:00,530
-Well, this thing is now also recursively a CONS.
+这个东西递归的产生了CONS
 
 653
 01:06:00,530 --> 01:06:11,350
-So that this promise now is the next thing, which is a 2 and a promise to do more.
+这个约定生成了下一个东西，就是2和一个约定
 
 654
 01:06:11,350 --> 01:06:14,470
-And so on and so on and so on.
+一直这样下去
 
 655
 01:06:14,470 --> 01:06:18,200
-So nothing gets built up until you walk down the stream.
+所以你沿着流这样下来，并没有构造什么
 
 656
 01:06:18,200 --> 01:06:25,500
-Because what's sitting here is not the list, but a promise to generate the list. And by promise, technically I mean procedure.
+因为这个东西不是列表，只是一个生成列表的约定，技术上来说，是一个过程
 
 657
 01:06:28,050 --> 01:06:30,485
-So it doesn't get built up.
+因此并没有构造列表
 
 658
 01:06:30,485 --> 01:06:34,280
-Yeah, I should have said that before this point.
+我应该早点说的
 
 659
 01:06:34,280 --> 01:06:34,490
-OK.
+好吧
 
 660
 01:06:34,490 --> 01:06:34,790
-Thank you.
+就到这里
 
 661
 01:06:34,790 --> 01:06:36,340
-Let's take a break.
+大家休息一下吧
 
