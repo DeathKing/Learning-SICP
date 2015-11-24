@@ -556,163 +556,163 @@ d也一样
 
 140
 00:16:30,320 --> 00:16:52,790
-Now, it's also the case that when the and-action procedure is awakened, saying one of the people who know that you've told--one of the people you've told to wake you up if their signal changes, you have to go look and ask them what's their signal so you can do the and, and produce a signal for this one.
+假如与门被“人”通知了 -- 因为"其它人"信号值的变化 -- 与门就得回头去检测自己的输入电路的新值是多少，才能做“与”操作，生成新的输出信号
 
 141
 00:16:57,090 --> 00:17:06,400
-So there has to be, for example, information here saying A1, my A1 is this guy, and my A2 is this guy.
+这也即与门的输入，A1是这个a，A2就是b
 
 142
 00:17:08,930 --> 00:17:16,170
-And not only that, when I do my and, I'm going to have to tell this guy something.
+不只这样，还有点别的
 
 143
 00:17:16,170 --> 00:17:21,160
-So I need an output--  being this guy.
+还有一个输出
 
 144
 00:17:25,800 --> 00:17:43,520
-And similarly, this guy's going to have a thing called the input that he interrogates to find out what the value of the signal on the input is, when the signal wakes up and says, I've changed, and sends a message this way saying, I've changed.
+同样地，非门也有一个输入，它也不时地在关注着信号的变化，当有“人”来通知它“我已经改变了”
 
 145
 00:17:43,520 --> 00:17:46,900
-This guy says, OK, what's your value now?
+它就反过来查询这个新的信号值
 
 146
 00:17:46,900 --> 00:17:55,860
-When he gets that value, then he's going to have to say, OK, output changes this guy, changes this guy.
+取到值之后，然后计算输出，改变输出的信号值
 
 147
 00:18:00,600 --> 00:18:02,481
-And so on.
+等等等等，就像是这样
 
 148
 00:18:02,481 --> 00:18:06,240
-And so I have to have at least that much connected-ness.
+因此我也必须有这么多的连接
 
 149
 00:18:06,240 --> 00:18:10,260
-Now, let's go back and look, for example, at the and-gate.
+现在我们回头观察一下，这个与门
 
 150
 00:18:10,260 --> 00:18:13,670
-Here we are back on this slide.
+这张幻灯片
 
 151
 00:18:13,670 --> 00:18:16,040
-And we can see some of these parts.
+这几个部分的内容
 
 152
 00:18:16,040 --> 00:18:21,030
-For any particular and-gate, there is an A1, there is an A2, and the output.
+对每个与门，都有A1，A2两个输入，一个输出output
 
 153
 00:18:21,030 --> 00:18:46,240
-And those are, those are an environment that was created at the--those produce a frame at the time and-gate was called, a frame where A1, A2, and output are--have as their values, they're bound to the wires which, they are--which were passed in.
+当and-gate运行的时候，A1 A2 output构成了其运行“环境”，它们有各自的信号值
 
 154
 00:18:46,240 --> 00:18:54,590
-In that environment, I constructed a procedure-- this one right there.
+在这个环境下，我构建一个新的过程
 
 155
 00:18:54,590 --> 00:18:57,780
-And-action procedure was constructed in that environment.
+and-action-procedure
 
 156
 00:18:57,780 --> 00:19:01,620
-That was the result of evaluating a lambda expression.
+过程定义了并没有实际运行
 
 157
 00:19:01,620 --> 00:19:07,620
-So it hangs onto the frame where these were defined.
+当它运行的时候，根据环境模型
 
 158
 00:19:07,620 --> 00:19:11,700
-Local--part of its local state is that.
+找到它的局部环境
 
 159
 00:19:11,700 --> 00:19:17,310
-The and-action procedure, therefore, has access to A1, A2, and output as we see here.
+and-action-procedure就取到了这里的A1 A2 output的值
 
 160
 00:19:17,310 --> 00:19:19,645
-A1, A2, and output.
+A1 A2 output
 
 161
 00:19:22,360 --> 00:19:26,030
-Now, we haven't looked inside of a wire yet.
+我们还没有深入探索“电线”的内部结构
 
 162
 00:19:26,030 --> 00:19:29,030
-That's all that remains.
+我们来看看
 
 163
 00:19:29,030 --> 00:19:30,280
-Let's look at a wire.
+来看看“电线”
 
 164
 00:19:33,520 --> 00:19:36,160
-Like the overhead, very good.
+非常棒的结构
 
 165
 00:19:39,500 --> 00:19:43,090
-Well, the wire, again, is a, is a somewhat complicated mess.
+“电线”是有那么一点复杂
 
 166
 00:19:43,090 --> 00:19:46,840
-Ooh, wrong one.
+哦，说错了
 
 167
 00:19:46,840 --> 00:19:49,780
-It's a big complicated mess, like that.
+是非常复杂
 
 168
 00:19:49,780 --> 00:19:54,720
-But let's look at it in detail and see what's going on.
+但是还是来看一下，到底是什么
 
 169
 00:19:54,720 --> 00:19:57,760
-Well, the wire is one of these.
+“电线”是这上面画的云一样的东西 
 
 170
 00:19:57,760 --> 00:20:05,010
-And it has to have two things that are part of it, that it's state.
+有两个主要部分，都是它的状态
 
 171
 00:20:05,010 --> 00:20:07,390
-One of them is the signal we see here.
+其中一个是信号值
 
 172
 00:20:07,390 --> 00:20:19,270
-In other words, when we call make-wire to make a wire, then the first thing we do is we create some variables which are the signal and the action procedures for this wire.
+换句话说，当我们执行make-wire，首先要做的是新建两个局部变量signal和action-procs
 
 173
 00:20:22,042 --> 00:20:27,840
-And in that context, we define various functions--or procedures, excuse me, procedures.
+在这个上下文中，我们定义了一系列的过程
 
 174
 00:20:27,840 --> 00:20:32,850
-One of them is called set-my-signal to a new value.
+先看(set-my-signal! new)
 
 175
 00:20:32,850 --> 00:20:37,930
-And what that does is takes a new value in.
+它所做的只是，取一个新值new
 
 176
 00:20:37,930 --> 00:20:40,360
-If that's equal to my current value of my signal, I'm done.
+如果new和signal一样，信号没有变化，就没必要做什么了
 
 177
 00:20:40,360 --> 00:20:54,630
-Otherwise, I set the signal to the new value and call each of the action procedures that I've been, that I've been--what's the right word?--  introduced to.
+否则，把signal的值赋值为new，再执行action-procs里的所有过程，即通知所有“相关的人”
 
 178
 00:20:54,630 --> 00:21:01,530
-I get introduced when the and-gate was applied to me.
+当作为and-gate的参数的时候，它就是我的“联系人”了，得去通知它
 
 179
 00:21:04,130 --> 00:21:07,410
-I add action procedure at the bottom.
+添加“联系人”的这个过程在最下面
 
 180
 00:21:07,410 --> 00:21:27,780
