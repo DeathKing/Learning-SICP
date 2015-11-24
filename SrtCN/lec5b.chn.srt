@@ -360,199 +360,199 @@ logical-not只是把0，1换成1，0罢了
 
 91
 00:11:10,910 --> 00:11:15,900
-And what it does, of course, is nothing more than compute the logical and of the signals on the inputs.
+它所做的只是根据信号逻辑与运算出输出信号而已
 
 92
 00:11:15,900 --> 00:11:25,470
-And after some delay, called the and-gate delay, calls this procedure, which sets a signal on the output to a new value.
+在and-gate-delay的延时之后，更新输出信号值
 
 93
 00:11:25,470 --> 00:11:28,350
-Now, how I implement these things is all wishful thinking.
+我完全是按愿望思考来完成的这一切
 
 94
 00:11:28,350 --> 00:11:32,020
-As you see here, I have an assignment operation.
+你看，这里有一个赋值操作
 
 95
 00:11:32,020 --> 00:11:34,570
-It's not set.
+并不是set!
 
 96
 00:11:34,570 --> 00:11:46,340
-It's a derived assignment operation in the same way we had functions that were derived from CAR and CDR. So I, by convention, label that with an exclamation point.
+之前我们模仿过CAR，CDR构建新过程，这里也是同理，按照惯例，它的具体实现留作最后的惊喜
 
 97
 00:11:46,340 --> 00:12:03,350
-And over here, you see there's an action, which is to inform the wire, called A1 locally in this and-gate, to call the and-action procedure when it gets changed, and the wire A2 to call the and-action procedure when it gets changed.
+这个过程add-action!，提醒线路A1，当它改变的时候记得执行过程add-action-procedure，A2也是一样
 
 98
 00:12:06,310 --> 00:12:09,510
-All very simple.
+非常简单
 
 99
 00:12:09,510 --> 00:12:18,310
-Well, let's talk a little bit about this communication that must occur between these various parts.
+现在我们再来聊聊各个部分之间信息是如何传递的吧
 
 100
 00:12:18,310 --> 00:12:47,360
-Suppose, for example, I have a very simple circuit which contains an and with wires A and B. And that connects through a wire called C to an inverter which has a wire output called D. What are the comput...--here's the physical world.
+假设，有一个非常简单的电路，一个与门，输入a，b，输出端c又作为输入接在非门上，非门的输出是d
 
 101
 00:12:47,360 --> 00:12:49,860
-It's an abstraction of the physical world.
+一个对实际电路的抽象
 
 102
 00:12:49,860 --> 00:12:54,880
-Now I can buy these out of little pieces that you get at Radio Shack for a few cents.
+要不了几分钱就可以从Radio Shack买到这些元件
 
 103
 00:12:54,880 --> 00:13:01,530
-And there are boxes that act like this, which have little numbers on them like LS04 or something.
+那些元件的作用和画在这里的差不多，不同的是元件上面都标有很多小数字像“LS04”之类的
 
 104
 00:13:01,530 --> 00:13:09,010
-Now supposing I were to try to say what's the computational model.
+现在来看其中的计算模型
 
 105
 00:13:09,010 --> 00:13:15,850
-What is the thing that corresponds to that, that part of reality in the mind of us and in the computer?
+它联系起我们头脑里的现实和在计算机中虚拟的现实，这种联系到底是什么
 
 106
 00:13:15,850 --> 00:13:25,750
-Well, I have to assign for every object in the world an object in the computer, and for every relationship in the world between them a relationship in the computer.
+真实世界的对象或关系改变了，我就去改变“虚拟”世界中相对应的对象或关系
 
 107
 00:13:25,750 --> 00:13:28,560
-That's my goal.
+这是我们的目标
 
 108
 00:13:28,560 --> 00:13:30,900
-So let's do that.
+让我们来看看怎么做
 
 109
 00:13:30,900 --> 00:13:35,401
-Well, I have some sort of thing called the signal, A.
+这一团东西代表信号A
 
 110
 00:13:35,401 --> 00:13:37,940
-This is A. It's a signal.
+A，一个信号
 
 111
 00:13:37,940 --> 00:13:39,900
-It's a cloudy thing like that.
+画的像一团云
 
 112
 00:13:39,900 --> 00:13:49,140
-And I have another one down here which I'm going to call B. It's another signal.
+再画另一个信号，B
 
 113
 00:13:49,140 --> 00:14:00,320
-Now this signal--these two signals are somehow going to have to hook together into a box, let's call it this, which is the and-gate, action procedure.
+这两个信号将要一起连入一个盒子，一个与门，一个动作过程
 
 114
 00:14:00,320 --> 00:14:02,040
-That's the and-gate's action procedure.
+这就是与门的动作过程
 
 115
 00:14:07,660 --> 00:14:30,195
-And it's going to produce--well, it's going to interact with a signal object, which we call C--a wire object, excuse me, we call C. And then the-- this is going to put out again, or connect to, another action procedure which is one associated with the inverter in the world, not.
+它又联系起另一个信号C，后面的非门连接起来和前面差不多
 
 116
 00:14:32,860 --> 00:14:42,970
-And I'm going to have another--another wire, which we'll call D.
+最后一个信号/电线，D
 
 117
 00:14:42,970 --> 00:14:45,770
-So here's my layout of stuff.
+整体布局就是这样
 
 118
 00:14:45,770 --> 00:14:51,500
-Now we have to say what's inside them and what they have to know to compute.
+现在必须来研究它们内部的实际机制了，它们的实际运行过程
 
 119
 00:14:51,500 --> 00:14:57,340
-Well, every--every one of these wires has to know what the value of the signal that's on that wire is.
+每一个电线都必须知道自己的信号是什么
 
 120
 00:14:57,340 --> 00:15:00,680
-So there's going to be some variable inside here, we'll call it signal.
+所以内部一定有些变量来表示信号
 
 121
 00:15:02,670 --> 00:15:05,840
-And he owns a value.
+a有一个变量，signal
 
 122
 00:15:05,840 --> 00:15:08,656
-So there must be some environment associated with this.
+也不要忘了它所关联的环境
 
 123
 00:15:08,656 --> 00:15:11,800
-And for each one of these, there must be an environment that binds signal.
+剩下的每一个都和a一样
 
 124
 00:15:15,400 --> 00:15:16,880
-And there must be a signal here, therefore.
+这里也有一个signal变量
 
 125
 00:15:19,400 --> 00:15:24,170
-And presumably, signal's a value that's either 1 or 0, and signal.
+可以猜出来，signal的值不是0就是1
 
 126
 00:15:28,000 --> 00:15:34,390
-Now, we also have to have some list of people to inform if the signal here changes.
+还需要一个列表，记录一些“联系人”，当信号实际改变的时候要去通知”他们“
 
 127
 00:15:36,660 --> 00:15:39,300
-We're going to have to inform this.
+我们得通知这个与门
 
 128
 00:15:39,300 --> 00:15:44,500
-So I've got that list. We'll call it the Action Procedures, AP.
+这个列表我们叫它AP(Action Procedures，动作过程)
 
 129
 00:15:44,500 --> 00:15:50,500
-And it's presumably a list. But the first thing on the list, in this case, is this guy.
+假定它真的用列表实现，在这里，列表里第一个肯定是这个与门
 
 130
 00:15:50,500 --> 00:15:54,810
-And the action procedures of this one happens to have some list of stuff.
+b和a一样
 
 131
 00:15:54,810 --> 00:15:59,020
-There might be other people who are sharing A, who are looking at it.
+也可能有一些其它“人”在时刻等待着A来叫“他们”
 
 132
 00:15:59,020 --> 00:16:03,630
-So there might be other guys on this list, like somebody over there that we don't know about.
+所以这里可能有其它“人”，具体不知道是谁
 
 133
 00:16:03,630 --> 00:16:07,200
-It's the other guy attached to A.
+我画在这里
 
 134
 00:16:07,200 --> 00:16:13,070
-And the action procedure here also has to point to that, the list of action procedures.
+在b内部的AP列表里，肯定也要有这个与门
 
 135
 00:16:13,070 --> 00:16:18,530
-And of course, that means this one, its action procedures has to point up to here.
+相类似的，这里这样来连接
 
 136
 00:16:18,530 --> 00:16:21,770
-This is the things-- the people it has to inform.
+这是c要通知的“人”
 
 137
 00:16:21,770 --> 00:16:24,280
-And this guy has some too.
+d也一样
 
 138
 00:16:24,280 --> 00:16:27,190
-But I don't know what they are because I didn't draw it in my diagram.
+但是我不知道它要通知谁，因为“他们”没有在我的图中出现
 
 139
 00:16:27,190 --> 00:16:30,320
-It's the things connected to D.
+可能是和D连接起来的其它门吧
 
 140
 00:16:30,320 --> 00:16:52,790
