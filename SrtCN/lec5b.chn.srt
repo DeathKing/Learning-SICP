@@ -100,7 +100,7 @@
 
 26
 00:03:34,610 --> 00:03:41,092
-例如，在数字电路里我们有像反相器这样的东西
+例如，在数字电路里我们有像非门这样的东西
 
 27
 00:03:41,092 --> 00:03:43,990
@@ -224,139 +224,139 @@ d也是
 
 57
 00:06:48,790 --> 00:06:53,890
-And the nice thing about this that I've just shown you is this language is hierarchical in the right way.
+你可以看的出来，这个语言非常有层次性
 
 58
 00:06:53,890 --> 00:07:06,300
-If a language isn't hierarchical in the right way, if it turns out that a compound object doesn't look like a primitive, there's something wrong with the language-- at least the way I feel about that.
+如果一个语言没有层次性，如果你不能把一个复合对象当成原子对象来使用，这个语言肯定是有问题的 -- 至少我这样觉得
 
 59
 00:07:06,300 --> 00:07:23,350
-So here we have--here, instead of starting with mathematical functions, or things that compute mathematical functions, which is what we've been doing up until now, instead of starting with things that look like mathematical functions, or compute such things, we are starting with things that are electrical objects and we build up more electrical objects.
+之前我们都是从计算一些数字上的函数开始的，现在我们不那样做，我们从一些电路对象开始，构建更多的电路对象
 
 60
 00:07:23,350 --> 00:07:30,500
-And the glue we're using is basically the Lisp structure: lambdas.
+用LISP里的lambda将其粘合起来
 
 61
 00:07:30,500 --> 00:07:32,930
-Lambda is the ultimate glue, if you will.
+lambda是很有用的粘合剂
 
 62
 00:07:32,930 --> 00:08:05,900
-And of course, half adder itself can be used in a more complicated abstraction called a full adder, which in fact involves two half adders, as you see here, hooked together with some extra wires, that you see here, S, C1, and C2, and an or-gate, to manufacture a full adder, which takes a input number, another input number, a carry in, and produces output, a sum and a carry out.
+当然，两个半加器可以组成结构更为复杂的全加器，就像这里这个，把线路连在一起，还需要另外的电线如S，C1和C2，还有一个或门。全加器输入两个数，一个进位值，输出“和”和一个进位值
 
 63
 00:08:05,900 --> 00:08:12,990
-And out of full adders, you can make real adder chains and big adders.
+除此之外，还可以把全加器链起来组成更大的加法器
 
 64
 00:08:12,990 --> 00:08:22,270
-So we have here a language so far that has primitives, means of combination, and means of abstraction to real language.
+现在我们的语言有了原子元素，组合方法和抽象方法，才算完整
 
 65
 00:08:22,270 --> 00:08:25,000
-Now, how are we going to implement this?
+现在问题来了，如何实现这套语言？
 
 66
 00:08:25,000 --> 00:08:27,070
-Well, let's do it easily.
+其实并不难
 
 67
 00:08:27,070 --> 00:08:28,610
-Let's look at the primitives.
+首先来看原子元素
 
 68
 00:08:28,610 --> 00:08:31,160
-The only problem is we have to implement the primitives.
+实现原子元素也是整个问题的根本所在
 
 69
 00:08:31,160 --> 00:08:43,417
-Nothing else has to be implemented, because we're picking up the means of combination and abstraction from Lisp, inheriting them in the embedding.
+至于组合方法与抽象方法完全不用亲自实现，因为语言嵌入在LISP中可以直接使用LISP中的这种机制
 
 70
 00:08:43,417 --> 00:08:45,860
-OK, so let's look at a particular primitive.
+好的，我们先来看一个原子元素
 
 71
 00:08:45,860 --> 00:08:47,400
-An inverter is a nice one.
+非门吧
 
 72
 00:08:51,540 --> 00:08:54,900
-Now, inverter has two wires coming in, an in and an out.
+非门有两个引脚，一个输入，一个输出
 
 73
 00:08:57,440 --> 00:09:04,300
-And somehow, it's going to have to know what to do when a signal comes in.
+有信号输入的时候它要做点什么
 
 74
 00:09:04,300 --> 00:09:20,120
-So somehow it's going to have to tell its input wire-- and now we're going to talk about objects and we're going to see this in a little more detail soon-- but it's going to have to tell its input wire that when you change, tell me.
+它和输入的电线说 -- 我们开始讨论一些关于对象的东西，细节之处以后再谈 -- 它需要对作为输入的电线的说 “当你的值变的时候，告诉我一声”
 
 75
 00:09:20,120 --> 00:09:26,870
-So this object, the object which is the inverter has to tell the object which is the input wire, hi, my name is George.
+所以非门可能会这样和这个输入对象交流， “Hi，我是George”
 
 76
 00:09:26,870 --> 00:09:31,720
-And my, my job is to do something with results when you change.
+“我的工作就是，当你变化的时候对结果做一点修改”
 
 77
 00:09:31,720 --> 00:09:34,730
-So when you change, you get a change, tell me about it.
+“所以当你变化的时候，告诉我一声”
 
 78
 00:09:34,730 --> 00:09:37,010
-Because I've got to do something with that.
+“因为我需要这个去做点别的”
 
 79
 00:09:37,010 --> 00:09:56,130
-Well, that's done down here by adding an action on the input wire called invert-in, where invert-in is defined over here to be a procedure of no arguments, which gets the logical not of the signal on the input wire.
+我们在这里为in添加一个动作invert-in，它在这里定义，是一个无参数的过程，对线路上的信号取反
 
 80
 00:09:56,130 --> 00:10:07,140
-And after some delay, which is the inverter delay, all these electrical objects have delays, we'll do the following thing-- set the signal on the output wire to the new value.
+在一段延时之后，就是inverter-delay -- 每个电路对象都有延时 -- 我们再把输出设置为新的值
 
 81
 00:10:10,160 --> 00:10:12,400
-A very simple program.
+非常简单
 
 82
 00:10:12,400 --> 00:10:23,840
-Now, you have to imagine that the output wire has to be sensitive and know that when its signal changes, it may have to tell other guys, hey, wake up.
+你可以这样理解，这个作为输出的电线很有灵性，当信号改变的时候，它就奔走相告
 
 83
 00:10:23,840 --> 00:10:26,050
-My value has changed.
+“我的值已经改变啦”
 
 84
 00:10:26,050 --> 00:10:36,810
-So when you hook together inverter with an and-gate or something like that, there has to be a lot of communication going on in order to make sure that the signal propagates right.
+所以当你把非门和与门或者其它的什么连在一起的时候，其中会有很多类似“奔走相告”的过程，确保信号以正确的方式传递
 
 85
 00:10:36,810 --> 00:10:38,620
-And down here is nothing very exciting.
+到了这里反而很平常
 
 86
 00:10:38,620 --> 00:10:46,240
-This is just the definition of logical not for some particular representations of the logical values-- 1, 0 in this case.
+logical-not只是把0，1换成1，0罢了
 
 87
 00:10:46,240 --> 00:10:49,780
-And we can look at things more complicated like and-gates.
+与门就相对复杂一些
 
 88
 00:10:49,780 --> 00:10:56,950
-And-gates take two inputs, A1 and A2, we'll call them, and produce an output.
+与门有两个输入A1，A2，输出是output
 
 89
 00:10:56,950 --> 00:11:00,860
-But the structure of the and-gate is identical to the one we just saw.
+但是其结构和非门没有什么大的不同
 
 90
 00:11:00,860 --> 00:11:10,910
-There's one called an and-action procedure that's defined, which is the thing that gets called when an input is changed.
+当输入信号改变的时候，就执行过程and-action
 
 91
 00:11:10,910 --> 00:11:15,900
