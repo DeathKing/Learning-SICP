@@ -960,179 +960,179 @@ the-agenda记录下来一个动作过程未来执行的时间
 
 241
 00:27:02,800 --> 00:27:07,410
-Well, in order to set this thing going, I just want to show you some behavior out of this simulator.
+说点题外话
 
 242
 00:27:07,410 --> 00:27:12,370
-By the way, you may think this simulator is very simple, and probably too simple to be useful.
+这个模拟器其实是非常简单，简单到你认为它根本没什么用
 
 243
 00:27:12,370 --> 00:27:18,680
-The fact of the matter is that this simulator has been used to manufacture a fairly large computer.
+事实上这样的模拟器曾用来操纵大型机
 
 244
 00:27:18,680 --> 00:27:22,360
-So this is a real live example.
+那是一个真实的案例
 
 245
 00:27:22,360 --> 00:27:25,560
-Actually, not exactly this simulator, because I'll tell you the difference.
+实际上这两个模拟器有点不同
 
 246
 00:27:25,560 --> 00:27:29,820
-The difference is that there were many more different kinds of primitives.
+不同之处在于操纵大型机的模拟器有更多的原子结构
 
 247
 00:27:29,820 --> 00:27:33,200
-There's not just the word inverter or and-gate.
+不只是有非门，与门之类的
 
 248
 00:27:33,200 --> 00:27:45,170
-There were things like edge-triggered, flip-flops, and latches, transparent latches, and adders, and things like that.
+还有边缘触发器，触发电路，锁存器，电平触发器，加法器等等之类的
 
 249
 00:27:45,170 --> 00:27:54,690
-And the difficulty with that is that there's pages and pages of the definitions of all these primitives with numbers like LS04.
+困难之处在于需要很多页的文档来描述这些原子结构
 
 250
 00:27:54,690 --> 00:27:56,740
-And then there's many more parameters for them.
+同时它们还有很多的参数
 
 251
 00:27:56,740 --> 00:27:58,480
-It's not just one delay.
+不是只有一个延时这么简单
 
 252
 00:27:58,480 --> 00:28:01,220
-There's things like set up times and hold times and all that.
+还有建立时间，维持时间之类的
 
 253
 00:28:01,220 --> 00:28:15,110
-But with the exception of that part of the complexity, the structure of the simulator that we use for building a real computer, that works is exactly what you're seeing here.
+真实计算机的结构确实复杂，但是那么所谓模拟器的部分却和这里我们要讲的很相似
 
 254
 00:28:15,110 --> 00:28:19,270
-Well in any case, what we have here is a few simple things.
+回到正题，这些东西都很简单
 
 255
 00:28:19,270 --> 00:28:23,030
-Like, there's inverter delays being set up and making a new agenda.
+像这个，设置非门的延时时间，构建一个the-agenda
 
 256
 00:28:23,030 --> 00:28:26,470
-And then we can make some inputs.
+这里我们可以用(make-wire)构建更多线路
 
 257
 00:28:26,470 --> 00:28:29,460
-There's input-1, input-2, a sum and a carry, which are wires.
+这里只有4个，input-1 input-2 sum carry
 
 258
 00:28:29,460 --> 00:28:37,810
-I'm going to put a special kind of object called a probe onto, onto some of the wires, onto sum and onto carry.
+过程probe在sum carry对象上放置了一种称为探测器的特殊对象
 
 259
 00:28:37,810 --> 00:28:46,120
-A probe is a, can object that has the property that when you change a wire it's attached to, it types out a message.
+探测器可以在被监测的对象信号改变的时候，输出一条消息
 
 260
 00:28:46,120 --> 00:28:47,970
-It's an easy thing to do.
+这很容易实现
 
 261
 00:28:47,970 --> 00:28:59,400
-And then once we have that, of course, the way you put the probe on, the first thing it does, it says, the current value of the sum at time 0 is 0 because I just noticed it.
+这里，我们第一次执行(probe 'sum sum)，它打印出消息说，当前sum在时刻0的信号值是0
 
 262
 00:28:59,400 --> 00:29:05,556
-And the value of the carry at time 0, this is the time, is 0.
+carry与sum相同
 
 263
 00:29:05,556 --> 00:29:09,620
-And then we go off and we build some structure.
+我们继续来构建更多结构
 
 264
 00:29:09,620 --> 00:29:18,420
-Like, we can build a structure here that says you have a half-adder on input-1, input-2, sum, and carry.
+比如这里构建一个半加器
 
 265
 00:29:18,420 --> 00:29:20,420
-And we're going to set the signal on input-1 to 1.
+现在把input-1上的信号变为1
 
 266
 00:29:20,420 --> 00:29:21,880
-We do some propagation.
+然后开始模拟
 
 267
 00:29:21,880 --> 00:29:29,520
-At time 8, which you could see going through this thing if you wanted to, the new value of sum became 1.
+在时刻8的时候，sum的信号变为1
 
 268
 00:29:29,520 --> 00:29:31,150
-And the thing says I'm done.
+然后没有然后了
 
 269
 00:29:31,150 --> 00:29:32,630
-That wasn't very interesting.
+好像没什么意思
 
 270
 00:29:32,630 --> 00:29:34,150
-But we can send it some more signals.
+我们继续
 
 271
 00:29:34,150 --> 00:29:36,590
-Like, we set-signal on input-2 to be one.
+把input-2也变为1
 
 272
 00:29:36,590 --> 00:29:45,040
-And at that time if we propagate, then it carried at 11, the carry becomes 1, and at 16, the sum's new value becomes 0.
+如果再模拟，在时刻11，carry变为1，时刻16，sum变为0
 
 273
 00:29:45,040 --> 00:29:48,990
-And you might want to work out that, if you like, about the digital circuitry.
+如果你想，你可以实现一个电子电路
 
 274
 00:29:48,990 --> 00:29:50,620
-It's true, and it works.
+真的，确实可以
 
 275
 00:29:50,620 --> 00:29:51,535
-And it's not very interesting.
+把input-2变为1，整个过程看起来也没什么特别的
 
 276
 00:29:51,535 --> 00:29:54,580
-But that's the kind of behavior we get out of this thing.
+但是却清楚地表明了这一些都是如何运作的
 
 277
 00:30:01,830 --> 00:30:12,952
-So what I've shown you right now is a large-scale picture, how you, at a bigger, big scale, you implement an event-driven simulation of some sort.
+现在我给你们呈现的是一种宏观的图景，如何去实现事件驱动的模拟
 
 278
 00:30:12,952 --> 00:30:21,225
-And how you might organize it to have nice hierarchical structure allowing you to build abstract boxes that you can instantiate.
+你如何组织出有层次性的结构，构建抽象的盒子
 
 279
 00:30:21,225 --> 00:30:25,780
-But I haven't told you any of the details about how this agenda and things like that work.
+the-agenda忘记说了
 
 280
 00:30:25,780 --> 00:30:28,630
-That we'll do next.
+下一小节再说
 
 281
 00:30:28,630 --> 00:30:34,310
-And that's going to involve change and mutation of data and things like that.
+这将涉及到一些关于数据变化之类的事情
 
 282
 00:30:34,310 --> 00:30:35,860
-Are there any questions now, before I go on?
+在我继续之前，有什么问题吗？
 
 283
 00:30:47,160 --> 00:30:47,550
-Thank you.
+没有的话
 
 284
 00:30:47,550 --> 00:30:48,800
-Let's take a break.
+休息时间
 
 285
 00:31:28,940 --> 00:31:35,060
