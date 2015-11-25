@@ -672,7 +672,7 @@ A1 A2 output
 
 169
 00:19:54,720 --> 00:19:57,760
-“电线”是这上面画的云一样的东西 
+“电线”是这上面画的云一样的东西
 
 170
 00:19:57,760 --> 00:20:05,010
@@ -1136,279 +1136,279 @@ the-agenda忘记说了
 
 285
 00:31:28,940 --> 00:31:35,060
-Well, we've been making a simulation.
+我们已经做了一个模拟器
 
 286
 00:31:35,060 --> 00:31:43,920
-And the simulation is an event-driven simulation where the objects in the world are the objects in the computer.
+这种模拟是事件驱动的，计算机中的对象与现实中的对象一一对应
 
 287
 00:31:43,920 --> 00:32:04,420
-And the changes of state that are happening in the world in time are organized to be time in the computer, so that if something happens after something else in the world, then we have it happen after, after the corresponding events happen in the same order in the computer.
+现实世界中的时间相对的也由计算机中的时间代替，假如现实中这件事发生在那件事之后，在计算机中也应该是这样，同样的顺序
 
 288
 00:32:04,420 --> 00:32:08,220
-That's where we have assignments, when we make that alignment.
+那也是我们引入赋值的开始
 
 289
 00:32:08,220 --> 00:32:16,040
-Right now I want to show you a way of organizing time, which is an agenda or priority queue, it's sometimes called.
+现在我要介绍一种方法来组织时间，用agenda和优先队列来实现
 
 290
 00:32:16,040 --> 00:32:21,230
-We'll do some--we'll do a little bit of just understanding what are the things we need to be able to do to make agendas.
+这样做之前，先来了解点别的
 
 291
 00:32:28,330 --> 00:32:35,960
-And so we're going to have--and so right now over here, I'm going to write down a bunch of primitive operations for manipulating agendas.
+这里我们先写一些对于agenda的基础操作
 
 292
 00:32:35,960 --> 00:32:43,680
-I'm not going to show you the code for them because they're all very simple, and you've got listings of all that anyway.
+具体实现我就不细说了，非常简单而且你们手上也有
 
 293
 00:32:43,680 --> 00:32:44,380
-So what do we have?
+有什么操作呢？
 
 294
 00:32:44,380 --> 00:32:54,130
-We have things like make-agenda which produces a new agenda.
+make-agenda构造一个agenda
 
 295
 00:32:59,860 --> 00:33:12,625
-We can ask--we get the current-time of an agenda, which gives me a number, a time.
+current-time，取得当前的时间，是一个数字
 
 296
 00:33:16,990 --> 00:33:21,900
-We can get--we can ask whether an agenda is empty, empty-agenda.
+empty-agenda，判断agenda是否为空
 
 297
 00:33:30,200 --> 00:33:32,570
-And that produces either a true or a false.
+返回true或false
 
 298
 00:33:42,590 --> 00:33:44,720
-We can add an object to an agenda.
+也要向agenda添加对象
 
 299
 00:33:52,710 --> 00:33:56,910
-Actually, what we add to an agenda is an operation--an action to be done.
+现实上这里添加的对象是一个过程，一个动作过程
 
 300
 00:33:56,910 --> 00:34:04,810
-And that takes a time, the action itself, and the agenda I want to add it to.
+一共3个参数，时间time，动作过程action，要添加入的agenda
 
 301
 00:34:07,850 --> 00:34:10,719
-That inserts it in the appropriate place in the agenda.
+把action放入agenda合适的地方
 
 302
 00:34:10,719 --> 00:34:23,259
-I can get the first item off an agenda, the first thing I have to do, which is going to give me an action.
+(FIRST-ITEM agenda)用于取出agenda中第一个item
 
 303
 00:34:26,085 --> 00:34:29,540
-And I can remove the first item from an agenda.
+还可以把第一个item从中删除
 
 304
 00:34:29,540 --> 00:34:31,409
-That's what I have to be able to do with agendas.
+这些就是对agenda的全部基础操作
 
 305
 00:34:31,409 --> 00:34:33,020
-That is a big complicated mess.
+杂乱不甚
 
 306
 00:34:42,530 --> 00:34:43,780
-From an agenda.
+从agenda删除
 
 307
 00:34:45,530 --> 00:34:52,528
-Well, let's see how we can organize this thing as a data structure a bit.
+现在我们来看如何具体组织数据结构
 
 308
 00:34:52,528 --> 00:35:01,570
-Well, an agenda is going to be some kind of list. And it's going to be a list that I'm going to have to be able to modify.
+agenda应该是一个列表，一个可修改的列表
 
 309
 00:35:01,570 --> 00:35:11,070
-So we have to talk about modifying of lists, because I'm going to add things to it, and delete things from it, and things like that.
+因为我们要向其中添加，删除，所以列表必定是可被修改的
 
 310
 00:35:11,070 --> 00:35:13,820
-It's organized by time.
+它依时间来组织
 
 311
 00:35:13,820 --> 00:35:15,570
-It's probably good to keep it in sorted order.
+以某种顺序排序起来也是有益的
 
 312
 00:35:18,330 --> 00:35:23,420
-But sometimes there are lots of things that happen at the same time--approximate same time.
+但是也有可能同一时间会发生很多事，需要执行很多过程
 
 313
 00:35:23,420 --> 00:35:29,040
-What I have to do is say, group things by the time at which they're supposed to happen.
+我们把将要发生的事，要执行的过程按时间顺序来组织
 
 314
 00:35:29,040 --> 00:35:32,780
-So I'm going to make an agenda as a list of segments.
+所以agenda看起来就像是很多segment组成的列表
 
 315
 00:35:32,780 --> 00:35:39,620
-And so I'm going to draw you a data structure for an agenda, a perfectly reasonable one.
+我来画一下这个结构，好让人理解
 
 316
 00:35:39,620 --> 00:35:41,110
-Here's an agenda.
+这是一个agenda
 
 317
 00:35:41,110 --> 00:35:42,870
-It's a thing that begins with a name.
+以一个名字开始
 
 318
 00:35:47,630 --> 00:35:49,940
-I'm going to do it right now out of list structure.
+在画具体的表结构之前先画它
 
 319
 00:35:52,620 --> 00:35:53,980
-It's got a header.
+作为一个头部
 
 320
 00:35:53,980 --> 00:35:55,840
-There's a reason for the header.
+这个头部的存在也是很必要的
 
 321
 00:35:55,840 --> 00:35:57,630
-We're going to see the reason soon.
+待会你就会知道
 
 322
 00:36:00,680 --> 00:36:03,750
-And it will have a segment.
+再画一个segment
 
 323
 00:36:03,750 --> 00:36:05,620
-It will have--it will be a list of segments.
+这将是许多segment组成的列表
 
 324
 00:36:08,310 --> 00:36:33,320
-Supposing this agenda has two segments, they're the car's-- successive car's of this list. Each segment is going to have a time--  say for example, 10-- that says that the things that happen in this segment are at time 10.
+假设现在有两个segment，这样连接在一起-- 连接使用CAR就可访问到 -- 每个segment都要有一个时间，代表动作过程要执行的时间，比如这个就是10
 
 325
 00:36:33,320 --> 00:36:42,240
-And what I'm going to have in here is another data structure which I'm not going to describe, which is a queue of things to do at time 10.
+这里还要有另一个数据结构，先不具体描述，代表在时刻10将要做的事
 
 326
 00:36:42,240 --> 00:36:43,330
-It's a queue.
+一个队列
 
 327
 00:36:43,330 --> 00:36:45,130
-And we'll talk about that in a second.
+一会儿再细说
 
 328
 00:36:45,130 --> 00:36:50,200
-But abstractly, the queue is just a list of things to do at a particular time.
+抽象来看，队列就是一系列在一个固定时间要做的事情的集合
 
 329
 00:36:50,200 --> 00:36:53,100
-And I can add things to a queue.
+我可以向其中添加其它要做的事
 
 330
 00:36:53,100 --> 00:36:56,140
-This is a queue.
+一个队列
 
 331
 00:36:56,140 --> 00:36:59,115
-There's a time, there's a segment.
+一个时刻，两者就是segment的主要元素
 
 332
 00:37:02,889 --> 00:37:06,035
-Now, I may have another segment in this agenda.
+这里还有一个segment
 
 333
 00:37:08,940 --> 00:37:13,410
-Supposing this is stuff that happens at time 30.
+假设其时刻是30
 
 334
 00:37:13,410 --> 00:37:23,210
-It has, of course, another queue of things that are queued up to be done at time 30.
+类似的，这里也要有一个队列，记录这一时刻将发生的事
 
 335
 00:37:23,210 --> 00:37:27,090
-Well, there are various things I have to be able to do to an agenda.
+现在我们来看看，对agenda的一系列操作
 
 336
 00:37:27,090 --> 00:37:33,030
-Supposing I want to add to an agenda another thing to be done at time 10.
+假设我想在时刻10，想做新的事情
 
 337
 00:37:33,030 --> 00:37:34,700
-Well, that's not very hard.
+这并不难
 
 338
 00:37:34,700 --> 00:37:39,730
-I'm going to walk down here, looking for the segment of time 10.
+我只需要沿着这下来，找到时刻是10的segment
 
 339
 00:37:39,730 --> 00:37:42,930
-It is possible that there is no segment of time 10.
+也可能这样的一个segment并不存在
 
 340
 00:37:42,930 --> 00:37:45,420
-We'll cover that case in a second.
+一会儿再谈这种情况
 
 341
 00:37:45,420 --> 00:37:56,290
-But if I find a segment of time 10, then if I want to add another thing to be done at time 10, I just increase that queue-- "just increase" isn't such an obvious idea.
+如果我找到了这样一个segment，就把这件事放入队列中 -- 尽管要怎样加入队列并不明显
 
 342
 00:37:56,290 --> 00:38:01,430
-But I increase the things to be done at that time.
+但是那时我就得这样做
 
 343
 00:38:01,430 --> 00:38:05,140
-Now, supposing I want to add something to be done at time 20.
+现在，假设我想在时刻20做点什么
 
 344
 00:38:05,140 --> 00:38:08,680
-There is no segment for time 20.
+然而并没有时刻是20的segment
 
 345
 00:38:08,680 --> 00:38:11,340
-I'm going to have to create a new segment.
+我不得不构造一个segment
 
 346
 00:38:11,340 --> 00:38:17,610
-I want my time 20 segment to exist between time 10 and time 30.
+我想把这个segment放在10与30之间
 
 347
 00:38:17,610 --> 00:38:20,170
-Well, that takes a little work.
+这着实要花点功夫
 
 348
 00:38:20,170 --> 00:38:21,525
-I'm going to have to do a CONS.
+先用CONS
 
 349
 00:38:24,260 --> 00:38:29,940
-I'm going to have to make a new element of the agenda list--list of segments.
+构建一个新的segment
 
 350
 00:38:33,600 --> 00:38:35,400
-I'm going to have to change.
+这里的连接必须要变
 
 351
 00:38:35,400 --> 00:38:37,540
-Here's change.
+就像这样
 
 352
 00:38:37,540 --> 00:38:56,657
-I'm going to have to change the CDR of the CDR of the agenda to point that a new CONS of the new segment and the CDR of the CDR of the CDR of the agenda, the CD-D-D-DR.
+把segment 10的CDR指向新的segment 20，新的segment 20的CDR指向segment 30
 
 353
 00:38:56,657 --> 00:39:06,290
-And this is going to have a new segment now of time 20 with its own queue, which now has one element in it.
+这个segment的时刻为20，队列里一个元素
 
 354
 00:39:10,730 --> 00:39:20,770
