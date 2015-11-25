@@ -716,247 +716,247 @@ A1 A2 output
 
 180
 00:21:07,410 --> 00:21:27,780
-Also, I have to define a way of accepting an action procedure-- which is what you see here--- which increments my action procedures using set to the result of CONSing up a new process--a procedure, which is passed to me, on to my actions procedures list. And for technical reasons, I have to call that procedure one.
+然后，我还得定义一个接受动作过程的过程，就在这里，使用con把新的过程与原来的过程列表连接在一起，再赋值予action-pros，最后还要再运行一次这个过程proc
 
 181
 00:21:27,780 --> 00:21:36,950
-So I'm not going to tell you anything about that, that has to do with event-driven simulations and getting them started, which takes a little bit of thinking.
+这是一种事件驱动的模拟模型，我还不打算细讲，因为那还需要思考更多的内容
 
 182
 00:21:36,950 --> 00:21:53,820
-And finally, I'm going to define a thing called the dispatcher, which is a way of passing a message to a wire, which is going to be used to extract from it various information, like what is the current signal value?
+最后定义一个过程dispatcher，用来解读传递给线路的信息，执行不同的操作，比如这里，当前的信号值是多少？
 
 183
 00:21:53,820 --> 00:21:57,180
-What is the method of setting your signal?
+设置新信号值的方法是什么？
 
 184
 00:21:57,180 --> 00:22:00,100
-I want to get that out of it.
+我想要这个方法
 
 185
 00:22:00,100 --> 00:22:02,600
-How do I--how do I add another action procedure?
+我怎么样去添加另外的动作过程呢？
 
 186
 00:22:05,510 --> 00:22:09,940
-And I'm going to return that dispatch, that procedure as a value.
+最后，返回过程dispatch
 
 187
 00:22:09,940 --> 00:22:19,790
-So the wire that I've constructed is a message accepting object which accepts a message like, like what's your method of adding action procedures?
+因此整个电线的被构建成了一个可接受不同信息的对象，比如 ‘add-action!来询问添加动作过程的方法是什么？
 
 188
 00:22:19,790 --> 00:22:29,010
-In fact, it'll give me a procedure, which is the add action procedure, which I can then apply to an action procedure to create another action procedure in the wire.
+因此实际上，它返回了一个过程，这个过程接收一个动作过程作为参数，将其实际添加入电线的action-procs的列表中
 
 189
 00:22:31,620 --> 00:22:32,820
-So that's a permission.
+这是一种权限
 
 190
 00:22:32,820 --> 00:22:37,450
-So it's given me permission to change your action procedures.
+给予你了一种去改变自身动作过程列表的权限
 
 191
 00:22:37,450 --> 00:22:41,710
-And in fact, you can see that over here.
+再来看看这里
 
 192
 00:22:41,710 --> 00:22:43,278
-Next slide.
+下一张幻灯片
 
 193
 00:22:43,278 --> 00:22:44,528
-Ah.
+噢
 
 194
 00:22:47,760 --> 00:22:49,120
-This is nothing very interesting.
+没什么有意思的
 
 195
 00:22:49,120 --> 00:22:54,990
-The call each of the action procedures is just a CDRing down a list. And I'm not going to even talk about that anymore.
+(call-each procedures)只是对列表中过程顺序地执行调用，没什么好说的
 
 196
 00:22:54,990 --> 00:22:57,560
-We're too advanced for that.
+我们早就知道了
 
 197
 00:22:57,560 --> 00:23:03,090
-However, if I want to get a signal from a wire, I ask the wire-- which is, what is the wire?
+然而，如果我想知道线路上的信号值是多少，就得这样来询问wire
 
 198
 00:23:03,090 --> 00:23:05,860
-The wire is the dispatch returned by creating the wire.
+wire只是一个dispatch过程而已
 
 199
 00:23:05,860 --> 00:23:06,830
-It's a procedure.
+只是一个过程
 
 200
 00:23:06,830 --> 00:23:12,590
-I call that dispatch on the message get-signal.
+这是是‘get-signal作为参数来执行这个过程
 
 201
 00:23:12,590 --> 00:23:16,900
-And what I should expect to get is a method of getting a signal.
+实际得到的只是取得线路信号值的方法
 
 202
 00:23:16,900 --> 00:23:19,220
-Or actually, I get the signal.
+进一步的就可以得到信号值
 
 203
 00:23:19,220 --> 00:23:38,700
-If I want to set a signal, I want to change a signal, then what I'm going to do is take a wire as an argument and a new value for the signal, I'm going to ask the wire for permission to set its signal and use that permission, which is a procedure, on the new value.
+如果我想要对线路设置一个新的信号值，这里传递wire和new-value两个参数，(wire 'set-signal!)取得改变线路信号的权限，实际是一个过程，应用于new-value
 
 204
 00:23:38,700 --> 00:24:13,010
-And if we go back to the overhead here, thank you, if we go back to the overhead here, we see that the method-- if I ask for the method of setting the signal, that's over here, it's set-my-signal, a procedure that's defined inside the wire, which if we look over here is the thing that says set my internal value called the signal, my internal variable, which is the signal, to the new value, which is passed to me as an argument, and then call each of the action procedures waking them up.
+我们继续追溯这个过程，调用(wire 'set-signal)之后，我们返回这个过程，定义在线路里面，名为set-my-signal，我们回头看幻灯片，返回的过程有一个实际的调用，以new-value为参数，去改变线路内部signal变量的值，最后再去依次通知“联系人”
 
 205
 00:24:16,340 --> 00:24:19,400
-Very simple.
+非常简单
 
 206
 00:24:19,400 --> 00:24:30,100
-Going back to that slide, we also have the one last thing-- which I suppose now you can easily work out for yourself-- is the way you add an action.
+再来看看幻灯片，还有最后一点，add-action!，我想你们很轻易地就理解了
 
 207
 00:24:30,100 --> 00:24:36,470
-You take a wire--a wire and an action procedure.
+wire action-proc两个参数
 
 208
 00:24:36,470 --> 00:24:40,050
-And I ask the wire for permission to add an action.
+然后请求添加动作过程的权限
 
 209
 00:24:40,050 --> 00:24:45,020
-Getting that permission, I use that permission to give it an action procedure.
+得到权限去添加新的动作过程
 
 210
 00:24:45,020 --> 00:24:48,570
-So that's a real object.
+这就是整个“电线”对象
 
 211
 00:24:48,570 --> 00:24:52,460
-There's a few more details about this.
+还有些细节
 
 212
 00:24:52,460 --> 00:24:58,390
-For example, how am I going to control this thing?
+比如，我怎么来控制它？
 
 213
 00:24:58,390 --> 00:25:01,290
-How do I do these delays?
+这些延时怎么实现？
 
 214
 00:25:01,290 --> 00:25:02,540
-Let's look at that for a second.
+我们来快速过一遍
 
 215
 00:25:05,275 --> 00:25:08,360
-The next one here.
+下一张
 
 216
 00:25:08,360 --> 00:25:09,570
-Let's see.
+我们来看看
 
 217
 00:25:09,570 --> 00:25:18,770
-We know when we looked at the and-gate or the not-gate that when a signal changed on the input, there was a delay.
+我们细看与门或者或门定义，会发现里面还有“延时”这样的东西
 
 218
 00:25:18,770 --> 00:25:23,310
-And then it was going to call the procedure, which was going to change the output.
+一段延时之后才开始执行过程，改变输出
 
 219
 00:25:26,040 --> 00:25:28,120
-Well, how are we going to do this?
+这个要如何实现？
 
 220
 00:25:28,120 --> 00:25:34,720
-We're going to make up some mechanism, a fairly complicated mechanism at that, which we're going to have to be very careful about.
+这里引入一种新技巧，非常复杂，我们得非常细心地来看
 
 221
 00:25:34,720 --> 00:25:37,390
-But after a delay, we're going to do an action.
+在“delay”的延时之后，执行过程action
 
 222
 00:25:37,390 --> 00:25:40,590
-A delay is a number, and an action is a procedure.
+"delay"是一个数字，"action“是一个过程
 
 223
 00:25:40,590 --> 00:25:49,510
-What that's going to be is they're going to have a special structure called an agenda, which is a thing that organizes time and actions.
+这里有一个特殊的数据结构the-agenda，用于组织时间与动作过程
 
 224
 00:25:49,510 --> 00:25:50,880
-And we're going to see that in a while.
+一会儿再来细看它
 
 225
 00:25:50,880 --> 00:25:53,070
-I don't want to get into that right now.
+先把这里说完
 
 226
 00:25:53,070 --> 00:25:59,130
-But the agenda has a moment at which--at which something happens.
+the-agenda记录下来一个动作过程未来执行的时间
 
 227
 00:25:59,130 --> 00:26:08,460
-We're setting up for later at some moment, which is the sum of the time, which is the delay time plus the current time, which the agenda thinks is now.
+在current-time + delay段的时间之后，将会执行那个过程
 
 228
 00:26:08,460 --> 00:26:13,090
-We're going to set up to do this action, and add that to the agenda.
+这个过程随着计算好的这个时刻，添加入the-agenda中
 
 229
 00:26:15,280 --> 00:26:18,660
-And the way this machine will now run is very simple.
+要使这个”计时钟表“运行起来并不困难
 
 230
 00:26:18,660 --> 00:26:22,710
-We have a thing called propagate, which is the way things run.
+下面这个过程progagate，就是来做这件事的
 
 231
 00:26:22,710 --> 00:26:27,440
-If the agenda is empty, we're done--if there's nothing more to be done.
+如果the-agenda是空的，就没有要做的
 
 232
 00:26:27,440 --> 00:26:34,200
-Otherwise, we're going to take the first item off the agenda, and that's a procedure of no arguments.
+否则，我们就取出the-agenda的第一个元素，它是一个没有参数的过程
 
 233
 00:26:34,200 --> 00:26:36,030
-So that we're going to see extra parentheses here.
+这里有两层括号
 
 234
 00:26:36,030 --> 00:26:39,190
-We call that on no arguments.
+里面的一层返回一个过程，外面的一层括号执行了这个过程
 
 235
 00:26:39,190 --> 00:26:42,200
-That takes the action.
+就是之前存储入the-agenda的动作
 
 236
 00:26:42,200 --> 00:26:48,395
-Then we remove that first item from the agenda, and we go around the propagation loop.
+然后这个过程就可以从the-agenda删掉了，最后执行propagate，进行无限循环
 
 237
 00:26:48,395 --> 00:26:50,750
-So that's the overall structure of this thing.
+这就是整体的结构
 
 238
 00:26:53,380 --> 00:26:57,430
-Now, there's a, a few other things we can look at.
+还有点其它的
 
 239
 00:26:57,430 --> 00:27:00,410
-And then we're going to look into the agenda a little while from now.
+一会儿再来看the-agenda
 
 240
 00:27:00,410 --> 00:27:02,800
-Now the overhead again.
+现在整体上来看
 
 241
 00:27:02,800 --> 00:27:07,410
