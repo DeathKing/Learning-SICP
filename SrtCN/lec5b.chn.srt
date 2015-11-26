@@ -1648,151 +1648,151 @@ SET-CDR！和它类似
 
 413
 00:46:38,346 --> 00:47:21,850
-When we originally introduced pairs made out of CONS, made by CONS, we only said a few axioms about them, which were of the form-- what were they-- for all X and Y, the CAR of the CONS of X and Y is X and the CDR of the CONS of X and Y is Y. Now, these say nothing about whether a CONS has an identity like a person.
+当我们讲到CONS的时候，我们提到了CONS的原则，(car (cons x y)) => x，(cdr (cons x y )) => y
 
 414
 00:47:21,850 --> 00:47:29,740
-In fact, all they say is something sort of abstract, that a CONS is the parts it's made out of.
+这个描述的有点抽象，CONS是由它组成的部分所组成的
 
 415
 00:47:29,740 --> 00:47:37,390
-And of course, two things are made out of the same parts, they're the same, at least from the point of view of these axioms.
+要是这样来看，如果两个CONS，它们两个的组成部分是相同的，从原则来看，这两个CONS就应该相同
 
 416
 00:47:37,390 --> 00:47:49,830
-But by introducing assignment-- in fact, mutable data is a kind of assignment, we have a set CAR and a set CDR-- by introducing those, these axioms no longer tell the whole story.
+但是引入了赋值以后，数据变成了变量，值可以通过赋值来改变，比如用SET-CAR！ SET-CDR！，这样来看，这些原则好像没有把CONS描述清楚
 
 417
 00:47:49,830 --> 00:47:53,250
-And they're still true if written exactly like this.
+但是这里写的也是对的
 
 418
 00:47:53,250 --> 00:47:56,070
-But they don't tell the whole story.
+只不过描述的不再完整
 
 419
 00:47:56,070 --> 00:48:10,090
-Because if I'm going to set a particular CAR in a particular CONS, the questions are, well, is that setting all CARs and all CONSes of the same two things or not?
+如果我用SET-CAR！ SET-CDR！改变两个CONS，使它们的CAR和CDR都相同，这两个CONS是否是完全相同的？
 
 420
 00:48:10,090 --> 00:48:21,570
-If I--if we use CONSes to make up things like rational numbers, or things like 3 over 4, supposing I had two three-fourths.
+假如我用CONS构建两个有理数，两个3/4
 
 421
 00:48:21,570 --> 00:48:25,340
-Are they the same one-- or are they different?
+这两个一样吗？还是不一样？
 
 422
 00:48:25,340 --> 00:48:27,860
-Well, in the case of numbers, it doesn't matter.
+当然，对于数字来说，这并不重要
 
 423
 00:48:27,860 --> 00:48:33,020
-Because there's no meaning to changing the denominator of a number.
+因为这两个有理数表示的大小是一样的，都是3/4
 
 424
 00:48:33,020 --> 00:48:36,840
-What you could do is make a number which has a different denominator.
+你可以改变一个有理数的分母来使它们变的不一样
 
 425
 00:48:36,840 --> 00:48:44,770
-But the concept of changing a number which has to have a different denominator is sort of a very weird, and sort of not supported by what you think of as mathematics.
+但是这看来很怪异，强制的改变分母使其两个有理数有区别，这也和数学上认知不符合
 
 426
 00:48:44,770 --> 00:48:53,690
-However, when these CONSes represent things in the physical world, then changing something like the CAR is like removing a piece of the fingernail.
+但是，如果CONS表示的是现实世界中的物体，修改CAR就像剪掉你的指甲一样，是切实存在的
 
 427
 00:48:53,690 --> 00:48:57,770
-And so CONSes have an identity.
+所以，每一个CONS都是不同的，它们有自己的身份
 
 428
 00:48:57,770 --> 00:49:01,280
-Let me show you what I mean about identity, first of all.
+我来先说明“身份”是什么意思
 
 429
 00:49:01,280 --> 00:49:04,320
-Let's do some little example here.
+来看些例子
 
 430
 00:49:04,320 --> 00:49:15,200
-Supposing I define A to the CONS of 1 and 2.
+假如(define a (cons 1 2))
 
 431
 00:49:18,040 --> 00:49:38,120
-Well, what that means, first of all, is that somewhere in some environment I've made a symbol A to have a value which is a pair consisting of pointers to a 1 and a pointer to a 2, just like that.
+这是什么意思呢？在环境中的某处有一个符号a，它代表了一个序对，CAR指向1，CDR指向2
 
 432
 00:49:38,120 --> 00:50:03,970
-Now, supposing I also say define B to be the CONS--  it doesn't matter, but I like it better, it's prettier-- of A and A.
+假设再定义一个b，(define b (cons a a))
 
 433
 00:50:03,970 --> 00:50:07,840
-Well, first of all, I'm using the name A twice.
+这里用了两次a
 
 434
 00:50:07,840 --> 00:50:11,300
-At this moment, I'm going to think of CONSes as having identity.
+现在就要考虑序对的身份问题了
 
 435
 00:50:11,300 --> 00:50:13,690
-This is the same one.
+这两个a是一样的，是同一个东西
 
 436
 00:50:13,690 --> 00:50:33,260
-And so what that means is I make another pair, which I'm going to call B. And it contains two pointers to A. At this point, I have three names for this object.
+所以b是这样的一个序对，CAR与CDR都指向a，对于a来说，有三个别名都代表着它
 
 437
 00:50:33,260 --> 00:50:34,790
-A is its name.
+a是一个
 
 438
 00:50:34,790 --> 00:50:37,230
-The CAR of B is its name.
+(car b)是一个
 
 439
 00:50:37,230 --> 00:50:39,360
-And the CDR of B is its name.
+(cdr b)也是一个
 
 440
 00:50:39,360 --> 00:50:41,150
-It has several aliases, they're called.
+都是这个序对的别名
 
 441
 00:50:44,230 --> 00:51:07,880
-Now, supposing I do something like set-the-CAR, the CAR of the CAR of B to 3.
+假设现在执行 (SET-CAR! (CAR B) 3)
 
 442
 00:51:12,750 --> 00:51:17,830
-What that means is I find the CAR of B, that's this.
+找到b的CAR
 
 443
 00:51:17,830 --> 00:51:20,935
-I set the CAR of that to be 3, changing this.
+把它的CAR设置为3
 
 444
 00:51:24,760 --> 00:51:35,340
-I've changed A. If I were to ask what's the CAR of A--of A now?
+这样我也就修改了a，现在调用(CAR A)来看一下结果
 
 445
 00:51:35,340 --> 00:51:45,290
-I would get out 3, even though here we see that A was the CONS of 1 and 2.
+结果是3，尽管上面定义a是(cons 1 2)
 
 446
 00:51:45,290 --> 00:51:48,400
-I caused A to change by changing B.
+我通过改变b而改变了a
 
 447
 00:51:48,400 --> 00:51:52,010
-There is sharing here.
+它们共享着一处数据
 
 448
 00:51:52,010 --> 00:51:54,240
-That's sometimes what we want.
+有时候我们需要这样的结构
 
 449
 00:51:54,240 --> 00:52:04,350
-Surely in the queues and things like that, that's exactly what we defined our--organized our data structures to facilitate-- sharing.
+我们之前的队列，就是这样来组织的
 
 450
 00:52:04,350 --> 00:52:25,190
