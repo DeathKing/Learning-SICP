@@ -1796,369 +1796,370 @@ a是一个
 
 450
 00:52:04,350 --> 00:52:25,190
-But inadvertent sharing, unanticipated interactions between objects, is the source of most of the bugs that occur in complicated programs. So by introducing this possibility of things having identity and sharing and having multiple names for the same thing, we get a lot of power.
+但是对象之间不合理的共享与操作，是很多复杂系统中bug的来源。所以我们虽然使对象具有身份，可以用很多别名来共享，得到了不少的好处
 
 451
 00:52:25,190 --> 00:52:28,640
-But we're going to pay for it with lots of complexity and bugs.
+但是同时也为此引出的bug而付出代价
 
 452
 00:52:32,190 --> 00:52:46,560
-So also, for example, if I just looked at this just to drive that home, the CADR of B, which has nothing to do with even the CAR of B, apparently.
+还看这里的这个例子，(CADR B)，看起来和(CAR B)没有一点关系
 
 453
 00:52:46,560 --> 00:52:49,350
-The CADR of B, what's that?
+但是它的值是什么？
 
 454
 00:52:49,350 --> 00:52:53,560
-Take that CDR of B and now take the CAR of that.
+来找一下
 
 455
 00:52:53,560 --> 00:52:56,480
-Oh, that's 3 also.
+哦，还是3
 
 456
 00:52:56,480 --> 00:53:01,120
-So I can have non-local interactions by sharing.
+有了共享这样的机制，局部的含义也不是那么清楚了
 
 457
 00:53:01,120 --> 00:53:02,480
-And I have to be very careful of that.
+所以我们要非常小心的操作
 
 458
 00:53:06,640 --> 00:53:22,820
-Well, so far, of course, it seems I've introduced several different assignment operators-- set, set CAR, set CDR. Well, maybe I should just get rid of set CAR and set CDR. Maybe they're not worthwhile.
+目前为止，我已经介绍了SET！ SET-CAR！ SET-CDR！这些赋值操作，或许我应该不用SET-CAR！ SET-CDR！，它们引入太多问题了
 
 459
 00:53:22,820 --> 00:53:27,170
-Well, the answer is that once you let the camel's nose into the tent, the rest of him follows.
+不幸的是，一旦你让骆驼的鼻子进了帐篷，相当于你把它放进了帐篷
 
 460
 00:53:30,160 --> 00:53:35,850
-All I have to have is set, and I can make all of the--all of the bad things that can happen.
+我想说的是，只要有set！，这一切不幸的都可能会发生
 
 461
 00:53:38,550 --> 00:53:40,690
-Let's play with that a little bit.
+我们来分析一下
 
 462
 00:53:40,690 --> 00:53:52,480
-A couple of days ago, when we introduced compound data, you saw Hal show you a definition of CONS in terms of a message acceptor.
+前些日子讲到复合数据的时候，哈罗德教授向你们展示了用消息接收的方式来定义CONS
 
 463
 00:53:52,480 --> 00:54:04,440
-I'm going to show you even a more horrible thing, a definition of CONS in terms of nothing but air, hot air.
+现在我要用一种更为恐怖的方式来定义CONS
 
 464
 00:54:04,440 --> 00:54:14,580
-What is the definition of CONS, of the old functional kind, in terms of purely lambdic expressions, procedures?
+过去的那个CONS是怎么定义的来着？一个lambda表达式，一个过程？
 
 465
 00:54:17,190 --> 00:54:28,580
-Because I'm going to then modify this definition to get assignment to be only one kind of assignment, to get rid of the set CAR and set CDR in terms of set.
+我们这里对CONS的修改是要达到这样的效果，用SET！来代替SET-CAR！ SET-CDR！
 
 466
 00:54:28,580 --> 00:54:46,320
-So what if I define CONS of X and Y to be a procedure of one argument called a message M, which calls that message on X and Y?
+这里我定义CONS为一个接受一个参数M的过程，M作用于X与Y
 
 467
 00:54:51,120 --> 00:54:57,870
-This [? idea ?] was invented by Alonzo Church, who was the greatest programmer of the 20th century, although he never saw a computer.
+这是阿隆佐·丘奇发明的方法，他是20世纪最伟大的程序员之一，尽管当时电脑还没有被发明
 
 468
 00:54:57,870 --> 00:54:59,130
-It was done in the 1930s.
+那时20世纪30年代的事了
 
 469
 00:54:59,130 --> 00:55:02,220
-He was a logician, I suppose at Princeton at the time.
+他是一个逻辑学家，当时应该是在普林斯顿
 
 470
 00:55:08,660 --> 00:55:46,670
-Define CAR of X to be the result of applying X to that procedure of two arguments, A and D, which selects A. I will define CDR of X to be that procedure, to be the result of applying X to that procedure of A and D, which selects D.
+(DEFINE (CAR X) (X (lambda(A D) A)))
+(DEFINE (CDR X) (X (lambda(A D) D)))
 
 471
 00:55:46,670 --> 00:55:50,510
-Now, you may not recognize this as CAR, CDR, and CONS.
+这就是CONS CAR CDR
 
 472
 00:55:50,510 --> 00:55:55,210
-But I'm going to demonstrate to you that it satisfies the original axioms, just once.
+我来举例看一下，它是否符合之前所说的CONS的原则
 
 473
 00:55:55,210 --> 00:55:58,290
-And then we're going to do some playing of games.
+简单来看
 
 474
 00:55:58,290 --> 00:56:09,695
-Consider the problem CAR of CONS of, say, 35 and 47.
+(CAR (CONS 35 47))
 
 475
 00:56:09,695 --> 00:56:11,120
-Well, what is that?
+这是什么呢？
 
 476
 00:56:11,120 --> 00:56:19,710
-It is the result of taking car of the result of substituting 35 and 47 for X and Y in the body of this.
+用代换模型，把CONS换成这边定义的
 
 477
 00:56:19,710 --> 00:56:20,690
-Well, that's easy enough.
+非常容易
 
 478
 00:56:20,690 --> 00:56:35,750
-That's CAR of the result of substituting into lambda of M, M of 35 and 47.
+就是(CAR (lambda (M) (M 35 47)))
 
 479
 00:56:35,750 --> 00:56:42,830
-Well, what this is, is the result of substituting this object for X in the body of that.
+再来代换CAR
 
 480
 00:56:42,830 --> 00:57:15,840
-So that's just lambda of M-- that's substituted, because this object is being substituted for X, which is the beginning of a list, lambda of M-- M of 35 and 47, applied to that procedure of A and D, which gives me A. Well, that's the result of substituting this for M here.
+((lambda (M) (M 35 47)) (lambda (A D) A))
 
 481
 00:57:15,840 --> 00:57:26,026
-So that's the same thing as lambda of A, D, A, applied to 35 and 47.
+继续代换，((lambda (A D) A) 35 47)
 
 482
 00:57:26,026 --> 00:57:27,560
-Oh, well that's 35.
+结果就是35
 
 483
 00:57:27,560 --> 00:57:40,720
-That's substituting 35 for A and for 47 for D in A. So I don't need any data at all, not even numbers.
+35对应A，47对应的是D。在这种定义里，我什么数据都不需要，甚至连数字都没有
 
 484
 00:57:40,720 --> 00:57:42,640
-This is Alonso Church's hack.
+太佩服丘奇了
 
 485
 00:57:52,420 --> 00:57:56,760
-Well, now we're going to do something nasty to him.
+现在呢我们来对这个定义做点修改
 
 486
 00:57:56,760 --> 00:57:58,860
-Being a logician, he wouldn't like this.
+作为逻辑学家，他可能会不太开心
 
 487
 00:57:58,860 --> 00:58:03,260
-But as programmers, let's look at the overhead.
+但是作为程序员，应该没什么
 
 488
 00:58:03,260 --> 00:58:05,390
-And here we go.
+我们来看看
 
 489
 00:58:05,390 --> 00:58:09,570
-I'm going to change the definition of CONS.
+修改CONS的定义
 
 490
 00:58:09,570 --> 00:58:14,520
-It's almost the same as Alonzo Church's, but not quite.
+和丘奇的定义很相似，但是不完全相同
 
 491
 00:58:14,520 --> 00:58:16,070
-What do we have here?
+具体到底是什么？
 
 492
 00:58:16,070 --> 00:58:40,940
-The CONS of two arguments, X and Y, is going to be that procedure of one argument M, which supplies M to X and Y as before, but also to two permissions, the permission to set X to N and the permission to set Y to N, given that I have an N.
+CONS定义为一个过程，这个过程需要一个参数M，但是M作用于4个参数，X，Y 和两个lambda过程
 
 493
 00:58:40,940 --> 00:59:03,365
-So besides the things that I had here in Church's definition, what I have is that the thing that CONS returns will apply its argument to not just the values of the X and Y that the CONS is made of, but also permissions to set X and Y to new values.
+所以这里的不同之处在于，M除了应用于x y之外，还应用于两个过程，分别用于修改x与y的值
 
 494
 00:59:06,540 --> 00:59:11,690
-Now, of course, just as before, CAR is exactly the same.
+类似之前，CAR看起来也很相似
 
 495
 00:59:11,690 --> 00:59:22,550
-The CAR of X is nothing more than applying X, as in Church's definition, to a procedure, in this case, of four arguments, which selects out the first one.
+(CAR X)也就只是从4个参数里挑出第一个而已
 
 496
 00:59:22,550 --> 00:59:37,920
-And just as we did before, that will be the value of X that was contained in the procedure which is the result of evaluating this lambda expression in the environment where X and Y are defined over here.
+和之前一样，返回的将会是这个过程中的x
 
 497
 00:59:41,940 --> 00:59:45,640
-That's the value of CONS.
+这个过程的整体就是CONS
 
 498
 00:59:45,640 --> 00:59:47,730
-Now, however, the exciting part.
+接着，最为精彩的一段
 
 499
 00:59:47,730 --> 00:59:48,960
-CDR, of course, is the same.
+CDR，和CAR一样的
 
 500
 00:59:48,960 --> 00:59:55,800
-The exciting part, set CAR and set CDR. Well, they're nothing very complicated anymore.
+SET-CAR！ SET-CDR！的实现着实让人眼前一亮，其实它们也并不复杂
 
 501
 00:59:55,800 --> 01:00:26,150
-Set CAR of a CONS X to a new value Y is nothing more than applying that CONS, which is the procedure of four--the procedure of one argument which applies its argument to four things, to a procedure which is of four arguments-- the value of X, the value of Y, permission to set X, the permission to set Y-- and using it--using that permission to set X to the new value.
+(SET-CAR! X Y)无非就是用一个取到4个参数中第3个参数的过程，去代换实际定义的CONS，取得修改其中X的权限，把其修改为新的值Y
 
 502
 01:00:31,650 --> 01:00:33,540
-And similarly, set-cdr is the same thing.
+SET-CDR！和它是类似的
 
 503
 01:00:36,120 --> 01:00:40,470
-So what you've just seen is that I didn't introduce any new primitives at all.
+你也看到了，这里并没有引入新的其它基础操作
 
 504
 01:00:40,470 --> 01:00:45,340
-Whether or not I want to implement it this way is a matter of engineering.
+具体要不要这样来实现是一个工程性问题
 
 505
 01:00:45,340 --> 01:00:51,680
-And the answer is of course I don't implement it this way for reasons that have to do with engineering.
+实际上出于一些原因，工程上并不这样来实现
 
 506
 01:00:51,680 --> 01:00:58,765
-However in principle, logically, once I introduced one assignment operator, I've assigned--I've introduced them all.
+原理上逻辑上就是这样，一旦引入了赋值，便可以修改任意的东西
 
 507
 01:01:05,420 --> 01:01:06,670
-Are there any questions?
+有什么问题吗？
 
 508
 01:01:09,200 --> 01:01:12,040
-Yes, David.
+好的，David
 
 509
 01:01:12,040 --> 01:01:15,740
-AUDIENCE: I can follow you up until you get--I can follow all of that.
+我可以跟的上你的思路，直到
 
 510
 01:01:15,740 --> 01:01:24,210
-But when we bring in the permissions, defining CONS in terms of the lambda N, I don't follow where N gets passed.
+直到那个lambda (n)那里，我不知道这个参数是什么时候传进来的
 
 511
 01:01:24,210 --> 01:01:25,100
-PROFESSOR: Oh, I'm sorry.
+哦，抱歉
 
 512
 01:01:25,100 --> 01:01:26,340
-I'll show you.
+我没讲清楚
 
 513
 01:01:26,340 --> 01:01:27,360
-Let's follow it.
+我们来仔细看看
 
 514
 01:01:27,360 --> 01:01:29,180
-Of course, we could do it on the blackboard.
+当然，我们也可以在黑板上演示
 
 515
 01:01:29,180 --> 01:01:30,170
-It's not so hard.
+并不难懂
 
 516
 01:01:30,170 --> 01:01:32,450
-But it's also easy here.
+非常简单
 
 517
 01:01:32,450 --> 01:01:38,520
-Supposing I wish to set-cdr of X to Y. See that right there.
+来看(set-cdr! x y)
 
 518
 01:01:38,520 --> 01:01:46,890
-set-cdr of X to Y. X is presumably a CONS, a thing resulting from evaluating CONS.
+x是一个CONS
 
 519
 01:01:46,890 --> 01:01:58,110
-Therefore X comes from a place over here, that that X is of the result of evaluating this lambda expression.
+x可以代换为这一部分，一个lambda表达式
 
 520
 01:01:58,110 --> 01:01:59,380
-Right?
+对吧
 
 521
 01:01:59,380 --> 01:02:08,950
-That when I evaluated that lambda expression, I evaluated it in an environment where the arguments to CONS were defined.
+这个lambda，是在定义CONS的环境下执行的
 
 522
 01:02:11,750 --> 01:02:29,250
-That means that as free variables in this lambda expression, there is the--there are in the frame, which is the parent frame of this lambda expression, the procedure resulting from this lambda expression, X and Y have places.
+这意味着，x y都是自由变量，x y所在的frame在这个lambda的上层，因此在这个过程中可以访问到x和y
 
 523
 01:02:29,250 --> 01:02:31,910
-And it's possible to set them.
+也可以对它们赋值
 
 524
 01:02:31,910 --> 01:02:37,010
-I set them to an N, which is the argument of the permission.
+这里赋值为n，是一个传过来的参数
 
 525
 01:02:37,010 --> 01:02:47,940
-The permission is a procedure which is passed to M, which is the argument that the CONS object gets passed.
+这个可以进行修改的过程是M的参数，而M又是CONS对象的参数
 
 526
 01:02:47,940 --> 01:02:57,480
-Now, let's go back here in the set-cdr The CONS object, which is the first argument of set-cdr gets passed an argument.
+现在再来看看SET-CDR！，第一个参数是一个CONS对象
 
 527
 01:03:00,260 --> 01:03:07,920
-That--there's a procedure of four things, indeed, because that's the same thing as this M over here, which is applied to four objects.
+这是一个有4个参数的过程，作为实参，对应这里的形参M
 
 528
 01:03:07,920 --> 01:03:12,970
-The object over here, SD, is, in fact, this permission.
+这边的这个sd，就对应于这个过程
 
 529
 01:03:15,470 --> 01:03:19,930
-When I use SD, I apply it to Y, right there.
+当我执行sd，应用于Y
 
 530
 01:03:22,910 --> 01:03:25,740
-So that comes from this.
+y是这里传过来的参数
 
 531
 01:03:25,740 --> 01:03:34,160
-AUDIENCE: So what do you-- PROFESSOR: So to finish that, the N that was here is the Y which is here.
+David：那-- 教授：对应起来，这里的y就对应于这里的n
 
 532
 01:03:34,160 --> 01:03:34,810
-How's that?
+明白了吧
 
 533
 01:03:34,810 --> 01:03:35,750
-AUDIENCE: Right, OK.
+了解了
 
 534
 01:03:35,750 --> 01:03:41,970
-Now, when you do a set-cdr, X is the value the CDR is going to become.
+当你执行SET-CDR！的时候，x是CDR要变成的值
 
 535
 01:03:41,970 --> 01:03:44,742
-PROFESSOR: The X over here.
+这里的x
 
 536
 01:03:44,742 --> 01:03:46,200
-I'm sorry, that's not true.
+并不全对
 
 537
 01:03:46,200 --> 01:03:56,150
-The X is--set-cdr has two arguments-- The CONS I'm changing and the value I'm changing it to.
+SET-CAR！有两个参数，这个x是我们要改变的CONS对象
 
 538
 01:03:56,150 --> 01:03:58,320
-So you have them backwards, that's all.
+你可以代换回去看看，就很清楚了
 
 539
 01:04:01,750 --> 01:04:03,000
-Are there any other questions?
+还有什么问题吗？
 
 540
 01:04:07,880 --> 01:04:08,640
-Well, thank you.
+好的
 
 541
 01:04:08,640 --> 01:04:09,890
-It's time for lunch.
+这节课就到这里
 
