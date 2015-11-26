@@ -1408,243 +1408,243 @@ agenda应该是一个列表，一个可修改的列表
 
 353
 00:38:56,657 --> 00:39:06,290
-这个segment的时刻为20，队列里一个元素
+这个segment的时刻为20，队列只有一件事要做
 
 354
 00:39:10,730 --> 00:39:20,770
-If I wanted to add something at the end, I'm going to have to replace the CDR of this, of this list with something.
+如果我想在后面添加点什么，就更改这个CDR指向要添加的东西
 
 355
 00:39:20,770 --> 00:39:24,040
-We're going to have to change that piece of data structure.
+必须对数据结构进行修改
 
 356
 00:39:24,040 --> 00:39:27,210
-So I'm going to need new primitives for doing this.
+因此我需要新的基础操作
 
 357
 00:39:27,210 --> 00:39:29,550
-But I'm just showing you why I need them.
+因为原有的基础操作达不到这一点
 
 358
 00:39:29,550 --> 00:39:49,400
-And finally, if I wanted to add a thing to be done at time 5, I'm going to have to change this one, because I'm going to have to add it in over here, which is why I planned ahead and had a header cell, which has a place.
+如果我想在时刻5做点什么事，按时间顺序来看，就得改变这里的CDR，这也就是我留了一个“头”的原因，可以方便的进行在队列头插入的操作
 
 359
 00:39:49,400 --> 00:39:53,420
-If I'm going to change things, I have to have places for the change.
+如果我想做些改变
 
 360
 00:39:53,420 --> 00:39:58,600
-I have to have a place to make the change.
+就必须找准哪些地方需要修改
 
 361
 00:39:58,600 --> 00:40:02,540
-If I remove things from the agenda, that's not so hard.
+从agenda中删除东西并不困难
 
 362
 00:40:02,540 --> 00:40:11,220
-Removing them from the beginning is pretty easy, which is the only case I have. I can go looking for the first, the first segment.
+删除操作非常简单，我只讲一种情况，先找到第一个segment
 
 363
 00:40:11,220 --> 00:40:14,510
-I see if it has a non-empty queue.
+判断队列是否为空
 
 364
 00:40:14,510 --> 00:40:20,100
-If it has a non-empty queue, well, I'm going to delete one element from the queue, like that.
+如果队列不是空的，就把要移除的事情从队列中删掉
 
 365
 00:40:20,100 --> 00:40:24,220
-If the queue ever becomes empty, then I have to delete the whole segment.
+如果这时队列变为空的，就还要继续把segment删掉
 
 366
 00:40:24,220 --> 00:40:28,220
-And then this, this changes to point to here.
+这里，把“头”的CDR指向这里
 
 367
 00:40:28,220 --> 00:40:36,440
-So it's quite a complicated data structure manipulation going on, the details of which are not really very exciting.
+这个数据结构操作起来很复杂，很无趣
 
 368
 00:40:36,440 --> 00:40:38,920
-Now, let's talk about queues.
+现在我们来聊聊队列
 
 369
 00:40:38,920 --> 00:40:41,160
-They're similar.
+它们很相似
 
 370
 00:40:41,160 --> 00:40:44,340
-Because each of these agendas has a queue in it.
+每一个segment都有一个队列
 
 371
 00:40:44,340 --> 00:40:45,590
-What's a queue?
+队列是什么？
 
 372
 00:40:49,079 --> 00:40:52,350
-A queue is going to have the following primitive operations.
+一个队列有这些基础操作
 
 373
 00:40:52,350 --> 00:41:02,170
-To make a queue, this gives me a new queue.
+MAKE-QUEUE 构建一个新队列
 
 374
 00:41:07,274 --> 00:41:16,850
-I'm going to have to be able to insert into a queue a new item.
+INSERT-QUEUE！ 向队列中插入新元素
 
 375
 00:41:24,510 --> 00:41:28,740
-I'm going to have to be able to delete from a queue the first item in the queue.
+DELETE-QUEUE！ 从队列中删除元素
 
 376
 00:41:39,988 --> 00:41:52,890
-And I want to be able to get the first thing in the queue from some queue.
+FRONT-QUEUE 查看队列中第一个元素
 
 377
 00:41:52,890 --> 00:41:55,140
-I also have to be able to test whether a queue is empty.
+还需要检测队列是否为空
 
 378
 00:42:07,110 --> 00:42:15,120
-And when you invent things like this, I want you to be very careful to use the kinds of conventions I use for naming things.
+如果你以后要发明些类似的基础操作，我希望你要注意下命名约定
 
 379
 00:42:15,120 --> 00:42:19,870
-Notice that I'm careful to say these change something and that tests it.
+有改动的操作加上！，判断的谓词用？
 
 380
 00:42:19,870 --> 00:42:24,335
-And presumably, I did the same thing over here.
+看起来，和这边的好像差不多
 
 381
 00:42:24,335 --> 00:42:29,240
-OK, and there should be an empty test over here.
+嗯，这里也需要一个是否为空的检测
 
 382
 00:42:29,240 --> 00:42:31,720
-OK, well, how would I make a queue?
+好的，我要如何构建一个队列呢？
 
 383
 00:42:31,720 --> 00:42:37,840
-A queue wants to be something I can add to at the end of, and pick up the thing at the beginning of.
+队列是一个后进先出的结构
 
 384
 00:42:37,840 --> 00:42:41,230
-I should be able to delete from the beginning and add to the end.
+从队列头删除元素，向队列尾添加元素
 
 385
 00:42:41,230 --> 00:42:43,740
-Well, I'm going to show you a very simple structure for that.
+我可以用一种很简单的结构来实现
 
 386
 00:42:43,740 --> 00:42:47,080
-We can make this out of CONSes as well.
+先有一个序对
 
 387
 00:42:47,080 --> 00:42:49,910
-Here's a queue.
+整个队列的开始
 
 388
 00:42:49,910 --> 00:42:59,610
-It has--it has a queue header, which contains two parts-- a front pointer and a rear pointer.
+这是一个队列“头”，包含一个头指针和一个尾指针
 
 389
 00:43:02,930 --> 00:43:09,000
-And here I have a queue with two items in it.
+假如队列一共两个元素
 
 390
 00:43:09,000 --> 00:43:12,095
-The first item, I don't know, it's perhaps a 1.
+第一个，值假定是1
 
 391
 00:43:12,095 --> 00:43:16,530
-And the second item, I don't know, let's give it a 2.
+第二个假定是2吧
 
 392
 00:43:21,160 --> 00:43:31,850
-The reason why I want two pointers in here, a front pointer and a rear pointer, is so I can add to the end without having to chase down from the beginning.
+需要两个指针的原因在于，向尾部添加元素的时候，就不用一直CDR找到结尾这样费力
 
 393
 00:43:31,850 --> 00:43:47,530
-So for example, if I wanted to add one more item to this queue, if I want to add on another item to be worried about later, all I have to do is make a CONS, which contains that item, say a 3.
+例如，我想要向队列添加入一个新元素，只需要先用CONS构建一个序对，假如值是3
 
 394
 00:43:47,530 --> 00:43:51,340
-That's for inserting 3 into the queue.
+再添加到队列里
 
 395
 00:43:51,340 --> 00:44:00,100
-Then I have to change this pointer here to here.
+这里就需要把item 2的CDR指向item 3
 
 396
 00:44:00,100 --> 00:44:04,320
-And I have to change this one to point to the new rear.
+尾指针也指到最后
 
 397
 00:44:09,120 --> 00:44:18,890
-If I wish to take the first element of the queue, the first item, I just go chasing down the front pointer until I find the first one and pick it up.
+如果我想查看第一个元素，由头指针就可以轻易找到
 
 398
 00:44:18,890 --> 00:44:27,450
-If I wish to delete the first item from the queue, delete-queue, all I do is move the front pointer along this way.
+如果想删除元素，只需要把头指针向后移到就行
 
 399
 00:44:27,450 --> 00:44:31,700
-The new front of the queue is now this.
+新的头指针指向这里
 
 400
 00:44:31,700 --> 00:44:34,390
-So queues are very simple too.
+所以队列比较简单
 
 401
 00:44:34,390 --> 00:44:41,350
-So what you see now is that I need a certain number of new primitive operations.
+我们需要一些另外的基础操作来支持这种修改操作
 
 402
 00:44:41,350 --> 00:44:42,560
-And I'm going to give them some names.
+我先列出它们的名字
 
 403
 00:44:42,560 --> 00:44:47,350
-And then we're going to look into how they work, and how they're used.
+然后我们再来看它们是如何使用的
 
 404
 00:44:47,350 --> 00:44:58,940
-We have set the CAR of some pair, or a thing produced by CONSing, to a new value.
+SET-CAR！ 改变一个序对的CAR为一个新值
 
 405
 00:45:02,370 --> 00:45:09,920
-And set the CDR of a pair to a new value.
+SET-CDR！和它类似
 
 406
 00:45:12,680 --> 00:45:16,030
-And then we're going to look into how they work.
+现在来看看它们到底做了什么
 
 407
 00:45:16,030 --> 00:45:20,960
-I needed setting CAR over here to delete the first element of the queue.
+我用SET-CAR！修改头指针的指向，删除第一个元素
 
 408
 00:45:20,960 --> 00:45:23,470
-This is the CAR, and I had to set it.
+这是CAR，我把它SET为另的值
 
 409
 00:45:23,470 --> 00:45:30,160
-I had to be able to set the CDR to be able to move the rear pointer, or to be able to increment the queue here.
+同理SET-CDR！修改尾指针的指向来添加元素
 
 410
 00:45:30,160 --> 00:45:35,515
-All of the operations I did were made out of those that I just showed you on the, on the last blackboard.
+全部的修改工作都是由SET-CAR！ SET-CDR！完成的
 
 411
 00:45:38,230 --> 00:45:38,430
-Good.
+非常完美
 
 412
 00:45:38,430 --> 00:45:40,357
-Let's pause the time, and take a little break then.
+先讲到这里，大家休息一下
 
 413
 00:46:38,346 --> 00:47:21,850
