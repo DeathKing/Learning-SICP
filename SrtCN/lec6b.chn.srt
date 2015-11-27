@@ -48,7 +48,7 @@ n是0的时候就是终点
 
 13
 00:01:27,960 --> 00:01:34,310
-否则，就查找流的TAIL的第n-1个元素
+否则，就在流的TAIL查找第n-1个元素
 
 14
 00:01:34,310 --> 00:01:41,700
@@ -60,183 +60,183 @@ n是0的时候就是终点
 
 16
 00:01:45,910 --> 00:01:49,300
-And another way, here's a little procedure that prints a stream.
+这里有另一个简单的过程，打印一个流
 
 17
 00:01:49,300 --> 00:01:54,150
-We say print a stream, so to print a stream s.
+把流中的元素依次打印输出
 
 18
 00:01:54,150 --> 00:01:55,315
-Well, what do we do?
+我们要怎么做呢？
 
 19
 00:01:55,315 --> 00:01:59,720
-We print the head of the stream, and that will cause the head to be computed.
+先打印流的head，流的head这时就被计算出来
 
 20
 00:01:59,720 --> 00:02:04,990
-And then we recursively print stream the tail of the stream.
+然后再递归打印流的tail
 
 21
 00:02:04,990 --> 00:02:09,660
-And if we're already done, maybe we have to return something about the message done.
+如果流为空，就返回一个“done”的消息
 
 22
 00:02:09,660 --> 00:02:14,310
-OK, and then so if you make a stream, you could say here's the stream, this very long stream.
+如果你构造了一个流 这个流非常之长
 
 23
 00:02:14,310 --> 00:02:21,320
-And then you say print the stream, and the elements of the stream will get computed successively as that print calls them.
+这时你再来打印这个流 流中的元素会依次的计算并打印出来
 
 24
 00:02:21,320 --> 00:02:24,680
-They won't get all computed initially.
+并不会一次性的全部计算出来
 
 25
 00:02:24,680 --> 00:02:30,190
-So in this way, we can deal with some very long streams.
+正因为如此 我们就能处理非常长的流
 
 26
 00:02:30,190 --> 00:02:33,600
-Well, how long can a stream be?
+多长呢？
 
 27
 00:02:33,600 --> 00:02:36,360
-Well, it can be infinitely long.
+无穷
 
 28
 00:02:36,360 --> 00:02:38,920
-Let's look at an example here on the computer.
+我们用电脑来实践一下
 
 29
 00:02:38,920 --> 00:02:57,420
-I could walk up to this computer, and I could say-- how about we'll define the stream of integers starting with some number N, the stream of positive integers starting with some number n.
+在解释器里，我们输入(DEFINE (INTEGERS-FROM N) 定义一个从N开始的整数流
 
 30
 00:02:59,760 --> 00:03:19,010
-And that's cons-stream of n onto the integers from one more.
+(CONS-STREAM N (INTEGERS-FROM (+ N 1)))) 
 
 31
 00:03:24,680 --> 00:03:25,930
-So there are the integers.
+这样就我们要的全部整数
 
 32
 00:03:28,800 --> 00:03:31,500
-Then I could say let's get all the integers.
+现在我们用这个表示所有的整数
 
 33
 00:03:34,410 --> 00:03:44,580
-define the stream of integers to be the integers starting with 1.
+(DEFINE INTEGERS (INTEGERS-FROM 1))
 
 34
 00:03:48,840 --> 00:04:02,995
-And now if I say something like what's the what's the 20th integer.
+现在执行 (NTH-STREAM 20 INTEGERS) 查看第20个元素
 
 35
 00:04:02,995 --> 00:04:07,270
-So it's 21 because we start counting at 0.
+得到21 因为我们以n=0为结束条件
 
 36
 00:04:07,270 --> 00:04:09,450
-Or I can do more complicated things.
+或者我们来点更复杂的
 
 37
 00:04:09,450 --> 00:04:10,840
-Let me to define a little predicate here.
+我再来定义一个谓词
 
 38
 00:04:13,740 --> 00:04:19,160
-How about define no-seven.
+(DEFINE (NO-SEVEN X）
 
 39
 00:04:19,160 --> 00:04:23,376
-It's going to test an integer, and it's going to say it's not.
+它可以检测一个整数，判断是否是7的倍数
 
 40
 00:04:28,820 --> 00:04:38,175
-I take the remainder of x by 7, I don't get 0.
+(NOT (= (REMAINDER X 7) 0))) X对7的余数不为0
 
 41
 00:04:41,890 --> 00:04:58,885
-And then I could say define the integers with no sevens to be, take all the integers and filter them to have no sevens.
+这时用NO-SEVEN这个谓词，过滤全部的整数
 
 42
 00:05:11,570 --> 00:05:16,360
-So now I've got the stream of all the integers that are not divisible by seven.
+这样就得到了所有不是7的倍数的整数
 
 43
 00:05:16,360 --> 00:05:28,320
-So if I say what's the 100th integer and the list not divisible by seven, I get 117.
+现在我来查看第100个不是7的倍数的整数
 
 44
 00:05:28,320 --> 00:05:35,270
-Or if I'd like to say well, gee, what are all of them?
+或者你也想知道这个流的全部元素
 
 45
 00:05:35,270 --> 00:05:41,700
-So I could say print stream all these integers with no seven, it goes off printing.
+(PRINT-STREAM NS) 来尝试打印这个流 现在输出个不停
 
 46
 00:05:45,100 --> 00:05:47,070
-You may have to wait a very long time to see them all.
+无穷的数应该永远打印不完吧
 
 47
 00:05:52,670 --> 00:06:01,100
-Well, you can start asking, gee, is it really true that this data structure with the integers is really all the integers?
+你可能会问了，你写的这个INTEGERS真的是全部的整数吗？
 
 48
 00:06:01,100 --> 00:06:04,053
-And let me draw a picture of that program I just wrote.
+现在我画一个图来表示下这个过程
 
 49
 00:06:08,170 --> 00:06:19,775
-Here's the definition of the integers again that I just typed in, Right it's a cons of the first integer under the integer starting with the rest. Now, we can make a picture of that and see what it looks like.
+这是我们刚才对整数的定义，它组合起第一个整数和剩下的整数，现在我们画个图来看看
 
 50
 00:06:22,720 --> 00:06:27,420
-Conceptually, what I have is a box that's the integer starting with n.
+抽象地来看，我画一个盒子来表示从n开始的所有整数
 
 51
 00:06:27,420 --> 00:06:37,705
-It takes in some number n, and it's going to return a stream of-- this infinite stream of all integers starting with n.
+它接受一个参数n，然后返回一个流，这个流表示从n开始的所有整数
 
 52
 00:06:37,705 --> 00:06:38,690
-And what do I do?
+接下来
 
 53
 00:06:38,690 --> 00:06:42,470
-Well, this is an integers from box.
+哦 给盒子写上名字
 
 54
 00:06:45,070 --> 00:06:45,800
-What's it got in it?
+里面是什么样子
 
 55
 00:06:45,800 --> 00:06:54,110
-Well, it takes in this n, and it increments it.
+取得参数n之后，将其 +1
 
 56
 00:06:58,030 --> 00:07:03,170
-And then it puts the result into recursively another integer's from box.
+然后递归的作为另一个INT-FROM盒子的参数
 
 57
 00:07:06,870 --> 00:07:14,270
-It takes the result of that and the original n and puts those together with a cons and forms a stream.
+最后的这个结果和n组合起来，构成了最后外层盒子所返回的流
 
 58
 00:07:14,270 --> 00:07:18,530
-So that's a picture of that program I wrote.
+刚才那个过程画出来就是这样子
 
 59
 00:07:18,530 --> 00:07:18,780
-Let's see.
+很有意思
 
 60
 00:07:18,780 --> 00:07:23,320
-These kind of diagrams we first saw drawn by Peter Henderson, the same guy who did the Escher language.
+这种画法是Peter Henderson发明的，也是之前绘图语言的发明者
 
 61
 00:07:23,320 --> 00:07:28,530
