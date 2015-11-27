@@ -34,6 +34,7 @@
 | lec5a | Windfarer | 翻译中 | 55% |
 | lec5b | DreamAndDead | 待校订 | 0%  |
 | lec6a | 匿名       | 待校订 | 0%  |
+| lec6b | DreamAndDead | 翻译中 | 0%  |
 | lec9a | loucq123  | 翻译中 | 35% |
 
 ## 捐助本项目
