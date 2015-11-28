@@ -528,303 +528,303 @@ filter盒子过滤掉tail中所有整除head的数
 
 133
 00:14:28,820 --> 00:14:32,690
-Well, we've been looking at a couple of examples of stream programming.
+我们已经了解了许多如何用流进行编程的例子
 
 134
 00:14:34,790 --> 00:14:41,490
-All the stream procedures that we've looked at so far have the same kind of character.
+那些盒子都有一个共同的特征
 
 135
 00:14:41,490 --> 00:14:51,000
-We've been writing these recursive procedures that kind of generate these stream elements one at a time and put them together in cons-streams. So we've been thinking a lot about generators.
+我们总是递归地一次生成一个元素，再用cons-stream连接起来。因此我们必须一起思考生成流的过程
 
 136
 00:14:51,000 --> 00:15:07,350
-There's another way to think about stream processing, and that's to focus not on programs that sort of process these elements as you walk down the stream, but on things that kind of process the streams all at once.
+这里我们用另一种方式来思考流，不是那种需要沿着流一个逐个元素来思考，而是把流作为一个整体
 
 137
 00:15:07,350 --> 00:15:12,410
-To show you what I mean, let me start by defining two procedures that will come in handy.
+为了把意思表示清楚，我们来看两个过程
 
 138
 00:15:12,410 --> 00:15:22,330
-The first one's called add streams. Add streams takes two streams: s1 and s2.
+第一个过程是 add-streams，两以两个流s1 s2作为参数
 
 139
 00:15:22,330 --> 00:15:22,460
-and.
+然后
 
 140
 00:15:22,460 --> 00:15:32,970
-It's going to produce a stream whose elements are the are the corresponding sums. We just sort of add them element-wise.
+生成一个新的流，其元素是两个流相应位置元素的和
 
 141
 00:15:32,970 --> 00:15:36,810
-If either stream is empty, we just return the other one.
+如果其中一个流是空的，我们就返回另一个流
 
 142
 00:15:36,810 --> 00:15:50,090
-Otherwise, we're going to make a new stream whose head is the sum of the two heads and whose tail is the result of recursively adding the tails.
+否则，我们就构建一个新的流，head元素是两个参数head的和，然后再递归求tail部分
 
 143
 00:15:50,090 --> 00:15:53,150
-So that will produce the element-wise sum of two streams.
+这就是“逐个元素来思考”来表示的整个过程
 
 144
 00:15:53,150 --> 00:15:57,500
-And then another useful thing to have around is scale stream.
+另一个过程是scale-stream
 
 145
 00:15:57,500 --> 00:16:09,710
-Scale stream takes some constant number in a stream s and is going to produce the stream of elements of s multiplied by this constant.
+两个参数，c是一个常数，s是一个流，结果生成的流相当于是将流s整体缩放了c倍
 
 146
 00:16:09,710 --> 00:16:18,290
-And that's easy, that's just a map of the function of an element that multiplies it by the constant, and we map that down the stream.
+这个过程表述起来很简单，就是用map-stream和这个lambda对流s进行映射
 
 147
 00:16:20,520 --> 00:16:27,910
-So given those two, let me show you what I mean by programs that operate on streams all at once.
+考虑清楚这两个例子的区别，现在我来具体用程序演示“将流作为整体来思考”到底是什么意思
 
 148
 00:16:27,910 --> 00:16:30,200
-Let's look at this.
+我们来看这个
 
 149
 00:16:30,200 --> 00:16:31,680
-Suppose I write this.
+假设这样
 
 150
 00:16:31,680 --> 00:16:52,190
-I say define--  I'll call it ones-- to be cons-stream of 1 onto ones.
+(DEFINE ONES (CONS-STREAM 1 ONES))
 
 151
 00:16:54,860 --> 00:16:56,950
-What's that?
+这是什么？
 
 152
 00:16:56,950 --> 00:17:03,330
-That's going to be an infinite stream of ones because the first thing is 1.
+这是一个表示无穷个1的流，因为我们看到第一个元素是1
 
 153
 00:17:03,330 --> 00:17:11,780
-And the tail of it is a thing whose first thing is 1 and whose tail is a thing whose first thing is 1 and so on and so on and so on.
+tail部分是ONES，ONES的head也是1，ONES的tail又是ONES，其head又是1，以此类推
 
 154
 00:17:11,780 --> 00:17:15,130
-So that's an infinite stream of ones.
+这就是无穷个1的流
 
 155
 00:17:15,130 --> 00:17:18,599
-And now using that, let me give you another definition of the integers.
+现在根据ONES，我再给出另一种定义整数的方式
 
 156
 00:17:18,599 --> 00:17:48,270
-We can define the integers to be-- well, the first integer we'll take to be 1, this cons-stream of 1 onto the element-wise sum onto add streams of the integers to ones.
+(DEFINE INTEGERS (CONS-STREAM 1 (ADD-STREAM INTEGERS ONES)))
 
 157
 00:17:54,950 --> 00:18:06,640
-The integers are a thing whose first element is 1, and the rest of them you get by taking those integers and incrementing each one by one.
+整数的第一个数是1，其余的数则是将整数全部加1
 
 158
 00:18:06,640 --> 00:18:13,940
-So the second element of the integers is the first element of the integers incremented by one.
+按这种方式，第二个整数就是第一个整数加1
 
 159
 00:18:13,940 --> 00:18:31,250
-And the rest of that is the next one, and the third element of that is the same as the first element of the tail of the integers incremented by one, which is the same as the first element of the original integers incremented by one and incremented by one again and so on.
+得到第三个整数的过程也和得到第二个整数的过程类似，就是一个不断加1的过程
 
 160
 00:18:35,240 --> 00:18:36,310
-That looks pretty suspicious.
+它居然可以运行，有点匪夷所思，
 
 161
 00:18:36,310 --> 00:18:40,150
-See, notice that it works because of delay.
+这样的过程可以正常运行的关键在于延时求值
 
 162
 00:18:40,150 --> 00:18:43,870
-See, this looks like-- let's take a look at ones.
+我们来看这个ONES
 
 163
 00:18:43,870 --> 00:18:51,130
-This looks like it couldn't even be processed because it's suddenly saying in order to know what ones is, I say it's cons-stream of something onto ones.
+这看起来根本不可能，我想知道ONES是什么，你却告诉我说把1和ONES连接在一起就是ONES
 
 164
 00:18:51,130 --> 00:18:55,250
-The reason that works is because of that very sneaky hidden delay in there.
+它之所以可以运行是因为暗中隐藏的delay
 
 165
 00:18:55,250 --> 00:19:00,290
-Because what this really is, remember, cons-stream is just an abbreviation.
+关键是，cons-stream是只是一个缩写
 
 166
 00:19:00,290 --> 00:19:08,785
-This really is cons of 1 onto delay of ones.
+实际是(CONS 1 (DELAY ONES))
 
 167
 00:19:12,140 --> 00:19:15,500
-So how does that work?
+再来实际看一下
 
 168
 00:19:15,500 --> 00:19:18,020
-You say I'm going to define ones.
+这里定义ONES
 
 169
 00:19:18,020 --> 00:19:20,700
-First I see what ones is supposed to be defined as.
+首先我发现ONES是一个CONS
 
 170
 00:19:20,700 --> 00:19:32,710
-Well, ones is supposed to be defined as a cons whose first part is 1 and whose second part is, well, it's a promise to compute something that I don't worry about yet.
+CAR部分是1，CDR部分则是一个计算的约定
 
 171
 00:19:32,710 --> 00:19:37,270
-So it doesn't bother me that at the point I do this definition, ones isn't defined.
+不用担心说ONES还没有被定义，你这里怎么可以写一个ONES
 
 172
 00:19:37,270 --> 00:19:40,670
-Having run the definition now, ones is defined.
+将运行整个定义的时候，ONES就被定义了
 
 173
 00:19:40,670 --> 00:19:44,920
-So that when I go and look at the tail of it, it's defined.
+所以当我再访问到这个部分时，ONES已经被定义过了
 
 174
 00:19:44,920 --> 00:19:46,590
-It's very sneaky.
+这一点非常隐讳
 
 175
 00:19:46,590 --> 00:19:48,470
-And an integer is the same way.
+下面整数的定义也是如此
 
 176
 00:19:48,470 --> 00:19:53,210
-I can refer to integers here because hidden way down-- because of this cons-stream.
+我可以在这里使用INTEGERS也是因为CONS-STREAM的缘故
 
 177
 00:19:53,210 --> 00:19:57,050
-It's the cons-stream of 1 onto something that I don't worry that yet.
+CONS-STREAM把1和剩下的部分连接起来
 
 178
 00:19:57,050 --> 00:20:02,570
-So I don't look at it, and I don't notice that integers isn't defined at the point where I try and run the definition.
+所以我根本不用关注INTEGERS有没有定义的问题
 
 179
 00:20:06,320 --> 00:20:12,430
-OK, let me draw a picture of that integers thing because it still maybe seems a little bit shaky.
+这个定义好像还是不那么牢靠的样子，这里我们用图形来表示一下
 
 180
 00:20:12,430 --> 00:20:15,020
-What do I do?
+怎么画呢？
 
 181
 00:20:15,020 --> 00:20:26,590
-I've got the stream of ones, and that sort of comes in and goes into an adder that's going to be this add streams thing.
+ONES这个流，作为输出进入一个加法器，进行流的加法
 
 182
 00:20:29,310 --> 00:20:35,760
-And that goes in-- that's going to put out the integers.
+输出是INTEGERS
 
 183
 00:20:40,760 --> 00:20:48,060
-And the other thing that goes into the adder here is the integer, so there's a little feedback loop.
+加法器另一个加数则是INTEGERS，返过来构成一个循环
 
 184
 00:20:48,060 --> 00:20:53,180
-And all I need to start it off is someplace I've got a stick that initial 1.
+还需要在这里加一个初始值1才算完成
 
 185
 00:20:57,100 --> 00:21:02,910
-In a real signal processing thing, this might be a delay element with that was initialized to 1.
+要是在1这里加上一个延时的器件，看起来就完全和信号处理是一回事
 
 186
 00:21:02,910 --> 00:21:07,860
-But there's a picture of that ones program.
+当然也得除去ONES这个部分
 
 187
 00:21:07,860 --> 00:21:17,360
-And in fact, that looks a lot like-- if you've seen real signal block diagram things, that looks a lot like accumulators, finite state accumulators.
+如果你了解信号处理的话，你会发现这个图很像一个有穷状态的accumulator
 
 188
 00:21:17,360 --> 00:21:28,440
-And in fact, we can modify this a little bit to change this into something that integrates a stream or a finite state accumulator, however you like to think about it.
+我们可以稍加修改，就可以将其变成一个有穷状态的accumulator
 
 189
 00:21:28,440 --> 00:21:45,700
-So instead of the ones coming in and getting out the integers, what we'll do is say there's a stream s coming in, and we're going to get out the integral of this, successive values of that, and it looks almost the same.
+把ONES换成一个流，INTEGERS就应该是这个流的积分
 
 190
 00:21:45,700 --> 00:21:54,260
-The only thing we're going to do is when s comes in here, before we just add it in we're going to multiply it by some number dt.
+还需要修改的一点就是，在S输入加法器之前，先将其乘以dt
 
 191
 00:21:57,680 --> 00:22:00,000
-And now what we have here, this is exactly the same thing.
+剩下的就不用改了
 
 192
 00:22:00,000 --> 00:22:04,020
-We have a box, which is an integrator.
+用盒子包裹起来，就是一个积分器
 
 193
 00:22:09,790 --> 00:22:19,980
-And it takes in a stream s, and instead of 1 here, we can put the additional value for the integral.
+对一个流S进行积分，这里的1可以换成一个积分的初始值
 
 194
 00:22:19,980 --> 00:22:25,270
-And that one looks very much like a signal processing block diagram program.
+这个看起来就非常像是信号处理了
 
 195
 00:22:25,270 --> 00:22:27,980
-In fact, here's the procedure that looks exactly like that.
+这里，还有一个程序来表示这个图
 
 196
 00:22:31,490 --> 00:22:34,010
-Find the integral of a stream.
+对一个流进行积分
 
 197
 00:22:34,010 --> 00:22:42,230
-So an integral's going to take a stream and produce a new stream, and it takes in an initial value and some time constant.
+接收一个流s，一个初始值和dt，产生一个新的流表示积分
 
 198
 00:22:42,230 --> 00:22:43,040
-And what do we do?
+然后呢？
 
 199
 00:22:43,040 --> 00:22:49,400
-Well, we internally define this thing int, and we make this internal name so we can feed it back, loop it around itself.
+内部定义一个流int，将其命名的原因在于可以回调它构成一个循环
 
 200
 00:22:49,400 --> 00:23:01,280
-And int is defined to be something that starts out at the initial value, and the rest of it is gotten by adding together.
+这个int流初始值是initial-value
 
 201
 00:23:01,280 --> 00:23:06,880
-We take our input stream, scale it by dt, and add that to int.
+剩下的则是将s缩放dt倍，和int相加
 
 202
 00:23:06,880 --> 00:23:10,690
-And now we'll return from all that the value of integral is this thing int.
+最后我们返回流int
 
 203
 00:23:10,690 --> 00:23:15,920
-And we use this internal definition syntax so we could write a little internal definition that refers to itself.
+我们为int命名是为了在int内部可以引用int
 
 204
 00:23:21,880 --> 00:23:23,710
-Well, there are all sorts of things we can do.
+我们还可以做的更多
 
 205
 00:23:23,710 --> 00:23:25,500
-Let's try this one.
+来看这个
 
 206
 00:23:25,500 --> 00:23:26,895
-how about the Fibonacci numbers.
+斐波那契数
 
 207
 00:23:26,895 --> 00:23:32,625
-You can say define fibs.
+定义FIBS
 
 208
 00:23:36,350 --> 00:23:37,985
