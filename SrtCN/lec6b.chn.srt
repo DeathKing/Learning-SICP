@@ -924,243 +924,243 @@ ONES这个流，作为输出进入一个加法器，进行流的加法
 
 232
 00:26:17,580 --> 00:26:36,390
-See, in the same way, let's imagine that we're building an analog computer to solve some differential equation like, say, we want to solve the equation y prime dy dt is y squared, and I'm going to give you some initial value.
+假如我们构建了模拟计算机来求解微分方程，比如 y' = y^2，还需要些初始值
 
 233
 00:26:36,390 --> 00:26:38,030
-I'll tell you y of 0 equals 1.
+y(0) = 1
 
 234
 00:26:41,060 --> 00:26:43,690
-Let's say dt is equal to something.
+dt = .0001
 
 235
 00:26:46,770 --> 00:26:51,040
-Now, in the old days, people built analog computers to solve these kinds of things.
+很久之间就有人构建模拟计算机来解决这类问题
 
 236
 00:26:51,040 --> 00:26:53,020
-And the way you do that is really simple.
+原理非常简单
 
 237
 00:26:53,020 --> 00:27:03,055
-You get yourself an integrator, like that one, an integrator box.
+先拿一个积分器
 
 238
 00:27:03,055 --> 00:27:08,530
-And we put in the initial value y of 0 is 1.
+初始值是1
 
 239
 00:27:08,530 --> 00:27:13,890
-And now if we feed something in and get something out, we'll say, gee, what we're getting out is the answer.
+还差一个输入和一个输出，输出的结果就是y
 
 240
 00:27:13,890 --> 00:27:21,490
-And what we're going to feed in is the derivative, and the derivative is supposed to be the square of the answer.
+输入的是y的导数，在这是y' = y^2
 
 241
 00:27:21,490 --> 00:27:42,910
-So if we take these values and map using square, and if I feed this around, that's how I build a block diagram for an analog computer that solves this differential equation.
+所以这里使用square进行map，返回去作为这里的输入，这就是用来求解这个微分方程的图
 
 242
 00:27:42,910 --> 00:27:47,230
-Now, what we'd like to do is write a stream program that looks exactly like that.
+现在我们用代码来表示下这个过程
 
 243
 00:27:47,230 --> 00:27:49,390
-And what do I mean exactly like that?
+这个图究竟表示的是什么呢？
 
 244
 00:27:49,390 --> 00:28:13,790
-Well, I'd say define y to be the integral of dy starting at 1 with 0.001 as a time step.
+y可以这样来定义，就是对dy进行积分，初始值是1，间隔是.0001
 
 245
 00:28:13,790 --> 00:28:16,805
-And I'd like to say that says this.
+接下来
 
 246
 00:28:16,805 --> 00:28:20,850
-And then I'd like to say, well, dy is gotten by mapping the square along y.
+来表示y' = y^2
 
 247
 00:28:20,850 --> 00:28:33,510
-So define dy to be map square along y.
+dy就定义为(MAP SQUARE Y)
 
 248
 00:28:33,510 --> 00:28:41,410
-So there's a stream description of this analog computer, and unfortunately, it doesn't work.
+这就是使用流对整个图的解释，不幸的是，并不能运行
 
 249
 00:28:41,410 --> 00:28:51,190
-And you can see why it doesn't work because when I come in and say define y to be the integral of dy, it says, oh, the integral of y-- huh?
+你可以看到这为什么不行，因为这个定义y的地方，是dy的积分，额，dy是什么
 
 250
 00:28:51,190 --> 00:28:53,710
-Oh, that's undefined.
+没定义啊
 
 251
 00:28:53,710 --> 00:28:58,770
-So I can't write this definition before I've written this one.
+所以我得先定义dy
 
 252
 00:28:58,770 --> 00:29:03,580
-On the other hand, if I try and write this one first, it says, oh, I define y to be the map of square along y?
+另一方面，如果先定义了dy，又会发现(MAP SQUARE Y)
 
 253
 00:29:03,580 --> 00:29:05,770
-Oh, that's not defined yet.
+y也没有定义
 
 254
 00:29:05,770 --> 00:29:11,580
-So I can't write this one first, and I can't write that one first. So I can't quite play this game.
+这个不能先写，那个也不能，没法玩儿了
 
 255
 00:29:17,560 --> 00:29:20,460
-Well, is there a way out?
+有没有什么解决办法呢？
 
 256
 00:29:20,460 --> 00:29:22,200
-See, we can do that with ones.
+所幸的是这可以解决
 
 257
 00:29:22,200 --> 00:29:34,770
-See, over here, we did this thing ones, and we were able to define ones in terms of ones because of this delay that was built inside because cons-stream had a delay.
+这边，我们可以用ONES来定义ONES是因为CONS-STREAM中ONES可以延时求值
 
 258
 00:29:34,770 --> 00:29:36,070
-Now, why's it sensible?
+巧妙在什么地方呢？
 
 259
 00:29:36,070 --> 00:29:40,730
-Why's it sensible for cons-stream to be built with this delay?
+为什么CONS-STREAM增加了DELAY就变得巧妙了呢？
 
 260
 00:29:40,730 --> 00:29:45,950
-The reason is that cons-stream can do a useful thing without looking at its tail.
+原因在于CONS-STERAM这样做之后就完全不用关心TAIL的部分了
 
 261
 00:29:45,950 --> 00:29:54,870
-See, if I say this is cons-stream of 1 onto something without knowing anything about something, I know that the stream starts off with 1.
+只用关心我把1和什么东西连接在一起了，而且那个东西以1开始
 
 262
 00:29:54,870 --> 00:29:57,910
-That's why it was sensible to build something like cons-stream.
+CONS-STREAM就巧妙在这里
 
 263
 00:29:59,960 --> 00:30:06,320
-So we put a delay in there, and that allows us to have this sort of self-referential definition.
+增加了一个DELAY，就可以进行自引用的定义了
 
 264
 00:30:06,320 --> 00:30:08,190
-Well, integral is a little bit the same way.
+INTEGRAL也可以用这种方式来解决
 
 265
 00:30:08,190 --> 00:30:17,580
-See, notice for an integral, I can-- let's go back and look at integral for a second.
+我们回头再看看INTEGRAL的定义
 
 266
 00:30:17,580 --> 00:30:28,970
-See, notice integral, it makes sense to say what's the first thing in the integral without knowing the stream that you're integrating.
+求积分的时候，只需要关心我们从initial-value开始积分，并不需要了解整个流
 
 267
 00:30:28,970 --> 00:30:33,140
-Because the first thing in the integral is always going to be the initial value that you're handed.
+因为积分结果的第一个元素肯定是initial-value
 
 268
 00:30:33,140 --> 00:30:37,090
-So integral could be a procedure like cons-stream.
+integral的内部就是cons-stream实现的
 
 269
 00:30:37,090 --> 00:30:46,710
-You could define it, and then even before it knows what it's supposed to be integrating, it knows enough to say what its initial value is.
+我们可以这样定义，甚至不用知道要积分的流是什么，只需要知道初始值是什么就行了
 
 270
 00:30:46,710 --> 00:30:58,430
-So we can make a smarter integral, which is aha, you're going to give me a stream to integrate and an initial value, but I really don't have to look at that stream that I'm supposed to integrate until you ask me to work down the stream.
+INTEGRAL还可以修改地更为精妙，以一个初始值和一个流进行积分，我甚至不用关心这个流是什么，直到积分的时候再来查看这个流
 
 271
 00:30:58,430 --> 00:31:03,710
-In other words, integral can be like cons-stream, and you can expect that there's going to be a delay around its integrand.
+换句话说，这个INTEGRAL就像CONS-STREAM一样，被积分的流延时求值
 
 272
 00:31:03,710 --> 00:31:05,610
-And we can write that.
+我们这样修改
 
 273
 00:31:05,610 --> 00:31:07,650
-Here's a procedure that does that.
+来看这个过程
 
 274
 00:31:07,650 --> 00:31:17,110
-Another version of integral, and this is almost like the previous one, except the stream it's going to get in is going to expect to be a delayed object.
+改动的并不多，只是这里的s变成了delay-s，一个经过DELAY的流
 
 275
 00:31:17,110 --> 00:31:18,850
-And how does this integral work?
+这个INTEGRAL又是怎么运作的呢？
 
 276
 00:31:18,850 --> 00:31:32,300
-Well, the little thing it's going to define inside of itself says on the cons-stream, the initial value is the initial value, but only inside of that cons-stream, and remember, there's going to be a hidden delay inside here.
+内部还是一个CONS-STREAM，初始值就是initial-value，这里还要记住，delay-s是一个被DELAY过的流
 
 277
 00:31:34,950 --> 00:31:43,180
-Only inside of that cons-stream will I start looking at what the actual delayed object is.
+到了实际计算的时候，就用FORCE来查看流的实际内容
 
 278
 00:31:43,180 --> 00:31:45,970
-So my answer is the first thing's the initial value.
+第一个元素是initial-value
 
 279
 00:31:45,970 --> 00:31:59,260
-If anybody now asks me for my tail, at that point, I'm going to force that delayed object-- and I'll call that s-- and I do the add streams. So this is an integral which is sort of like cons-stream.
+如果有人想要查看流的实际内容是什么，就对延时对象应用FORCE，这里称其为s，然后做流的加法。整个过程有点像CONS-STREAM的感觉
 
 280
 00:31:59,260 --> 00:32:07,330
-It's not going to actually try and see what you handed it as the thing to integrate until you look past the first element.
+这个被积分的流是什么我根本不会去深究，直到你需要它的时候我才会去查看这个流
 
 281
 00:32:10,120 --> 00:32:27,090
-And if we do that and we can make this work, all we have to do here is say define y to the integral of delay of y, of delay of dy.
+如果这样的话，对于y' = y^2的问题也就解决了，只需要将Y的定义中dt改为(DELAY DY)
 
 282
 00:32:27,090 --> 00:32:35,280
-So y is going to be the integral of delay of dy starting at 1, and now this will work.
+Y就是对(DELAY Y)的积分，这样一来就可以了
 
 283
 00:32:35,280 --> 00:32:44,600
-Because I type in the definition of y, and that says, oh, I'm supposed to use the integral of something I don't care about right now because it's a delay.
+我输入Y的定义，要求一个什么的积分，具体是什么我也不关心，因为是一个延时对象
 
 284
 00:32:44,600 --> 00:32:46,320
-And these things, now you define dy.
+这之后，再定义dy
 
 285
 00:32:46,320 --> 00:32:47,550
-Now, y is defined.
+没有问题了，因为y已经被定义了
 
 286
 00:32:47,550 --> 00:32:51,700
-So when I define dy, it can see that definition for y.
+所以在dy内部引用y并没有问题
 
 287
 00:32:51,700 --> 00:32:52,840
-Everything is now started up.
+一切都正常了
 
 288
 00:32:52,840 --> 00:32:54,920
-Both streams have their first element.
+这两个流都有初始值
 
 289
 00:32:54,920 --> 00:33:00,590
-And then when I start mapping down, looking at successive elements, both y and dy are defined.
+当用SQUARE进行MAP的时候，查看后继的元素并不会引发什么问题，y和dy都被定义过了
 
 290
 00:33:00,590 --> 00:33:08,660
-So there's a little game you can play that goes a little bit beyond just using the delay that's hidden inside streams. Questions?
+DELAY除了在CONS-STREAM之内还是很有用的不是吗？好的，大家有问题么
 
 291
 00:33:13,178 --> 00:33:14,428
-OK, let's take a break.
+没有的话，休息一下吧
 
 292
 00:34:07,300 --> 00:34:14,320
