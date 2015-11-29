@@ -1420,59 +1420,59 @@ fact-iter内部定义一个过程iter，它时刻记录着product和counter的�
 
 356
 00:40:54,610 --> 00:41:10,230
-But after you work a while, you suddenly have 3 megabytes of stuff, which is-- I guess they call them the dragging tail problem of people who are looking at these, of promises that sort of haven't been called in because you couldn't quite express an iteration.
+但是你才用了一会儿，就会发现已经占用了3MB空间，充斥了未被计算的约定，这个应该是被称为拖尾问题，就因为不能表示迭代过程的缘故
 
 357
 00:41:10,230 --> 00:41:20,110
-And one of the research questions in these kinds of languages are figuring out the right compiler technology to get rid of the so-called dragging tails.
+一个针对这种语言的研究方向就是如何采用一种编译技术来避免拖尾问题
 
 358
 00:41:20,110 --> 00:41:23,940
-It's not simple.
+非常困难
 
 359
 00:41:23,940 --> 00:41:32,056
-But there's another kind of more striking issue about why you just don't go ahead and make your language normal order.
+在不能表示迭代之外，正则序求值还有另一个缺点
 
 360
 00:41:32,056 --> 00:41:42,000
-And the reason is that normal-order evaluation and side effects just don't mix.
+很遗憾的是，正则序求值与赋值副作用是不相容的
 
 361
 00:41:42,000 --> 00:41:45,350
-They just don't go together very well.
+它们在一起效果并不好
 
 362
 00:41:45,350 --> 00:42:00,400
-Somehow, you can't-- it's sort of you can't simultaneously go around trying to model objects with local state and change and at the same time do these normal-order tricks of de-coupling time.
+你不能对有局部状态的对象同时应用正则序求值来分离时间延时求值
 
 363
 00:42:00,400 --> 00:42:03,790
-Let me just show you a really simple example, very, very simple.
+我来举一个非常简单的例子
 
 364
 00:42:03,790 --> 00:42:07,520
-Suppose we had a normal-order language.
+假设语言是正则序求值
 
 365
 00:42:07,520 --> 00:42:09,550
-And I'm going to start out in this language.
+例子是这样的
 
 366
 00:42:09,550 --> 00:42:10,520
-This is now normal order.
+注意现在是正则序求值
 
 367
 00:42:10,520 --> 00:42:13,570
-I'm going to define x to be 0.
+定义x是0
 
 368
 00:42:13,570 --> 00:42:15,750
-It's just some variable I'll initialize.
+初始化的变量
 
 369
 00:42:15,750 --> 00:42:22,640
-And now I'm going to define this little funny function, which is an identity function.
+下面这个过程 id 比较有趣
 
 370
 00:42:22,640 --> 00:42:26,770
