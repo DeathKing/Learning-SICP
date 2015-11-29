@@ -116,7 +116,7 @@ n是0的时候就是终点
 
 30
 00:02:59,760 --> 00:03:19,010
-(CONS-STREAM N (INTEGERS-FROM (+ N 1)))) 
+(CONS-STREAM N (INTEGERS-FROM (+ N 1))))
 
 31
 00:03:24,680 --> 00:03:25,930
@@ -1164,259 +1164,259 @@ DELAY除了在CONS-STREAM之内还是很有用的不是吗？好的，大家有�
 
 292
 00:34:07,300 --> 00:34:14,320
-Well, just before the break, I'm not sure if you noticed it, but something nasty started to happen.
+在刚才休息的时候，我不知道你们有没有发现什么事不对劲
 
 293
 00:34:14,320 --> 00:34:34,389
-We've been going along with the streams and divorcing time in the programs from time in the computers, and all that divorcing got hidden inside the streams. And then at the very end, we saw that sometimes in order to really take advantage of this method, you have to pull out other delays.
+我们通过流将程序表面表现的时间关系与实际在计算机中运行的时间关系分离开来，可以这样分离的原因在于流中的DELAY。在某些时候，我们为了利用这种优势，需要更多的DELAY
 
 294
 00:34:34,389 --> 00:34:39,030
-You have to write some explicit delays that are not hidden inside that cons-stream.
+也就是要显式地来使用DELAY
 
 295
 00:34:39,030 --> 00:34:49,929
-And I did a very simple example with differential equations, but if you have some very complicated system with all kinds of self-loops, it becomes very, very difficult to see where you need those delays.
+我已经用微分方程示例过了，如果你遇到非常复杂的系统，其中有很多自引用的循环，这时你需要在什么地方用DELAY就非常模糊了
 
 296
 00:34:49,929 --> 00:34:55,550
-And if you leave them out by mistake, it becomes very, very difficult to see why the thing maybe isn't working.
+假如你一不小心漏了一个，程序会出错而且你还不知道哪里出了错
 
 297
 00:34:55,550 --> 00:35:08,690
-So that's kind of mess, that by getting this power and allowing us to use delay, we end up with some very complicated programming sometimes, because it can't all be hidden inside the streams.
+我们显式使用DELAY获得的力量不足以克服大型的复杂的系统，因为它们并不能像流一样把DELAY隐藏起来，这非常混乱
 
 298
 00:35:08,690 --> 00:35:11,036
-Well, is there a way out of that?
+有没有什么解决方案呢？
 
 299
 00:35:11,036 --> 00:35:13,480
-Yeah, there is a way out of that.
+所幸地是 有
 
 300
 00:35:13,480 --> 00:35:25,450
-We could change the language so that all procedures acted like cons-stream, so that every procedure automatically has an implicit delay around its arguments.
+我可以改变整个语言，所有过程表现起来就像CONS-STREAM一样，因此每一个过程都对其参数延时求值
 
 301
 00:35:25,450 --> 00:35:27,520
-And what would that mean?
+什么意思呢？
 
 302
 00:35:27,520 --> 00:35:32,210
-That would mean when you call a procedure, the arguments wouldn't get evaluated.
+就是说 你执行一个过程，并不马上对参数求值
 
 303
 00:35:32,210 --> 00:35:39,260
-Instead, they'd only be evaluated when you need them, so they might be passed off to some other procedure, which wouldn't evaluate them either.
+相反地，它们只有在需要被求值的时候才会被求值，因此它们可以不被求值的传递至其它过程中，一直这样传递下去
 
 304
 00:35:39,260 --> 00:35:42,150
-So all these procedures would be passing promises around.
+过程传递的只是计算的约定而已
 
 305
 00:35:42,150 --> 00:35:52,380
-And then finally maybe when you finally got down to having to look at the value of something that was handed to a primitive operator would you actually start calling in all those promises.
+直到最后你需要查看某个值的时候，这才真正的求出这个部分的值
 
 306
 00:35:52,380 --> 00:36:02,920
-If we did that, since everything would have a uniform delay, then you wouldn't have to write any explicit delays, because it would be automatically built into the way the language works.
+假如我们这样做了，就不需要显式的使用DELAY了，任何东西都有DELAY，它完全内建在语言之中了
 
 307
 00:36:02,920 --> 00:36:34,560
-Or another way to say that, technically what I'm describing is what's called-- if we did that, our language would be so-called normal-order evaluation language versus what we've actually been working with, which is called applicative order--  versus applicative-order evaluation.
+换句话说，技术上这是一种正则序求值的语言，和我们一直使用的应用序求值不同
 
 308
 00:36:34,560 --> 00:36:36,835
-And remember the substitution model for applicative order.
+还记得应用序吧
 
 309
 00:36:36,835 --> 00:36:43,590
-It says when you go and evaluate a combination, you find the values of all the pieces.
+就是你求值一个表达式的时候，每个部分都要预先计算出来
 
 310
 00:36:43,590 --> 00:36:47,600
-You evaluate the arguments and then you substitute them in the body of the procedure.
+参数具体求值之后，才代换入过程
 
 311
 00:36:47,600 --> 00:36:49,890
-Normal order says no, don't do that.
+正则序则不是这样
 
 312
 00:36:49,890 --> 00:36:58,640
-What you do is effectively substitute in the body of the procedure, but instead of evaluating the arguments, you just put a promise to compute them there.
+代换的过程是一样的，不过并不先对参数求值，只是代换入了一个计算的约定
 
 313
 00:36:58,640 --> 00:37:09,340
-Or another way to say that is you take the expressions for the arguments, if you like, and substitute them in the body of the procedure and go on, and never really simplify anything until you get down to a primitive operator.
+换句话说，这个表达式作为参数，就直接的把这个表达式代换入过程，并不进行求值直到需要求值的时候
 
 314
 00:37:09,340 --> 00:37:11,840
-So that would be a normal-order language.
+这就是所谓的正则序求值语言
 
 315
 00:37:11,840 --> 00:37:13,490
-Well, why don't we do that?
+为什么不这样做呢？
 
 316
 00:37:13,490 --> 00:37:18,940
-Because if we did, we'd get all the advantages of delayed evaluation with none of the mess.
+这样做了之后，我们就获得了延时求值的所有优点
 
 317
 00:37:18,940 --> 00:37:24,710
-In fact, if we did that and cons was just a delayed procedure, that would make cons the same as cons-stream.
+CONS也会是延时求值的，就和CONS-STREAM一样
 
 318
 00:37:24,710 --> 00:37:32,350
-We wouldn't need streams of all because lists would automatically be streams. That's how lists would behave, and data structures would behave that way.
+也不需要流了，因为列表会自动的像流那样，所有的数据对象都会被延时求值
 
 319
 00:37:32,350 --> 00:37:35,270
-Everything would behave that way, right?
+所有的，不是么？
 
 320
 00:37:35,270 --> 00:37:41,020
-You'd never really do any computation until you actually needed the answer.
+直到需要答案的时候才去实际的求值
 
 321
 00:37:41,020 --> 00:37:44,790
-You wouldn't have to worry about all these explicit annoying delays.
+也不用担心这些显式的DELAY了
 
 322
 00:37:44,790 --> 00:37:47,160
-Well, why don't we do that?
+为什么不这样做呢？
 
 323
 00:37:47,160 --> 00:37:49,230
-First of all, I should say people do do that.
+首先，已经有人这样做过了
 
 324
 00:37:49,230 --> 00:37:51,850
-There's some very beautiful languages.
+这是一类十分优雅的语言
 
 325
 00:37:51,850 --> 00:38:00,710
-One of the very nicest is a language called Miranda, which is developed by David Turner at the University of Kent.
+其中最为人称道的是一门名为Miranda的语言，是肯特大学的David Turner发明的
 
 326
 00:38:00,710 --> 00:38:01,930
-And that's how this language works.
+它就是用这样的原理实现的
 
 327
 00:38:01,930 --> 00:38:14,970
-It's a normal-order language and its data structures, which look like lists, are actually streams. And you write ordinary procedures in Miranda, and they do these prime things and eight queens things, just without anything special.
+正则序求值，列表就像流一样。如果你用Miranda来解决像质数，八皇后这样的问题，写出来的过程看起来就很普通
 
 328
 00:38:14,970 --> 00:38:17,790
-It's all built in there.
+DELAY已经内建入语言了
 
 329
 00:38:17,790 --> 00:38:19,040
-But there's a price.
+但是这样也有不足之处
 
 330
 00:38:21,190 --> 00:38:23,170
-Remember how we got here.
+还记得我们为什么引入流了吗
 
 331
 00:38:23,170 --> 00:38:27,480
-We're decoupling time in the programs from time in the machines.
+我们把程序的时间和它实际执行的时间相分离
 
 332
 00:38:27,480 --> 00:38:33,140
-And if we put delay, that sort of decouples it everywhere, not just in streams. Remember what we're trying to do.
+如果我们在所有地方都引入了DELAY，这也是我们现在正在做的
 
 333
 00:38:33,140 --> 00:38:39,300
-We're trying to think about programming as a way to specify processes.
+编程就完全是单纯地描述解决方案的事了
 
 334
 00:38:39,300 --> 00:38:47,030
-And if we give up too much time, our language becomes more elegant, but it becomes a little bit less expressive.
+我们完全放弃了对时间的控制，尽管语言变的优雅起来，但是牺牲了太多东西
 
 335
 00:38:47,030 --> 00:38:51,480
-There are certain distinctions that we can't draw.
+并且还有一些致命的缺陷
 
 336
 00:38:51,480 --> 00:38:53,980
-One of them, for instance, is iteration.
+其中之一就是迭代
 
 337
 00:38:53,980 --> 00:39:01,230
-Remember this old procedure, iterative factorial, that we looked at quite a long time ago.
+我们以前写过，迭代的来求阶乘
 
 338
 00:39:01,230 --> 00:39:12,120
-Iterative factorial had a thing, and it said there was an internal procedure, and there was a state which was a product and a counter, and we iterate that going around the loop.
+fact-iter内部定义一个过程iter，它时刻记录着product和counter的状态，就这样迭代的求解
 
 339
 00:39:12,120 --> 00:39:15,730
-And we said that was an iterative procedure because it didn't build up state.
+我们说这是一个迭代过程是因为它并没有把状态堆积给解释器
 
 340
 00:39:15,730 --> 00:39:23,900
-And the reason it didn't build up state is because this iter that's called is just passing these things around to itself.
+因为状态时刻作为参数传递给了自身
 
 341
 00:39:23,900 --> 00:39:31,660
-Or in the substitution model, you could see in the substitution model that Jerry did, that in an iterative procedure, that state doesn't have to grow.
+也可以用代换具体的实践来看，这个迭代的过程，并没有状态堆积导致表达式增长的情况
 
 342
 00:39:31,660 --> 00:39:34,840
-And in fact, we said it doesn't, so this is an iteration.
+因此这是一个迭代过程
 
 343
 00:39:34,840 --> 00:39:41,150
-But now think about this exact same text if we had a normal-order language.
+但是现在用正则序的思维来看
 
 344
 00:39:41,150 --> 00:39:45,650
-What would happen is this would no longer be an iterative procedure?
+这个迭代过程会变成什么样子
 
 345
 00:39:45,650 --> 00:39:52,330
-And if you really think about the details of the substitution model, which I'm not going to do here, this expression would grow.
+如果你用正则序去进行代换，一直代换下去表达式就会变得越来越长
 
 346
 00:39:52,330 --> 00:39:53,280
-Why would it grow?
+为什么会这样？
 
 347
 00:39:53,280 --> 00:39:58,080
-It's because when iter calls itself, it calls itself with this product.
+因为iter递归的调用自己，把product代换为(* counter product)
 
 348
 00:39:58,080 --> 00:40:02,510
-If it's a normal-order language, that multiplication is not going to get done.
+在正则序里，这个乘法在这里并没有求值
 
 349
 00:40:02,510 --> 00:40:06,670
-That's going to say I'm to call myself with a promise to compute this product.
+传递并代换的只是这个乘法计算的约定
 
 350
 00:40:06,670 --> 00:40:09,760
-And now iter goes around again.
+然后iter继续代换下去
 
 351
 00:40:09,760 --> 00:40:18,400
-And I'm going to call myself with a promise to compute this product where now one of the one factors is a promise.
+用这样的计算约定反复的递归代换
 
 352
 00:40:18,400 --> 00:40:19,430
-And I call myself again.
+代换
 
 353
 00:40:19,430 --> 00:40:31,790
-And if you write out the substitution model for that iterative process, you'll see exactly the same growth in state, all those promises that are getting remembered that have to get called in at the very end.
+如果你实际模拟下这个过程，你会清楚的看到状态的堆积，所有的约定直到最后才被计算
 
 354
 00:40:31,790 --> 00:40:36,980
-So one of the disadvantages is that you can't really express iteration.
+所以正则序不能表达迭代的计算过程
 
 355
 00:40:36,980 --> 00:40:54,610
-Maybe that's a little theoretical reason why not, but in fact, people who are trying to write real operating systems in these languages are running into exactly these types of problems. Like it's perfectly possible to implement a text editor in languages like these.
+或许这个问题有更深层次的理论上的原因，事实上许多写操作系统的人都很头疼这类问题。比如你用这类语言实现了一个文本编辑器
 
 356
 00:40:54,610 --> 00:41:10,230
