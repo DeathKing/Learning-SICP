@@ -1476,123 +1476,123 @@ fact-iter内部定义一个过程iter，它时刻记录着product和counter的�
 
 370
 00:42:22,640 --> 00:42:26,770
-And what it does, it keeps track of the last time you called it using x.
+它用x来记录上一次id过程的参数值
 
 371
 00:42:31,620 --> 00:42:36,760
-So the identity of n just returns n, but it sets x to be n.
+这个过程最后只是返回了n，但是还把x赋值为n
 
 372
 00:42:36,760 --> 00:42:42,580
-And now I'll define a little increment function, which is a very little, simple scenario.
+最后再定义一个过程inc，也非常简单
 
 373
 00:42:42,580 --> 00:42:47,230
-Now, imagine I'm interacting with this in the normal-order language, and I type the following.
+假设在正则序求值的语言里，求值下面的表达式
 
 374
 00:42:47,230 --> 00:42:54,190
-I say define y to be increment the identity function of 3, so y is going to be 4.
+(define y (inc (id 3)))，y的值应该是4
 
 375
 00:42:57,410 --> 00:42:59,520
-Now, I say what's x?
+x应该是多少呢？
 
 376
 00:42:59,520 --> 00:43:04,710
-Well, x should have been the value that was remembered last when I called the identity function.
+x应该是上一次我们执行过程id的参数值
 
 377
 00:43:04,710 --> 00:43:08,530
-So you'd expect to say, well, x is 3 at this point, but it's not.
+你可能会想，这里x应该是3，但是并不是这样
 
 378
 00:43:08,530 --> 00:43:17,000
-Because when I defined y here, what I really defined y to be increment of a promise to do this thing.
+因为我定义y的时候，只是一个计算的约定
 
 379
 00:43:17,000 --> 00:43:21,560
-So I didn't look at y, so that identity function didn't get run.
+所以(id 3)的这部分并没有求值
 
 380
 00:43:21,560 --> 00:43:25,320
-So if I type in this definition and look at x, I'm going to get 0.
+我输入这个定义之后，x并没有改变，还是0
 
 381
 00:43:28,360 --> 00:43:38,342
-Now, if I go look at y and say what's y, say y is 4, looking at y, that very active looking at y caused the identity function to be run.
+现在我输入y，要求对y求值，y就是4，(id 3)就在求值y的过程中被求值
 
 382
 00:43:38,342 --> 00:43:40,740
-And now x will get remembered as 3.
+所以再来看x，x就应该是3
 
 383
 00:43:40,740 --> 00:43:42,020
-So here x will be 0.
+上面这里的x是0
 
 384
 00:43:42,020 --> 00:43:43,280
-Here, x will be 3.
+下面这里是3
 
 385
 00:43:43,280 --> 00:43:57,100
-That's a tiny, little, simple scenario, but you can see what kind of a mess that's going to make for debugging interactive programs when you have normal-order evaluation.
+这是一个非常简单的模拟场景，但是你可以观察到当你用正则序求值，甚至连变量的值都很难弄清楚
 
 386
 00:43:57,100 --> 00:43:59,690
-It's very confusing.
+很令人迷惑
 
 387
 00:43:59,690 --> 00:44:09,780
-But it's very confusing for a very deep reason, which is that the whole idea of putting in delays is that you throw away time.
+深层次的原因，我想应该是所有都有了DELAY之后，我们也就完全脱离了时间的概念
 
 388
 00:44:09,780 --> 00:44:11,750
-That's why we can have these infinite processes.
+也因为如此我们可以处理一些无穷的情况
 
 389
 00:44:11,750 --> 00:44:17,790
-Since we've thrown away time, we don't have to wait for them to run, right?
+脱离了时间之后，就没有必要非要等到哪一刻才开始运行，不是吗？
 
 390
 00:44:17,790 --> 00:44:28,760
-We decouple the order of events in the computer from what we write in our programs. But when we talk about state and set and change, that's exactly what we do want control of.
+这样我就把程序所表示的时间顺序与实际运行的时间顺序分离开来。但是当我们谈及状态、赋值和改变，它们都和时间相关
 
 391
 00:44:28,760 --> 00:44:34,570
-So it's almost as if there's this fundamental contradiction in what you want.
+从根本上相矛盾
 
 392
 00:44:34,570 --> 00:44:42,410
-And that brings us back to these sort of philosophical mutterings about what is it that you're trying to model and how do you look at the world.
+这仿佛是一个哲学问题，从什么样的角度观察世界，构建什么样的模型
 
 393
 00:44:42,410 --> 00:44:47,140
-Or sometimes this is called the debate over functional programming.
+有时这也被称为“函数式程序设计的争论”
 
 394
 00:44:53,570 --> 00:45:00,440
-A so-called purely functional language is one that just doesn't have any side effects.
+所谓完全函数式的语言是那种完全没有副作用的语言
 
 395
 00:45:00,440 --> 00:45:06,360
-Since you have no side effects, there's no assignment operator, so there are no terrible consequences of it.
+没有副作用，没有赋值，也不用担心有什么糟糕的后果
 
 396
 00:45:06,360 --> 00:45:07,930
-You can use a substitution-like thing.
+可以使用代换模型
 
 397
 00:45:07,930 --> 00:45:15,050
-Programs really are like mathematics and not like models in the real world, not like objects in the real world.
+程序更像是数学计算，而不是构建模型或对象
 
 398
 00:45:15,050 --> 00:45:17,170
-There are a lot of wonderful things about functional languages.
+函数式语言有很多了不起的特性
 
 399
 00:45:17,170 --> 00:45:29,260
-Since there's no time, you never have any synchronization problems. And if you want to put something into a parallel algorithm, you can run the pieces of that parallel processing any way you want.
+没有时间的概念，所以完全不用担心同步的问题。如果你把这些应用在并行算法上，就可以并行计算不同的部分
 
 400
 00:45:29,260 --> 00:45:33,640
