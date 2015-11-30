@@ -1712,159 +1712,159 @@ x应该是上一次我们执行过程id的参数值
 
 429
 00:48:18,810 --> 00:48:31,510
-The bank account might have in it-- if we looked at this in a sort of message-passing view of the world, we'd say a bank account is an object that has some local state in there, which is the balance, say.
+如果我们以信息传递的角度来看，银行帐户应该是一个对象，内部保存着局部状态balance金额
 
 430
 00:48:34,110 --> 00:48:48,560
-And a user using this system comes and sends a transaction request. So the user sends a transaction request, like deposit some money, and the bank account maybe-- let's say the bank account always responds with what the current balance is.
+如果一个用户发出交易申请，比如存钱，这个银行帐户就会用最新的balance金额作出回应
 
 431
 00:48:48,560 --> 00:48:54,350
-The user says let's deposits some money, and the bank account sends back a message which is the balance.
+比如我们存点钱，帐户就会返回存钱后总金额是多少
 
 432
 00:48:54,350 --> 00:48:59,150
-And the user says deposit some more, and the bank account sends back a message.
+用户发出信息，帐户反馈信息
 
 433
 00:48:59,150 --> 00:49:03,200
-And just like the random number generator, you'd say, gee, we would like to use set.
+就随机数生成器一样，我们得用赋值才可以
 
 434
 00:49:03,200 --> 00:49:09,570
-We'd like to have balance be a piece of local state inside this bank account because we want to separate the state of the user from the state of the bank account.
+帐户的内部保存了局部状态balance，因此就把用户的状态和帐户的状态分离开来
 
 435
 00:49:13,280 --> 00:49:16,420
-Well, that's the message-processing view.
+这是从信息传递的角度来看
 
 436
 00:49:16,420 --> 00:49:22,740
-There's a stream view with that thing, which does the same thing without any set or side effects.
+如果从流的角度来看，就不需要赋值或副作用之类
 
 437
 00:49:22,740 --> 00:49:31,180
-And the idea is again we don't think about anything having local state.
+我们不想任何有关局部状态的事
 
 438
 00:49:31,180 --> 00:49:38,640
-We think about the bank account as something that's going to process a stream of transaction requests.
+可以认为银行帐户是一个处理一系列交易请求的东西
 
 439
 00:49:38,640 --> 00:49:49,490
-So think about this bank account not as something that goes message by message, but something that takes in a stream of transaction requests like maybe successive deposit announced.
+帐户不是一个处理信息的对象了，而是处理交易请求流的东西
 
 440
 00:49:49,490 --> 00:49:55,940
-1, 2, 2, 4, those might be successive amounts to deposit.
+比如1 2 2 4，连续的存钱交易
 
 441
 00:49:55,940 --> 00:50:03,770
-And then coming out of it is the successive balances 1, 3, 5, 9.
+从帐户出来的流应该是1 3 5 9
 
 442
 00:50:03,770 --> 00:50:10,820
-So we think of the bank account not as something that has state, but something that acts sort of on the infinite stream of requests.
+帐户没有局部状态，它只是一个流处理器
 
 443
 00:50:10,820 --> 00:50:12,370
-But remember, we've thrown away time.
+记住，这样想的话，就没有了时间的概念
 
 444
 00:50:12,370 --> 00:50:30,010
-So what we can do is if the user's here, we can have this infinite stream of requests being generated one at a time coming from the user and this transaction stream coming back on a printer being printed one at a time.
+如果这里有一个用户，我们把他的所有交易看做是无穷的流，帐户一次处理一个元素，所有的balance金额也作为一个流
 
 445
 00:50:30,010 --> 00:50:39,560
-And if we drew a little line here, right there to the user, the user couldn't tell that this system doesn't have state.
+如果在这里划一条线，用户从外面来看，根本不能分辨银行帐户到底有没有状态
 
 446
 00:50:39,560 --> 00:50:42,660
-It looks just like the other one, but there's no state in there.
+因为它们对外表现是一样的
 
 447
 00:50:45,120 --> 00:50:53,835
-And by the way, just to show you, here's an actual implementation of this-- we'll call it make deposit account because you can only deposit.
+哦，顺便提一个，这里有一个具体的代码实现 -- 假设我们只存钱
 
 448
 00:50:53,835 --> 00:51:00,020
-It takes an initial balance and then a stream of deposits you might make.
+这个过程接受一个balance初始值和一个存钱交易流
 
 449
 00:51:00,020 --> 00:51:00,820
-And what is it?
+具体怎么做呢？
 
 450
 00:51:00,820 --> 00:51:18,300
-Well, it's just cons-stream of the balance onto make a new account stream whose initial balance is the old balance plus the first thing in the deposit stream and make deposit account works on the rest of which is the tail of the deposit stream.
+很简单，只不过是用CONS-STREAM把初始金额和递归调用make-deposit-account的结果组合在一起，递归调用的时候，金额参数要加上第一次要存的钱，流参数变为交易流的TAIL
 
 451
 00:51:18,300 --> 00:51:28,790
-So there's sort of a very typical message-passing, object-oriented thing that's done without side effects at all.
+原来用面向对象解决的问题，我们用流就可以解决
 
 452
 00:51:28,790 --> 00:51:32,250
-There are very many things you can do this way.
+很多地方都可以这样思考
 
 453
 00:51:32,250 --> 00:51:36,400
-Well, can you do everything without assignment?
+可能你会想了，我能不用赋值做所有的事情吗？
 
 454
 00:51:36,400 --> 00:51:40,050
-Can everybody go over to purely functional languages?
+可以只用纯函数式语言来编程吗？
 
 455
 00:51:40,050 --> 00:51:48,100
-Well, we don't know, but there seem to be places where purely functional programming breaks down.
+这个问题谁也说不清，好像有些地方用函数式编程不太妥当
 
 456
 00:51:48,100 --> 00:51:58,850
-Where it starts hurting is when you have things like this, but you also mix it up with the other things that we had to worry that, which are objects and sharing and two independent agents being the same.
+比如关于银行帐户的一个更复杂的例子，函数式也会有点吃力因为我们混入了共享的问题，这里两个用户共享一个帐户
 
 457
 00:51:58,850 --> 00:52:02,960
-So under a typical one, suppose you want to extend this bank account.
+在这种情况下，假如你来扩展这个帐户
 
 458
 00:52:02,960 --> 00:52:04,210
-So here's a bank account.
+这是一个帐户
 
 459
 00:52:12,220 --> 00:52:18,780
-Bank accounts take in a stream of transaction requests and put out streams of, say, balances or responses to that.
+帐户取一个交易流，生成一个新的流
 
 460
 00:52:18,780 --> 00:52:26,090
-But suppose you want to model the fact that this is a joint bank account between two independent people.
+假如这个帐户是两个独立的用户共享的会怎么样
 
 461
 00:52:26,090 --> 00:52:33,140
-So suppose there are two people, say, Bill and Dave, who have a joint bank account.
+假设两个人Bill和Dave，共享一个帐户
 
 462
 00:52:35,960 --> 00:52:36,850
-How would you model this?
+怎么来建模呢？
 
 463
 00:52:36,850 --> 00:52:45,880
-Well, Bill puts out a stream of transaction requests, and Dave puts out a stream of transaction requests, and somehow, they have to merge into this bank account.
+Bill有一个交易流，Dave也有一个交易流，可以把这两个流合并在一起再输入帐户
 
 464
 00:52:45,880 --> 00:53:01,190
-So what you might do is write a little stream processing thing called merge, which sort of takes these, merges them together, produces a single stream for the bank account.
+所以我们只需要一个merge的过程，将这两个流合并为一个流就行
 
 465
 00:53:01,190 --> 00:53:03,610
-Now they're both talking to the same bank account.
+现在他们就共享一个帐户了
 
 466
 00:53:03,610 --> 00:53:06,600
-That's all great, but how do you write merge?
+看起来不错，问题是怎么来实现merge
 
 467
 00:53:06,600 --> 00:53:09,730
-What's this procedure merge?
+merge根据什么来合并？
 
 468
 00:53:09,730 --> 00:53:12,760
