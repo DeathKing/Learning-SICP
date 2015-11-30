@@ -1596,119 +1596,119 @@ x应该是上一次我们执行过程id的参数值
 
 400
 00:45:29,260 --> 00:45:33,640
-There's just never any synchronization to worry that, and it's a very congenial environment for doing this.
+从来不担心同步问题，这几乎是与生俱来的
 
 401
 00:45:33,640 --> 00:45:35,450
-The price is you give up assignment.
+代价是放弃了赋值
 
 402
 00:45:39,060 --> 00:45:44,520
-So an advocate of a functional language would say, gee, that's just a tiny price to pay.
+一些函数式编程的狂热分子会说，这点代价算不了什么
 
 403
 00:45:44,520 --> 00:45:46,510
-You probably shouldn't use assignment most of the time anyway.
+确实，在大部分情况下不用赋值也可以
 
 404
 00:45:46,510 --> 00:45:54,190
-And if you just give up assignment, you can be in this much, much nicer world than this place with objects.
+如果用你用赋值，就得想办法用其它方式来解决原来用对象解决的问题
 
 405
 00:45:54,190 --> 00:45:56,300
-Well, what's the rejoinder to that?
+有没有什么例子呢？
 
 406
 00:45:56,300 --> 00:46:00,300
-Remember how we got into this mess.
+想想我们如何走到这一步的
 
 407
 00:46:00,300 --> 00:46:04,440
-We started trying to model things that had local state.
+我们构造有独立状态的对象
 
 408
 00:46:04,440 --> 00:46:06,840
-So remember Jerry's random number generator.
+还记得Jerry的随机数生成器吧
 
 409
 00:46:06,840 --> 00:46:14,080
-There was this random number generator that had some little state in it to compute the next random number and the next random number and the next random number.
+随机数生成器内部有一个状态，根据这个状态计算下一个随机数，下下一个等等
 
 410
 00:46:14,080 --> 00:46:21,050
-And we wanted to hide that state away from the Cesaro compute part process, and that's why we needed set.
+我们可以将随机数生成与蒙特卡洛算法分离开来，因此赋值在这里就异常重要了
 
 411
 00:46:21,050 --> 00:46:24,070
-We wanted to package that stated modularly.
+我们用模块化来封装状态
 
 412
 00:46:24,070 --> 00:46:27,560
-Well, a functional programming person would say, well, you're just all wet.
+使用函数式编程的程序员可能会说，“你搞错了”
 
 413
 00:46:27,560 --> 00:46:29,840
-I mean, you can write a perfectly good modular program.
+“我的意思是，你能写出另一种更具模块化的程序”
 
 414
 00:46:29,840 --> 00:46:33,250
-It's just you're thinking about modularity wrong.
+“从另一种角度来思考模块化”
 
 415
 00:46:33,250 --> 00:46:36,880
-You're hung up in this next random number and the next random number and the next random number.
+一直为生成一个又一个的随机数所烦恼
 
 416
 00:46:36,880 --> 00:46:39,880
-Why don't you just say let's write a program.
+为什么不写一个这样的程序
 
 417
 00:46:39,880 --> 00:46:44,445
-Let's write an enumerator which just generates an infinite stream of random numbers.
+写一个枚举器，生成一个无穷的随机数的流
 
 418
 00:46:49,010 --> 00:46:54,540
-We can sort of have that stream all at once, and that's going to be our source of random numbers.
+一次性就生成所有的随机数，而且还可以为其它地方使用
 
 419
 00:46:54,540 --> 00:47:06,880
-And then if you like, you can put that through some sort of processor, which is-- I don't know-- a Cesaro test, and that can do what it wants.
+如果你想的话，就可以把这个流接过来，到这个蒙特卡洛测试的过程
 
 420
 00:47:06,880 --> 00:47:28,140
-And what would come out of there would be a stream of successive approximations to pi.
+输出的是一个流，其中是一连串的对PI的估计值
 
 421
 00:47:28,140 --> 00:47:35,540
-So as we looked further down this stream, we'd tug on this Cesaro thing, and it would pull out more and more random numbers.
+和前面讲的类似，这样用流的连接，可以“拖出“无限个随机数来计算蒙特卡洛测试
 
 422
 00:47:35,540 --> 00:47:39,720
-And the further and further we look down the stream, the better an approximation we'd get to pi.
+我们使用的随机数越多，最后对PI的估计值就越准
 
 423
 00:47:39,720 --> 00:47:43,890
-And it would do exactly the same as the other computation, except we're thinking about the modularity different.
+具体的计算过程还是一样的，只不过使用了另一种模块化的方式
 
 424
 00:47:43,890 --> 00:47:49,400
-We're saying imagine we had all those infinite streams of random numbers all at once.
+我们假如一次性生成了所有的随机数
 
 425
 00:47:49,400 --> 00:47:53,860
-You can see the details of this procedure in the book.
+这个过程的细节在书上有
 
 426
 00:47:53,860 --> 00:48:03,280
-Similarly, there are other things that we tend to get locked into on this one and that one and the next one and the next one, which don't have to be that way.
+相似地还有别的例子，我们也习惯于一次一次来，但完全可以不这么来想
 
 427
 00:48:03,280 --> 00:48:08,900
-Like you might think about like a banking system, which is a very simple idea.
+我们来思考一下银行系统
 
 428
 00:48:08,900 --> 00:48:12,210
-Imagine we have a program that sort of represents a bank account.
+假设我们这里这个程序代表了银行帐户
 
 429
 00:48:18,810 --> 00:48:31,510
