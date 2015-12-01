@@ -64,203 +64,203 @@
 
 17
 00:02:01,090 --> 00:02:10,450
-But in any case, there's something very remarkable that can happen in the competition world which is that you can have something called a universal machine.
+但是不管怎样，有一个叫做“通用机”的机器还是很值得我们注意的
 
 18
 00:02:10,450 --> 00:02:21,260
-If we look at the second slide, what we see is a special machine called eval.
+我们再来看第二张幻灯片，这个特殊的机器名为eval
 
 19
 00:02:21,260 --> 00:02:25,720
-There is a machine called eval, and I'm going to show it to you today.
+这个eval也就是今天要讲的
 
 20
 00:02:25,720 --> 00:02:27,780
-It's very simple.
+它非常简单
 
 21
 00:02:27,780 --> 00:02:30,490
-What is remarkable is that it will fit on the blackboard.
+甚至在黑板这么小的空间里都能把它写出来
 
 22
 00:02:33,350 --> 00:02:40,450
-However, eval is a machine which takes as input a description of another machine.
+要注意的是，eval的输入比较特殊，它以对其它机器的描述作为输入
 
 23
 00:02:40,450 --> 00:02:46,490
-It could take the wiring diagram of a factorial machine as input.
+这里它以一个计算阶乘的机器的布线图描述作为输入
 
 24
 00:02:46,490 --> 00:02:58,910
-Having done so, it becomes a simulator for the factorial machine such that, if you put a six in, out comes a 720.
+这样一来，eval变成了计算阶乘机器的模拟器，对eval输入6，得到阶乘结果720
 
 25
 00:02:58,910 --> 00:03:02,130
-That's a very remarkable sort of machine.
+这种机器非同一般
 
 26
 00:03:02,130 --> 00:03:05,590
-And the most amazing part of it is that it fits on a blackboard.
+最让人吃惊的是只消在黑板这么小的空间内就可以描述完它
 
 27
 00:03:05,590 --> 00:03:28,050
-By contrast, one could imagine in the analog electronics world a very different machine, a machine which also was, in some sense, universal, where you gave a circuit diagram as one of the inputs, for example, of this little low-pass filter, one-pole low-pass filter.
+我们可以类比着来看，假设在现实里的模拟电路中，有这样一种通用的机器，它以电路设计图纸为输入，像是低通滤波器、 单极点低通滤波器之类的  
 
 28
 00:03:28,050 --> 00:03:49,890
-And you can imagine that you could, for example, scan this out-- the scan lines are the signal that's describing what this machine is to simulate-- then the analog of that which is made out of electrical circuits, should configure itself into a filter that has the frequency response specified by the circuit diagram.
+你可以这样想像，用这个机器进行扫描输出 -- 扫描线应该可以描述出通用机在模拟的这个机器 -- 使用响应特定频率的滤波电路图的通用机模拟的效果应该和真实的滤波器达到的效果一样
 
 29
 00:03:49,890 --> 00:03:55,670
-That's a very hard machine to make, and, surely, there's no chance that I could put it on a blackboard.
+这种机器很难制造出来，我肯定也不能只在黑板这么大的空间就具体的表述出它
 
 30
 00:03:55,670 --> 00:03:58,430
-So we're going to see an amazing thing today.
+所以说，今天是我们见证奇迹的时刻
 
 31
 00:03:58,430 --> 00:04:02,790
-We're going to see, on the blackboard, the universal machine.
+我们将会见证，在黑板上，我就可以“制造”出通用机
 
 32
 00:04:02,790 --> 00:04:06,780
-And we'll see that among other things, it's extremely simple.
+除了部分事情以外，它其实非常简单
 
 33
 00:04:06,780 --> 00:04:11,280
-Now, we're getting very close to the real spirit in the computer at this point.
+我们也逐渐触碰到活在计算机中真正的神灵
 
 34
 00:04:11,280 --> 00:04:20,470
-So I have to show a certain amount of reverence and respect, so I'm going to wear a suit jacket for the only time that you'll ever see me wear a suit jacket here.
+这里务必要保持足够的尊敬，所以我特地穿上西服外套，你们应该从没见我穿过
 
 35
 00:04:20,470 --> 00:04:26,980
-And I think I'm also going to put on an appropriate hat for the occasion.
+我想我还得戴上一顶合适的帽子
 
 36
 00:04:28,780 --> 00:04:40,370
-Now, this is a lecturer which I have to warn you--  let's see, normally, people under 40 and who don't have several children are advised to be careful.
+开讲前再给大家提个醒 -- 40岁以下以及还没有几个孩子的人要小心了
 
 37
 00:04:40,370 --> 00:04:51,820
-If they're really worried, they should leave. Because there's a certain amount of mysticism that will appear here which may be disturbing and cause trouble in your minds.
+如果你真的受不了，可以选择离开 因为一会儿要发生的事情非常神秘，可能使你的思想异常混乱
 
 38
 00:04:51,820 --> 00:05:02,510
-Well in any case, let's see, I wish to write for you the evaluator for Lisp.
+好了，无论如何，我还是要向你们写一下Lisp的求值程序
 
 39
 00:05:02,510 --> 00:05:05,020
-Now the evaluator isn't very complicated.
+求值程序并不复杂
 
 40
 00:05:05,020 --> 00:05:08,240
-It's very much like all the programs we've seen already.
+很像我们以前见到过的程序
 
 41
 00:05:08,240 --> 00:05:10,860
-That's the amazing part of it.
+这也是它令人吃惊的地方
 
 42
 00:05:10,860 --> 00:05:16,620
-It's going to be-- and I'm going to write it right here-- it's a program called eval.
+现在我开始写这个程序，叫做eval
 
 43
 00:05:22,900 --> 00:05:30,030
-And it's a procedure of two arguments in expression of an environment.
+它是一个接受两个参数的过程，exp是表达式，env是表达式执行的环境
 
 44
 00:05:31,860 --> 00:05:34,940
-And like every interesting procedure, it's a case analysis.
+和很多有趣的过程一样，过程内部按情况分析
 
 45
 00:05:40,460 --> 00:05:44,210
-But before I start on this, I want to tell you some things.
+但是在我开始之前，我还想告诉你们一些其它的
 
 46
 00:05:44,210 --> 00:05:54,210
-The program we're going to write on the blackboard is ugly, dirty, disgusting, not the way I would write this is a professional.
+这里的这个程序非常丑陋、混乱、令人作呕，并不是一种专业的写法
 
 47
 00:05:54,210 --> 00:06:02,550
-It is written with concrete syntax, meaning you've got really to use lots of CARs and CDRs which is exactly what I told you not to do.
+它用具体的语法写就，也就是说我们用很多CAR CDR之类，我之前告诉过你们这样写并不好
 
 48
 00:06:02,550 --> 00:06:12,420
-That's on purpose in this case, because I want it to be small, compact, fit on the blackboard so you can get the whole thing.
+在这里是故意这样来写的，因为我想使其娇小，简洁，达到可以写在黑板上的规模
 
 49
 00:06:12,420 --> 00:06:15,800
-So I don't want to use long names like I normally use.
+我就不像平时那样使用很多很长的命名了
 
 50
 00:06:15,800 --> 00:06:19,580
-I want to use CAR-CDR because it's short.
+就用CAR CDR，很简洁
 
 51
 00:06:19,580 --> 00:06:20,950
-Now, that's a trade-off.
+这算是一种权衡
 
 52
 00:06:20,950 --> 00:06:23,570
-I don't want you writing programs like this.
+我不希望你们这样来写程序
 
 53
 00:06:23,570 --> 00:06:26,090
-This is purely for an effect.
+这里单纯地想达到一种简洁的效果
 
 54
 00:06:26,090 --> 00:06:31,270
-Now, you're going to have to work a little harder to read it, but I'm going to try to make it clear as I'm writing it.
+因此你们读起来可能有些费力，我尽量写的清楚
 
 55
 00:06:31,270 --> 00:06:51,670
-I'm also-- this is a pretty much complete interpreter, but there's going to be room for putting in more things-- I'm going to leave out definition and assignment, just because they are not essential, for a mathematical reason I'll show you later and also they take up more space.
+这个求值器比较完整，但是并不完全，我就不写define和assignment的部分了，不是它们不重要，而是出于一些数学上的原因，再说黑板地方也不大
 
 56
 00:06:51,670 --> 00:06:54,170
-But, in any case, what do we have to do?
+但是，我们怎么做呢？
 
 57
 00:06:54,170 --> 00:07:02,030
-We have to do a dispatch which breaks the types of expressions up into particular classes.
+这里需要做一个分配，把表达式分类
 
 58
 00:07:02,030 --> 00:07:03,525
-So that's what we're going to have here.
+这就是现在要做的
 
 59
 00:07:03,525 --> 00:07:05,150
-Well, what expressions are there?
+这里的表达式应该是什么？
 
 60
 00:07:05,150 --> 00:07:06,810
-Let's look at the kinds of expressions.
+我们先来看几种表达式
 
 61
 00:07:06,810 --> 00:07:10,420
-We can have things like the numeral three.
+表达式是数字3
 
 62
 00:07:10,420 --> 00:07:12,720
-What do I want that to do?
+要怎么做？
 
 63
 00:07:12,720 --> 00:07:17,050
-I can make choices, but I think right now, I want it to be a three.
+我有很多选择，但是我马上想到，它就应该是数字3
 
 64
 00:07:17,050 --> 00:07:18,860
-That's what I want.
+这就是我要的
 
 65
 00:07:18,860 --> 00:07:19,800
-So that's easy enough.
+这个足够简单
 
 66
 00:07:19,800 --> 00:07:31,970
-That means I want, if the thing is a number, the expression, that I want the expression itself as the answer.
+那就意味着，如果表达式是数字，表达式本身就应该是求值结果
 
 67
 00:07:35,420 --> 00:07:39,390
