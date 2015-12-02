@@ -636,143 +636,143 @@ evcond稍后再说
 
 160
 00:18:09,640 --> 00:18:11,590
-What else is this doing?
+它还做些什么呢？
 
 161
 00:18:11,590 --> 00:18:26,610
-Well, apply's job is to take a procedure and apply it to its arguments after both have been evaluated to come up with a procedure and the arguments rather the operator symbols and the operand symbols, whatever they are-- symbolic expressions.
+apply主要是将过程应用于实际参数，这里所说的是过程和参数的符号求值的结果，而不是过程和参数的符号
 
 162
 00:18:33,270 --> 00:18:43,280
-So we will define apply to be a procedure of two arguments, a procedure and arguments.
+所以我们定义apply过程，接受两个参数分别代表将应用的过程和这个过程的参数列表
 
 163
 00:18:47,110 --> 00:18:48,080
-And what does it do?
+具体怎么来写呢？
 
 164
 00:18:48,080 --> 00:18:49,720
-It does nothing very complicated.
+其实并不复杂
 
 165
 00:18:49,720 --> 00:18:50,970
-It's got two cases.
+分两种情况就够了
 
 166
 00:18:53,580 --> 00:19:06,930
-Either the procedure is primitive--  And I don't know exactly how that is done.
+如果这个过程是基本过程 -- 我不知道这个谓词具体是根据什么来判断的
 
 167
 00:19:06,930 --> 00:19:18,550
-It's possible there's some type information just like we made closure for, here, being the description of the type of a compound thing-- probably so.
+可能原理就像我们用'closure标志来表示组合结构的类型一样，我想可能是这样
 
 168
 00:19:18,550 --> 00:19:27,350
-But it is not essential how that works, and, in fact, it turns out, as you probably know or have deduced, that you don't need any primitives anyway.
+但是深究这个谓词并不必要，事实上你可能已经知道或是演绎过，我们并不需要任何基本过程
 
 169
 00:19:27,350 --> 00:19:33,190
-You can compute anything without them because some of the lambda that I've been playing with.
+我们没有基本过程只用lambda也照样可以正常计算
 
 170
 00:19:33,190 --> 00:19:34,750
-But it's nice to have them.
+但是有它们总归方便点儿
 
 171
 00:19:34,750 --> 00:19:38,060
-So here we're going to do some magic which I'm not going to explain.
+接下来就是精彩的部分了，我先不细讲
 
 172
 00:19:38,060 --> 00:19:42,860
-Go to machine language, apply primop.
+转到机器语言，执行apply-primop
 
 173
 00:19:42,860 --> 00:19:44,850
-Here's how it adds.
+加法就是这样运算的
 
 174
 00:19:44,850 --> 00:19:46,100
-Execute an add instruction.
+执行加法指令
 
 175
 00:19:50,360 --> 00:19:54,940
-However, the interesting part of a language is the glue by which the predicates are glued together.
+然而一门语言有趣的部分在于谓词是如何组合在一起的
 
 176
 00:19:54,940 --> 00:19:56,910
-So let's look at that.
+我们接着往下看
 
 177
 00:19:56,910 --> 00:20:07,620
-Well, the other possibility is that this is a compound made up by executing a lambda expression, this is a compound procedure.
+另一种可能就是这是一个求值lambda得到的过程，一个复合过程
 
 178
 00:20:07,620 --> 00:20:10,110
-Well, we'll check its type.
+我们检测它的类型标志
 
 179
 00:20:10,110 --> 00:20:24,500
-If it is closure, if it's one of those, then I have to do an eval of the body.
+如果是'closure，我就得求值这个过程体
 
 180
 00:20:24,500 --> 00:20:44,260
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
 
 181
 00:20:47,030 --> 00:20:48,280
-That was a long sentence.
+这句话很长
 
 182
 00:20:51,130 --> 00:20:52,822
-Well that's easy enough.
+但是描述的内容足够简单
 
 183
 00:20:52,822 --> 00:20:56,214
-Now here's going to be a lot of CAR-CDRing.
+一会儿可能会出现许多CAR CDR CADR ...
 
 184
 00:20:56,214 --> 00:20:59,400
-I have to get the body of the procedure.
+现在我先要得到过程体
 
 185
 00:20:59,400 --> 00:21:02,960
-Where's the body of the procedure in here?
+过程体如何取出呢？
 
 186
 00:21:02,960 --> 00:21:06,130
-Well here's the CAR, here's the CDR is the whole rest of this.
+这一部分是CAR，剩下的是CDR部分
 
 187
 00:21:06,130 --> 00:21:13,200
-So here's the CADR. And so I see, what I have here is the body is the second element of the second element of the procedure.
+然后这里就是CADR，我看看，过程体就在整个过程第二部分的第二部分
 
 188
 00:21:13,200 --> 00:21:19,170
-So it's the CADR of the CADR or the CADADR.
+也就是CADR的CADR，或者简写为CADADR
 
 189
 00:21:19,170 --> 00:21:27,495
-It's the C-A-D-A-D-R, CADADR of the procedure.
+这里取整个过程的CADADR
 
 190
 00:21:30,260 --> 00:21:43,500
-To evaluate the body in the result of binding that's making up more environment, well I need the formal parameters of the of the procedure, what is that?
+为了在参数绑定后的新环境之中执行这个过程，我还得取到过程的形式参数，形参怎么取呢？
 
 191
 00:21:43,500 --> 00:21:48,780
-That's the CAR of the CDR. It's horrible isn't it?
+就是CDR的CAR，很混乱不是吗？
 
 192
 00:21:52,440 --> 00:21:55,440
---of the procedure.
+过程的CADR
 
 193
 00:21:55,440 --> 00:22:04,540
-Bind that to the arguments that were passed in the environment, which is passed also as part of the procedure.
+绑定形参实参添加进环境中，环境也是随着过程被传递进来
 
 194
 00:22:04,540 --> 00:22:16,315
-Well, that's the CAR of the CDR of the CDR of this, CADDR, of the procedure.
+也就是CDR的CDR的CAR，过程的CADDR
 
 195
 00:22:20,290 --> 00:22:39,000
@@ -1180,7 +1180,7 @@ It's a very beautiful thing, even though it's written in an ugly style, being th
 
 296
 00:34:49,600 --> 00:34:51,460
-I suggest that we just-- let's look at it for a while.
+I suggest that we just-- let's look at it for a while. [骗人啊，说好的只写一黑板呢]
 
 297
 00:34:56,749 --> 00:35:49,750
@@ -1188,11 +1188,11 @@ I suggest that we just-- let's look at it for a while.
 
 298
 00:35:49,750 --> 00:35:51,000
-Are there any questions?
+大家有什么问题吗？
 
 299
 00:36:01,180 --> 00:36:04,044
-Alright, I suppose it's time to take a small break then.
+没有的话就休息一会儿吧
 
 300
 00:36:04,044 --> 00:36:56,780
