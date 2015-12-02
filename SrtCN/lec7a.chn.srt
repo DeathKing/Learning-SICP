@@ -776,171 +776,171 @@ apply主要是将过程应用于实际参数，这里所说的是过程和参数
 
 195
 00:22:20,290 --> 00:22:39,000
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+ (bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
 
 196
 00:22:39,000 --> 00:22:42,570
-You get a undefined procedure type.
+如果不是，这里就是未定义的过程类型
 
 197
 00:22:42,570 --> 00:22:45,500
-So I may as well do that anyway.
+这里保持原样
 
 198
 00:22:45,500 --> 00:22:57,610
---else, some sort of error, like that.
+下面加上else，如果出现错误情况
 
 199
 00:22:57,610 --> 00:23:10,750
-Now, of course, again, in some sort of more real system, written for professional reasons, this would be written with a case analysis done by some sort of dispatch.
+插个话，目前很多专业用途的系统中，内部的结构也与这类似，主要是分条件判断，分配处理不同情况
 
 200
 00:23:10,750 --> 00:23:16,220
-Over here, I would probably have other cases like, is this compiled code?
+回到这里，我可能还会添加新的条件判断，比如这是编译过的代码吗？
 
 201
 00:23:16,220 --> 00:23:17,020
-It's very important.
+这很重要
 
 202
 00:23:17,020 --> 00:23:25,880
-I might have distinguished the kind of code that's produced by a directly evaluating a lambda in interpretation from code that was produced by somebody's compiler or something like that.
+这样的话我就可以区分一段代码是我通过解释代码对lambda求值得到的结果还是通过编译器编译代码得到的结果
 
 203
 00:23:25,880 --> 00:23:27,230
-And we'll talk about that later.
+之后再讨论这个话题
 
 204
 00:23:27,230 --> 00:23:30,510
-Or is this a piece Fortran program I have to go off and execute.
+又或许是我必须要执行的一段Frotran代码
 
 205
 00:23:30,510 --> 00:23:32,920
-It's a perfectly possible thing, at this point, to do that.
+如果这种可能发生了，记住，就在这里把情况加进去
 
 206
 00:23:32,920 --> 00:23:44,360
-In fact, in this concrete syntax evaluator I'm writing here, there's an assumption built in that this is Lisp, because I'm using CARs and CDRs.
+事实上，我在写这个求值器的时候，有一个内在的假定即这是一种Lisp语言的实现方式，因为我大量使用了CAR CDR之类
 
 207
 00:23:44,360 --> 00:23:46,750
-CAR means the operator, and CDR means the operand.
+CAR意味着操作符，CDR意味着操作数
 
 208
 00:23:46,750 --> 00:23:56,160
-In the text, there is an abstract syntax evaluator for which these could be-- these are given abstract names like operator, and operand, and all these other things are like that.
+在这种情形下，就可以想像已经存在了一个抽象的语法解析器，通过它我们就可以取到操作符操作数等等
 
 209
 00:23:56,160 --> 00:24:01,570
-And, in that case, you could reprogram it to be ALGOL with no problem.
+在清楚了这个假定之后，你完全可以用ALGOL再来实现这个求值器
 
 210
 00:24:03,760 --> 00:24:08,660
-Well, here we have added another couple of things that we haven't defined.
+写完apply之后，发现又引入了一些未定义的过程
 
 211
 00:24:10,810 --> 00:24:15,050
-I don't think I'll worry about these at all, however, this one will be interesting later.
+我先不操心这两个，下面这个BIND还是挺有意思的
 
 212
 00:24:17,930 --> 00:24:20,550
-Let's just proceed through this and get it done.
+现在我们来快速过一遍，结束这一部分
 
 213
 00:24:20,550 --> 00:24:23,060
-There's only two more blackboards so it can't be very long.
+只剩下两块黑板了，因此它们加起来代码并不多
 
 214
 00:24:27,056 --> 00:24:30,070
-It's carefully tailored to exactly fit.
+不过代码还得精心剪裁一番才可以全部放的进黑板
 
 215
 00:24:30,070 --> 00:24:30,980
-Well, what do we have left?
+嗯，还剩下点什么？
 
 216
 00:24:30,980 --> 00:24:33,730
-We have to define EVLIST, which is over here.
+我们得定义那边的evlist
 
 217
 00:24:33,730 --> 00:24:44,240
-And EVLIST is nothing more than a map down a bunch of operands producing arguments.
+evlist不过是遍历一串操作数生成实际参数
 
 218
 00:24:44,240 --> 00:24:45,820
-But I'm going to write it out.
+但是还是写出来看看
 
 219
 00:24:45,820 --> 00:24:53,610
-And one of the reasons I'm going to write this out is for a mystical reason, which is I want to make this evaluator so simple that it can understand itself.
+还要把它写出来是为了一个神秘的原因，就是我想要求值器简单到可以求值自身
 
 220
 00:24:56,450 --> 00:25:00,230
-I'm going to really worry about that a little bit.
+这一点还是有点重要的
 
 221
 00:25:00,230 --> 00:25:02,850
-So let's write it out completely.
+现在我就把它完全写在这里
 
 222
 00:25:02,850 --> 00:25:06,080
-See, I don't want to worry about whether or not the thing can pass functional arguments.
+看，我完全不用操心是否传递入的参数是一个过程
 
 223
 00:25:06,080 --> 00:25:08,980
-The value evaluator is not going to use them.
+求值器并不会真正使用到它们
 
 224
 00:25:08,980 --> 00:25:10,880
-The evaluator is not going to produce functional values.
+求值器也不会生成一个是过程的值
 
 225
 00:25:10,880 --> 00:25:24,070
-So even if there were a different, alternative language that were very close to this, this evaluates a complex language like Scheme which does allow procedural arguments, procedural values, and procedural data.
+因此，如果有一个不同的，和scheme非常相似的语言，它也可以像scheme一样求值比如使用过程参数，返回过程为值，允许过程作为数据
 
 226
 00:25:24,070 --> 00:25:31,580
-But even if I were evaluating ALGOL, which doesn't allow procedural values, I could use this evaluator.
+值得注意的是，如果我对ALGOL语言求值，也可以使用这个求值器，尽管ALGOL并不允许过程作为返回值
 
 227
 00:25:31,580 --> 00:25:34,050
-And this evaluator is not making any assumptions about that.
+因为这个解释器并没有对这些事情做过什么假定
 
 228
 00:25:34,050 --> 00:25:40,640
-And, in fact, if this value were to be restricted to not being able to that, it wouldn't matter, because it doesn't use any of those clever things.
+事实上，如果被求值的语言真的被限定了不能做这做那，没关系，只能算它们没有使用到这些高级功能
 
 229
 00:25:40,640 --> 00:25:44,070
-So that's why I'm arranging this to be super simple.
+这也是为什么我可以将求值器组织的如此简单
 
 230
 00:25:44,070 --> 00:25:47,810
-This is sort of the kernel of all possible language evaluators.
+这几乎是所有现存语言求值器的核心
 
 231
 00:25:47,810 --> 00:25:49,420
-How about that?
+回到这个定义上来
 
 232
 00:25:49,420 --> 00:25:53,820
-Evlist--  well, what is it?
+evlise，它是什么呢？
 
 233
 00:25:53,820 --> 00:26:33,260
-It's the procedure of two arguments, l and an environment, where l is a list such that if the list of arguments is the empty list, then the result is the empty list. Otherwise, I want to cons up the result of evaluating the CAR of the list of operands in the environment.
+这个过程也有两个参数，l和env，l是所有参数的列表，如果l为空，就返回一个空列表，否则就先在环境中求值第一个参数
 
 234
 00:26:33,260 --> 00:26:50,130
-So I want the first operand evaluated, and I'm going to make a list of the results by CONSing that onto the result of this EVLISTing as a CDR recursion, the CDR of the list relative to the same environment.
+求值第一个参数之后，我想要在当前环境递归evlist求值CDR部分，和第一个求值结果连接为列表
 
 235
 00:26:53,350 --> 00:27:03,620
-Evlist, cons, else, COND, lambda, define--  And I have one more that I want to put on the blackboard.
+闭合括号evlist cons else cond lambda define，还有一个过程我也想写在这里
 
 236
 00:27:03,620 --> 00:27:05,470
-It's the essence of this whole thing.
+它是整件事的关键部分
 
 237
 00:27:05,470 --> 00:27:08,130
