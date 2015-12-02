@@ -444,195 +444,195 @@ It's happening somewhere earlier in the reader or something.
 
 112
 00:13:10,250 --> 00:13:15,190
-This implements the rule for environments in the environment model.
+这样就实现了环境模型中的那些规则
 
 113
 00:13:15,190 --> 00:13:19,210
-It has to do with construction of procedures from lambda expressions.
+对于从lambda构建一个过程是必不可少的
 
 114
 00:13:19,210 --> 00:13:32,240
-The environment that was around at the time the evaluator encountered the lambda expression is the environment where the procedure resulting interprets it's free variables.
+而且closure里的这个环境就是过程真正执行的时候查找自由变量的地方
 
 115
 00:13:34,720 --> 00:13:35,920
-So that's part of that.
+所以这里应该有环境env
 
 116
 00:13:35,920 --> 00:13:39,210
-And so we have to capture that environment as part of the procedure object.
+必须把环境作为过程对象的一部分
 
 117
 00:13:39,210 --> 00:13:41,750
-And we'll see how that gets used later.
+之后我们再来细看环境在其中的作用
 
 118
 00:13:41,750 --> 00:13:54,520
-There are also conditional expressions of things like COND of say, p one, e one, p two, e two.
+下一种情况，条件表达式，(cond (p1 e1) (p2 e2) ...)
 
 119
 00:13:54,520 --> 00:14:03,480
-Where this is a predicate, a predicate is a thing that is either true or false, and the expression to be evaluated if the predicate is true.
+p是谓词，谓词求值结果非真即假，e是表达式，只有在谓词为真的时候才被求值
 
 120
 00:14:03,480 --> 00:14:06,790
-A set of clauses, if you will, that's the name for such a thing.
+如果不介意，我暂时称其为一组子句
 
 121
 00:14:06,790 --> 00:14:09,360
-So I'm going put that somewhere else.
+具体的求值过程写在别的地方
 
 122
 00:14:09,360 --> 00:14:12,420
-We're going to worry about that in another piece of code.
+让别人来考虑具体求值的部分
 
 123
 00:14:12,420 --> 00:14:32,050
-So EQ--  if the CAR of the expression is COND, then I'm going to do nothing more than evaluate the COND, the CDR of the expression.
+这里继续写，如果(car exp)是'cond，然后就求值(cdr exp)
 
 124
 00:14:34,080 --> 00:14:38,380
-That's all the clauses in the environment that I'm given.
+记得带上环境
 
 125
 00:14:41,430 --> 00:14:56,590
-Well, there's one more case, arbitrary thing like the sum of x and three, where this is an operator applied to operands, and there's nothing special about it.
+好的，还有一种情况，比如(+ x 3)，一个操作符应用于操作数，它并不特殊
 
 126
 00:14:56,590 --> 00:14:59,850
-It's not one of the special cases, the special forms.
+就是说，它不属于这里的特殊形式
 
 127
 00:14:59,850 --> 00:15:09,650
-These are the special forms.
+上面写的这些都是特殊形式
 
 128
 00:15:09,650 --> 00:15:14,370
-And if I were writing here a professional program, again, I would somehow make this data directed.
+还是再提一下，如果这里用数据导向的方式来写，会更加的专业
 
 129
 00:15:14,370 --> 00:15:22,360
-So there wouldn't be a sequence of conditionals here, there'd be a dispatch on some bits if I were trying to do this in a more professional way.
+那样的话这里就不会是一系列的条件判断，数据导向会把这种按条件分配的过程表示的更为优雅
 
 130
 00:15:22,360 --> 00:15:26,710
-So that, in fact, I can add to the thing without changing my program much.
+并且，我还可以在不改动代码的情况下添加新的条件判断
 
 131
 00:15:26,710 --> 00:15:31,280
-So, for example, they would run fast, but I'm not worried about that.
+也可能那样会执行的更快，虽然有很多优势，这里我并不考虑那样来写
 
 132
 00:15:31,280 --> 00:15:34,890
-Here we're trying to look at this in its entirety.
+现在的目的是把握eval过程的全局
 
 133
 00:15:34,890 --> 00:15:37,360
-So it's else.
+好吧，接着写
 
 134
 00:15:37,360 --> 00:15:38,560
-Well, what do we do?
+要怎么做呢？
 
 135
 00:15:38,560 --> 00:15:40,965
-In this case, I have to somehow do an addition.
+这个(+ x 3)的例子里，我得做加法
 
 136
 00:15:44,350 --> 00:15:46,565
-Well, I could find out what the plus is.
+那样的话我就得清楚 + 到底是什么
 
 137
 00:15:46,565 --> 00:15:50,550
-I have to find out what the x and the three are.
+接着弄清楚 x 和 3 是什么
 
 138
 00:15:50,550 --> 00:15:58,020
-And then I have to apply the result of finding what the plus is to the result of finding out what the x and the three are.
+然后再把 + 的结果应用于 x 与 3 的结果
 
 139
 00:15:58,020 --> 00:15:59,830
-We'll have a name for that.
+具体来写一下
 
 140
 00:15:59,830 --> 00:16:20,480
-So I'm going to apply the result of evaluating the CAR of the expression-- the car of the expression is the operator-- in the environment given.
+(apply (eval (car exp) env)，(car exp)就是操作符的部分
 
 141
 00:16:20,480 --> 00:16:24,050
-So evaluating the operator gets me the procedure.
+执行(eval (car exp) env)就得到操作符的结果
 
 142
 00:16:24,050 --> 00:16:27,290
-Now I have to evaluate all the operands to get the arguments.
+我还得求值操作数来得到具体参数
 
 143
 00:16:27,290 --> 00:16:38,835
-I'll call that EVLIST, the CDR of the operands, of the expression, with respect to the environment.
+执行evlist来求值操作数
 
 144
 00:16:41,940 --> 00:16:48,070
-EVLIST will come up later-- EVLIST, apply, COND pair, COND, lambda, define.
+(evlist (cdr exp) env)，这个evlist稍后细讲
 
 145
 00:16:50,900 --> 00:16:56,590
-So that what you are seeing here now is pretty much all there is in the evaluator itself.
+你现在看到的就是一个完整的求值器
 
 146
 00:16:56,590 --> 00:17:07,470
-It's the case dispatch on the type of the expression with the default being a general application or a combination.
+它针对表达式的类型分情况处理，表达式可以是一个完整的程序或者简单表达式的组合
 
 147
 00:17:17,520 --> 00:17:20,089
-Now there is lots of things we haven't defined yet.
+不过我们还有些过程没有被定义
 
 148
 00:17:20,089 --> 00:17:21,780
-Let's just look at them and see what they are.
+接下来就看这些未定义的部分
 
 149
 00:17:21,780 --> 00:17:25,480
-We're going to have to do this later, evcond.
+evcond稍后再说
 
 150
 00:17:25,480 --> 00:17:27,579
-We have to write apply.
+我得定义apply
 
 151
 00:17:27,579 --> 00:17:31,790
-We're going to have to write EVLIST. We're going to write LOOKUP.
+还有evlist，lookup
 
 152
 00:17:31,790 --> 00:17:33,430
-I think that's everything, isn't there?
+我看看，没别的了吧？
 
 153
 00:17:33,430 --> 00:17:38,570
-Everything else is something which is simple, or primitive, or something like that.
+剩下的就是一些简单基本的东西了
 
 154
 00:17:38,570 --> 00:17:44,450
-And, of course, we could many more special forms here, but that would be a bad idea in general in a language.
+当然，这里可以写很多特殊形式，但是对于一个语言来说无疑很糟糕
 
 155
 00:17:44,450 --> 00:17:47,690
-You make a language very complicated by putting a lot of things in there.
+那会让语言变得很复杂
 
 156
 00:17:47,690 --> 00:17:54,010
-The number of reserve words that should exist in a language should be no more than a person could remember on his fingers and toes.
+保留字就不该比你能记住几个手指脚指的数目还多
 
 157
 00:17:54,010 --> 00:17:59,410
-And I get very upset with languages which have hundreds of reserve words.
+看到有些语言的保留字有上百个，我都不知道该说什么
 
 158
 00:17:59,410 --> 00:18:00,710
-But that's where the reserve words go.
+特殊形式也就是所谓定义保留字的地方
 
 159
 00:18:04,750 --> 00:18:09,640
-Well, now let's get to the next part of this, the kernel, apply.
+好的，接下来，我们来看第二个核心的部分，apply
 
 160
 00:18:09,640 --> 00:18:11,590
