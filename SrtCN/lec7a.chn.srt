@@ -240,7 +240,7 @@
 
 61
 00:07:06,810 --> 00:07:10,420
-表达式是数字3
+表达式数字3
 
 62
 00:07:10,420 --> 00:07:12,720
@@ -264,95 +264,95 @@
 
 67
 00:07:35,420 --> 00:07:39,390
-Now the next possibility is things that we represent as symbols.
+表达式还可能是符号
 
 68
 00:07:39,390 --> 00:07:47,614
-Examples of symbols are things like x, n, eval, number, x.
+比如x n eval number之类
 
 69
 00:07:47,614 --> 00:07:49,630
-What do I mean them to be?
+它们意味着什么？
 
 70
 00:07:49,630 --> 00:07:51,690
-Those are things that stand for other things.
+它们是一类代表其它事物的事物
 
 71
 00:07:51,690 --> 00:07:54,770
-Those are the variables of our language.
+也就是我们语言中所谓的变量
 
 72
 00:07:54,770 --> 00:08:02,930
-And so I want to be able to say, for example, that x, for example, transforms to it's value which might be three.
+因此，假如这有一个x，求值结果应该是它代表的那个值，我随便写一个3
 
 73
 00:08:02,930 --> 00:08:07,920
-Or I might ask something like car.
+又假如符号是car
 
 74
 00:08:07,920 --> 00:08:23,100
-I want to have as its value-- be something like some procedure, which I don't know what is inside there, perhaps a machine language code or something like that.
+这时候来求值，结果应该是一个过程，具体内部可能是机器码或是别的，不过这里我们并不需要关心
 
 75
 00:08:23,100 --> 00:08:24,430
-So, well, that's easy enough.
+到这是还是相对简单的
 
 76
 00:08:24,430 --> 00:08:27,890
-I'm going to push that off on someone else.
+我还是想把符号求值的具体部分交给别人来写
 
 77
 00:08:27,890 --> 00:08:40,159
-If something is a symbol, if the expression is a symbol, then I want the answer to be the result, looking up the expression in the environment.
+假如表达式是符号，就执行(lookup exp env)，得到表达式在当前环境的结果
 
 78
 00:08:46,480 --> 00:08:54,060
-Now the environment is a dictionary which maps the symbol names to their values.
+这里的环境就相当于一本字典，根据符号名字就可以查找到相应的值
 
 79
 00:08:54,060 --> 00:08:56,280
-And that's all it is.
+就这么简单
 
 80
 00:08:56,280 --> 00:08:57,530
-How it's done?
+env在这里到底是什么？
 
 81
 00:08:57,530 --> 00:08:59,760
-Well, we'll see that later.
+稍后我们再谈这个
 
 82
 00:08:59,760 --> 00:09:01,670
-It's very easy.
+其实并不难
 
 83
 00:09:01,670 --> 00:09:04,670
-It's easy to make data structures that are tables of various sorts.
+就是一个融合了多种排序的表结构
 
 84
 00:09:04,670 --> 00:09:10,040
-But it's only a table, and this is the access routine for some table.
+可以简单理解为它就是一个表，lookup过程可以查找这个表
 
 85
 00:09:10,040 --> 00:09:17,430
-Well, the next thing, another kind of expression-- you have things that are described constants that are not numbers, like 'foo.
+好的，接下来，下一种可能 -- 表达式可能是一些不是数字的常数，比如'foo
 
 86
 00:09:20,170 --> 00:09:31,520
-Well, for my convenience, I want to syntactically transform that into a list structure which is, quote foo.
+这里方便起见，我把它转化为语法上等同的形式(quote foo)
 
 87
 00:09:35,140 --> 00:09:48,780
-A quoted object, whatever it is, is going to be actually an abbreviation, which is not part of the evaluator but happens somewhere else, an abbreviation for an expression that looks like this.
+求值器并不处理引号，一个被引的表达式，无论它是什么，都是一个缩写，像是(quote foo)这种形式的缩写
 
 88
 00:09:48,780 --> 00:09:55,615
-This way, I can test for the type of the expression as being a quotation by examining the car of the expression.
+这样我就可以依据表达式的car来判断表达式的类型了
 
 89
 00:09:58,460 --> 00:10:01,650
-So I'm not going to worry about that in the evaluator.
+因此这一部分也不难写
 
 90
 00:10:01,650 --> 00:10:05,540
@@ -360,87 +360,87 @@ It's happening somewhere earlier in the reader or something.
 
 91
 00:10:05,540 --> 00:10:25,140
-If the expression of the expression is quote, then what I want, I want quote foo to itself evaluate to foo.
+如果表达式被引，求值结果是，这里(quote foo)的求值结果应该是foo自身
 
 92
 00:10:25,140 --> 00:10:27,530
-It's a constant.
+一个常量
 
 93
 00:10:27,530 --> 00:10:30,645
-This is just a way of saying that this evaluates to itself.
+也就是说求值结果是它自身
 
 94
 00:10:33,150 --> 00:10:33,660
-What is that?
+该怎么来写呢？
 
 95
 00:10:33,660 --> 00:10:51,290
-That's the second of the list. It's the second element of the list. The second element of the list is it's CADR. So I'm just going to write here, CADR.
+也就是列表的第二个部分了，应该是列表的CADR，所以这里我就写CADR
 
 96
 00:10:51,290 --> 00:10:52,510
-What else do we have here?
+表达式还可能是什么类型呢？
 
 97
 00:10:52,510 --> 00:11:04,160
-We have lambda expressions, for example, lambda of x plus x y.
+还有lambda表达式，比如，(lambda (x) (+ x y))
 
 98
 00:11:04,160 --> 00:11:09,600
-Well, I going have to have some representation for the procedure which is the value of an expression, of a lambda expression.
+这样的话，我就必须得有方法来表示过程，也就是lambda求值的结果
 
 99
 00:11:09,600 --> 00:11:13,030
-The procedure here is not the expression lambda x.
+过程并不是lambda (x)表达式
 
 100
 00:11:13,030 --> 00:11:16,170
-That's the description of it, the textual description.
+表达式只是对过程的文字描述
 
 101
 00:11:16,170 --> 00:11:27,360
-However, what what I going to expect to see here is something which contains an environment as one of its parts if I'm implementing a lexical language.
+相对地，我更希望执行过程的时候还要考虑环境的因素
 
 102
 00:11:27,360 --> 00:11:30,790
-And so what I'd like to see is some type flags.
+所以这里我们需要一些类型标志
 
 103
 00:11:30,790 --> 00:11:39,060
-I'm going to have to be able to distinguish procedures later, procedures which were produced by lambdas, from ones that may be primitive.
+因为之后我们要凭借标志来区分哪些是过程，即lambda和一些原子元素求值的结果
 
 104
 00:11:39,060 --> 00:11:44,935
-And so I'm going to have some flag, which I'll just arbitrarily call closure, just for historical reasons.
+这里考虑历史因素，我就用closure作为类型标志
 
 105
 00:11:47,760 --> 00:11:49,920
-Now, to say what parts of this are important.
+现在来看看，哪些部分必不可少
 
 106
 00:11:49,920 --> 00:11:54,220
-I'm going to need to know the bound variable list and the body.
+我需要形参列表和过程体
 
 107
 00:11:54,220 --> 00:12:03,795
-Well, that's the CDR of this, so it's going to be x and plus x y and some environment.
+也就是lambda的CDR，最后还有执行环境env
 
 108
 00:12:08,170 --> 00:12:18,520
-Now this is not something that users should ever see, this is purely a representation, internally, for a procedure object.
+单纯的语言使用者肯定没见过像这样的，它只是内部对过程对象的一种表示方法吧
 
 109
 00:12:18,520 --> 00:12:26,340
-It contains a bound variable list, a body, and an environment, and some type tag saying, I am a procedure.
+它包含了形参列表，过程体，执行环境，和表示自身为过程类型的标志
 
 110
 00:12:26,340 --> 00:12:28,080
-I'm going to make one now.
+接下来写代码
 
 111
 00:12:28,080 --> 00:13:10,250
-So if the CAR of the expression is quote lambda, then what I'm going to put here is-- I'm going to make a list of closure, the CDR of the procedure description was everything except the lambda, and the current environment.
+如果表达式的CAR是'lambda，求值结果就是(list 'closure (cdr exp) env)
 
 112
 00:13:10,250 --> 00:13:15,190
