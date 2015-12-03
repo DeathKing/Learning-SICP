@@ -1068,119 +1068,119 @@ bind在环境中添加新的绑定
 
 268
 00:31:15,460 --> 00:31:22,800
-And what we are going to do here is make a-- we're going to make a no-frame for an environment structure.
+我们这里先依照环境的数据结构构造一个frame
 
 269
 00:31:22,800 --> 00:31:28,080
-The environment structure is going to be represented as a list of frames.
+环境就是由一系列的frame组成的
 
 270
 00:31:28,080 --> 00:31:49,690
-So given an existing environment structure, I'm going to make a new environment structure by consing a new frame onto the existing environment structure, where the new frame consists of the result of pairing up the variables, which are the bound variables of the procedure I'm applying, to the values which are the arguments that were passed that procedure.
+所以对于环境来说，我把一个新的frame和环境连接在一起就构成了新的环境，新的frame是由pair-up对形参与实参进行绑定得到的结果
 
 271
 00:31:49,690 --> 00:31:58,391
-This is just making a list, adding a new element to our list of frames, which is an environment structure, to make a new environment.
+环境也就是一个列表而已，构造一个新frame元素，添加入列表就构成了新环境
 
 272
 00:31:58,391 --> 00:32:01,540
-Where pair-up is very simple.
+其实pair-up非常简单
 
 273
 00:32:01,540 --> 00:32:09,720
-Pair-up is nothing more than if I have a list of variables and a list of values, well, if I run out of variables and if I run out of values, everything's OK.
+对于一个变量的列表和一个值的列表，两个列表中元素个数应该相同
 
 274
 00:32:09,720 --> 00:32:12,990
-Otherwise, I've given too many arguments.
+如果不同，就是实参的数目不对了
 
 275
 00:32:12,990 --> 00:32:18,560
-If I've not run out of variables, but I've run out of values, that I have too few arguments.
+假如值遍历完了，还剩下有变量，说明实参给少了
 
 276
 00:32:18,560 --> 00:32:42,950
-And in the general case, where I don't have any errors, and I'm not done, then I really am just adding a new pair of the first variable with the first argument, the first value, onto a list resulting from pairing-up the rest of the variables with the rest of the values.
+如果没有遇到错误，即变量和值是可以对上号的，就应该用第一个变量和第一个值构造一个序对，和pair-up对两列表CDR的求值结果相连接
 
 277
 00:32:42,950 --> 00:32:46,620
-Lookup is of course equally simple.
+lookup也简单
 
 278
 00:32:46,620 --> 00:32:54,650
-If I have to look up a symbol in an environment, well, if the environment is empty, then I've got an unbound variable.
+假使我要在环境中查找一个变量，环境是空的，这个变量就是未绑定的
 
 279
 00:32:54,650 --> 00:33:05,930
-Otherwise, what I'm going to do is use a special pair list lookup procedure, which we'll have very shortly, of the symbol in the first frame of the environment.
+否则，就调用一个新的过程来从环境的第一个frame开始查找变量
 
 280
 00:33:05,930 --> 00:33:09,200
-Since I know the environment is not empty, it must have a first frame.
+因为环境不是空的，所以一定有第一个frame
 
 281
 00:33:09,200 --> 00:33:11,140
-So I lookup the symbol in the first frame.
+所以我就在第一个frame中查找
 
 282
 00:33:11,140 --> 00:33:15,150
-That becomes the value cell here.
+找到的序对也就是这里的vcell
 
 283
 00:33:15,150 --> 00:33:23,720
-And then, if the value cell is empty, if there is no such value cell, then I have to continue and look at the rest of the frames.
+如果vcell为空，我就需要在环境中剩下的frame中查找
 
 284
 00:33:23,720 --> 00:33:25,990
-It means there was nothing found there.
+vcell为空意味着当前frame没有找到变量
 
 285
 00:33:25,990 --> 00:33:32,010
-So that's a property of ASSQ is it returns emptiness if it doesn't find something.
+如果没有找到，assq就会返回空值
 
 286
 00:33:32,010 --> 00:33:41,050
-but if it did find something, then I'm going to use the CDR of the value cell here, which is the thing that was the pair consisting of the variable and the value.
+如果找到了，值就应该是vcell的CDR部分，因为vcell是一个变量和值的序对
 
 287
 00:33:41,050 --> 00:33:45,000
-So the CDR of it is the value part.
+因此CDR就取到了值
 
 288
 00:33:45,000 --> 00:33:47,970
-Finally, ASSQ is something you've probably seen already.
+assq这个过程你们之前见过
 
 289
 00:33:47,970 --> 00:33:53,760
-ASSQ takes a symbol and a list of pairs, and if the list is empty, it's empty.
+assq取一个符号和一系列序对的列表，如果列表为空，变返回'()
 
 290
 00:33:53,760 --> 00:33:59,820
-If the symbol is the first thing in the list-- That's an error.
+如果符号等于列表中第一个 -- 这里写错了
 
 291
 00:33:59,820 --> 00:34:04,160
-That should be CAAR, C-A-A-R. Everybody note that.
+应该是CAAR，大家注意了
 
 292
 00:34:07,730 --> 00:34:08,980
-Right there, OK?
+就是这里，看见了吗？
 
 293
 00:34:13,121 --> 00:34:35,190
-And in any case, if the symbol is the CAAR of the A list, then I want the first, the first pair, in the A list. So, in other words, if this is the key matching the right entry, otherwise, I want to look up that symbol in the rest. Sorry for producing a bug, bugs appear.
+如果符号等于列表的CAAR，然后就取列表的第一个序对元素作为返回值，这就是我们要找的绑定；如果符号与之不相同，就在剩下的列表中继续查找。很抱歉刚才幻灯片上面写错了
 
 294
 00:34:35,190 --> 00:34:39,639
-Well, in any case, you're pretty much seeing the whole thing now.
+到现在为止，你们也已看到了全貌
 
 295
 00:34:41,880 --> 00:34:49,600
-It's a very beautiful thing, even though it's written in an ugly style, being the kernel of every language.
+虽然用很难看的编程方式书写出来，但是仍然不能掩盖它的美丽与优雅，这正是语言的核心所在
 
 296
 00:34:49,600 --> 00:34:51,460
-I suggest that we just-- let's look at it for a while. [骗人啊，说好的只写一黑板呢]
+这样优美的程序，我们可以多看一会儿[骗人啊，说好的只写一黑板呢，又刷出N张幻灯片啊]
 
 297
 00:34:56,749 --> 00:35:49,750
