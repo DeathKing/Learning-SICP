@@ -944,127 +944,127 @@ evlise，它是什么呢？
 
 237
 00:27:05,470 --> 00:27:08,130
-And there's some sort of next layer down.
+还要深入一个层次
 
 238
 00:27:14,540 --> 00:27:18,880
-Conditionals-- conditionals are the only thing left that are sort of substantial.
+条件式 -- 在剩下的过程中，条件式是唯一一个非常重要的过程
 
 239
 00:27:18,880 --> 00:27:25,530
-Then below that, we have to worry about things like lookup and bind, and we'll look at that in a second.
+除了这个，我们还有lookup bind的过程要讨论
 
 240
 00:27:25,530 --> 00:27:31,600
-But of the substantial stuff at this level of detail, next important thing is how you deal with conditionals.
+但是在这个讨论事情相对具体的层次上，下一个重要的事就是你如何处理条件式
 
 241
 00:27:31,600 --> 00:27:33,330
-Well, how do we have a conditional thing?
+这里，条件式具体要怎么写？
 
 242
 00:27:37,670 --> 00:27:44,720
-It's a procedure of a set of clauses and an environment.
+它是一个过程，参数是一串子句和环境
 
 243
 00:27:47,340 --> 00:27:49,820
-And what does it do?
+它做些什么呢？
 
 244
 00:27:49,820 --> 00:28:04,520
-It says, if I've no more clauses, well, I have to give this a value.
+如果这里没有子句，我得有一个返回值
 
 245
 00:28:04,520 --> 00:28:06,540
-It could be that it was an error.
+可能是一个错误
 
 246
 00:28:06,540 --> 00:28:10,060
-Supposing it run off the end of a conditional, it's pretty arbitrary.
+假设它遍历完了所有条件，都没有符合的，接下来发生什么还真不好说
 
 247
 00:28:10,060 --> 00:28:13,650
-It's up to me as programmer to choose what I want to happen.
+这完全取决于我，作为一个程序员可以选择应该怎么处理
 
 248
 00:28:13,650 --> 00:28:20,100
-It's convenient for me, right now, to write down that this has a value which is the empty list, doesn't matter.
+对我来说实在太方便了，现在我写一个空列表作为返回值，完全无碍
 
 249
 00:28:20,100 --> 00:28:23,110
-For error checking, some people might prefer something else.
+如是有些人倾向于错误检测，他们可以在这里写点别的
 
 250
 00:28:23,110 --> 00:28:25,570
-But the interesting things are the following ones.
+下面的更有意思
 
 251
 00:28:25,570 --> 00:28:40,265
-If I've got an else clause--  You see, if I have a list of clauses, then each clause is a list. And so the predicate part is the CAAR of the clauses.
+这里有一系列的子句，每个子句都是一个列表，假如我遇到一个else子句，子句的谓词部分应该是子句的CAAR
 
 252
 00:28:43,560 --> 00:28:51,090
-It's the CAR, which is the first part of the first clause in the list of clauses.
+所有子句中第一个子句的第一个部分
 
 253
 00:28:51,090 --> 00:28:59,800
-If it's an else, then it means I want my result of the conditional to be the result of evaluating the matching expression.
+如果是else，就意味着整个条件式的结果就是执行这个else子句中表达式的结果
 
 254
 00:28:59,800 --> 00:29:22,195
-So I eval the CADR. So this is the first clause, the second element of it, CADAR-- CADAR of a CAR-- of the clauses, with respect to the environment.
+所以接着对CADAR部分在当前环境下求值，就是第一个子句的第二个部分
 
 255
 00:29:26,620 --> 00:29:29,630
-Now the next possibility is more interesting.
+下一种可能性更有意思
 
 256
 00:29:29,630 --> 00:29:44,360
-If it's false, if the first predicate in the predicate list is not an else, and it's not false, if it's not the word else, and if it's not a false thing-- Let's write down what it is if it's a false thing.
+如果不是else子句，而且子句的谓词结果是false -- 我们接着写
 
 257
 00:29:44,360 --> 00:30:04,180
-If the result of evaluating the first predicate, the clauses--  respect the environment, if that evaluation yields false, then it means, I want to look at the next clause.
+在当前环境下求值子句的谓词部分，如果是false，这就意味着还得接着判断下面的子句
 
 258
 00:30:04,180 --> 00:30:05,990
-So I want to discard the first one.
+第一个就扔掉不管了
 
 259
 00:30:05,990 --> 00:30:16,700
-So we just go around loop, evcond, the CDR of the clauses relative to that environment.
+我们还得在当前环境下，继续递归evcond循环子句的CDR部分
 
 260
 00:30:21,240 --> 00:30:41,960
-And otherwise, I had a true clause, in which case, what I want is to evaluate the CADAR of the clauses relative to that environment.
+又或者，我遇到了一个真子句，即求值子句的谓词部分结果为真
 
 261
 00:30:48,200 --> 00:30:51,210
-Boy, it's almost done.
+条件式就要到尾声了
 
 262
 00:30:51,210 --> 00:30:53,730
-It's quite close to done.
+非常近了
 
 263
 00:30:53,730 --> 00:30:56,210
-I think we're going to finish this part off.
+把这一部分结束
 
 264
 00:30:56,210 --> 00:31:01,220
-So just buzzing through this evaluator, but so far you're seeing almost everything.
+回到全局再看一遍求值器，你已经对它有一个完整的把握了
 
 265
 00:31:01,220 --> 00:31:04,040
-Let's look at the next transparency here.
+接着来看一张幻灯片
 
 266
 00:31:08,980 --> 00:31:11,980
-Here is bind.
+bind的定义
 
 267
 00:31:11,980 --> 00:31:15,460
-Bind is for making more table.
+bind在环境中添加新的绑定
 
 268
 00:31:15,460 --> 00:31:22,800
