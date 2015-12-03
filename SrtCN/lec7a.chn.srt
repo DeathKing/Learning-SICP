@@ -1200,131 +1200,131 @@ assq取一个符号和一系列序对的列表，如果列表为空，变返回'
 
 301
 00:36:56,780 --> 00:37:03,470
-OK, now we're just going to do a little bit of practice understanding what it is we've just shown you.
+这一节我们用一个实例来理解一下求值器的运作过程
 
 302
 00:37:03,470 --> 00:37:11,500
-What we're going to do is go through, in detail, an evaluation by informally substituting through the interpreter.
+我们根据求值器的工作过程，手写出解释器中的代换过程
 
 303
 00:37:11,500 --> 00:37:25,330
-And since we have no assignments or definitions in this interpreter, we have no possible side effects, and so the we can do substitution with impunity and not worry about results.
+因为这个求值器的并没有赋值与定义的实现，所以我们只管放心的代换，不用担心任何副作用
 
 304
 00:37:25,330 --> 00:37:30,690
-So the particular problem I'd like to look at is it an interesting one.
+我举一个特别点儿的例子吧
 
 305
 00:37:30,690 --> 00:37:59,890
-It's the evaluation of quote, open, open, open, lambda of x, lambda of y plus x y, lambda, lambda, applied to three, applied to four, in some global environment which I'll call e0.
+(eval '(((lambda(x) (lambda(y) (+ x y))) 3) 4) <e0>)
 
 306
 00:38:04,930 --> 00:38:14,300
-So what we have here is a procedure of one argument x, which produces as its value a procedure of one argument y, which adds x to y.
+一个参数为x的过程，生成一个参数为y的过程，其中运算x + y
 
 307
 00:38:14,300 --> 00:38:17,960
-We are applying the procedure of one argument x to three.
+外层的这个过程应用于数字3
 
 308
 00:38:17,960 --> 00:38:21,400
-So x should become three.
+所以x应该是3
 
 309
 00:38:21,400 --> 00:38:26,167
-And the result of that should be procedure of one argument y, which will then apply to 4.
+生成的结果应该是一个参数为y的过程，应用于数字4
 
 310
 00:38:28,910 --> 00:38:34,790
-And there is a very simple case, they will then add those results.
+然后要做的也很简单，得到x与y的和
 
 311
 00:38:34,790 --> 00:38:37,660
-And now in order to do that, I want to make a very simple environment model.
+具体做之前，先来构造环境
 
 312
 00:38:37,660 --> 00:38:44,460
-And at this point, you should already have in your mind the environments that this produces.
+我相信你们对于环境已经了然于胸
 
 313
 00:38:44,460 --> 00:38:56,740
-But we're going to start out with a global environment, which I'll call e0, which is that.
+我们从全局环境开始，称之为e0
 
 314
 00:38:56,740 --> 00:39:31,270
-And it's going to have in it things, definitions for plus, and times, and-- using Greek letters, isn't that interesting, for the objects-- and minus, and quotient, and CAR, and CDR, and CONS, and EQ, and everything else you might imagine in a global environment.
+里面应该有+、*的过程定义 -- 我这里用希腊字母来表示过程对象，有没有很好玩儿 -- 还有 - / CAR CDR CONS EQ?等等，所有你能想到的基本过程都在这里
 
 315
 00:39:31,270 --> 00:39:39,220
-It's got something there for each of those things, something the machine is born with, that's e0.
+每个符号都有一个过程对象，由机器底层实现的，这就是环境e0
 
 316
 00:39:39,220 --> 00:39:42,940
-Now what does it mean to do this evaluation?
+这对求值意味着什么呢？
 
 317
 00:39:42,940 --> 00:39:48,670
-Well, we go through the set of special forms. First of all, this is not a number.
+现在我们开始求值这个例子，从特殊形式开始查找，第一，这不是一个数字
 
 318
 00:39:48,670 --> 00:39:50,380
-This is not a symbol.
+也不是符号
 
 319
 00:39:53,210 --> 00:39:56,520
-Gee, it's not a quoted expression.
+这不是一个引用表达式
 
 320
 00:39:56,520 --> 00:40:00,600
-This is a quoted expression, but that's not what I interested in.
+这其实是一个被引用的表达式，但不是我们所关注的那种 引用表达式
 
 321
 00:40:00,600 --> 00:40:05,890
-The question is, whether or not the thing which is quoted is quoted expression?
+问题在于，是否被引的就一定是引用表达式？
 
 322
 00:40:05,890 --> 00:40:07,960
-I'm evaluating an expression.
+现在求值这个表达式
 
 323
 00:40:07,960 --> 00:40:11,410
-This just says it's this particular expression.
+可以理解为 ' 说明这是一个特殊的表达式
 
 324
 00:40:11,410 --> 00:40:12,660
-This is not a quoted expression.
+并非是引用表达式
 
 325
 00:40:15,230 --> 00:40:19,120
-It's not a thing that begins with lambda.
+继续我们对特殊形式的判断中来，表达式也不以lambda开头
 
 326
 00:40:19,120 --> 00:40:22,030
-It's not a thing that begins with COND.
+也不以cond开头
 
 327
 00:40:22,030 --> 00:40:26,310
-Therefore, it's an application of its of an operated operands.
+因此它不在特殊形式之列，它属于操作符应用于操作数之类
 
 328
 00:40:26,310 --> 00:40:28,570
-It's a combination.
+这是一个组合式
 
 329
 00:40:28,570 --> 00:40:36,480
-The combination thus has this as the operator and this is the operands.
+这一部分是它的操作符，这里是操作数
 
 330
 00:40:40,130 --> 00:41:24,450
-Well, that means that what I'm going to do is transform this into apply of eval, of quote, open, open lambda of x, lambda of y-- I'm evaluating the operator-- plus x y, in the environment, also e0, with the operands that I'm going to apply this to, the arguments being the result of EVLIST, the list containing four, fin e0.
+根据eval的规则，变换成为(apply (eval '((lambda(x) (lambda(y) (+ x y))) 3) <e0>) (evlist '(4) <e0>)
 
 331
 00:41:29,010 --> 00:41:36,840
-I'm using this funny notation here for e0 because this should be that environment.
+我把e0写的很特别是来强调它是环境的身份
 
 332
 00:41:36,840 --> 00:41:39,890
-I haven't a name for it, because I have no environment to name it in.
+我无法为它命名，因为命名需要其它环境
 
 333
 00:41:41,960 --> 00:41:47,730
@@ -1336,351 +1336,351 @@ The data structure, which is the environment, goes there.
 
 335
 00:41:53,040 --> 00:41:55,850
-Well, that's what we're seeing here.
+好的，经过变换就成了这样
 
 336
 00:41:55,850 --> 00:41:59,610
-Well in order to do this, I have to do this, and I have to do that.
+为了执行apply，我得先执行eval和evlist
 
 337
 00:41:59,610 --> 00:42:03,770
-Well this one's easy, so why don't we do that one first.
+evlist简单点，我们先计算这个吧
 
 338
 00:42:03,770 --> 00:42:09,520
-This turns into apply of eval-- just copying something now.
+上面的一行复制下来
 
 339
 00:42:09,520 --> 00:42:11,000
-Most of the substitution rule is copying.
+代换的过程中我们得重复不少笔墨
 
 340
 00:42:18,530 --> 00:42:23,350
-So I'm going to not say the words when I copy, because it's faster.
+抄写的时候我就不说什么了，这样快一点儿
 
 341
 00:42:26,100 --> 00:42:48,910
-And then the EVLIST is going to turn into a cons, of eval, of four, in e0--  because it was not an empty list-- onto the result of EVLISTing, on the empty list, in e0.
+下面evlist的部分就代换成为 (cons (eval '4 <e0>) (evlist '() <e0>))
 
 342
 00:42:52,580 --> 00:42:55,800
-And I'm going to start leaving out steps soon, because it's going to get boring.
+步骤开始有点乏味，我开始想略过一点了
 
 343
 00:42:59,870 --> 00:43:20,240
-But this is basically the same thing as apply, of eval--  I'm going to keep doing this-- the lambda of x, the lambda of y, plus xy, 3, close, e0.
+上面的再抄下来
 
 344
 00:43:20,240 --> 00:43:21,490
-I'm a pretty good machine.
+一字不差吧
 
 345
 00:43:24,690 --> 00:43:28,790
-Well, eval of four, that's meets the question, is it a number.
+到下面的eval，4是一个数字
 
 346
 00:43:28,790 --> 00:43:35,280
-So that's cons, cons of 4.
+4求值出来还是4
 
 347
 00:43:35,280 --> 00:43:39,240
-And EVLIST of the empty list is the empty list, so that's this.
+evlist这里参数是空列表，结果相应也是空列表
 
 348
 00:43:43,270 --> 00:43:48,710
-And that's very simple to understand, because that means the list containing four itself.
+一起代换过来，就是(cons 4 '())
 
 349
 00:43:48,710 --> 00:44:13,940
-So this is nothing more than apply of eval, quote, open, open, lambda of x, lambda of y, plus x y, three applied to, e0, applied to the list four-- bang.
+上面的再抄下来，下面的(cons 4 '())就是'(4)
 
 350
 00:44:13,940 --> 00:44:15,190
-So that's that step.
+变换结果就是这样
 
 351
 00:44:18,100 --> 00:44:20,360
-Now let's look at the next, more interesting thing.
+我们来看下一个有趣的部分
 
 352
 00:44:20,360 --> 00:44:23,070
-What do I do to evaluate that?
+这一行怎么来变换？
 
 353
 00:44:23,070 --> 00:44:29,460
-Evaluating this means I have to evaluate-- Well, it's not.
+变换这一行之前我得先变换eval这部分
 
 354
 00:44:29,460 --> 00:44:31,680
-It's nothing but an application.
+这一部分的表达式也属于操作符应用操作数的类型
 
 355
 00:44:31,680 --> 00:44:33,570
-It's not one of the special things.
+也不属于特殊形式
 
 356
 00:44:33,570 --> 00:44:46,570
-If the application of this operator, which we see here-- here's the operator-- applied to this operands, that combination.
+操作符是这一大部分，应用于操作数，整体是一个组合式
 
 357
 00:44:46,570 --> 00:44:52,370
-But we know how to do that, because that's the last case of the conditional.
+我们很清楚变换的规则，它就在eval内部条件式的最后
 
 358
 00:44:52,370 --> 00:45:01,160
-So substituting in for this evaluation, it's apply of eval of the operator in the EVLIST of the operands.
+变换这一部分，就大概像(apply (eval operator) (evlist operands))这样
 
 359
 00:45:01,160 --> 00:45:25,350
-Well, it's apply, of apply, of eval, of quote, open, lambda of x, lambda of y, plus x y, lambda, lambda, in environment e0.
+我们接着写，(apply (apply (eval '(lambda(x) (lambda(y) (+ x y))) <e0>)
 
 360
 00:45:30,520 --> 00:45:35,230
-I'm going to short circuit the evaluation of the operands , because they're the same as they were before.
+操作数这里的变换我就直接写结果了，因为和前面是一样的
 
 361
 00:45:35,230 --> 00:45:39,330
-I got a list containing three, apply that, and apply that to four.
+过程应用于列表'(3)，再应用于'(4)
 
 362
 00:45:42,780 --> 00:45:44,410
-Well let's see.
+我们接着看
 
 363
 00:45:44,410 --> 00:45:49,450
-Eval of a lambda expression produces a procedure object.
+求值lambda表达式生成一个过程对象
 
 364
 00:45:52,030 --> 00:46:12,130
-So this is apply, of apply, of the procedure object closure, which contains the body of the procedure, x, which is lambda-- which binds x [UNINTELLIGIBLE]
+继续变换，(apply (apply '(closure ((x) (lambda(y) (+ x y))))
 
 365
 00:46:12,130 --> 00:46:20,630
-the internals of the body, it returns the procedure of one argument y, which adds x to y.
+这个过程内部返回一个形参为y的过程，对x和y求和
 
 366
 00:46:23,210 --> 00:46:30,340
-Environment e0 is now captured in it, because this was evaluated with respect to e0.
+还要记得环境e0，因为在环境下求值才有意义
 
 367
 00:46:30,340 --> 00:46:33,040
-e0 is part now of the closure object.
+e0现在也是closure对象的一部分了
 
 368
 00:46:33,040 --> 00:46:41,300
-Apply that to open, three, close, apply, to open, 4, close, apply.
+应用予'(3)，再应用于'(4)
 
 369
 00:46:47,390 --> 00:46:57,150
-So going from this step to this step meant that I made up a procedure object which captured in it e0 as part of the procedure object.
+这样一步步的变换过来，现在构造了一个过程对象，并且包含了环境e0
 
 370
 00:46:57,150 --> 00:46:58,620
-Now, we're going to pass those to apply.
+现在是过程应用参数求值的时候了
 
 371
 00:46:58,620 --> 00:47:02,710
-We have to apply this procedure to that set of arguments.
+我们得把过程应用于实际参数
 
 372
 00:47:02,710 --> 00:47:07,380
-Well, but that procedure is not primitive.
+这里的过程并不是基本过程
 
 373
 00:47:07,380 --> 00:47:13,710
-It's, in fact, a thing which has got the tag closure, and, therefore, what we have to do is do a bind.
+事实上看到标志'closure就已经知道这不是基本过程了，而且这里我们还需要进行参数绑定
 
 374
 00:47:13,710 --> 00:47:15,830
-We have to bind.
+必须要绑定
 
 375
 00:47:15,830 --> 00:47:28,230
-A new environment is made at this point, which has as its parent environment the one over here, e0, that environment.
+这里构造一个新环境，父环境是e0
 
 376
 00:47:30,320 --> 00:47:31,570
-And we'll call this one, e1.
+命名这个环境为e1
 
 377
 00:47:34,620 --> 00:47:36,040
-Now what's bound in there?
+这里要绑定些什么呢？
 
 378
 00:47:36,040 --> 00:47:38,620
-x is bound to three.
+变量x绑定为值3
 
 379
 00:47:38,620 --> 00:47:41,480
-So I have x equal three.
+这里写x=3
 
 380
 00:47:41,480 --> 00:47:42,730
-That's what's in there.
+这样就行
 
 381
 00:47:44,940 --> 00:47:46,240
-And we'll call that e1.
+新环境叫e1
 
 382
 00:47:46,240 --> 00:48:00,290
-So what this transforms into is an eval of the body of this, which is this, the body of that procedure, in the environment that you just saw.
+这样的话，里面的过程，即(lambda(y) (+ x y))就应该在e1的环境下来求值了
 
 383
 00:48:00,290 --> 00:48:16,520
-So that's an apply, of eval, quote, open, lambda of y, plus x y-- the body--  in e1.
+即 (apply (eval '(lambda(y) (+ x y)) <e1>)
 
 384
 00:48:20,660 --> 00:48:28,680
-And apply the result of that to four, open, close, 4-- list of arguments.
+应用于参数列表'(4)
 
 385
 00:48:28,680 --> 00:48:33,110
-Well, that's sensible enough because evaluating a lambda, I know what to do.
+到了这里，变换过程就变得很清晰了，我知道该做什么
 
 386
 00:48:33,110 --> 00:48:52,150
-That means I apply, the procedure which is closure, binds one argument y, adds x to y, with e1 captured in it.
+这和上面的很类似，继续变换(apply '(closure ((y) (+ x y)) <e1>)
 
 387
 00:48:55,790 --> 00:48:57,800
-And you should really see this.
+你应该已经知道了
 
 388
 00:48:57,800 --> 00:49:00,140
-I somehow manufactured a closure.
+我构造了一个closure对象
 
 389
 00:49:00,140 --> 00:49:01,790
-I should've put this here.
+放在这里
 
 390
 00:49:01,790 --> 00:49:03,040
-There was one over here too.
+这里也有一个，是前面lambda (x)的那个
 
 391
 00:49:06,230 --> 00:49:08,080
-Well, there's one here now.
+这是现在的这个
 
 392
 00:49:08,080 --> 00:49:17,880
-I've captured e1, and this is the procedure of one argument y, whatever this is.
+closure内部是有参数为y的过程体和环境e1
 
 393
 00:49:17,880 --> 00:49:20,435
-That's what that is there, that closure.
+这就是这里的closure
 
 394
 00:49:23,040 --> 00:49:26,230
-I'm going to apply that to four.
+将这个过程应用于'(4)
 
 395
 00:49:30,690 --> 00:49:31,940
-Well, that's easy enough.
+很简单
 
 396
 00:49:36,830 --> 00:49:49,540
-That means I have to make a new environment by copying this pointer, which was the pointer of the procedure, which binds y equal 4 with that environment.
+这就意味着我还得构造一个新环境，绑定变量y为数字4
 
 397
 00:49:49,540 --> 00:49:52,460
-And here's my new environment, which I'll call e2.
+这个是新环境，称为e2
 
 398
 00:49:55,870 --> 00:50:01,910
-And, of course, this application then is evaluate the body in e2.
+接着就是在环境e2中求值过程体(+ x y)
 
 399
 00:50:01,910 --> 00:50:13,710
-So this is eval, the body, which is plus x y, in the environment e2.
+然后变换为，(eval '(+ x y) <e2>)
 
 400
 00:50:13,710 --> 00:50:37,340
-But this is an application, so this is the apply, of eval, plus in e2, an EVLIST, quote, open, x y, in e2.
+继续变换，(apply (eval '+ <e2>) (evlist '(x y) <e2>))
 
 401
 00:50:44,880 --> 00:50:45,590
-Well, but let's see.
+我们来看
 
 402
 00:50:45,590 --> 00:50:54,190
-That is apply, the object which is a result of that and plus.
+接着写，(apply ，eval这部分在环境中寻找符号'+
 
 403
 00:50:54,190 --> 00:51:01,780
-So here we are in e2, plus is not here, it's not here, oh, yes, but's here as some primitive operator.
+所以我们从e2开始找，它不在这里，也不在e1，哦，它是一个基本操作符
 
 404
 00:51:01,780 --> 00:51:04,745
-So it's the primitive operator for addition.
+用于做加法
 
 405
 00:51:08,490 --> 00:51:14,370
-Apply that to the result of evaluating x and y in e2.
+把它应用于x y在e2中解析到的结果
 
 406
 00:51:14,370 --> 00:51:18,340
-But we can see that x is three and y is four.
+我们知道x是3 y是4
 
 407
 00:51:18,340 --> 00:51:23,936
-So that's a three and four, here.
+所以这里写'(3 4)
 
 408
 00:51:23,936 --> 00:51:26,280
-And that magically produces for me a seven.
+然后就神奇的得到结果7
 
 409
 00:51:30,520 --> 00:51:40,470
-I wanted to go through this so you would see, essentially, one important ingredient, which is what's being passed around, and who owns what, and what his job is.
+我把这个例子具体的演示一遍是想让你们清楚的看到，求值过程中实际传递的是什么，每一部分的职能又是什么
 
 410
 00:51:40,470 --> 00:51:41,700
-So what do we have here?
+所以这里是一些什么呢？
 
 411
 00:51:41,700 --> 00:51:46,520
-We have eval, and we have apply, the two main players.
+一个eval，一个apply，两个主角
 
 412
 00:51:49,370 --> 00:51:52,320
-And there is a big loop the goes around like this.
+在它们之间是一个大循环
 
 413
 00:51:52,320 --> 00:52:06,270
-Which is eval produces a procedure and arguments for apply.
+eval将过程与参数传递予apply
 
 414
 00:52:06,270 --> 00:52:09,710
-Now some things eval could do by itself.
+也有些事情eval可以自己做
 
 415
 00:52:09,710 --> 00:52:10,860
-Those are little self things here.
+一些内部的事情吧
 
 416
 00:52:10,860 --> 00:52:12,700
-They're not interesting.
+没多大意思
 
 417
 00:52:12,700 --> 00:52:16,240
-Also eval evaluates all of the arguments, one after another.
+eval也逐个解析每个形参
 
 418
 00:52:16,240 --> 00:52:17,650
-That's not very interesting.
+也没什么意思
 
 419
 00:52:17,650 --> 00:52:22,300
-Apply can apply some procedures like plus, not very interesting.
+apply实际执行一些过程比如+
 
 420
 00:52:22,300 --> 00:52:32,880
-However, if apply can't apply a procedure like plus, it produces an expression and environment for eval.
+然而如果不是基本过程不能直接执行，它就再度将表达式与环境传递予eval
 
 421
 00:52:35,470 --> 00:52:43,740
-The procedural arguments wrap up essentially the state of a computation and, certainly, the expression of environment.
+参数和过程记录了计算的状态和环境下的表达式
 
 422
 00:52:43,740 --> 00:52:48,820
@@ -1692,23 +1692,23 @@ But what we're going to do-- it's always got something like an expression of env
 
 424
 00:52:58,970 --> 00:53:12,280
-There are minor little sub loops like eval through EVLIST, or eval through evcond, or apply through a primitive apply.
+这里也有一些副循环比如eval中的evlist、evcond和apply中的apply
 
 425
 00:53:16,140 --> 00:53:18,500
-But they're not the essential things.
+但是它们并不是最主要的
 
 426
 00:53:18,500 --> 00:53:21,860
-So that's what I wanted you to see.
+这整个就是我想让你们看到的
 
 427
 00:53:21,860 --> 00:53:23,110
-Are there any questions?
+有什么问题吗？
 
 428
 00:53:25,930 --> 00:53:28,690
-Yes.
+你说
 
 429
 00:53:28,690 --> 00:53:37,070
