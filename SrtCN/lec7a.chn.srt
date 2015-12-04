@@ -2252,135 +2252,135 @@ expt = (f (f (f (f .... (f 丄)....)
 
 564
 01:11:16,380 --> 01:11:19,760
-现在我们的问题又变成了如何来无穷的调用
+现在我们的问题又变成了如何构造出无穷调用
 
 565
 01:11:22,590 --> 01:11:24,920
-We need some infinite things.
+我们需要这些
 
 566
 01:11:24,920 --> 01:11:28,980
-How am I going to nest up an f an infinite number of times?
+我怎么来无穷次的执行F呢？
 
 567
 01:11:28,980 --> 01:11:32,380
-I'd better construct this.
+我得把它构造出来
 
 568
 01:11:32,380 --> 01:11:32,930
-Well, I don't know.
+好吧我不知道
 
 569
 01:11:32,930 --> 01:11:34,810
-How would I make an infinite loop at all?
+到底怎么样构建一个无穷循环呢？
 
 570
 01:11:34,810 --> 01:11:38,340
-Let's take a very simple infinite loop, the simplest infinite loop imaginable.
+我们先来看一个非常简单的无穷循环，我能想到的最简单的
 
 571
 01:11:43,550 --> 01:12:07,440
-If I were to take that procedure of one argument x which applies x to x and apply that to the procedure of one argument x which applies x to x, then this is an infinite loop.
+比如这样  ((lambda(x) (x x)) (lambda(x) (x x)))，这样就是一个无限的循环了
 
 572
 01:12:07,440 --> 01:12:09,980
-The reason why this is an infinite loop is as follows.
+现在来解释它是无限循环的原因
 
 573
 01:12:09,980 --> 01:12:18,850
-The way I understand this is I substitute the argument for the formal parameter in the body.
+只需要参数代换入过程体即可
 
 574
 01:12:18,850 --> 01:12:29,660
-But if I do that, I take for each of these x's, I substitute one of these, making a copy of the original expression I just started with, the simplest infinite loop.
+其中的每个x都要代换为(lambda(x) (x x))，这也就又回到了这个表达式上来，我们就从这里开始，一个最简单的循环
 
 575
 01:12:35,440 --> 01:12:43,090
-Now I want to tell you about a particular operator which is constructed by a perturbation from this infinite loop.
+我想要讲的是一个特别的操作符，只需对这个无穷循环做一点点小的改动
 
 576
 01:12:47,040 --> 01:12:48,290
-I'll call it y.
+我称其为Y
 
 577
 01:12:52,290 --> 01:13:04,480
-This is called Curry's Paradoxical Combinator of y after a fellow by the name of Curry, who was a logician of the 1930s also.
+这被称为Curry Y不动点组合子，是由20世纪30年代的逻辑学家Curry发明的
 
 578
 01:13:04,480 --> 01:13:09,330
-And if I have a procedure of one argument f, what's it going to have in it?
+Y是一个接受一个参数的过程，具体怎么写呢？
 
 579
 01:13:09,330 --> 01:13:27,899
-It's going to have a kind of infinite loop in it, which is that procedure of one argument x which applies f to x of x, applied to that procedure of one argument x, which applies f to f of x.
+内部需要构建出无限循环，((lambda(x) (f (x x))) (lambda(x) (f (x x))))
 
 580
 01:13:32,300 --> 01:13:34,590
-Now what's this do?
+这个是怎么运作的？
 
 581
 01:13:34,590 --> 01:13:42,950
-Suppose we apply y to F. Well, that's easy enough.
+假设执行(Y F)
 
 582
 01:13:42,950 --> 01:13:46,910
-That's this capital F over here.
+就是那边那个大写的F
 
 583
 01:13:46,910 --> 01:13:49,920
-Well, the easiest thing to say there is, I substitute F for here.
+很简单，把F代换进来
 
 584
 01:13:55,320 --> 01:14:02,800
-So that's going to give me, basically-- because then I'm going to substitute this for x in here.
+里面的lambda代换进去
 
 585
 01:14:08,970 --> 01:14:11,730
-Let me actually do it in steps, so you can see it completely.
+我逐步的代换一次，你就可以明白是怎么回事了
 
 586
 01:14:11,730 --> 01:14:15,020
-I'm going to be very careful.
+我会非常谨慎
 
 587
 01:14:15,020 --> 01:14:37,910
-This is open, open, lambda of x , capital F, x, x, applied to itself, F of x of x.
+也就是 ((lambda(x) (F (x x))) (lambda(x) (F (x x))))
 
 588
 01:14:37,910 --> 01:15:11,510
-Substituting this for this in here, this is F applied to-- what is it-- substituting this in here, open, open, lambda of x, F, of x and x, applied to lambda of x, F of x of x, F, lambda, pair, F.
+lambda代换进来，也就是 (F (lambda(x) (F (x x))) (lambda(x) (F (x x))))
 
 589
 01:15:11,510 --> 01:15:13,420
-Oh, but what is this?
+哇，这一部分是什么？
 
 590
 01:15:13,420 --> 01:15:20,030
-This thing over here that I just computed, is this thing over here.
+也就是我们上面要计算的这部分
 
 591
 01:15:20,030 --> 01:15:23,370
-But I just wrapped another F around it.
+不同的是在外层应用了过程F
 
 592
 01:15:23,370 --> 01:15:27,850
-So by applying y to F, I make an infinite series of F's.
+以此类推，就构造出了无穷个F迭代应用的过程
 
 593
 01:15:27,850 --> 01:15:33,170
-If I just let this run forever, I'll just keep making more and more F's outside.
+我们一直这样代换下去，就会在外层得到越来越多的F
 
 594
 01:15:33,170 --> 01:15:36,855
-I ran an infinite loop which is useless, but it doesn't matter that the inside is useless.
+运行一个无穷循环看似无用，但是我们还要注意到循环过程中内部的变化
 
 595
 01:15:40,220 --> 01:16:04,450
-So y of F is F applied to y of F. So y is a magical thing which, when applied to some function, produces the object which is the fixed point of that function, if it exists, and if this all works.
+(Y F) => (F (Y F))，Y这个过程很神奇，应用于一个过程，就可以求出这个过程的不动点，当然是在不动点存在的前提下
 
 596
 01:16:07,910 --> 01:16:11,630
-Because, indeed, if I take y of F and put it into F, I get y of F out.
+因为，这里把(Y F)作为一个整体，F应用于(Y F)结果还是(Y F)
 
 597
 01:16:16,240 --> 01:16:23,860
@@ -2583,134 +2583,130 @@ AUDIENCE: With this, it seems that then there's no need to define, as you imply,
 Defines were kind of a side-effect it seemed in the language.
 
 647
-01:20:36,490 --> 01:20:37,075
-[INTERPOSING]
+01:20:36,490 --> 01:20:39,300
+[INTERPOSING] are order dependent.
 
 648
-01:20:37,075 --> 01:20:39,300
-are order dependent.
+01:20:39,300 --> 01:20:43,150
+Does this eliminate the side-effect from the. Well
 
 649
-01:20:39,300 --> 01:20:43,150
-Does this eliminate the side-effect from the [INTERPOSING]
-
-650
 01:20:43,150 --> 01:20:49,180
 PROFESSOR: The answer is, this is not the way these things were implemented.
 
-651
+650
 01:20:49,180 --> 01:21:03,690
 Define, indeed is implemented as an operation that actually modifies an environment structure, changes the frame that the define is executed in.
 
-652
+651
 01:21:03,690 --> 01:21:11,340
 And there are many reasons for that, but a lot of this has to do with making an interactive system.
 
-653
+652
 01:21:11,340 --> 01:21:24,090
 What this is saying is that if you've made a system, and you know you're not going to do any debugging or anything like that, and you know everything there is all at once, and you want to say, what is the meaning of a final set of equations?
 
-654
+653
 01:21:24,090 --> 01:21:25,790
 This gives you a meaning for it.
 
-655
+654
 01:21:25,790 --> 01:21:35,000
 But in order to make an interactive system, where you can change the meaning of one thing without changing everything else, incrementally, you can't do that by implementing it this way.
 
-656
+655
 01:21:40,990 --> 01:21:41,860
 Yes.
 
-657
+656
 01:21:41,860 --> 01:21:44,650
 AUDIENCE: Another question on your danger slide.
 
-658
+657
 01:21:44,650 --> 01:21:50,300
 It seemed that the two examples that you gave had to do with convergence and non-convergence?
 
-659
+658
 01:21:50,300 --> 01:22:05,430
 And that may or may not have something to do with function theory in a way which would lead you to think of it in terms of linear systems, or non-linear systems. How does this convergence relate to being able to see a priori what properties of that might be violated?
 
-660
+659
 01:22:05,430 --> 01:22:07,680
 PROFESSOR: I don't know.
 
-661
+660
 01:22:07,680 --> 01:22:10,610
 The answer is, I don't know under what circumstances.
 
-662
+661
 01:22:10,610 --> 01:22:16,910
 I don't know how to translate that into less than an hour of talk more.
 
-663
+662
 01:22:16,910 --> 01:22:22,720
 What are the conditions under which, for which we know that these things converge?
 
-664
+663
 01:22:22,720 --> 01:22:32,810
 And v, all that was telling you that arguments that are based on convergence are flaky if you don't know the convergence beforehand.
 
-665
+664
 01:22:32,810 --> 01:22:34,440
 You can make wrong arguments.
 
-666
+665
 01:22:34,440 --> 01:22:40,690
 You can make deductions, as if you know the answer, and not be stopped somewhere by some obvious contradiction.
 
-667
+666
 01:22:40,690 --> 01:23:03,020
 AUDIENCE: So can we say then that if F is a convergent mathematical expression, then the recursion property can be-- PROFESSOR: Well, I think there's a technical kind of F, there is a technical description of those F's that have the property that when you iteratively apply them like this, you converge.
 
-668
+667
 01:23:03,020 --> 01:23:09,370
 Things that are monotonic, and continuous, and I forgot what else.
 
-669
+668
 01:23:09,370 --> 01:23:13,430
 There is a whole bunch of little conditions like that which have this property.
 
-670
+669
 01:23:13,430 --> 01:23:22,010
 Now the real problem is deducing from looking at the F, its definition here, whether not it has those properties, and that's very hard.
 
-671
+670
 01:23:22,010 --> 01:23:23,280
 The properties are easy.
 
-672
+671
 01:23:23,280 --> 01:23:24,580
 You can write them down.
 
-673
+672
 01:23:24,580 --> 01:23:26,930
 You can look in a book by Joe Stoy.
 
-674
+673
 01:23:26,930 --> 01:23:29,910
 It's a great book-- Stoy.
 
-675
+674
 01:23:31,780 --> 01:23:41,800
 It's called, The Scott-Strachey Method of Denotational Semantics, and it's by Joe Stoy, MIT Press.
 
-676
+675
 01:23:47,960 --> 01:23:51,880
 And he works out all this in great detail, enough to horrify you.
 
-677
+676
 01:23:55,080 --> 01:23:56,330
 But it really is readable.
 
-678
+677
 01:24:09,150 --> 01:24:11,490
 OK, well, thank you.
 
-679
+678
 01:24:11,490 --> 01:24:13,780
 Time for the bigger break, I suppose.
 
