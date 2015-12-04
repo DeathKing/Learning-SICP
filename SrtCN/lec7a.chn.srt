@@ -1800,459 +1800,459 @@ x是外层过程的参数，y是内层过程的参数
 
 451
 00:56:08,410 --> 00:56:17,960
-Let's see, at this point, you should be getting the feeling, what's this nonsense this Sussman character is feeding me?
+现在大家可能开始嘀咕了，GJS说了这么多没用的有什么意义？
 
 452
 00:56:20,740 --> 00:56:24,800
-There's an awful lot of strange nonsense here.
+很多话没多大意义，而且还不好理解
 
 453
 00:56:24,800 --> 00:56:30,892
-After all, he purported to explain to me Lisp, and he wrote me a Lisp program on the blackboard.
+毕竟他还是给我详细解释了Lisp，并且还在黑板上写了程序
 
 454
 00:56:30,892 --> 00:56:38,370
-The Lisp program was intended to be interpreted for Lisp, but you need a Lisp interpreter in order to understand that program.
+这个程序是用Lisp所写的Lisp的解释器，但是要运行它你必须得先有一个Lisp解释器啊
 
 455
 00:56:38,370 --> 00:56:44,150
-How could that program have told me anything there is to be known about Lisp?
+理解了这个程序就算是完全了解Lisp了吗？
 
 456
 00:56:44,150 --> 00:56:45,795
-How is that not completely vacuous?
+这不是很空洞吗？
 
 457
 00:56:48,490 --> 00:56:50,990
-It's a very strange thing.
+而且非常诡异
 
 458
 00:56:50,990 --> 00:56:52,430
-Does it tell me anything at all?
+它是不是还隐藏了什么？
 
 459
 00:56:56,070 --> 00:57:03,105
-Well, you see, the whole thing is sort of like these Escher's hands that we see on this slide.
+我们想想看，这整件事是否很像幻灯片上这幅埃舍尔所画的手
 
 460
 00:57:06,180 --> 00:57:17,110
-Yes, eval and apply each sort of draw each other and construct the real thing, which can sit out and draw itself.
+eval和apply彼此画出彼此，组成了整个程序，它完全是自己画出了自己
 
 461
 00:57:17,110 --> 00:57:20,550
-Escher was a very brilliant man, he just didn't know the names of these spirits.
+埃舍尔聪明绝顶，他看透了其中的玄机不过却没有为其命名
 
 462
 00:57:23,910 --> 00:57:36,090
-Well, I'm going to do now, is I'm going to try to convince you that both this mean something, and, as a aside, I'm going to show you why you don't need definitions.
+我现在要做的就是，使你们相信，这一切都是有意义的，顺便地提到，我们甚至连定义都不需要
 
 463
 00:57:36,090 --> 00:57:44,890
-Just turns out that that sort of falls out, why definitions are not essential in a mathematical sense for doing all the things we need to do for computing.
+这可能有点打破常规了，我们要做实际计算却不需要定义，这有点违反数学直觉
 
 464
 00:57:49,070 --> 00:57:50,690
-Well, let's see here.
+我们来实际的看一下
 
 465
 00:57:50,690 --> 00:57:54,870
-Consider the following small program, what does it mean?
+考虑下面的这一小段程序，它有什么作用？
 
 466
 00:57:54,870 --> 00:57:57,035
-This is a program for computing exponentials.
+一个计算指数的程序
 
 467
 00:58:07,270 --> 00:58:22,070
-The exponential of x to the nth power is if--  and is zero, then the result is one.
+(define expt (lambda (x n) (cond ((= n 0) 1) 
 
 468
 00:58:22,070 --> 00:58:33,930
-Otherwise, I want the product of x and the result of exponentiating x to the n minus one power.
+(else (* x (expt x (- n 1))))
 
 469
 00:58:42,858 --> 00:58:46,630
-I think I got it right.
+应该没错
 
 470
 00:58:46,630 --> 00:58:49,470
-Now this is a recursive definition.
+一个递归定义
 
 471
 00:58:49,470 --> 00:58:56,410
-It's a definition of the exponentiation procedure in terms of itself.
+用expt自身来定义expt
 
 472
 00:58:56,410 --> 00:59:05,650
-And, as it has been mentioned before, your high school geometry teacher probably gave you a hard time about things like that.
+之前提到过，你的高中几何老师教这里的时候一定费了不少功夫
 
 473
 00:59:05,650 --> 00:59:07,910
-Was that justified?
+这样定义合理吗？
 
 474
 00:59:07,910 --> 00:59:13,430
-Why does this self referential definition make any sense?
+为什么这种自己定义自己的无赖方式会说得过去呢？
 
 475
 00:59:13,430 --> 00:59:17,600
-Well, first of all, I'm going to convince you that your high school geometry teacher was I telling you nonsense.
+首先我要说的是，高中老师教的那一套确实说不过去
 
 476
 00:59:20,370 --> 00:59:24,490
-Consider the following set of definitions here.
+比如来看几组方程
 
 477
 00:59:24,490 --> 00:59:33,070
-x plus y equals three, and x minus y equal one.
+x + y = 3    x - y = 1
 
 478
 00:59:33,070 --> 00:59:37,490
-Well, gee, this tells you x in terms of y, and this one tells you y in terms of x, presumably.
+看，这个用y来告诉你x是什么，下面这个用x来告诉你y是什么
 
 479
 00:59:40,150 --> 00:59:42,950
-And yet this happens to have a unique solution in x and y.
+碰巧这组方程有唯一的解
 
 480
 00:59:55,910 --> 01:00:06,600
-However, I could also write two x plus two y is six.
+然而，如果我写 2x + 2y = 6
 
 481
 01:00:06,600 --> 01:00:09,610
-These two equations have an infinite number solutions.
+上面这两个联立，就有无穷个解了
 
 482
 01:00:15,730 --> 01:00:24,070
-And I could write you, for example, x minus y equal 2, and these two equations have no solutions.
+我再写 x - y = 2，下面的这两个联立完全没有解
 
 483
 01:00:29,820 --> 01:00:39,510
-Well, I have here three sets of simultaneous linear equations, this set, this set, and this set.
+这里三组方程式，这组，这组和这组
 
 484
 01:00:39,510 --> 01:00:42,900
-But they have different numbers of solutions.
+它们的解的数目完全不同
 
 485
 01:00:42,900 --> 01:00:45,760
-The number of solutions is not in the form of the equations.
+解的数目通过方程的形式是看不出来的
 
 486
 01:00:45,760 --> 01:00:48,350
-They all three sets have the same form.
+三组方程看起来形式一样
 
 487
 01:00:48,350 --> 01:00:50,205
-The number of solutions is in the content.
+判断解的数目需要具体的来看方程的内容
 
 488
 01:00:53,000 --> 01:00:59,660
-I can't tell by looking at the form of a definition whether it makes sense, only by its detailed content.
+我不能看一眼方程的外貌就判断出解的数目来，必须要仔细辨别方程的内容
 
 489
 01:00:59,660 --> 01:01:05,100
-What are the coefficients, for example, in the case of linear equations?
+比如，这个线性方程，我们具体看方程的系数是什么？
 
 490
 01:01:05,100 --> 01:01:16,030
-So I shouldn't expect to be able to tell looking at something like this, from some simple things like, oh yes, EXPT is the solution of this recursion equation.
+所以我不能仅仅依照方程形式就来判断解是什么样子，就比如这个，你说，expt是这个递归方程的解
 
 491
 01:01:16,030 --> 01:01:26,040
-Expt is the procedure which if substituted in here, gives me EXPT back.
+你还说，expt这个过程，你在这里调用，它就真的计算返回相应的指数
 
 492
 01:01:26,040 --> 01:01:37,200
-I can't tell, looking at this form, whether or not there's a single, unique solution for EXPT, an infinite number of solutions, or no solutions.
+我也不清楚，简单看看这个方程的形式，我也不知道expt是有一个解，无限个解还是根本没有解
 
 493
 01:01:37,200 --> 01:01:40,490
-It's got to be how it counts and things like that, the details.
+要做具体的判断必须明白 它是如何计算的 类似的具体的细节
 
 494
 01:01:40,490 --> 01:01:42,900
-And it's harder in programming than linear algebra.
+在编程中弄清楚可不像在线性代数中那么简单了
 
 495
 01:01:42,900 --> 01:01:45,210
-There aren't too many theorems about it in programming.
+在编程中定理并不多
 
 496
 01:01:48,450 --> 01:01:53,970
-Well, I want to rewrite these equations a little bit, these over here.
+现在我先把这些个方程重写一遍
 
 497
 01:01:53,970 --> 01:01:56,770
-Because what we're investigating is equations like this.
+因为我们要讨论的是这种形式的方程
 
 498
 01:01:56,770 --> 01:02:04,730
-But I want to play a little with equations like this that we understand, just so we get some insight into this kind of question.
+我只是想在这几个方程上做一些变换，以便于我们理解那边的方程
 
 499
 01:02:04,730 --> 01:02:19,380
-We could rewrite our equations here, say these two, the ones that are interesting, as x equals three minus y, and y equals x minus one.
+我们把中间这个方程组重写为 x = 3 - y   y = x - 1 
 
 500
 01:02:22,010 --> 01:02:24,050
-What do we call this transformation?
+这种变换叫什么来着？
 
 501
 01:02:24,050 --> 01:02:26,095
-This is a linear transformation, t.
+一个线性变换，记为t
 
 502
 01:02:29,430 --> 01:02:37,370
-Then what we're getting here is an equation x y equals t of x y.
+所以这组方程也可以写作 <x y> = T<x y>
 
 503
 01:02:42,990 --> 01:02:44,560
-What am I looking for?
+我在找什么？
 
 504
 01:02:44,560 --> 01:02:47,040
-I'm looking for a fixed point of t.
+我在找T的不动点
 
 505
 01:02:47,040 --> 01:02:59,350
-The solution is a fixed point of t.
+不动点也就是方程的解
 
 506
 01:03:01,910 --> 01:03:10,880
-So the methods we should have for looking for solutions to equations, if I can do it by fixed points, might be applicable.
+所以我们已知的求不动点的方法也可以用在这里
 
 507
 01:03:10,880 --> 01:03:22,410
-If I have a means of finding a solution to an equations by fixed points-- just, might not work-- but it might be applicable to investigating solutions of equations like this.
+假如我有一个根据不动点来求得方程不动点的方法 -- 可能不管用 -- 可能也适用于这种情况的方程
 
 508
 01:03:27,240 --> 01:03:30,260
-But what I want you to feel is that this is an equation.
+我们来把这个想像为方程，感受一下
 
 509
 01:03:30,260 --> 01:03:45,010
-It's an expression with several instances of various names which puts a constraint on the name, saying what that name could have as its value, rather than some sort of mechanical process of substitution right now.
+这个表达式，其中有一些名字，上面对应着值的约束，不仅仅只用机械的代换来看它
 
 510
 01:03:47,740 --> 01:03:51,220
-This is an equation which I'm going to try to solve.
+这个方程就是我要求解的方程
 
 511
 01:03:51,220 --> 01:03:53,960
-Well, let's play around and solve it.
+我们来试试看
 
 512
 01:03:53,960 --> 01:04:00,320
-First of all, I want to write down the function which corresponds to t.
+首先，类比T的形式我先写一个函数
 
 513
 01:04:00,320 --> 01:04:06,960
-First I want to write down the function which corresponds to t whose fixed point is the answer to this question.
+这个函数的不动点就是我们想要的答案
 
 514
 01:04:11,950 --> 01:04:14,240
-Well, let's consider the following procedure f.
+来看这个过程  F
 
 515
 01:04:16,870 --> 01:04:19,340
-I claim it computes that function.
+用F来计算函数
 
 516
 01:04:19,340 --> 01:04:33,430
-f is that procedure of one argument g, which is that procedure of two arguments x and n.
+F有一个参数g，g是一个过程，有两个参数x和n
 
 517
 01:04:33,430 --> 01:05:00,690
-Which have the property that if n is zero, then the result is one, otherwise, the result is the product of x and g, applied to x, and minus n1.
+g的过程体是 (cond ((= n 0) 1) (else (* x (g (x (- n 1))))))
 
 518
 01:05:03,370 --> 01:05:30,930
-g, times, else, COND, lambda, lambda--  Here f is a procedure, which if I had a solution to that equation, if I had a good exponentiation procedure, and I applied f to that procedure, then the result would be a good exponentiation procedure.
+f是一个过程，如果这个方程有解，如果我有一个计算指数的过程，我用f来调用这个过程，结果也应该是一个计算指数的过程
 
 519
 01:05:37,460 --> 01:05:39,420
-Because, what does it do?
+它是怎么做的呢？
 
 520
 01:05:39,420 --> 01:05:54,670
-Well, all it is is exposing g were a good exponentiation procedure, well then this would produce, as its value, a procedure to arguments x and n, such that if n were 0, the result would be one, which is certainly true of exponentiation.
+假设g是一个指数计算过程，代入这里，生成一个有两个参数x和n的过程，其中如果n=0，结果就是1，这一点符合指数的定义
 
 521
 01:05:54,670 --> 01:06:03,470
-Otherwise, it will be the result of multiplying x by the exponentiation procedure given to me with x and n minus one as arguments.
+否则，就返回指数过程g计算得到的x^n-1与x的乘积
 
 522
 01:06:03,470 --> 01:06:14,620
-So if this computed the correct exponentiation for n minus one, then this would be the correct exponentiation for exponent n, so this would have been the right exponentiation procedure.
+如果对x^n-1的计算没有问题，那么返回的这个过程计算x^n也一定没有问题，这就是正确的指数计算过程
 
 523
 01:06:17,500 --> 01:06:32,320
-So what I really want to say here is E-X-P-T is a fixed point of f.
+所以，expt是F方程的不动点
 
 524
 01:06:37,550 --> 01:06:40,060
-Now our problem is there might be more than one fixed point.
+现在我们的问题在于，万一不止一个不动点
 
 525
 01:06:40,060 --> 01:06:43,270
-There might be no fixed points.
+万一根本没有不动点
 
 526
 01:06:43,270 --> 01:06:44,810
-I have to go hunting for the fixed points.
+所以我们必须求出不动点
 
 527
 01:06:48,290 --> 01:06:49,540
-Got to solve this equation.
+解出方程
 
 528
 01:06:52,160 --> 01:06:55,580
-Well there are various ways to hunt for fixed points.
+求不动点有很多种方式
 
 529
 01:06:55,580 --> 01:07:00,815
-Of course, the one we played with at the beginning of this term worked for cosine.
+我们一开始的时候举过cos的例子
 
 530
 01:07:06,080 --> 01:07:16,090
-Go into radians mode on your calculator and push cosine, and just keep doing it, and you get to some number which is about 0.73 or 0.74.
+计算器调成弧度制，然后一直按cosine，最后数字会稳定在0.73 0.74左右
 
 531
 01:07:16,090 --> 01:07:17,340
-I can't remember which.
+记不清是哪个了
 
 532
 01:07:22,900 --> 01:07:33,770
-By iterating a function, whose fixed point I'm searching for, it is sometimes the case that that function will converge in producing the fixed point.
+类似的，不断进行迭代，说不定就可以找出方程的不动点
 
 533
 01:07:33,770 --> 01:07:39,910
-I think we luck out in this case, so let's look for it.
+碰碰运气，来试试这种方法 
 
 534
 01:07:39,910 --> 01:07:48,030
-Let's look at this slide.
+来看这张幻灯片
 
 535
 01:07:48,030 --> 01:07:51,390
-Consider the following sequence of procedures.
+这有一连串的过程
 
 536
 01:07:56,400 --> 01:08:02,940
-e0 over here is the procedure which does nothing at all.
+e0什么也不做
 
 537
 01:08:02,940 --> 01:08:07,780
-It's the procedure which produces an error for any arguments you give it.
+如果将它应用于参数肯定会报错
 
 538
 01:08:07,780 --> 01:08:09,030
-It's basically useless.
+没什么用
 
 539
 01:08:14,480 --> 01:08:20,080
-Well, however, I can make an approximation.
+然而，我可以应用F逐渐逼近
 
 540
 01:08:20,080 --> 01:08:26,990
-Let's consider it the worst possible approximation to exponentiation, because it does nothing.
+e0应该是最差的近似了，因为它什么也做不了
 
 541
 01:08:26,990 --> 01:08:37,380
-Well, supposing I substituted e0 for g by calling f, as you see over here on e0.
+假设我用调用过程F应用于e0
 
 542
 01:08:37,380 --> 01:08:40,729
-So you see over here, have e0 there.
+e0代换了g，就在这里
 
 543
 01:08:40,729 --> 01:08:43,859
-Then gee, what's e1?
+我们来看看，e1是什么？
 
 544
 01:08:43,859 --> 01:08:49,325
-e1 is a procedure which exponentiate things to the 0th power, with no trouble.
+e1是一个可以计算x的0次方的过程，没什么问题
 
 545
 01:08:49,325 --> 01:08:54,250
-It gets the right answer, anything to the zero is one, and it makes an error on anything else.
+如果n=0值就是1，n!=0的话就会报错
 
 546
 01:08:57,390 --> 01:09:07,310
-Well, now what if I take e1 and I substitute if for g by calling f on e1?
+如果我对e1再次调用F会发生什么？
 
 547
 01:09:10,500 --> 01:09:15,670
-Oh gosh, I have here a procedure of two arguments.
+哦，还是得到了一个有两个参数的过程
 
 548
 01:09:15,670 --> 01:09:24,200
-Now remember e1 was appropriate for taking exponentiations of 0, for raising to the 0 exponent.
+记住，e1是F应用e0得到的近似，原本什么都做不了，现在可以计算0次方
 
 549
 01:09:24,200 --> 01:09:29,520
-So here, is n is 0, the result is one, so this guy is good for that too.
+来看e2，如果n=0，结果就是1，也是符合指数计算原则的
 
 550
 01:09:29,520 --> 01:09:35,979
-However, I can use something for raising to the 0th power to multiply it by x to raise something to the first power.
+然而，这里的乘法使得原本只能计算0次方的过程现在可以计算1次方
 
 551
 01:09:35,979 --> 01:09:39,670
-So e2 is good for both power 0 and one.
+所以e2可以计算0和1次方
 
 552
 01:09:43,800 --> 01:09:47,899
-And e3 is constructed from e2 in the same way.
+e3的推导过程和e2是类似的
 
 553
 01:09:47,899 --> 01:09:55,120
-And e3, of course, by the same argument is good for powers 0, one, and two.
+即E3可以用来计算0、1、2次方
 
 554
 01:09:55,120 --> 01:10:02,520
-And so I will assert for you, without proof, because the proof is horribly difficult.
+因此我就不加证明的断言，不动点就是一个指数计算过程，这个证明十分的困难
 
 555
 01:10:02,520 --> 01:10:07,710
-And that's the sort of thing that people called denotational semanticists do.
+这也就是人们所谓的指称语义学家所做的事
 
 556
 01:10:07,710 --> 01:10:10,265
-This great idea was invented by Scott and Strachey.
+这个伟大的想法最先是从Scott和Strachey开始的
 
 557
 01:10:14,240 --> 01:10:24,240
-They're very famous mathematician types who invented the interpretation for these programs that we have that I'm talking to you about right now.
+他们是非常出色的数学家，也就是他们发明了那些程序的解释方式，就是我刚才讲的
 
 558
 01:10:24,240 --> 01:10:32,220
-And they proved, by topology that there is such a fixed point in the cases that we want.
+他们用拓扑学的知识证明了，刚才我们的那个例子是存在固定点的
 
 559
 01:10:32,220 --> 01:10:43,680
-But the assertion is E-X-P-T is limit as n goes to infinity of em.
+但是结论是，expt是 n趋于无穷时Em的极限值
 
 560
 01:10:43,680 --> 01:10:47,900
-and And that we've constructed this by the following way.
+我们也可以这样写
 
 561
 01:10:50,520 --> 01:11:01,120
---is Well, it's f of, f of, f of, f of, f of-- f applied to anything at all.
+expt = (f (f (f (f .... (f 丄)....)
 
 562
 01:11:01,120 --> 01:11:05,320
-It didn't matter what that was, because, in fact, this always produces an error.
+不用管丄是什么，因为它总会生成一个错误
 
 563
 01:11:07,540 --> 01:11:16,380
-Applied to this--  That's by infinite nesting of f's.
+无穷的调用F
 
 564
 01:11:16,380 --> 01:11:19,760
-So now my problem is to make some infinite things.
+现在我们的问题又变成了如何来无穷的调用
 
 565
 01:11:22,590 --> 01:11:24,920
