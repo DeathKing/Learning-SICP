@@ -4,219 +4,219 @@
 
 2
 00:00:16,401 --> 00:00:19,520
-PROFESSOR: Well, let's see.
+现在，我们想想上一节课讲过的东西
 
 3
 00:00:19,520 --> 00:00:23,050
-What we did so far was a lot of fun, was it useful for anything?
+感觉上它非常有趣，它有什么实际的用途吗？
 
 4
 00:00:26,330 --> 00:00:29,380
-I suppose the answer is going to be yes.
+我想答案肯定是“是的”
 
 5
 00:00:29,380 --> 00:00:35,180
-If these metacircular interpreters are a valuable thing to play with.
+元循环求值器是非常有价值非常值得琢磨的
 
 6
 00:00:38,050 --> 00:00:52,570
-Well, there have been times I spend 50% of my time, over a year, trying various design alternatives by experimenting with them with metacircular interpreters-- metacircular interpreters like the sort you just saw.
+我曾花费一年的时间研究元循环求值器，并据此设计出不同的元循环求值器
 
 7
 00:00:52,570 --> 00:01:01,270
-Metacircular is because they are defined in terms of themselves in such a way that the language they interpret contains itself.
+元循环以它们自身来定义自身，因为元循环所求值的语言包含有元循环本身[此句不确定，可能大概意思是 元循环所解释的语言正是编写此元循环的语言]
 
 8
 00:01:01,270 --> 00:01:06,800
-Such interpreters are a convenient medium for exploring language issues.
+这样的求值器是一种探索语言的良好媒介
 
 9
 00:01:06,800 --> 00:01:15,490
-If you want to try adding a new feature, it's sort of a snap, it's easy, you just do it and see what happens.
+如果你想添加一个新的feature，小菜一碟，只需稍做修改运行看结果就行
 
 10
 00:01:15,490 --> 00:01:21,090
-You play with that language for a while you say, gee, I'm didn't like that, you throw it away.
+你可能试了一会儿，觉得不行，放弃了这个feature
 
 11
 00:01:21,090 --> 00:01:33,720
-Or you might want to see what the difference is if you'd make a slight difference in the binding strategy, or some more complicated things that might occur.
+你可能想试试修改一下绑定策略或者更复杂一些的东西，然后看看语言会发生什么
 
 12
 00:01:33,720 --> 00:01:49,690
-In fact, these metacircular interpreters are an excellent medium for people exchanging ideas about language design, because they're pretty easy to understand, and they're short, and compact, and simple.
+事实上，对于讨论与交换语言设计，元循环求值器是一个良好的媒介，它们非常容易理解，简洁简单
 
 13
 00:01:49,690 --> 00:02:05,450
-If I have some idea that I want somebody to criticize like say, Dan Friedman at Indiana, I'd write a little metacircular interpreter and send him some network mail with this interpreter in it.
+假如我想和在印度的Dan Friedman讨论语言设计上的想法，我只需写一个元循环求值器邮件给他
 
 14
 00:02:05,450 --> 00:02:11,940
-He could whip it up on his machine and play with it and say, that's no good.
+他在他的机器上运行看看效果，可能他会觉得这个设计并不好
 
 15
 00:02:11,940 --> 00:02:16,880
-And then send it back to me and say, well, why don't you try this one, it's a little better.
+然后他修改一番，然后再邮件给我，为什么不试试这个，会更好一些
 
 16
 00:02:16,880 --> 00:02:20,160
-So I want to show you some of that technology.
+所以我将会讲一些这方面的技术
 
 17
 00:02:20,160 --> 00:02:30,790
-See, because, really, it's the essential, simple technology for getting started in designing your own languages for particular purposes.
+因为，针对特定目的来设计新语言，它真的是一种必需的技术，而且还很容易 
 
 18
 00:02:30,790 --> 00:02:34,210
-Let's start by adding a very simple feature to a Lisp.
+我们试着先在Lisp中添加一个非常简单的feature
 
 19
 00:02:40,640 --> 00:02:44,370
-Now, one thing I want to tell you about is features, before I start.
+在这之前，我先来谈谈feature吧
 
 20
 00:02:49,560 --> 00:02:56,620
-There are many languages that have made a mess of themselves by adding huge numbers of features.
+有太多的语言因为添加了过多的feature而把语言弄的混乱不堪
 
 21
 00:02:56,620 --> 00:03:02,520
-Computer scientists have a joke about bugs that transform it to features all the time.
+计算机科学家也有一个笑话说 bug总可以变成feature的事
 
 22
 00:03:05,030 --> 00:03:12,820
-But I like to think of it is that many systems suffer from what's called creeping featurism.
+我认为很多系统都在经受着蠕变特性的折磨
 
 23
 00:03:12,820 --> 00:03:20,170
-Which is that George has a pet feature he'd like in the system, so he adds it.
+比方说George有一个很喜欢的feature，并且加入了系统
 
 24
 00:03:20,170 --> 00:03:26,640
-And then Harry says, gee, this system is no longer what exactly I like, so I'm going to add my favorite feature.
+Harry也想着，我也不喜欢这个系统，然后加入了自己最喜欢的特性
 
 25
 00:03:26,640 --> 00:03:30,710
-And then Jim adds his favorite feature.
+Jim也这样做
 
 26
 00:03:30,710 --> 00:03:37,790
-And, after a while, the thing has a manual 500 pages long that no one can understand.
+要不了多长时间，系统的操作手册一定是没人能看懂的500多页的庞然大物
 
 27
 00:03:37,790 --> 00:03:44,830
-And sometimes it's the same person who writes all of these features and produces this terribly complicated thing.
+有时候也可能只是一个人在添加feature并且导致同样糟糕的结果
 
 28
 00:03:44,830 --> 00:03:55,730
-In some cases, like editors, it's sort of reasonable to have lots of features, because there are a lot of things you want to be able to do and many of them arbitrary.
+很多情况下，比如编辑器，就会有很多feature，因为你想要很多的功能并且很多功能都有些随意性
 
 29
 00:03:55,730 --> 00:04:01,690
-But in computer languages, I think it's a disaster to have too much stuff in them.
+但是回到编程语言上来，我认为有太多的feature是一个灾难
 
 30
 00:04:04,110 --> 00:04:21,010
-The other alternative you get into is something called feeping creaturism, which is where you have a box which has a display, a fancy display, and a mouse, and there is all sorts of complexity associated with all this fancy IO.
+还有另一种情况你之为feeping creaturism，假如这儿有一个盒子，它有一个华丽的显示器，还从中引出一个鼠标，这个盒子内部可能还有些复杂
 
 31
 00:04:21,010 --> 00:04:30,080
-And your computer language becomes a dismal, little, tiny thing that barely works because of all the swapping, and disk twitching, and so on, caused by your Windows system.
+你的编程语言可能会因为Windows内存交换，磁盘颤动等一系列问题而不能正常工作
 
 32
 00:04:30,080 --> 00:04:37,440
-And every time you go near the computer, the mouse process wakes up and says, gee do you have something for me to do, and then it goes back to sleep.
+每当你使用计算机的时候，就会唤醒鼠标进程，它会询问是否需要做什么事情然后就回去沉睡
 
 33
 00:04:37,440 --> 00:04:42,940
-And if you accidentally push mouse with you elbow, a big puff of smoke comes out of your computer and things like that.
+可能你突然不小心地胳膊肘碰到了鼠标，你的计算机突然就冒起浓烟或者更糟糕的情况 [= =]
 
 34
 00:04:42,940 --> 00:04:47,500
-So two ways to disastrously destroy a system by adding features.
+这就是由于添加feature而导致系统不能用的两种典型情况
 
 35
 00:04:47,500 --> 00:04:49,730
-But try right now to add a little, simple feature.
+现在我们要添加的是一个非常简单的feature
 
 36
 00:04:52,300 --> 00:04:57,250
-This actually is a good one, and in fact, real Lisps have it.
+这是一个好的feature，事实上，Lisp中就有这个feature
 
 37
 00:04:57,250 --> 00:05:05,430
-As you've seen, there are procedures like plus and times that take any number of arguments.
+我们都知道，像+ *这样的过程可以接受不定数目的参数
 
 38
 00:05:05,430 --> 00:05:17,540
-So we can write things like the sum of the product of a and x and x, and the product of b and x and c.
+就比如 (+ (* a x x) (* b x) c)
 
 39
 00:05:17,540 --> 00:05:30,000
-As you can see here, addition takes three arguments or two arguments, multiplication takes two arguments or three arguments, taking numbers of arguments all of which are to be treated in the same way.
+你可以看到，+有两到三个参数，*也有两到三个参数，不管多少个参数都同样可以计算
 
 40
 00:05:30,000 --> 00:05:34,960
-This is a valuable thing, indefinite numbers of arguments.
+可以接受不定数目的参数，这一点非常有用
 
 41
 00:05:34,960 --> 00:05:47,850
-Yet the particular Lisp system that I showed you is one where the numbers of arguments is fixed, because I had to match the arguments against the formal parameters in the binder, where there's a pairup.
+而之前我所讲的Lisp求值器只能接受固定数目的参数，因为我用pair-up将形参与实参一一对应
 
 42
 00:05:50,810 --> 00:05:58,590
-Well, I'd like to be able to define new procedures like this that can have any number of arguments.
+假如我想定义像这样的不定参数数目的过程
 
 43
 00:05:58,590 --> 00:06:01,150
-Well there's several parts to this problem.
+我们分步来考虑
 
 44
 00:06:01,150 --> 00:06:15,480
-The first part is coming up with the syntactic specification, some way of notating the additional arguments, of which you don't know how many there are.
+第一步，我得先有相应的语法描述，就是一种表示附加参数的表示法，而且附加参数的个数是不定的
 
 45
 00:06:15,480 --> 00:06:26,980
-And then there's the other thing, which is once we've notated it, how are we going to interpret that notation so as to do the right thing, whatever the right thing is?
+下一步，我们之前也提到过，即，我们怎样使用新的语法得到正确的结果呢？
 
 46
 00:06:26,980 --> 00:06:30,480
-So let's consider an example of a sort of thing we might want to be able to do.
+我们先来看一个相关的例子
 
 47
 00:06:33,070 --> 00:06:49,090
-So an example might be, that I might want to be able to define a procedure which is a procedure of one required argument x and a bunch of arguments, I don't know how many there are, called y.
+我想要定义一个过程，有一个必需的参数x和剩下的一串不定数目的参数y
 
 48
 00:06:49,090 --> 00:07:05,990
-So x is required, and there are many y's, many argument-- y will be the list of them.
+x是必需的，还有剩下的很多参数用y表示，y是剩下参数的列表
 
 49
 00:07:14,480 --> 00:07:36,890
-Now, with such a thing, we might be able to say something like, map-- I'm going to do something to every one-- of that procedure of one argument u, which multiplies x by u, and we'll apply that to y.
+这个过程里，我可以这样写 (map (lambda(u) (* x u)) y)
 
 50
 00:07:36,890 --> 00:07:46,300
-I've used a dot here to indicate that the thing after this is a list of all the rest of the arguments.
+我用一个“点号”来表明y代表了剩下的所有参数
 
 51
 00:07:46,300 --> 00:07:47,745
-I'm making a syntactic specification.
+这样，我就对问题做出了语法描述
 
 52
 00:07:53,320 --> 00:08:08,631
-Now, what this depends upon, the reason why this is sort of a reasonable thing to do, is because this happens to be a syntax that's used in the Lisp reader for representing conses.
+为什么这样来写呢？因为这恰好是Lisp reader[应该是指REPL的输出]用来表示cons的一种语法
 
 53
 00:08:08,631 --> 00:08:11,080
-We've never introduced that before.
+之前没有介绍过
 
 54
 00:08:11,080 --> 00:08:26,980
-You may have seen when playing with the system that if you cons two things together, you get the first, space, dot, the second, space-- the first, space, dot, space, the second with parentheses around the whole thing.
+你可能也自己尝试过，当你用cons连接两个东西，返回的结果是 ( 第一个 . 第二个)
 
 55
 00:08:26,980 --> 00:08:41,870
-So that, for example, this x dot y corresponds to a pair, which has got an x in it and a y in it.
+举例来说吧，x . y 对应着这样一个序对，CAR是x CDR是y
 
 56
 00:08:41,870 --> 00:09:18,280
