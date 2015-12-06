@@ -468,75 +468,75 @@ tail部分的y是一个符号
 
 118
 00:18:20,358 --> 00:18:23,260
-PROFESSOR: Well let's see.
+我们接着来看
 
 119
 00:18:23,260 --> 00:18:38,250
-Now, I'm going to tell you about a rather more substantial variation, one that's a famous variation that many early Lisps had.
+我将要介绍另一种Lisp变式，这项feature非常出名，早期的很多Lisp实现都有它
 
 120
 00:18:38,250 --> 00:18:41,770
-It's called dynamic binding of variables.
+它被称为变量的动态绑定
 
 121
 00:18:41,770 --> 00:18:44,680
-And we'll investigate a little bit about that right now.
+我们现在来研究一下
 
 122
 00:18:47,620 --> 00:18:53,740
-I'm going to first introduce this by showing you the sort of thing that would make someone want this idea.
+我先来介绍一下是什么情况导致人们会有动态绑定这样的想法的
 
 123
 00:18:53,740 --> 00:18:58,640
-I'm not going to tell what it is yet, I'm going to show you why you might want it.
+我不具体说是到底是什么情况，我只来举一些例子，你们说不定也会有同样的想法的
 
 124
 00:18:58,640 --> 00:19:08,140
-Suppose, for example, we looked at the sum procedure again for summing up a bunch of things.
+假设，我们再来考虑sum这个过程，对一串东西求和
 
 125
 00:19:08,140 --> 00:20:08,220
-To be that procedure, of a term, lower bound, method of computing the next index, and upper bound, such that, if a is greater than b then the result is 0, otherwise, it's the sum, of the term, procedure, applied to a and the result of adding up, terms, with the next a being the a, the next procedure passed along, and the upper bound being passed along.
+(define sum (lambda (term a next b) (cond ((> a b) 0) (else (+ (term a) (sum term (next a) next b))))))
 
 126
 00:20:14,510 --> 00:20:25,450
-Blink, blink, blink-- Now, when I use this sum procedure, I can use it, for example, like this.
+当我使用sum过程的时候，我可以这样来用
 
 127
 00:20:25,450 --> 00:21:11,440
-We can define the sum of the powers to be, for example, sum of a bunch of powers x to the n, to be that procedure of a, b, and n-- lower bound, the upper bound, and n-- which is sum, of lambda of x, the procedure of one argument x, which exponentiates x to the n, with the a, the incrementer, and b, being passed along.
+(define sum-powers (lambda (a b n) (sum (lambda (x) (expt x n)) a 1+ b)))
 
 128
 00:21:11,440 --> 00:21:16,340
-So we're adding up x to n, given an x.
+计算x^n
 
 129
 00:21:16,340 --> 00:21:19,740
-x takes on values from a to b, incrementing by one.
+x从a到b取值，加1递增
 
 130
 00:21:22,940 --> 00:21:29,780
-I can also write the-- That's right.
+我也可以写 -- 对了
 
 131
 00:21:29,780 --> 00:21:31,910
-Product, excuse me.
+乘积
 
 132
 00:21:31,910 --> 00:21:33,220
-The product of a bunch of powers.
+product-powers
 
 133
 00:21:38,080 --> 00:21:40,020
-It's a strange name.
+名字有点奇怪
 
 134
 00:21:40,020 --> 00:21:41,960
-I'm going to leave it there.
+还是不改了
 
 135
 00:21:41,960 --> 00:21:50,890
-Weird-- I write up what I have. I'm sure that's right.
+有点怪，就按原来的吧
 
 136
 00:21:50,890 --> 00:22:03,400
