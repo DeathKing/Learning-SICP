@@ -540,127 +540,127 @@ product-powers
 
 136
 00:21:50,890 --> 00:22:03,400
-And if I want the product of a bunch of powers-- That was 12 brain cells, that double-take.
+如果我想写product-powers，That was 12 brain cells, that double-take.[此句不明了]
 
 137
 00:22:03,400 --> 00:22:11,450
-I can for example use the procedure which is like sum, which is for making products, but it's similar to that, that you've seen before.
+这个过程就像刚才的sum-powers差不多
 
 138
 00:22:11,450 --> 00:22:16,725
-There's a procedure of three arguments again.
+也是一个有三个参数的过程
 
 139
 00:22:16,725 --> 00:22:37,850
-Which is the product of terms that are constructed, or factors in this case, constructed from exponentiating x to the n, where I start with a, I increment, and I go to b.
+过程具体为(product (lambda (x) (expt x n)) a 1+ b)
 
 140
 00:22:41,530 --> 00:22:50,750
-Now, there's some sort of thing here that should disturb you immediately.
+你可能马上就意识到一些问题
 
 141
 00:22:50,750 --> 00:22:53,180
-These look the same.
+它们看起来几乎一样
 
 142
 00:22:53,180 --> 00:22:56,590
-Why am I writing this code so many times?
+为什么要重复写代码呢？
 
 143
 00:22:56,590 --> 00:23:01,270
-Here I am, in the same boat I've been in before.
+现在就和之前我们遇到的情况很相似了
 
 144
 00:23:01,270 --> 00:23:03,810
-Wouldn't it be nice to make an abstraction here?
+构造一个抽象不是挺好的吗？
 
 145
 00:23:03,810 --> 00:23:05,980
-What's an example of a good abstraction to make?
+如何构建良好的抽象呢？
 
 146
 00:23:05,980 --> 00:23:08,470
-Well, I see some codes that's identical.
+我看到有一些完全相同的代码
 
 147
 00:23:08,470 --> 00:23:11,080
-Here's one, and here's another.
+这有一段，还有这里
 
 148
 00:23:14,450 --> 00:23:17,090
-And so maybe I should be able to pull that out.
+所以我应该把它们提取出来
 
 149
 00:23:17,090 --> 00:23:25,710
-I should be able to say, oh yes, the sum of the powers could be written in terms of something called the nth power procedure.
+所以我就会想，sum-powers可以用名为nth-powers的过程来表示
 
 150
 00:23:25,710 --> 00:23:30,030
-Imagine somebody wanted to write a slightly different procedure that looks like this.
+假如有人想写一个稍微不同的过程
 
 151
 00:23:37,630 --> 00:23:53,556
-The sum powers to be a procedure of a, b, and n, as the result of summing up the nth power.
+(define sum-powers (lambda (a b n) 
 
 152
 00:23:53,556 --> 00:24:02,170
-We're going to give a name to that idea, for starting at a, going by one, and ending at b.
+(sum nth-power a 1+ b)
 
 153
 00:24:06,000 --> 00:24:16,270
-And similarly, I might want to write the product powers this way, abstracting out this idea.
+相似地，我用这种方式来重写product-powers
 
 154
 00:24:16,270 --> 00:24:17,520
-I might want this.
+应该这样
 
 155
 00:24:22,100 --> 00:24:58,380
-Product powers, to be a procedure of a, b, and n, which is the product of the nth power operation on a with the incrementation and b being my arguments for the analogous-thing product.
+(define product-powers (lambda (a b n) (product nth-powers a 1+ b)))
 
 156
 00:24:58,380 --> 00:25:05,930
-And I'd like to be able to define, I'd like to be able to define nth power-- I'll put it over here.
+我们还需要定义过程nth-powers，我把它写在这边
 
 157
 00:25:11,215 --> 00:25:12,990
-I'll put it at the top.
+写在上面
 
 158
 00:25:25,410 --> 00:25:35,390
---to be, in fact, my procedure of one argument x which is the result of exponentiating x to the n.
+这个过程就应该是 (define nth-powers (lambda (x) (expt x n)))
 
 159
 00:25:35,390 --> 00:25:38,640
-But I have a problem.
+但是我遇到一个问题
 
 160
 00:25:38,640 --> 00:25:48,810
-My environment model, that is my means of interpretation for the language that we've defined so far, does not give me a meaning for this n.
+我们用环境模型来解释这一段代码，但是找不到n的定义
 
 161
 00:25:52,520 --> 00:26:06,410
-Because, as you know, this n is free in this procedure.
+因为，在这个过程内，n是自由变量
 
 162
 00:26:06,410 --> 00:26:16,640
-The environment model tells us that the meaning of a free variable is determined in the environment in which this procedure is defined.
+环境模型告诉我们自由变量的值取决于过程被定义时所在的环境
 
 163
 00:26:16,640 --> 00:26:25,850
-In a way I have written it, assuming these things are defined on the blackboard as is, this is defined in the global environment, where there is no end.
+假设所有的过程就像我在黑板上写的这样来定义，nth-powers就定义在全局环境下，没有n的定义
 
 164
 00:26:25,850 --> 00:26:28,720
-Therefore, n is unbound variable.
+因此，n是未绑定的变量
 
 165
 00:26:28,720 --> 00:26:36,220
-But it's perfectly clear, to most of us, that we would like it to be this n and this n.
+这种写法很简洁，但是我们都希望n是这里的n和这里的n
 
 166
 00:26:38,990 --> 00:26:42,840
-On the other hand, it would be nice.
+这样就太完美了
 
 167
 00:26:42,840 --> 00:26:52,900
