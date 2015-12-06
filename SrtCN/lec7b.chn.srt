@@ -220,247 +220,247 @@ x是必需的，还有剩下的很多参数用y表示，y是剩下参数的列�
 
 56
 00:08:41,870 --> 00:09:18,280
-The other notations that you've seen so far are things like a procedure of arguments x and y and z which do things, and that looks like-- Just looking at the bound variable list, it looks like this, x, y, z, and the empty thing.
+目前为止你们所见到的过程参数都像是这样的，比如x y z，画出列表来就像是这样，x y z '()
 
 57
 00:09:18,280 --> 00:09:46,380
-If I have a list of arguments I wish to match this against, supposing, I have a list of arguments one, two, three, I want to match these against. So I might have here a list of three things, one, two, three.
+如果我想要一个列表与之匹配的话，假设列表(1 2 3)，用来和(x y z)相匹配
 
 58
 00:09:48,990 --> 00:09:54,220
-And I want to match x, y, z against one, two, three.
+用(x y z)来对应(1 2 3)
 
 59
 00:09:54,220 --> 00:10:05,480
-Well, it's clear that the one matches the x, because I can just sort of follow the structure, and the two matches the y, and the three matches the z.
+很明显的，我们先把列表的第一个元素相对应，即x对应1，然后再开始对应列表剩下的部分
 
 60
 00:10:05,480 --> 00:10:18,510
-But now, supposing I were to compare this x dot y-- this is x dot y-- supposing I compare that with a list of three arguments, one, two, three.
+假设我来匹配(x . y)，还是用(1 2 3)
 
 61
 00:10:18,510 --> 00:10:20,000
-Let's look at that again.
+我们再来看
 
 62
 00:10:28,000 --> 00:10:43,740
-One, two, three-- Well, I can walk along here and say, oh yes, x matches the one, the y matches the list, which is two and three.
+1 2 3,我遍历过来，哦对的，x对应1，y对应剩下的列表，也就是(2 3)
 
 63
 00:10:43,740 --> 00:10:50,160
-So the notation I'm choosing here is one that's very natural for Lisp system.
+所以这里选用的表示法对于Lisp来说是非常自然的
 
 64
 00:10:52,660 --> 00:10:56,040
-But I'm going to choose this as a notation for representing a bunch of arguments.
+如果我就选择 x . y 来表示不定参数
 
 65
 00:10:58,290 --> 00:11:00,770
-Now, there's an alternative possibility.
+还有一种可能性
 
 66
 00:11:00,770 --> 00:11:25,140
-If I don't want to take one special out, or two special ones out or something like that, if I don't want to do that, if I want to talk about just the list of all the arguments like in addition, well then the argument list I'm going to choose to be that procedure of all the arguments x which does something with x.
+我不想要一个必需的参数，或者两个或者更多，我想要所有的参数都是不必需的全部作为一个列表，这样的话所有的实际参数组成的列表就是x
 
 67
 00:11:25,140 --> 00:11:45,850
-And which, for example, if I take the procedure, which takes all the arguments x and returned the list of them, that's list. That's the procedure list.
+举例来看，我定义一个过程，接受参数并返回参数的列表，这个匿名过程就是过程list啊
 
 68
 00:11:45,850 --> 00:11:46,840
-How does this work?
+怎么来看待这一点呢？
 
 69
 00:11:46,840 --> 00:11:55,140
-Well, indeed what I had as the bound variable list in this case, whatever it is, is being matched against a list of arguments.
+不管怎么说，这里应该是一个形参列表，来匹配实际参数的列表
 
 70
 00:11:55,140 --> 00:11:57,145
-This symbol now is all of the arguments.
+这时，这里的x就代表了所有的参数
 
 71
 00:12:01,490 --> 00:12:10,285
-And so this is the choice I'm making for a particular syntactic specification, for the description of procedures which take indefinite numbers of arguments.
+所以这是一种特殊的语法描述，来表示参数个数完全不定的情况
 
 72
 00:12:13,190 --> 00:12:18,420
-There are two cases of it, this one and this one.
+一共就两种情况，上面这种和下面这种
 
 73
 00:12:18,420 --> 00:12:31,100
-When you make syntactic specifications, it's important that it's unambiguous, that neither of these can be confused with a representation we already have, this one.
+当你构建新的语法描述的时候，一定要注意，不要与现有的语法混淆或者矛盾
 
 74
 00:12:33,610 --> 00:12:58,465
-I can always tell whether I have a fixed number of explicitly named arguments made by these formal parameters, or a fixed number of named formal parameters followed by a thing which picks up all the rest of them, or a list of all the arguments which will be matched against this particular formal parameter called x, because these are syntactically distinguishable.
+引入了新的语法描述，我也总是可以分清是接收固定数目的参数，还是一定固定参数后再接不定数目的参数，更或者是参数的个数完全不确定全部由x来表示
 
 75
 00:13:02,250 --> 00:13:14,560
-Many languages make terrible errors in that form where whole segments of interpretation are cut off, because there are syntactic ambiguities in the language.
+有很多语言都是由于语法描述方面出现了混淆或者矛盾导致语言解释器的错误
 
 76
 00:13:14,560 --> 00:13:25,060
-They are the traditional problems with ALGOL like languages having to do with the nesting of ifs in the predicate part.
+比如 类ALGOL语言的嵌套if问题
 
 77
 00:13:25,060 --> 00:13:35,250
-In any case, now, so I've told you about the syntax, now, what are we going to do about the semantics of this?
+现在我已经告诉你们可行的语法了，接下来要怎么做呢？
 
 78
 00:13:35,250 --> 00:13:36,590
-How do we interpret it?
+我们如何来解释它？
 
 79
 00:13:36,590 --> 00:13:38,440
-Well this is just super easy.
+其实很简单
 
 80
 00:13:38,440 --> 00:13:43,396
-I'm going to modify the metacircular interpreter to do it.
+现在我来修改一下元循环
 
 81
 00:13:43,396 --> 00:13:46,020
-And that's a one liner.
+只需要修改一行
 
 82
 00:13:46,020 --> 00:13:47,590
-There it is.
+在这里
 
 83
 00:13:47,590 --> 00:13:49,560
-I'm changing the way you pair things up.
+把pair-up修改一下就行
 
 84
 00:13:56,390 --> 00:14:16,080
-Here's the procedure that pairs the variables, the formal parameters, with the arguments that were passed from the last description of the metacircular interpreter.
+pair-up就是那个用来匹配形参与实参的过程
 
 85
 00:14:18,960 --> 00:14:22,670
-And here's some things that are the same as they were before.
+大部分地方都不需要修改
 
 86
 00:14:22,670 --> 00:14:31,050
-In other words, if the list of variables is empty, then if the list of values is empty, then I have an empty list.
+如果变量列表为空，而且值的列表也是空，就返回空列表
 
 87
 00:14:31,050 --> 00:14:41,580
-Otherwise, I have too many arguments, that is, if I have empty variables but not empty values.
+否则，就是值太多了，也即变量列表为空而值列表不是空的
 
 88
 00:14:41,580 --> 00:14:50,090
-If I have empty values, but the variables are not empty, I have too few arguments.
+如果值列表为空，但是变量列表不为空，那么就是实参给少了
 
 89
 00:14:50,090 --> 00:15:06,255
-The variables are a symbol-- interesting case-- then, what I should do is say, oh yes, this is the special case that I have a symbolic tail.
+如果变量是一个符号，开始有意思了，这是一种特殊情况，这是一个符号尾
 
 90
 00:15:09,010 --> 00:15:14,900
-I have here a thing just like we looked over here.
+情况就像这里的一样
 
 91
 00:15:14,900 --> 00:15:18,630
-This is a tail which is a symbol, y.
+tail部分的y是一个符号
 
 92
 00:15:18,630 --> 00:15:20,730
-It's not a nil.
+它不是nil
 
 93
 00:15:20,730 --> 00:15:25,600
-It's not the empty list. Here's a symbolic tail that is just the very beginning of the tail.
+也不是空列表，这里的符号尾x就是最开始的那种情况
 
 94
 00:15:25,600 --> 00:15:27,790
-There is nothing else.
+不是另外的情况
 
 95
 00:15:27,790 --> 00:15:44,500
-In that case, I wish to match that variable with all the values and add that to the pairing that I'm making.
+这种情况下，我就用这个符号去匹配整个值列表
 
 96
 00:15:44,500 --> 00:15:48,910
-Otherwise, I go through the normal arrangement of making up the whole pairing.
+否则，我就回到以往的正常情况来一一匹配
 
 97
 00:15:52,020 --> 00:15:54,510
-I suppose that's very simple.
+我认为这很容易理解 
 
 98
 00:15:54,510 --> 00:15:57,080
-And that's all there is to it.
+就是这些
 
 99
 00:15:57,080 --> 00:15:58,330
-And now I'll answer some questions.
+现在  答疑时间
 
 100
 00:16:02,620 --> 00:16:06,600
-The first one-- Are there any questions?
+有什么问题吗？
 
 101
 00:16:06,600 --> 00:16:06,950
-Yes?
+你说
 
 102
 00:16:06,950 --> 00:16:10,450
-AUDIENCE: Could you explain that third form?
+你能再解释一下第三种形式吗？
 
 103
 00:16:10,450 --> 00:16:12,590
-PROFESSOR: This one?
+这个？
 
 104
 00:16:12,590 --> 00:16:18,570
-Well, maybe we should look at the thing as a piece of list structure.
+或许你用表结构来思考它会更容易理解一些
 
 105
 00:16:18,570 --> 00:16:22,400
-This is a procedure which contains a lambda.
+这是一个过程，包含一个lambda
 
 106
 00:16:25,970 --> 00:16:31,090
-I'm just looking at the list structure which represents this.
+我来画出表示上面这个过程的表结构
 
 107
 00:16:31,090 --> 00:16:32,730
-Here's x.
+这里是x
 
 108
 00:16:32,730 --> 00:16:33,980
-These are our symbols.
+这些是我们的符号
 
 109
 00:16:37,410 --> 00:16:39,580
-And then the body is nothing but x.
+过程体就是x而已
 
 110
 00:16:44,840 --> 00:16:54,010
-If I were looking for the bound variable list part of this procedure, I would go looking at the CADR, and I'd find a symbol.
+如果我来查找这个过程的形参部分，取整个结构的CADR，返回一个符号x
 
 111
 00:16:54,010 --> 00:17:05,760
-So the, naturally, which is this pairup thing I just showed you, is going to be matching a symbolic object against a list of arguments that were passed.
+所以，很自然地，在pair-up中，我就用一个符号去匹配整个实参的列表
 
 112
 00:17:05,760 --> 00:17:09,559
-And it will bind that symbol to the list of arguments.
+这个符号与实参的列表相绑定
 
 113
 00:17:13,910 --> 00:17:20,920
-In this case, if I'm looking for it, the match will be against this in the bound variable list position.
+上面这种情况，如果我用CADR，得到这样的结构去匹配实参列表
 
 114
 00:17:24,140 --> 00:17:31,450
-Now, if what this does is it gets a list of arguments and returns it, that's list. That's what the procedure is.
+这里的x就匹配到整个实参的列表然后返回x这个列表，这就是这个过程所做的事
 
 115
 00:17:34,510 --> 00:17:36,140
-Oh well, thank you.
+好的
 
 116
 00:17:36,140 --> 00:17:37,830
-Let's take a break.
+大家休息一下吧
 
 117
 00:17:37,830 --> 00:18:20,358
