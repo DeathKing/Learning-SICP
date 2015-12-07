@@ -1020,63 +1020,63 @@ pgen这里的n明显的就是product-powers这里的n
 
 256
 00:37:58,380 --> 00:38:06,470
-AUDIENCE: Is the only solution to the problem you raise to create another procedure?
+刚才那个问题只有这一种解决办法吗？
 
 257
 00:38:06,470 --> 00:38:12,402
-In other words, can this only work in languages that are capable of defining objects as procedures?
+换句话说，是不是只有那些过程可作为对象的语言才可以用这样的方法来解决？
 
 258
 00:38:12,402 --> 00:38:13,765
-PROFESSOR: Oh, I see.
+我想想
 
 259
 00:38:16,530 --> 00:38:28,190
-My solution to making this abstraction, when I didn't want include the procedure inside the body, depends upon my ability to return a procedure or export one.
+我的解决方法是构造抽象，我没有把过程用lambda定义在sum里，而是定义在外面，然后这个过程生成一个新过程
 
 260
 00:38:28,190 --> 00:38:30,410
-And that's right.
+没错
 
 261
 00:38:30,410 --> 00:38:43,000
-If I don't have that, then I just don't have this ability to make an abstraction in a way where I don't have possibilities of symbol conflicts that were unanticipated.
+如果过程作为对象，我就不能这样来解决符号冲突的问题了
 
 262
 00:38:43,000 --> 00:38:45,610
-That's right.
+你说的对
 
 263
 00:38:45,610 --> 00:39:03,700
-I consider being able to return the procedural value and, therefore, to sort of have first class procedures, in general, as being essential to doing very good modular programming.
+我可以把过程作为函数返回值，也只能在过程是一类公民的语言中可以做到，这一点对于模块化编程非常重要
 
 264
 00:39:03,700 --> 00:39:07,440
-Now, indeed there are many other ways to skin this cat.
+有很多种方式来解决这个问题
 
 265
 00:39:07,440 --> 00:39:15,840
-What you can do is take for each of the bad things that you have to worry about, you can make a special feature that covers that thing.
+你需要的做的就是考虑所有你认为糟糕的情况，然后做一个feature来解决它
 
 266
 00:39:15,840 --> 00:39:17,930
-You can make a package system.
+你可以做一个包系统
 
 267
 00:39:17,930 --> 00:39:22,240
-You can make a module system as in Ada, et cetera.
+或者像Ada中的模块系统
 
 268
 00:39:22,240 --> 00:39:26,440
-And all of those work, or they cover little regions of it.
+这些都可以，可能区别只是解决的程度不一
 
 269
 00:39:26,440 --> 00:39:45,590
-The thing is that returning procedures as values cover all of those problems. And so it's the simplest mechanism that gives you the best modularity, gives you all of the known modularity mechanisms.
+过程作为返回值这一点可以解决所有问题，这种最简单的机制，却可以给予你最好的模块性
 
 270
 00:39:45,590 --> 00:39:48,248
-Well, I suppose it's time for the next break, thank you.
+好的，该休息一会儿了
 
 271
 00:39:48,248 --> 00:40:41,871
@@ -1084,187 +1084,187 @@ Well, I suppose it's time for the next break, thank you.
 
 272
 00:40:41,871 --> 00:40:55,420
-PROFESSOR: Well, yesterday when you learned about streams, Hal worried to you about the order of evaluation and delayed arguments to procedures.
+昨天你们学习流的时候，哈罗德向你们提到过求值顺序与过程参数延时求值的问题
 
 273
 00:40:55,420 --> 00:41:15,250
-The way we played with streams yesterday, it was the responsibility of the caller and the callee to both agree that an argument was delayed, and the callee must force the argument if it needs the answer.
+我们昨天讲了流，其中调用者和被调用者都必须了解参数是被delay的，然后被调用者对参数force而得到结果
 
 274
 00:41:15,250 --> 00:41:26,100
-So there had to be a lot of hand shaking between the designer of a procedure and user of it over delayedness.
+这样的话，过程的开发者和过程的使用者就需要太多的交流与协商
 
 275
 00:41:26,100 --> 00:41:45,900
-That turns out, of course, to be a fairly bad thing, it works all right with streams. But as a general thing, what you want is an idea to have a locus, a decision, a design decision in general, to have a place where it's made, explicitly, and notated in a clear way.
+这看起来很糟糕，但是对于流来说没什么不妥。但是，广泛着来看，我们想要的是一个广泛层面的设计决策，而且可以显式的清晰的表述出来
 
 276
 00:41:45,900 --> 00:41:59,500
-And so it's not a very good idea to have to have an agreement, between the person who writes a procedure and the person who calls it, about such details as, maybe, the arguments of evaluation, the order of evaluation.
+所以，如果过程编写者和过程使用者需要花费不少的精力去协商比如参数是否求值、求值顺序的问题，那是十分不妥当的
 
 277
 00:41:59,500 --> 00:42:00,750
-Although, that's not so bad.
+但是也不是太糟糕
 
 278
 00:42:00,750 --> 00:42:04,540
-I mean, we have other such agreements like, the input's a number.
+我的意思是，可能参数输入的是一个数字
 
 279
 00:42:04,540 --> 00:42:11,020
-But it would be nice if only one of these guys could take responsibility, completely.
+但是，如果其中一个人可以全权负责这部分的事情是再好不过了
 
 280
 00:42:11,020 --> 00:42:15,510
-Now this is not a new idea.
+这个想法已经不算新潮了
 
 281
 00:42:15,510 --> 00:42:22,020
-ALGOL 60 had two different ways of calling a procedure.
+ALGOL就提供了完全不同的两种方式来执行过程
 
 282
 00:42:22,020 --> 00:42:25,590
-The arguments could be passed by name or by value.
+参数作为名称传递或者值传递
 
 283
 00:42:25,590 --> 00:42:31,110
-And what that meant was that a name argument was delayed.
+按名字传递的意思即这个参数会延时求值
 
 284
 00:42:31,110 --> 00:42:39,620
-That when you passed an argument by name, that its value would only be obtained if you accessed that argument.
+当你按名字传递一个参数，只有你去取它的值的时候，它的值才会被计算出来
 
 285
 00:42:42,290 --> 00:42:50,320
-So what I'd like to do now is show you, first of all, a little bit about, again, we're going to make a modification to a language.
+我们接下来，还要对语言进行一些小的修改
 
 286
 00:42:50,320 --> 00:42:53,370
-In this case, we're going to add a feature.
+这里，我们再添加一个新的feature
 
 287
 00:42:53,370 --> 00:43:00,430
-We're going to add the feature of, by name parameters, if you will, or delayed parameters.
+可以称作为“名称参数”，或者你就理解为 延时参数 就行
 
 288
 00:43:00,430 --> 00:43:08,220
-Because, in fact, the default in our Lisp system is by the value of a pointer.
+因为事实上，我们的Lisp中默认传递的是指针的值
 
 289
 00:43:08,220 --> 00:43:13,410
-A pointer is copied, but the data structure it points at is not.
+指针被复制了，但是它所指向的数据结构却没有变化 [在没有赋值与副作用的情况下，这不会造成什么影响]
 
 290
 00:43:13,410 --> 00:43:19,990
-But I'd like to, in fact, show you is how you add name arguments as well.
+我也会讲到，如何来使用名称参数
 
 291
 00:43:19,990 --> 00:43:23,100
-Now again, why would we need such a thing?
+为什么我们需要这样的feature呢？
 
 292
 00:43:23,100 --> 00:43:29,720
-Well supposing we wanted to invent certain kinds of what otherwise would be special forms, reserve words?
+语言中的保留字在eval中都属于特殊形式，假如我们开发出具有保留字那样的功能
 
 293
 00:43:29,720 --> 00:43:32,180
-But I'd rather not take up reserve words.
+但是并不是添加新的保留字
 
 294
 00:43:32,180 --> 00:43:36,360
-I want procedures that can do things like if.
+我想用一个过程来达到if的效果
 
 295
 00:43:36,360 --> 00:43:39,420
-If is special, or cond, or whatever it is.
+if很特殊，cond也是
 
 296
 00:43:39,420 --> 00:43:40,600
-It's the same thing.
+它们很一样
 
 297
 00:43:40,600 --> 00:43:50,840
-It's special in that it determines whether or not to evaluate the consequent or the alternative based on the value of the predicate part of an expression.
+if特殊在它会根据谓词的真假来判断是执行真语句还是假语句
 
 298
 00:43:50,840 --> 00:43:57,270
-So taking the value of one thing determines whether or not to do something else.
+谓词的值决定了做不做后续的事
 
 299
 00:43:57,270 --> 00:44:08,670
-Whereas all the procedures like plus, the ones that we can define right now, evaluate all of their arguments before application.
+然而像 + 之类的过程，它们的参数可以在过程应用之前求值
 
 300
 00:44:08,670 --> 00:44:19,452
-So, for example, supposing I wish to be able to define something like the reverse of if in terms of if.
+假如我现在用保留字if来定义一个与if相反含义的过程
 
 301
 00:44:19,452 --> 00:44:20,702
-Call it unless.
+叫它unless
 
 302
 00:44:24,890 --> 00:44:28,190
-We've a predicate, a consequent, and an alternative.
+一个谓词，一个真语句，一个假语句
 
 303
 00:44:28,190 --> 00:44:32,440
-Now what I would like to sort of be able to do is say-- oh, I'll do it in terms of cond.
+接下来的是，哦，我用的是cond来定义，不是if，前面说错了
 
 304
 00:44:32,440 --> 00:44:45,350
-Cond, if not the predicate, then take the consequent, otherwise, take the alternative.
+(cond ((not p) c) (else a))
 
 305
 00:44:51,290 --> 00:44:56,920
-Now, what I'd like this to mean, is supposing I do something like this.
+在这种情况下，假设我继续做下面的
 
 306
 00:44:56,920 --> 00:45:11,350
-I'd like this unless say if equals one, 0, then the answer is two, otherwise, the quotient of one and 0.
+(unless (= 1 0) 2 (/ 1 0))
 
 307
 00:45:15,980 --> 00:45:25,580
-What I'd like that to mean is the result of substituting equal one, 0, and two, and the quotient of one, 0 for p, c, and a.
+接下来要做的是进行代换，下面的1 2 3参数分别对应上面的p c a
 
 308
 00:45:25,580 --> 00:45:51,160
-I'd like that to mean, and this is funny, I'd like it to transform into or mean cond not equal one, 0, then the result is two, otherwise I want it to be the quotient one and 0.
+代换过后就像是，(cond ((not (= 1 0)) 2) (else (/ 1 0)))
 
 309
 00:45:54,480 --> 00:45:59,970
-Now, you know that if I were to type this into Lisp, I'd get a two.
+如果你直接把cond这一部分输入Lisp，会得到结果2
 
 310
 00:45:59,970 --> 00:46:02,910
-There's no problem with that.
+没问题
 
 311
 00:46:02,910 --> 00:46:10,840
-However, if I were to type this into Lisp, because all the arguments are evaluated before I start, then I'm going to get an error out of this.
+然而，如果我把unless这一部分输入Lisp，参数会在过程执行之前先求值，这样(/ 1 0)这里就会报错
 
 312
 00:46:13,380 --> 00:46:16,880
-So that if the substitutions work at all, of course, I would get the right answer.
+如果代换为cond，我可以得到正确的结果
 
 313
 00:46:16,880 --> 00:46:20,160
-But here's a case where the substitutions don't work.
+但是这里这种情况，代换并不能进行
 
 314
 00:46:22,920 --> 00:46:23,860
-I don't get the wrong answer.
+我得到了错误的结果
 
 315
 00:46:23,860 --> 00:46:24,670
-I get no answer.
+没结果
 
 316
 00:46:24,670 --> 00:46:25,920
-I get an error.
+还是一个错误
 
 317
 00:46:28,420 --> 00:46:34,270
-Now, however, I'd like to be able to make my definition so that this kind of thing works.
+现在，我要想办法使这样的定义可以成功运行
 
 318
 00:46:34,270 --> 00:46:39,930
