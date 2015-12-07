@@ -784,239 +784,239 @@ APL就是用动态绑定来解释自由变量的，而不是静态绑定
 
 197
 00:30:41,490 --> 00:31:06,810
-And if we look at that here, the only change we have to make is that fellow takes that environment and uses that environment for the purpose of extending that environment when abiding the formal parameters of the procedure to the arguments that were passed, not an environment that was captured in the procedure.
+我们再来看看apply，增加了一个环境参数，绑定参数的时候就来扩展这个环境，而不是去扩展原先绑定在'closure过程内的环境了
 
 198
 00:31:06,810 --> 00:31:14,130
-The reason why the first Lisps were implemented this way, is the sort of the obvious, accidental implementation.
+为什么早期的Lisp如此来实现呢？原因也很清楚，碰巧实现了
 
 199
 00:31:14,130 --> 00:31:17,250
-And, of course, as usual, people got used to it and liked it.
+然后大家也就习惯了
 
 200
 00:31:17,250 --> 00:31:21,590
-And there were some people said, this is the way to do it.
+因此不少人就说Lisp就应该这样做
 
 201
 00:31:21,590 --> 00:31:35,460
-Unfortunately that causes some serious problems. The most important, serious problem in using dynamic binding is there's a modularity crisis that's involved it.
+不幸地是这导致了不小的问题，最严重的一点是，动态绑定破坏了模块性
 
 202
 00:31:35,460 --> 00:31:44,580
-If two people are working together on some big system, then an important thing to want is that the names used by each one don't interfere with the names of the other.
+如果有两个人在一个大型系统上协同工作，其中一个重要的事情就是两个人的命名不能相互冲突
 
 203
 00:31:47,930 --> 00:31:59,850
-It's important that when I invent some segment of code that no one can make my code stop working by using my names that I use internal to my code, internal to his code.
+这一点很重要，不能说 你使用了我代码中的命名就导致我的代码停止工作
 
 204
 00:31:59,850 --> 00:32:06,670
-However, dynamic binding violates that particular modularity constraint in a clear way.
+然而，很明显地 动态绑定和特定的模块性约束相冲突
 
 205
 00:32:06,670 --> 00:32:12,540
-Consider, for example, what happens over here.
+我们考虑一下，这样会发生什么
 
 206
 00:32:12,540 --> 00:32:19,810
-Suppose it was the case that I decided to change the word next.
+假如我把next命名为别的
 
 207
 00:32:19,810 --> 00:32:28,970
-Supposing somebody is writing sum, and somebody else is going to use sum.
+假设两个人，一个人写sum过程，另一个人使用sum过程
 
 208
 00:32:28,970 --> 00:32:33,790
-The writer of sum has a choice of what names he may use.
+sum的编写者有权利来选择sum内部的命名
 
 209
 00:32:33,790 --> 00:32:36,760
-Let's say, I'm that writer.
+假设我就是那个编写者
 
 210
 00:32:36,760 --> 00:32:39,300
-Well, by gosh, just happens I didn't want to call this next.
+刚巧，这里我不想用next来表示
 
 211
 00:32:39,300 --> 00:32:41,500
-I called it n.
+只写一个n
 
 212
 00:32:41,500 --> 00:32:48,140
-So all places where you see next, I called it n.
+所以下面的代码就把next都换成n
 
 213
 00:32:48,140 --> 00:32:49,940
-Whoops.
+哎呀
 
 214
 00:32:49,940 --> 00:32:56,110
-I changed nothing about the specifications of this program, but this program stops working.
+我只是改变了过程内部的命名而已，但是整个程序就宕掉了
 
 215
 00:32:56,110 --> 00:32:59,730
-Not only that, unfortunately, this one does too.
+不仅如此，这边也出现了问题
 
 216
 00:32:59,730 --> 00:33:02,260
-Why do these programs stop working?
+为什么会这样？
 
 217
 00:33:02,260 --> 00:33:04,480
-Well, it's sort of clear.
+答案非常明显
 
 218
 00:33:04,480 --> 00:33:24,370
-Instead of chasing out the value of the n that occurs in nth power over here or over here, through the environment of definition, where this one is always linked to this one, if it was through the environment of definition, because here is the definition.
+为了找出nth-powers中n的值，如果根据环境模型，这个n总是这个n
 
 219
 00:33:24,370 --> 00:33:30,700
-This lambda expression was executed in the environment where that n was defined.
+lambda表达式总在n被定义的环境下运行
 
 220
 00:33:30,700 --> 00:33:37,320
-If instead of doing that, I have to chase through the call chain, then look what horrible thing happens.
+然而如果是动态绑定，我必须追踪过程的调用链，就会有糟糕的事情发生
 
 221
 00:33:37,320 --> 00:33:44,780
-Well, this was called from inside sum as term, term a.
+这个lambda部分其实是在sum内作为term来调用
 
 222
 00:33:44,780 --> 00:33:47,350
-I'm looking for a value of n.
+这时再来查找n的定义
 
 223
 00:33:47,350 --> 00:33:50,700
-Instead of getting this one, I get that one.
+这样我们找到的n就不是sum-powers的n了，而变成了sum这里的n
 
 224
 00:33:50,700 --> 00:33:54,680
-So by changing the insides of this program, this program stops working.
+因此，在过程的内部的小小修改就导致了整个程序停止工作
 
 225
 00:33:56,770 --> 00:34:00,020
-So I no longer have a quantifier, as I described before.
+这里的n就不再是一个量词了
 
 226
 00:34:02,700 --> 00:34:05,430
-The lambda symbol is supposed to be a quantifier.
+在这个lambda里n应该是一个量词才对
 
 227
 00:34:05,430 --> 00:34:24,040
-A thing which has the property that the names that are bound by it are unimportant, that I can uniformly substitute any names for these throughout this thing, so long as they don't occur in here, the new names, and the meaning of this expression should remain unchanged.
+一个事物所绑定的名字应该是不重要的，如果我在这里针对一个名字统一换成别的，表达式的含义也应该保持不变
 
 228
 00:34:24,040 --> 00:34:28,690
-I've just changed the meaning of the expression by changing the one of the names.
+但是刚才我只是对next换成了n而已，就导致nth-powers改变了意思
 
 229
 00:34:28,690 --> 00:34:32,170
-So lambda is no longer a well defined idea.
+所以这里用lambda也就不妥当了
 
 230
 00:34:32,170 --> 00:34:34,550
-It's a very serious problem.
+这个问题非常严重
 
 231
 00:34:34,550 --> 00:34:48,090
-So for that reason, I and my buddies have given up this particular kind of abstraction, which I would like to have, in favor of a modularity principle.
+因为这个原因，我和同事们放弃了动态绑定，相对的我更喜欢模块化原则
 
 232
 00:34:48,090 --> 00:34:54,530
-But this is the kind of experiment you can do if you want to play with these interpreters.
+这也是一种针对求值器的探索
 
 233
 00:34:54,530 --> 00:34:58,270
-You can try them out this way, that way, and the other way.
+你可以尝试多种方法
 
 234
 00:34:58,270 --> 00:35:00,070
-You see what makes a nicer language.
+从中你会了解到 是什么使一个语言更加优雅
 
 235
 00:35:02,680 --> 00:35:04,990
-So that's a very important thing to be able to do.
+所以元循环真的很重要
 
 236
 00:35:04,990 --> 00:35:10,880
-Now, I would like to give you a feeling for I think the right thing to do is here.
+现在我们来想想在动态绑定的前提下 怎么样使得这里的程序可以正常运行
 
 237
 00:35:10,880 --> 00:35:16,280
-How are you going to I get this kind of power in a lexical system?
+如何正确的利用动态绑定带来的好处呢？
 
 238
 00:35:16,280 --> 00:35:23,690
-And the answer is, of course, what I really want is a something that makes up for me an exponentiator for a particular n.
+答案是，我只想要一个针对n求指数的过程
 
 239
 00:35:23,690 --> 00:35:26,280
-Given an n, it will make me an exponentiator.
+给定一个n，它就返回一个求n次方的过程
 
 240
 00:35:26,280 --> 00:35:28,170
-Oh, but that's easy too.
+这非常简单
 
 241
 00:35:28,170 --> 00:35:30,570
-In other words, I can write my program this way.
+换言之，我可以这样来写
 
 242
 00:35:35,450 --> 00:35:45,240
-I'm going to define a thing called PGEN, which is a procedure of n which produces for me an exponentiator.
+我定义一个过程PGEN，达到刚才所说的效果
 
 243
 00:35:50,240 --> 00:35:51,490
---x to the n.
+(lambda (n) (lambda (x) (expt x n)))
 
 244
 00:35:56,900 --> 00:36:07,890
-Given that I have that, then I can capture the abstraction I wanted even better, because now it's encapsulated in a way where I can't be destroyed by a change of names.
+这样来写的话会更好一些，封装就不会被改名的情况而破坏了
 
 245
 00:36:07,890 --> 00:36:37,590
-I can define some powers to be a procedure again of a, b, and n which is the sum of the term function generated by using this generator, PGEN, n, with a, incrementer, and b.
+(define sum-powers (lambda (a b n) (sum (pgen n) a 1+ b)))
 
 246
 00:36:42,490 --> 00:37:11,150
-And I can define the product of powers to be a procedure of a, b, and n which is the product PGEN, n, with a, increment, and b.
+再定义product-powers，(define product-powers (lambda (a b n) (product (pgen n) a 1+ b)))
 
 247
 00:37:11,150 --> 00:37:17,280
-Now, of course, this is a very simple example where this object that I'm trying to abstract over is small.
+当然，这里的这个例子针对的抽象很简单
 
 248
 00:37:17,280 --> 00:37:20,100
-But it could be a 100 lines of code.
+但是这样来写的话就导致要写更多的代码
 
 249
 00:37:20,100 --> 00:37:23,670
-And so, the purpose of this is, of course, to make it simple.
+这样写的目的在于使其清晰一些
 
 250
 00:37:23,670 --> 00:37:28,200
-I'd give a name to it, it's just that here it's a parameterized name.
+确保这里的n引用的是正确的n
 
 251
 00:37:28,200 --> 00:37:34,050
-It's a name that depends upon, explicitly, the lexically apparent value of n.
+pgen这里的n明显的就是product-powers这里的n
 
 252
 00:37:37,130 --> 00:37:40,210
-So you can think of this as a long name.
+你也可以认为这个过程调用是一个很长的名字
 
 253
 00:37:40,210 --> 00:37:49,220
-And here, I've solved my problem by naming the term generation procedures within an n in them.
+这里我用一个n为参数可以生成新过程的过程来避免了之前的问题
 
 254
 00:37:55,080 --> 00:37:57,140
-Are there any questions?
+有什么问题吗？
 
 255
 00:37:57,140 --> 00:37:58,380
-Oh, yes, David.
+你说，David
 
 256
 00:37:58,380 --> 00:38:06,470
