@@ -664,123 +664,123 @@ product-powers
 
 167
 00:26:42,840 --> 00:26:52,900
-Certainly we've got to be careful here of keeping this to be this, and this one over here, wherever it is to be this one.
+当然我们也要确定这里的n是这里的n，这边的也一样
 
 168
 00:26:57,390 --> 00:27:04,040
-Well, the desire to make this work has led to a very famous bug.
+这种想法造就了一个非常著名的bug
 
 169
 00:27:04,040 --> 00:27:07,310
-I'll tell you about the famous bug.
+我来细说下这个bug
 
 170
 00:27:07,310 --> 00:27:10,660
-Look at this slide.
+这张幻灯片
 
 171
 00:27:10,660 --> 00:27:13,990
-This is an idea called dynamic binding.
+这是一种新的设计想法，动态绑定
 
 172
 00:27:13,990 --> 00:27:29,125
-Where, instead of the free variable being interpreted in the environment of definition of a procedure, the free variable is interpreted as having its value in the environment of the caller of the procedure.
+不在过程定义时的环境下解释自由变量，而在调用过程的环境下解释被调用过程内部的自由变量
 
 173
 00:27:31,850 --> 00:28:04,470
-So what you have is a system where you search up the chain of callers of a particular procedure, and, of course, in this case, since nth power is called from inside product whatever it is-- I had to write our own sum which is the analogous procedure-- and product is presumably called from product powers, as you see over here, then since product powers bind with variable n , then nth powers n would be derived through that chain.
+在这个系统中，你从调用程序的链中搜索自由变量，在这个例子里，nth-powers在product的内部被调用 -- sum也是相似的 -- product被product-powers调用，所以你看，product-powers绑定了变量n之后，nth-powers就可以解释自由变量n了
 
 174
 00:28:08,140 --> 00:28:15,800
-Similarly, this n, the nth power in n in this case, would come through nth power here being called from inside sum.
+相似地，sum这边，nth-powers中的n会通过sum-powers sum这样的调用关系中解释自由变量n
 
 175
 00:28:15,800 --> 00:28:19,730
-You can see it being called from inside sum here.
+它被sum调用了
 
 176
 00:28:19,730 --> 00:28:22,900
-It's called term here.
+对应这里的term
 
 177
 00:28:22,900 --> 00:28:28,930
-But sum was called from inside of sum powers, which bound n.
+sum在sum-powers内部被调用，而sum-powers绑定了变量n
 
 178
 00:28:28,930 --> 00:28:36,495
-Therefore, there would be an n available for that n to get it's value from.
+因此nth-powers这里的n就得到了解释
 
 179
 00:28:39,430 --> 00:28:46,540
-What we have below this white line plus over here, is what's called a dynamic binding view of the world.
+这边白线以下的情况，就是我们所称的动态绑定
 
 180
 00:28:46,540 --> 00:28:50,850
-If that works, that's a dynamic binding view.
+用动态绑定的角度来解释，就可以正常运行
 
 181
 00:28:50,850 --> 00:28:55,990
-Now, let's take a look, for example, at just what it takes to implement that.
+我们来看看，要怎么实现这个功能
 
 182
 00:28:55,990 --> 00:28:57,480
-That's real easy.
+非常简单
 
 183
 00:28:57,480 --> 00:29:06,490
-In fact, the very first Lisps that had any interpretations of the free variables at all, had dynamic binding interpretations for the free variables.
+事实上，最开始的Lisp实现凡是可以对自由变量进行解释的，都是用的动态绑定方法
 
 184
 00:29:06,490 --> 00:29:15,220
-APL has dynamic binding interpretation for the free variables, not lexical or static binding.
+APL就是用动态绑定来解释自由变量的，而不是静态绑定
 
 185
 00:29:15,220 --> 00:29:18,790
-So, of course, the change is in eval.
+要实现动态绑定，要从eval下手
 
 186
 00:29:18,790 --> 00:29:22,780
-And it's really in two places.
+只需修改两个地方就行
 
 187
 00:29:22,780 --> 00:29:29,010
-First of all, one thing we see, is that things become a little simpler.
+第一个地方修改的更为简单
 
 188
 00:29:32,460 --> 00:29:42,030
-If I don't have to have the environment be the environment of definition for procedure, the procedure need not capture the environment at the time it's defined.
+如果是动态绑定的话，过程在定义的时候就无需关乎环境的问题
 
 189
 00:29:42,030 --> 00:30:01,290
-And so if we look here at this slide, we see that the clause for a lambda expression, which is the way a procedure is defined, does not make up a thing which has a type closure and a attached environment structure.
+所以我们看到，在lambda表达式的这一行，只需要返回exp本身就行了，不需要像之前那样加上类型标签'closure并且和环境结构绑定在一起
 
 190
 00:30:01,290 --> 00:30:02,540
-It's just the expression itself.
+就是exp本身
 
 191
 00:30:02,540 --> 00:30:06,440
-And we'll decompose that some other way somewhere else.
+相应的，解读lambda过程的地方也要修改一些
 
 192
 00:30:06,440 --> 00:30:14,290
-The other thing we see is the applicator must be able to get the environment of the caller.
+另外要注意的是，在apply的时候必须要知道调用者的环境
 
 193
 00:30:14,290 --> 00:30:19,560
-The caller of a procedure is right here.
+调用者的环境就在这里
 
 194
 00:30:19,560 --> 00:30:26,980
-If the expression we're evaluating is anpplication or a combination, then we're going to call a procedure which is the value of the operator.
+如果表达式是一个过程应用或者组合式，然后我们就执行过程，也就是操作符的值
 
 195
 00:30:29,840 --> 00:30:35,890
-The environment of the caller is the environment we have right here, available now.
+调用者的环境就是我们当前的环境
 
 196
 00:30:35,890 --> 00:30:41,490
-So all I have to do is pass that environment to the applicator, to apply.
+所以我要把这个环境传递予apply
 
 197
 00:30:41,490 --> 00:31:06,810
