@@ -1428,223 +1428,223 @@ if特殊在它会根据谓词的真假来判断是执行真语句还是假语句
 
 358
 00:51:24,100 --> 00:51:33,132
-Producing an environment of the call which is, in fact, the environment where this was defined with an extra frame in it that's empty.
+为过程调用生成了新的环境就是在过程定义的时候所附加的新frame
 
 359
 00:51:33,132 --> 00:51:36,240
-I don't care about that.
+这里就不细细讨论了
 
 360
 00:51:36,240 --> 00:51:51,980
-Well, if we go back to this slide, since it's the case, if we look at this for a second, everything is the same as it was before except the case of applications or combinations.
+我们再来看这张幻灯片，仔细看一会儿，会发现大部分都是相同的，只有最下面处理组合式的地方不同
 
 361
 00:51:51,980 --> 00:51:54,680
-And combinations are going to do two things.
+这种情况有两个部分
 
 362
 00:51:54,680 --> 00:52:00,425
-One, is I have to evaluate the procedure-- forget the procedure-- by evaluating the operator.
+一是我得先求值操作符
 
 363
 00:52:00,425 --> 00:52:02,380
-That's what you see right here.
+也就是这一部分
 
 364
 00:52:02,380 --> 00:52:10,730
-I have to make sure that that's current, that is not a delayed object, and evaluate that to the point where it's forced now.
+这里我要保证它已经被求出值的，也即用undelay来确保操作符不再是延时对象
 
 365
 00:52:10,730 --> 00:52:18,460
-And then I have to somehow apply that to the operands.
+然后应用于操作数
 
 366
 00:52:18,460 --> 00:52:21,530
-But I have to keep the environment, pass that environmental along.
+这里还要保存下当前的环境，作为第三个参数传递过去
 
 367
 00:52:21,530 --> 00:52:23,710
-So some of those operands I may have to delay.
+如果有一些参数是延时了的
 
 368
 00:52:23,710 --> 00:52:29,302
-I may have to attach that environment to those operands.
+就需要用此时的环境来求值
 
 369
 00:52:29,302 --> 00:52:32,990
-This is a rather complicated thing happening here.
+看起来已经十分复杂了
 
 370
 00:52:32,990 --> 00:52:34,240
-Looking at that in apply.
+再来看看apply
 
 371
 00:52:36,400 --> 00:52:42,610
-Apply, well it has a primitive procedure thing just like before.
+这一部分还是判断基本过程，和之前一样
 
 372
 00:52:42,610 --> 00:52:44,390
-But the compound one is a little more interesting.
+组合过程的部分就比较有意思了
 
 373
 00:52:47,250 --> 00:53:00,290
-I have to evaluate the body, just as before, in an environment which is the result of binding some formal parameters to arguments in the environment.
+我要在过程定义时绑定的环境下求值过程，但是参数要在和延时参数关联起来的环境下求值
 
 374
 00:53:00,290 --> 00:53:01,530
-That's true.
+两个环境
 
 375
 00:53:01,530 --> 00:53:03,820
-The environment is the one that comes from the procedure now.
+这个环境是定义过程时关联的环境
 
 376
 00:53:03,820 --> 00:53:08,040
-It's a lexical language, statically bound.
+静态绑定
 
 377
 00:53:08,040 --> 00:53:12,960
-However, one thing I have to do is strip off the declarations to get the names of the variables.
+我还需要的是去掉name声明，获得变量的实际名字
 
 378
 00:53:12,960 --> 00:53:15,450
-That's what this guy does, vnames.
+也就是vnames过程所要做的
 
 379
 00:53:15,450 --> 00:53:33,770
-And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
 
 380
 00:53:37,280 --> 00:53:45,820
-The other thing you see here is that we got a primitive, a primitive like plus, had better get at the real operands.
+另外，如果遇到的基本过程，操作数还是要马上求值
 
 381
 00:53:45,820 --> 00:53:47,690
-So here is a place where we're going to have to force them.
+也就是这里
 
 382
 00:53:47,690 --> 00:53:51,340
-And we're going to look at what evlist is going to have to do a bunch of forces.
+evlist中其中做了很多force的工作
 
 383
 00:53:51,340 --> 00:53:52,780
-So we have two different kinds of evlist now.
+所以这里有两个evlist
 
 384
 00:53:52,780 --> 00:53:59,870
-We have evlist and gevlist. Gevlist is going to wrap delays around some things and force others, evaluate others.
+evlist和gevlist gevlist对要延时的参数加以封装，对其它的则马上求值
 
 385
 00:53:59,870 --> 00:54:07,900
-And this guy's going to do some forcing of things.
+evlist的话就是单纯的去求值
 
 386
 00:54:07,900 --> 00:54:12,250
-Just looking at this a little bit, this is a game you must play for yourself, you know.
+来看evlist，这里我们只需做我们自己的事就行，大家已经很熟悉了
 
 387
 00:54:12,250 --> 00:54:19,730
-It's not something that you're going to see all possible variations on an evaluator talking to me.
+这里不会有求值器传递过来的多种情况
 
 388
 00:54:19,730 --> 00:54:21,410
-What you have to do is do this for yourself.
+我们只需要一味求值就可以了
 
 389
 00:54:21,410 --> 00:54:29,930
-And after you feel this, you play this a bit, you get to see all the possible design decisions and what they might mean, and how they interact with each other.
+在你感觉过这种方式之后，你将会看到另一种方式，这里你需要处理不同的设计决策，了解它们的具体意思，清楚它们如何相互关联
 
 390
 00:54:29,930 --> 00:54:33,160
-So what languages might have in them.
+任何语言都是这样
 
 391
 00:54:33,160 --> 00:54:37,200
-And what are some of the consistent sets that make a legitimate language.
+普遍通用的规则与少量特殊的规则，协同构建一门合理的语言
 
 392
 00:54:37,200 --> 00:54:41,850
-Whereas what things are complicated kluges that are just piles of junk.
+然后如果有太多的kluge，就会对语言造成破坏
 
 393
 00:54:41,850 --> 00:54:50,750
-So evlist of course, over here, just as I said, is a list of operands which are going to be undelayed after evaluation.
+回到evlist上来，针对所有的操作数force求值
 
 394
 00:54:50,750 --> 00:54:56,050
-So these are going to be forced, whatever that's going to mean.
+无论操作数是否是延时对象
 
 395
 00:54:56,050 --> 00:55:04,040
-And gevlist, which is the next thing-- Thank you.
+下一个，gevlist
 
 396
 00:55:04,040 --> 00:55:09,810
-What we see here, well there's a couple of possibilities.
+这里，就会发现有很多种情况
 
 397
 00:55:09,810 --> 00:55:19,390
-Either it's a normal, ordinary thing, a symbol sitting there like the predicate in the unless, and that's what we have here.
+如果不是用name延时的参数，就像unless中谓词部分，对应这一部分代码
 
 398
 00:55:19,390 --> 00:55:23,340
-In which case, this is intended to be evaluated in applicative order.
+这一部分就使用应用序求值
 
 399
 00:55:23,340 --> 00:55:25,630
-And it's, essentially, just what we had before.
+就像以前一样
 
 400
 00:55:25,630 --> 00:55:37,900
-It's mapping eval down the list. In other words, I evaluate the first expression and continue gevlisting the CDR of the expression in the environment.
+然后递归求值，就是对CAR求值之后，再用gevlist对剩下的求值
 
 401
 00:55:37,900 --> 00:55:43,600
-However, it's possible that this is a name parameter.
+然而，有可能我们遇到一个延时参数
 
 402
 00:55:43,600 --> 00:56:02,790
-If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
+如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
 
 403
 00:56:02,790 --> 00:56:05,600
-And this is part of the mapping process that you see here.
+然后继续递归
 
 404
 00:56:09,070 --> 00:56:14,700
-The only other interesting place in this interpreter is cond.
+另一个有意思的地方是evcond
 
 405
 00:56:14,700 --> 00:56:18,550
-People tend to write this thing, and then they leave this one out.
+人们可能认为这一部分没什么特别的，就草草写完
 
 406
 00:56:18,550 --> 00:56:20,510
-There's a place where you have to force.
+这里有一个地方是需要force的，值得注意
 
 407
 00:56:20,510 --> 00:56:25,990
-Conditionals have to know whether or not the answer is true or false.
+条件式必须先知道谓词的真假
 
 408
 00:56:25,990 --> 00:56:28,550
-It's like a primitive.
+就像一个基本过程一样
 
 409
 00:56:28,550 --> 00:56:31,890
-When you do a conditional, you have to force.
+当你定义条件式的时候，你必须需要force
 
 410
 00:56:31,890 --> 00:56:34,350
-Now, I'm not going to look at any more of this in any detail.
+剩下的细节就没什么特别的了
 
 411
 00:56:34,350 --> 00:56:36,750
-It isn't very exciting.
+就先不深究了
 
 412
 00:56:36,750 --> 00:56:38,990
-And what's left is how you make delays.
+剩下的就是delay的实现了
 
 413
 00:56:38,990 --> 00:56:44,840
