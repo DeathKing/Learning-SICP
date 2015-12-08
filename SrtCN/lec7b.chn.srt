@@ -1648,151 +1648,151 @@ evlist的话就是单纯的去求值
 
 413
 00:56:38,990 --> 00:56:44,840
-Well, delays are data structures which contain an expression, an environment, and a type on them.
+delay就是一个数据结构，其中包括了类型'trunk，表达式和环境 
 
 414
 00:56:44,840 --> 00:56:46,680
-And it says they're a thunk.
+'thunk标明这是一个trunk
 
 415
 00:56:46,680 --> 00:56:52,970
-That comes from ALGOL language, and it's claimed to be the sound of something being pushed on a stack.
+是从ALGOL借用过来的，原义大概是把什么压在栈中
 
 416
 00:56:52,970 --> 00:56:53,410
-I don't know.
+记不清了
 
 417
 00:56:53,410 --> 00:56:58,740
-I was not an ALGOLician or an ALGOLite or whatever, so I don't know.
+我对ALGOL了解的不深入
 
 418
 00:56:58,740 --> 00:57:00,270
-But that's what was claimed.
+但是我们就在这里借用它了
 
 419
 00:57:00,270 --> 00:57:07,860
-And undelay is something which will recursively undelay thunks until the thunk becomes something which isn't a thunk.
+undelay不断递归的force求值，直到遇到不是'trunk的对象
 
 420
 00:57:07,860 --> 00:57:12,050
-This is the way you implement a call by name like thing in ALGOL.
+这就是具体的实现
 
 421
 00:57:12,050 --> 00:57:15,210
-And that's about all there is.
+全部都在这里了
 
 422
 00:57:15,210 --> 00:57:16,460
-Are there any questions?
+有什么问题吗？
 
 423
 00:57:26,840 --> 00:57:27,560
-AUDIENCE: Gerry?
+Gerry？
 
 424
 00:57:27,560 --> 00:57:29,626
-PROFESSOR: Yes, Vesko?
+你说，Vesko
 
 425
 00:57:29,626 --> 00:57:39,350
-AUDIENCE: I noticed you avoided calling by name in the primitive procedures, I was wondering what cause you have on that?
+我注意到，在调用基本过程的时候，你避免用名字传递参数，这样做有什么原因吗？
 
 426
 00:57:39,350 --> 00:57:40,070
-You never need that?
+需要这样吗？
 
 427
 00:57:40,070 --> 00:57:47,140
-PROFESSOR: Vesko is asking if it's ever reasonable to call a primitive procedure by name?
+Vesko想问的是 基本过程的参数如果按名字传递是否合理？
 
 428
 00:57:47,140 --> 00:57:49,270
-The answer is, yes.
+答案是 是的
 
 429
 00:57:49,270 --> 00:57:52,930
-There's one particular case where it's reasonable, actually two.
+有一种情况下是可以的，哦两种
 
 430
 00:57:56,050 --> 00:58:03,690
-Construction of a data structure like cons where making an array if you have arrays with any number of elements.
+比如用cons来构建一个数组的数据结构
 
 431
 00:58:03,690 --> 00:58:07,440
-It's unnecessary to evaluate those arguments.
+没必要求值参数
 
 432
 00:58:07,440 --> 00:58:11,160
-All you need is promises to evaluate those arguments if you look at them.
+你只需要一个约定，一个需要计算参数的时候就可以得到结果的约定
 
 433
 00:58:11,160 --> 00:58:21,830
-If I cons together two things, then I could cons together the promises just as easily as I can cons together the things.
+如果我用cons把两个东西连接起来，连接两个约定和连接两个实际的东西一样简单
 
 434
 00:58:21,830 --> 00:58:24,840
-And it's not even when I CAR CDR them that I have to look at them.
+甚至在用CAR CDR取出的时候也不用计算
 
 435
 00:58:24,840 --> 00:58:28,260
-That just gets out the promises and passes them to somebody.
+直接把约定传递给其它人
 
 436
 00:58:28,260 --> 00:58:34,420
-That's why the lambda calculus definition, the Alonzo Church definition of CAR, CDR, and cons makes sense.
+这也是阿隆佐 丘奇用lambda演算定义的cons能够说得通的原因
 
 437
 00:58:34,420 --> 00:58:40,760
-It's because no work is done in CAR, CDR, and cons, it's just shuffling data, it's just routing, if you will.
+因为在cons car cdr中并没有什么计算，它们不过是存东西取东西而已
 
 438
 00:58:40,760 --> 00:58:45,280
-However, the things that do have to look at data are things like plus.
+然而像 + 这样的过程必须要了解参数是什么
 
 439
 00:58:45,280 --> 00:58:52,460
-Because they have a look at the bits that the numbers are made out of, unless they're lambda calculus numbers which are funny.
+因为 + 需要和实际组成数字的比特打交道，如果遇到一个lambda就搞笑了
 
 440
 00:58:52,460 --> 00:58:55,880
-They have to look at the bits to be able to crunch them together to do the add.
+它要从数字的比特层面来实际计算
 
 441
 00:58:59,210 --> 00:59:13,300
-So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
+可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
 
 442
 00:59:16,460 --> 00:59:18,700
-On the other hand predicates on data structures have to.
+话说回来判断数据结构的谓词还是需要force的
 
 443
 00:59:21,710 --> 00:59:23,560
-Is this a pair?
+这是一个序对吗？
 
 444
 00:59:23,560 --> 00:59:24,640
-Or is it a symbol?
+或者是一个符号？
 
 445
 00:59:24,640 --> 00:59:25,690
-Well, you better find out.
+最好搞清楚是什么
 
 446
 00:59:25,690 --> 00:59:26,940
-You got to look at it then.
+这点还是挺重要的
 
 447
 00:59:30,300 --> 00:59:31,550
-Any other questions?
+还有问题吗？
 
 448
 00:59:40,050 --> 00:59:41,610
-Oh, well, I suppose it's time for a break.
+没了，下面是休息时间
 
 449
 00:59:41,610 --> 00:59:42,106
-Thank you.
+下课
 
 450
 00:59:42,106 --> 01:00:02,950
