@@ -1268,163 +1268,163 @@ if特殊在它会根据谓词的真假来判断是执行真语句还是假语句
 
 318
 00:46:34,270 --> 00:46:39,930
-What I want to do is say something special about c and a.
+这里我要对 c 和 a 动点手脚
 
 319
 00:46:39,930 --> 00:46:42,715
-I want them to be delayed automatically.
+我想使它们自动延时求值
 
 320
 00:46:46,300 --> 00:46:51,520
-I don't want them to be evaluated at the time I call.
+不想使它们在执行过程之前就求值
 
 321
 00:46:51,520 --> 00:46:55,600
-So I'm going to make a declaration, and then I'm going to see how to implement such a declaration.
+所以按照惯例，我先构造一种语法描述，之后我们再来具体的实现它
 
 322
 00:46:55,600 --> 00:47:02,140
-But again, I want you to say to yourself, oh, this is an interesting kluge he's adding in here.
+你们应该深信，我正在添加一个有趣的kluge[不知怎么译的准确]
 
 323
 00:47:02,140 --> 00:47:05,750
-The piles of kluges make a big complicated mess.
+太多的kluge会使得系统混乱复杂
 
 324
 00:47:05,750 --> 00:47:10,120
-And is this going to foul up something else that might occur.
+还会搞砸以后要添加的功能
 
 325
 00:47:10,120 --> 00:47:13,860
-First of all, is it syntactically unambiguous?
+新的语法描述，先来看，是否有语法上混淆的问题
 
 326
 00:47:13,860 --> 00:47:17,840
-Well, it will be syntactically unambiguous with what we've seen so far.
+当然，这里我要写的是一个清晰的无二义的新语法
 
 327
 00:47:17,840 --> 00:47:21,670
-But what I'm going to do may, in fact, cause trouble.
+但是接下来要做的却会导致另外的问题
 
 328
 00:47:21,670 --> 00:47:34,300
-It may be that the thing I had will conflict with type declarations I might want to add in the future for giving some system, some compiler or something, the ability to optimize given the types are known.
+可能以后我们会为了优化系统或者编译器而引入类型声明的机制，我一会儿要定义的新语法可能会与之冲突
 
 329
 00:47:34,300 --> 00:47:40,570
-Or it might conflict with other types of declarations I might want to make about the formal parameters.
+或者会与那些声明参数类型这样的机制相冲突
 
 330
 00:47:40,570 --> 00:47:44,925
-So I'm not making a general mechanism here where I can add declarations.
+所以我这里要添加的机制并不是一个完整的机制
 
 331
 00:47:44,925 --> 00:47:46,750
-And I would like to be able to do that.
+只是能解决目前的问题而已
 
 332
 00:47:46,750 --> 00:47:51,010
-But I don't want to talk about that right now.
+具体怎么样完整就不在这里说了
 
 333
 00:47:51,010 --> 00:47:53,680
-So here I'm going to do, I'm going to build a kluge.
+接下来
 
 334
 00:47:57,050 --> 00:48:14,930
-So we're going to define unless of a predicate-- and I'm going to call these by name-- the consequent, and name the alternative.
+我再来定义unless，一个谓词，真真假语句都按名称来传递，即(name c) (name a)
 
 335
 00:48:19,850 --> 00:48:25,280
-Huh, huh-- I got caught in the corner.
+哦没估计好，卡在黑板边了
 
 336
 00:48:31,240 --> 00:48:41,360
-If not p then the result is c, else-- that's what I'd like.
+(cond ((not p) c) (else a))
 
 337
 00:48:44,670 --> 00:48:51,650
-Where I can explicitly declare certain of the parameters to be delayed, to be computed later.
+我可以显式的来声明，哪些参数按名称传递延时求值
 
 338
 00:48:55,008 --> 00:49:00,450
-Now, this is actually a very complicated modification to an interpreter rather than a simple one.
+这样的话，要对求值器做出的修改可就比之前的feature要复杂多了
 
 339
 00:49:00,450 --> 00:49:09,280
-The ones you saw before, dynamic binding or adding indefinite argument procedures, is relatively simple.
+之前的动态绑定，或者不定参数，相比比较简单
 
 340
 00:49:09,280 --> 00:49:12,120
-But this one changes a basic strategy.
+但是这里，是一个基本原则的改变
 
 341
 00:49:12,120 --> 00:49:36,110
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
 
 342
 00:49:36,110 --> 00:49:46,810
-However, here, I don't want to evaluate the operands to produce the arguments until after I examined the procedure to see what the procedure's declarations look like.
+然而这里，在我检测过整个过程的声明之前，我并不想立即求值操作数
 
 343
 00:49:49,590 --> 00:49:52,680
-So let's look at that.
+我们来看这个
 
 344
 00:49:52,680 --> 00:49:57,480
-Here we have a changed evaluator.
+对求值器的修改
 
 345
 00:49:57,480 --> 00:50:09,750
-I'm starting with the simple lexical evaluator, not dynamic, but we're going to have to do something sort of similar in some ways.
+这是从最开始的那个求值器修改得来的，不是动态绑定的那个  这里的修改和之前的有些相似
 
 346
 00:50:09,750 --> 00:50:19,360
-Because of the fact that, if I delay a procedure-- I'm sorry-- delay an argument to a procedure, I'm going to have to attach and environment to it.
+如果我延时一个过程 -- 哦说错了 -- 延时一个过程的参数，就必须把当前的环境和参数关联在一起
 
 347
 00:50:19,360 --> 00:50:23,380
-Remember how Hal implemented delay.
+还记得哈罗德教授是怎么实现delay的吧
 
 348
 00:50:23,380 --> 00:50:31,180
-Hal implemented delay as being a procedure of no arguments which does some expression.
+哈罗德教授把delay实现为一个没有参数的过程，其中包含了要延时的操作
 
 349
 00:50:31,180 --> 00:50:32,670
-That's what delay of the expression is.
+就像这样
 
 350
 00:50:35,370 --> 00:50:36,620
---of that expression.
+(delay e)
 
 351
 00:50:39,180 --> 00:50:40,950
-This turned into something like this.
+返回下面的(lambda () e)
 
 352
 00:50:44,520 --> 00:50:49,010
-Now, however, if I evaluate a lambda expression, I have to capture the environment.
+然而，我要执行这个lambda，就必须要在一定的环境下
 
 353
 00:50:51,410 --> 00:51:01,530
-The reason why is because there are variables in there who's meaning I wish to derive from the context where this was written.
+原因是因为其中有一些自由变量只有在正确的上下文中才能正确解读
 
 354
 00:51:04,010 --> 00:51:06,095
-So that's why a lambda does the job.
+这也是 用lambda来实现delay的原因
 
 355
 00:51:06,095 --> 00:51:08,070
-It's the right thing.
+非常合适
 
 356
 00:51:08,070 --> 00:51:21,090
-And such that the forcing of a delayed expression was same thing as calling that with no arguments.
+相对应的，对延时对象force就是执行这个无参数的过程
 
 357
 00:51:21,090 --> 00:51:24,100
-It's just the opposite of this.
+和上面恰恰相对
 
 358
 00:51:24,100 --> 00:51:33,132
