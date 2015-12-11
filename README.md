@@ -35,8 +35,8 @@
 | lec5b | DreamAndDead | 待校订 | 5%  |
 | lec6a | 匿名       | 待校订 | 0%  |
 | lec6b | DreamAndDead | 待校订 | 0%  |
-| lec7a | DreamAndDead | 已认领 | 0%  |
-| lec7b | DreamAndDead | 已认领 | 0%  |
+| lec7a | DreamAndDead | 待校订 | 0%  |
+| lec7b | DreamAndDead | 待校订 | 0%  |
 | lec8a | sillyg00se | 已认领 | 0%  |
 | lec9a | loucq123  | 翻译中 | 50% |
 
