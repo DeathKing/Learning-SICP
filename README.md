@@ -30,9 +30,9 @@
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec4b | rtmagic   | 翻译中 | 70% |
-| lec5a | Windfarer | 翻译中 | 65% |
-| lec5b | DreamAndDead | 待校订 | 5%  |
+| lec4b | rtmagic   | 翻译中 | 75% |
+| lec5a | Windfarer | 翻译中 | 70% |
+| lec5b | DreamAndDead | 待校订 | 25%  |
 | lec6a | 匿名       | 待校订 | 0%  |
 | lec6b | DreamAndDead | 待校订 | 0%  |
 | lec7a | DreamAndDead | 待校订 | 0%  |
