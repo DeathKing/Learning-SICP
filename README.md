@@ -38,7 +38,7 @@
 | lec7a | DreamAndDead | 待校订 | 0%  |
 | lec7b | DreamAndDead | 待校订 | 0%  |
 | lec8a | sillyg00se | 已认领 | 0%  |
-| lec9a | loucq123  | 翻译中 | 50% |
+| lec9a | loucq123  | 翻译中 | 65% |
 
 ## 捐助本项目
 
