@@ -8,12 +8,20 @@
 
 这门课程只提供了英文字幕，本项目旨在将这些英文字幕翻译为中文，方便广大的`Scheme/Lisp`学习者。
 
+## 教辅资料
+
+这里收集了一些有用的学习资料，包括SICP原书、Scheme新手教程、相关拓展习题等。
+
++ [SICP原书全文·英文](https://mitpress.mit.edu/sicp/full-text/book/book.html)
++ [SICP原书PDF版·英文](https://github.com/sarabander/sicp-pdf)
++ [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn)
++ [MIT 2015春 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html)
+
 ## 视频地址
 
 + [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [百度网盘SICP文件夹](http://pan.baidu.com/s/1bnvO3vT)
-
 
 | 编号 | 标题 | 优酷 | YouTube | 下载地址 | 译者 |
 | ---- | ---- |:----:|:-------:|:--------:| ---- |
@@ -30,15 +38,15 @@
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec4b | rtmagic   | 翻译中 | 70% |
-| lec5a | Windfarer | 翻译中 | 65% |
-| lec5b | DreamAndDead | 待校订 | 5%  |
+| lec4b | rtmagic   | 翻译中 | 75% |
+| lec5a | Windfarer | 翻译中 | 70% |
+| lec5b | DreamAndDead | 待校订 | 25%  |
 | lec6a | 匿名       | 待校订 | 0%  |
 | lec6b | DreamAndDead | 待校订 | 0%  |
 | lec7a | DreamAndDead | 待校订 | 0%  |
 | lec7b | DreamAndDead | 待校订 | 0%  |
 | lec8a | sillyg00se | 已认领 | 0%  |
-| lec9a | loucq123  | 翻译中 | 50% |
+| lec9a | loucq123  | 翻译中 | 65% |
 
 ## 捐助本项目
 
