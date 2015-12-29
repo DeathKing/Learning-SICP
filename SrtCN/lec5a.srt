@@ -5811,3 +5811,382 @@ It's not pulled out from the Monte Carlo process.
 它不是分离的，让我们来看看为什么
 It's not separated. Let's look why.
 
+1167
+01:10:13,853 --> 01:10:15,850
+记住，这里的约束是，
+Remember, the constraint here
+
+1168
+01:10:15,850 --> 01:10:18,693
+每个过程
+is that every procedure
+
+1169
+01:10:18,690 --> 01:10:22,831
+对于同样的参数，将返回同样的值
+return the same value for the same arguments.
+
+1170
+01:10:22,830 --> 01:10:26,400
+每个过程就是一个函数
+Every procedure represents a function.
+
+1171
+01:10:26,791 --> 01:10:28,506
+那是另一种约束
+That's a different kind of constraint.
+
+1172
+01:10:28,500 --> 01:10:31,640
+因为当我赋值时，我可以改变一些内部状态变量
+Because when I have assignments, I can  change some internal state variable.
+
+1173
+01:10:31,640 --> 01:10:34,853
+所以让我们来看看它是怎么出错的
+So let's see how that causes things to go wrong.
+
+1174
+01:10:34,850 --> 01:10:37,240
+我们从头开始
+Well, start at the beginning.
+
+1175
+01:10:37,240 --> 01:10:42,662
+看起来是一样的估算pi的过程
+The estimate of pi looks sort of the same.
+
+1176
+01:10:42,660 --> 01:10:46,240
+我取random-gcd-test应用于n
+What I'm doing is I take the square root of six 
+
+1177
+01:10:46,240 --> 01:10:50,746
+的结果分之6的平方根
+over the random GCD test applied to n
+
+1178
+01:10:50,746 --> 01:10:52,740
+就是这个
+whereas that's what this is.
+
+1179
+01:10:52,740 --> 01:10:55,204
+在这里，我们开始看到了一些有趣的东西
+But here, we are beginning to see something funny.
+
+1180
+01:10:55,200 --> 01:10:58,324
+对于trial为参数的random-gcd-test过程
+The random GCD test of a certain number of trials
+
+1181
+01:10:58,320 --> 01:11:00,462
+就像我们之前做的一样
+is just like we had before,
+
+1182
+01:11:00,460 --> 01:11:04,666
+是一个对于实验剩余次数的迭代
+an iteration on the number of trials remaining,
+
+1183
+01:11:04,660 --> 01:11:07,515
+
+the number of trials that have been passed,
+
+1184
+01:11:07,510 --> 01:11:10,657
+另一个变量x
+and another variable x.
+
+1185
+01:11:10,650 --> 01:11:12,333
+这个x是什么？
+What's that x?
+
+1186
+01:11:12,330 --> 01:11:17,164
+x是随机数生成器的状态
+That x is the state of the random number generator.
+
+1187
+01:11:18,711 --> 01:11:21,160
+它会在这里被使用
+And it is now going to be used here.
+
+1188
+01:11:21,160 --> 01:11:23,791
+这里的同样的随机数更新函数
+The same random update function that I have over here
+
+1189
+01:11:23,790 --> 01:11:27,608
+#TBD
+is the one I would have used in a random number generator if I were building it the other way,
+
+1190
+01:11:27,600 --> 01:11:30,306
+从Knuth的书中找出的一个
+the one I get out of Knuth's books.
+
+1191
+01:11:31,422 --> 01:11:34,737
+x将转化为x1，我需要两个随机数
+x is going to get transformed into x1, I need two random numbers.
+
+1192
+01:11:34,730 --> 01:11:37,213
+x1将被转化为x2
+And x1 is going to get transformed into x2,
+
+1193
+01:11:37,213 --> 01:11:39,210
+我有两个随机数
+I have two random numbers.
+
+1194
+01:11:39,210 --> 01:11:42,417
+然后进行和之前一样的步骤
+I then have to do exactly what I did before.
+
+1195
+01:11:42,410 --> 01:11:45,151
+取x1和x2的最大公约数
+I take the GCD of x1 x2.
+
+1196
+01:11:45,150 --> 01:11:47,693
+如果结果是1，则继续循环
+If that's one, then I go around the loop with
+
+1197
+01:11:47,690 --> 01:11:51,813
+将x2作为下一个x的值
+x2 being the next value of x.
+
+1198
+01:11:54,271 --> 01:11:56,680
+这里所发生的
+You see what's happened here
+
+1199
+01:11:56,680 --> 01:12:01,702
+随机数生成器的状态不再被限制于随机数生成器内部
+is that the state of the random number generator is no longer confined to the insides of the random number generator.
+
+1200
+01:12:01,700 --> 01:12:03,337
+它已经暴露了出来
+It has leaked out.
+
+1201
+01:12:03,330 --> 01:12:05,506
+它已经被暴露在
+It has leaked out into my procedure
+
+1202
+01:12:05,500 --> 01:12:10,555
+我们的的蒙特卡洛实验的过程中
+that does the Monte Carlo experiment.
+
+1203
+01:12:10,550 --> 01:12:11,875
+但比那更糟糕的是
+But what's worse than that,
+
+1204
+01:12:11,870 --> 01:12:16,675
+Cesaro实验，它也被暴露了
+is it's also, because it was contained inside my experiment itself, Cesaro,
+
+1205
+01:12:16,670 --> 01:12:20,604
+因为Cesaro被调用了两次
+Because Cesaro called twice,
+
+1206
+01:12:20,600 --> 01:12:22,471
+每次有不同的值
+has to have a different value each time,
+
+1207
+01:12:22,470 --> 01:12:26,106
+如果我要进行一个合理的实验的话
+if I going to have a legitimate experimental test.
+
+1208
+01:12:26,100 --> 01:12:30,795
+所以Cesaro也不能成为函数了
+So Cesaro can't be a function either,
+
+1209
+01:12:30,790 --> 01:12:36,222
+除非我把随机数生成器的种子传给它#TBD
+unless I pass it the seed of the random number generator that is going to go wandering around.
+
+1210
+01:12:36,222 --> 01:12:39,377
+所以很不幸，随机数生成器的种子
+So unfortunately, the seed of random number generator
+
+1211
+01:12:39,370 --> 01:12:42,777
+从随机数生成器中暴露到了Cesaro内部
+has leaked out into Cesaro, from the random number generator,
+
+1212
+01:12:42,770 --> 01:12:45,462
+被暴露在蒙特卡洛实验中
+that's leaked into the Monte Carlo experiment.
+
+1213
+01:12:45,460 --> 01:12:50,066
+很不幸，这里的蒙特卡洛实验不再是通用的了
+And, unfortunately, my Monte Carlo experiment here is no longer general.
+
+1214
+01:12:50,060 --> 01:12:51,951
+这个蒙特卡洛实验
+The Monte Carlo experiment here
+
+1215
+01:12:51,950 --> 01:12:58,600
+知道了我在实验中需要多少个随机数
+knows how many random numbers I need to do the experiment.
+
+1216
+01:12:58,600 --> 01:13:00,022
+这真的很糟糕
+That's sort of horrible.
+
+1217
+01:13:00,020 --> 01:13:03,266
+我失去了将问题分解开来的能力
+I lost an ability to decompose a problem into pieces,
+
+1218
+01:13:03,260 --> 01:13:09,368
+因为我不愿意接受信息的循环
+because I wasn't willing to accept the little loop of information,
+
+1219
+01:13:09,360 --> 01:13:12,817
+反馈的过程
+the feedback process,
+
+1220
+01:13:12,810 --> 01:13:15,946
+发生在随机数生成器内部
+that happens inside the random number generator before
+
+1221
+01:13:15,940 --> 01:13:22,528
+在赋值给一个受限于随机数生成器的状态变量之前
+that was made by having an assignment to a state variable that was confined to the random number generator.
+
+1222
+01:13:22,520 --> 01:13:25,817
+所以实际上，随机数生成器是一个对象
+So the fact that the random number generator is an object,
+
+1223
+01:13:25,810 --> 01:13:27,933
+它有一个内部状态变量
+with an internal state variable,
+
+1224
+01:13:27,930 --> 01:13:32,671
+它不受任何东西影响#TBD
+it's affected by nothing, but it'll give you something, and it will apply it's force to you,
+
+1225
+01:13:32,670 --> 01:13:35,826
+那是我们现在缺少的
+that was what we're missing now.
+
+1226
+01:13:37,820 --> 01:13:40,737
+好，我认为我已经知道了
+OK, well I think we've seen
+
+1227
+01:13:40,737 --> 01:13:42,730
+引入赋值的充分理由
+enough reason for doing this,
+
+1228
+01:13:42,730 --> 01:13:45,382
+并且一些看起来很圆满
+and it all sort of looks very wonderful.
+
+1229
+01:13:45,380 --> 01:13:51,568
+如果赋值是一个好东西
+Wouldn't it be nice if assignment was a good thing
+
+1230
+01:13:51,560 --> 01:13:53,146
+并且赋值是值得的，这不是很好吗？and maybe it's worth it,
+
+1231
+01:13:53,140 --> 01:13:55,231
+我不是很确定
+but I'm not sure.
+
+1232
+01:13:55,230 --> 01:13:57,048
+Mr. Gilbert and Sullivan说过
+As Mr. Gilbert and Sullivan said,
+
+1233
+01:13:57,040 --> 01:13:58,515
+#TBD
+things are seldom what they seem,
+
+1234
+01:13:58,510 --> 01:14:01,546
+#TBD
+skim milk masquerades as cream.
+
+1235
+01:14:01,733 --> 01:14:05,862
+谁有什么问题吗？
+Are there any questions?
+
+1236
+01:14:16,740 --> 01:14:19,866
+在座的有哲学家吗？
+Are there any philosophers here?
+
+1237
+01:14:19,860 --> 01:14:24,328
+有人想要讨论objects的问题吗？
+Anybody want to argue about objects?
+
+1238
+01:14:24,320 --> 01:14:27,097
+你们已经被战翻在地了，是吧？
+You're just floored, right?
+
+1239
+01:14:29,510 --> 01:14:35,360
+你们不完成作业。就遇不到好问题
+And you haven't done your homework yet. You haven't come up with a good question.
+
+1240
+01:14:36,142 --> 01:14:38,140
+好了
+Oh, well.
+
+1241
+01:14:39,970 --> 01:14:42,853
+感谢你们。我们下课吧
+Sure, thank you. Let's take the long break now.
+
+1242
+01:14:47,900 --> 01:15:05,911
+[音乐]
+[MUSIC PLAYING]
+
