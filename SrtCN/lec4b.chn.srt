@@ -4384,7 +4384,7 @@ well, in our case we'll use something that looks like this.
 
 877
 00:58:56,360 --> 00:58:59,680
-我们把它写成一系列 按系数排列的序对
+我们把它写成一系列 按次数排列的序对
 We'll make it a bunch of pairs which have an order in a coefficient
 
 878
@@ -4528,489 +4528,491 @@ If the two polynomials have the same variable,
 then we'll do something.
 
 906
-01:00:48,810 --> 01:00:52,350
+01:00:48,810 --> 01:00:51,264
 如果它们的变量不相同 我们返回一个错误
 If they don't have the same variable, we'll give an error,
 
 907
-01:00:52,350 --> 01:00:55,480
-两个多项式的变量不相同
+01:00:52,350 --> 01:00:54,016
+“两个多项式的变量不相同”
 polynomials not in the same variable.
 
 908
-01:00:55,480 --> 01:00:58,120
-如果它们的变量确实是相同的呢
-And if they do have the same variable, what we'll do is
+01:00:55,480 --> 01:00:57,376
+如果它们的变量确实是相同
+And if they do have the same variable,
 
 909
-01:00:58,120 --> 01:01:01,130
-我们要做的是构造一个新的多项式
-we'll make a polynomial whose variable is whatever that
+01:00:57,600 --> 01:00:59,184
+我们就要构造一个新的多项式
+what we'll do is we'll make a polynomial
 
 910
-01:01:01,130 --> 01:01:05,570
-它的变量是原来两个式子的变量 它的项表
-variable is, and whose term-list is something we'll
+01:00:59,800 --> 01:01:01,856
+它的变量即是原式的变量
+whose variable is whatever that variable is,
 
 911
-01:01:05,570 --> 01:01:10,170
-我们用这个+terms过程 +terms会把两个项表加起来
-call sum-terms. Plus terms will add the two term lists.
+01:01:03,152 --> 01:01:06,560
+它的项表则由过程+terms产生
+and whose term-list is something we'll call sum-terms. 
 
 912
-01:01:10,170 --> 01:01:13,500
-所以我们要把两个多项式的项表加起来
-So we'll add the two term lists to the polynomial.
+01:01:07,488 --> 01:01:09,808
++terms过程会把两个项表加起来
+Plus terms will add the two term lists.
 
 913
-01:01:13,500 --> 01:01:16,750
-得到一个新的项表 我们把它们加起来
-That'll give us a term-list.We'll add on, we'll say it's a
+01:01:10,170 --> 01:01:12,016
+所以我们要把两个多项式的项表合起来
+So we'll add the two term lists to the polynomial.
 
 914
-01:01:16,750 --> 01:01:19,500
-我们说这是一个关于这个变量的
-polynomial in the variable with that
+01:01:13,500 --> 01:01:14,512
+该过程即可返回一个项表
+That'll give us a term-list.
 
 915
-01:01:19,500 --> 01:01:22,550
-有这么一个项表的多项式 这就是+poly过程
-term-list. That's plus poly.
+01:01:15,000 --> 01:01:20,016
+我们将变量和得到的项表构造成新的多项式
+We'll add on, we'll say it's a polynomial in the variable with that term-list.
 
 916
-01:01:22,550 --> 01:01:26,360
-然后我们要把这个过程放进表格中polynomial
-And then we're going to put in our table under the type
+01:01:20,688 --> 01:01:21,792
+这就是+poly过程
+That's plus poly.
 
 917
-01:01:26,360 --> 01:01:30,520
-那一栏的下面 用+poly实现add操作
-polynomial, add them using plus poly.
+01:01:22,550 --> 01:01:27,008
+然后我们要把这个过程放进表格中polynomial那一栏
+And then we're going to put in our table under the type polynomial
 
 918
+01:01:28,240 --> 01:01:30,144
+用+poly实现add操作
+add them using plus poly.
+
+919
 01:01:30,520 --> 01:01:31,750
 当然实际上没做多少事情
 And of course we really haven't done much.
 
-919
-01:01:31,750 --> 01:01:34,360
-我们只是把所有的工作压到
-What we've really done is pushed all the work onto this
-
 920
-01:01:34,360 --> 01:01:38,480
-+terms的头上 它会负责把项表相加起来
-thing, plus-terms, which is supposed to add term-lists.
+01:01:31,750 --> 01:01:35,312
+我们只是把所有的工作压到+terms的头上
+What we've really done is pushed all the work onto this thing, +terms
 
 921
-01:01:38,480 --> 01:01:40,920
+01:01:35,792 --> 01:01:37,024
+它会负责把项表相加起来
+which is supposed to add term-lists.
+
+922
+01:01:37,744 --> 01:01:39,168
 我们看看这个过程
 Let's look at that.
 
-922
-01:01:40,920 --> 01:01:48,900
-这是我们把两个项表相加的大概过程
+923
+01:01:39,184 --> 01:01:48,032
+这是+terms过程的大概结构
 Here's an overview of how we might add two term-lists.
 
-923
-01:01:48,900 --> 01:01:51,860
+924
+01:01:48,900 --> 01:01:51,744
 L1和L2是两个项表
 So L1 and L2 were going to be two term-lists.
 
-924
-01:01:51,860 --> 01:01:55,700
-然后每个项表都是一系列序对 按次数排序
+925
+01:01:52,000 --> 01:01:54,816
+所谓“项表”即是按每项次数排序的序对
 And a term-list is a bunch of pairs, coefficient in order.
 
-925
+926
 01:01:55,700 --> 01:01:56,950
-这里有一个大的条件判断
+这里有一个大的分情况分析
 And it's a big case analysis.
 
-926
-01:01:59,860 --> 01:02:03,470
-我们要做的第一件事是看看项表里
-And the first thing we'll check for and see if there are
-
 927
-01:02:03,470 --> 01:02:07,020
-有没有至少一个项 我们在项表里递归下降
-any terms. We're going to recursively work down these
+01:01:59,860 --> 01:02:04,144
+首先 我们要检查项表是否为空
+And the first thing we'll check for and see if there are any terms
 
 928
-01:02:07,020 --> 01:02:09,980
-最终下降到一个状态就是L1
-term-lists, so eventually we'll get to a place where
+01:02:05,392 --> 01:02:07,552
+我们对项表做递归下降处理
+We're going to recursively work down these term-lists
 
 929
-01:02:09,980 --> 01:02:12,270
-或者L2 有一个是空的
-either L1 or L2 might be empty.
+01:02:08,160 --> 01:02:11,744
+最终下降到 L1或L2为空
+so eventually we'll get to a place where either L1 or L2 might be empty.
 
 930
-01:02:12,270 --> 01:02:15,160
-如果其中一个是空的呢 我们的答案就是
-And if either one is empty,our answer will
+01:02:12,270 --> 01:02:14,352
+只要其中有一个为空
+And if either one is empty,
 
 931
-01:02:15,160 --> 01:02:15,850
-剩下的另一个
-be the other one.
+01:02:14,528 --> 01:02:15,850
+我们的答案就是剩下的另一个
+our answer will be the other one.
 
 932
-01:02:15,850 --> 01:02:20,720
+01:02:15,850 --> 01:02:19,552
 就是说如果L1是空表 我们就返回L2
-So if L1 is empty we'll return L2, and if L2 is empty
+So if L1 is empty we'll return L2,
 
 933
-01:02:20,720 --> 01:02:23,470
+01:02:19,632 --> 01:02:21,712
 L2是空表的话就返回L1
-we'll return L1.
+and if L2 is empty we'll return L1.
 
 934
-01:02:23,470 --> 01:02:27,220
+01:02:23,264 --> 01:02:25,760
 除此之外还有三种情况
 Otherwise there are sort of three interesting cases.
 
 935
-01:02:27,220 --> 01:02:30,560
-我们先拿到每一个项表里的
-What we're going to do is grab the first term in each of
+01:02:27,220 --> 01:02:27,984
+我们要做的是
+What we're going to do is
 
 936
-01:02:30,560 --> 01:02:37,660
-第一项 我们把它们分别叫做t1和t2
-those lists, called t1 and t2.
+01:02:29,088 --> 01:02:31,050
+取表中的第一项
+grab the first term in each of those lists,
 
 937
-01:02:37,660 --> 01:02:43,090
-我们看t1的次数是高于
-And we're going to look at three cases, depending on
+01:02:33,504 --> 01:02:36,048
+记为t1和t2
+Right? Called t1 and t2.
 
 938
-01:02:43,090 --> 01:02:47,230
-还是低于t2的次数 还是相等 我们看属于
-whether the order of t1 is greater than the order of t2,
+01:02:37,660 --> 01:02:39,056
+我们来分析一下这三种情况
+And we're going to look at three cases,
 
 939
-01:02:47,230 --> 01:02:51,470
-这三种情况中的哪一种
-or less than t2, or the same.
+01:02:39,600 --> 01:02:45,680
+分别是t1的次数大于t2的
+ depending on whether the order of t1 is greater than the order of t2,
 
 940
-01:02:53,290 --> 01:02:54,910
+01:02:47,230 --> 01:02:50,592
+小于t2的 或者等于t2的
+or less than t2, or the same.
+
+941
+01:02:53,280 --> 01:02:54,910
 这就是我们要判断的三种情况
 Those are the three cases we're going to look at.
 
-941
-01:02:54,910 --> 01:02:57,160
+942
+01:02:54,910 --> 01:02:55,840
 先看看这一种
 Let's look at this case.
 
-942
-01:02:58,640 --> 01:03:03,550
-如果t1的次数比t2的次数要高
-If the order of t1 is greater than the order of t2, then
-
 943
-01:03:03,550 --> 01:03:08,280
-就意味着我们的答案的第一项的次数
-what that means is that our answer is going to start with
+01:02:58,640 --> 01:03:01,312
+如果t1的次数比t2的次数要高
+If the order of t1 is greater than the order of t2,
 
 944
-01:03:08,280 --> 01:03:11,480
-就是t1的次数
-this term of the order of t1.
+01:03:03,400 --> 01:03:04,704
+就意味着
+ then what that means is that
 
 945
-01:03:11,480 --> 01:03:14,450
-因为高次项不会和任何次数低的项相加
-Because it won't combine with any lower order terms. So what
+01:03:06,064 --> 01:03:09,968
+答案的第一项的次数就是t1的次数
+then what that means is that our answer is going to start with this term of the order of t1.
 
 946
-01:03:14,450 --> 01:03:19,720
-那么我们只需要把低次的项加起来 我们递归地
-we do is add the lower order terms. We recursively add
+01:03:11,568 --> 01:03:13,808
+因为高次项不会和任何低次项相加
+Because it won't combine with any lower order terms.
 
 947
-01:03:19,720 --> 01:03:21,900
-把L1和L2两个项表里
-together all the terms in the rest of the
+01:03:14,176 --> 01:03:16,192
+那么我们只需要把低次的项加起来
+So what we do is add the lower order terms.
 
 948
-01:03:21,900 --> 01:03:26,880
-剩下的项相加
-term-list in L1 and L2.
+01:03:16,760 --> 01:03:18,256
+我们递归地把
+We recursively add
 
 949
-01:03:26,880 --> 01:03:30,120
-作为我们的答案中低次的项
-That's going to be the lower order terms of the answer.
+01:03:19,712 --> 01:03:25,070
+把L1和L2两个项表里剩下的项相加
+together all the terms in the rest of the term-list in L1 and L2.
 
 950
-01:03:30,120 --> 01:03:31,490
-然后我们把它们
-And then we're going to adjoin to that the
+01:03:27,136 --> 01:03:29,328
+作为我们的答案中低次项
+That's going to be the lower order terms of the answer.
 
 951
-01:03:31,490 --> 01:03:33,180
-和最高次的项连接起来
-highest order term.
+01:03:30,120 --> 01:03:32,480
+然后我们把它们和最高次的项连接起来
+And then we're going to adjoin to that the highest order term.
 
 952
-01:03:33,180 --> 01:03:35,120
-这里我用了一系列
-And I'm using here a whole bunch of procedures I haven't
+01:03:33,180 --> 01:03:35,456
+这里 我用了一对还未定义的过程
+And I'm using here a whole bunch of procedures I haven't defined
 
 953
-01:03:35,120 --> 01:03:39,360
-我还没有定义过的过程 比如adjoin-term rest-terms
-defined, like a adjoin-term, and rest-terms, and selectors
+01:03:35,456 --> 01:03:35,472
+比如adjoin-term、rest-terms
+ like a adjoin-term, and rest-terms,
+这里 我用了一对还未定义的过程
+And I'm using here a whole bunch of procedures I haven't defined
 
 954
-01:03:39,360 --> 01:03:41,410
-还有获取次数的选择函数
-that get order.
+01:03:35,472 --> 01:03:37,552
+比如adjoin-term、rest-terms
+ like a adjoin-term, and rest-terms,
 
 955
-01:03:41,410 --> 01:03:44,730
+01:03:38,480 --> 01:03:40,176
+还有获取次数的选择函数
+and selectors that get order.
+
+956
+01:03:41,152 --> 01:03:42,784
 但是你可以想象它们是什么样子的
 But you can imagine what those are.
 
-956
-01:03:44,730 --> 01:03:48,550
-那么如果第一个项表的次数比第二个要高
-So if the first term-list has a higher order than the
-
 957
-01:03:48,550 --> 01:03:51,830
-我们就递归地把所有的低次的项相加
-second, we recursively add all the lower terms and then stick
+01:03:44,448 --> 01:03:48,768
+那么如果第一个项表的次数比第二个要高
+Right? So if the first term-list has a higher order than the second
 
 958
-01:03:51,830 --> 01:03:55,540
-再和最高次项连接起来
-on that last term.
+01:03:48,780 --> 01:03:51,088
+我们就递归地把所有的低次的项相加
+we recursively add all the lower terms
 
 959
-01:03:55,540 --> 01:03:56,890
-对于其他情况也是一样的
-The other case, the same way.
+01:03:51,280 --> 01:03:53,420
+再和最高次项连接起来
+and then stick on that last term.
 
 960
-01:03:56,890 --> 01:04:02,400
-如果第一个多项式次数比较低
-If the first term has a smaller order, well then we add
+01:03:55,540 --> 01:03:56,752
+其它情况也是一样的
+The other case, the same way.
 
 961
-01:04:02,400 --> 01:04:07,740
-我们就把整个第一个多项式 和第二个多项式低次的项
-we add the first term-list and the rest of the terms in the
+01:03:56,890 --> 01:04:00,288
+如果第一个多项式次数比较低
+If the first term has a smaller order,
 
 962
-01:04:07,740 --> 01:04:12,430
-相加 然后把结果再和最高次项连起来
-second one, and adjoin on this highest order term.
+01:04:00,540 --> 01:04:08,368
+我们就把整个第一个多项式和第二个多项式低次的项相加 
+well then we add we add the first term-list and the rest of the terms in the second one
 
 963
-01:04:14,570 --> 01:04:16,660
-到现在没发生多少复杂的事情 我们只是一次次
-So so far nothing's much happened, we've just sort of
+01:04:08,624 --> 01:04:12,656
+然后把结果再和最高次项连起来
+and adjoin on this highest order term.
 
 964
-01:04:16,660 --> 01:04:19,700
-把问题变成 让低次数的项相加
-pushed this thing off into adding lower order terms. The
+01:04:14,570 --> 01:04:15,968
+到现在也没多少复杂的事情
+So so far nothing's much happened,
 
 965
-01:04:19,700 --> 01:04:22,870
-还有最后一种情况是 两个多项式的次数一样
-last case where you actually get to a coefficients that you
+01:04:15,968 --> 01:04:19,408
+把问题变成 让低次数的项相加
+we've just sort of pushed this thing off into adding lower order terms.
 
 966
-01:04:22,870 --> 01:04:24,240
-你必须要把它们的系数加起来
-have to add, this will be the case where
+01:04:19,470 --> 01:04:21,968
+还有最后一种情况是 两个多项式的次数一样
+The last case where you actually get to a coefficients
 
 967
-01:04:24,240 --> 01:04:27,240
-你必须要把它们的系数加起来
-the orders are equal.
+01:04:22,570 --> 01:04:25,184
+你必须要把它们的系数加起来 因为它们是同类项
+that you have to add, this will be the case where the orders are equal.
 
 968
-01:04:27,240 --> 01:04:30,340
-我们的应对方法是 仍然是递归地
-What we do is, well again recursively add the lower
+01:04:27,240 --> 01:04:30,992
+我们的应对方法仍然是 递归地把低次项相加
+What we do is, well again recursively add the lower order terms.
 
 969
-01:04:30,340 --> 01:04:33,460
-把低次的项相加 但是现在必须要实实在在地相加两个东西了
-order terms. But now we have to really combine something.
+01:04:31,008 --> 01:04:32,832
+但现在我们需要合并一些项了
+But now we have to really combine something.
 
 970
-01:04:33,460 --> 01:04:38,960
-我们构造一个项 让它的次数等于
-What we do is we make a term whose order is the order of
+01:04:33,460 --> 01:04:36,352
+我们构造一个项
+What we do is we make a term
 
 971
-01:04:38,960 --> 01:04:40,820
-我们正在处理的那一项的次数
-the term we're looking at.
+01:04:37,312 --> 01:04:39,936
+其次数为我们正在处理的那一项的次数
+whose order is the order of the term we're looking at.
 
 972
-01:04:40,820 --> 01:04:44,320
+01:04:40,820 --> 01:04:42,720
 因为现在t1和t2的次数是相同的
 By now t1 and t2 have the same order.
 
 973
-01:04:44,320 --> 01:04:45,090
-这就是它们的次数
+01:04:44,320 --> 01:04:44,992
+确定好次数了
 That's its order.
 
 974
-01:04:45,090 --> 01:04:50,400
-它的系数呢 通过把t1和t2
-And its coefficient is gotten by adding the coefficient of
+01:04:45,090 --> 01:04:52,336
+而它的系数是t1和t2系数之和
+And its coefficient is gotten by adding the coefficient of t1 and the coefficient of t2.
 
 975
-01:04:50,400 --> 01:04:53,230
-的系数相加来获取
-t1 and the coefficient of t2.
+01:04:55,792 --> 01:04:59,648
+这是一个庞大的递归过程
+There's... This is a big recursive working down of terms,
 
 976
-01:04:56,360 --> 01:04:59,800
-这是一个庞大的递归过程
-This is a big recursive working down of terms, but
+01:04:59,680 --> 01:05:03,616
+但其中只有一个符号值得玩味
+but really there's only one interesting symbol in this procedure,
 
 977
-01:04:59,800 --> 01:05:03,070
-但是实际上整个过程中只有一个符号是
-really there's only one interesting symbol in this
+01:05:04,256 --> 01:05:05,696
+它蕴含了重要的思想
+only one interesting idea.
 
 978
-01:05:03,070 --> 01:05:05,900
-最有意思的 只有一个有趣的想法
-procedure, only one interesting idea.
-
-979
 01:05:05,900 --> 01:05:08,500
-那就是这个add
+那就是这个ADD过程
 The interesting idea is this add.
 
-980
-01:05:12,390 --> 01:05:15,330
+979
+01:05:12,390 --> 01:05:14,800
 说它有趣是因为
 And the reason that's interesting is because
 
-981
-01:05:15,330 --> 01:05:18,220
-刚才有一件好事发生
+980
+01:05:15,424 --> 01:05:17,376
+有一件好事发生
 something completely wonderful just happened.
 
+981
+01:05:18,220 --> 01:05:21,376
+我们没有把多项式加法
+We reduced adding polynomials,
+
 982
-01:05:18,220 --> 01:05:25,440
-我们把多项式加法 没有归为plus过程的一种
-We reduced adding polynomials,not to sort of plus, but to
+01:05:22,560 --> 01:05:26,464
+归约为某种加法 而是归约为通用运算符ADD
+ not to sort of plus, but to the generic add.
 
 983
-01:05:25,440 --> 01:05:28,820
-却把它放在通用操作符add之下
-the generic add.
+01:05:28,820 --> 01:05:32,288
+换句话说 用这种方法实现它之后
+In other words, by implementing it that way,
 
 984
-01:05:28,820 --> 01:05:33,270
-换句话说 用这种方法实现它之后
-In other words, by implementing it that way, not
+01:05:32,890 --> 01:05:34,688
+我们的系统就不光有
+not only do we have our system
 
 985
-01:05:33,270 --> 01:05:37,530
-我们的系统就不光有
-only do we have our system where we can have rational
+01:05:35,920 --> 01:05:41,664
+有理数、复数还有寻常算术
+where we can have rational numbers, or complex numbers, or ordinary numbers,
 
 986
-01:05:37,530 --> 01:05:42,090
-有理数，复数和普通数字的运算这些功能
-numbers, or complex numbers,or ordinary numbers, we've
+01:05:41,856 --> 01:05:43,824
+我们同时也让它支持多项式运算了
+we've just added on polynomials.
 
 987
-01:05:42,090 --> 01:05:44,340
-我们同时也让它支持多项式运算了
-just added on polynomials.
+01:05:48,520 --> 01:05:51,136
+而多项式的系数可以是
+But the coefficients of the polynomials
 
 988
-01:05:48,520 --> 01:05:51,820
-但是这个多项式的系数可以是
-But the coefficients of the polynomials can be anything
+01:05:51,248 --> 01:05:52,860
+这个系统能够相加的任何东西
+can be anything that the system can add.
 
 989
-01:05:51,820 --> 01:05:53,590
-这个系统能够相加的任何东西
-that the system can add.
+01:05:53,590 --> 01:05:56,736
+也就是说多项式的系数
+So these could be polynomials whose coefficient
 
 990
-01:05:53,590 --> 01:05:57,450
-也就是说 多项式的系数可以是
-So these could be polynomials whose coefficients are
+01:05:57,200 --> 01:06:01,200
+有理数或者复数
+are rational numbers or complex numbers,
 
 991
-01:05:57,450 --> 01:06:04,110
-有理数或者复数 复数可以是
-rational numbers or complex numbers, which in turn could
+01:06:02,768 --> 01:06:06,992
+复数同时可支持直角坐标形式和极坐标形式
+which in turn could be either rectangular, or polar,
 
 992
-01:06:04,110 --> 01:06:11,250
-直角坐标或者极坐标表示 或者就是普通的数值
-be either rectangular, or polar, or ordinary numbers.
+01:06:09,120 --> 01:06:11,392
+系数还可以是寻常的数字
+or ordinary numbers.
 
 993
-01:06:19,860 --> 01:06:23,460
-我想说的是 我们的系统现在可以
-So what I mean precisely is our system right now
+01:06:18,976 --> 01:06:21,216
+我想说的是
+Rignt? So what I mean precisely is
 
 994
-01:06:23,460 --> 01:06:30,200
-自动处理多项式相加这样的事情
-automatically can handle things like adding together
+01:06:22,060 --> 01:06:24,352
+我们的系统现在可以自动地
+our system right now automatically
 
 995
-01:06:30,200 --> 01:06:35,830
-比如2/3x^2+5/17x+11/4这样的式子
-polynomials that have this one:2/3 of x squared plus
+01:06:26,600 --> 01:06:31,504
+处理像这样的式子
+can handle things like adding together polynomials that have this form
 
 996
-01:06:35,830 --> 01:06:40,940
+01:06:31,536 --> 01:06:39,696
 比如2/3x^2+5/17x+11/4这样的式子
-5/17 x plus 11/4.
+2/3 of x squared plus 5/17 x plus 11/4.
 
 997
-01:06:40,940 --> 01:06:44,210
+01:06:40,940 --> 01:06:43,488
 也可以自动处理像是
-Or automatically handle polynomials that look like 3
+Or automatically handle polynomials that look like
 
 998
-01:06:44,210 --> 01:06:54,160
-(3+2i)x^5+4+7i这样的式子
-plus 2i times x to the fifth plus 4 plus 7i, or something.
+01:06:43,824 --> 01:06:52,576
+(3+2i)x^5+(4+7i)这样的式子
+3 plus 2i times x to the fifth plus 4 plus 7i, or something.
 
 999
-01:06:54,160 --> 01:06:56,210
+01:06:53,888 --> 01:06:56,210
 系统可以自动处理这些运算
-You can automatically handle those things.
+Right? You can automatically handle those things.
 
 1000
-01:06:56,210 --> 01:06:57,820
-为什么
+01:06:56,210 --> 01:06:57,072
+为什么呢？
 Why is that?
 
 1001
-01:06:57,820 --> 01:07:03,280
+01:06:57,820 --> 01:07:01,504
 仅仅是因为 或者说深层次的原因是
-That's merely because, or profoundly because we reduced
+That's merely because, or profoundly because
 
 1002
-01:07:03,280 --> 01:07:06,790
+01:07:02,170 --> 01:07:05,936
 我们把多项式相加归约成了把它们的系数相加
-adding polynomials to adding their coefficients.
+we reduced adding polynomials to adding their coefficients.
 
 1003
 01:07:06,790 --> 01:07:09,670
