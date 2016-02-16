@@ -38,10 +38,10 @@
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec4b | rtmagic   | 翻译中 | 85% |
+| lec4b | rtmagic   | 后期制作 | 10% |
 | lec5a | Windfarer | 翻译中 | 70% |
 | lec5b | DreamAndDead | 待校订 | 30%  |
-| lec6a | 匿名       | 待校订 | 0%  |
+| lec6a | 匿名、DreamAndDead | 待校订 | 0%  |
 | lec6b | DreamAndDead | 待校订 | 0%  |
 | lec7a | DreamAndDead | 待校订 | 0%  |
 | lec7b | DreamAndDead | 待校订 | 0%  |
