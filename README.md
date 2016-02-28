@@ -1,5 +1,7 @@
 # 《计算机程序的结构和解释》公开课 翻译项目
 
+[![Join the chat at https://gitter.im/DeathKing/Learning-SICP](https://badges.gitter.im/DeathKing/Learning-SICP.svg)](https://gitter.im/DeathKing/Learning-SICP?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <p align="center">
   <img src="http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/wizard.jpg" alt="SICP"/>
 </p>
