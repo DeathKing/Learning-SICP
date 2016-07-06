@@ -49,6 +49,7 @@
 | lec8a | sillyg00se | 待校订 | 0%  |
 | lec8b | sillyg00se | 已认领 | 0%  |
 | lec9a | loucq123  | 翻译中 | 65% |
+| lec10a | Windfarer | 已认领 | 0% |
 
 ## 捐助本项目
 
