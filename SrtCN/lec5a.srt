@@ -4003,281 +4003,282 @@ Now we're going to investigate the behavior of this.
 It's a sort of interesting thing.
 
 801
-00:48:59,540 --> 00:49:01,450
+00:48:59,824 --> 00:49:01,450
 为了研究它的行为
 In order to investigate the behavior,
 
 802
-00:49:01,450 --> 00:49:03,830
+00:49:01,450 --> 00:49:03,088
 我需要建立一个环境模型
 I have to make an environment model,
 
 803
-00:49:03,830 --> 00:49:08,000
+00:49:04,112 --> 00:49:05,984
 因为我们不能通过其他的方式来理解它
 because we can't understand this any other way.
 
 804
-00:49:08,000 --> 00:49:10,000
+00:49:08,656 --> 00:49:09,632
 所以我们开始吧
 So let's just do that.
 
 805
-00:49:10,000 --> 00:49:13,240
+00:49:10,000 --> 00:49:12,864
 我们从这里开始
 We start out with some sort of--
 
 806
-00:49:13,240 --> 00:49:16,130
-假设机器天生就有一个全局的环境
+00:49:13,240 --> 00:49:15,904
+假设机器天生就有一个全局环境
 let's say there is a global environment that the machine is born with.
 
 807
-00:49:16,130 --> 00:49:19,780
-我们把它叫做全局环境
+00:49:16,130 --> 00:49:17,120
+我们把它叫做Global
 Global we'll call it.
 
 808
-00:49:19,780 --> 00:49:24,440
+00:49:20,032 --> 00:49:24,256
 它内部有一堆初始化的东西
 And it's going to have in it a bunch of initial things.
 
 809
-00:49:24,440 --> 00:49:25,720
+00:49:24,440 --> 00:49:25,600
 我们都知道它里面有什么
 We all know what it's got.
 
 810
-00:49:25,720 --> 00:49:32,130
+00:49:25,720 --> 00:49:30,880
 这里面有+和*
 It's got things in it like say, plus, and times,
 
 811
-00:49:32,130 --> 00:49:38,570
+00:49:32,240 --> 00:49:37,264
 / -和CAR
 and quotient, and difference, and CAR,
 
 812
-00:49:38,570 --> 00:49:41,450
+00:49:38,704 --> 00:49:39,744
 以此类推
 and etcetera,
 
 813
-00:49:41,450 --> 00:49:42,720
+00:49:41,450 --> 00:49:42,480
 有很多东西
 lots of things.
 
 814
-00:49:42,720 --> 00:49:44,420
+00:49:42,880 --> 00:49:43,984
 我不知道它们是什么
 I don't know what they are,
 
 815
-00:49:44,420 --> 00:49:45,980
+00:49:44,420 --> 00:49:45,552
 一些乱七八糟的符号
 some various squiggles
 
 816
-00:49:45,980 --> 00:49:50,560
+00:49:46,080 --> 00:49:48,880
 机器一开始就有这些特性
 that are the things the machine is born with.
 
 817
-00:49:50,560 --> 00:49:54,370
+00:49:51,216 --> 00:49:53,232
 通过在这做定义
 And by doing the definition here,
 
 818
-00:49:54,370 --> 00:49:56,160
+00:49:54,688 --> 00:49:55,760
 我要做的是--
 what I plan to do--
 
 819
-00:49:56,160 --> 00:49:57,310
+00:49:56,320 --> 00:49:57,310
 我在干什么呢？
 Well, what am I doing?
 
 820
-00:49:57,310 --> 00:49:59,720
+00:49:57,310 --> 00:49:59,584
 我要把它关联到全局环境上
 I'm doing this relative to the global environment.
 
 821
-00:49:59,720 --> 00:50:03,460
+00:49:59,720 --> 00:50:01,296
 这是我的环境指针
 So here's my environment pointer.
 
 822
-00:50:03,460 --> 00:50:07,960
-为了达到那个目的 我要执行这个LAMBDA表达式
+00:50:03,728 --> 00:50:06,704
+为了达到那个目的 我要求值这个LAMBDA表达式
 In order to do that I have to evaluate this lambda expression.
 
 823
-00:50:07,960 --> 00:50:11,110
-这意味着我创建了一个过程对象That means I make a procedure object.
+00:50:08,352 --> 00:50:10,016
+这意味着我创建了一个过程对象
+That means I make a procedure object.
 
 824
-00:50:11,110 --> 00:50:17,040
+00:50:11,504 --> 00:50:13,264
 所以 我要在这创建一个过程对象
 So I'm going to make a procedure object here.
 
 825
-00:50:17,040 --> 00:50:19,410
+00:50:17,360 --> 00:50:18,688
 这个过程对象
 And the procedure object has,
 
 826
-00:50:19,410 --> 00:50:21,120
+00:50:18,720 --> 00:50:20,496
 由于在它被定义的地方
 as the place it's defined,
 
 827
-00:50:21,120 --> 00:50:23,660
+00:50:21,168 --> 00:50:22,352
 有一个全局的环境
 the global environment.
 
 828
-00:50:23,660 --> 00:50:27,900
+00:50:24,064 --> 00:50:25,792
 这个过程对象包括了
 The procedure object contains
 
 829
-00:50:27,900 --> 00:50:31,960
+00:50:28,160 --> 00:50:31,472
 以N为参数的过程的代码
 some code that represents a procedure of one argument n
 
 830
-00:50:31,960 --> 00:50:36,780
-它返回一个不接受参数的过程来做一些事情
+00:50:31,960 --> 00:50:35,344
+它返回一个不接受参数的过程
 which returns a procedure of no arguments which does something.
 
 831
-00:50:37,810 --> 00:50:44,110
+00:50:38,240 --> 00:50:43,280
 定义是一种改变环境的方法
 And the define is a way of changing this environment,
 
 832
-00:50:44,110 --> 00:50:52,200
+00:50:44,320 --> 00:50:46,736
 所以我把MAKE-COUNTER加入全局环境中
 so that I now add to it a make-counter,
 
 833
-00:50:52,200 --> 00:50:55,690
+00:50:52,288 --> 00:50:55,056
 这是对于特殊的东西定义的一个特殊的规则
 a special rule for the special thing defined.
 
 834
-00:50:55,690 --> 00:50:58,800
+00:50:55,824 --> 00:50:56,944
 但它其实是
 But what that is,
 
 835
-00:50:58,800 --> 00:51:03,630
+00:50:58,944 --> 00:51:01,968
 它给了我们一个指针 指向那个过程
 is it gives me that pointer to that procedure.
 
 836
-00:51:03,630 --> 00:51:08,950
-所以现在全局环境中也有了make-counter
+00:51:03,824 --> 00:51:06,320
+所以现在全局环境中也有了MAKE-COUNTER
 So now the global environment contains make-counter as well.
 
 837
-00:51:08,950 --> 00:51:11,640
+00:51:09,280 --> 00:51:11,216
 现在 我们要进行一些操作
 Now, we're going to do some operations.
 
 838
-00:51:11,640 --> 00:51:14,810
+00:51:11,872 --> 00:51:13,504
 我要用它来创建一些计数器
 I'm going to use this to make some counters.
 
 839
-00:51:14,810 --> 00:51:16,900
+00:51:14,992 --> 00:51:16,208
 我们将看到什么是计数器
 We'll see what a counter is.
 
 840
-00:51:16,900 --> 00:51:23,260
+00:51:17,120 --> 00:51:18,512
 所以我们定义
 So let's define
 
 841
-00:51:23,260 --> 00:51:35,550
+00:51:23,328 --> 00:51:26,656
 C1为一个从0开始的计数器
 c1 to be a counter beginning at 0.
 
 842
-00:51:35,550 --> 00:51:39,320
+00:51:35,728 --> 00:51:38,384
 根据模型 我们知道如何做这个了
 Well, we know how to do this now, according to the model.
 
 843
-00:51:39,320 --> 00:51:45,200
-我需要执行在全局环境中的MAKE-COUNTER
+00:51:39,632 --> 00:51:44,336
+我需要在全局环境中求值这个表达式
 I have to evaluate the expression make-counter in the global environment,
 
 844
-00:51:45,200 --> 00:51:47,660
-MAKE-COUNTER 0
+00:51:45,408 --> 00:51:46,272
+(MAKE-COUNTER 0)
 make-counter of 0.
 
 845
-00:51:47,660 --> 00:51:53,320
+00:51:47,808 --> 00:51:51,104
 我查找MAKE-COUNTER 发现它是一个过程
 Well, I look up make-counter and see that it's a procedure.
 
 846
-00:51:53,320 --> 00:51:55,950
+00:51:53,616 --> 00:51:55,296
 我将要应用这个过程
 I'm going to have to apply that procedure.
 
 847
-00:51:55,950 --> 00:51:58,240
+00:51:56,224 --> 00:51:57,744
 应用这个过程的方式
 The way I apply the procedure
 
 848
-00:51:58,240 --> 00:52:01,630
+00:51:58,432 --> 00:51:59,968
 就是构建一个框架
 is by constructing a frame.
 
 849
-00:52:01,630 --> 00:52:06,450
+00:52:01,808 --> 00:52:03,792
 所以我构建了一个框架
-So I construct a frame
+Okay? So I construct a frame
 
 850
-00:52:06,450 --> 00:52:11,620
+00:52:06,592 --> 00:52:10,448
 它内部有一个N的值
 which has a value for n in it
 
 851
-00:52:11,620 --> 00:52:13,760
+00:52:11,776 --> 00:52:12,640
 这个值是0
 which is 0
 
 852
-00:52:13,760 --> 00:52:15,760
+00:52:14,000 --> 00:52:15,344
 它的父环境
 and the parent environment
 
 853
-00:52:15,760 --> 00:52:22,820
-是MAKE-COUNTER的定义的环境
+00:52:15,872 --> 00:52:19,328
+就是定义MAKE-COUNTER时的环境
 is the one which is the environment of definition of make-counter.
 
 854
-00:52:22,820 --> 00:52:30,930
+00:52:23,936 --> 00:52:28,368
 所以我已经通过将MAKE-COUNTER应用于0上 而创建了一个环境
 So I've made an environment by applying make-counter to 0.
 
 855
-00:52:30,930 --> 00:52:33,460
-现在 我需要执行MAKE-COUNTER的体
+00:52:31,450 --> 00:52:34,400
+现在 我需要求值MAKE-COUNTER的体
 Now, I have to evaluate the body of make-counter,
 
 856
-00:52:33,460 --> 00:52:40,140
+00:52:34,410 --> 00:52:37,728
 就是那个环境中的LAMBDA表达式
 which is this lambda expression, in that environment.
 
