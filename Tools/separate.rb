@@ -5,7 +5,7 @@ if ARGV.empty?
     puts "Separate - 分割单个双语字幕为两个字幕。"
     puts "用法: separate srt_file"
     puts "说明：如果出错了，尝试调整一下newline。"
-    puts "\nWriten by DeathKing"
+    puts "Writen by DeathKing"
     exit
 end
 

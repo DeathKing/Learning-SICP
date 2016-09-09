@@ -1,0 +1,6219 @@
+﻿1
+00:00:00,000 --> 00:00:01,980
+[MUSIC PLAYING]
+[音乐]
+
+2
+00:00:11,500 --> 00:00:13,866
+赋值、状态和副作用
+Assignment, State, and Side-effects
+
+3
+00:00:18,311 --> 00:00:22,000
+教授：到目前为止 我们已经教了很多编程技巧
+PROFESSOR: Well, so far we've invented enough programming
+
+4
+00:00:22,256 --> 00:00:24,064
+来编写复杂程序了
+to do some very complicated things.
+
+5
+00:00:24,768 --> 00:00:29,660
+并且 关于编程你们确实已经学到了很多
+And you surely learned a lot about programming at this point.
+
+6
+00:00:29,660 --> 00:00:31,488
+你们已经学习了几乎所有的
+You've learned almost all the most important tricks
+
+7
+00:00:31,860 --> 00:00:35,872
+那些拥有大量经验的人 才能领悟的技巧
+that usually don't get taught to people until they have had a lot of experience.
+
+8
+00:00:36,416 --> 00:00:40,080
+例如 数据导向编程就是一个主要的技巧
+For example, data directed programming is a major trick,
+
+9
+00:00:40,750 --> 00:00:43,152
+昨天 你们也学习了一种解释型语言
+and yesterday you also saw an interpreted language.
+
+10
+00:00:45,024 --> 00:00:48,460
+我们所做的这一切
+We did this all in a computer language,
+
+11
+00:00:48,544 --> 00:00:49,632
+目前来讲
+at this point,
+
+12
+00:00:49,888 --> 00:00:51,952
+都是在一种没有赋值语句的计算机语言中完成的
+where there was no assignment statement.
+
+13
+00:00:53,770 --> 00:00:58,176
+对于你们中用过Basic或者Pascal的人
+And presumably, for those of you who've seen your Basic or Pascal or whatever,
+
+14
+00:00:58,688 --> 00:01:01,232
+可能会认为“赋值”是最重要的东西
+that's usually considered the most important thing.
+
+15
+00:01:01,792 --> 00:01:03,820
+今天我们将要做一些糟糕的事情
+Well today, we're going to do something horrible.
+
+16
+00:01:03,820 --> 00:01:05,456
+我们要把赋值语句加进来
+We're going to add an assignment statement.
+
+17
+00:01:07,216 --> 00:01:09,140
+既然在没有赋值语句的时候 我们都可以很好地完成工作
+And since we can do all these wonderful things without it,
+
+18
+00:01:09,140 --> 00:01:10,176
+为什么我们还要把它加进来呢？
+why should we add it?
+
+19
+00:01:10,992 --> 00:01:13,728
+我们需要认识到一件重要的事情 #TBD
+An important thing to understand is that today we're going to
+
+20
+00:01:14,480 --> 00:01:15,712
+首先要定下一个规则
+first of all, have a rule,
+
+21
+00:01:16,480 --> 00:01:17,930
+而我们将一直遵守这个规则
+which is going to always be obeyed,
+
+22
+00:01:17,930 --> 00:01:20,800
+这是我们为语言引入新的特性的唯一原因
+which is the only reason we ever add a feature to our language
+
+23
+00:01:21,536 --> 00:01:23,140
+是因为我们有一个好的理由
+is because there is a good reason.
+
+24
+00:01:23,936 --> 00:01:27,280
+#TBD
+And the good reason is going to boil down to the ability,
+
+25
+00:01:27,280 --> 00:01:28,890
+现在你获得了#TBD
+you now get an ability
+
+26
+00:01:28,890 --> 00:01:31,510
+把问题分解为不同的小部分的能力 #TBD
+to break a problem into pieces that are different sets of pieces
+
+27
+00:01:31,510 --> 00:01:34,270
+你过去可能在不使用这种能力的情况下分解问题 #TBD
+then you could have broken it down without that,
+
+28
+00:01:34,384 --> 00:01:36,160
+让你有了另外手段用来分解问题
+give you another means of decomposition.
+
+29
+00:01:38,304 --> 00:01:39,450
+我们这就开始
+However, let's just start.
+
+30
+00:01:39,450 --> 00:01:41,880
+从回顾我们的
+Let me quick begin by reviewing
+
+31
+00:01:41,880 --> 00:01:47,376
+现在已经有的这种语言出发
+the kind of language that we have now.
+
+32
+00:01:48,160 --> 00:01:50,448
+我们之前写的是所谓的函数式程序
+We've been writing what's called functional programs.
+
+33
+00:01:51,216 --> 00:01:52,528
+函数式程序
+And functional programs
+
+34
+00:01:53,040 --> 00:01:57,952
+是一种对数学事实的编码
+are a kind of encoding of mathematical truths.
+
+35
+00:01:58,880 --> 00:02:00,510
+例如 当我们看到
+For example, when we look at
+
+36
+00:02:00,510 --> 00:02:04,096
+像幻灯片上这样阶乘过程时
+the factorial procedure that you see on the slide here,
+
+37
+00:02:05,072 --> 00:02:06,624
+基本上是两个子句
+it's basically two clauses.
+
+38
+00:02:06,992 --> 00:02:08,640
+如果n是1 则结果是1
+If n is one, the result is one,
+
+39
+00:02:08,640 --> 00:02:11,200
+否则返回n乘以n-1的阶乘
+otherwise n times factorial n minus one.
+
+40
+00:02:11,200 --> 00:02:12,336
+这是n的阶乘
+That's factorial of n.
+
+41
+00:02:12,896 --> 00:02:14,272
+它就是阶乘函数
+Well, that is factorial of n.
+
+42
+00:02:14,832 --> 00:02:16,870
+如果用一些其他的记号
+And written down in some other obscure notation
+
+43
+00:02:16,870 --> 00:02:19,328
+那些你在微积分课堂上学到的晦涩的符号来写
+that you might have learned in calculus classes,
+
+44
+00:02:20,304 --> 00:02:22,110
+用数理逻辑来写
+Ahh.. mathematical logic,
+
+45
+00:02:22,110 --> 00:02:26,368
+如果n等于1
+what you see there is if n equals one,
+
+46
+00:02:27,136 --> 00:02:29,900
+那么n的阶乘结果是1 否则
+for the result of n factorial is one, otherwise,
+
+47
+00:02:29,900 --> 00:02:32,560
+如果n大于1 则n的阶乘就是n乘以n-1的阶乘
+greater than one, n factorial is n times n minus one factorial.
+
+48
+00:02:32,560 --> 00:02:33,552
+数学事实
+True statements,
+
+49
+00:02:34,928 --> 00:02:36,700
+就是我们一直以来用的那种语言
+that's the kind of language we've been using.
+
+50
+00:02:37,008 --> 00:02:39,230
+无论何时 我们遇到了这样的数学事实
+And whenever we have true statements of that sort,
+
+51
+00:02:39,536 --> 00:02:46,656
+有一种理解它们工作原理的方法
+there is a kind of, a way of understanding how they work
+
+52
+00:02:47,408 --> 00:02:51,120
+就是这些过程可以由代换演算而来
+which is that such processes can be evolved by substitution.
+
+53
+00:02:51,296 --> 00:02:53,712
+来看第二张幻灯片
+And so we see on the second slide here,
+
+54
+00:02:54,992 --> 00:02:58,816
+我们理解执行的过程
+that the way we understand the execution
+
+55
+00:02:58,832 --> 00:03:03,500
+隐含在表达式的顺序中
+implied by those statements in arranged in that order,
+
+56
+00:03:04,040 --> 00:03:07,760
+也就是你不断地将实际参数
+is that you do successive substitutions of arguments
+
+57
+00:03:07,870 --> 00:03:10,880
+代换到程序体的形式参数中
+for formal parameters in the body of a procedure.
+
+58
+00:03:12,000 --> 00:03:14,512
+这些基本上是一系列的等价代换
+This is basically a sequence of equalities.
+
+59
+00:03:14,610 --> 00:03:17,250
+4的阶乘是4乘以3的阶乘
+Factorial four is four times factorial three.
+
+60
+00:03:17,250 --> 00:03:20,050
+也就是4乘以3乘以2的阶乘
+That is four times three times factorial of two
+
+61
+00:03:20,050 --> 00:03:21,010
+以此类推
+and so on.
+
+62
+00:03:21,232 --> 00:03:23,872
+我们总是保持数学事实成立
+We're always preserving truth.
+
+63
+00:03:25,232 --> 00:03:28,840
+尽管我们正在讨论数学事实
+Even though we're talking about true statements,
+
+64
+00:03:28,840 --> 00:03:31,960
+这里会有超过一个的数学事实
+there might be more than one organization of these true statements
+
+65
+00:03:31,960 --> 00:03:35,120
+来描述一个特定的函数的计算
+to describe the computation of a particular function,
+
+66
+00:03:36,320 --> 00:03:38,420
+这个特定的函数的值的计算
+the computation of the value of a particular function.
+
+67
+00:03:38,420 --> 00:03:40,928
+所以 让我来看下这里的例子
+So, for example, looking at the next one here.
+
+68
+00:03:41,488 --> 00:03:49,020
+这有一个计算m与n之和的方法
+Here is a way of looking at the sum of n and m.
+
+69
+00:03:49,536 --> 00:03:52,048
+我们使用一个递归的过程来完成
+And we did this one by a recursive process.
+
+70
+00:03:52,896 --> 00:03:58,160
+也就是(1+ (+ (-1+ n) m))
+It's the increment of the sum of the decrement of n and m.
+
+71
+00:04:00,080 --> 00:04:05,620
+当然 这里也有相应的数理逻辑 解释了这个方法
+And, of course, there is some piece of mathematical logic here that describes that.
+
+72
+00:04:06,176 --> 00:04:10,496
+也就是((n-1)+m)+1
+It's the increment of the sum of the decrement of n and m,
+
+73
+00:04:11,408 --> 00:04:12,224
+跟之前那个一样
+just like that.
+
+74
+00:04:13,104 --> 00:04:16,400
+所以这儿并没有什么特殊的魔法
+So there's nothing particularly magic about that.
+
+75
+00:04:16,416 --> 00:04:20,010
+当然 如果我们可以再来看一个相同的迭代过程
+And, of course, if we can also look at an iterative process for the same,
+
+76
+00:04:20,192 --> 00:04:24,920
+计算同样的函数 但是进行逐步迭代的程序
+a program that evolves an iterative process, for the same function.
+
+77
+00:04:25,264 --> 00:04:27,568
+这两个程序将得到同样的结果
+These are two things that compute the same answer.
+
+78
+00:04:30,080 --> 00:04:34,832
+我们就可以认为这两个程序在数学上是等效的
+And we have equivalent mathematical truths that are arranged there.
+
+79
+00:04:36,656 --> 00:04:39,936
+你对这些数学事实的排序 决定了具体过程 #TBD
+And just the way you arrange those truths determine the particular process.
+
+80
+00:04:40,304 --> 00:04:43,424
+我们对于这些数学事实的排序和选择 决定了过程发展的方式 #TBD
+In the way choose and arrange them determines the process that's evolved.
+
+81
+00:04:44,336 --> 00:04:48,600
+因此我们可以灵活地讨论待计算的函数
+So we have the flexibility of talking about both the function to be computed,
+
+82
+00:04:48,600 --> 00:04:50,192
+以及计算该函数的所用的方法
+and the method by which it's computed.
+
+83
+00:04:50,600 --> 00:04:52,600
+这并不清晰 我们需要再深入一些
+So it's not clear we need more.
+
+84
+00:04:53,616 --> 00:04:55,500
+然而 今天我要来讲这个糟糕的东西
+However, today I'm going to this awful thing.
+
+85
+00:04:55,500 --> 00:04:58,432
+我要给大家介绍赋值操作
+I'm going to introduce this assignment operation.
+
+86
+00:04:58,896 --> 00:05:00,416
+这是什么？
+Now, what is this?
+
+87
+00:05:02,896 --> 00:05:09,220
+首先 在编程语言中有另一种语句
+Well, first of all, there is going to be another kind of kind of statement, if you will,
+
+88
+00:05:09,220 --> 00:05:10,848
+这种语句叫做SET!
+in a programming language called Set!
+
+89
+00:05:12,410 --> 00:05:15,968
+具有赋值操作的语句
+And SET! -- Things that do things like assignment,
+
+90
+00:05:15,968 --> 00:05:15,984
+我都会在后面加上一个感叹号
+I'm going to put exclamation points after.
+具有赋值操作的语句
+And SET! -- Things that do things like assignment,
+
+91
+00:05:15,984 --> 00:05:17,850
+我都会在后面加上一个感叹号
+I'm going to put exclamation points after.
+
+92
+00:05:18,512 --> 00:05:20,960
+这个感叹号代表什么意思呢？
+We'll talk about what that means in a second.
+
+93
+00:05:20,960 --> 00:05:23,010
+这个感叹号 与问号类似
+The exclamation point, again like question mark,
+
+94
+00:05:23,010 --> 00:05:25,880
+是我们给名字随意加的符号
+is an arbitrary thing we attach to the symbol which is the name,
+
+95
+00:05:25,880 --> 00:05:27,880
+它对于系统来说没有意义
+has no significance to the system.
+
+96
+00:05:28,080 --> 00:05:30,210
+它唯一的意义就是告诉我们
+The only significance is to me and you
+
+97
+00:05:30,400 --> 00:05:34,416
+注意这里是某种赋值操作
+to alert you that this is an assignment of some sort.
+
+98
+00:05:35,880 --> 00:05:40,064
+但是我们要给某个变量赋一个值
+But we're going to set a variable to a value.
+
+99
+00:05:43,744 --> 00:05:45,130
+这意味着
+And what that's going to mean
+
+100
+00:05:45,130 --> 00:05:48,288
+在某个时间点发生了一些事情
+is that there is a time at which something happens.
+
+101
+00:05:48,656 --> 00:05:49,616
+这是一个时间点
+Here's a time.
+
+102
+00:05:49,860 --> 00:05:52,144
+如果时间以这个方向流动
+If I have time going this way,
+
+103
+00:05:53,504 --> 00:05:54,820
+这是个时间轴
+it's a time axis.
+
+104
+00:05:55,008 --> 00:05:57,820
+时间在平面上由上到下地流逝
+Time progresses by walking down the page.
+
+105
+00:05:58,704 --> 00:06:00,920
+赋值是第一个
+Then an assignment is the first thing we have
+
+106
+00:06:00,920 --> 00:06:04,304
+使过去和未来之间产生差别的事物
+that produces the difference between a before and an after.
+
+107
+00:06:06,592 --> 00:06:08,720
+我们之前写的所有程序
+All the other programs that we've written,
+
+108
+00:06:09,184 --> 00:06:10,680
+都不包含赋值
+that have no assignments in them,
+
+109
+00:06:10,680 --> 00:06:13,120
+这些程序以怎样的顺序进行执行都没关系
+the order in which they were evaluated didn't matter.
+
+110
+00:06:14,704 --> 00:06:15,960
+但是赋值比较特殊
+But assignment is special,
+
+111
+00:06:15,960 --> 00:06:17,696
+它使时间中产生了一个时间点
+it produces a moment in time.
+
+112
+00:06:17,960 --> 00:06:24,736
+因此在SET!出现之前和之后中间有一个时间点
+So there is a moment before the set occurs and after,
+
+113
+00:06:27,616 --> 00:06:32,704
+使得在这个时间点之后
+such that after this moment in time,
+
+114
+00:06:33,600 --> 00:06:43,760
+变量有了一个值 即VALUE
+the variable has the value, value.
+
+115
+00:06:49,232 --> 00:06:51,504
+与这个变量之前的值无关
+Independent of what value it had before,
+
+116
+00:06:52,800 --> 00:06:55,792
+SET!改变了它的值
+set! changes the value of the variable.
+
+117
+00:06:57,696 --> 00:06:58,750
+在此之前
+Until this moment,
+
+118
+00:06:58,750 --> 00:07:01,504
+什么都没有发生改变
+we had nothing that changed.
+
+119
+00:07:03,216 --> 00:07:04,112
+举例来说
+So, for example,
+
+120
+00:07:04,848 --> 00:07:06,230
+我们可以想到的一件事是
+one of the things we can think of
+
+121
+00:07:06,230 --> 00:07:09,420
+我们写的一些过程 比如阶乘的程序
+is that the procedures we write for something like factorial
+
+122
+00:07:09,648 --> 00:07:12,752
+事实上与数学中的阶乘函数完全相同
+are in fact pretty much identical to the function factorial.
+
+123
+00:07:13,776 --> 00:07:16,448
+比如说4的阶乘 如果我写FACT(4)
+Factorial of four, if I write fact4,
+
+124
+00:07:17,232 --> 00:07:19,152
+无论它的上下文是怎样的
+independent of what context it's in,
+
+125
+00:07:19,696 --> 00:07:21,290
+无论我写几遍
+and independent of how many times I write it,
+
+126
+00:07:21,290 --> 00:07:22,352
+我总能得到同样的结果
+I always get the same answer.
+
+127
+00:07:23,290 --> 00:07:24,128
+结果永远是24
+It's always 24.
+
+128
+00:07:25,376 --> 00:07:28,928
+它是参数到到结果的唯一映射
+It's a unique map from the argument to the answer.
+
+129
+00:07:30,304 --> 00:07:32,656
+迄今为止 我们之前写的所有程序都是这样的
+And all the programs we've written so far are like that.
+
+130
+00:07:33,520 --> 00:07:36,032
+然而 当引入赋值后 一切就不同了
+However, once I have assignment, that isn't true.
+
+131
+00:07:36,960 --> 00:07:38,160
+举个例子
+So, for example,
+
+132
+00:07:39,184 --> 00:07:48,528
+如果我将COUNT定义为1
+if I were to define count to be one.
+
+133
+00:07:50,000 --> 00:07:52,416
+然后定义一个过程
+And then I'm going to define also a procedure,
+
+134
+00:07:55,168 --> 00:07:56,832
+一个叫做DEMO的简单过程
+a simple procedure called demo,
+
+135
+00:07:59,520 --> 00:08:03,840
+它接受参数X 并执行下面的操作
+which takes argument x and does the following operations.
+
+136
+00:08:03,840 --> 00:08:09,620
+首先将X修改为X+1
+It first sets x to x plus one.
+
+137
+00:08:09,620 --> 00:08:11,776
+我的天啊！ 这看起来就像FORTRAN是吧？
+My gosh, this looksjust like FORTRAN, right--
+
+138
+00:08:13,168 --> 00:08:14,176
+只是用了些有趣的语法
+in a funny syntax.
+
+139
+00:08:16,800 --> 00:08:21,376
+然后返回(+ X COUNT)
+And then add to x count,
+
+140
+00:08:22,144 --> 00:08:24,144
+哦 我刚犯了个错
+Oh, I just made a mistake.
+
+141
+00:08:24,384 --> 00:08:25,232
+我的意思是
+I want to say,
+
+142
+00:08:25,472 --> 00:08:27,120
+(SET! COUNT (1+ COUNT))
+set! count to one plus count.
+
+143
+00:08:30,370 --> 00:08:31,792
+就是我在这里定义的这个
+It's this thing defined here.
+
+144
+00:08:34,416 --> 00:08:36,512
+然后X和COUNT相加
+And then add and said plus x count.
+
+145
+00:08:40,352 --> 00:08:42,064
+然后就可以试着运行这个过程了
+Then I can try this procedure.
+
+146
+00:08:42,480 --> 00:08:43,200
+让我们运行它
+Let's run it.
+
+147
+00:08:43,920 --> 00:08:47,220
+假设我可以输入
+So, suppose I get a prompt and I say,
+
+148
+00:08:47,488 --> 00:08:48,688
+输入(DEMO 3)
+demo 3
+
+149
+00:08:52,192 --> 00:08:53,200
+这里发生了什么？
+Well, what happens here?
+
+150
+00:08:53,740 --> 00:08:55,280
+发生的第一件事情是
+The first thing that happens
+
+151
+00:08:55,536 --> 00:08:56,890
+COUNT现在是1
+is count is currently one.
+
+152
+00:08:56,890 --> 00:08:58,400
+现在 这是一个时间点
+Currently, there is a time.
+
+153
+00:08:59,120 --> 00:09:00,290
+我们在讨论时间点
+We're talking about time.
+
+154
+00:09:00,624 --> 00:09:01,744
+X的值为3
+x gets three.
+
+155
+00:09:02,928 --> 00:09:04,032
+在这个时刻
+At this moment,
+
+156
+00:09:04,672 --> 00:09:07,536
+COUNT增加了 所以COUNT是2
+I say, oh yes, count is incremented, so count is two.
+
+157
+00:09:09,024 --> 00:09:10,448
+2加3等于5
+two plus three is five.
+
+158
+00:09:10,800 --> 00:09:12,432
+所以结果是5
+So the answer I get out is five.
+
+159
+00:09:14,480 --> 00:09:21,584
+然后我再一次 输入(DEMO 3)
+Then I say, demo of say, three again.
+
+160
+00:09:23,600 --> 00:09:24,560
+结果是什么？
+Okay, What do I get?
+
+161
+00:09:24,830 --> 00:09:27,408
+现在COUNT是2 它不再是1了
+Well, now count is two, it's not one anymore,
+
+162
+00:09:28,912 --> 00:09:30,352
+因为我让COUNT加1了
+because I have incremented it.
+
+163
+00:09:30,920 --> 00:09:32,640
+但现在我执行这个过程
+But now I go through this process,
+
+164
+00:09:32,720 --> 00:09:33,664
+X的值为3
+three goes into x,
+
+165
+00:09:34,176 --> 00:09:37,408
+COUNT变为1+COUNT 因此现在是3了
+count becomes one plus count, so that's three now.
+
+166
+00:09:38,080 --> 00:09:39,620
+这两个相加是6
+The sum of those two is six,
+
+167
+00:09:39,620 --> 00:09:40,944
+所以结果是6
+so the answer is six.
+
+168
+00:09:41,920 --> 00:09:43,030
+我们可以发现
+And what we see
+
+169
+00:09:43,030 --> 00:09:44,720
+同样的表达式
+is the same expression
+
+170
+00:09:45,088 --> 00:09:46,640
+却得到了不同的结果
+leads to two different answers,
+
+171
+00:09:48,752 --> 00:09:49,968
+因为时间的作用
+depending upon time.
+
+172
+00:09:52,080 --> 00:09:53,744
+所以DEMO不是函数
+So demo is not a function,
+
+173
+00:09:54,176 --> 00:09:56,128
+或者说它并没有计算一个数学意义上的函数
+does not compute a mathematical function.
+
+174
+00:09:59,888 --> 00:10:02,096
+事实上 你可以知道这是为什么
+In fact, you could also see why now, of course,
+
+175
+00:10:02,848 --> 00:10:06,416
+因为这里是第一处代换模型失效的地方
+this is the first place where the substitution model isn't going to work.
+
+176
+00:10:07,728 --> 00:10:09,552
+它给代换模型判了死刑
+This kills the substitution model dead.
+
+177
+00:10:11,280 --> 00:10:17,184
+哲学家可能注意到一些有关引用的小问题
+You know, with quotation there were some little problems that a philosopher might notice with substitutions,
+
+178
+00:10:17,180 --> 00:10:19,872
+因为当你在引用中执行代换时
+because you have to worry about what deductions you can make when you substitute into quotes,
+
+179
+00:10:20,912 --> 00:10:22,128
+需要考虑你可以得到什么样的推论
+when you substitute into quotes,
+
+180
+00:10:22,340 --> 00:10:23,920
+如果你能够使用代换的话
+if you're allowed to do that at all.
+
+181
+00:10:25,088 --> 00:10:25,600
+但是
+But
+
+182
+00:10:26,064 --> 00:10:28,000
+在这里代换模型已经失效了
+here the substitution model is dead,
+
+183
+00:10:28,110 --> 00:10:29,408
+它什么也不能做了
+can't do anything at all.
+
+184
+00:10:29,640 --> 00:10:30,570
+因为
+Because,
+
+185
+00:10:30,570 --> 00:10:35,856
+假设我想用代换模型来考虑COUNT的代换
+Supposing I wanted to use a substitution model to consider substituting for count?
+
+186
+00:10:37,104 --> 00:10:41,168
+如果我在这里和这里进行代换
+Well, my gosh, if I substitute for here and here,
+
+187
+00:10:41,696 --> 00:10:42,960
+它们是不同的
+they're different ones.
+
+188
+00:10:44,448 --> 00:10:45,968
+它不再是同一个COUNT了
+It's not the same count any more.
+
+189
+00:10:46,480 --> 00:10:47,648
+我得到了错误的结果
+I get the wrong answer.
+
+190
+00:10:47,970 --> 00:10:50,144
+代换模型是一个静态的现象
+The substitution model is a static phenomenon
+
+191
+00:10:51,184 --> 00:10:52,560
+它描述的事物的事实
+describes things that are true
+
+192
+00:10:53,936 --> 00:10:55,296
+而不是事物的变动
+and not things that change.
+
+193
+00:10:55,500 --> 00:10:57,040
+这里 我们的事实变动了
+Here, we have truths that change.
+
+194
+00:11:00,608 --> 00:11:06,740
+那么 在我给出任何解释之前
+OK, Well, before I give you any understanding of this,
+
+195
+00:11:06,740 --> 00:11:07,790
+这很糟糕
+this is very bad.
+
+196
+00:11:07,790 --> 00:11:09,728
+我们失去了我们的计算模型
+Now, we've lost our model of computation.
+
+197
+00:11:10,288 --> 00:11:10,800
+并且
+And,
+
+198
+00:11:11,488 --> 00:11:13,696
+很快 我将不得不构建一个新的计算模型
+pretty soon, I'm going to have to build you a new model of computation.
+
+199
+00:11:14,660 --> 00:11:17,872
+我们现在的讨论 还是从一个不严谨的角度进行的
+But ours plays with this, just now, in an informal sense.
+
+200
+00:11:18,560 --> 00:11:20,160
+当然 你们已经看到的是
+Of course, what you already see
+
+201
+00:11:20,512 --> 00:11:22,704
+当我做一些像赋值之类的事情时
+is that when I have something like assignment,
+
+202
+00:11:23,120 --> 00:11:24,510
+我们所需要的模型
+the model that we're going to need
+
+203
+00:11:24,510 --> 00:11:26,890
+与我们之前模型不同
+is different from the model that we had before
+
+204
+00:11:26,890 --> 00:11:30,930
+在这个的模型中 像count或x这些符号
+in that, the variables, those symbols like count, or x
+
+205
+00:11:30,930 --> 00:11:34,070
+不再关联于它们的值
+are no longer going to refer to the values they have,
+
+206
+00:11:34,070 --> 00:11:37,312
+而是关联于某个储存这些值的地方
+but rather to some sort of place where the value restored.
+
+207
+00:11:37,680 --> 00:11:39,472
+我们将花些时间来适应这种思想
+We're going to have to think that way for a while.
+
+208
+00:11:40,208 --> 00:11:42,110
+这将是一个很糟糕的事情
+And it's going to be a very bad thing
+
+209
+00:11:42,110 --> 00:11:43,472
+并且会造成很多麻烦
+and cause a lot of trouble.
+
+210
+00:11:44,496 --> 00:11:48,250
+所以 就像我说的 若非理由周全
+And so, as I said, the very fact that we're inventing this bad thing,
+
+211
+00:11:48,250 --> 00:11:50,096
+不然绝不要发明这种糟糕的东西
+means that there had better be a good reason for it,
+
+212
+00:11:50,370 --> 00:11:52,864
+否则 就是劳神费力
+otherwise, just a waste of time and a lot of effort.
+
+213
+00:11:53,392 --> 00:11:55,552
+让我们看看一些可以讨论的东西
+Let's just look at some of it just to play.
+
+214
+00:11:55,880 --> 00:11:58,590
+假设我们写了函数式版本的阶乘函数
+Supposing we write down the functional version,
+
+215
+00:11:58,590 --> 00:12:00,480
+传统意义中的那个函数式
+functional meaning in the old style,
+
+216
+00:12:01,376 --> 00:12:04,608
+具有迭代计算过程的阶乘函数
+of factorial by an iterative process.
+
+217
+00:12:09,590 --> 00:12:13,280
+N的阶乘
+Factorial of n.
+
+218
+00:12:18,384 --> 00:12:24,352
+我们要(ITER M I)
+we're going to iterate of m and i,
+
+219
+00:12:26,128 --> 00:12:33,136
+就是说如果I大于N
+which says if i is greater than n,
+
+220
+00:12:33,776 --> 00:12:35,510
+则结果是M
+then the result is m,
+
+221
+00:12:36,304 --> 00:12:37,392
+否则
+otherwise,
+
+222
+00:12:39,792 --> 00:12:46,820
+结果是(ITER (* I M))
+the result of iterating the product of i and m.
+
+223
+00:12:46,820 --> 00:12:49,952
+所以M将是我累积的结果
+So m is going to be the product that I'm accumulating.
+
+224
+00:12:51,584 --> 00:12:52,624
+M就是这个乘积
+m is the product.
+
+225
+00:12:57,970 --> 00:13:00,176
+然后我要把COUNT加1
+And the count I'm going to increase by one.
+
+226
+00:13:04,620 --> 00:13:10,976
+[闭合括号中]
+Plus, ITER, ELSE, COND, define.
+
+227
+00:13:11,952 --> 00:13:13,040
+我在这里启动这个内部过程
+I'm going to start this up.
+
+228
+00:13:17,168 --> 00:13:19,792
+通过前面的学习 我想大家早已驾轻就熟了
+And these days, you should have no trouble reading something like this.
+
+229
+00:13:20,864 --> 00:13:25,152
+这里是一个累积的乘积 和一个计数器
+What I have here is a product there being accumulated and a counter.
+
+230
+00:13:26,480 --> 00:13:28,464
+我让它们都从1开始
+I start them up both at one.
+
+231
+00:13:28,896 --> 00:13:30,920
+我将不断让计数器增加
+I'm going to buzz the counter up,
+
+232
+00:13:30,920 --> 00:13:33,120
+每一轮I变成I+1
+i goes to i plus one every time around.
+
+233
+00:13:34,560 --> 00:13:37,472
+这是我们在这个过程中设置时间的唯一方法
+But that's only way our putting a time on the process,
+
+234
+00:13:38,480 --> 00:13:40,048
+这些都是一系列的事实
+each of this is just a set of truths,
+
+235
+00:13:40,496 --> 00:13:41,344
+真实的规则 #TBD
+true rules.
+
+236
+00:13:42,816 --> 00:13:46,130
+M将获得一个新的值 就是I乘M
+And m is going to get a new values of i and m,
+
+237
+00:13:46,130 --> 00:13:47,824
+每一轮I乘以M
+i times m each time around,
+
+238
+00:13:48,688 --> 00:13:52,064
+最终I将大于N 在那种情况下 结果就是M
+and eventually i is going to be bigger than n, in which case, the answer's going to be m.
+
+239
+00:13:52,672 --> 00:13:54,800
+我给你们讲课的时候 用到了“时间”这个概念
+Now, I'm speaking to you, use time in this.
+
+240
+00:13:55,680 --> 00:13:57,456
+那是因为我知道计算机是怎么工作的
+That's just because I know how the computer works.
+
+241
+00:13:58,256 --> 00:13:59,248
+但是我没必要这么做
+But I didn't have to.
+
+242
+00:13:59,264 --> 00:14:02,300
+这完全可以有一个纯数学的解释
+This could be a purely mathematical description at this point,
+
+243
+00:14:02,300 --> 00:14:03,744
+因为在这里代换可以工作
+because substitution will work for this.
+
+244
+00:14:05,104 --> 00:14:08,140
+但是我们写一个类似的程序
+But let's set right down a similar sort of program,
+
+245
+00:14:08,304 --> 00:14:09,952
+使用相同的算法
+using the same algorithm,
+
+246
+00:14:10,736 --> 00:14:12,112
+但使用了赋值
+but with assignments.
+
+247
+00:14:15,696 --> 00:14:17,168
+所以这个叫做函数式版本
+So this is called the functional version.
+
+248
+00:14:23,728 --> 00:14:25,568
+我想写个命令式的版本的
+I want to write down an imperative version.
+
+249
+00:14:34,480 --> 00:14:35,392
+N的阶乘
+Factorial of n.
+
+250
+00:14:35,920 --> 00:14:37,744
+我要创建两个变量
+I'm going to create my two variables.
+
+251
+00:14:40,160 --> 00:14:45,536
+把I的值初始化为1
+Let i initialize itself to one,
+
+252
+00:14:46,320 --> 00:14:49,776
+M也初始化为1
+and m be initialized to one, similar.
+
+253
+00:14:51,152 --> 00:14:52,192
+我们创建一个循环
+We'll create a loop
+
+254
+00:14:59,312 --> 00:15:07,270
+如果I比N大 循环结束
+which has COND greater than i, and if i is greater than n, we're done.
+
+255
+00:15:07,270 --> 00:15:08,870
+结果是M
+And the result is m,
+
+256
+00:15:08,870 --> 00:15:10,384
+也就是我累积的乘积
+the product I'm accumulating.
+
+257
+00:15:10,870 --> 00:15:11,776
+否则
+Otherwise,
+
+258
+00:15:15,520 --> 00:15:17,408
+我接下来要做三件事
+I'm going to write down three things to do.
+
+259
+00:15:19,264 --> 00:15:27,056
+我要把M赋值为I*M
+I'm going to set! m to the product of i and m,
+
+260
+00:15:29,360 --> 00:15:35,200
+把I赋值为I+1
+set! i to the sum of i and one,
+
+261
+00:15:37,856 --> 00:15:39,312
+然后继续循环
+and go around the loop again.
+
+262
+00:15:40,410 --> 00:15:43,024
+你们中的FORTRAN程序员应该觉得眼熟
+Looks very familiar to you FORTRAN programmers.
+
+263
+00:15:44,736 --> 00:15:46,640
+[闭合括号中]
+ELSE, COND, define,
+
+264
+00:15:46,640 --> 00:15:47,888
+就是这种语法有点陌生
+funny syntax though.
+
+265
+00:15:51,136 --> 00:15:52,272
+启动循环
+Start the loop up,
+
+266
+00:15:56,100 --> 00:15:57,568
+程序就写完了
+and that's the program.
+
+267
+00:15:59,152 --> 00:16:00,528
+那么 这个程序
+Now, this program,
+
+268
+00:16:01,312 --> 00:16:02,496
+我们应该怎么思考它呢？
+how do we think about it?
+
+269
+00:16:02,710 --> 00:16:04,256
+先来看看这里是什么
+Well, let's just say what we're seeing here.
+
+270
+00:16:04,848 --> 00:16:07,470
+这里有两个局部变量 I和M
+There are two local variables, i and m,
+
+271
+00:16:07,470 --> 00:16:09,024
+它们都被初始化为1
+that have been initialized to one.
+
+272
+00:16:10,720 --> 00:16:13,890
+在每一次循环里 我检测I是否大于N
+Every time around the loop, I test to see if i is greater than n,
+
+273
+00:16:13,890 --> 00:16:15,088
+就是我们传入的参数
+which is the input argument,
+
+274
+00:16:15,300 --> 00:16:18,144
+如果成立的话 结果就是M中所累积的乘积
+and if so, the result is the product being accumulated in m.
+
+275
+00:16:19,168 --> 00:16:21,210
+然而 如果循环没有结束
+However, if it's not the end of the loop,
+
+276
+00:16:21,210 --> 00:16:22,896
+如果我们的工作没有结束
+if I'm not done,
+
+277
+00:16:23,648 --> 00:16:28,400
+则我们要把乘积变为i与当前乘积的结果
+then what I'm going to do is change the product to be the result of multiplying i times the current product.
+
+278
+00:16:29,040 --> 00:16:30,688
+就是我们在这里做过的事情
+Which is sort of what we were doing here.
+
+279
+00:16:31,424 --> 00:16:32,688
+除了这里我没有改动
+Except here I wasn't changing.
+
+280
+00:16:33,632 --> 00:16:35,776
+我创建了一个复本
+I was making another copy,
+
+281
+00:16:36,816 --> 00:16:42,048
+因为代换模型就是你复制过程的体
+because the substitution model says, you copy the body of the procedure
+
+282
+00:16:43,088 --> 00:16:45,888
+并用实际参数代换形式参数
+with the arguments substituted for the formal parameters.
+
+283
+00:16:46,720 --> 00:16:48,420
+这里 我考虑的不是副本
+Here I'm not worried about copying,
+
+284
+00:16:48,420 --> 00:16:50,528
+在这里 我已经改变了M的值
+here I've changed the value of m.
+
+285
+00:16:51,808 --> 00:16:55,120
+我也把I的值变成了I+1
+I also then change the value of i to i plus one,
+
+286
+00:16:55,616 --> 00:16:56,960
+然后继续循环
+and go buzzing around.
+
+287
+00:16:58,224 --> 00:17:00,080
+看起来是一样的程序
+Seems like essentially the same program,
+
+288
+00:17:00,960 --> 00:17:02,840
+在今天引入赋值之后
+but there are some ways of making errors here
+
+289
+00:17:02,840 --> 00:17:05,504
+我们在这里有很多种方式犯错
+that didn't exist until today.
+
+290
+00:17:06,144 --> 00:17:07,024
+例如
+For example,
+
+291
+00:17:07,456 --> 00:17:09,408
+如果我在赋值的时候
+if I were to do the horrible thing
+
+292
+00:17:10,048 --> 00:17:12,144
+没有小心地写程序
+of not being careful in writing my program
+
+293
+00:17:12,640 --> 00:17:16,080
+把两个赋值的顺序调换了
+and interchange those two assignments,
+
+294
+00:17:17,104 --> 00:17:18,912
+程序计算的就不是相同的函数了
+the program wouldn't compute the same function.
+
+295
+00:17:20,336 --> 00:17:22,870
+我得到了一个时间错误 因为这儿有个依赖关系
+I get a timing error because there's a dependency
+
+296
+00:17:22,870 --> 00:17:27,220
+因为M依赖于I上一次的值
+that m depends upon having the last value of i.
+
+297
+00:17:27,344 --> 00:17:28,928
+如果我先改变i的值
+If I try change i first,
+
+298
+00:17:31,312 --> 00:17:33,776
+就会在乘以M的时候 得到错误的I值
+then I've got the wrong value of i when I multiply by m.
+
+299
+00:17:35,968 --> 00:17:38,380
+没有赋值的话不会存在这样的BUG
+It's a bug that wasn't available until this moment,
+
+300
+00:17:38,380 --> 00:17:40,592
+这是由于我们引入了某些包含时间的东西造成的
+until we introduced something that had time in it.
+
+301
+00:17:43,440 --> 00:17:44,304
+如我所说的
+So, as I said,
+
+302
+00:17:45,536 --> 00:17:47,390
+首先 我们需要一个新的计算模型
+first we need a new model of computation,
+
+303
+00:17:47,390 --> 00:17:50,864
+然后 需要有一个非常好的理由来支持我们做如此丑陋的事
+and second, we have to be damn good reason for doing this kind of ugly thing.
+
+304
+00:17:52,720 --> 00:17:53,744
+有什么问题吗？
+Are there any questions?
+
+305
+00:17:58,832 --> 00:18:00,224
+David 大点儿声说
+Speak loudly, David
+
+306
+00:18:00,400 --> 00:18:03,472
+学生：现在 我们引入了SET!
+AUDIENCE: I'm confused about, we've introduced set now,
+
+307
+00:18:03,904 --> 00:18:06,368
+但是之前我们已经有LET和DEFINE了
+but we had let before and define before.
+
+308
+00:18:06,896 --> 00:18:09,700
+我不太清楚它们的区别
+I'm confused about the difference between the three.
+
+309
+00:18:09,700 --> 00:18:13,250
+DEFINE不能像SET!一样用吗？
+Wouldn't define work in the same situation as set!
+
+310
+00:18:13,984 --> 00:18:14,830
+请详细讲讲
+if you introduced it a bit?
+
+311
+00:18:14,830 --> 00:18:19,310
+教授：不 DEFINE用于创建并初始化
+PROFESSOR: No, define is intended for setting something once the first time,
+
+312
+00:18:19,310 --> 00:18:21,360
+为了创建它
+for making it, OK?
+
+313
+00:18:22,080 --> 00:18:24,704
+你永远也不会见到我在黑板上
+You've never seen me write on a blackboard
+
+314
+00:18:25,600 --> 00:18:26,944
+在同一行写两个DEFINE
+two defines in a row
+
+315
+00:18:27,088 --> 00:18:32,080
+只是为了让某个变量的旧值变成一个新的值
+whose intention was to change the old value of some variable to a new one.
+
+316
+00:18:32,080 --> 00:18:34,510
+学生：这是一个约定俗成的规矩 还是--
+AUDIENCE: Is that by convention or--
+
+317
+00:18:34,510 --> 00:18:36,350
+教授：不 这是有意为之的
+PROFESSOR: No, it's intention.
+
+318
+00:18:36,350 --> 00:18:38,928
+答案是
+Okay? The answer is,
+
+319
+00:18:39,696 --> 00:18:40,840
+举个例子
+that, for example,
+
+320
+00:18:40,840 --> 00:18:42,272
+在一个过程内部
+internal to a procedure,
+
+321
+00:18:43,200 --> 00:18:45,920
+两个DEFINE写在一行里是非法的
+two defines in a row are illegal,
+
+322
+00:18:46,688 --> 00:18:48,576
+对于同一个变量DEFINE两次是非法的
+two defines in a row of the same variable.
+
+323
+00:18:50,240 --> 00:18:51,740
+X不能被DEFINE两次
+x can't be defined twice.
+
+324
+00:18:51,740 --> 00:18:55,200
+而系统会不会捕获这个错误 就是另一个问题了
+Whether or not a system catches that error is a different question,
+
+325
+00:18:55,936 --> 00:18:57,888
+但是我定下规矩
+but I legislate to you
+
+326
+00:18:58,120 --> 00:19:00,640
+任何东西都只能DEFINE一次
+that define happens once on anything.
+
+327
+00:19:00,736 --> 00:19:02,640
+确实 在交互式调试中
+Now, indeed, in interactive debugging,
+
+328
+00:19:03,376 --> 00:19:07,488
+我们打算让你与计算机交互时可以重新DEFINE一些东西
+we intend that you interacting with your computer will redefine things,
+
+329
+00:19:08,192 --> 00:19:11,216
+所以交互式调试时产生的是一个特殊的异常
+and so there's a special exception made for interactive debugging.
+
+330
+00:19:11,824 --> 00:19:16,480
+但是DEFINE的意思是建立某些东西
+But define is intended to mean to set up something
+
+331
+00:19:18,144 --> 00:19:20,960
+在那个时间点后 它的值是永远不变的
+which will be forever that value after that point.
+
+332
+00:19:22,050 --> 00:19:24,544
+好像所有的DEFINE都是在最开始完成的
+It's as if all the defines were done at the beginning.
+
+333
+00:19:26,090 --> 00:19:30,928
+事实上 在Scheme过程中 DEFINE的唯一合法使用地方
+In fact, the only legal place to put a define in Scheme internal to a procedure
+
+334
+00:19:31,024 --> 00:19:33,360
+就是在LAMBDA表达式的开始
+is just at the beginning of a lambda expression,
+
+335
+00:19:34,470 --> 00:19:37,664
+也就是过程体的开始
+which is the beginning of the body of a procedure.
+
+336
+00:19:40,400 --> 00:19:45,808
+LET当然与那个不一样
+Now, let of course does nothing like either of that.
+
+337
+00:19:48,096 --> 00:19:49,552
+如果你想知道LET发生了什么
+I mean, if you look at what's happening with a let,
+
+338
+00:19:50,176 --> 00:19:52,130
+LET只会绑定一次
+this happens again exactly once.
+
+339
+00:19:52,130 --> 00:19:55,824
+它建立了一个I和M的值分别为1的上下文
+It sets up a context where i and m are values one and one.
+
+340
+00:19:56,832 --> 00:20:00,576
+这个上下文存在于整个作用域中
+That context exists throughout this scope,
+
+341
+00:20:01,310 --> 00:20:02,800
+也就是这个程序范围
+this region of the program.
+
+342
+00:20:04,992 --> 00:20:10,128
+然而 你不会认为LET再次设置了I的值
+However, you don't think of that let as setting i again.
+
+343
+00:20:11,040 --> 00:20:12,160
+它没有改变I的值
+It doesn't change it.
+
+344
+00:20:12,160 --> 00:20:14,016
+因为LET的作用 I将永远不会变化
+i never changes because of the let.
+
+345
+00:20:15,280 --> 00:20:16,816
+因为LET的作用 I才被创建
+i gets created because of let.
+
+346
+00:20:18,512 --> 00:20:19,296
+实际上
+In fact,
+
+347
+00:20:19,730 --> 00:20:21,424
+LET是一个非常简单的想法
+the let is a very simple idea.
+
+348
+00:20:22,240 --> 00:20:23,590
+let不会做别的事情
+Let does nothing more,
+
+349
+00:20:23,590 --> 00:20:31,620
+LET的语义是……
+Let a variable one to have value one
+
+350
+00:20:31,620 --> 00:20:33,504
+我要把这些更规整地写下来
+I'll write this down a little bit more neatly;
+
+351
+00:20:37,160 --> 00:20:43,730
+表达式 (var1 e1)
+Let's write, var one have value, the value of expression e1,
+
+352
+00:20:43,730 --> 00:20:47,360
+还有(var2 e2)
+and variable two, have this value of the expression e2,
+
+353
+00:20:48,144 --> 00:20:49,744
+在表达式e3中
+in an expression e3,
+
+354
+00:20:51,600 --> 00:21:05,808
+与一个以var1和var2为形式参数的过程一样
+is the same thing as a procedure of var one and var two, the formal parameters,
+
+355
+00:21:06,944 --> 00:21:08,960
+e3成为过程的体
+and e3 being the body,
+
+356
+00:21:10,912 --> 00:21:14,000
+在这里 var1与e1的值绑定
+where var one is bound to the value of e1,
+
+357
+00:21:14,270 --> 00:21:16,912
+var2与e2的值绑定
+and var two gets the value of e2.
+
+358
+00:21:19,536 --> 00:21:23,264
+所以实际上 这是一个从代换的角度来看很容易理解的东西
+So this is, in fact, a perfectly understandable thing from a substitution point of view.
+
+359
+00:21:24,896 --> 00:21:27,952
+其实就是同一个表达式的两种不同的写法
+This is really the same expression written in two different ways.
+
+360
+00:21:31,690 --> 00:21:33,504
+事实上 系统真正的工作方式
+In fact, the way the actual system works 
+
+361
+00:21:33,632 --> 00:21:35,820
+就是在运行之前把代码翻译成这种形式
+is this gets translated into this before anything happens.
+
+362
+00:21:37,648 --> 00:21:41,770
+学生：我还是不清楚是什么造成了LET和DEFINE之间的区别
+AUDIENCE: OK, I'm still unclear as then what makes the difference between a let and a define. They could--
+
+363
+00:21:41,770 --> 00:21:44,304
+教授：DEFINE就是个语法糖
+PROFESSOR: A define is a syntactic sugar,
+
+364
+00:21:44,624 --> 00:21:49,104
+本质上来说 是通过LET创建一系列变量 然后给它们一次性赋值
+whereby, essentially a bunch of variables get created by lets and then set up once.
+
+365
+00:21:57,104 --> 00:21:59,744
+好吧 我们休息一会
+OK, time for the first break, I think. Thank you.
+
+366
+00:22:02,520 --> 00:22:19,230
+[音乐]
+[MUSIC PLAYING]
+
+367
+00:22:48,810 --> 00:23:03,690
+[音乐]
+[MUSIC PLAYING]
+
+368
+00:23:04,288 --> 00:23:06,112
+看
+Well let's see.
+
+369
+00:23:06,448 --> 00:23:09,088
+现在 我不得不重建计算模型
+I now have to rebuild the model of computation,
+
+370
+00:23:09,776 --> 00:23:14,160
+使得你能够明白那些机制是如何运作的
+so you understand how some such mechanical mechanism could work
+
+371
+00:23:14,912 --> 00:23:16,464
+来完成我们刚才说的那些工作
+that can do what we've just talked about.
+
+372
+00:23:17,536 --> 00:23:21,392
+我刚刚摧毁了你们的代换模型
+I just recently destroyed your substitution model.
+
+373
+00:23:22,624 --> 00:23:26,032
+不幸的是 这个模型比代换模型要复杂得多
+Unfortunately, this model is significantly more complicated than the substitution model.
+
+374
+00:23:26,624 --> 00:23:27,936
+这个模型叫环境模型
+It's called the environment model.
+
+375
+00:23:29,024 --> 00:23:31,200
+我即将介绍一些术语
+And I'm going to have to introduce some terminology,
+
+376
+00:23:32,032 --> 00:23:34,510
+无论如何 你知道这些术语都是很好的
+which is very good terminology for you to know anyway.
+
+377
+00:23:34,510 --> 00:23:35,744
+它是关于名字的
+It's about names.
+
+378
+00:23:36,510 --> 00:23:41,312
+我们将要给事物拥有的名字和这些名字的用途命名 #TBD
+And we're going to give names to the kinds of names things have and the way those names are used.
+我们将要给事物拥有的名字和这些名字的用途命名 #TBD
+And we're going to give names to the kinds of names things have and the way those names are used.
+
+379
+00:23:42,480 --> 00:23:47,940
+所以这是一个元解释 如果你想这么理解的话
+So this is a meta-description, if you will.
+
+380
+00:23:48,560 --> 00:23:50,850
+总之 这里面有一堆糟糕的术语
+Anyway, there is a pile of an unfortunate terminology here,
+
+381
+00:23:50,850 --> 00:23:53,760
+但我们需要利用它们来理解所谓的“环境模型”
+but we're going to need this to understand what's called the environment model.
+
+382
+00:23:54,704 --> 00:23:57,536
+我们可能要做一点无聊的事情了
+We're about to do a little bit of boring, dog-work here.
+
+383
+00:23:58,040 --> 00:24:01,584
+我们来看第一张张幻灯片
+Let's look at the first transparency.
+
+384
+00:24:02,256 --> 00:24:06,976
+我们看到了术语“约束”的解释
+And we see a description of a word called bound.
+
+385
+00:24:08,800 --> 00:24:11,000
+我们会说一个变量V
+And we're going to say that a variable, v,
+
+386
+00:24:11,000 --> 00:24:12,912
+被约束在表达式E中
+is bound in an expression, e,
+
+387
+00:24:13,410 --> 00:24:21,520
+如果e的含义没有被变量w的形式代换改变的话#TBD
+if the meaning of e is unchanged by the uniform replacement of a variable w,
+
+388
+00:24:21,560 --> 00:24:24,288
+对于E中的每个V #TBD
+not occurrent if for every occurrence of v in e.
+
+389
+00:24:25,696 --> 00:24:27,008
+这个解释很长
+Now that's a long sentence,
+
+390
+00:24:27,376 --> 00:24:32,624
+在我们在被搞糊涂之前 我应该稍微解释下
+so, I think, I'm going to have to say a little bit about that before we even fool around at all here.
+
+391
+00:24:33,424 --> 00:24:35,280
+我们这里讨论的约束变量
+Bound variables we're talking about here.
+
+392
+00:24:44,160 --> 00:24:45,568
+你们已经看到它们很多次了
+And you've seen lots of them.
+
+393
+00:24:46,070 --> 00:24:48,176
+只是你们可能还没意识到
+You may not know that you've seen lots of them.
+
+394
+00:24:48,240 --> 00:24:52,240
+在逻辑学中 你们看到一个逻辑变量
+Well, I suppose in your logic, you saw a logical variables like,
+
+395
+00:24:53,270 --> 00:25:00,112
+就像微积分课上的 对于任意任何X 存在一个Y 使得P为真
+for every x there exists a y such that p is true of x and y from your calculus class.
+
+396
+00:25:02,880 --> 00:25:05,824
+这个变量X 这个变量Y 它们被约束
+This variable, x, and this variable, y, are bound,
+
+397
+00:25:07,088 --> 00:25:07,920
+因为
+because,
+
+398
+00:25:08,336 --> 00:25:09,980
+这个表达式的含义
+the meaning of this expression
+
+399
+00:25:09,980 --> 00:25:15,616
+不取决于我用来描述X和Y的具体字母
+does not depend upon the particular letters I used to describe x and y.
+
+400
+00:25:16,496 --> 00:25:19,184
+如果我用W替换X
+If I were to change the w for x,
+
+401
+00:25:19,840 --> 00:25:25,680
+则可以说对于任意W 存在一个Y使得P为真
+then said for every w there exists a y such that p is true of w and y,
+
+402
+00:25:25,984 --> 00:25:27,088
+它们其实是同一句话
+it would be the same sentence.
+
+403
+00:25:29,440 --> 00:25:30,340
+就是这个意思
+That's what it means.
+
+404
+00:25:30,340 --> 00:25:34,896
+又或者说 你们看到这样一个积分
+Or another case of this that you've seen is integral say,
+
+405
+00:25:35,408 --> 00:25:42,656
+对dx/(1+x^2)从0到1积分
+from 0 to one of dx over one plus x square.
+
+406
+00:25:46,032 --> 00:25:47,920
+这就是你们经常见到的那种东西
+Well that's something you see all the time.
+
+407
+00:25:47,920 --> 00:25:50,928
+这个x是一个约束变量
+And this x is a bound variable.
+
+408
+00:25:52,064 --> 00:25:53,792
+如果我把它换成t
+If I change that to a t,
+
+409
+00:25:54,150 --> 00:25:56,256
+这个表达式其实没有变化
+the expression is still the same thing.
+
+410
+00:25:58,060 --> 00:26:02,768
+就是arctan(1)/4之类的
+This is a 1/4 of the arctan of one or something here, something like that.
+
+411
+00:26:04,704 --> 00:26:06,016
+是的 就是arctan(1)
+Yes, that's the arctan of one.
+
+412
+00:26:06,624 --> 00:26:08,768
+所以约束变量事实上很常见
+So bound variables are actually fairly common,
+
+413
+00:26:09,080 --> 00:26:12,368
+如果你们接触过一些数学的话
+for those of you who have played a bit with mathematics.
+
+414
+00:26:13,264 --> 00:26:17,472
+好 让我们来到编程的世界
+Well, let's go into the programming world.
+
+415
+00:26:19,024 --> 00:26:21,360
+现在量词不再是
+Instead of the quantifier being something like,
+
+416
+00:26:22,032 --> 00:26:24,060
+所有、存在和积分
+for every, or there exists, or integral,
+
+417
+00:26:24,060 --> 00:26:26,432
+我们有一个符号作为量词 用于约束变量
+a quantifier is a symbol that binds a variable.
+
+418
+00:26:27,472 --> 00:26:28,992
+我们要使用量词LAMBDA
+And we are going to use the quantifier lambda
+
+419
+00:26:29,792 --> 00:26:31,808
+作为约束变量的一个必要的东西
+as being the essential thing that binds variables.
+
+420
+00:26:33,808 --> 00:26:36,128
+我们有一个极好的例子
+And so we have some nice examples here
+
+421
+00:26:36,592 --> 00:26:44,140
+对于以Y为参数的过程 做了以下的事情
+like that procedure of one argument y which does the following thing.
+
+422
+00:26:44,140 --> 00:26:46,960
+它调用一个含单个参数X的过程
+It calls the procedure of one argument x,
+
+423
+00:26:47,872 --> 00:26:51,136
+该过程 将X乘以Y
+which multiplies x by y,
+
+424
+00:26:52,880 --> 00:26:54,528
+并应用于3
+and applies that to three.
+
+425
+00:26:58,768 --> 00:27:01,664
+这个过程中包含两个约束变量
+That procedure has the property there of two bound variables in it,
+
+426
+00:27:02,016 --> 00:27:02,928
+X和Y
+x and y
+
+427
+00:27:04,832 --> 00:27:07,472
+这个量词 LAMBDA 约束了这个Y
+This quantifier, lambda here, binds this y,
+
+428
+00:27:07,910 --> 00:27:10,784
+这个量词 LAMBDA 约束了这个X
+and this quantifier, lambda, binds that x.
+
+429
+00:27:12,112 --> 00:27:17,056
+因为 如果我用了一个没有出现在表达式中的任意符号 如W
+Because, if I were to take an arbitrary symbol does not occur in this expression like w
+
+430
+00:27:17,984 --> 00:27:21,040
+用W替换表达式中的所有Y
+and replace all y's with w's in this expression,
+
+431
+00:27:21,360 --> 00:27:22,752
+这个表达式仍与原来的相同
+the expression is still the same,
+
+432
+00:27:23,664 --> 00:27:24,800
+是相同的过程
+the same procedure.
+
+433
+00:27:26,224 --> 00:27:27,410
+这是一个重要的想法
+And this is an important idea.
+
+434
+00:27:27,410 --> 00:27:29,648
+我们有这种东西的原因
+The reason why we had such things like that
+
+435
+00:27:30,208 --> 00:27:31,410
+这是一种模块性
+is a kind of modularity.
+
+436
+00:27:31,410 --> 00:27:32,864
+如果有两个人写程序
+If two people are writing programs,
+
+437
+00:27:34,032 --> 00:27:35,260
+并且他们在合作编程
+and they work together,
+
+438
+00:27:35,260 --> 00:27:40,560
+在他们自己构建的小项目里用什么命名都没有关系
+it shouldn't matter what names they use internal to their own little machines that they're building.
+
+439
+00:27:42,832 --> 00:27:44,672
+所以 实际上我想告诉你们
+And so, what I'm really telling you there,
+
+440
+00:27:45,440 --> 00:27:46,752
+例如
+is that, for example,
+
+441
+00:27:46,840 --> 00:27:51,264
+这个表达式等于 以Y为参数的过程
+this is equivalent to that procedure of one argument y which
+
+442
+00:27:52,352 --> 00:27:59,232
+使用这个对于一个参数z的过程 这个过程将Z乘以Y
+uses that procedure of one argument z which multiplies z by y.
+
+443
+00:28:01,648 --> 00:28:03,536
+因为没人关心我在这用什么
+Because nobody cares what I used in here.
+
+444
+00:28:06,368 --> 00:28:07,248
+这是一个极好的例子
+It's a nice example.
+
+445
+00:28:08,848 --> 00:28:09,856
+另一方面
+On the other hand,
+
+446
+00:28:11,072 --> 00:28:14,336
+我有一些未被约束的变量
+I have some variables that are not bound.
+
+447
+00:28:15,232 --> 00:28:15,968
+举个例子
+And example,
+
+448
+00:28:20,272 --> 00:28:21,760
+这个对于一个以X为参数的过程
+that procedure of one argument x
+
+449
+00:28:22,096 --> 00:28:25,040
+将X乘以Y
+which multiplies x by y
+
+450
+00:28:27,280 --> 00:28:28,160
+在这个例子中
+In this case,
+
+451
+00:28:29,456 --> 00:28:30,752
+y没有被约束
+y is not bound.
+
+452
+00:28:32,464 --> 00:28:34,272
+假设Y的值是3
+Supposing y had the value three,
+
+453
+00:28:35,264 --> 00:28:36,800
+Z的值是4
+and z had the value four,
+
+454
+00:28:38,832 --> 00:28:44,272
+那么这个过程就是把它的参数乘以3
+then this procedure would be the thing that multiplies its argument by three.
+
+455
+00:28:44,864 --> 00:28:47,392
+如果我把所有的y都用z来代替
+If I were to replace every instance of y with z,
+
+456
+00:28:47,520 --> 00:28:51,968
+我将得到一个完全不同的过程 它会把参数乘以4
+I would have a different procedure which multiplies every argument that's given by four.
+
+457
+00:28:53,872 --> 00:28:56,400
+事实上 我们给这类变量取了个名字
+And, in fact, we have a name for such a variable.
+
+458
+00:28:57,760 --> 00:29:04,010
+我们把表达式E中的变量V叫做自由变量
+Here, we say that a variable, v, is free in the expression, e,
+
+459
+00:29:04,010 --> 00:29:06,016
+如果用没有出现在E中的变量W统一替换E中所有的V
+if the meaning of the expression, e, is changed
+
+460
+00:29:06,040 --> 00:29:11,200
+使得表达式E的含义发生了改变
+by the uniform replacement of a variable, w, not occurring in e, for every occurrence of v and e.
+
+461
+00:29:13,264 --> 00:29:13,712
+所以
+So,
+
+462
+00:29:14,496 --> 00:29:22,768
+所以这就是为什么这个变量Y 是一个自由变量
+So that's why this variable over here, y, is a free variable.
+
+463
+00:29:29,160 --> 00:29:32,272
+所以 这个表达式里的自由变量
+And so free variables in this expression--
+
+464
+00:29:33,760 --> 00:29:35,184
+另一个例子是
+And other examples of that is that
+
+465
+00:29:36,176 --> 00:29:39,328
+对于一个以Y为参数的过程
+is that procedure of one argument y,
+
+466
+00:29:40,432 --> 00:29:42,000
+就像我们之前的那个一样
+which is just what we had before,
+
+467
+00:29:42,272 --> 00:29:44,608
+调用以X为参数的过程
+which uses that procedure of one argument x
+
+468
+00:29:45,088 --> 00:29:48,544
+将X与Y相乘--
+that multiplies x by y--
+
+469
+00:29:51,408 --> 00:29:52,656
+并应用于3
+use that on three.
+
+470
+00:29:57,248 --> 00:30:00,352
+这个过程中有一个自由变量
+This procedure has a free variable in it
+
+471
+00:30:00,928 --> 00:30:01,984
+也就是这个星号
+which is asterisk.
+
+472
+00:30:05,008 --> 00:30:05,890
+因为
+See, because,
+
+473
+00:30:05,890 --> 00:30:08,080
+如果它表示正常意义的乘法
+if that has a normal meaning of multiplication,
+
+474
+00:30:09,440 --> 00:30:12,784
+如果我统一地用加号来代替星号
+then if I were to replace uniformly all asterisks with pluses,
+
+475
+00:30:14,256 --> 00:30:16,384
+这个表达式的含义就变了
+then the meaning of this expression would change.
+
+476
+00:30:19,344 --> 00:30:20,768
+这就是自由变量的意思
+That's what you mean by a free variable.
+
+477
+00:30:22,688 --> 00:30:24,816
+现在 你们已经学到了一些逻辑学术语
+So, so far you've learned some logician words
+
+478
+00:30:25,648 --> 00:30:27,584
+用它们可以解释名字的用法
+which describe the way names are used.
+
+479
+00:30:28,944 --> 00:30:31,264
+我们要需要更进一步深入
+Now, we have to do a little bit more playing around here,
+
+480
+00:30:32,960 --> 00:30:33,728
+再多了解一些
+a little bit more.
+
+481
+00:30:35,136 --> 00:30:36,224
+我想给你们讲讲
+I want to tell you about
+
+482
+00:30:36,816 --> 00:30:39,760
+变量被定义的区域
+about the regions are over which variables are defined.
+
+483
+00:30:42,176 --> 00:30:42,880
+你瞧
+You see,
+
+484
+00:30:43,376 --> 00:30:45,696
+目前为止 我们已经相当不正式了
+we've been very informal about this up till now,
+
+485
+00:30:46,336 --> 00:30:50,160
+当然 你们中的一些 或者大部分人可能已经理解得很透彻了
+and, of course, many of you have probably understood very clearly or most of you,
+
+486
+00:30:50,360 --> 00:30:52,848
+在这里被声明的X
+that the x that's being declared here
+
+487
+00:30:53,648 --> 00:30:55,184
+只被定义在这里
+is defined only in here.
+
+488
+00:30:58,288 --> 00:31:00,912
+这个X 只被定义在这里
+This x is the defined only in here,
+
+489
+00:31:01,616 --> 00:31:04,336
+这个Y 只被定义在这里
+and this y is defined only in here.
+
+490
+00:31:07,104 --> 00:31:09,168
+我们给这个概念取了个名字 叫作用域
+We have a name for such an idea. It's called a scope.
+
+491
+00:31:11,616 --> 00:31:13,584
+我给你们再讲个术语
+And let me give you another piece of terminology.
+
+492
+00:31:14,704 --> 00:31:15,776
+这个就比较复杂
+It's a long story.
+
+493
+00:31:15,968 --> 00:31:17,648
+如果X是E中的一个约束变量
+If x is a bound variable in e,
+
+494
+00:31:18,160 --> 00:31:20,240
+那么它是约束于一个LAMBDA表达式中
+then there is a lambda expression where it is bound.
+
+495
+00:31:20,896 --> 00:31:24,910
+LAMBDA表达式是约束变量的唯一方式
+So the only way you can get a bound variable ultimately is by lambda expression.
+
+496
+00:31:24,910 --> 00:31:25,968
+你可能会担心
+Then you may worry,
+
+497
+00:31:26,220 --> 00:31:29,056
+DEFINE是它的一个例外吗？
+does define quite an exception to this?
+
+498
+00:31:29,648 --> 00:31:32,920
+事实证明 通过巧妙安排 我们可以避免使用DEFINE
+And it turns out, we could always arrange things so you don't need any defines.
+
+499
+00:31:32,920 --> 00:31:33,968
+一会我们就能看到了
+And we'll see that in a while.
+
+500
+00:31:34,240 --> 00:31:35,728
+它一个非常神奇的东西
+It's a very magical thing.
+
+501
+00:31:36,540 --> 00:31:38,680
+所以这里不需要DEFINE
+So define really can go away.
+
+502
+00:31:38,680 --> 00:31:42,310
+实际上 唯一能创建名字的东西是LAMBDA
+The really, only thing that makes names is lambda .
+
+503
+00:31:42,310 --> 00:31:44,140
+那就是它的工作
+That's its job.
+
+504
+00:31:44,140 --> 00:31:46,230
+多么的令人惊奇
+And what's so amazing about a lot of things
+
+505
+00:31:46,230 --> 00:31:48,540
+很多东西你只凭借LAMBDA就可以计算
+is you can compute with only lambda.
+
+506
+00:31:48,540 --> 00:31:50,540
+但是 在任何情况下
+But, in any case,
+
+507
+00:31:50,540 --> 00:31:55,760
+一个LAMBDA表达式有一个地方来声明变量
+a lambda expression has a place where it declares a variable.
+
+508
+00:31:55,760 --> 00:31:58,350
+我们把它称为形式参数列表
+We call it the formal parameter list
+
+509
+00:31:58,350 --> 00:32:01,110
+或约束变量列表
+and we say or the bound variable list.
+
+510
+00:32:01,110 --> 00:32:04,740
+我们说LAMBDA表达式约束--这是一个动词
+We say that the lambda expression binds -- so it's a verb
+
+511
+00:32:04,740 --> 00:32:08,340
+--约束了在约束变量列表里声明的变量
+--binds the variables declared in it's bound variable list.
+
+512
+00:32:08,340 --> 00:32:13,040
+另外 表达式中定义变量的那些部分
+In addition, those parts of the expression where the variable is defined,
+
+513
+00:32:13,040 --> 00:32:15,450
+是被一些声明所声明的
+which was declared by some declaration
+
+514
+00:32:15,450 --> 00:32:20,100
+这些部分被叫做变量的作用域
+is called the scope of that variable.
+
+515
+00:32:20,100 --> 00:32:22,100
+所以 这些是作用域
+So these are scopes.
+
+516
+00:32:22,100 --> 00:32:27,160
+这是Y的作用域
+This is the scope of y.
+
+517
+00:32:27,160 --> 00:32:32,750
+这是X的作用域--
+And this is the scope of x--
+
+518
+00:32:32,750 --> 00:32:35,010
+以此类推
+that sort of thing.
+
+519
+00:32:40,860 --> 00:32:43,550
+好
+OK,
+
+520
+00:32:43,550 --> 00:32:46,250
+现在我们有了足够多的术语
+well, now we have enough terminology
+
+521
+00:32:46,250 --> 00:32:51,760
+用来理解如何建立一个新的计算模型了
+to begin to understand how to make a new model for computation
+
+522
+00:32:51,760 --> 00:32:54,500
+因为 很重要的一点是
+because the key thing going on here
+
+523
+00:32:54,500 --> 00:32:57,100
+我们摧毁了代换模型
+is that we destroyed the substitution model,
+
+524
+00:32:57,100 --> 00:33:03,510
+我们现在不得不需要一个模型 来体现表示名字被关联到某些地方
+and we now have to have a model that represents the names as referring to places.
+
+525
+00:33:03,510 --> 00:33:05,720
+因为 如果我们要改变某个东西
+Because if we are going to change something,
+
+526
+00:33:05,720 --> 00:33:09,050
+我们就需要一个存它的地方
+then we have a place where it's stored.
+
+527
+00:33:09,050 --> 00:33:10,510
+你看
+You see,
+
+528
+00:33:10,510 --> 00:33:13,580
+如果一个名字只是关联于一个值
+if a name only refers to a value,
+
+529
+00:33:13,580 --> 00:33:16,540
+如果我试图改变这个名字的含义
+and if I tried to change the name's meaning,
+
+530
+00:33:16,540 --> 00:33:20,320
+这不怎么明确
+well, that's not clear.
+
+531
+00:33:20,320 --> 00:33:24,680
+因为没有名字可以关联的地方
+There's nothing that is the place that that name referred to.
+
+532
+00:33:24,680 --> 00:33:27,110
+我如何真正的去描述它呢？
+How am I really saying it? There is nothing shared
+
+533
+00:33:27,110 --> 00:33:29,540
+没有东西在名字的所有实例之间共享
+among all of the instances of that name.
+
+534
+00:33:29,540 --> 00:33:31,680
+我们真正的意思是 对于一个名字
+And what we really mean, by a name,
+
+535
+00:33:31,680 --> 00:33:33,800
+是用来让我们找到某些东西的
+is that we find something out.
+
+536
+00:33:33,800 --> 00:33:36,540
+我们为某个东西命名 然后你拿到了它
+We've given something a name, and you have it,
+
+537
+00:33:36,540 --> 00:33:39,060
+你能得到它 是因为我给了你一个它的引用
+and you have it, because I'm given you a reference to it,
+
+538
+00:33:39,060 --> 00:33:40,850
+我把对它的引用给了你
+and I've given you a reference to it.
+
+539
+00:33:40,850 --> 00:33:43,010
+我们会看到很多相关的例子
+And we'll see a lot about that.
+
+540
+00:33:43,010 --> 00:33:45,820
+所以我来教给你关于环境的知识
+So let me tell you about environments.
+
+541
+00:33:45,820 --> 00:33:49,020
+我需要用一下头顶上的幻灯机
+I need the overhead projection machine,
+
+542
+00:33:49,020 --> 00:33:51,020
+谢谢你
+thank you.
+
+543
+00:33:51,610 --> 00:33:53,620
+这里
+And so here
+
+544
+00:33:55,080 --> 00:34:01,080
+是一堆环境结构
+is a bunch of environment structures.
+
+545
+00:34:01,080 --> 00:34:06,020
+环境就是执行虚拟的代换的一种方法
+An environment is a way of doing
+substitutions virtually.
+
+546
+00:34:06,020 --> 00:34:07,890
+它代表了一个地方
+It represents a place
+
+547
+00:34:07,890 --> 00:34:12,980
+是存储你的未完成的代换的地方
+where something is stored which is the substitutions that you haven't done.
+
+548
+00:34:12,980 --> 00:34:16,500
+它是一个收集各种东西的地方
+It's a place where everything accumulates,
+
+549
+00:34:16,500 --> 00:34:21,460
+在那里 变量的名字与值关联在一起
+where the names of the variables are associated with the values they have
+
+550
+00:34:21,460 --> 00:34:22,660
+所以
+such that,
+
+551
+00:34:22,660 --> 00:34:25,900
+当你问某个名字是什么意思的时候
+when you say, what dose this name mean,
+
+552
+00:34:25,900 --> 00:34:27,900
+你要在一个环境中寻找答案
+you look it up in an environment.
+
+553
+00:34:27,900 --> 00:34:30,410
+所以环境是一个函数
+So an environment is a function,
+
+554
+00:34:30,410 --> 00:34:31,940
+或一张表
+or a table,
+
+555
+00:34:31,940 --> 00:34:33,240
+或类似的东西
+or something like that.
+
+556
+00:34:33,240 --> 00:34:35,460
+但它是一种结构化的表
+But it's a structured sort of table.
+
+557
+00:34:35,460 --> 00:34:38,400
+它是由框架构成
+It's made out of things called frames.
+
+558
+00:34:40,860 --> 00:34:44,600
+框架是环境的一部分
+Frames are pieces of environment,
+
+559
+00:34:44,600 --> 00:34:46,600
+它们被链接在一起
+and they are chained together,
+
+560
+00:34:46,600 --> 00:34:48,600
+以某种很好的方式
+in some nice ways,
+
+561
+00:34:48,600 --> 00:34:53,080
+就是叫做父链接之类的东西
+by what's called parent links or something like that.
+
+562
+00:34:53,080 --> 00:34:55,310
+这里
+So here,
+
+563
+00:34:55,310 --> 00:34:57,620
+有一个环境结构
+we have an environment structure
+
+564
+00:34:57,620 --> 00:35:04,900
+它由三个环境组成 分别是A B和C
+consisting of three environments, basically, A, B, and C.
+
+565
+00:35:04,900 --> 00:35:08,580
+D也是环境 但它和C是一样的
+d is also an environment, but it's the same one,
+
+566
+00:35:08,580 --> 00:35:11,010
+它们共享了同一个环境
+they share.
+
+567
+00:35:11,010 --> 00:35:14,280
+那就是赋值的精髓所在
+And that's the essence of assignment.
+
+568
+00:35:14,280 --> 00:35:16,100
+如果我改变了一个变量
+If I change a variable,
+
+569
+00:35:16,100 --> 00:35:19,800
+比如改变这个变量的值
+a value of a valuable that lives here, like that one,
+
+570
+00:35:19,800 --> 00:35:23,500
+那么它将在所有地方都可见
+it should be visible from all places that you're looking at it from.
+
+571
+00:35:23,500 --> 00:35:24,840
+用x来举例
+Take this one, x.
+
+572
+00:35:24,840 --> 00:35:28,190
+如果我将X改为4
+If I change the x to four,
+
+573
+00:35:28,190 --> 00:35:30,190
+在其他地方也是可见的
+it's visible from other places.
+
+574
+00:35:30,190 --> 00:35:32,190
+但是我们现在不去关心这个
+But I'm not going to worry about that right now.
+
+575
+00:35:32,190 --> 00:35:34,310
+过一会儿会详细讨论这个问题
+We're going to talk a lot about that in a little while.
+
+576
+00:35:34,310 --> 00:35:36,540
+这里有什么？
+What do we have here?
+
+577
+00:35:36,540 --> 00:35:39,220
+这些叫做框架 这是一个框架
+Well, these are called frames. Here is a frame,
+
+578
+00:35:39,220 --> 00:35:40,620
+这是一个框架
+here's a frame
+
+579
+00:35:40,620 --> 00:35:42,770
+这也是一个框架
+and here's a frame.
+
+580
+00:35:42,770 --> 00:35:45,200
+A是一个环境
+A is an environment which consists of
+
+581
+00:35:45,200 --> 00:35:48,170
+它由框架II
+the table label which is frame two,
+
+582
+00:35:48,170 --> 00:35:52,200
+和框架I组成
+followed by the table labeled frame one.
+
+583
+00:35:52,200 --> 00:35:54,870
+在这个环境中
+And, in this environment,
+
+584
+00:35:54,870 --> 00:36:00,200
+在这个所谓的环境中 也就是框架II中
+in say this environment, frame two,
+
+585
+00:36:00,200 --> 00:36:03,840
+x和y是被约束的
+x and y are bound.
+
+586
+00:36:03,840 --> 00:36:05,260
+它们有值
+They have values.
+
+587
+00:36:05,260 --> 00:36:07,180
+对不起 是在框架I中
+Sorry, in frame one
+
+588
+00:36:07,180 --> 00:36:09,520
+在框架II中
+In frame two,
+
+589
+00:36:09,520 --> 00:36:10,880
+Z被约束
+z is bound,
+
+590
+00:36:10,880 --> 00:36:12,280
+X被约束
+and x is bound,
+
+591
+00:36:12,280 --> 00:36:14,780
+并且Y也是被约束的
+and y is bound,
+
+592
+00:36:14,780 --> 00:36:17,420
+但是我们看到的x的值
+but the value of x that we see,
+
+593
+00:36:17,420 --> 00:36:19,640
+从这个角度来看
+looking from this point of view,
+
+594
+00:36:19,640 --> 00:36:22,230
+是这个X 它的值是7
+is this x. It's x is seven,
+
+595
+00:36:22,230 --> 00:36:24,840
+而不是这个值为3的X
+rather than this one which is three.
+
+596
+00:36:24,840 --> 00:36:30,100
+我们称之为 这个X隐蔽了这个X
+We say that this x shadows this x.
+
+597
+00:36:30,720 --> 00:36:32,980
+从环境III
+From environment three--
+
+598
+00:36:32,980 --> 00:36:34,450
+从框架III
+from frame three,
+
+599
+00:36:34,450 --> 00:36:35,730
+从环境B
+from environment b,
+
+600
+00:36:35,730 --> 00:36:37,450
+它引用了框架III
+which refers to frame three,
+
+601
+00:36:37,450 --> 00:36:44,010
+变量N 和Y被约束 X也被约束
+we have variables n and y bound and also x.
+
+602
+00:36:44,010 --> 00:36:48,150
+这个Y把它隐蔽了
+This y shadow this one.
+
+603
+00:36:48,150 --> 00:36:51,000
+从这个角度来看
+So the value, looking from this point of view,
+
+604
+00:36:51,000 --> 00:36:53,180
+Y的值是2
+of y is two.
+
+605
+00:36:53,180 --> 00:36:55,280
+从这个角度来看
+The value for looking from this point of view
+
+606
+00:36:55,280 --> 00:36:59,620
+M的值是1 X的值是3
+and m is one. And the value, looking from this point of view, of x is three.
+
+607
+00:37:01,920 --> 00:37:03,150
+所以 我们有了一个
+So there we have
+
+608
+00:37:03,150 --> 00:37:06,060
+由框架构成的非常简单的环境结构
+a very simple environment structure made out of frames.
+
+609
+00:37:06,060 --> 00:37:10,700
+它们与过程的应用相一致
+These correspond to the applications of procedures.
+
+610
+00:37:10,700 --> 00:37:13,420
+我们马上就会看到
+And we'll see that in a second.
+
+611
+00:37:13,420 --> 00:37:18,690
+现在要给你们看看我们构建的一些其他的很好的小结构
+So now I have to make you some other nice little structure that we build.
+
+612
+00:37:20,560 --> 00:37:22,020
+下一张幻灯片
+Next slide,
+
+613
+00:37:22,020 --> 00:37:24,840
+我们可以看到一个对象
+we see an object,
+
+614
+00:37:24,840 --> 00:37:27,620
+我们将要描绘它的过程
+which I'm going to draw procedures.
+
+615
+00:37:27,620 --> 00:37:29,830
+这是一个过程
+This is a procedure.
+
+616
+00:37:29,830 --> 00:37:32,840
+这个过程由两个部分组成
+A procedure is made out of two parts.
+
+617
+00:37:32,840 --> 00:37:36,300
+这有点像cons
+It's sort of like a cons.
+
+618
+00:37:36,790 --> 00:37:39,440
+不管怎样 它有两个部分
+However, it's the two parts.
+
+619
+00:37:40,440 --> 00:37:45,420
+第一个部分指向一些代码
+The first part refers to some code,
+
+620
+00:37:45,420 --> 00:37:47,420
+这些代码将会被执行
+something that can be executed,
+
+621
+00:37:47,420 --> 00:37:50,530
+你可以把它视作一组指令
+a set of instructions, if you will. You can think of it that way.
+
+622
+00:37:50,530 --> 00:37:53,700
+第二部分是环境
+And the second part is the environment.
+
+623
+00:37:53,700 --> 00:37:56,710
+这个过程就是全部了
+The procedure is the whole thing.
+
+624
+00:37:56,710 --> 00:37:58,710
+我们要用它
+And we're going to have to use this
+
+625
+00:37:58,710 --> 00:38:05,910
+来捕获出现在过程中的自由变量的值
+to capture the values of the free variables that occur in the procedure.
+
+626
+00:38:05,910 --> 00:38:10,860
+如果过程中出现一个变量 它不是约束变量就是自由变量
+If a variable occurs in the procedure it's either bound in that procedure or free.
+
+627
+00:38:10,860 --> 00:38:12,380
+如果它是约束变量
+If it's bound,
+
+628
+00:38:12,380 --> 00:38:15,670
+则它的值将很容易被找到
+then the value will somehow be easy to find.
+
+629
+00:38:15,890 --> 00:38:18,910
+它将存在于某个很容易找到的环境中
+It will be in some easy environment to get at.
+
+630
+00:38:18,910 --> 00:38:20,660
+如果它是自由变量
+If it's free,
+
+631
+00:38:20,660 --> 00:38:23,020
+#TBD
+we're going to have to have something that goes with the procedure
+
+632
+00:38:23,020 --> 00:38:26,280
+#TBD
+that says where we'll go look for its value.
+
+633
+00:38:26,280 --> 00:38:29,210
+现在为什么的理由还不清楚
+And the reasons why are not obvious yet,
+
+634
+00:38:29,210 --> 00:38:31,760
+但很快就要真相大白了
+but will be soon.
+
+635
+00:38:31,760 --> 00:38:35,190
+这里有一个对象 它是个混合的对象
+So here's a procedure object. It's a composite object
+
+636
+00:38:35,190 --> 00:38:42,400
+由一些代码和一个环境结构组成
+consisting of a piece of code and a environment structure.
+
+637
+00:38:42,400 --> 00:38:46,190
+现在我要告诉你们一些全新的规则
+Now I will tell you the new rules, the complete new rules,
+
+638
+00:38:46,190 --> 00:38:49,200
+关于执行的规则
+for evaluation.
+
+639
+00:38:50,320 --> 00:38:52,960
+这里只有两条规则
+The first rule is-- there's only two of them.
+
+640
+00:38:52,960 --> 00:38:56,920
+这些规则与代换模型规则相对应
+These correspond to the substitution model rules.
+
+641
+00:38:56,920 --> 00:38:59,480
+第一条规则是用来解决
+And the first one has to do with
+
+642
+00:38:59,480 --> 00:39:04,140
+如何把一个过程 应用到它参数上的问题的
+how do you apply a procedure to its arguments?
+
+643
+00:39:05,020 --> 00:39:08,820
+程序对象被应用于一组参数
+And a procedural object is applied to a set of arguments
+
+644
+00:39:08,820 --> 00:39:10,940
+是通过构建一个新的框架来完成
+by constructing a new frame.
+
+645
+00:39:10,940 --> 00:39:15,830
+那个框架将包含形式参数
+That frame will contain the mapping of the former parameters to the actual
+parameters
+
+646
+00:39:15,830 --> 00:39:20,960
+对调用中使用的实际参数的映射
+of the arguments that were supplied in the call.
+
+647
+00:39:20,960 --> 00:39:22,310
+如你所知
+As you know,
+
+648
+00:39:22,310 --> 00:39:26,940
+当我们建立一个过程 如LAMBDA X  X乘Y
+when we make up a call to a procedure like lambda x times x y,
+
+649
+00:39:26,940 --> 00:39:29,900
+然后我们以3为参数调用它
+and we call that with the argument three,
+
+650
+00:39:29,900 --> 00:39:33,870
+那么我们需要某个从X到3的映射
+then we're going to need some mapping of x to three.
+
+651
+00:39:33,870 --> 00:39:36,520
+这与之前的代换是一样的
+It's the same thing as later substituting,
+
+652
+00:39:36,520 --> 00:39:41,520
+在旧的模型中 X代换为3
+if you will, the three for the x in the old model.
+
+653
+00:39:41,520 --> 00:39:44,990
+所以我要建立一个框架
+So I'm going to build a frame which contains x equals three
+
+654
+00:39:44,990 --> 00:39:48,160
+在框架中包含X等于3的这个信息
+as the information in that frame.
+
+655
+00:39:48,160 --> 00:39:50,160
+现在
+Now,
+
+656
+00:39:50,160 --> 00:39:53,960
+过程的体即将被执行
+the body of the procedure will then have to be evaluated which is this,
+
+657
+00:39:53,960 --> 00:39:57,610
+它将在一个环境中执行
+and will be evaluated in an environment
+
+658
+00:39:57,610 --> 00:40:08,370
+这个环境是由我们创建的新框架组合而成
+which is constructed by adjoining the new frame that we just made
+
+659
+00:40:08,370 --> 00:40:12,770
+它是我们所应用的过程的一部分
+to the environment which was part of the procedure that we applied.
+
+660
+00:40:12,770 --> 00:40:17,820
+所以 举个例子
+So I'm going to make a little example of that here.
+
+661
+00:40:18,680 --> 00:40:24,920
+假设我有一些环境
+Supposing I have some environment.
+
+662
+00:40:24,920 --> 00:40:27,570
+画个方框代表它
+Here's a frame which represents it.
+
+663
+00:40:27,570 --> 00:40:32,830
+以及一些过程--我画圆来代表它们 因为这比小三角形好画--
+And some procedure-- which I'm going to draw with circles here because it's easier than little triangles--
+
+664
+00:40:32,830 --> 00:40:37,460
+抱歉 是菱形
+Sorry, those are rhombuses,
+
+665
+00:40:37,460 --> 00:40:42,400
+小块菱形的果冻之类的东西
+rhomboidal little pieces of fruit jelly or something.
+
+666
+00:40:42,400 --> 00:40:45,700
+这有一个使用这个环境的过程
+So here's a procedure which takes this environment.
+
+667
+00:40:45,700 --> 00:40:48,160
+这个过程有一些代码
+And the procedure has a piece of code,
+
+668
+00:40:48,160 --> 00:40:50,120
+是一个LAMBDA表达式
+which is a lambda expression,
+
+669
+00:40:50,120 --> 00:40:52,960
+约束了X和Y
+which binds x and y
+
+670
+00:40:52,960 --> 00:40:57,760
+然后执行了表达式E
+and then executes an expression, e.
+
+671
+00:40:57,760 --> 00:40:59,560
+这是一个过程
+And this is the procedure.
+
+672
+00:40:59,560 --> 00:41:01,060
+我们叫它P
+We'll call it p.
+
+673
+00:41:01,060 --> 00:41:06,180
+我希望将这个过程应用于3和4
+I wish to apply that procedure to three and four.
+
+674
+00:41:06,180 --> 00:41:09,530
+所以我在这写(P 3 4)
+So I want to do p of three and four.
+
+675
+00:41:09,530 --> 00:41:12,890
+我要做的事情是 是创建一个新的框架
+What I'm going to do, of course, is make a new frame.
+
+676
+00:41:12,890 --> 00:41:15,140
+我建立了一个框架
+I build a frame
+
+677
+00:41:15,140 --> 00:41:18,640
+框架中X等于3
+which contains x equals three,
+
+678
+00:41:18,640 --> 00:41:21,240
+y等于4
+and y equals four.
+
+679
+00:41:21,240 --> 00:41:24,130
+我要把这个框架
+I'm going to connect that frame
+
+680
+00:41:24,130 --> 00:41:26,130
+连接到这一个框架上
+to this frame over here.
+
+681
+00:41:27,120 --> 00:41:29,680
+对于这个环境
+And then this environment,
+
+682
+00:41:29,680 --> 00:41:31,300
+我把它叫做B
+with I will call b,
+
+683
+00:41:31,300 --> 00:41:37,070
+我会在这个环境中执行E的体
+is the environment in which I will evaluate the body of e.
+
+684
+00:41:39,370 --> 00:41:41,370
+现在
+Now,
+
+685
+00:41:41,370 --> 00:41:46,290
+E可能包含了X和Y的引用以及一些别的东西
+e may contain references to x and y and other things.
+
+686
+00:41:46,290 --> 00:41:50,540
+X和Y的值在这里
+x and y will have values right here.
+
+687
+00:41:50,540 --> 00:41:54,300
+其他的变量的值在这里
+Other things will have their values here.
+
+688
+00:41:54,700 --> 00:41:56,940
+怎样才能获取这个框架呢？
+How do we get this frame?
+
+689
+00:41:56,940 --> 00:41:59,450
+我们通过过程构建来完成
+That we do by the construction of procedures
+
+690
+00:41:59,450 --> 00:42:01,840
+这就是另一条规则了
+which is the other rule.
+
+691
+00:42:01,840 --> 00:42:05,140
+请看下一张幻灯片
+And I think that's the next slide.
+
+692
+00:42:05,140 --> 00:42:07,310
+规则二
+Rule two,
+
+693
+00:42:07,310 --> 00:42:09,900
+当一个LAMBDA表达式被执行时
+when a lambda expression is evaluated,
+
+694
+00:42:09,900 --> 00:42:13,650
+相对于某个特定的环境--
+relative to a particular environment--
+
+695
+00:42:13,650 --> 00:42:14,700
+看
+See,
+
+696
+00:42:14,700 --> 00:42:18,120
+获取一个过程的方式就是执行一个LAMBDA表达式
+the way I get a procedure is by evaluating the lambda expression.
+
+697
+00:42:18,120 --> 00:42:19,850
+这里有一个LAMBDA表达式
+Here's a lambda expression.
+
+698
+00:42:19,850 --> 00:42:21,630
+通过执行它
+By evaluating it,
+
+699
+00:42:21,630 --> 00:42:24,860
+我获得了一个可以应用于3的过程
+I get a procedure which I can apply to three.
+
+700
+00:42:24,860 --> 00:42:26,650
+现在这个LAMBDA表达式
+Now this lambda expression
+
+701
+00:42:26,650 --> 00:42:31,540
+在一个Y已被定义的环境中执行
+is evaluated in an environment where y is defined.
+
+702
+00:42:31,540 --> 00:42:36,390
+我希望这个过程的体中包括的y是自由变量
+And I want the body of this which contains a free version of y.
+
+703
+00:42:36,390 --> 00:42:38,660
+在这里面 Y是自由变量
+y is free in here,
+
+704
+00:42:38,660 --> 00:42:41,230
+它在其他的地方都是被约束的
+it's bound over the whole thing,
+
+705
+00:42:41,230 --> 00:42:43,190
+但在这里是自由变量
+but it's free over here.
+
+706
+00:42:43,190 --> 00:42:47,060
+我想让这个Y成为它
+I want that y to be this one.
+
+707
+00:42:47,060 --> 00:42:55,280
+我在Y被创建的环境中执行这个过程的体
+I evaluate this body of this procedure in the environment where y was created.
+
+708
+00:42:55,280 --> 00:42:58,860
+就像这个一样 因为那是通过应用完成的
+That's this kind of thing, because that was done by application.
+
+709
+00:42:58,860 --> 00:43:00,030
+现在
+Now,
+
+710
+00:43:00,030 --> 00:43:02,850
+如果我还想查找Y的值
+if I ever want to look up the value of y,
+
+711
+00:43:02,850 --> 00:43:04,320
+我就必须知道它在哪
+I have to know where it is.
+
+712
+00:43:04,320 --> 00:43:06,420
+因此 这个过程在被创建时
+Therefore, this procedural was created,
+
+713
+00:43:06,420 --> 00:43:10,060
+过程的创建 也就是LAMBDA表达式的执行结果
+the creation of the procedure which is the result of evaluating that lambda expression
+
+714
+00:43:10,060 --> 00:43:17,840
+最好是获取一个指针或记住Y被约束在哪个框架中
+had better capture a pointer or remember the frame in which y was bound.
+
+715
+00:43:17,840 --> 00:43:20,960
+这就是这个规则的内容
+So that's what this rule is telling us.
+
+716
+00:43:20,960 --> 00:43:24,310
+那么 举个例子
+So, for example,
+
+717
+00:43:24,310 --> 00:43:30,680
+如果我恰好执行了一个LAMBDA表达式
+if I happen to be evaluating a lambda expression,
+
+718
+00:43:30,680 --> 00:43:33,780
+在E中的LAMBDA表达式
+lambda expression in e,
+
+719
+00:43:33,780 --> 00:43:40,990
+LAMBDA X Y 我们把它#TBD
+lambda of say, x and y, let's call it g in e,
+
+720
+00:43:40,990 --> 00:43:42,760
+执行它
+evaluating that.
+
+721
+00:43:42,760 --> 00:43:46,880
+这些事的意义就是我现在构建了一个过程对象
+all that means is I now construct a procedure object.
+
+722
+00:43:46,880 --> 00:43:48,560
+E是某个环境
+e is some environment.
+
+723
+00:43:48,560 --> 00:43:51,520
+有个指针指向E
+e is something which has a pointer to it.
+
+724
+00:43:51,520 --> 00:43:58,240
+我构建了一个过程对象指向了这个环境
+I construct a procedure object that points up to that environment,
+
+725
+00:43:58,240 --> 00:44:00,450
+它的代码
+where the code of that
+
+726
+00:44:00,450 --> 00:44:05,920
+是一个LAMBDA表达式 或者其他可以翻译为LAMBDA表达式的东西
+is a lambda expression or whatever that translates into.
+
+727
+00:44:05,920 --> 00:44:12,020
+而这就是一个过程
+And this is the procedure.
+
+728
+00:44:12,020 --> 00:44:14,940
+所以这个产物对我来说
+So this produces for me--
+
+729
+00:44:14,940 --> 00:44:16,370
+这个对象
+this object here,
+
+730
+00:44:16,370 --> 00:44:18,370
+这个环境指针
+this environment pointer,
+
+731
+00:44:18,370 --> 00:44:22,520
+获取了lambda表达式执行所处于的环境
+captures the place where this lambda expression was evaluated,
+
+732
+00:44:22,520 --> 00:44:25,360
+定义所使用的环境
+where the definition was used,
+
+733
+00:44:25,360 --> 00:44:29,960
+创建一个过程时的定义所用的环境
+where the definition was used to make a procedure,
+
+734
+00:44:29,960 --> 00:44:32,540
+从而创建了过程
+to make the procedure.
+
+735
+00:44:32,540 --> 00:44:37,040
+所以 它将环境从定义过程的地方取出
+So it picks up the environment from the place where that procedure was defined,
+
+736
+00:44:37,040 --> 00:44:39,350
+将它保存在过程自己内部
+stores it in the procedure itself,
+
+737
+00:44:39,350 --> 00:44:41,140
+之后当过程被调用时
+and then when the procedure is used,
+
+738
+00:44:41,140 --> 00:44:43,820
+它在被定义时的环境
+the environment where it was defined is extended
+
+739
+00:44:43,820 --> 00:44:48,240
+将由新的框架扩充
+with the new frame.
+
+740
+00:44:48,240 --> 00:44:52,790
+这给了我们一个放置有值的变量的地方
+So this gives us a locus for putting where a variable has a value.
+
+741
+00:44:52,790 --> 00:44:53,960
+举个例子
+And, for example,
+
+742
+00:44:53,960 --> 00:44:57,520
+如果有很多东西指向那这个环境
+if there are lots of guys pointing in at that environment,
+
+743
+00:44:57,520 --> 00:45:01,030
+它们就会共享这个环境
+then they share that place.
+
+744
+00:45:01,030 --> 00:45:03,660
+我们很快就会更进一步了解它们
+And we'll see more of that shortly.
+
+745
+00:45:03,660 --> 00:45:06,290
+现在你们有了一个新模型
+Well, now you have a new model
+
+746
+00:45:06,290 --> 00:45:10,950
+我们用它来理解程序的执行
+for understanding the execution of programs.
+
+747
+00:45:10,950 --> 00:45:13,100
+我觉得现在我应该解答一些问题了
+I suppose I'll take questions now,
+
+748
+00:45:13,100 --> 00:45:17,600
+之后我们再继续
+and then we'll go on and use that for something.
+
+749
+00:45:17,600 --> 00:45:19,520
+学生：这么说是对的吗？
+AUDIENCE: Is it right to say then,
+
+750
+00:45:19,520 --> 00:45:23,960
+环境就是被连接在一起的框架开始的地方--
+the environment is that linked chain of frames starting with--
+
+751
+00:45:23,960 --> 00:45:25,480
+教授：对
+PROFESSOR: That's right.
+
+752
+00:45:25,480 --> 00:45:27,440
+学生：通过它能够取回所有的框架？
+AUDIENCE:  working all the way back?
+
+753
+00:45:27,440 --> 00:45:32,160
+教授：是的 环境是一系列被连接在一起的框架
+PROFESSOR: Yes, the environment is a sequence of frames linked together.
+
+754
+00:45:32,160 --> 00:45:36,600
+我对它的理解是 它是指向第一个框架的指针
+And the way I like to think about it, it's the pointer to the first one,
+
+755
+00:45:36,600 --> 00:45:41,500
+因为一旦你获得了它 你就能拿到所有的框架
+because once you've got that you've got them all.
+
+756
+00:45:43,500 --> 00:45:45,500
+还有谁有问题吗？
+Anybody else?
+
+757
+00:45:45,500 --> 00:45:49,360
+学生：有这种可能吗？在两个不同的环境中执行
+AUDIENCE: Is it possible to evaluate a procedure or to define a procedure in two different environments
+
+758
+00:45:49,360 --> 00:45:53,200
+或定义一个过程 使得它有不同的行为 并且有指向两个环境的指针--
+such that it will behave differently, and have pointers to both--
+
+759
+00:45:53,200 --> 00:45:56,900
+教授：噢 是的 同一个过程不会有两个不同环境
+PROFESSOR: Oh, yes. The same procedure is not going to have two different environments.
+
+760
+00:45:56,900 --> 00:45:59,020
+同样的代码
+The same code,
+
+761
+00:45:59,020 --> 00:46:00,820
+同样的LAMBDA表达式
+the same lambda expression
+
+762
+00:46:00,820 --> 00:46:05,790
+可以在两个不同的环境中执行
+can be evaluated in two environments producing two different procedures.
+
+763
+00:46:05,790 --> 00:46:07,180
+每个过程--
+Each procedure--
+
+764
+00:46:07,180 --> 00:46:09,950
+学生：它们的定义有同样的名字 它们的操作--
+AUDIENCE: Their definition has the same name. Their operation--
+
+765
+00:46:09,950 --> 00:46:12,380
+教授：它们定义是写起来是一样的 使用同样的字母
+PROFESSOR: The definition is written the same, with the same characters.
+
+766
+00:46:12,380 --> 00:46:14,930
+我能执行那一组字母
+I can evaluate that set of characters,
+
+767
+00:46:14,930 --> 00:46:18,140
+或定义的列表结构之类的东西
+whatever, that list structure that defines,
+
+768
+00:46:18,140 --> 00:46:20,800
+那只是文本表示
+that is the textual representation.
+
+769
+00:46:20,800 --> 00:46:25,420
+我可以在两个不同环境种执行它 产生两个不同的过程
+I can evaluate that in two different environments producing two different procedures.
+
+770
+00:46:25,420 --> 00:46:27,420
+每一个过程
+Each of those procedures
+
+771
+00:46:27,420 --> 00:46:32,340
+有它们自己的一组局部变量
+has its own local sets of variables,
+
+772
+00:46:32,340 --> 00:46:36,100
+我们很快就会看到
+and we'll see that right now.
+
+773
+00:46:36,100 --> 00:46:38,950
+还有其他人吗？
+Anybody else?
+
+774
+00:46:42,220 --> 00:46:46,520
+好 谢谢你们 我们休息一会
+OK, thank you. Let's take a break.
+
+775
+00:46:46,520 --> 00:47:03,170
+[音乐]
+[MUSIC PLAYING]
+
+776
+00:47:05,610 --> 00:47:22,670
+[音乐]
+[MUSIC PLAYING]
+
+777
+00:47:22,670 --> 00:47:26,420
+我现在已经为你们做了一件非常糟糕的事情
+Well, now I've done this terrible thing to you.
+
+778
+00:47:26,420 --> 00:47:32,230
+我引入了一个非常复杂的东西
+I've introduced a very complicated thing,
+
+779
+00:47:32,230 --> 00:47:34,350
+赋值
+assignment,
+
+780
+00:47:34,350 --> 00:47:40,700
+它摧毁了我们程序中大部分的 有趣的数学特性
+which destroys most of the interesting mathematical properties of our programs.
+
+781
+00:47:40,700 --> 00:47:42,980
+我为什么要做这件事呢
+Why should I have done this?
+
+782
+00:47:42,980 --> 00:47:45,860
+这样做可能有什么好处吗？
+What possible good could this do?
+
+783
+00:47:45,860 --> 00:47:49,340
+很明显 这不是一个什么好东西
+Clearly not a nice thing,
+
+784
+00:47:49,340 --> 00:47:52,560
+因此我最好有一个好的解释
+so I better have a good excuse.
+
+785
+00:47:52,560 --> 00:47:54,800
+让我们来小小地玩一下
+Well, let's do a little bit of playing,
+
+786
+00:47:54,800 --> 00:47:58,680
+首先 我们写些非常有趣的带赋值的程序
+first of all, with some very interesting programs that have assignment.
+
+787
+00:47:58,680 --> 00:48:01,290
+来理解它们的特殊之处
+Understand something special about them
+
+788
+00:48:01,290 --> 00:48:04,310
+这些特殊之处使赋值变得有价值
+that makes them somewhat valuable.
+
+789
+00:48:04,310 --> 00:48:07,550
+我们从一个非常简单的程序开始
+Start with a very simple program
+
+790
+00:48:07,550 --> 00:48:10,350
+我把这个程序叫做MAKE-COUNTER
+I'm going to call make-counter.
+
+791
+00:48:10,350 --> 00:48:24,060
+我要把它定义为
+I'm going to define make-counter
+
+792
+00:48:24,060 --> 00:48:29,020
+接受一个参数N的过程
+to be a procedure of one argument n
+
+793
+00:48:29,020 --> 00:48:34,190
+并且它的返回值是一个没有参数的过程--
+which returns as its value a procedure of no arguments--
+
+794
+00:48:34,190 --> 00:48:36,670
+一个生成过程的过程--
+a procedure that produces a procedure--
+
+795
+00:48:36,670 --> 00:48:47,540
+这个过程把N的值设为N+1
+which sets n to the increment of n
+
+796
+00:48:47,540 --> 00:48:53,700
+并且返回N的值
+and returns that value of n.
+
+797
+00:48:54,850 --> 00:48:57,540
+现在 我们要研究它的行为
+Now we're going to investigate the behavior of this.
+
+798
+00:48:57,540 --> 00:48:59,540
+它很有趣
+It's a sort of interesting thing.
+
+799
+00:48:59,540 --> 00:49:01,450
+为了研究它的行为
+In order to investigate the behavior,
+
+800
+00:49:01,450 --> 00:49:03,830
+我需要建立一个环境模型
+I have to make an environment model,
+
+801
+00:49:03,830 --> 00:49:08,000
+因为我们不能通过其他的方式来理解它
+because we can't understand this any other way.
+
+802
+00:49:08,000 --> 00:49:10,000
+所以我们开始吧
+So let's just do that.
+
+803
+00:49:10,000 --> 00:49:13,240
+我们从这里开始
+We start out with some sort of--
+
+804
+00:49:13,240 --> 00:49:16,130
+假设机器天生就有一个全局的环境
+let's say there is a global environment that the machine is born with.
+
+805
+00:49:16,130 --> 00:49:19,780
+我们把它叫做全局环境
+Global we'll call it.
+
+806
+00:49:19,780 --> 00:49:24,440
+它内部有一堆初始化的东西
+And it's going to have in it a bunch of initial things.
+
+807
+00:49:24,440 --> 00:49:25,720
+我们都知道它里面有什么
+We all know what it's got.
+
+808
+00:49:25,720 --> 00:49:32,130
+这里面有+和*
+It's got things in it like say, plus, and times,
+
+809
+00:49:32,130 --> 00:49:38,570
+/ -和CAR
+and quotient, and difference, and CAR,
+
+810
+00:49:38,570 --> 00:49:41,450
+以此类推
+and etcetera,
+
+811
+00:49:41,450 --> 00:49:42,720
+有很多东西
+lots of things.
+
+812
+00:49:42,720 --> 00:49:44,420
+我不知道它们是什么
+I don't know what they are,
+
+813
+00:49:44,420 --> 00:49:45,980
+一些乱七八糟的符号
+some various squiggles
+
+814
+00:49:45,980 --> 00:49:50,560
+机器一开始就有这些特性
+that are the things the machine is born with.
+
+815
+00:49:50,560 --> 00:49:54,370
+通过在这做定义
+And by doing the definition here,
+
+816
+00:49:54,370 --> 00:49:56,160
+我要做的是--
+what I plan to do--
+
+817
+00:49:56,160 --> 00:49:57,310
+我在干什么呢？
+Well, what am I doing?
+
+818
+00:49:57,310 --> 00:49:59,720
+我要把它关联到全局环境上
+I'm doing this relative to the global environment.
+
+819
+00:49:59,720 --> 00:50:03,460
+这是我的环境指针
+So here's my environment pointer.
+
+820
+00:50:03,460 --> 00:50:07,960
+为了达到那个目的 我要执行这个LAMBDA表达式
+In order to do that I have to evaluate this lambda expression.
+
+821
+00:50:07,960 --> 00:50:11,110
+这意味着我创建了一个过程对象That means I make a procedure object.
+
+822
+00:50:11,110 --> 00:50:17,040
+所以 我要在这创建一个过程对象
+So I'm going to make a procedure object here.
+
+823
+00:50:17,040 --> 00:50:19,410
+这个过程对象
+And the procedure object has,
+
+824
+00:50:19,410 --> 00:50:21,120
+由于在它被定义的地方
+as the place it's defined,
+
+825
+00:50:21,120 --> 00:50:23,660
+有一个全局的环境
+the global environment.
+
+826
+00:50:23,660 --> 00:50:27,900
+这个过程对象包括了
+The procedure object contains
+
+827
+00:50:27,900 --> 00:50:31,960
+以N为参数的过程的代码
+some code that represents a procedure of one argument n
+
+828
+00:50:31,960 --> 00:50:36,780
+它返回一个不接受参数的过程来做一些事情
+which returns a procedure of no arguments which does something.
+
+829
+00:50:37,810 --> 00:50:44,110
+定义是一种改变环境的方法
+And the define is a way of changing this environment,
+
+830
+00:50:44,110 --> 00:50:52,200
+所以我把MAKE-COUNTER加入全局环境中
+so that I now add to it a make-counter,
+
+831
+00:50:52,200 --> 00:50:55,690
+这是对于特殊的东西定义的一个特殊的规则
+a special rule for the special thing defined.
+
+832
+00:50:55,690 --> 00:50:58,800
+但它其实是
+But what that is,
+
+833
+00:50:58,800 --> 00:51:03,630
+它给了我们一个指针 指向那个过程
+is it gives me that pointer to that procedure.
+
+834
+00:51:03,630 --> 00:51:08,950
+所以现在全局环境中也有了make-counter
+So now the global environment contains make-counter as well.
+
+835
+00:51:08,950 --> 00:51:11,640
+现在 我们要进行一些操作
+Now, we're going to do some operations.
+
+836
+00:51:11,640 --> 00:51:14,810
+我要用它来创建一些计数器
+I'm going to use this to make some counters.
+
+837
+00:51:14,810 --> 00:51:16,900
+我们将看到什么是计数器
+We'll see what a counter is.
+
+838
+00:51:16,900 --> 00:51:23,260
+所以我们定义
+So let's define
+
+839
+00:51:23,260 --> 00:51:35,550
+C1为一个从0开始的计数器
+c1 to be a counter beginning at 0.
+
+840
+00:51:35,550 --> 00:51:39,320
+根据模型 我们知道如何做这个了
+Well, we know how to do this now, according to the model.
+
+841
+00:51:39,320 --> 00:51:45,200
+我需要执行在全局环境中的MAKE-COUNTER
+I have to evaluate the expression make-counter in the global environment,
+
+842
+00:51:45,200 --> 00:51:47,660
+MAKE-COUNTER 0
+make-counter of 0.
+
+843
+00:51:47,660 --> 00:51:53,320
+我查找MAKE-COUNTER 发现它是一个过程
+Well, I look up make-counter and see that it's a procedure.
+
+844
+00:51:53,320 --> 00:51:55,950
+我将要应用这个过程
+I'm going to have to apply that procedure.
+
+845
+00:51:55,950 --> 00:51:58,240
+应用这个过程的方式
+The way I apply the procedure
+
+846
+00:51:58,240 --> 00:52:01,630
+就是构建一个框架
+is by constructing a frame.
+
+847
+00:52:01,630 --> 00:52:06,450
+所以我构建了一个框架
+So I construct a frame
+
+848
+00:52:06,450 --> 00:52:11,620
+它内部有一个N的值
+which has a value for n in it
+
+849
+00:52:11,620 --> 00:52:13,760
+这个值是0
+which is 0
+
+850
+00:52:13,760 --> 00:52:15,760
+它的父环境
+and the parent environment
+
+851
+00:52:15,760 --> 00:52:22,820
+是MAKE-COUNTER的定义的环境
+is the one which is the environment of definition of make-counter.
+
+852
+00:52:22,820 --> 00:52:30,930
+所以我已经通过将MAKE-COUNTER应用于0上 而创建了一个环境
+So I've made an environment by applying make-counter to 0.
+
+853
+00:52:30,930 --> 00:52:33,460
+现在 我需要执行MAKE-COUNTER的体
+Now, I have to evaluate the body of make-counter,
+
+854
+00:52:33,460 --> 00:52:40,140
+就是那个环境中的LAMBDA表达式
+which is this lambda expression, in that environment.
+
+855
+00:52:40,140 --> 00:52:42,590
+执行这个体
+Well evaluating this body,
+
+856
+00:52:42,590 --> 00:52:46,050
+它是一个LAMBDA表达式
+this body is a lambda expression.
+
+857
+00:52:46,050 --> 00:52:49,390
+执行一个LAMBDA表达式 意味着创建一个过程对象
+Evaluate a lambda expression means make a procedure object.
+
+858
+00:52:49,390 --> 00:52:56,380
+所以我将创建一个过程对象
+So I'm going to make a procedure object.
+
+859
+00:52:56,380 --> 00:52:58,290
+这个过程对象
+And that procedure object has
+
+860
+00:52:58,290 --> 00:53:04,080
+拥有一个环境
+the environment it was defined in being that,
+
+861
+00:53:04,080 --> 00:53:07,410
+在这个环境中N被定义为0
+where n was defined to be 0.
+
+862
+00:53:07,410 --> 00:53:09,880
+它有一些代码
+And it has some code,
+
+863
+00:53:09,880 --> 00:53:13,640
+这个过程不需要参数
+which is the procedure of no arguments which does something,
+
+864
+00:53:13,640 --> 00:53:15,280
+#TBD
+that sets something,
+
+865
+00:53:15,280 --> 00:53:17,470
+并返回N
+and returns n.
+
+866
+00:53:17,470 --> 00:53:19,280
+这个东西
+And this thing
+
+867
+00:53:19,280 --> 00:53:21,920
+将成为一个对象
+is going to be the object,
+
+868
+00:53:21,920 --> 00:53:25,820
+在全局环境中 它的名字是C1
+which in the global environment, will have the name c1.
+
+869
+00:53:25,820 --> 00:53:28,640
+所以我们在这建立一个名字 C1
+So we construct a name here, c1,
+
+870
+00:53:28,640 --> 00:53:35,200
+并且说C1等于这个过程
+and say that equals that.
+
+871
+00:53:35,200 --> 00:53:42,740
+现在 再来创建另一个计数器
+Now, but also make another counter,
+
+872
+00:53:42,740 --> 00:53:50,530
+通过MAKE-COUNTER创建c2
+c2 to be make-counter say,
+
+873
+00:53:50,530 --> 00:53:53,970
+让它从10开始
+starting with 10.
+
+874
+00:53:53,970 --> 00:53:56,530
+然后我执行同样的步骤
+Then I do essentially the same thing.
+
+875
+00:53:56,530 --> 00:54:00,820
+我应用这个MAKE-COUNTER过程
+I apply the make-counter procedure, which I got from here,
+
+876
+00:54:00,820 --> 00:54:05,480
+建立另一个N等于10的框架
+to make another frame with n being 10.
+
+877
+00:54:05,480 --> 00:54:09,840
+全局环境作为它的父环境
+That frame has the global environment as its parent.
+
+878
+00:54:09,840 --> 00:54:12,780
+然后我构建一个过程
+I then construct a procedure
+
+879
+00:54:12,780 --> 00:54:18,080
+以这个框架作为它定义的环境
+which has that as it's frame of definition.
+
+880
+00:54:18,080 --> 00:54:21,800
+它的代码是
+The code of it is
+
+881
+00:54:21,800 --> 00:54:25,540
+一个不需要参数 并做了某些工作的过程
+the procedure of no arguments which does something.
+
+882
+00:54:25,540 --> 00:54:28,600
+#TBD
+And it does a set, and so on.
+
+883
+00:54:28,600 --> 00:54:31,220
+然后返回N
+And n comes out.
+
+884
+00:54:31,220 --> 00:54:36,710
+这就是C2
+And c2 is this.
+
+885
+00:54:36,710 --> 00:54:39,920
+好 你们应该发现 某些东西开始变得有趣了
+Well, you're already beginning to see something fairly interesting.
+
+886
+00:54:39,920 --> 00:54:42,850
+这里有两个N
+There are two n's here.
+
+887
+00:54:42,850 --> 00:54:45,890
+它们不是同一个N
+They are not one n.
+
+888
+00:54:45,890 --> 00:54:48,450
+每当我调用MAKE-COUNTER的时候
+Each time I called make-counter,
+
+889
+00:54:48,450 --> 00:54:52,340
+我就创建了另一个N的实例
+I made another instance of n.
+
+890
+00:54:52,340 --> 00:54:57,470
+它们彼此独立 没有关联
+These are distinct and separate from each other.
+
+891
+00:54:57,470 --> 00:55:01,350
+现在 我们来使用一下这些计数器
+Now, let's do some execution, use those counters.
+
+892
+00:55:05,620 --> 00:55:15,640
+如果此时 我调用C1 会发生什么？
+Well, what happens if I say, c1 at this point?
+
+893
+00:55:15,640 --> 00:55:17,560
+我会在这里查找
+Well, I go over here,
+
+894
+00:55:17,560 --> 00:55:20,640
+发现C1是一个过程
+and I say, oh yes, c1 is a procedure.
+
+895
+00:55:20,640 --> 00:55:23,160
+我要不带参数地调用这个过程
+I'm going to call this procedure on no arguments,
+
+896
+00:55:23,160 --> 00:55:24,960
+因为它不需要参数
+but it has no parameters.
+
+897
+00:55:24,960 --> 00:55:26,810
+对吧？
+That's right.
+
+898
+00:55:26,810 --> 00:55:27,960
+它的体是什么呢？
+What's its body?
+
+899
+00:55:27,960 --> 00:55:30,020
+我得在这里查找 因为我没有写下来
+Well, I have to look over here, because I didn't write it down.
+
+900
+00:55:30,020 --> 00:55:33,660
+这个过程体是将N设置为N+1
+It said, set n to one plus n
+
+901
+00:55:33,660 --> 00:55:36,860
+并且返回N
+and return n,
+
+902
+00:55:36,860 --> 00:55:38,860
+就是把N增大1
+increment n.
+
+903
+00:55:38,860 --> 00:55:42,620
+N看起来应该是这一个
+Well, the n it sees is this one.
+
+904
+00:55:42,620 --> 00:55:45,630
+所以我把这个n增大1
+So I increment that n.
+
+905
+00:55:45,630 --> 00:55:48,440
+它变成了1
+That becomes one,
+
+906
+00:55:48,440 --> 00:55:51,700
+然后返回了1
+and I return the value one.
+
+907
+00:55:51,700 --> 00:55:58,160
+之后我调用C2
+Supposing I then called c2.
+
+908
+00:55:58,160 --> 00:56:00,980
+我会做什么？
+Well, what do I do?
+
+909
+00:56:00,980 --> 00:56:03,330
+C2是相同的过程
+I say c2 is this procedure which does the same thing,
+
+910
+00:56:03,330 --> 00:56:05,330
+但这个N
+but here's the n.
+
+911
+00:56:05,330 --> 00:56:10,730
+它变成了11
+It becomes 11.
+
+912
+00:56:10,730 --> 00:56:15,760
+所以返回值是11
+And so I have an 11 which is the value.
+
+913
+00:56:15,760 --> 00:56:20,670
+然后我们再来调用一下C1
+I then can say, let's try c1 again.
+
+914
+00:56:20,670 --> 00:56:23,110
+C1是这个
+c1 is this,
+
+915
+00:56:23,110 --> 00:56:27,010
+它是2
+that's two,
+
+916
+00:56:27,010 --> 00:56:29,360
+所以结果是2
+so the answer is two.
+
+917
+00:56:29,360 --> 00:56:33,180
+然后调用C2
+And c2
+
+918
+00:56:33,180 --> 00:56:35,550
+然后C2通过同样的方法 返回了12
+gives me a 12 by the same method,
+
+919
+00:56:35,550 --> 00:56:37,550
+它在这里进行查找
+by walking down here looking at that
+
+920
+00:56:37,550 --> 00:56:41,420
+发现了N 并把它加1
+and saying, here's the n, I'm incrementing.
+
+921
+00:56:41,420 --> 00:56:44,850
+这里就是计算对象
+So what I have are computational objects.
+
+922
+00:56:44,850 --> 00:56:48,840
+这里有两个计数器
+There are two counters,
+
+923
+00:56:48,840 --> 00:56:55,150
+每一个都有各自独立的局部状态
+each with its own independent local state.
+
+924
+00:56:55,150 --> 00:56:57,450
+我们再进一步
+Let's talk about this a little.
+
+925
+00:56:57,450 --> 00:57:01,000
+这是个奇怪的东西
+This is a strange thing.
+
+926
+00:57:01,000 --> 00:57:03,980
+什么是对象？
+What's an object?
+
+927
+00:57:03,980 --> 00:57:07,360
+这个概念并不明确
+It's not at all obvious what an object is.
+
+928
+00:57:07,360 --> 00:57:10,940
+我们倾向于以对象的角度思考
+We like to think about objects,
+
+929
+00:57:10,940 --> 00:57:14,400
+因为这样思考比较经济
+because it's economical to think that way.
+
+930
+00:57:14,400 --> 00:57:18,360
+这是一种智力上的经济
+It's an intellectual economy.
+
+931
+00:57:18,360 --> 00:57:20,840
+我是一个对象
+I am an object.
+
+932
+00:57:20,840 --> 00:57:23,390
+你们都是对象
+You are an object.
+
+933
+00:57:23,390 --> 00:57:27,210
+我们不是一样的对象
+We are not the same object.
+
+934
+00:57:27,210 --> 00:57:29,920
+我可以把世界分为两部分
+I can divide the world into two parts,
+
+935
+00:57:29,920 --> 00:57:31,920
+我和你
+me and you,
+
+936
+00:57:31,920 --> 00:57:34,420
+以及其他的东西
+and there's other things as well,
+
+937
+00:57:34,420 --> 00:57:35,440
+那么
+such that
+
+938
+00:57:35,440 --> 00:57:39,680
+大多数对于我的讨论
+most of the things I might want to discuss about my workings
+
+939
+00:57:39,680 --> 00:57:41,240
+不会影响到你
+do not involve you,
+
+940
+00:57:41,240 --> 00:57:45,480
+大多数对于你的讨论不会牵涉到我
+and most of the things I want to discuss about your workings don't involve me.
+
+941
+00:57:45,480 --> 00:57:47,390
+我有血压
+I have a blood pressure,
+
+942
+00:57:47,390 --> 00:57:49,150
+体温
+a temperature,
+
+943
+00:57:49,150 --> 00:57:52,670
+呼吸频率
+
+a respiration rate,
+
+944
+00:57:52,670 --> 00:57:55,820
+血液中有确定的血糖值
+certain amount of sugar in my blood,
+
+945
+00:57:55,820 --> 00:57:59,720
+数不清的 数以千计的状态变量--上百万实际上
+and numerous, thousands, of state variables-- millions actually,
+
+946
+00:57:59,720 --> 00:58:00,930
+我不知道具体有多少
+or I don't know how many--
+
+947
+00:58:00,930 --> 00:58:04,740
+以物理学观点 我拥有大量的状态变量
+huge numbers of state variables in the physical sense
+
+948
+00:58:04,740 --> 00:58:08,810
+如果将我视为一个粒子的话which represent the state of me as a particle,
+
+949
+00:58:08,810 --> 00:58:12,500
+而你也有许许多多这样的变量
+and you have gazillions of them as well.
+
+950
+00:58:12,500 --> 00:58:17,080
+大多数我的变量与大多数你的变量是解耦的无关的
+And most of mine are uncoupled to most of yours.
+
+951
+00:58:17,080 --> 00:58:20,310
+所以可以计算我的属性
+So we can compute the properties of me
+
+952
+00:58:20,310 --> 00:58:23,660
+而不用太担心你的属性
+without worrying too much about the properties of you.
+
+953
+00:58:23,660 --> 00:58:25,890
+如果我们需要把我们两个放在一起计算
+If we had to work about both of us together,
+
+954
+00:58:25,890 --> 00:58:30,340
+那么我们需要考虑的状态的数量 就是你与我的状态的数量的乘积
+than the number of states that we have to consider is the product of the number of states you have and the number of states I have.
+
+955
+00:58:30,340 --> 00:58:32,450
+但这个方法只是一种计数
+But this way it's almost a sum.
+
+956
+00:58:32,450 --> 00:58:35,900
+现在 实际上我们互相之间都有作用
+Now, indeed there are forces that couple us.
+
+957
+00:58:35,900 --> 00:58:38,240
+我对你讲话 你的状态就变了
+I'm talking to you and your state changes.
+
+958
+00:58:38,240 --> 00:58:41,420
+我看着你 我的状态就变了
+I'm looking at you and my state changes.
+
+959
+00:58:41,420 --> 00:58:44,200
+因此 我的变量中的一小部分
+Some of my state variables, a very few of them,
+
+960
+00:58:44,200 --> 00:58:46,070
+与你的一些变量是耦合的
+therefore, are coupled to yours.
+
+961
+00:58:46,070 --> 00:58:47,800
+如果你突然大喊大叫
+If you were to suddenly yell very loud,
+
+962
+00:58:47,800 --> 00:58:51,970
+我的血压就会升高
+my blood pressure would go up.
+
+963
+00:58:53,700 --> 00:58:57,170
+将世界看作是由独立的变量
+However, and it may not be always appropriate
+
+964
+00:58:57,170 --> 00:59:01,990
+和独立的粒子组成的是不恰当的
+to think about the world as being made out of independent states and independent particles.
+
+965
+00:59:01,990 --> 00:59:05,030
+在像量子力学这样的东西里存在大量的BUG
+Lots of the bugs that occur in things like quantum mechanics,
+
+966
+00:59:05,030 --> 00:59:08,800
+或者当我们思考像量子力学之类的东西的时候 会在我们的脑海中产生bug
+or the bugs in our minds that occur when we think about things like quantum mechanics,
+
+967
+00:59:08,800 --> 00:59:10,970
+由于这样的事实
+are due the fact that we are trying to think about things
+
+968
+00:59:10,970 --> 00:59:13,430
+我们会竭尽全力地去将事物分解为相互独立的部分来看待
+being broken up into independent pieces,
+
+969
+00:59:13,430 --> 00:59:17,910
+而事实上事物的耦合程度 远远大于在表面所看到的
+when in fact there's more coupling than we see on the surface,
+
+970
+00:59:17,910 --> 00:59:19,530
+即便这样 我们仍像那样思考
+or that we want to believe in,
+
+971
+00:59:19,530 --> 00:59:22,030
+是因为我们希望高效并且有效的进行计算
+because we want to compute efficiently and effectively.
+
+972
+00:59:22,030 --> 00:59:25,510
+我们被培养成以那种方式进行思考
+We've been trained to think that way.
+
+973
+00:59:29,540 --> 00:59:31,300
+大家看
+Well, let's see.
+
+974
+00:59:31,300 --> 00:59:34,740
+我们如何才能知道我们是否有对象？
+How would we know if we had objects at all?
+
+975
+00:59:34,740 --> 00:59:37,640
+如果我们有对象 应该如何描述呢？
+How can we tell if we have objects?
+
+976
+00:59:37,640 --> 00:59:42,160
+通过思考一些视觉误差
+Consider some possible optical illusions.
+
+977
+00:59:42,160 --> 00:59:44,820
+就能解答这个问题
+This could be done.
+
+978
+00:59:44,820 --> 00:59:47,760
+这几截粉笔不完全相同
+These pieces of chalk are not appropriately identical,
+
+979
+00:59:47,760 --> 00:59:51,120
+但是我觉得你看不出来它们的区别
+but supposing you couldn't tell the difference of them by looking at them.
+
+980
+00:59:51,730 --> 00:59:53,320
+有一种可能
+Well, there's a possibility
+
+981
+00:59:53,320 --> 00:59:56,070
+是这一切都是我们与镜子的游戏
+that this all a game I'm playing with mirrors.
+
+982
+00:59:56,070 --> 00:59:58,790
+它们真的是同一截粉笔
+It's really the same piece of chalk,
+
+983
+00:59:58,790 --> 01:00:01,230
+但你看到了两个
+but you're seeing two of them.
+
+984
+01:00:01,230 --> 01:00:04,600
+你怎么知道你看到的是一个还是两个呢？
+How would you know if you're seeing one or two?
+
+985
+01:00:04,600 --> 01:00:07,220
+我只知道有一种方法可以确定
+Well, there's only one way I know.
+
+986
+01:00:07,220 --> 01:00:09,320
+抓起其中一个并且改变它
+You grab one of them and change it
+
+987
+01:00:09,320 --> 01:00:11,590
+然后看看另一个有没有跟着变化
+and see if the other one changed.
+
+988
+01:00:13,760 --> 01:00:15,340
+而另一个没有变化
+And it didn't, so there's two of them.
+
+989
+01:00:15,340 --> 01:00:17,340
+所以这里有两截粉笔
+so there's two of them.
+
+990
+01:00:19,250 --> 01:00:20,590
+另一方面
+And, on the other hand,
+
+991
+01:00:20,590 --> 01:00:22,440
+事物还有一些其他的类似的纠结属性
+there is some other screwy properties of things like that.
+
+992
+01:00:22,440 --> 01:00:24,840
+例如 我们怎么才知道某个东西是否改变了呢？
+Like, how do we know if something changed?
+
+993
+01:00:24,840 --> 01:00:28,650
+我们需要在它改变之前和之后进行观察We have to look at it before and after the change.
+
+994
+01:00:28,650 --> 01:00:30,020
+改变就是赋值
+The change is an assignment,
+
+995
+01:00:30,020 --> 01:00:32,020
+它是时间中的一个时刻
+it's a moment in time.
+
+996
+01:00:32,020 --> 01:00:36,250
+但是那意味着我们需要知道 我们看到的是否是同一个
+But that means we have to know it was the same one that we're looking at.
+
+997
+01:00:36,250 --> 01:00:38,840
+所以一些东西非常奇怪
+So some very strange, and unusual, and obscure,
+
+998
+01:00:38,840 --> 01:00:40,840
+不同寻常并且晦涩难懂
+and obscure, and -- I don't understand
+
+999
+01:00:40,840 --> 01:00:44,450
+并且我不理解与赋值
+the problems associated with assignment,
+
+1000
+01:00:44,450 --> 01:00:47,120
+变化以及对象有关的问题
+and change, and objects.
+
+1001
+01:00:47,120 --> 01:00:50,100
+这些东西可能变得非常非常糟糕
+These could get very, very bad.
+
+1002
+01:00:51,060 --> 01:00:52,880
+例如
+For example,
+
+1003
+01:00:52,880 --> 01:00:55,960
+我 是一个特定的人
+here I am, I am a particular person,
+
+1004
+01:00:55,960 --> 01:00:57,960
+一个特定的对象
+a particular object.
+
+1005
+01:00:57,960 --> 01:01:00,490
+现在 我可以拿出小刀
+Now, I can take out my knife,
+
+1006
+01:01:00,490 --> 01:01:01,890
+切下一片我的指甲
+and cut my fingernail.
+
+1007
+01:01:01,890 --> 01:01:05,690
+一片指甲掉在了桌子上
+A piece of my fingernail has fallen off onto the table.
+
+1008
+01:01:05,690 --> 01:01:10,710
+我相信自己和一秒钟之前的自己 是同一个人
+I believe I am the same person I was a second ago,
+
+1009
+01:01:10,710 --> 01:01:14,170
+但在物理上并不是分毫不差
+but I'm not physically the same in the slightest.
+
+1010
+01:01:14,170 --> 01:01:15,430
+我已经改变了
+I have changed.
+
+1011
+01:01:15,430 --> 01:01:17,430
+为什么我还是同一个人呢？
+Why am I the same?
+
+1012
+01:01:17,850 --> 01:01:20,770
+什么能认定我的身份呢？
+What is the identity of me?
+
+1013
+01:01:20,770 --> 01:01:24,730
+我不知道
+I don't know.
+
+1014
+01:01:24,730 --> 01:01:29,320
+除非我有某种身份证明
+Except for the fact that I have some sort of identity.
+
+1015
+01:01:29,320 --> 01:01:33,400
+我觉得 由于引入赋值和对象
+And so, I think by introducing assignment and objects,
+
+1016
+01:01:33,400 --> 01:01:38,380
+我们不得不去面对这种
+we have opened ourselves up to all the horrible questions of philosophy
+
+1017
+01:01:38,380 --> 01:01:43,040
+困扰了哲学家们上千年的哲学问题
+that have been plaguing philosophers for some thousands of years about this sort of thing.
+
+1018
+01:01:43,040 --> 01:01:45,580
+这也是相比之下 数学清晰得多的原因
+It's why mathematics is a lot cleaner.
+
+1019
+01:01:45,580 --> 01:01:52,240
+我看看来看看动作和身份认证
+Let's look at the best things I know to say about actions and identity.
+
+1020
+01:01:52,240 --> 01:01:55,600
+动作A 对于对于某个对象X有影响
+We say that an action,
+a, had an effect on an object, x,
+
+1021
+01:01:55,600 --> 01:01:56,890
+换句话说
+or equivalently,
+
+1022
+01:01:56,890 --> 01:01:58,680
+X被A改变
+that x was changed by a,
+
+1023
+01:01:58,680 --> 01:02:01,740
+如果某个属性P 在P作用于X之前为真
+if some property, p, which was true of x before a,
+
+1024
+01:02:01,740 --> 01:02:04,800
+在A作用于X之后为假
+became false of x after a.
+
+1025
+01:02:04,800 --> 01:02:06,310
+我们测试一下
+Let's test.
+
+1026
+01:02:06,310 --> 01:02:10,640
+这也意味着 我必须#TBD
+It still means I have to have the x before and after.
+
+1027
+01:02:10,640 --> 01:02:12,790
+或者 换句话说
+Or, the other way of saying this is,
+
+1028
+01:02:12,790 --> 01:02:16,070
+我们说两个对象X和Y是同一个东西
+we say that two objects x and y are the same for any action
+
+1029
+01:02:16,070 --> 01:02:19,350
+是由于任何动作对X的影响将对Y有同样的影响
+which has an effect on x has the same effect on y
+
+1030
+01:02:19,350 --> 01:02:21,390
+然而 就像我说的
+However, objects are very useful,
+
+1031
+01:02:21,390 --> 01:02:24,340
+对象在智力经济上是非常有用的
+as I said, for intellectual economy.
+
+1032
+01:02:24,340 --> 01:02:27,910
+对于它们来说非常有用的东西之一
+One of the things that's incredibly useful about them,
+
+1033
+01:02:27,910 --> 01:02:30,480
+就是对于这个世界
+is that the world is,
+
+1034
+01:02:30,480 --> 01:02:34,860
+我们习惯于把它认为是由带有独立状态的独立对象所构成的
+made out of independent objects with independent local state.
+
+1035
+01:02:34,860 --> 01:02:39,330
+我们喜欢以那样的的方式来思考 虽然那并不完全正确
+We like to think that way, although it isn't completely true.
+
+1036
+01:02:39,330 --> 01:02:42,030
+当我们要写一个非常复杂的程序
+When we want to make very complicated programs
+
+1037
+01:02:42,030 --> 01:02:43,670
+来应对这样一个世界时
+that deal with such a world,
+
+1038
+01:02:43,670 --> 01:02:46,680
+如果我们希望这些程序可以被我们理解
+if we want those programs to be understandable by us
+
+1039
+01:02:46,680 --> 01:02:48,530
+并且也是可修改的
+and also to be changeable,
+
+1040
+01:02:48,530 --> 01:02:51,280
+那么如果世界改变了 我们只需要稍微改动一下程序
+so that if we change the world we change the program only a little bit,
+
+1041
+01:02:51,280 --> 01:02:53,700
+我们希望建立一种联系 一种同构
+then we want there to be connections, isomorphism,
+
+1042
+01:02:53,700 --> 01:02:58,380
+在真实世界的对象与我们脑海中的对象之间
+between the objects in the world and the objects in our mental model.
+
+1043
+01:02:58,380 --> 01:03:02,000
+世界的模块化 使我们的程序得以模块化
+The modularity of the world can give us the modularity in our programming.
+
+1044
+01:03:02,000 --> 01:03:05,680
+所以我们发明了面向对象编程
+So we invent things called object-oriented programming and things like that
+
+1045
+01:03:05,680 --> 01:03:09,500
+使我们获得那样的力量
+to provide us with that power.
+
+1046
+01:03:09,500 --> 01:03:11,190
+但是 它甚至更简单
+But it's even easier.
+
+1047
+01:03:11,190 --> 01:03:13,280
+让我们玩一个小游戏
+Let's play a little game.
+
+1048
+01:03:13,280 --> 01:03:16,770
+通过这个游戏给你展示一个例子
+I want to play a little game, show you an even easier example of where
+
+1049
+01:03:16,770 --> 01:03:22,570
+赋值表达式可以增强模块化的例子
+modularity can be enhanced by using an assignment statement, judiciously.
+
+1050
+01:03:22,570 --> 01:03:25,350
+有一件我想让你深刻记住的事
+One thing I want to enforce and impress on you,
+
+1051
+01:03:25,350 --> 01:03:30,000
+就是不要像在FORTRAN Basic或者Pascal里一样使用赋值语句
+is don't use assignment statements the way you use it in FORTRAN or Basic or something or Pascal,
+
+1052
+01:03:30,000 --> 01:03:32,470
+你不那样做 也能达到目的
+to do the things you don't have to do with it.
+
+1053
+01:03:33,920 --> 01:03:36,840
+这不是思考大多数事情的正确方式
+It's not the right way to think for most things.
+
+1054
+01:03:36,840 --> 01:03:38,490
+有些时候它是必要的
+Sometimes it's essential,
+
+1055
+01:03:38,490 --> 01:03:39,690
+或者可能是必要的
+or maybe it's essential.
+
+1056
+01:03:39,690 --> 01:03:42,010
+我们一会更深入地去研究
+We'll see more about that too.
+
+1057
+01:03:42,010 --> 01:03:44,730
+我要给你展示一个有趣的游戏
+OK, let me show you a fun game here.
+
+1058
+01:03:47,330 --> 01:03:49,520
+从前有一个数学家
+There was mathematician
+
+1059
+01:03:49,520 --> 01:03:54,260
+叫做Cesaro
+by the name of Cesaro--or Cesaro, Cesaro I suppose it is--
+
+1060
+01:03:54,260 --> 01:03:58,140
+他发现了一个很绝妙的计算pi的方法
+who figured out a clever way of computing pi.
+
+1061
+01:03:58,140 --> 01:04:05,020
+如果我有两个随机数
+It turns out that if I take to random numbers
+
+1062
+01:04:05,020 --> 01:04:07,420
+两个随机的整数
+two integers at random,
+
+1063
+01:04:07,420 --> 01:04:10,640
+计算它们的最大公约数
+and compute the greatest common divisor,
+
+1064
+01:04:10,640 --> 01:04:13,660
+结果可能是1 或者不是1
+their greatest common divisor is either one or it's not one.
+
+1065
+01:04:13,660 --> 01:04:17,820
+如果是1 它们没有公约数
+If it's one, then they have no common divisors.
+
+1066
+01:04:17,820 --> 01:04:20,680
+如果它们的最大公约数是1
+If their greatest common divisor is one--
+
+1067
+01:04:20,680 --> 01:04:23,090
+这两个随机数
+the probability that two random numbers,
+
+1068
+01:04:23,090 --> 01:04:26,580
+最大公约数为1的 两个随机生成的数
+two numbers chosen at random, has as greatest common divisor one
+
+1069
+01:04:26,580 --> 01:04:29,110
+与pi有关系
+is related to pi.
+
+1070
+01:04:29,110 --> 01:04:31,110
+事实上
+In fact--
+
+1071
+01:04:31,110 --> 01:04:32,760
+是的 这很奇怪
+yes, it's very strange--
+
+1072
+01:04:32,760 --> 01:04:39,270
+当然有其他计算pi的方法 像投针法之类的的方法
+of course there are other ways of computing pi, like dropping pins on flags, and things like that, and sort of the same kind of thing.
+
+1073
+01:04:39,270 --> 01:04:51,520
+两个随机生成的N1和N2的最大公约数
+So the probability of that the GCD of number one and number two, two random numbers chosen,
+
+1074
+01:04:51,520 --> 01:04:54,820
+是6/pi^2
+is 6 over pi squared.
+
+1075
+01:04:54,820 --> 01:04:56,970
+我不准备证明这个
+I'm not going to try to prove that.
+
+1076
+01:04:56,970 --> 01:05:00,770
+事实上这不难 并且有些有趣
+It's actually not too hard and sort of fun.
+
+1077
+01:05:00,770 --> 01:05:03,300
+我们为什么会做出这样的推断呢？
+How would we estimate such probability?
+
+1078
+01:05:03,300 --> 01:05:07,070
+我们进行可能性推断的方式
+Well, the way we do that,
+
+1079
+01:05:07,070 --> 01:05:09,070
+是做大量的实验
+is by doing lots of experiments,
+
+1080
+01:05:09,070 --> 01:05:12,010
+去计算成功的试验
+and then computing the ratios of the ones that come out one way
+
+1081
+01:05:12,010 --> 01:05:15,520
+与试验总次数的比率
+to the total number of experiments we do.
+
+1082
+01:05:15,520 --> 01:05:17,840
+这种方法叫做蒙特卡洛方法
+It's called Monte Carlo,
+
+1083
+01:05:17,840 --> 01:05:22,380
+在其他的例如有巨量的变量的地方--
+and it's useful in other contexts for doing things like integrals where you have lots and lots of variables--
+
+1084
+01:05:22,380 --> 01:05:26,080
+#TBD是非常有用的
+the space which is limiting the dimensions you are doing you integral in.
+
+1085
+01:05:26,080 --> 01:05:29,400
+回到这里
+But going back to here,
+
+1086
+01:05:29,400 --> 01:05:33,560
+我们来看看这张幻灯片
+Let's look at this slide,
+
+1087
+01:05:33,560 --> 01:05:37,190
+我们可以用Cesaro的方法来推测pi的值
+We can use Cesaro's method for estimating pi
+
+1088
+01:05:37,190 --> 01:05:43,180
+#TBD通过n次尝试 取蒙特卡洛实验的平方根分之六
+with n trials by taking the square root of six over a Monte Carlo,
+
+1089
+01:05:43,180 --> 01:05:48,670
+一个N次尝试的蒙特卡洛实验的结果
+a Monte Carlo experiment with n trials,
+
+1090
+01:05:48,670 --> 01:05:51,090
+使用了Cesaro试验
+using Cesaro's experiment,
+
+1091
+01:05:51,090 --> 01:05:58,700
+这个试验是关于两个随机数的最大公约数的--
+where Cesaro's experiment is the test of whether the GCD of two random numbers--
+
+1092
+01:05:58,700 --> 01:06:01,782
+你可以看到 我已经在这里进行了一些赋值
+And you can see that I've already got some assignments in here,
+
+1093
+01:06:01,780 --> 01:06:03,911
+就像我写的这样
+just by what I wrote.
+
+1094
+01:06:03,910 --> 01:06:07,497
+这个在括号中的RAND
+The fact that this word rand, in parentheses,
+
+1095
+01:06:07,490 --> 01:06:09,097
+这个过程调用
+therefore, that procedure call,
+
+1096
+01:06:09,090 --> 01:06:11,395
+生成了一个其他的值
+yields a different value than this one,
+
+1097
+01:06:11,390 --> 01:06:14,408
+至少是我写的这样所假设的
+at least that's what I'm assuming by writing this this way,
+
+1098
+01:06:14,400 --> 01:06:17,920
+这表明这不是一个函数
+indicates that this is not a function,
+
+1099
+01:06:17,920 --> 01:06:22,048
+在变化时 里面会有一个内部状态
+that there's internal state in it which is changing.
+
+1100
+01:06:22,040 --> 01:06:28,644
+如果两个随机数的最大公约数等于1
+If the GCD of those two random numbers is equal to one,
+
+1101
+01:06:28,644 --> 01:06:30,640
+这就是整个实验过程
+that's the experiment.
+
+1102
+01:06:31,324 --> 01:06:36,240
+那么我有了一个用来推算pi的值的实验方法
+So here I have an experimental method for estimating the value of pi.
+
+1103
+01:06:36,240 --> 01:06:40,022
+我可以简单地将这个问题分为两个部分
+Where, I can easily divide this problem into two parts.
+
+1104
+01:06:40,020 --> 01:06:44,897
+一部分是Cesaro的特殊的蒙特卡洛实验 就像你刚才看到那个
+One is the specific Monte Carlo experiment of Cesaro, which you just saw,
+
+1105
+01:06:44,890 --> 01:06:49,115
+另一部分就是进行蒙特卡洛实验的常规技巧
+and the other is the general technique of doing Monte Carlo experiments.
+
+1106
+01:06:49,110 --> 01:06:50,893
+就是这个
+And that's what this is.
+
+1107
+01:06:50,890 --> 01:06:55,675
+如果我想进行n次蒙特卡洛实验
+If I want to do Monte Carlo experiments with n trials,
+
+1108
+01:06:55,670 --> 01:06:59,142
+即一个确定次数的实验 一个特定的实验
+a certain number of trials, and a particular experiment,
+
+1109
+01:06:59,140 --> 01:07:00,693
+我进行实验的方法就是
+the way I do that
+
+1110
+01:07:00,690 --> 01:07:03,244
+构建一个迭代过程
+is I make a little iterative procedure
+
+1111
+01:07:03,240 --> 01:07:08,133
+这个过程有两个变量 分别是试验的剩余次数 和通过次数
+which has variable the number of trials remaining and the number trials that have been passed,
+
+1112
+01:07:08,133 --> 01:07:10,130
+就是结果为真的次数
+that I've gotten true.
+
+1113
+01:07:10,130 --> 01:07:12,213
+如果剩余次数为0
+And if the number remaining is 0,
+
+1114
+01:07:12,210 --> 01:07:15,888
+结果就是通过的次数除以总次数
+then the answer is the number past divided by this whole number of trials,
+
+1115
+01:07:15,880 --> 01:07:18,866
+即对可能性的估计
+was the estimate of the probability.
+
+1116
+01:07:18,860 --> 01:07:20,044
+如果剩余次数不是0
+And if it's not,
+
+1117
+01:07:20,040 --> 01:07:22,080
+如果还有试验要做
+if I have more trials to do,
+
+1118
+01:07:22,080 --> 01:07:24,008
+那么接下来我们就进行一次试验
+then let's do one. We do an experiment.
+
+1119
+01:07:24,000 --> 01:07:27,302
+我们调用一次没有参数的实验的过程
+We call the procedure which is experiment on no arguments.
+
+1120
+01:07:27,300 --> 01:07:29,040
+我们进行这个试验
+We do the experiment
+
+1121
+01:07:29,040 --> 01:07:30,822
+如果实验结果为真
+and then, if that turned out to be true,
+
+1122
+01:07:30,820 --> 01:07:32,626
+我们继续循环
+we go around the loop
+
+1123
+01:07:32,620 --> 01:07:35,706
+将试验通过次数加1
+decrementing the number of experiments we have to do by one
+
+1124
+01:07:35,700 --> 01:07:38,382
+试验剩余次数减1
+and incrementing the number that were passed.
+
+1125
+01:07:38,382 --> 01:07:40,380
+如果实验的结果为假
+And if the experiment was false,
+
+1126
+01:07:40,380 --> 01:07:42,253
+我们继续循环
+we just go around the loop
+
+1127
+01:07:42,250 --> 01:07:44,382
+剩余试验次数减1
+decrementing the number of experiments remaining
+
+1128
+01:07:44,380 --> 01:07:47,742
+试验通过次数保持不变
+and keeping the number passed the same.
+
+1129
+01:07:48,600 --> 01:07:55,231
+我们以TRIAL为剩余次数 0为通过次数开始迭代
+We start this up iterating over the total number of trials with 0 experiments past.
+
+1130
+01:07:55,230 --> 01:07:57,524
+多么简洁的小程序啊
+A very elegant little program.
+
+1131
+01:07:57,520 --> 01:08:00,555
+我不一定非要进行Cesaro的实验
+And I don't have to just do this with Cesaro's experiment,
+
+1132
+01:08:00,550 --> 01:08:03,213
+它可以用来进行很多种蒙特卡洛实验
+it could be lots of Monte Carlo experiments I might do.
+
+1133
+01:08:03,210 --> 01:08:07,302
+当然 它依赖于某种随机数生成器的存在
+Of course, this depends upon the existence of some sort of random number generator.
+
+1134
+01:08:07,300 --> 01:08:13,248
+随机数生成器通常是像这种的东西
+And random number generators generally look something like this.
+
+1135
+01:08:13,240 --> 01:08:17,288
+这是一个随机数生成器--
+There is a random number generator--
+
+1136
+01:08:17,280 --> 01:08:25,480
+实际上它就是一个 进行类似于计数操作的过程is in fact a procedure which is going to do something just like the counter.
+
+1137
+01:08:25,480 --> 01:08:28,151
+它会把X的值更新为
+It's going to update an x
+
+1138
+01:08:28,150 --> 01:08:32,137
+将某个函数应用于x的结果
+to the result of applying some function to x,
+
+1139
+01:08:32,130 --> 01:08:35,324
+这个函数是
+where this function
+
+1140
+01:08:35,320 --> 01:08:41,320
+你可能在Kunth写的关于编程细节的书中找到的某种复杂的函数
+is some screwy kind of function that you might find out in Knuth's books on the details of programming.
+
+1141
+01:08:41,320 --> 01:08:45,751
+他写了这些充满了编程细节的绝妙的书
+He does these wonderful books that are full of the details of programming,
+
+1142
+01:08:45,750 --> 01:08:48,631
+因为我记不住随机数生成器该怎样写
+because I can't remember how to make a random number generator,
+
+1143
+01:08:48,630 --> 01:08:51,462
+但我可以在书里找出一个来用
+but I can look it up there, and I can find out.
+
+1144
+01:08:51,460 --> 01:08:54,084
+最后 我返回了X的值
+And then, eventually, I return the value of x
+
+1145
+01:08:54,080 --> 01:08:58,031
+也就是随机数生成器的内部状态变量
+which is the state variable internal to the random number generator.
+
+1146
+01:08:58,030 --> 01:09:01,204
+这个状态变量以某种方式被初始化
+That state variable is initialized somehow,
+
+1147
+01:09:01,204 --> 01:09:03,200
+从而获得了一个值
+and has a value.
+
+1148
+01:09:03,200 --> 01:09:10,217
+这个过程被定义在那个变量被约束的上下文中
+And this procedure is defined in the context where that variable
+
+1149
+01:09:10,210 --> 01:09:15,666
+所以你在这看到的 是一个隐藏的本地状态
+So this is a hidden piece of local state that you see here.
+
+1150
+01:09:15,660 --> 01:09:21,355
+这个过程定义在那个上下文中
+And this procedure is defined in that context.
+
+1151
+01:09:21,350 --> 01:09:24,697
+现在 那就是一个非常容易的事情了
+Now, that's a very simple thing to do.
+
+1152
+01:09:24,690 --> 01:09:25,995
+并且它非常的好用
+And it's very nice.
+
+1153
+01:09:25,990 --> 01:09:28,937
+设想 我不想用赋值
+Supposing, I didn't want to use assignments.
+
+1154
+01:09:28,930 --> 01:09:32,564
+假设我想写一个不带赋值的程序
+Supposing, I wanted to write this program without assignments.
+
+1155
+01:09:32,560 --> 01:09:35,311
+我将遇到什么困难？
+What problems would I have?
+
+1156
+01:09:35,310 --> 01:09:37,666
+让我们来看看
+Well, let's see.
+
+1157
+01:09:37,660 --> 01:09:41,880
+我要用一下头顶上的投影仪了
+I'd like to use the overhead machine here,
+
+1158
+01:09:41,880 --> 01:09:43,226
+多谢
+thank you.
+
+1159
+01:09:43,220 --> 01:09:47,662
+首先 我们来整体看一下 这是一个很庞大的东西
+First of all, let's look at the whole thing. It's a big story.
+
+1160
+01:09:47,662 --> 01:09:50,960
+它告诉你有某些东西出了问题
+Unfortunately, which tells you there is something wrong.
+
+1161
+01:09:50,960 --> 01:09:53,324
+#TBD
+It's at least that big,
+
+1162
+01:09:53,320 --> 01:09:56,475
+它是一个整体
+and it's monolithic.
+
+1163
+01:09:56,470 --> 01:10:00,120
+你不需要现在去理解或看这里的文本
+You don't have to understand or look at the text there right now
+
+1164
+01:10:00,120 --> 01:10:01,920
+#TBD
+to see that it's monolithic.
+
+1165
+01:10:01,920 --> 01:10:04,897
+它不是Cesaro的实验
+It isn't a thing which is Cesaro's experiment.
+
+1166
+01:10:04,890 --> 01:10:09,675
+它不是从蒙特卡洛过程中抽取出来的
+It's not pulled out from the Monte Carlo process.
+
+1167
+01:10:09,670 --> 01:10:13,853
+它不是分离的 让我们来看看为什么
+It's not separated. Let's look why.
+
+1168
+01:10:13,853 --> 01:10:15,850
+记住 这里的约束是
+Remember, the constraint here
+
+1169
+01:10:15,850 --> 01:10:18,693
+每个过程
+is that every procedure
+
+1170
+01:10:18,690 --> 01:10:22,831
+对于同样的参数 将返回同样的值
+return the same value for the same arguments.
+
+1171
+01:10:22,830 --> 01:10:26,400
+每个过程就是一个函数
+Every procedure represents a function.
+
+1172
+01:10:26,791 --> 01:10:28,506
+那是另一种约束
+That's a different kind of constraint.
+
+1173
+01:10:28,500 --> 01:10:31,640
+因为当我赋值时 我可以改变一些内部状态变量
+Because when I have assignments, I can  change some internal state variable.
+
+1174
+01:10:31,640 --> 01:10:34,853
+所以让我们来看看它是怎么出错的
+So let's see how that causes things to go wrong.
+
+1175
+01:10:34,850 --> 01:10:37,240
+我们从头开始
+Well, start at the beginning.
+
+1176
+01:10:37,240 --> 01:10:42,662
+看起来是一样的估算pi的过程
+The estimate of pi looks sort of the same.
+
+1177
+01:10:42,660 --> 01:10:46,240
+我取RAMDOM-GCD-TEST应用于N
+What I'm doing is I take the square root of six
+
+1178
+01:10:46,240 --> 01:10:50,746
+的结果分之6的平方根
+over the random GCD test applied to n
+
+1179
+01:10:50,746 --> 01:10:52,740
+就是这个
+whereas that's what this is.
+
+1180
+01:10:52,740 --> 01:10:55,204
+在这里 我们开始看到了一些有趣的东西
+But here, we are beginning to see something funny.
+
+1181
+01:10:55,200 --> 01:10:58,324
+对于trial为参数的random-gcd-test过程
+The random GCD test of a certain number of trials
+
+1182
+01:10:58,320 --> 01:11:00,462
+就像我们之前做的一样
+is just like we had before,
+
+1183
+01:11:00,460 --> 01:11:04,666
+是一个对于实验剩余次数的迭代
+an iteration on the number of trials remaining,
+
+1184
+01:11:04,660 --> 01:11:07,515
+
+the number of trials that have been passed,
+
+1185
+01:11:07,510 --> 01:11:10,657
+另一个变量X
+and another variable x.
+
+1186
+01:11:10,650 --> 01:11:12,333
+这个X是什么？
+What's that x?
+
+1187
+01:11:12,330 --> 01:11:17,164
+X是随机数生成器的状态
+That x is the state of the random number generator.
+
+1188
+01:11:18,711 --> 01:11:21,160
+它会在这里被使用
+And it is now going to be used here.
+
+1189
+01:11:21,160 --> 01:11:23,791
+这里的同样的随机更新函数
+The same random update function that I have over here
+
+1190
+01:11:23,790 --> 01:11:27,608
+是我要在随机数生成器中用的 我可能自己写一个
+is the one I would have used in a random number generator if I were building it the other way,
+
+1191
+01:11:27,600 --> 01:11:30,306
+或者从Knuth的书中找一个
+the one I get out of Knuth's books.
+
+1192
+01:11:31,422 --> 01:11:34,737
+X将转化为X1 我需要两个随机数
+x is going to get transformed into x1, I need two random numbers.
+
+1193
+01:11:34,730 --> 01:11:37,213
+X1将被转化为X2
+And x1 is going to get transformed into x2,
+
+1194
+01:11:37,213 --> 01:11:39,210
+我有两个随机数
+I have two random numbers.
+
+1195
+01:11:39,210 --> 01:11:42,417
+然后进行和之前一样的步骤
+I then have to do exactly what I did before.
+
+1196
+01:11:42,410 --> 01:11:45,151
+取X1和X2的最大公约数
+I take the GCD of x1 x2.
+
+1197
+01:11:45,150 --> 01:11:47,693
+如果结果是1 则继续循环
+If that's one, then I go around the loop with
+
+1198
+01:11:47,690 --> 01:11:51,813
+将x2作为下一个x的值
+x2 being the next value of x.
+
+1199
+01:11:54,271 --> 01:11:56,680
+这里所发生的
+You see what's happened here
+
+1200
+01:11:56,680 --> 01:12:01,702
+随机数生成器的状态不再被限制于随机数生成器内部
+is that the state of the random number generator is no longer confined to the insides of the random number generator.
+
+1201
+01:12:01,700 --> 01:12:03,337
+它已经暴露了出来
+It has leaked out.
+
+1202
+01:12:03,330 --> 01:12:05,506
+它已经被暴露在
+It has leaked out into my procedure
+
+1203
+01:12:05,500 --> 01:12:10,555
+我们的的蒙特卡洛实验的过程中
+that does the Monte Carlo experiment.
+
+1204
+01:12:10,550 --> 01:12:11,875
+但比那更糟糕的是
+But what's worse than that,
+
+1205
+01:12:11,870 --> 01:12:16,675
+Cesaro实验 它也被暴露了
+is it's also, because it was contained inside my experiment itself, Cesaro,
+
+1206
+01:12:16,670 --> 01:12:20,604
+因为Cesaro被调用了两次
+Because Cesaro called twice,
+
+1207
+01:12:20,600 --> 01:12:22,471
+每次有不同的值
+has to have a different value each time,
+
+1208
+01:12:22,470 --> 01:12:26,106
+如果我要进行一个合理的实验的话
+if I going to have a legitimate experimental test.
+
+1209
+01:12:26,100 --> 01:12:30,795
+所以Cesaro也不能成为函数了
+So Cesaro can't be a function either,
+
+1210
+01:12:30,790 --> 01:12:36,222
+除非我把随机数生成器的种子传给它#TBD
+unless I pass it the seed of the random number generator that is going to go wandering around.
+
+1211
+01:12:36,222 --> 01:12:39,377
+所以很不幸 随机数生成器的种子
+So unfortunately, the seed of random number generator
+
+1212
+01:12:39,370 --> 01:12:42,777
+从随机数生成器中暴露到了Cesaro内部
+has leaked out into Cesaro, from the random number generator,
+
+1213
+01:12:42,770 --> 01:12:45,462
+被暴露在蒙特卡洛实验中
+that's leaked into the Monte Carlo experiment.
+
+1214
+01:12:45,460 --> 01:12:50,066
+很不幸 这里的蒙特卡洛实验不再是通用的了
+And, unfortunately, my Monte Carlo experiment here is no longer general.
+
+1215
+01:12:50,060 --> 01:12:51,951
+这个蒙特卡洛实验
+The Monte Carlo experiment here
+
+1216
+01:12:51,950 --> 01:12:58,600
+知道了我在实验中需要多少个随机数
+knows how many random numbers I need to do the experiment.
+
+1217
+01:12:58,600 --> 01:13:00,022
+这真的很糟糕
+That's sort of horrible.
+
+1218
+01:13:00,020 --> 01:13:03,266
+我失去了将问题分解开来的能力
+I lost an ability to decompose a problem into pieces,
+
+1219
+01:13:03,260 --> 01:13:09,368
+因为我不愿意接受信息的循环
+because I wasn't willing to accept the little loop of information,
+
+1220
+01:13:09,360 --> 01:13:12,817
+反馈的过程
+the feedback process,
+
+1221
+01:13:12,810 --> 01:13:15,946
+发生在随机数生成器内部
+that happens inside the random number generator before
+
+1222
+01:13:15,940 --> 01:13:22,528
+在赋值给一个受限于随机数生成器的状态变量之前
+that was made by having an assignment to a state variable that was confined to the random number generator.
+
+1223
+01:13:22,520 --> 01:13:25,817
+所以实际上 随机数生成器是一个对象
+So the fact that the random number generator is an object,
+
+1224
+01:13:25,810 --> 01:13:27,933
+它有一个内部状态变量
+with an internal state variable,
+
+1225
+01:13:27,930 --> 01:13:32,671
+它不受任何东西影响 但是它会给你某些东西 把它的力量赐予你
+it's affected by nothing, but it'll give you something, and it will apply it's force to you,
+
+1226
+01:13:32,670 --> 01:13:35,826
+那是我们现在缺少的
+that was what we're missing now.
+
+1227
+01:13:37,820 --> 01:13:40,737
+好 我认为我已经知道了
+OK, well I think we've seen
+
+1228
+01:13:40,737 --> 01:13:42,730
+引入赋值的充分理由
+enough reason for doing this,
+
+1229
+01:13:42,730 --> 01:13:45,382
+并且一些看起来很圆满
+and it all sort of looks very wonderful.
+
+1230
+01:13:45,380 --> 01:13:51,568
+如果赋值是一个好东西
+Wouldn't it be nice if assignment was a good thing
+
+1231
+01:13:51,560 --> 01:13:53,146
+并且赋值是值得的 这不是很好吗？
+and maybe it's worth it,
+
+1232
+01:13:53,140 --> 01:13:55,231
+我不是很确定
+but I'm not sure.
+
+1233
+01:13:55,230 --> 01:13:57,048
+Mr. Gilbert and Sullivan说过
+As Mr. Gilbert and Sullivan said,
+
+1234
+01:13:57,040 --> 01:13:58,515
+事情很少与它们看起来相一致
+things are seldom what they seem,
+
+1235
+01:13:58,510 --> 01:14:01,546
+#TBD
+skim milk masquerades as cream.
+
+1236
+01:14:01,733 --> 01:14:05,862
+谁有什么问题吗？
+Are there any questions?
+
+1237
+01:14:16,740 --> 01:14:19,866
+在座的有哲学家吗？
+Are there any philosophers here?
+
+1238
+01:14:19,860 --> 01:14:24,328
+有人想要讨论objects的问题吗？
+Anybody want to argue about objects?
+
+1239
+01:14:24,320 --> 01:14:27,097
+你们已经被战翻在地了 是吧？
+You're just floored, right?
+
+1240
+01:14:29,510 --> 01:14:35,360
+你们不完成作业 就遇不到好问题
+And you haven't done your homework yet. You haven't come up with a good question.
+
+1241
+01:14:36,142 --> 01:14:38,140
+好了
+Oh, well.
+
+1242
+01:14:39,970 --> 01:14:42,853
+感谢你们 我们下课吧
+Sure, thank you. Let's take the long break now.
+
+1243
+01:14:47,900 --> 01:15:05,911
+[音乐]
+[MUSIC PLAYING]
+

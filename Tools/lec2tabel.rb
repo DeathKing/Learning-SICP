@@ -7,7 +7,8 @@ AUTHORS = {
   "ChingfanTsou"   => "https://github.com/ChingfanTsou",
   "DeathKing"      => "https://github.com/DeathKing",
   "endyul"         => "https://github.com/endyul",
-  "Michael Savior" => "https://github.com/mut0u"
+  "Michael Savior" => "https://github.com/mut0u",
+  "rtmagic"        => "https://github.com/rtmagic"
 }
 
 FORMAT = "| %-s | %-s | %-s | %-s | %-s | %-s |"

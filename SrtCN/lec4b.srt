@@ -1,0 +1,6688 @@
+﻿1
+00:00:00,000 --> 00:00:02,256
+Learning-SICP学习小组
+倾情制作
+
+2
+00:00:02,320 --> 00:00:03,536
+翻译&&时间轴：刘殊君（rtmagic）
+压制&&特效：邓雄飞（Dysprosium）
+校对：邓雄飞（Dysprosium）
+
+3
+00:00:03,552 --> 00:00:04,240
+特别感谢：裘宗燕教授
+
+4
+00:00:04,330 --> 00:00:10,352
+计算机程序的构造和解释
+
+5
+00:00:11,400 --> 00:00:16,500
+通用运算符
+Generic Operators
+
+6
+00:00:20,180 --> 00:00:21,840
+教授：到目前为止 我们已经进行了很多
+PROFESSOR: So far in this course we've been talking
+
+7
+00:00:21,840 --> 00:00:23,780
+关于数据抽象的讨论
+a lot about data abstraction.
+
+8
+00:00:23,780 --> 00:00:27,150
+关键理念就是在构造系统的时候
+And remember the idea is that we build systems
+
+9
+00:00:27,740 --> 00:00:32,560
+在其中加入水平的抽象屏障 这些抽象屏障
+that have these horizontal barriers in them, these abstraction barriers
+
+10
+00:00:33,420 --> 00:00:39,210
+把你使用一个数据对象的方式
+that separate use, the way you might use some data object,
+
+11
+00:00:39,930 --> 00:00:41,180
+和表示它的方式区分开来
+from the way you might represent it.
+
+12
+00:00:49,400 --> 00:00:52,030
+或者可以这样理解它 在上层有一个老板
+Or another way to think of that is up here you have the boss
+
+13
+00:00:52,110 --> 00:00:55,500
+想要调用某种数据对象
+who's going to be using some sort of data object.
+
+14
+00:00:57,110 --> 00:01:02,310
+而在下层 George负责它的具体实现
+And down here is George who's implemented it.
+
+15
+00:01:02,310 --> 00:01:05,420
+这种把使用与表示分离的想法
+Now this notion of separating use from representation
+
+16
+00:01:05,440 --> 00:01:09,760
+可以让你分开考虑这两个问题
+so you can think about these two problems separately
+
+17
+00:01:10,600 --> 00:01:14,760
+这是一种非常强大的编程的方法论 -- 数据抽象
+is a very,very powerful programming methodology, data abstraction.
+
+18
+00:01:15,930 --> 00:01:18,810
+但另一方面 数据抽象在那些真正复杂的系统上
+On the other hand, it's not really sufficient
+
+19
+00:01:19,560 --> 00:01:21,840
+并不是很有效
+for really complex systems.
+
+20
+00:01:22,960 --> 00:01:27,648
+这个问题就出在George这里
+And the problem with this is George.
+
+21
+00:01:28,640 --> 00:01:32,090
+或者说 实际上 问题就在于
+Or actually, the problem is that
+
+22
+00:01:32,090 --> 00:01:32,780
+现在有太多的George
+there are a lot of Georges.
+
+23
+00:01:34,630 --> 00:01:35,390
+具体地说
+Let's be concrete.
+
+24
+00:01:35,390 --> 00:01:39,180
+假设现在有George和Martha两个人
+Let's suppose there is George,and there's also Martha.
+
+25
+00:01:41,190 --> 00:01:44,220
+他们都是这个系统的开发人员
+OK, now George and Martha are both working on this system,
+
+26
+00:01:46,040 --> 00:01:47,290
+都在设计数据的表示方法
+both designing representations,
+
+27
+00:01:48,410 --> 00:01:50,670
+而且他们完全合不来
+and absolutely are incompatible.
+
+28
+00:01:51,750 --> 00:01:53,620
+他们不会合作开发同一种表示方法
+They wouldn't cooperate on a representation
+
+29
+00:01:54,010 --> 00:01:55,340
+永远也不会
+under any circumstances.
+
+30
+00:01:57,480 --> 00:01:59,720
+现在的问题是 假设你想要这样一个系统
+And the problem is you would like to have some system
+
+31
+00:02:00,060 --> 00:02:02,600
+在这个系统中George和Martha都为它设计了数据表示方法
+where both George and Martha are designing representations,
+
+32
+00:02:03,820 --> 00:02:08,080
+但是如果你在高于这个抽象屏障的层面思考
+and, yet, if you're above this abstraction barrier
+
+33
+00:02:09,400 --> 00:02:11,040
+你就不用去操心这些事情
+you don't want to have to worry about that,
+
+34
+00:02:11,660 --> 00:02:14,180
+不用操心 某个东西是到底是George做的还是Martha做的
+whether something is done by George or by Martha.
+
+35
+00:02:14,180 --> 00:02:15,430
+同时你也不想让George和Martha
+And you don't want George and Martha to
+
+36
+00:02:15,430 --> 00:02:16,480
+妨碍彼此的工作
+interfere with each other.
+
+37
+00:02:16,630 --> 00:02:20,310
+你在设计系统的时候 不仅仅需要这些
+Somehow in designing a system, you not only want these
+
+38
+00:02:20,310 --> 00:02:23,840
+水平的抽象屏障 同时也想设置一道
+horizontal barriers, but you also want some kind of
+
+39
+00:02:25,824 --> 00:02:30,640
+垂直的屏障 -- 来把George和Martha分离开
+some kind of vertical barrier to keep George and Martha separate.
+
+40
+00:02:32,980 --> 00:02:35,400
+我们来说得再具体一点
+Let me be a little bit more concrete.
+
+41
+00:02:36,560 --> 00:02:40,540
+想象一个很大的公司的人事记录
+Imagine that you're thinking about personnel records
+
+42
+00:02:41,180 --> 00:02:46,110
+这个公司里有很多部门没什么联系
+for a large company with a lot of loosely linked divisions
+
+43
+00:02:47,900 --> 00:02:49,710
+并且部门之间合作得也不太好
+that don't cooperate very well either.
+
+44
+00:02:50,430 --> 00:02:57,040
+甚至还可以想象这个大公司就是由
+And imagine even that this company is formed by merging a
+
+45
+00:02:57,040 --> 00:02:59,450
+很多公司组成的 而且每个公司
+whole bunch of companies that already have their personnel
+
+46
+00:02:59,450 --> 00:03:00,700
+都有自己的一套人事记录
+record system set up.
+
+47
+00:03:03,250 --> 00:03:06,570
+想象一下突然有一天 这些部门
+And imagine that once these divisions are all linked in
+
+48
+00:03:06,570 --> 00:03:08,530
+被一种神奇的卫星网络连接起来
+some kind of very sophisticated satellite
+
+49
+00:03:08,530 --> 00:03:10,520
+它们各自的数据库都被放到了一起
+network, and all these databases are put together.
+
+50
+00:03:12,240 --> 00:03:13,850
+现在你想要
+And what you'd like to do
+
+51
+00:03:14,840 --> 00:03:16,330
+在公司的任何地方
+is from any place in the company,
+
+52
+00:03:17,260 --> 00:03:23,130
+都能够知道 哦 某一条人事记录里的
+to be able to say things like,oh, what's the name in a
+
+53
+00:03:23,130 --> 00:03:23,870
+“姓名”是什么
+personnel record?
+
+54
+00:03:26,300 --> 00:03:29,150
+或者一条记录里的“工作”是什么
+Or, what's the job description in a personnel record?
+
+55
+00:03:30,540 --> 00:03:34,400
+同时又不需要担心每一个部门
+And not have to worry about the fact that each division
+
+56
+00:03:34,840 --> 00:03:36,760
+对于人事记录的格式
+obviously is going to have completely separate
+
+57
+00:03:36,760 --> 00:03:39,370
+有着完全不同的习惯
+conventions for how you might implement these records.
+
+58
+00:03:41,580 --> 00:03:43,260
+从你的视角上你不想去了解这些东西
+From this point you don't want to know about that.
+
+59
+00:03:44,960 --> 00:03:47,920
+那么怎么才能做到这样呢？
+Well how could you possibly do that?
+
+60
+00:03:48,430 --> 00:03:52,410
+当然 一种方法是下发一个告示
+One way, of course, is to send down an edict from somewhere
+
+61
+00:03:52,640 --> 00:03:56,290
+来通知所有人把他们的记录格式
+that everybody has to change their format to some fixed
+
+62
+00:03:56,290 --> 00:03:57,240
+都改成某种标准的格式
+compatible thing.
+
+63
+00:03:58,070 --> 00:04:00,120
+人们经常这样做 但都没有成功
+That's what people often try, and of course it never works.
+
+64
+00:04:01,820 --> 00:04:07,340
+另一个办法则是重新安排这些记录
+Another thing that you might want to do is somehow arrange
+
+65
+00:04:08,330 --> 00:04:09,900
+让它们中间有这种垂直的抽象屏障
+it so you can have these vertical barriers.
+
+66
+00:04:11,250 --> 00:04:14,400
+当你查询一份人事档案里的姓名的时候
+So that when you ask for the name of a personnel record,
+
+67
+00:04:14,430 --> 00:04:17,970
+不管它是什么格式 name这个过程都能设法
+somehow, whatever format it happens to be, name will
+
+68
+00:04:17,970 --> 00:04:19,420
+搞清楚怎么正确地完成这件事
+figure out how to do the right thing.
+
+69
+00:04:22,730 --> 00:04:25,530
+我们把name叫做一个 所谓的“通用运算符”
+We want name to be, so-called, a generic operator.
+
+70
+00:04:26,260 --> 00:04:30,060
+通用运算符意味着它会根据数据的种类
+Generic operator means what it sort of precisely does depends
+
+71
+00:04:30,060 --> 00:04:31,690
+准确地做出对应的操作
+on the kind of data that it's looking at.
+
+72
+00:04:33,650 --> 00:04:36,620
+更进一步讲 你想让这个系统在
+More than that, you'd like to design the system so that the
+
+73
+00:04:36,920 --> 00:04:39,790
+下次公司里多了一个新的人员划分的时候
+next time a new division comes into the company
+
+74
+00:04:42,510 --> 00:04:45,640
+人们连接系统的方法不会有很大的变化
+they don't have to make any big changes in what they're already doing
+
+75
+00:04:45,640 --> 00:04:50,110
+并且公司里剩下的部门
+to link into this system, and the rest of the company
+
+76
+00:04:50,110 --> 00:04:52,010
+要把它们的人员记录添加到这个系统
+doesn't have to make any big changes
+
+77
+00:04:52,270 --> 00:04:53,930
+也不需要做什么大的修改
+to admit their stuff to the system.
+
+78
+00:04:55,520 --> 00:04:57,520
+那么这就是你应该考虑的问题
+So that's the problem you should be thinking about.
+
+79
+00:04:58,700 --> 00:05:00,770
+或者这就是你的工作
+Like it's sort of just your work.
+
+80
+00:05:00,770 --> 00:05:03,776
+要让系统可以用最少的改动来拥抱变化
+You want to be able to include new things by making minimal changes.
+
+81
+00:05:05,980 --> 00:05:08,120
+这就是我们今天要讨论的问题
+OK, well that's the problem that we'll be talking about today.
+
+82
+00:05:09,440 --> 00:05:14,220
+你脑子里应该有这个分布式的人事档案系统
+And you should have this sort of distributed personnel record system in your mind.
+
+83
+00:05:14,240 --> 00:05:16,620
+但是实际上 我今天要讨论的是一个
+But actually the one I'll be talking about is a problem
+
+84
+00:05:16,620 --> 00:05:18,480
+比那要更加自成体系的问题
+that's a little bit more self-contained than that.
+
+85
+00:05:19,290 --> 00:05:21,760
+我觉得用它可以把事情说得更清楚一点
+that'll bring up the issues, I think, more clearly.
+
+86
+00:05:21,870 --> 00:05:26,010
+我们要讨论的是 复数域上的算术系统
+That's the problem of doing a system that does arithmetic on complex numbers.
+
+87
+00:05:27,770 --> 00:05:28,920
+我们来看看这个系统
+So let's take a look here.
+
+88
+00:05:30,690 --> 00:05:31,744
+来复习一下
+Just as a little review,
+
+89
+00:05:32,048 --> 00:05:33,530
+什么是“复数”
+there are things called complex numbers.
+
+90
+00:05:35,250 --> 00:05:38,220
+复数z可以看做复平面上的一点
+Complex number you can think of as a point in the plane, or z.
+
+91
+00:05:39,370 --> 00:05:47,190
+我们将复数表示为实数部分和虚数部分
+And you can represent a point either by its real-part and its imaginary-part.
+
+92
+00:05:47,190 --> 00:05:50,830
+所以如果这个是复数z 它的实部是这么多
+So if this is z and its real-part is this much,
+
+93
+00:05:51,500 --> 00:05:53,240
+它的虚部是那么多
+and its imaginary-part is that much,
+
+94
+00:05:54,330 --> 00:05:56,440
+我们就可以记z=x+iy
+and you write z equals x plus iy.
+
+95
+00:05:59,110 --> 00:06:03,210
+还有另一种方法来表示一个复数 比如说
+Or another way to represent a complex number is by saying,
+
+96
+00:06:03,210 --> 00:06:09,000
+这个点与原点的距离是多少 在原点的什么角度上
+what's the distance from the origin, and what's the angle?
+
+97
+00:06:11,320 --> 00:06:16,670
+像这样 复数也可以表示为半径乘以一个角度
+So that represents a complex number as its radius times an angle.
+
+98
+00:06:19,520 --> 00:06:21,920
+第一种表示法称为 直角坐标系表示
+This one's called -- the original one's called rectangular form,
+
+99
+00:06:22,590 --> 00:06:25,456
+或者说实部-虚部表示
+rectangular representation, real- and imaginary-part
+
+100
+00:06:26,208 --> 00:06:30,040
+而后一种是用模和辐角两部分的极坐标表示
+or polar representation magnitude and angle--
+
+101
+00:06:30,040 --> 00:06:31,480
+并且如果你知道了一个复数的实部和虚部
+and if you know the real- and imaginary-part,
+
+102
+00:06:31,530 --> 00:06:33,360
+你就能计算出它的模和辐角
+you can figure out the magnitude and angle.
+
+103
+00:06:33,720 --> 00:06:36,970
+如果知道了x和y 就能用这个式子算出r
+If you know x and y, you can get r by this formula.
+
+104
+00:06:37,190 --> 00:06:39,480
+等于两个数平方和的平方根 然后就可以
+Square root of sum of the squares, and you can get the
+
+105
+00:06:39,480 --> 00:06:40,760
+用反三角函数算出辐角的值
+angle as an arctangent.
+
+106
+00:06:41,420 --> 00:06:44,420
+或者反过来 如果你知道了r和A
+Or conversely, if you knew r and A you could
+
+107
+00:06:44,420 --> 00:06:45,310
+你也能计算出x和y
+figure out x and y.
+
+108
+00:06:45,800 --> 00:06:49,430
+x=r·cos(A) y=r·sin(A)
+x is r times the cosine of A, and y is r times the sine of A.
+
+109
+00:06:51,340 --> 00:06:53,660
+这是表示复数的两种不同方法
+All right, so there's these two. They're complex numbers.
+
+110
+00:06:54,130 --> 00:06:57,150
+分别是极坐标形式和直角坐标形式
+You can think of them either in polar form or rectangular form.
+
+111
+00:06:57,150 --> 00:06:58,128
+我们要设计的是
+What we would like to do
+
+112
+00:06:58,320 --> 00:07:01,328
+一个复数域上的算术系统
+is make a system that does arithmetic on complex numbers.
+
+113
+00:07:03,952 --> 00:07:05,120
+换句话讲 我们要
+In other words, what we'd like--
+
+114
+00:07:05,580 --> 00:07:06,990
+就像之前课上有理数运算的例子一样
+just like the rational number example--
+
+115
+00:07:07,380 --> 00:07:10,208
+是构造一个叫做+c的操作
+is to have some operations plus c,
+
+116
+00:07:10,736 --> 00:07:13,904
+它将两个复数然后把它们相加、相减
+which is going to take two complex numbers and add them, subtract them,
+
+117
+00:07:14,352 --> 00:07:16,944
+相乘或者相除
+ and multiply them, and divide them.
+
+118
+00:07:20,730 --> 00:07:25,280
+那么我们要用到一点点数学
+OK, well there's little bit of mathematics behind it.
+
+119
+00:07:25,280 --> 00:07:28,360
+对它们进行操作的具体的算式是什么
+What are the actual formulas for manipulating such things?
+
+120
+00:07:30,410 --> 00:07:31,920
+它们是怎么得出来的 并不重要
+And it's sort of not important where they come from,
+
+121
+00:07:34,000 --> 00:07:35,790
+我们只是用它们实现运算
+but just as an implementer let's see--
+
+122
+00:07:35,800 --> 00:07:37,950
+如果想要把两个复数相加
+if you want to add two complex numbers it's pretty easy to
+
+123
+00:07:39,130 --> 00:07:42,660
+可以很容易地获取它们的实部和虚部
+it's pretty easy to get its real-part and its imaginary-part.
+
+124
+00:07:42,660 --> 00:07:45,930
+两个复数的和的实部
+The real-part of the sum of two complex numbers
+
+125
+00:07:47,720 --> 00:07:49,728
+z1+z2的实部
+real-part of the z1 plus z2
+
+126
+00:07:50,064 --> 00:07:54,640
+就是z1的实部加上z2的实部
+is the real-part of z1 plus the real-part of z2.
+
+127
+00:07:57,820 --> 00:08:01,600
+然后z1+z2的虚部也就是
+And the imaginary-part of z1 plus z2
+
+128
+00:08:01,744 --> 00:08:05,664
+z1的虚部加上z2的虚部
+is the imaginary part of z1 plus the imaginary part of z2.
+
+129
+00:08:07,410 --> 00:08:09,480
+所以复数相加是非常简单的事情
+So it's pretty easy to add complex numbers.
+
+130
+00:08:09,480 --> 00:08:10,992
+你只要把各个部分分别加起来
+You just add the corresponding parts
+
+131
+00:08:11,310 --> 00:08:13,180
+然后用结果构建一个新的复数
+and make a new complex number with those parts.
+
+132
+00:08:13,370 --> 00:08:14,736
+如果你想要让复数相乘
+If you want to multiply them,
+
+133
+00:08:15,536 --> 00:08:17,820
+那么在极坐标下运算会方便很多
+it's kind of nice to do it in polar form.
+
+134
+00:08:17,820 --> 00:08:20,384
+因为对于两个复数
+Because if you have two complex numbers,
+
+135
+00:08:20,400 --> 00:08:26,540
+两复数积之模 就是它们各自的模的乘积
+ the magnitude of their product is here, the product of the magnitudes.
+
+136
+00:08:28,850 --> 00:08:33,880
+它们的积的辐角 就是两个辐角的和
+And the angle of the product is the sum of the angles.
+
+137
+00:08:35,800 --> 00:08:40,540
+这就是复数域上的运算所需的数学知识
+So that's sort of mathematics that allows you to do arithmetic on complex numbers.
+
+138
+00:08:40,540 --> 00:08:42,380
+我们来想一想具体的实现
+Let's actually think about the implementation.
+
+139
+00:08:43,720 --> 00:08:47,390
+我们就像之前运算有理数那样做
+Well we do it just like rational numbers.
+
+140
+00:08:49,840 --> 00:08:53,470
+来到底层 假设有一些构造函数和选择函数
+We come down, we assume we have some constructors and selectors.
+
+141
+00:08:53,760 --> 00:08:54,528
+它们应该是什么样子呢
+What would we like?
+
+142
+00:08:55,330 --> 00:08:58,160
+假设我们制造了一些表示数据对象的“云彩”
+Well let's assume that we make a data object cloud,
+
+143
+00:08:58,540 --> 00:09:00,780
+也就是用某种形式表示的复数
+which is a complex number that has some stuff in it,
+
+144
+00:09:01,790 --> 00:09:04,670
+我们能从这个复数中得到它的实部
+and that we can get out from a complex number the real-part,
+
+145
+00:09:05,520 --> 00:09:09,640
+可以获得 虚部、模、或者辐角
+or the imaginary-part, or the magnitude, or the angle.
+
+146
+00:09:12,150 --> 00:09:14,010
+然后我们需要一种方法来构造复数
+We want some ways of making complex numbers--
+
+147
+00:09:14,030 --> 00:09:15,640
+不仅要有选择函数 还要有构造函数
+not only selectors, but constructors.
+
+148
+00:09:16,800 --> 00:09:19,520
+那么假设我们有一个叫做make-rectangular的过程
+So we'll assume we have a thing called make-rectangular.
+
+149
+00:09:19,530 --> 00:09:24,270
+这个过程的功能是接受一个实部
+What make-rectangular is going to do is take a real-part and
+
+150
+00:09:24,510 --> 00:09:29,360
+和一个虚部 然后把这两个部分组合成一个复数
+an imaginary-part and construct a complex number with those parts.
+
+151
+00:09:31,920 --> 00:09:35,010
+同样我们也可以构造一个make-polar过程
+Similarly, we can have make-polar which will taking
+
+152
+00:09:35,010 --> 00:09:37,850
+它接受一个模和一个辐角
+a magnitude and an angle,
+
+153
+00:09:40,830 --> 00:09:43,900
+然后用这两个值 组成一个复数
+and construct a complex number which has that magnitude and angle.
+
+154
+00:09:44,680 --> 00:09:45,460
+那么这个系统
+So here's a system.
+
+155
+00:09:45,460 --> 00:09:47,770
+里面会有两个构造函数和四个选择函数
+We'll have two constructors and four selectors.
+
+156
+00:09:48,910 --> 00:09:55,150
+现在 就像之前课程中那样 我们基于这个抽象的数据结构
+And now, just like before, in terms of that abstract data
+
+157
+00:09:55,150 --> 00:09:59,220
+继续实现复数的各种运算
+we'll go ahead and implement our complex number operations.
+
+158
+00:09:59,220 --> 00:10:02,300
+而这些Lisp代码
+And here you can see translated into Lisp code
+
+159
+00:10:03,230 --> 00:10:07,470
+是从我之前写的算术公式“翻译”而来的
+just the arithmetic formulas I put down before.
+
+160
+00:10:08,060 --> 00:10:09,980
+如果我想把两个复数相加
+If I want to add two complex numbers
+
+161
+00:10:11,760 --> 00:10:15,560
+我就要用一个实部和一个虚部构造一个复数
+I will make a complex number out of its real- and imaginary-parts.
+
+162
+00:10:16,720 --> 00:10:19,024
+这个新的复数的实部是
+The real part of the complex number I'm going to make
+
+163
+00:10:19,408 --> 00:10:21,800
+两个复数的实部的和
+is the sum of the real-parts.
+
+164
+00:10:23,310 --> 00:10:25,376
+它的虚数部分是
+The imaginary part of the complex number I'm going to make
+
+165
+00:10:25,408 --> 00:10:27,520
+两个复数的虚部的和
+is the sum of the imaginary-parts.
+
+166
+00:10:30,310 --> 00:10:32,090
+我把它们放到一起 构造出一个复数
+I put those together, make a complex number.
+
+167
+00:10:32,160 --> 00:10:34,440
+这就是实现复数加法的方法
+That's how I implement complex number addition.
+
+168
+00:10:35,780 --> 00:10:38,490
+减法实际上是一样的
+Subtraction is essentially the same.
+
+169
+00:10:39,650 --> 00:10:42,970
+只需要把各个部分相加变成把它们相减
+All I do is subtract the parts rather than add them.
+
+170
+00:10:45,140 --> 00:10:47,072
+要把两个复数相乘
+To multiply two complex numbers,
+
+171
+00:10:47,740 --> 00:10:49,020
+要用另外一个式子
+I use the other formula.
+
+172
+00:10:49,270 --> 00:10:53,840
+我会用一个模和一个辐角来构造一个复数
+I'll make a complex number out of a magnitude and angle.
+
+173
+00:10:55,350 --> 00:10:56,448
+z1*z2的模
+The magnitude
+
+174
+00:10:56,656 --> 00:11:00,970
+就是z1的模乘以z2的模
+is going to be the product of the magnitudesof the two complex numbers I'm multiplying.
+
+175
+00:11:03,710 --> 00:11:05,936
+而z1*z2的辐角则是
+And the angle is going to be the sum
+
+176
+00:11:06,160 --> 00:11:08,510
+z1的辐角加上z2的辐角
+of the angles of the z1two complex numbers I'm multiplying.
+
+177
+00:11:09,620 --> 00:11:10,960
+那么这就是乘法的实现
+So there's multiplication.
+
+178
+00:11:11,230 --> 00:11:12,256
+然后是除法
+And then division,
+
+179
+00:11:14,272 --> 00:11:15,904
+除法和乘法几乎是一样的
+division is almost the same.
+
+180
+00:11:17,370 --> 00:11:19,580
+我只要把两个模相除 把辐角相减就可以了
+Here I divide the magnitudes and subtract the angles.
+
+181
+00:11:28,360 --> 00:11:30,460
+现在我已经实现了各种运算
+Now I've implemented the operations.
+
+182
+00:11:31,870 --> 00:11:33,640
+然后我们做什么
+And what do we do?
+
+183
+00:11:33,640 --> 00:11:34,520
+我们把George叫来
+We call on George.
+
+184
+00:11:36,060 --> 00:11:38,790
+我们完成了“使用”的部分 现在应该考虑“表示”了
+We've done the use, let's worry about the representation.
+
+185
+00:11:38,800 --> 00:11:40,940
+我们叫来George然后对他说
+We'll call on George and say to George,
+
+186
+00:11:40,970 --> 00:11:43,610
+“为我们设计一个一套复数的表示方法”
+go ahead and build us a complex number representation.
+
+187
+00:11:45,250 --> 00:11:47,440
+很好
+Well that's fine...ahhh
+
+188
+00:11:47,770 --> 00:11:52,660
+George可能会说 我们把一个复数
+George can say, we'll implement a complex number
+
+189
+00:11:52,660 --> 00:11:57,150
+实现为 一个由实部和虚部组成的序对
+simply as a pair that has the real-part and the imaginary-part.
+
+190
+00:11:57,200 --> 00:12:02,620
+那么如果我想用某个实部和虚部来构造复数
+So if I want to make a complex number with a certain real-part and an imaginary-part,
+
+191
+00:12:03,360 --> 00:12:05,552
+我只需要把它们cons起来即可 这样可以--
+I'll just use cons to form a pair, and that will--
+
+192
+00:12:06,032 --> 00:12:08,110
+这就是George表示复数的方法
+that's George's representation of a complex number.
+
+193
+00:12:09,780 --> 00:12:12,420
+那么如果我想获得它的实部 我只需要
+So if I want to get out the real-part of something, I just
+
+194
+00:12:12,420 --> 00:12:14,120
+提取出序对的car部分 -- 它的首部分
+extract the car, the first part.
+
+195
+00:12:14,350 --> 00:12:16,670
+如果我想要得到虚部 我就提取出它的cdr部分
+If I want to get the imaginary-part, I extract the cdr
+
+196
+00:12:19,640 --> 00:12:21,770
+那对于模和辐角 又该如何取得呢？
+How do I deal with the magnitude and angle?
+
+197
+00:12:22,220 --> 00:12:25,750
+如果我想取得某个复数的模
+Well if I want to extract the magnitude of one of these things
+
+198
+00:12:25,750 --> 00:12:32,300
+我需要计算该复数car与cdr的平方和的算术平方根
+I get the square root of the sum of the square of the car plus the square of the cdr.
+
+199
+00:12:33,790 --> 00:12:39,260
+如果我想得到辐角 我就计算它的cdr与car比值的反正切
+If I want to get the angle, I compute the arctangent of the cdr in the car.
+
+200
+00:12:39,530 --> 00:12:42,860
+这个Lisp过程用于计算反正切
+This is a lisp procedure for computing arctangent.
+
+201
+00:12:44,970 --> 00:12:48,590
+要是有人给我一个模和辐角
+And if somebody hands me a magnitude and an angle
+
+202
+00:12:48,940 --> 00:12:50,560
+并说：“给我构造一个复数”
+and says, make me a complex number,well I compute the
+
+203
+00:12:50,890 --> 00:12:56,240
+用它们计算出实部 r*cos(a) 和虚部 r*sin(a)
+well I compute the real-part and the imaginary-part, r * cosine of a and r * sine of a,
+
+204
+00:12:57,770 --> 00:12:59,050
+连接成一个序对就行了
+and stick them together into a pair.
+
+205
+00:13:01,460 --> 00:13:02,260
+完成了
+OK so we're done.
+
+206
+00:13:02,260 --> 00:13:04,750
+实际上我做的事情 在概念上讲
+In fact, what I just did, conceptually,
+
+207
+00:13:06,890 --> 00:13:09,376
+和我们之前提过的有理数的表示
+is absolutely no different from the rational number
+
+208
+00:13:10,608 --> 00:13:12,440
+是完全没有区别的
+representation that we looked at last time.
+
+209
+00:13:12,750 --> 00:13:13,910
+它们的思想相同
+It's the same sort of idea.
+
+210
+00:13:13,910 --> 00:13:16,280
+实现具体过程 选择一种表示方法
+You implement the operators, you pick a representation.
+
+211
+00:13:18,070 --> 00:13:18,650
+没有什么不同
+Nothing different.
+
+212
+00:13:20,070 --> 00:13:21,560
+现在我们来关心一下Martha
+Now let's worry about Martha.
+
+213
+00:13:23,210 --> 00:13:24,520
+嗯 Martha的想法不太一样
+See, Martha has a different idea.
+
+214
+00:13:26,670 --> 00:13:28,576
+她不想把复数表示成
+She doesn't want to represent a complex number
+
+215
+00:13:28,592 --> 00:13:30,900
+由实部和虚部组成的序对
+as a pair of a real-part and an imaginary-part.
+
+216
+00:13:30,900 --> 00:13:34,170
+她比较喜欢把它们表示成
+What she would like to do is represent a complex number as
+
+217
+00:13:34,170 --> 00:13:37,690
+由模和辐角组成的序对
+a pair of a magnitude and an angle.
+
+218
+00:13:39,550 --> 00:13:42,130
+那么如果我们没有让George而是让Martha
+So if instead of calling up George we ask Martha to design
+
+219
+00:13:42,130 --> 00:13:43,740
+来设计复数的表示方法 我们就会得到这样的东西
+our representation, we get something like this.
+
+220
+00:13:44,570 --> 00:13:47,160
+有一个make-polar过程
+We get make-polar.
+
+221
+00:13:47,160 --> 00:13:50,220
+当然了 有了一个模和一个辐角之后
+Sure, if I give you a magnitude and an angle we're
+
+222
+00:13:50,220 --> 00:13:53,070
+我们只要把它们组合成一个序对就行了
+just going to form a pair that has magnitude and angle.
+
+223
+00:13:55,430 --> 00:13:57,680
+如果你想取得复数的模 那很简单
+If you want to extract the magnitude, that's easy.
+
+224
+00:13:58,240 --> 00:13:59,370
+你只需要取序对的car部分即可
+You just pull out the car or the pair.
+
+225
+00:13:59,780 --> 00:14:02,670
+当然 想取得复数的辐角 那也很简单
+If you want to extract the angle, sure, that's easy.
+
+226
+00:14:02,670 --> 00:14:03,630
+只需取cdr部分即可
+You just pull out the cdr.
+
+227
+00:14:04,810 --> 00:14:07,020
+但是如果你想要获得实部和虚部
+If you want to look for real-parts and imaginary-parts,
+
+228
+00:14:07,420 --> 00:14:08,490
+那就得费点力气
+well then you have to do some work.
+
+229
+00:14:08,880 --> 00:14:14,580
+想得到实部 你就得计算r*cos(a)
+If you want the real-part, you have to get r cosine a.
+
+230
+00:14:14,580 --> 00:14:19,990
+换句话讲 用序对的car部分去乘以
+In other words, r, the car of the pair, times the cosine of
+
+231
+00:14:19,990 --> 00:14:20,950
+cdr部分的余弦值
+the cdr of the pair.
+
+232
+00:14:20,950 --> 00:14:26,230
+然后你就算出了r*cos(a)
+So this is r times the cosine of a,
+
+233
+00:14:26,540 --> 00:14:27,480
+这就是这个复数的实部
+and that's the real-part.
+
+234
+00:14:28,330 --> 00:14:31,400
+要是想算出它的虚部 用r乘以sin(a)就可以了
+If you want to get the imaginary-part, it's r times the sine of a.
+
+235
+00:14:32,660 --> 00:14:37,930
+现在如果我给你一个实部和虚部 然后说
+And if I hand you a real-part and an imaginary-part and say,
+
+236
+00:14:37,930 --> 00:14:42,030
+用它们给我构造一个复数
+make me a complex number with that real-part and
+
+237
+00:14:42,030 --> 00:14:44,170
+那就要先算出
+imaginary-part, well I figure out what the magnitude and
+
+238
+00:14:44,170 --> 00:14:45,540
+模和辐角是多少
+angle should be.
+
+239
+00:14:45,540 --> 00:14:47,850
+模是实部和虚部的平方和的算术平方根
+The magnitude's the square root of the sum of the squares
+
+240
+00:14:48,090 --> 00:14:49,230
+辐角是这个反正切
+and the angle's the arctangent.
+
+241
+00:14:49,230 --> 00:14:50,220
+我用这两个数构造一个序对
+I put those together to make a pair.
+
+242
+00:14:52,090 --> 00:14:54,170
+以上就是Martha的想法
+So there's Martha's idea.
+
+243
+00:14:56,690 --> 00:14:57,370
+那么哪种比较好呢？
+Well which is better?
+
+244
+00:14:59,680 --> 00:15:03,150
+如果你需要做很多加法 那么George的比较好
+Well if you're doing a lot of additions, probably George's is better
+
+245
+00:15:03,160 --> 00:15:05,610
+因为你总是要用到复数的实部和虚部
+is better, because you're doing a lot of real-parts and imaginary-parts.
+
+246
+00:15:05,850 --> 00:15:08,400
+如果你大多数时间都是在做乘法
+If mostly you're going to be doing multiplications and divisions,
+
+247
+00:15:09,480 --> 00:15:11,140
+那可能Martha的办法就要好一些
+then maybe Martha's idea is better.
+
+248
+00:15:11,140 --> 00:15:14,840
+又或者 -- 这就是问题所在了 -- 你决定不了
+Or maybe, and this is the real point, you can't decide.
+
+249
+00:15:16,590 --> 00:15:22,320
+或者出于某些个人原因 你想让它们同时存在
+Or maybe you just have to let them both hang around, for personality reasons.
+
+250
+00:15:23,480 --> 00:15:26,760
+也可能你是真的无法决定你更喜欢哪种表示法
+Maybe you just really can't ever decide what you would like.
+
+251
+00:15:28,560 --> 00:15:32,320
+回到这个话题 我们真正想要的是这样一个系统
+And again, what we would really like is a system that looks like this.
+
+252
+00:15:32,650 --> 00:15:36,170
+这里面 既有George 他实现了
+That somehow there's George over here, who has built
+
+253
+00:15:36,830 --> 00:15:39,640
+复数的直角坐标表示
+rectangular complex numbers.
+
+254
+00:15:41,470 --> 00:15:44,250
+又有Martha 她实现了复数的极坐标表示
+And Martha, who has polar complex numbers.
+
+255
+00:15:46,120 --> 00:15:49,696
+然后我们有各种运算
+And somehow we have operations
+
+256
+00:15:50,288 --> 00:15:56,890
+用来对复数进行加减乘除
+that can add, and subtract, and multiply, and divide
+
+257
+00:15:57,560 --> 00:15:58,768
+那么这些运算
+and it shouldn't matter
+
+258
+00:15:59,344 --> 00:16:02,790
+不应该被系统中同时存在的两种
+that there are two incompatible representations of complex
+
+259
+00:16:02,790 --> 00:16:03,980
+互不兼容的复数表示方法影响
+numbers floating around this system.
+
+260
+00:16:04,410 --> 00:16:08,330
+或者说 我们不光有像这样的一个抽象屏障
+In other words, not only like an abstraction barrier here
+
+261
+00:16:09,640 --> 00:16:11,840
+它里面有real-part
+that has things in it like a real-part,
+
+262
+00:16:15,770 --> 00:16:21,710
+还有 IMAG-PART、MAG 和 ANG 等几个过程
+and an imaginary-part, and magnitude,and angle.
+
+263
+00:16:23,830 --> 00:16:25,360
+不光有一层抽象屏障
+So not only is there an abstraction barrier
+
+264
+00:16:25,392 --> 00:16:28,380
+把实际的数据表示隐藏起来
+that hides the actual representation from us,
+
+265
+00:16:29,100 --> 00:16:31,520
+还有一层垂直的屏障
+but also there's some kind of vertical barrier here
+
+266
+00:16:32,190 --> 00:16:35,024
+容许不同的表示方法彼此共存
+that allows both of these representations to exist
+
+267
+00:16:35,872 --> 00:16:37,400
+而不互相干预
+without interfering with each other.
+
+268
+00:16:38,570 --> 00:16:41,070
+我们的想法是把这些东西
+The idea is that the things in here--
+
+269
+00:16:41,900 --> 00:16:44,120
+REAL-PART、IMAG-PART、MAG、ANG 这些过程
+real-part, imaginary-part,magnitude, and angle--
+
+270
+00:16:44,120 --> 00:16:46,490
+设计成通用运算符
+will be generic operators.
+
+271
+00:16:47,310 --> 00:16:49,450
+如果你调用real-part过程 它就会判断
+If you ask for the real-part, it will worry about
+
+272
+00:16:49,980 --> 00:16:51,310
+要在哪一种表示方法中寻找它
+what representation it's looking at.
+
+273
+00:16:53,880 --> 00:16:55,100
+那么我们怎么做到这一点呢
+OK, well how can we do that?
+
+274
+00:16:56,840 --> 00:16:59,230
+实际上有一个很容易想到的办法
+There's actually a really obvious idea,
+
+275
+00:16:59,840 --> 00:17:01,680
+如果你习惯了思考复数的模式
+if you're used to thinking about complex numbers.
+
+276
+00:17:02,520 --> 00:17:04,440
+如果你已经习惯了复合数据的思想
+If you're used to thinking about compound data.
+
+277
+00:17:06,330 --> 00:17:10,990
+假设你只要观察一个复数
+See, suppose you could just tell by looking at a complex number
+
+278
+00:17:12,170 --> 00:17:13,950
+就能看出它是被George还是Martha构造出来的
+whether it was constructed by George or Martha.
+
+279
+00:17:15,790 --> 00:17:18,900
+换句话说 在你眼前漂浮的这些东西
+In other words, so it's not that what's floating around
+
+280
+00:17:18,900 --> 00:17:20,910
+不是普通的复数 对吗？
+here are ordinary, just complex numbers, right?
+
+281
+00:17:20,910 --> 00:17:22,940
+它们是被某个设计者“构想”出来的
+They're fancy, designer complex numbers.
+
+282
+00:17:24,390 --> 00:17:28,040
+当考察一个复数 我们会发现它“不仅仅”是个复数
+So you look at a complex numbers as it's not just a complex number
+
+283
+00:17:28,040 --> 00:17:29,160
+它上面有一个标签
+it's got a label on it that says,
+
+284
+00:17:29,190 --> 00:17:30,750
+写着这个是由Martha制造的
+that one is by Martha.
+
+285
+00:17:31,450 --> 00:17:34,220
+或者这个是由George制造的
+Or this is a complex number by George.
+
+286
+00:17:34,480 --> 00:17:35,390
+对吧？它们被签了名字
+Right? They're signed.
+
+287
+00:17:36,860 --> 00:17:40,150
+在这之后 无论何时我们看见一个复数
+See, and then whenever we looked at a complex number we
+
+288
+00:17:40,150 --> 00:17:45,480
+我们只要看它的标签  然后我们就能知道
+could just read the label, and then we'd know how you expect
+
+289
+00:17:45,800 --> 00:17:46,720
+应该怎么对它进行运算
+to operate on that.
+
+290
+00:17:48,030 --> 00:17:51,190
+或者说 我们想要的不只是普通的数据对象
+In other words, what we want is not just ordinary data objects.
+
+291
+00:17:51,190 --> 00:17:54,370
+我们引入一个概念：带类型的数据
+We want to introduce the notion of what's called typed data.
+
+292
+00:17:59,760 --> 00:18:02,810
+带类型的数据就意味着 这里有一朵“云彩”
+Typed data means, again, there's some sort of cloud.
+
+293
+00:18:03,940 --> 00:18:08,930
+它里面有我们之前所说的那种
+And what it's got in it is an ordinary data object like
+
+294
+00:18:08,930 --> 00:18:09,900
+普通的数据对象
+we've been thinking about.
+
+295
+00:18:13,180 --> 00:18:16,540
+这是它的内容 就是实际的数据
+Pulled out the contents, sort of the actual data.
+
+296
+00:18:19,320 --> 00:18:21,568
+它里面还有一个叫做类型的东西
+But also a thing called a type,
+
+297
+00:18:22,560 --> 00:18:25,240
+被George或者Martha签了名
+but it's signed by either George or Martha.
+
+298
+00:18:25,990 --> 00:18:28,270
+那么我们现在就要从无类型的数据进入带类型数据的领域
+So we're going to go from regular data to type data.
+
+299
+00:18:31,950 --> 00:18:32,710
+我们怎么构造它
+How do we build that?
+
+300
+00:18:32,710 --> 00:18:33,500
+那很简单
+Well that's easy.
+
+301
+00:18:33,840 --> 00:18:35,320
+我们知道怎么构造“云彩”
+We know how to build clouds.
+
+302
+00:18:35,800 --> 00:18:36,880
+我们用序对来组成它们
+We can build them out of pairs.
+
+303
+00:18:37,920 --> 00:18:41,820
+那么我们就有了一种方法来表示带类型的数据
+So here's a little representation that supports typed data.
+
+304
+00:18:43,510 --> 00:18:49,640
+这种方法叫做 把类型附加到内容上
+There's a thing called take a type and attach it to a piece of contents,
+
+305
+00:18:49,690 --> 00:18:50,640
+用cons就可以做到
+and we just use cons.
+
+306
+00:18:51,640 --> 00:18:54,110
+然后面对一个带类型的数据 我们就可以知道它的类型
+And if we have a piece of typed data, we can look at the type
+
+307
+00:18:55,210 --> 00:18:56,000
+也就是序对的car部分
+which is the car.
+
+308
+00:18:56,290 --> 00:18:58,300
+我们也可以知道它的具体内容 就是它的cdr部分
+We can look at the contents,which is the cdr.
+
+309
+00:18:59,960 --> 00:19:04,280
+我们用这种方法使用带类型的数据
+Now along with that, the way we use our type data will test,
+
+310
+00:19:05,290 --> 00:19:07,260
+面对一段类型数据就能知道它是什么类型
+when we're given a piece of data, what type it is.
+
+311
+00:19:07,520 --> 00:19:09,260
+那么我们现在有了几种判断类型的谓词
+So we have some type predicates with us.
+
+312
+00:19:10,510 --> 00:19:13,730
+举例来讲 想要知道一个复数
+For example, to see whether a complex number is one of
+
+313
+00:19:13,730 --> 00:19:16,860
+是不是George构造的 是不是直角坐标表示的 我们只需要看
+George's, whether it's rectangular, we just check to
+
+314
+00:19:16,860 --> 00:19:21,850
+它的“类型”是不是rectangular这个符号
+see if the type of that is the symbol rectangular,
+
+315
+00:19:23,680 --> 00:19:25,050
+对吧？检查 rectangular 符号
+right? The symbol rectangular.
+
+316
+00:19:27,200 --> 00:19:30,330
+同理 想要知道一个复数是不是Martha构造的
+And to check whether a complex number is one of Martha's,
+
+317
+00:19:30,330 --> 00:19:33,420
+我们就看它的“类型”是不是polar这个符号
+we check to see whether the type is the symbol polar.
+
+318
+00:19:36,460 --> 00:19:39,210
+那么这就是一种识别数字的类型的方法
+So that's a way to test what kind of number we're looking at.
+
+319
+00:19:40,750 --> 00:19:42,810
+现在来想想 怎么用这种方法来构建系统
+Now let's think about how we can use that to build the system.
+
+320
+00:19:43,870 --> 00:19:46,730
+我们假设George和Martha分别在做各自的工作
+So let's suppose that George and Martha were off working separately,
+
+321
+00:19:47,360 --> 00:19:52,640
+每一个人都设计了他们的复数表示程序包
+and each of them had designed their complex number representation packages.
+
+322
+00:19:52,640 --> 00:19:58,520
+他们怎么让自己的东西成为系统的一部分
+What do they have to do to become part of the system,
+
+323
+00:19:58,730 --> 00:20:00,140
+和对方友好共存呢
+to exist compatibly?
+
+324
+00:20:00,140 --> 00:20:02,110
+那其实非常简单
+Well it's really pretty easy.
+
+325
+00:20:02,720 --> 00:20:04,510
+回忆一下 George做了这个程序包
+Remember, George had this package.
+
+326
+00:20:05,970 --> 00:20:08,480
+这就是George的程序包 或者说它的一部分
+Here's George's original package, or half of it.
+
+327
+00:20:08,980 --> 00:20:11,150
+然后红色下划线标出的部分是他需要做的修改
+And underlined in red are the changes he has to make.
+
+328
+00:20:12,090 --> 00:20:16,430
+之前 当George用x和y构建了一个复数的时候
+So before, when George made a complex number out of an x and y
+
+329
+00:20:17,520 --> 00:20:19,850
+他只是把它们组合成一个序对
+he just put them together to make a pair.
+
+330
+00:20:20,930 --> 00:20:23,390
+现在唯一不同的地方是 他给它们打了标签
+And the only difference is that now he signs them.
+
+331
+00:20:24,090 --> 00:20:28,080
+他把类型 -- 也就是 rectangular符号 -- 附加到这个序对上面
+He attaches the type, which is the symbol rectangular to that pair.
+
+332
+00:20:30,600 --> 00:20:33,260
+剩下的事情都和之前一样 除了一点
+Everything else George does is the same, except that--
+
+333
+00:20:33,920 --> 00:20:38,060
+就是George和Martha的程序都有叫做real-part和imaginary-part的过程
+see, George and Martha both have procedures named real-part and imaginary-part.
+
+334
+00:20:38,700 --> 00:20:42,960
+为了这些过程存在于在同一个Lisp环境中
+So to allow them both to exist in the same Lisp environment,
+
+335
+00:20:44,220 --> 00:20:45,920
+George就要修改他的过程名字
+George had changed the names of his procedures.
+
+336
+00:20:45,920 --> 00:20:49,140
+那么我们说 这是George的real-part过程
+So we'll say, this is George's real-part procedure.
+
+337
+00:20:49,140 --> 00:20:51,168
+叫做real-part-rectangular过程
+It's the real-part-rectangular procedure,
+
+338
+00:20:51,488 --> 00:20:54,060
+还有 imag-part-rectangular过程
+the imaginary-part-rectangular procedure.
+
+339
+00:20:55,420 --> 00:20:57,240
+那么这里是George的程序包剩下的部分
+And then here's the rest of George's package.
+
+340
+00:20:59,130 --> 00:21:02,060
+他已经有了magnitude和angle过程 只要把它们改名
+He'd had magnitude and angle, just renames them magnitude
+
+341
+00:21:02,060 --> 00:21:04,160
+叫magnitude-rectangular和angle-rectangular就好了
+rectangular and angle rectangular.
+
+342
+00:21:06,080 --> 00:21:07,960
+Martha要做的事情基本相同
+And Martha has to do basically the same thing.
+
+343
+00:21:09,860 --> 00:21:16,220
+在这之前 当她用模和辐角构造复数的时候
+Martha previously, when she made a complex number out of a magnitude and angle,
+
+344
+00:21:18,140 --> 00:21:19,270
+她只是把这两个东西cons起来
+she just cons them.
+
+345
+00:21:19,270 --> 00:21:20,860
+现在她额外附加类型 polar
+Now she attaches the type polar,
+
+346
+00:21:23,950 --> 00:21:25,610
+然后修改过程的名字
+and she changes the name
+
+347
+00:21:25,660 --> 00:21:29,850
+来避免保证她的real-part过程和George的产生冲突
+so her real-part procedure won't conflict in name with George's.
+
+348
+00:21:30,710 --> 00:21:32,990
+分别改为real-part-polar和imaginary-part-polar
+It's a real-part-polar,imaginary-part-polar,
+
+349
+00:21:34,540 --> 00:21:38,060
+magnitude-polar和angle-polar这四个过程
+magnitude polar, and angle polar.
+
+350
+00:21:45,000 --> 00:21:46,130
+现在我们的系统
+Now we have the system.
+
+351
+00:21:46,130 --> 00:21:47,920
+在它里面既有George又有Martha
+Right there's George and Martha.
+
+352
+00:21:49,160 --> 00:21:51,680
+然后现在我们需要一个经理来对类型进行判断
+And now we've got to get some kind of manager to look at these types.
+
+353
+00:21:52,830 --> 00:21:56,480
+那么在George和Martha给我们提供了类型数据之后
+How are these things actually going to work now
+
+354
+00:21:57,050 --> 00:21:59,400
+这个系统现在怎么工作呢？
+that George and Martha have supplied us with typed data?
+
+355
+00:22:00,530 --> 00:22:04,300
+我们手里有的 是一堆通用选择函数
+Well what we have are a bunch of generic selectors.
+
+356
+00:22:05,260 --> 00:22:10,630
+用于复数的通用选择函数比如 real-part、imag-part、magnitude和angle等
+Generic selectors for complex numbers real-part,imaginary-part, magnitude, and angle.
+
+357
+00:22:14,140 --> 00:22:15,400
+让我们更进一步观察它们
+Let's look at them more closely.
+
+358
+00:22:17,930 --> 00:22:19,000
+real-part过程应该做什么
+What does a real-part do?
+
+359
+00:22:19,310 --> 00:22:22,760
+如果我想得到一个复数的实部
+If I ask for the real part of a complex number,
+
+360
+00:22:24,070 --> 00:22:24,910
+那么我先要观察它
+well I look at it.
+
+361
+00:22:25,800 --> 00:22:26,690
+我观察它的类型
+I look at its type.
+
+362
+00:22:26,690 --> 00:22:28,120
+考虑它是用直角坐标表示的吗
+I say, is it rectangular?
+
+363
+00:22:31,020 --> 00:22:35,360
+如果是的话 我就对这个复数的"内容"部分
+If so, I apply George's real part procedure
+
+364
+00:22:36,060 --> 00:22:37,920
+调用George的real-part过程
+to the contents of that complex number.
+
+365
+00:22:41,070 --> 00:22:42,940
+这是一个带有类型的数字
+This is a number that has a type on it.
+
+366
+00:22:43,720 --> 00:22:47,660
+我用contents过程剥掉类型 并且对它应用George的过程
+I strip off the type using contents and apply George's procedure.
+
+367
+00:22:50,700 --> 00:22:52,860
+那如果是一个用极坐标表示的复数呢？
+Or is this a polar complex number?
+
+368
+00:22:53,950 --> 00:22:54,970
+如果我想要得到它的实部
+If I want the real part,
+
+369
+00:22:55,450 --> 00:22:58,780
+我就把Martha的real-part过程应用在这个数的内容上
+I apply Martha's real-part procedure to the contents of that number.
+
+370
+00:22:59,850 --> 00:23:01,150
+这就是real-part工作的方式
+So that's how real part works.
+
+371
+00:23:02,260 --> 00:23:05,660
+还有类似的imag-part过程 几乎是一样的
+And then similarly there's imaginary-part, which is almost the same.
+
+372
+00:23:06,510 --> 00:23:09,600
+它先观察这个数字 它是直角坐标表示的
+Right? It looks at the number and if it's rectangular, uses
+
+373
+00:23:09,600 --> 00:23:11,130
+就调用George的imaginary-part过程
+George's imaginary-part procedure.
+
+374
+00:23:11,130 --> 00:23:12,830
+是极坐标表示的 就用Martha的过程
+If it's polar, uses Martha's.
+
+375
+00:23:13,380 --> 00:23:17,400
+同理也可以构造出magnitude和angle两个过程
+And then there's a magnitude and an angle.
+
+376
+00:23:19,710 --> 00:23:21,020
+我们的系统是这个样子
+So there's a system.
+
+377
+00:23:23,000 --> 00:23:24,260
+它里面有三个部分
+Has three parts.
+
+378
+00:23:24,260 --> 00:23:26,590
+有George、Martha和一个经理
+There's sort of George, and Martha, and the manager.
+
+379
+00:23:26,760 --> 00:23:28,970
+这就是实现通用操作符的方法
+And that's how you get generic operators implemented.
+
+380
+00:23:28,970 --> 00:23:32,920
+为了把它说清楚 我们举一个简单的实例
+Let's look at just a simple example, just to pin it down.
+
+381
+00:23:33,500 --> 00:23:35,120
+但是准确描述了它工作的方式
+But exactly how this is going to work,
+
+382
+00:23:36,540 --> 00:23:43,980
+假设你现在 面对一个实部是1
+suppose you're going to be looking at the complex number who's real-part is one,
+
+383
+00:23:44,520 --> 00:23:46,090
+虚部是2的复数
+and who's imaginary-part is two.
+
+384
+00:23:46,090 --> 00:23:48,440
+也就是1+2i
+So that would be one plus 2i.
+
+385
+00:23:50,310 --> 00:23:52,640
+现在在这里
+What would happen is up here,
+
+386
+00:23:55,280 --> 00:23:57,530
+在操作发生的上层
+up here above where the operations have to happen,
+
+387
+00:23:57,630 --> 00:24:08,270
+复数被表示成一个由1和2组成的序对加上类型信息
+that number would be represented as a pair of 1 and 2 together with type data.
+
+388
+00:24:10,480 --> 00:24:11,390
+（1和2）是内容
+That would be the contents.
+
+389
+00:24:11,870 --> 00:24:17,960
+整个的数据就是在那之上加上一个rectangular符号
+And the whole data would be that thing with the symbol rectangular added onto that.
+
+390
+00:24:18,140 --> 00:24:21,530
+这就是复数在这个系统里存在的形式
+And that's the way that complex number would exist in the system.
+
+391
+00:24:22,330 --> 00:24:24,920
+你要调取real-part的时候
+When you went to take the real-part,
+
+392
+00:24:25,840 --> 00:24:28,890
+经理会检查这个数然后说 这是George构造的数字
+the manager will look at this and say, oh it's one of George's.
+
+393
+00:24:30,270 --> 00:24:31,530
+他会先把类型拿掉
+He'll strip off the type
+
+394
+00:24:33,340 --> 00:24:36,910
+然后把 (1,2) 这个序对传递给George
+and hand down to George the pair 1, 2.
+
+395
+00:24:38,000 --> 00:24:42,270
+这是George的系统可以直接处理的数据
+And that's the kind of data that George developed his system to use.
+
+396
+00:24:44,360 --> 00:24:45,920
+那么它被拆了出来
+So it gets stripped down.
+
+397
+00:24:46,520 --> 00:24:49,760
+之后 如果你让George构造一个复数
+Later on, if you ask George to construct a complex number,
+
+398
+00:24:51,240 --> 00:24:54,560
+George就会把它构造成序对
+George would construct some complex number as a pair,
+
+399
+00:24:55,070 --> 00:24:58,240
+在数据被传递到上层之前
+and before he passes it back up through the manager would
+
+400
+00:24:59,420 --> 00:25:01,130
+经理会再给它加上rectangular类型
+attach the type rectangular.
+
+401
+00:25:03,920 --> 00:25:04,650
+看这个过程
+So you see what happens.
+
+402
+00:25:04,650 --> 00:25:05,850
+这个系统不会发生混乱
+There's no confusion in this system.
+
+403
+00:25:05,850 --> 00:25:10,840
+就算在Martha的世界里 序对(1 2)的含义完全不同
+It doesn't matter in the least that the pair 1, 2
+
+404
+00:25:13,500 --> 00:25:15,750
+也并没有什么影响
+means something completely different in Martha's world.
+
+405
+00:25:15,750 --> 00:25:18,440
+在Martha的世界里这个序对代表了
+In Martha's world this pair means the complex number whose
+
+406
+00:25:18,440 --> 00:25:20,780
+一个模为1 辐角为2的复数
+magnitude is 1 and whose angle is 2.
+
+407
+00:25:21,190 --> 00:25:22,190
+但是这并不会造成混乱
+And there's no confusion,
+
+408
+00:25:22,220 --> 00:25:27,250
+因为每当有一个这样的序对经由经理之手
+because by the time any pair like this gets handed back through the manager to the
+
+409
+00:25:27,250 --> 00:25:29,610
+被交给主系统的时候 它都会被附加上polar的类型标志
+main system it's going to have the type polar attached.
+
+410
+00:25:31,210 --> 00:25:33,670
+而这个就会被贴上rectangular类型的标签
+Whereas this one would have the type rectangular attached.
+
+411
+00:25:36,930 --> 00:25:37,900
+好 我们休息一下
+OK, let's take a break.
+
+412
+00:25:40,770 --> 00:25:55,552
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+413
+00:25:55,690 --> 00:25:57,776
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+414
+00:25:57,776 --> 00:25:59,760
+讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+By: Prof. Harold Abelson && Gerald Jay Sussman
+
+
+415
+00:26:05,210 --> 00:26:11,952
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+416
+00:26:12,848 --> 00:26:16,750
+通用运算符
+Generic Operators
+
+417
+00:26:20,210 --> 00:26:24,150
+我们刚刚提出了一种实现通用运算符的策略
+We just looked at a strategy for implementing generic operators.
+
+418
+00:26:24,150 --> 00:26:31,400
+这种策略有一个名字 叫做“基于类型的分派”
+That strategy has a name: it's called dispatch on type.
+
+419
+00:26:34,310 --> 00:26:39,360
+它的想法就是你要把你的系统分成很多小块
+And the idea is that you break your system into a bunch of pieces.
+
+420
+00:26:39,360 --> 00:26:42,670
+里面有George和Martha在设计表示方法
+There's George and Martha, who are making representations,
+
+421
+00:26:43,370 --> 00:26:44,380
+还有一个经理
+and then there's the manager.
+
+422
+00:26:46,120 --> 00:26:48,060
+负责去看数据上的类型是什么
+Looks at the types on the data
+
+423
+00:26:48,510 --> 00:26:50,590
+然后分派给正确的人去处理
+and then dispatches them to the right person.
+
+424
+00:26:51,990 --> 00:26:56,010
+这种组织系统的方法有什么缺点呢？
+Well what criticisms can we make of that as a system organization?
+
+425
+00:26:58,150 --> 00:27:00,400
+首先 有个小小的烦人的问题
+Well first of all there was this little, annoying problem
+
+426
+00:27:00,400 --> 00:27:03,050
+George和Martha需要修改他们的过程的名字
+that George and Martha had to change the names of their procedures
+
+427
+00:27:04,000 --> 00:27:05,950
+George一开始写了一个real-part过程
+George originally had a real-part procedure,
+
+428
+00:27:05,980 --> 00:27:08,280
+现在他必须把它的名字改成real-part-rectangular
+and he had to go name it real-part rectangular
+
+429
+00:27:08,300 --> 00:27:10,830
+才能让它不与Martha的real-part过程相互冲突
+so it wouldn't interfere with Martha's real-part procedure,
+
+430
+00:27:10,840 --> 00:27:12,760
+而Martha的过程现在改叫real-part-polar
+which is now named real-part-polar,
+
+431
+00:27:13,640 --> 00:27:16,680
+这是为了不和经理的那个叫做real-part的过程发生冲突
+so it wouldn't interfere with the manager's real-part procedure, who's now named real-part.
+
+432
+00:27:17,310 --> 00:27:18,940
+这个问题确实很恼人
+That's kind of an annoying problem.
+
+433
+00:27:19,460 --> 00:27:21,130
+但是我现在暂时不讨论这个问题
+But I'm not going to talk about that one now.
+
+434
+00:27:21,270 --> 00:27:22,350
+我们稍后将会看到
+We'll see later on
+
+435
+00:27:23,260 --> 00:27:26,120
+在讨论到Lisp名称与环境的结构的时候
+when we think about the structure of Lisp names and environments
+
+436
+00:27:26,120 --> 00:27:30,390
+我们会有方法把这些所谓的命名空间分开来封装
+that there really are ways to package all those so-called name spaces separately so they
+
+437
+00:27:30,390 --> 00:27:31,560
+然后它们就不会互相影响了
+don't interfere with each other.
+
+438
+00:27:32,500 --> 00:27:34,010
+现在我们暂时不去考虑这个问题
+Not going to think about that problem now.
+
+439
+00:27:35,720 --> 00:27:38,190
+我现在想关注的问题是
+The problem that I actually want to focus on is
+
+440
+00:27:38,360 --> 00:27:43,240
+你把一个新人招纳进系统之中会发生什么
+what happens when you bring somebody new into the system.
+
+441
+00:27:44,510 --> 00:27:45,320
+会发生什么？
+What has to happen?
+
+442
+00:27:45,320 --> 00:27:46,810
+George和Martha并不关心
+Well George and Martha don't care.
+
+443
+00:27:47,420 --> 00:27:50,730
+George在他的直角坐标世界里
+George is sitting there in his rectangular world,
+
+444
+00:27:52,200 --> 00:27:53,840
+坐拥着他的过程和数据类型
+has his procedures and his types.
+
+445
+00:27:54,090 --> 00:27:55,740
+而Martha待在她的极坐标世界中
+Martha sits in her polar world.
+
+446
+00:27:55,930 --> 00:27:57,020
+不问世事
+She doesn't care.
+
+447
+00:27:59,380 --> 00:28:00,540
+但是经理呢？
+But let's look at the manager.
+
+448
+00:28:00,620 --> 00:28:02,840
+经理需要做什么？
+What's the manager have to do?
+
+449
+00:28:03,180 --> 00:28:06,200
+现在经理带着他的运算来了
+The manager comes through and had these operations.
+
+450
+00:28:07,360 --> 00:28:09,040
+有直角坐标的判断
+There was a test for rectangular
+
+451
+00:28:09,040 --> 00:28:10,140
+和极坐标的判断过程
+and a test for polar.
+
+452
+00:28:10,140 --> 00:28:14,910
+如果Harry带着某种新型的复数表示方法 进入这个系统
+If Harry comes in with some new kind of complex number,
+
+453
+00:28:17,210 --> 00:28:19,960
+同时带来了一个新的类型--Harry型复数
+and Harry has a new type, Harry type complex number, the
+
+454
+00:28:20,270 --> 00:28:23,280
+经理就需要修改他所有的过程
+manager has to go in and change all those procedures.
+
+455
+00:28:25,240 --> 00:28:26,940
+所以这个系统的不灵活之处
+So the inflexibility in the system,
+
+456
+00:28:26,960 --> 00:28:32,410
+也就是需要大量工作才能适应变化的地方 就在这个经理身上
+the place where work has to happen to accommodate change, is in the manager.
+
+457
+00:28:34,890 --> 00:28:35,990
+那是非常恼人的事情
+That's pretty annoying.
+
+458
+00:28:35,990 --> 00:28:37,210
+更恼人的是
+It's even more annoying
+
+459
+00:28:39,050 --> 00:28:41,210
+你意识到这个经理实际上什么也不做
+It's even more annoying when you realize the manager's not doing anything
+
+460
+00:28:42,590 --> 00:28:44,670
+这个经理只负责“传递公文”而已
+The manager is just being a paper pusher.
+
+461
+00:28:45,840 --> 00:28:51,130
+我们再来看看这些程序 它们在做什么
+Let's look again at these programs. What are they doing?
+
+462
+00:28:51,760 --> 00:28:52,720
+real-part过程在做什么
+What does real-part do?
+
+463
+00:28:52,880 --> 00:28:56,170
+这个过程说 哦 这个复数是
+Real-part says, oh, is it the kind of complex number that
+
+464
+00:28:56,170 --> 00:28:57,000
+George会处理的那一种吗
+George can handle?
+
+465
+00:28:57,000 --> 00:28:58,270
+如果是的话 好 把它交给George处理
+If so, send it off to George.
+
+466
+00:28:59,410 --> 00:29:01,760
+它是Martha能操作的那一种吗
+Is it the kind of complex number that Martha can handle?
+
+467
+00:29:01,820 --> 00:29:04,060
+是的话 把它交给Martha处理
+If so, send it off to Martha.
+
+468
+00:29:05,040 --> 00:29:08,720
+这个系统真正恼人之处 也就是这个系统的瓶颈
+So it's really annoying that the bottleneck in this system,
+
+469
+00:29:08,720 --> 00:29:11,660
+它降低灵活性 阻碍变化
+the thing that's preventing flexibility and change,
+
+470
+00:29:12,090 --> 00:29:14,360
+完全是一种的官僚主义
+is completely in the bureaucracy.
+
+471
+00:29:15,000 --> 00:29:17,020
+而不是任何做实事的人
+It's not in anybody who's doing any of the work.
+
+472
+00:29:19,700 --> 00:29:21,800
+很可惜这种情况经常发生
+Not an uncommon situation, unfortunately.
+
+473
+00:29:23,180 --> 00:29:24,410
+实际上发生的事情是
+See, what's really going on--
+
+474
+00:29:24,480 --> 00:29:26,970
+在系统中 有一张抽象的表格
+abstractly in the system, there's a table.
+
+475
+00:29:28,100 --> 00:29:30,080
+实际发生的事情是 有这样一张表格
+So what's really happening is somewhere there's a table.
+
+476
+00:29:30,840 --> 00:29:33,640
+其中有各种类型
+There're types.
+
+477
+00:29:34,400 --> 00:29:38,960
+有polar和rectangular
+There's polar and rectangular.
+
+478
+00:29:41,550 --> 00:29:43,020
+可能Harry也在这里
+And Harry's may be over here.
+
+479
+00:29:44,380 --> 00:29:46,560
+然后这里是各种运算符
+And there are operators.
+
+480
+00:29:48,050 --> 00:29:58,240
+各种运算符 比如real-part和imag-part
+There's an operator like real-part. Or imaginary-part.
+
+481
+00:30:00,010 --> 00:30:04,220
+还有magnitude、angle这些运算符
+Or a magnitude and angle.
+
+482
+00:30:05,830 --> 00:30:18,970
+单元格中对应的是相应过程
+And sitting in this table are the right procedures.
+
+483
+00:30:19,280 --> 00:30:21,990
+那么填在这里 负责polar类型的real-part过程的是
+So sitting here for the type polar and real-part is
+
+484
+00:30:21,990 --> 00:30:27,560
+Martha的real-part-polar过程
+Martha's procedure real-part-polar.
+
+485
+00:30:30,570 --> 00:30:36,620
+然后在这里是George的real-part-rectangular过程
+And over here in the table is George's procedure real-part-rectangular.
+
+486
+00:30:37,740 --> 00:30:43,070
+然后这里是Martha的magnitude-polar过程
+And over here would be, say, Martha's procedure magnitude-polar,
+
+487
+00:30:44,460 --> 00:30:49,760
+然后是George的magnitude-rectangular过程 等等等等
+and George's procedure magnitude-rectangular, right, and so on.
+
+488
+00:30:49,760 --> 00:30:51,240
+剩下的单元格也像这样填好
+The rest of this table's filled in.
+
+489
+00:30:52,390 --> 00:30:54,260
+这就是实际上发生的事情
+And that's really what's going on.
+
+490
+00:30:57,630 --> 00:31:01,740
+从某种意义上讲 经理做的事情就是
+So in some sense, all the manager is doing
+
+491
+00:31:02,110 --> 00:31:04,110
+去扮演这张表格
+is acting as this table.
+
+492
+00:31:06,860 --> 00:31:08,700
+那我们怎么去修补这个系统呢
+Well how do we fix our system?
+
+493
+00:31:11,740 --> 00:31:13,770
+怎么去消灭这种官僚主义？
+Well, how do you fix bureaucracies a lot of the time?
+
+494
+00:31:13,770 --> 00:31:15,440
+你要做的就是让这个经理走人
+What you do is you get rid of the manager.
+
+495
+00:31:16,010 --> 00:31:19,550
+我们用一台计算机来代替他
+We just take the manager and replace him by a computer.
+
+496
+00:31:20,170 --> 00:31:21,760
+我们要让自动操作抹掉他存在的意义
+We're going to automate him out of existence.
+
+497
+00:31:23,320 --> 00:31:26,570
+也就是说 我们不用这个经理去查阅这个表格
+Namely, instead of having the manager who basically consults this table,
+
+498
+00:31:27,450 --> 00:31:29,320
+而是让我们的系统直接去查阅它
+we'll have our system use the table directly.
+
+499
+00:31:31,020 --> 00:31:32,110
+这是什么意思呢？
+What do I mean by that?
+
+500
+00:31:32,110 --> 00:31:36,190
+我们来假设 还是用数据抽象的观点
+Let's assume, again using data abstraction,
+
+501
+00:31:37,710 --> 00:31:40,400
+我们有这样一种表格数据结构
+that we have some kind of data structure that's a table.
+
+502
+00:31:40,880 --> 00:31:43,610
+而且我们还有把东西填进去和从中删除的方法
+And we have ways of sticking things in and ways of getting things out.
+
+503
+00:31:44,350 --> 00:31:49,040
+为了把话说清楚 我们假设现在有一个叫put的方法
+And to be explicit, let me assume that there's an operation called "put."
+
+504
+00:31:50,300 --> 00:31:58,320
+本例中put方法接受两个参数 -- 我们称其为“关键字” -- key1和key2
+And put is going to take, case two things I'll call "keys." key1 and key2.
+
+505
+00:32:00,130 --> 00:32:00,992
+还有接受一个值
+And a value.
+
+506
+00:32:06,200 --> 00:32:11,120
+put过程把value存放在表格key1和key2对应的格子里
+And that stores the value in the table under key1 and key2.
+
+507
+00:32:11,490 --> 00:32:13,168
+然后我们假设有另一个叫get的过程
+And then we'll assume there's a thing called "get,"
+
+508
+00:32:15,232 --> 00:32:18,720
+它是这样的一个东西 如果我说把表格里
+such that if later on I say, get me what's in the table
+
+509
+00:32:19,408 --> 00:32:22,768
+存储在key1和key2对应的格子中的数据给我
+stored under key1 and key2,
+
+510
+00:32:23,408 --> 00:32:25,392
+它会把存储在那里的东西返回给我
+it'll retrieve whatever value was stored there.
+
+511
+00:32:26,730 --> 00:32:29,440
+我们先不要担心这个表格怎么实现
+And let's not worry about how tables are implemented.
+
+512
+00:32:30,000 --> 00:32:32,528
+那又是另一个数据抽象了 是George需要考虑的问题
+That's yet another data abstraction, George's problem.
+
+513
+00:32:33,060 --> 00:32:34,368
+也许稍后我们还会看到
+And maybe we'll see later--
+
+514
+00:32:34,700 --> 00:32:36,970
+我们还会讨论怎么用Lisp建立这个表格
+talk about how you might actually build tables in Lisp.
+
+515
+00:32:40,710 --> 00:32:45,504
+我们有了这个组织结构 George和Martha需要做什么呢？
+Well given this organization,what did George and Martha have to do?
+
+516
+00:32:47,380 --> 00:32:49,072
+当他们构建自己的系统的时候
+Well when they build their system,
+
+517
+00:32:49,130 --> 00:32:51,088
+都有责任在表格里
+they each have the responsibility
+
+518
+00:32:51,440 --> 00:32:53,820
+正确地添加上自己的那一列
+to set up their appropriate column in the table.
+
+519
+00:32:55,210 --> 00:32:57,472
+比如说 对于George
+So what George does, for example,
+
+520
+00:32:59,790 --> 00:33:02,064
+当他定义过程的时候 他需要做的就是
+when he defines his procedures all he has to do
+
+521
+00:33:02,272 --> 00:33:07,990
+把它们放进表格中的rectangular类型的那一列下面
+is go off and put into the table under the type-rectangular.
+
+522
+00:33:09,820 --> 00:33:12,128
+然后操作的名字是real-part
+And the name of the operation is real-part,
+
+523
+00:33:13,312 --> 00:33:15,264
+放入他的real-part-rectangular过程
+his procedure real-part-rectangular.
+
+524
+00:33:16,250 --> 00:33:17,780
+注意有什么被放到了表格里
+So notice what's going into this table.
+
+525
+00:33:17,780 --> 00:33:22,100
+这里的两个key是这两个符号：rectangular和real-part
+The two keys here are symbols, rectangular and real-part.
+
+526
+00:33:22,100 --> 00:33:22,752
+这是引用
+That's the quote.
+
+527
+00:33:24,400 --> 00:33:26,752
+要被填到表里的东西
+And what's going into the table is the actual 
+
+528
+00:33:26,848 --> 00:33:29,216
+是他编写的real-part-rectangular过程
+procedure that he wrote, real-part rectangular.
+
+529
+00:33:31,856 --> 00:33:34,304
+然后把这个获取虚部的过程也放进表里
+And then puts an imaginary part into the table, 
+
+530
+00:33:34,592 --> 00:33:37,808
+分类到rectangular和imag-part两个关键字之下
+filed under the keys rectangular and imaginary-part,
+
+531
+00:33:38,620 --> 00:33:42,880
+获取模值的过程放到rectangular和magnitude下面
+and magnitude under the keys rectangular magnitude,
+
+532
+00:33:43,616 --> 00:33:45,200
+获取辐角的过程放到rectangular和angle下面
+angle under rectangular-angle.
+
+533
+00:33:47,040 --> 00:33:50,840
+George作为系统的一部分 就要做以上这些事情
+Okay? So that's what George has to do to be part of this system.
+
+534
+00:33:54,420 --> 00:33:58,864
+Martha用同样的方法填好表格中关于polar的这一列
+Martha similarly sets up the column and the table under polar.
+
+535
+00:33:59,430 --> 00:34:00,656
+在polar和real-part对应的这一栏
+Polar and real-part.
+
+536
+00:34:01,696 --> 00:34:03,584
+应该填的过程是real-part-polar是吧？
+Right? Is the procedure real-part-polar?
+
+537
+00:34:04,340 --> 00:34:07,296
+然后分别是imag-part、magnitude和angle过程
+And imaginary-part, and magnitude, and angle.
+
+538
+00:34:08,912 --> 00:34:11,400
+Martha想要加入系统当中就要做这些事情
+So this is what Martha has to do to be part of the system.
+
+539
+00:34:11,400 --> 00:34:13,550
+每个设计了数据表示的人
+Everyone who makes a representation has the
+
+540
+00:34:13,550 --> 00:34:17,632
+都必须在表格里设置自己的一列
+responsibility for setting up a column in the table.
+
+541
+00:34:17,760 --> 00:34:19,900
+那么Harry带着他的绝妙的复数实现方法
+And what does Harry do when Harry comes in with his
+
+542
+00:34:19,900 --> 00:34:21,800
+过来的时候 他需要做什么呢
+brilliant idea for implementing complex numbers?
+
+543
+00:34:21,800 --> 00:34:23,968
+他先把过程写好
+Well he makes whatever procedure he wants and
+
+544
+00:34:24,048 --> 00:34:26,520
+然后在表格里再建立一列
+builds a new column in this table.
+
+545
+00:34:28,550 --> 00:34:30,048
+那么现在经理怎么样了呢
+OK, well what happened to the manager?
+
+546
+00:34:31,330 --> 00:34:34,610
+经理的存在被自动操作所取代
+The manager has been automated out of existence and is
+
+547
+00:34:34,610 --> 00:34:37,110
+被一个叫做operate的过程代替
+replaced by a procedure called operate.
+
+548
+00:34:37,110 --> 00:34:39,552
+这是这个系统最关键的一个过程
+And this is the key procedure in the whole system.
+
+549
+00:34:40,380 --> 00:34:45,920
+(define operate
+Let's say define operate.
+
+550
+00:34:51,060 --> 00:34:56,096
+Operate过程接收你想要采取的运算
+Operate is going to take an operation that you want to do,
+
+551
+00:34:57,750 --> 00:34:58,880
+应该说是这个运算的名字
+the name of an operation,
+
+552
+00:34:59,200 --> 00:35:03,280
+和被运算的对象
+and an object that you would like to apply that operation to.
+
+553
+00:35:04,210 --> 00:35:09,760
+那么举例来说 对一个复数调用real-part operate过程会做什么呢
+So for example, the real-part of some particular complex number, what does it do?
+
+554
+00:35:09,952 --> 00:35:11,904
+它要做的第一件事就是去查表
+Well the first thing it does, it looks in the table.
+
+555
+00:35:12,640 --> 00:35:13,872
+它查询这个表格
+Goes into the table
+
+556
+00:35:14,800 --> 00:35:22,560
+试图去找到存储在表格里的一个过程
+and tries to find a procedure that's stored in the table.
+
+557
+00:35:23,152 --> 00:35:24,800
+所以它要对表格调用get过程
+So it gets from the table,
+
+558
+00:35:25,504 --> 00:35:33,920
+用对象的类型和运算的名称作为关键字进行检索
+using as keys the type of the object and the operator,
+
+559
+00:35:38,920 --> 00:35:40,144
+这样就可以知道在表格中
+but looks on the table and sees
+
+560
+00:35:40,384 --> 00:35:42,720
+与数据的类型和要进行的运算相对应的是什么了
+what's stored under the type of the object and the operator
+
+561
+00:35:42,896 --> 00:35:44,352
+对应的这一格里填了什么东西
+sees if anything's stored.
+
+562
+00:35:44,440 --> 00:35:45,930
+我们假设get过程已经被实现好了
+Let's assume that get is implemented.
+
+563
+00:35:45,930 --> 00:35:47,728
+所以如果在那一格什么也没有
+So if nothing is stored there,
+
+564
+00:35:48,112 --> 00:35:51,792
+它就会返回一个空表
+it'll return a nil, return the empty list.
+
+565
+00:35:52,672 --> 00:35:55,392
+如果那里确实有什么东西
+So it says, if there's actually something stored there,
+
+566
+00:35:56,620 --> 00:36:00,432
+如果存储有这样的一个过程
+if the procedure here is not no,
+
+567
+00:36:03,150 --> 00:36:07,120
+那么就会把在表格里找到的这个过程
+then it'll take the procedure that it found in the table
+
+568
+00:36:09,792 --> 00:36:15,008
+应用到对象的具体内容上去
+procedure that it found in the table and apply it to the contents of the object.
+
+569
+00:36:18,256 --> 00:36:20,400
+如果那里没有东西的话
+And otherwise if there was nothing stored there,
+
+570
+00:36:20,672 --> 00:36:22,512
+它就会 -- 我们可以决定
+it'll-- well we can decide.
+
+571
+00:36:22,816 --> 00:36:27,120
+本例中 我们让它输出一个错误消息：“未定义的运算符”
+In this case let's have it put out an error message saying, undefined operator.
+
+572
+00:36:28,480 --> 00:36:30,240
+没有支持这种类型的运算符
+No operator for this type.
+
+573
+00:36:33,072 --> 00:36:34,720
+或者其它合适的错误信息
+Or some appropriate error message.
+
+574
+00:36:39,072 --> 00:36:39,488
+对吧？
+OK?
+
+575
+00:36:39,728 --> 00:36:41,040
+这个东西替代了经理
+And that replaces the manager.
+
+576
+00:36:41,890 --> 00:36:42,912
+我们怎么去使用它呢
+How do we really use it?
+
+577
+00:36:43,960 --> 00:36:49,808
+我们的想法是用operate过程来定义通用选择函数
+Well what we say is we'll go off and define our generic selectors using operate.
+
+578
+00:36:50,040 --> 00:36:56,752
+我们可以说一个对象的real-part
+We'll say that the real-part of an object is found by
+
+579
+00:36:57,140 --> 00:37:05,664
+是这个对象被operate应用了叫做real-part的运算后得到的结果
+operating on the object with the name of the operation being real-part.
+
+580
+00:37:08,070 --> 00:37:12,224
+那么类似地 imag-part是operate对obj应用imag-part运算
+And then similarly, imaginary-part is operate using the name imaginary-part
+
+581
+00:37:12,224 --> 00:37:13,984
+magnitude和angle同理
+and magnitude and angle.
+
+582
+00:37:15,360 --> 00:37:17,430
+这就是我们的实现方法
+That's our implementation.
+
+583
+00:37:17,430 --> 00:37:20,480
+由它们加上类型再加上operate过程组成
+That plus the type plus the operate procedure.
+
+584
+00:37:21,330 --> 00:37:24,000
+这个表格现在就有效地完成了之前经理的工作
+And the table effectively replaces what the  manager used to do.
+
+585
+00:37:24,064 --> 00:37:27,696
+我们来梳理一下在这个过程中发生的事情
+Let's just go through that slowly to show you what's going on.
+
+586
+00:37:27,900 --> 00:37:33,000
+假设我有一个由Martha构造的复数
+Suppose I have one of Martha's complex numbers.
+
+587
+00:37:33,536 --> 00:37:38,800
+它的模值是1 辐角是2
+It's got magnitude 1 and angle 2.
+
+588
+00:37:39,100 --> 00:37:40,220
+它是由Martha构造的
+And it's one of Martha's.
+
+589
+00:37:40,220 --> 00:37:45,456
+所以它被贴上了polar的标签
+So it's labeled here, polar.
+
+590
+00:37:47,248 --> 00:37:48,000
+我们叫它z
+Let's call that z.
+
+591
+00:37:48,000 --> 00:37:48,912
+假设这就是z
+Suppose that's z.
+
+592
+00:37:51,770 --> 00:37:54,464
+然后假设在这种实现方法下
+And suppose with this implementation someone comes up
+
+593
+00:37:54,800 --> 00:37:57,920
+有人想要取z的实部
+asks for the real-part of z.
+
+594
+00:38:04,870 --> 00:38:07,968
+由于real-part现在是用operate来定义的
+Well real-part now is defined in terms of operate.
+
+595
+00:38:09,160 --> 00:38:10,576
+这就等同于说
+So that's equivalent to saying
+
+596
+00:38:12,096 --> 00:38:24,816
+调用 (operate 'real-part z)
+operate with the name of the operator being real-part, the symbol real-part on z.
+
+597
+00:38:27,060 --> 00:38:28,090
+然后operate过程
+And now operate comes.
+
+598
+00:38:28,090 --> 00:38:29,248
+就会去查询表格
+It's going to look in the table,
+
+599
+00:38:31,040 --> 00:38:34,368
+然后试图去寻找在表格里存放的
+and it's going to try and find something stored under--
+
+600
+00:38:39,008 --> 00:38:46,220
+查询表格中与对象的类型相对应的一列
+the operation is going to apply by looking in the table under the type of the object.
+
+601
+00:38:46,720 --> 00:38:48,224
+那么z的类型是polar
+And the type of z is polar.
+
+602
+00:38:48,790 --> 00:38:51,376
+所以它就要说 我用polar作为关键字查表
+So it's going to look and say, can I get using polar?
+
+603
+00:38:52,990 --> 00:38:58,576
+然后运算的名称是real-part
+And the operation name, which was real-part.
+
+604
+00:39:05,960 --> 00:39:13,632
+它查询对应的过程 然后应用到z的内容上去
+It's going to look in there and apply that to the contents of z.
+
+605
+00:39:14,830 --> 00:39:17,136
+如果所有东西都安排妥当的话
+What's that is if everything was set up correctly,
+
+606
+00:39:17,744 --> 00:39:21,700
+如果它找到的过程就是Martha编写的过程
+this thing is the procedure that Martha put there.
+
+607
+00:39:21,700 --> 00:39:22,950
+也就是real-part-polar
+This is real-part-polar.
+
+608
+00:39:31,056 --> 00:39:35,130
+然后这就是z去掉类型之后的东西
+And this is z without its type.
+
+609
+00:39:35,440 --> 00:39:38,944
+是Martha最初设计的数据表示
+The thing that Martha originally designed those procedures to work on,
+
+610
+00:39:39,408 --> 00:39:40,432
+也就是这里的(1 2)
+which is 1, 2.
+
+611
+00:39:43,710 --> 00:39:45,872
+所以说在整个系统中 operate过程
+And so operate sort of does uniformly
+
+612
+00:39:46,464 --> 00:39:48,896
+和之前的经理做的事情没什么区别
+what the manager used to do sort of all over the system.
+
+613
+00:39:49,450 --> 00:39:52,592
+它通过查询表格找到正确的东西  然后剥离类型
+It finds the right thing, looks in the table, strips off the type,
+
+614
+00:39:53,584 --> 00:39:57,520
+然后把它传递给能够处理它的人
+and passes it down into the person who handles it.
+
+615
+00:39:58,880 --> 00:40:05,488
+你会发现 这是另一种 在大多数情况下
+This is another, and, you can see, more flexible for most purposes,
+
+616
+00:40:06,224 --> 00:40:08,048
+更灵活地实现通用运算符的方法
+way of implementing generic operators.
+
+617
+00:40:08,080 --> 00:40:15,696
+我们把它叫做“数据导向编程”
+And it's called data-directed programming.
+
+618
+00:40:20,350 --> 00:40:21,968
+其理念是
+And the idea of that is
+
+619
+00:40:23,424 --> 00:40:25,552
+在某种意义上 这些数据对象本身
+And the idea of that is in some sense the data objects themselves,
+
+620
+00:40:26,048 --> 00:40:28,352
+这些充斥在系统中的复数
+those little complex numbers that are floating around the system,
+
+621
+00:40:28,736 --> 00:40:33,168
+它们自身就携带着 关于应该怎么去操作它们的信息
+are carrying with them the information about how you should operate on them.
+
+622
+00:40:35,744 --> 00:40:36,784
+有什么疑问吗？
+Let's break for questions.
+
+623
+00:40:41,000 --> 00:40:41,240
+请说
+Yes.
+
+624
+00:40:41,240 --> 00:40:43,390
+学生：你在那个数据对象里存储的是什么呢
+AUDIENCE: What do you have stored in that data object?
+
+625
+00:40:43,390 --> 00:40:47,104
+这里面有这个数据本身 还有它的类型
+You have the data itself, you have its type,
+
+626
+00:40:47,100 --> 00:40:49,600
+还有该与该类型对应的运算
+the operations for that type?
+
+627
+00:40:49,690 --> 00:40:53,088
+或者说那些运算是存储在哪里呢？
+Or where are the operations that you found?
+
+628
+00:40:53,600 --> 00:40:54,176
+教授：好 让我--
+PROFESSOR: OK, let me--
+
+629
+00:40:54,980 --> 00:40:56,500
+恩 这是一个好问题
+yeah, that's a good question.
+
+630
+00:40:56,500 --> 00:41:00,464
+通过它暗示了实现我们目标的 其它可行方法
+Because it raises other possibilities of how you might do it.
+
+631
+00:41:00,750 --> 00:41:02,480
+当然可能的方法有很多
+And of course there are a lot of possibilities.
+
+632
+00:41:04,200 --> 00:41:06,144
+在这个特定的实现当中
+In this particular implementation,
+
+633
+00:41:06,240 --> 00:41:09,728
+在这个数据对象里放着
+what's sitting in this data object, for example,
+
+634
+00:41:10,448 --> 00:41:13,456
+就是数据本身 本例中是序对(1, 2)
+is the data itself-- which in this case is a pair of 1 and 2--
+
+635
+00:41:14,980 --> 00:41:16,550
+和一个符号
+and also a symbol.
+
+636
+00:41:16,550 --> 00:41:19,072
+就是这个符号 单词P-O-L-A-R
+This is the symbol, the word P-O-L-A-R,
+
+637
+00:41:20,600 --> 00:41:22,336
+这些就是这个数据对象里面的东西
+And that what's sitting in this data object.
+
+638
+00:41:24,240 --> 00:41:26,690
+那么这些运算又是存放在哪里的呢？
+OK, where are the operations themselves?
+
+639
+00:41:26,690 --> 00:41:29,008
+那些运算在表格里
+The operations are sitting in the table.
+
+640
+00:41:29,850 --> 00:41:31,072
+在这个表格里
+So in this table,
+
+641
+00:41:32,304 --> 00:41:36,464
+所有行和列的名字都是符号
+the rows and columns of the table are labeled by symbols.
+
+642
+00:41:38,230 --> 00:41:40,080
+所以当我往里面存什么东西的时候
+So when I store something in this table,
+
+643
+00:41:40,096 --> 00:41:47,020
+可以以符号polar或符号magnitude作为关键字
+the key might be the symbol polar and the symbol magnitude.
+
+644
+00:41:48,240 --> 00:41:51,310
+我这样写 可能让你们感到困惑了
+And I think by writing it this way I've been very confusing.
+
+645
+00:41:51,310 --> 00:41:52,704
+因为在这里面放的并不是
+Because what's really sitting here isn't--
+
+646
+00:41:53,160 --> 00:41:54,576
+当我写下mag-polar的时候
+when I wrote magnitude polar,
+
+647
+00:41:57,040 --> 00:41:59,230
+我指的是那个叫mag-polar的过程
+what I mean is the procedure magnitude polar.
+
+648
+00:41:59,850 --> 00:42:01,856
+可能 我本来应该在这里写上
+And probably what I really should have written--
+
+649
+00:42:02,580 --> 00:42:04,200
+但是这里空间太小了
+except it's too small for me to write
+
+650
+00:42:04,200 --> 00:42:05,072
+我写不下
+in this little space--
+
+651
+00:42:05,580 --> 00:42:08,928
+应该写成lambda(z)
+is something like lambda of z,
+
+652
+00:42:10,608 --> 00:42:12,750
+然后调用Martha实现的过程
+the thing that Martha wrote to implement.
+
+653
+00:42:14,710 --> 00:42:15,728
+你也可以从这里看出
+And then you can see from that,
+
+654
+00:42:15,744 --> 00:42:17,440
+我已经暗示了另一种方法
+there's another way that I alluded to
+
+655
+00:42:17,712 --> 00:42:19,824
+来解决名字冲突的问题
+of solving this name conflict problem
+
+656
+00:42:20,048 --> 00:42:23,150
+那就是George和Martha根本不用给他们的过程起名字
+which is that George and Martha never have to name their procedures at all.
+
+657
+00:42:23,150 --> 00:42:25,376
+可以直接把由lambda定义的
+They can just stick the lambda, the lambda...
+
+658
+00:42:25,392 --> 00:42:28,120
+由lambda定义的匿名函数放进表格里
+the anonymous things generated by lambda directly into the table.
+
+659
+00:42:28,660 --> 00:42:31,760
+你的问题还引出了另一种可能性
+There's also another thing that your question raises,
+
+660
+00:42:32,350 --> 00:42:34,064
+也就是
+is the possibility that maybe
+
+661
+00:42:34,830 --> 00:42:37,920
+可能我在这个数据对象里存储的
+what I would like somehow is to store in this data object
+
+662
+00:42:37,952 --> 00:42:39,480
+不是符号POLAR
+not the symbol P-O-L-A-R but
+
+663
+00:42:39,936 --> 00:42:42,352
+也许是这些运算本身
+maybe actually all the operations themselves.
+
+664
+00:42:43,900 --> 00:42:45,632
+这是组织系统的另一种方法
+And that's another way to organize the system,
+
+665
+00:42:45,664 --> 00:42:46,608
+叫做“消息传递”
+called message passing.
+
+666
+00:42:48,650 --> 00:42:49,920
+它们都殊途同归
+So there are a lot of ways you can do it.
+
+667
+00:42:54,640 --> 00:42:58,040
+学生：所以说如果Martha和George
+AUDIENCE: Therefore if Martha and George had used the same
+
+668
+00:42:58,040 --> 00:43:01,230
+用了相同的过程名字也没什么问题
+procedure names, it would be OK because it wouldn't look
+
+669
+00:43:01,230 --> 00:43:02,560
+[听不清]
+it wouldn't look into it
+
+670
+00:43:02,560 --> 00:43:04,688
+教授：对 你说得很对
+PROFESSOR: That's right.That's right.
+
+671
+00:43:04,800 --> 00:43:07,856
+看 他们甚至根本不需要给他们的过程命名
+See, they wouldn't even have to name their procedures at all.
+
+672
+00:43:08,040 --> 00:43:09,360
+George和Martha可以 --
+What George and Martha could writ --,
+
+673
+00:43:09,500 --> 00:43:10,624
+George可以这么来做
+what George could have written
+
+674
+00:43:10,832 --> 00:43:15,280
+与其在rectangular和real-part对应的格子里放
+instead of saying put in the table under rectangular- and real-part,
+
+675
+00:43:16,220 --> 00:43:17,984
+存放real-part-rectangular这个过程
+the procedure real-part rectangular,
+
+676
+00:43:18,032 --> 00:43:21,152
+George可以在rectangular和real-part对应的格子里放
+George could have written put under rectangular real-part,
+
+677
+00:43:21,248 --> 00:43:23,696
+放一个lambda(z) 然后什么什么
+lambda of z, such and such, such and such,
+
+678
+00:43:24,540 --> 00:43:26,848
+整个系统会以完全相同的方式工作
+And the system would work completely the same.
+
+679
+00:43:27,330 --> 00:43:29,248
+学生：我的问题是 就算Martha在
+AUDIENCE: My question is, Martha could put
+
+680
+00:43:29,840 --> 00:43:33,600
+Martha在key1和key2对应的格子里放了real-part过程
+could have put key1 key2 real-part,
+
+681
+00:43:33,952 --> 00:43:37,648
+George也在key1和key2下放了一个real-part过程
+and George could have put key1 key2 real-part,
+
+682
+00:43:37,960 --> 00:43:39,600
+只要两个过程的定义不一样
+and as long as they defined them differently
+
+683
+00:43:39,808 --> 00:43:41,264
+它们就不会发生任何冲突 对吗？
+they wouldn't have had any conflicts, right?
+
+684
+00:43:41,290 --> 00:43:43,808
+教授：对的 这完全没有问题
+PROFESSOR: Yes, that would all be OK except for the fact
+
+685
+00:43:44,976 --> 00:43:47,130
+除非你说的是George和Martha在同一个终端上工作
+that if you imagine George and Martha typing at the same
+
+686
+00:43:47,130 --> 00:43:49,200
+并且他们两个人起的所有名字的含义全部相同
+console with the same meanings for all their names,
+
+687
+00:43:49,820 --> 00:43:51,232
+那么同样的real-part就会造成困扰
+and it would get confused by real-part,
+
+688
+00:43:51,248 --> 00:43:52,800
+但是就算是这种情况也有办法解决
+but there are ways to arrange that, too.
+
+689
+00:43:52,800 --> 00:43:54,800
+从原则上讲你说的完全正确
+And in principle you're absolutely right.
+
+690
+00:43:54,980 --> 00:43:56,290
+如果它们的名字不互相冲突的话
+If their names didn't conflict--
+
+691
+00:43:56,290 --> 00:43:58,190
+被填到表里的是对象本身 而不是它们的名字
+it's the objects that go in the table, not the names.
+
+692
+00:44:08,200 --> 00:44:09,056
+好 我们休息一下
+OK, let's take a break.
+
+693
+00:44:12,912 --> 00:44:20,480
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+694
+00:44:20,960 --> 00:44:23,296
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+695
+00:44:23,450 --> 00:44:25,296
+讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+By: Prof. Harold Abelson && Gerald Jay Sussman
+
+696
+00:44:57,420 --> 00:45:05,072
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+697
+00:45:05,470 --> 00:45:09,248
+通用运算符
+Generic Operators
+
+
+698
+00:45:12,880 --> 00:45:16,880
+教授：好的 我们刚刚讲了一个数据导向编程的例子
+RPOFESSOR: All right, well we just looked at data-directed programming
+
+699
+00:45:17,680 --> 00:45:22,840
+我们将其用于实现一个复数域上的算术系统
+as a way of implementing a system that does arithmetic on complex numbers.
+
+700
+00:45:27,600 --> 00:45:32,480
+我已经在里面实现了 +c -c 这些运算
+So I had these operations in it called plus C and minus C,
+
+701
+00:45:32,880 --> 00:45:37,248
+*c \c 还有其它的一些过程
+and multiply, and divide,and maybe some others.
+
+702
+00:45:38,230 --> 00:45:45,728
+这些过程存在于上层 -- 这是关键之处
+And that sat on top of-- and this is the key point--
+
+703
+00:45:45,740 --> 00:45:49,600
+它们存在于两种不同表示方式的上层
+sat on top of two different representations.
+
+704
+00:45:50,340 --> 00:45:55,440
+这是一个直角坐标程序包 这里一个极坐标程序包
+A rectangular package here, and a polar package.
+
+705
+00:45:58,144 --> 00:45:59,150
+可能还有其它的东西
+And maybe some more.
+
+706
+00:45:59,150 --> 00:46:02,800
+关键理念就是 “其它的东西”可以很容易地添加上去
+And we saw that the whole idea is that maybe some more are now very easy to add.
+
+707
+00:46:04,670 --> 00:46:08,352
+但是这并没有真正体现出这种方法学的威力
+But that doesn't really show the power of this methodology.
+
+708
+00:46:08,900 --> 00:46:10,150
+我们看看发生了什么
+Shows you what's going on.
+
+709
+00:46:10,150 --> 00:46:12,336
+这个方法的威力 只有当你
+The power of the methodology only becomes apparent
+
+710
+00:46:12,944 --> 00:46:15,792
+当你把它嵌入于一些更复杂的系统中时才会显现
+when you start embedding this in some more complex system.
+
+711
+00:46:16,170 --> 00:46:17,744
+我现在要做的就是
+So let... What I'm going to do now
+
+712
+00:46:17,872 --> 00:46:20,016
+把它嵌入一个更复杂的系统中
+is embed this in some more complex system.
+
+713
+00:46:20,250 --> 00:46:25,280
+假设我们已经有了一个通用算术系统
+Let's assume that what we really have is a general kind of arithmetic system.
+
+714
+00:46:25,280 --> 00:46:27,240
+所谓的“通用算术系统”
+So called generic arithmetic system.
+
+715
+00:46:27,240 --> 00:46:28,544
+然后在系统的最顶层
+And at the top level here,
+
+716
+00:46:30,760 --> 00:46:35,920
+用户可以命令它把两个东西相加 或者相减
+somebody can say add twothings, or subtract two things,
+
+717
+00:46:37,456 --> 00:46:41,056
+或者让两数相乘、相除
+or multiply two  things, or divide two things.
+
+718
+00:46:44,140 --> 00:46:46,528
+然后在它们下面是一个抽象屏障
+And underneath that there's an abstraction barrier.
+
+719
+00:46:47,930 --> 00:46:49,152
+抽象屏障的下层
+And underneath this barrier,
+
+720
+00:46:49,504 --> 00:46:52,480
+是一个复数域算术程序包
+is, say, a complex arithmetic package.
+
+721
+00:46:53,024 --> 00:46:54,960
+然后你可以让它把两个复数相加
+And you can say, add two complex numbers.
+
+722
+00:46:55,040 --> 00:46:58,832
+或者你还可以把 有理数域算术程序包
+Or you might also have--remember we did a rational number package
+
+723
+00:46:58,880 --> 00:46:59,936
+给安装进来
+you might have that sitting there.
+
+724
+00:47:00,190 --> 00:47:01,728
+可以放进去有理数
+And there might be a rational thing.
+
+725
+00:47:04,768 --> 00:47:06,224
+然后有理数程序包里面
+And the rational number package,
+
+726
+00:47:07,168 --> 00:47:14,752
+有我们实现的 +rat、*rat等等的这些过程
+well, has the things we implemented. Plus rat, and times rat, and so on.
+
+727
+00:47:15,392 --> 00:47:17,010
+或者你还可以加上通常的Lisp算术系统
+Or you might have ordinary Lisp numbers.
+
+728
+00:47:17,010 --> 00:47:18,992
+你可以让它把3和4加起来
+You might say add three and four.
+
+729
+00:47:19,420 --> 00:47:20,944
+那么我们在这个系统里加入通常的算术系统
+So we might have ordinary numbers,
+
+730
+00:47:28,288 --> 00:47:34,672
+其中有Lisp自带的 + - * /
+in which case we have the Lisp supplied plus, and minus, and times, and slash.
+
+731
+00:47:36,670 --> 00:47:39,120
+总而言之 我们可以想象这个复数系统
+OK, so we might imagine this complex number system
+
+732
+00:47:39,440 --> 00:47:44,448
+存在于一个更加复杂的通用运算系统里面
+sitting in a more complicated generic operator structure at the next level up.
+
+733
+00:47:47,730 --> 00:47:48,736
+我们怎么才能做到呢
+Well how can we make that?
+
+734
+00:47:49,050 --> 00:47:52,320
+我们已经有了想法 只要再一次应用它就可以了
+We already have the idea, we're just going to do it again.
+
+735
+00:47:52,780 --> 00:47:54,720
+我们已经实现了一个有理数程序包
+We've implemented a rational number package.
+
+736
+00:47:54,720 --> 00:47:56,896
+那么我们来看看应该怎么修改它
+Let's look at how it has to be changed.
+
+737
+00:48:01,488 --> 00:48:03,408
+实际上 在这个层面 它根本就不需要修改
+In fact, at this level it doesn't have to be changed at all.
+
+738
+00:48:03,730 --> 00:48:05,888
+这完全就是我们上次写的那些代码
+This is exactly the code that we wrote last time.
+
+739
+00:48:07,180 --> 00:48:08,976
+要把两个有理数相加
+To add two rational numbers,
+
+740
+00:48:09,856 --> 00:48:10,912
+回忆一下 我们要用到这个公式
+remember there was this formula.
+
+741
+00:48:11,140 --> 00:48:13,376
+构造一个有理数 它的分子是
+You make a rational number whose numerator--
+
+742
+00:48:13,984 --> 00:48:17,568
+x的分子乘以y的分母
+is the numerator of the first times the denominator of the second
+
+743
+00:48:17,936 --> 00:48:21,520
+加上 x的分母乘以y的分子
+plus the denominator of the first times the numerator of the second.
+
+744
+00:48:21,520 --> 00:48:23,792
+而结果的分母是 x的分母乘y的分母
+And who's denominator is the product of the denominators.
+
+745
+00:48:25,760 --> 00:48:29,072
+然后是-rat、*rat、/rat这些过程
+And minus rat, and star rat, and slash rat.
+
+746
+00:48:30,360 --> 00:48:35,120
+这就是我们之前写的那个有理数程序包
+And this is exactly the rational number package that we made before.
+
+747
+00:48:36,310 --> 00:48:38,896
+我们忽略最大公约数的问题 先不去考虑那个
+We're ignoring the GCD problem,but let's not worry about that.
+
+748
+00:48:39,080 --> 00:48:42,592
+作为这个有理数包的实现人员
+How do we install... As implementers of this rational number package,
+
+749
+00:48:42,800 --> 00:48:45,104
+怎么把它安装到我们的通用运算系统中呢？
+how do we install it in the generic arithmetic system?
+
+750
+00:48:45,570 --> 00:48:46,224
+那很简单
+Well that's easy.
+
+751
+00:48:47,296 --> 00:48:51,568
+我们要做的事只有一件和之前不同
+Go off... There's only one thing we have to do differently.
+
+752
+00:48:51,840 --> 00:48:55,712
+在之前我们说构造一个有理数
+Whereas previously we said that to make a rational number
+
+753
+00:48:56,270 --> 00:48:59,984
+就是构造一个由分子分母组成的序对
+you built a pair of the numerator and denominator,
+
+754
+00:49:00,960 --> 00:49:03,200
+现在我们不光构造这个序对 还要给它贴上标签
+here we'll not only build the pair, but we'll sign it.
+
+755
+00:49:03,300 --> 00:49:04,560
+给它加上rational类型
+We'll attach the type rational.
+
+756
+00:49:06,368 --> 00:49:08,096
+这就是唯一的不同之处
+That's the only thing we have to do different,
+
+757
+00:49:08,560 --> 00:49:10,096
+把它变成带类型的数据
+make it a typed data object.
+
+758
+00:49:12,380 --> 00:49:14,080
+现在 我们要把运算放进表格里
+And now we'll stick our operations in the table.
+
+759
+00:49:14,368 --> 00:49:18,208
+我们在rational符号和add运算对应的格子里
+We'll put under the symbol rational and the operation add
+
+760
+00:49:18,920 --> 00:49:20,256
+放进我们的+rat过程
+our procedure -- +rat.
+
+761
+00:49:21,820 --> 00:49:23,248
+再次强调 这是一个符号
+And, again, note this is a symbol.
+
+762
+00:49:23,744 --> 00:49:23,930
+看到了么？
+Right?
+
+763
+00:49:24,030 --> 00:49:25,296
+这是引用 这也是引用
+Quote, and quote,
+
+764
+00:49:25,312 --> 00:49:28,016
+但是实际上放进表里的是+rat过程本身
+but the actual thing we're putting in the table is the procedure.
+
+765
+00:49:29,824 --> 00:49:31,776
+然后怎么做减法
+And for how to subtract,
+
+766
+00:49:31,790 --> 00:49:36,816
+我们用-rat过程做减法
+well you subtract rationals with minus rat.
+
+767
+00:49:38,270 --> 00:49:40,240
+然后是乘法和除法
+And multiply, and divide.
+
+768
+00:49:41,090 --> 00:49:43,640
+这些步骤精准地描述了 我们该怎么做
+And that is exactly and precisely what we have to do
+
+769
+00:49:44,144 --> 00:49:46,976
+来兼容这个通用算术系统
+to fit inside this generic arithmetic system.
+
+770
+00:49:48,510 --> 00:49:49,888
+那么整个系统怎么工作呢
+Well how does the whole thing work?
+
+771
+00:49:51,560 --> 00:49:58,400
+我们想实现的是通用运算符
+See, what we want to do is have some generic operators.
+
+772
+00:49:59,344 --> 00:50:02,800
+为了让add、sub、mul和div变成通用运算符
+Right? Have add and sub and mul and div be generic operators.
+
+773
+00:50:03,990 --> 00:50:17,360
+所以我们要把add过程定义为 (ADD X Y)就是
+So we're going to define add and say, to add x and y,
+
+774
+00:50:18,620 --> 00:50:22,128
+就是调用operate过程
+that will be operate--
+
+775
+00:50:26,080 --> 00:50:27,490
+我们把这个叫做operate-2
+we were going to call it operate-2.
+
+776
+00:50:27,490 --> 00:50:30,784
+这是我们的操作过程 但是要接收两个参数
+This is our operator procedure, but set up for two arguments
+
+777
+00:50:31,600 --> 00:50:35,840
+对它们应用add 把它们加起来
+using add on x and y.
+
+778
+00:50:37,600 --> 00:50:39,760
+这是和operate类似的一个东西
+And so this is the analog to operate.
+
+779
+00:50:40,420 --> 00:50:41,680
+我们再看看这个代码
+Let's look at the code for a second.
+
+780
+00:50:41,680 --> 00:50:42,930
+它和operate很相似
+It's almost like operate.
+
+781
+00:50:45,792 --> 00:50:52,496
+为了将运算符运用在两个参数arg1和arg2上
+Right? To operate with some operator on an argument1 and an argument2
+
+782
+00:50:55,040 --> 00:50:56,656
+首要任务是
+well the first thing we're going to do is check
+
+783
+00:50:56,832 --> 00:51:00,730
+检查这两个参数的类型是否相同
+and see if the two arguments have the same type.
+
+784
+00:51:01,900 --> 00:51:02,960
+所以我们要问
+So we'll say,
+
+785
+00:51:02,992 --> 00:51:07,776
+第一个参数的类型和第二个的类型一样吗？
+is the type of the first argument the same as the type of the second argument?
+
+786
+00:51:10,350 --> 00:51:13,360
+如果不一样
+And if they're not, if they're not
+
+787
+00:51:13,580 --> 00:51:15,632
+我们就停止运行 然后抛出错误
+we'll go off and complain, and say, that's an error.
+
+788
+00:51:15,670 --> 00:51:16,672
+我们不知道怎么对它们进行运算
+We don't know how to do that.
+
+789
+00:51:19,140 --> 00:51:20,496
+如果它们的类型确实是相同的
+If they do have the same type,
+
+790
+00:51:20,512 --> 00:51:22,080
+那就和之前一样了
+we'll do exactly what we did before.
+
+791
+00:51:22,080 --> 00:51:26,460
+我们会查询在参数的类型对应的
+We'll go look and filed under the type of the argument--
+
+792
+00:51:26,768 --> 00:51:29,616
+参数1和参数2是同样的类型 知道一个就可以
+arg 1 and arg 2 have the same type, so it doesn't matter.
+
+793
+00:51:30,420 --> 00:51:32,592
+我们到表格里去查找对应的过程
+So we'll look in the table, find the procedure.
+
+794
+00:51:33,640 --> 00:51:35,872
+如果找到这样一个过程
+If there is a procedure there,
+
+795
+00:51:37,536 --> 00:51:41,744
+我们就将其应用在参数1和参数2的内容上
+then we'll apply it to the contents of the arg1 and the contents of arg2.
+
+796
+00:51:43,030 --> 00:51:44,760
+如果是其它情况 就报错
+And otherwise we'll say, error.
+
+797
+00:51:44,760 --> 00:51:45,728
+“未定义运算符”
+Undefined operator.
+
+798
+00:51:46,890 --> 00:51:48,160
+这就是operate-2过程
+And so there's operate-2.
+
+799
+00:51:51,728 --> 00:51:54,032
+这就是我们要做的全部事情
+And that's all we have to do.
+
+800
+00:51:55,160 --> 00:51:57,456
+我们刚刚才写好了一个复数运算包
+We just built the complex number package before.
+
+801
+00:51:57,640 --> 00:52:01,008
+那么怎么把它放进这个通用系统里面呢？
+How do we embed that complex number package in this generic system?
+
+802
+00:52:02,140 --> 00:52:02,912
+方法几乎是一样的
+Almost the same.
+
+803
+00:52:06,410 --> 00:52:08,592
+我们构造一个叫做make-complex的过程
+We make a procedure called make-complex
+
+804
+00:52:09,952 --> 00:52:12,816
+它把George和Martha给我们的东西
+that takes whatever George and Martha hand to us
+
+805
+00:52:13,648 --> 00:52:15,008
+贴上complex的类型标志
+and add the type complex.
+
+806
+00:52:18,170 --> 00:52:23,872
+然后我们说 要把复数相加 这个+complex过程
+And then we say, to add complex numbers, plus complex,
+
+807
+00:52:25,840 --> 00:52:28,784
+用我们的内部过程 +c
+we use our internal procedure, plus c,
+
+808
+00:52:30,784 --> 00:52:32,240
+把结果加上类型
+and attach a type,
+
+809
+00:52:32,240 --> 00:52:33,424
+让它变成复数类型
+make that a complex number.
+
+810
+00:52:37,680 --> 00:52:42,528
+那么我们的包里原来有+c和-c这两个过程
+So our original package had names plus c and minus c
+
+811
+00:52:42,688 --> 00:52:44,752
+用来和George和Martha通信
+that we're using to communicate with George and Martha.
+
+812
+00:52:45,250 --> 00:52:47,392
+然后为了与外部通信
+And then to communicate with the outside world,
+
+813
+00:52:47,408 --> 00:52:53,040
+我们还有+complex和-complex
+we have a thing called plus-complex and minus-complex.
+
+814
+00:52:55,920 --> 00:52:56,530
+等等
+And so on.
+
+815
+00:52:56,530 --> 00:52:59,984
+它们唯一的不同就在于：后者的返回的是带类型的值
+And the only difference is that these return values that are typed
+
+816
+00:53:01,120 --> 00:53:02,416
+它们可以在这里被查询
+So they can be looked at up here.
+
+817
+00:53:02,850 --> 00:53:05,024
+而这些是内部过程
+And these are internal operations.
+
+818
+00:53:09,250 --> 00:53:10,680
+我们再来看那个幻灯片
+Let's go look at that slide again.
+
+819
+00:53:10,680 --> 00:53:13,040
+我们还有一件事要做
+There's one more thing we do.
+
+820
+00:53:13,740 --> 00:53:15,616
+在定义了+complex之后
+After defining plus-complex,
+
+821
+00:53:15,680 --> 00:53:20,528
+我们在complex类型和add符号对应的格子中
+we put under the type complex and the symbol add,
+
+822
+00:53:21,312 --> 00:53:22,752
+填上过程+complex
+that procedure plus complex.
+
+823
+00:53:23,200 --> 00:53:26,752
+对于-complex也类似
+And then similarly for subtracting complex numbers,
+
+824
+00:53:27,130 --> 00:53:29,130
+*complex和/complex亦如此
+and multiplying them, and dividing them.
+
+825
+00:53:31,700 --> 00:53:33,488
+那我们怎么安装寻常算术呢？
+OK, how do we install ordinary numbers?
+
+826
+00:53:35,250 --> 00:53:36,128
+方法还是一样的
+Exactly the same way.
+
+827
+00:53:38,160 --> 00:53:41,360
+我们会写一个叫做make-number的过程
+Come off and say, well we'll make a thing called make-number
+
+828
+00:53:44,340 --> 00:53:48,112
+make-number接收一个数 然后给它加上类型
+Make-number takes a number and attaches a type,
+
+829
+00:53:48,144 --> 00:53:49,296
+也就是符号number
+which is the symbol number.
+
+830
+00:53:50,260 --> 00:53:52,112
+我们构造一个过程叫做+number
+We build a procedure called plus-number,
+
+831
+00:53:52,928 --> 00:53:58,752
+用Lisp自带的加法把两个数加起来
+which is simply, add the two things using the ordinary addition,
+
+832
+00:53:58,928 --> 00:54:00,784
+因为我们现在讨论的是寻常算术
+because in this case we're talking about ordinary numbers,
+
+833
+00:54:01,312 --> 00:54:03,104
+给它加上类型 让它变成number类型
+and attach a type to it and make that a number.
+
+834
+00:54:04,510 --> 00:54:08,096
+然后我们把+number过程放到
+And then we put into the table under the symbol number
+
+835
+00:54:08,592 --> 00:54:11,008
+表格里number和add对应的的格子中
+and the operation add, this procedure plus-number,
+
+836
+00:54:12,304 --> 00:54:16,160
+再用相同的方法把减法 乘法 除法也放进去
+and then the same thing for subtracting, and multiplying, and dividing.
+
+837
+00:54:22,672 --> 00:54:26,060
+我们举一个例子 就看得清楚一点
+Let's look at an example, just to make it clear.
+
+838
+00:54:26,060 --> 00:54:28,752
+假设 比如说
+Suppose, for instance,
+
+839
+00:54:32,288 --> 00:54:34,150
+我要执行这个运算
+I'm going to perform the operation.
+
+840
+00:54:34,150 --> 00:54:38,220
+好 现在我要执行一个运算
+So I sit up here and I'm going to perform the operation,
+
+841
+00:54:38,220 --> 00:54:40,464
+比如说我把两个复数乘起来
+which looks like multiplying two complex numbers.
+
+842
+00:54:40,930 --> 00:54:48,640
+把3+4i和2+6i乘起来
+So I would multiply, say, 3 plus 4i and 2 plus 6i.
+
+843
+00:54:50,170 --> 00:54:52,608
+这就是我调用mul过程要传入的参数
+And that's something that I might want to take hand that to mul.
+
+844
+00:54:52,840 --> 00:54:55,760
+这里就代表通用运算符mul
+I'll write mul as my generic operator here.
+
+845
+00:54:57,170 --> 00:54:57,984
+那么它怎么工作呢
+How's that going to work?
+
+846
+00:54:58,280 --> 00:55:04,608
+我们讲3+4i 在整个系统里
+Well 3 plus 4i, say, sits in the system at this level
+
+847
+00:55:04,832 --> 00:55:06,112
+处于这样的一个位置
+as something that looks like this.
+
+848
+00:55:06,250 --> 00:55:07,520
+假设它是George那种方法表示的
+Let's say it was one of George's.
+
+849
+00:55:08,280 --> 00:55:14,976
+所以它的内部有一个3和一个4
+So it would have a 3 and a 4.
+
+850
+00:55:18,490 --> 00:55:20,976
+这上面还贴着George的类型标志
+And attached to that would be George's type,
+
+851
+00:55:24,336 --> 00:55:28,320
+是他构造的rectangular类型
+which says rectangular, it came from George.
+
+852
+00:55:29,510 --> 00:55:30,576
+又附加在那上面的
+And attached to that--
+
+853
+00:55:31,230 --> 00:55:35,792
+从更上一层的视角来看这一段数据
+and this itself would be the data view from the next level up
+
+854
+00:55:36,192 --> 00:55:36,784
+它又是一个
+which it is--
+
+855
+00:55:37,936 --> 00:55:39,968
+这整个又是一个带类型的数据
+so that itself would be a type-data object
+
+856
+00:55:40,608 --> 00:55:41,808
+它的类型是complex
+which would say complex.
+
+857
+00:55:44,820 --> 00:55:47,312
+那么这就是这个对象
+So that's what this object would look like
+
+858
+00:55:48,640 --> 00:55:50,240
+在最高层视角中的样子
+up here at the very highest level,
+
+859
+00:55:50,688 --> 00:55:53,568
+那些通用运算符看到的对象 就是这样的
+where the really super-generic operations are looking at it.
+
+860
+00:55:55,560 --> 00:55:58,720
+现在 mul过程会过来问
+Now what happens, mul eventually's going to come along
+
+861
+00:55:58,848 --> 00:56:00,400
+它的类型是什么？
+and say, oh,what's it's type?
+
+862
+00:56:00,480 --> 00:56:01,488
+它的类型是complex
+It's type is complex.
+
+863
+00:56:04,270 --> 00:56:06,464
+然后运行到operate-2 然后说
+Go through to operate-2 and say,
+
+864
+00:56:06,460 --> 00:56:09,728
+啊 我想要把表格里的过程
+oh, what I want to do is apply what's in the table,
+
+865
+00:56:09,720 --> 00:56:13,040
+也就是*complex这个过程
+which is going to be the procedure star complex,
+
+866
+00:56:15,088 --> 00:56:17,760
+应用到 将其类型剥离之后的结果上去
+on this thing with the type stripped off.
+
+867
+00:56:17,950 --> 00:56:19,280
+所以它会把类型剥下来
+So it's going to strip off the type,
+
+868
+00:56:19,936 --> 00:56:24,240
+把剩下的东西传递给复数的世界
+take that much, and send that down into the complex world.
+
+869
+00:56:26,704 --> 00:56:28,736
+复数的世界看了看它有的运算操作 然后说
+The complex world looks at its operations and says,
+
+870
+00:56:28,768 --> 00:56:30,560
+“我得调用*c这个过程”
+oh, I have to apply star c.
+
+871
+00:56:31,280 --> 00:56:32,144
+然后*c过程说
+Star c might say,
+
+872
+00:56:32,224 --> 00:56:37,200
+我想知道这个东西的模值是多少
+at some point I want to look at the magnitude of this object that it's in, that it's got.
+
+873
+00:56:39,420 --> 00:56:40,160
+然后它们会说 啊
+And they'll say, oh, it's
+
+874
+00:56:40,160 --> 00:56:41,712
+它是直角坐标表示的 是George的东西
+rectangular, it's one of George's.
+
+875
+00:56:41,870 --> 00:56:44,416
+所以它们又剥掉了一个类型
+So it'll then strip off the next version of type,
+
+876
+00:56:46,912 --> 00:56:49,808
+然后把内容交给George 让他提取出它的模值
+and hand that down to George to take the magnitude of.
+
+877
+00:56:52,160 --> 00:56:53,136
+那么我们看到
+So you see what's going on
+
+878
+00:56:53,440 --> 00:56:56,990
+这其中有一条由类型构成的链条
+is that there are these chains of types.
+
+879
+00:56:59,320 --> 00:57:01,504
+这个链条的长度就是你要
+And the length of the chain is sort of the number of levels
+
+880
+00:57:01,530 --> 00:57:03,136
+在这个表格里上升的层数
+that you're going to be going up in this table.
+
+881
+00:57:05,090 --> 00:57:05,968
+类型的作用则是
+And what a type tells you,
+
+882
+00:57:05,968 --> 00:57:10,848
+每当我们在表格中遇到一道垂直屏障时
+every time you have a vertical barrier in this table,
+
+883
+00:57:11,056 --> 00:57:14,064
+你不知道该如何抉择时
+where there's some ambiguity about where you should go down to the next level,
+
+884
+00:57:14,416 --> 00:57:15,856
+类型就会给你指路
+the type is telling you where to go.
+
+885
+00:57:17,440 --> 00:57:18,832
+然后最底层的过程
+And then everybody at the bottom,
+
+886
+00:57:18,976 --> 00:57:20,672
+它们构造数据结构 对数据进行筛选之后
+as they construct data and filter it up,
+
+887
+00:57:21,120 --> 00:57:22,810
+再把类型贴回去
+they stick their type back on.
+
+888
+00:57:25,350 --> 00:57:30,750
+这就是整个系统的总体结构
+So that's the general structure of the system.
+
+889
+00:57:33,410 --> 00:57:33,776
+好
+OK.
+
+890
+00:57:34,820 --> 00:57:35,680
+明白了这个之后
+Now that we've got this,
+
+891
+00:57:37,568 --> 00:57:39,440
+我们再让这个系统变得更加复杂
+let's go and make this thing even more complex.
+
+892
+00:57:41,890 --> 00:57:46,544
+我们这次不光要在系统里添加新的数域
+Let's talk about adding to the system not only these kinds of numbers
+
+893
+00:57:46,600 --> 00:57:51,152
+我们也来讨论一下怎么把多项式也加进去
+numbers, but it's also meaningful to start talking about adding polynomials.
+
+894
+00:57:51,510 --> 00:57:52,976
+让它能做多项式算术
+Might do arithmetic on polynomials.
+
+895
+00:57:53,360 --> 00:58:03,712
+比如我们可以计算x^15+2x^7+5
+Like we could have x to the fifteenth plus 2x to the seventh plus 5.
+
+896
+00:58:04,480 --> 00:58:05,840
+像这样的多项式
+That might be some polynomial.
+
+897
+00:58:06,380 --> 00:58:07,936
+如果有两个这样的东西
+And if we have two such gadgets
+
+898
+00:58:07,936 --> 00:58:09,488
+我们可以把它们相加或者相乘
+we can add them or multiply them.
+
+899
+00:58:10,530 --> 00:58:11,792
+先不管相除的问题
+Let's not worry about dividing them.
+
+900
+00:58:12,140 --> 00:58:14,672
+只考虑相加相乘和相减
+Just add them, multiply them, then we'll subtract them.
+
+901
+00:58:15,552 --> 00:58:17,160
+我们需要做什么
+Auhhh...What do we have to do? Well
+
+902
+00:58:18,528 --> 00:58:20,768
+我们先来想想怎么表示一个多项式
+let's think about how we might represent a polynomial.
+
+903
+00:58:21,830 --> 00:58:23,552
+它也是一种带类型的数据
+It's going to be some typed data object.
+
+904
+00:58:24,736 --> 00:58:27,552
+这个系统里的一个多项式
+So let's say a polynomial to this system
+
+905
+00:58:28,544 --> 00:58:31,680
+应该是带有polynomial类型的对象
+might look like a thing that starts with the type polynomial.
+
+906
+00:58:32,000 --> 00:58:34,550
+接下来它可能要问这个多项式的变量是哪个
+And then maybe it says the next thing is what variable its in.
+
+907
+00:58:34,550 --> 00:58:37,696
+比如这是一个以x为变量的多项式
+So I might say I'm a polynomial in the variable x.
+
+908
+00:58:38,960 --> 00:58:41,392
+然后 多项式内还有各项的信息
+And then it'll have some information about what the terms are.
+
+909
+00:58:42,250 --> 00:58:44,160
+有很多种方法来实现
+And there're just tons of ways to do this,
+
+910
+00:58:44,256 --> 00:58:47,632
+我们采用的方法是构造一个“项表”
+but one way is to say we're going to have a thing called a term-list.
+
+911
+00:58:51,520 --> 00:58:52,240
+所谓的“项表”
+And a term-list--
+
+912
+00:58:53,700 --> 00:58:55,616
+本例中 我们用的是类似这样的东西
+well, in our case we'll use something that looks like this.
+
+913
+00:58:56,360 --> 00:58:59,680
+我们把它写成一系列 按次数排列的序对
+We'll make it a bunch of pairs which have an order in a coefficient
+
+914
+00:58:59,690 --> 00:59:05,808
+那么这个项表就能表示这个多项式了
+So this polynomial would be represented by this term-list.
+
+915
+00:59:09,424 --> 00:59:10,688
+它的意义是
+And what that means is that
+
+916
+00:59:11,488 --> 00:59:19,710
+这个多项式第一项的次数是15 系数是1
+this polynomial starts off with a term of order 15 and coefficient 1.
+
+917
+00:59:23,820 --> 00:59:27,504
+然后下一项的次数是7 系数是2
+And the next thing in it is a term of order 7 and coefficient 2,
+
+918
+00:59:27,536 --> 00:59:30,496
+再下一项是一个常数 它次数是0 系数是5
+a term of order 0, which is constant in coefficient 5
+
+919
+00:59:31,450 --> 00:59:34,160
+实际上有很多很多种方法
+And there are lots and lots of ways,
+
+920
+00:59:34,256 --> 00:59:35,968
+也有很多很多的取舍
+and lots and lots of trade-offs
+
+921
+00:59:36,016 --> 00:59:39,100
+在你认真思考如何实现代数操作程序包时
+when you really think about making algebraic manipulation packages
+
+922
+00:59:39,440 --> 00:59:41,730
+你该如何表示这些东西
+that exactly how you should represent these things.
+
+923
+00:59:42,016 --> 00:59:43,680
+但是我们这种是比较标准的一种
+But this is a fairly standard one.
+
+924
+00:59:44,180 --> 00:59:45,552
+它适用于很多情况
+It's useful in a lot of contexts.
+
+925
+00:59:47,770 --> 00:59:50,992
+好 那么我们怎么实现我们的多项式算术呢
+OK, well how do we implement our polynomial arithmetic?
+
+926
+00:59:53,472 --> 00:59:54,960
+现在开始着手做这个事情
+Let's start out.
+
+927
+00:59:57,950 --> 01:00:00,288
+构造一个多项式 首先要
+What we'll do to make a polynomial--
+
+928
+01:00:00,760 --> 01:00:04,128
+首先我们得找一个办法来构造多项式
+we'll first have a way to make polynomials.
+
+929
+01:00:05,690 --> 01:00:10,288
+我们可以用一个变量 比如x和一个项表来构造它们
+We're going to make a polynomial out of variable like x and term-list.
+
+930
+01:00:11,248 --> 01:00:14,096
+我们要用某种方法把它们包装起来
+And all that does is we'll package them together someway.
+
+931
+01:00:14,304 --> 01:00:19,408
+我们可以用cons把变量和项表组合起来
+We'll put the variable together with the term list using cons
+
+932
+01:00:19,824 --> 01:00:21,744
+然后把这个序对加上polynomial的类型标志
+and then attached to that the type polynomial.
+
+933
+01:00:26,270 --> 01:00:27,776
+那我们怎么处理多项式相加呢？
+OK, how do we add two polynomials?
+
+934
+01:00:29,280 --> 01:00:31,856
+要相加两个多项式 p1和p2
+To add a polynomial, p1 and p2,
+
+935
+01:00:32,688 --> 01:00:35,184
+为了简化问题 假设我们
+and then just for simplicity let's say we
+
+936
+01:00:35,376 --> 01:00:37,152
+我们只相加变量相同的两个式子
+we will only add things in the same variable.
+
+937
+01:00:37,380 --> 01:00:39,280
+那么如果它们的变量相同
+So if they have the same variable,
+
+938
+01:00:39,696 --> 01:00:42,576
+是否相同交由我们编写的选择函数判断
+and same variable here is going to be some selector we write,
+
+939
+01:00:42,960 --> 01:00:44,384
+我们不必在意它的细节
+whose details we don't care about.
+
+940
+01:00:45,150 --> 01:00:47,040
+如果两个多项式的变量相同
+If the two polynomials have the same variable,
+
+941
+01:00:48,032 --> 01:00:48,810
+我们就继续运算
+then we'll do something.
+
+942
+01:00:48,810 --> 01:00:51,264
+如果它们的变量不相同 我们返回一个错误
+If they don't have the same variable, we'll give an error,
+
+943
+01:00:52,350 --> 01:00:54,016
+“两个多项式的变量不相同”
+polynomials not in the same variable.
+
+944
+01:00:55,480 --> 01:00:57,376
+如果它们的变量确实是相同
+And if they do have the same variable,
+
+945
+01:00:57,600 --> 01:00:59,184
+我们就要构造一个新的多项式
+what we'll do is we'll make a polynomial
+
+946
+01:00:59,800 --> 01:01:01,856
+它的变量即是原式的变量
+whose variable is whatever that variable is,
+
+947
+01:01:03,152 --> 01:01:06,560
+它的项表则由过程+terms产生
+and whose term-list is something we'll call sum-terms.
+
+948
+01:01:07,488 --> 01:01:09,808
++terms过程会把两个项表加起来
+Plus terms will add the two term lists.
+
+949
+01:01:10,170 --> 01:01:12,016
+所以我们要把两个多项式的项表合起来
+So we'll add the two term lists to the polynomial.
+
+950
+01:01:13,500 --> 01:01:14,512
+该过程即可返回一个项表
+That'll give us a term-list.
+
+951
+01:01:15,000 --> 01:01:20,016
+我们将变量和得到的项表构造成新的多项式
+We'll add on, we'll say it's a polynomial in the variable with that term-list.
+
+952
+01:01:20,688 --> 01:01:21,792
+这就是+poly过程
+That's plus poly.
+
+953
+01:01:22,550 --> 01:01:27,008
+然后我们要把这个过程放进表格中polynomial那一栏
+And then we're going to put in our table under the type polynomial
+
+954
+01:01:28,240 --> 01:01:30,144
+用+poly实现add操作
+add them using plus poly.
+
+955
+01:01:30,520 --> 01:01:31,750
+当然实际上没做多少事情
+And of course we really haven't done much.
+
+956
+01:01:31,750 --> 01:01:35,312
+我们只是把所有的工作压到+terms的头上
+What we've really done is pushed all the work onto this thing, +terms
+
+957
+01:01:35,792 --> 01:01:37,024
+它会负责把项表相加起来
+which is supposed to add term-lists.
+
+958
+01:01:37,744 --> 01:01:39,168
+我们看看这个过程
+Let's look at that.
+
+959
+01:01:39,184 --> 01:01:48,032
+这是+terms过程的大概结构
+Here's an overview of how we might add two term-lists.
+
+960
+01:01:48,900 --> 01:01:51,744
+L1和L2是两个项表
+So L1 and L2 were going to be two term-lists.
+
+961
+01:01:52,000 --> 01:01:54,816
+所谓“项表”即是按每项次数排序的序对
+And a term-list is a bunch of pairs, coefficient in order.
+
+962
+01:01:55,700 --> 01:01:56,950
+这里有一个大的分情况分析
+And it's a big case analysis.
+
+963
+01:01:59,860 --> 01:02:04,144
+首先 我们要检查项表是否为空
+And the first thing we'll check for and see if there are any terms
+
+964
+01:02:05,392 --> 01:02:07,552
+我们对项表做递归下降处理
+We're going to recursively work down these term-lists
+
+965
+01:02:08,160 --> 01:02:11,744
+最终下降到 L1或L2为空
+so eventually we'll get to a place where either L1 or L2 might be empty.
+
+966
+01:02:12,270 --> 01:02:14,352
+只要其中有一个为空
+And if either one is empty,
+
+967
+01:02:14,528 --> 01:02:15,850
+我们的答案就是剩下的另一个
+our answer will be the other one.
+
+968
+01:02:15,850 --> 01:02:19,552
+就是说如果L1是空表 我们就返回L2
+So if L1 is empty we'll return L2,
+
+969
+01:02:19,632 --> 01:02:21,712
+L2是空表的话就返回L1
+and if L2 is empty we'll return L1.
+
+970
+01:02:23,264 --> 01:02:25,760
+除此之外还有三种情况
+Otherwise there are sort of three interesting cases.
+
+971
+01:02:27,220 --> 01:02:27,984
+我们要做的是
+What we're going to do is
+
+972
+01:02:29,088 --> 01:02:31,050
+取表中的第一项
+grab the first term in each of those lists,
+
+973
+01:02:33,504 --> 01:02:36,048
+记为t1和t2
+Right? Called t1 and t2.
+
+974
+01:02:37,660 --> 01:02:39,056
+我们来分析一下这三种情况
+And we're going to look at three cases,
+
+975
+01:02:39,600 --> 01:02:45,680
+分别是t1的次数大于t2的
+depending on whether the order of t1 is greater than the order of t2,
+
+976
+01:02:47,230 --> 01:02:50,592
+小于t2的 或者等于t2的
+or less than t2, or the same.
+
+977
+01:02:53,280 --> 01:02:54,910
+这就是我们要判断的三种情况
+Those are the three cases we're going to look at.
+
+978
+01:02:54,910 --> 01:02:55,840
+先看看这一种
+Let's look at this case.
+
+979
+01:02:58,640 --> 01:03:01,312
+如果t1的次数比t2的次数要高
+If the order of t1 is greater than the order of t2,
+
+980
+01:03:03,400 --> 01:03:04,704
+就意味着
+then what that means is that
+
+981
+01:03:06,064 --> 01:03:09,968
+答案的第一项的次数就是t1的次数
+then what that means is that our answer is going to start with this term of the order of t1.
+
+982
+01:03:11,568 --> 01:03:13,808
+因为高次项不会和任何低次项相加
+Because it won't combine with any lower order terms.
+
+983
+01:03:14,176 --> 01:03:16,192
+那么我们只需要把低次的项加起来
+So what we do is add the lower order terms.
+
+984
+01:03:16,760 --> 01:03:18,256
+我们递归地把
+We recursively add
+
+985
+01:03:19,712 --> 01:03:25,070
+把L1和L2两个项表里剩下的项相加
+together all the terms in the rest of the term-list in L1 and L2.
+
+986
+01:03:27,136 --> 01:03:29,328
+作为我们的答案中低次项
+That's going to be the lower order terms of the answer.
+
+987
+01:03:30,120 --> 01:03:32,480
+然后我们把它们和最高次的项连接起来
+And then we're going to adjoin to that the highest order term.
+
+988
+01:03:33,180 --> 01:03:35,456
+这里 我用了一对还未定义的过程
+And I'm using here a whole bunch of procedures I haven't defined
+
+989
+01:03:35,472 --> 01:03:37,552
+比如adjoin-term、rest-terms
+like a adjoin-term, and rest-terms,
+
+990
+01:03:38,480 --> 01:03:40,176
+还有获取次数的选择函数
+and selectors that get order.
+
+991
+01:03:41,152 --> 01:03:42,784
+但是你可以想象它们是什么样子的
+But you can imagine what those are.
+
+992
+01:03:44,448 --> 01:03:48,768
+那么如果第一个项表的次数比第二个要高
+Right? So if the first term-list has a higher order than the second
+
+993
+01:03:48,780 --> 01:03:51,088
+我们就递归地把所有的低次的项相加
+we recursively add all the lower terms
+
+994
+01:03:51,280 --> 01:03:53,420
+再和最高次项连接起来
+and then stick on that last term.
+
+995
+01:03:55,540 --> 01:03:56,752
+其它情况也是一样的
+The other case, the same way.
+
+996
+01:03:56,890 --> 01:04:00,288
+如果第一个多项式次数比较低
+If the first term has a smaller order,
+
+997
+01:04:00,540 --> 01:04:08,368
+我们就把整个第一个多项式和第二个多项式低次的项相加
+well then we add we add the first term-list and the rest of the terms in the second one
+
+998
+01:04:08,624 --> 01:04:12,656
+然后把结果再和最高次项连起来
+and adjoin on this highest order term.
+
+999
+01:04:14,570 --> 01:04:15,968
+到现在也没多少复杂的事情
+So so far nothing's much happened,
+
+1000
+01:04:15,968 --> 01:04:19,408
+把问题变成 让低次数的项相加
+we've just sort of pushed this thing off into adding lower order terms.
+
+1001
+01:04:19,470 --> 01:04:21,968
+还有最后一种情况是 两个多项式的次数一样
+The last case where you actually get to a coefficients
+
+1002
+01:04:22,570 --> 01:04:25,184
+你必须要把它们的系数加起来 因为它们是同类项
+that you have to add, this will be the case where the orders are equal.
+
+1003
+01:04:27,240 --> 01:04:30,992
+我们的应对方法仍然是 递归地把低次项相加
+What we do is, well again recursively add the lower order terms.
+
+1004
+01:04:31,008 --> 01:04:32,832
+但现在我们需要合并一些项了
+But now we have to really combine something.
+
+1005
+01:04:33,460 --> 01:04:36,352
+我们构造一个项
+What we do is we make a term
+
+1006
+01:04:37,312 --> 01:04:39,936
+其次数为我们正在处理的那一项的次数
+whose order is the order of the term we're looking at.
+
+1007
+01:04:40,820 --> 01:04:42,720
+因为现在t1和t2的次数是相同的
+By now t1 and t2 have the same order.
+
+1008
+01:04:44,320 --> 01:04:44,992
+确定好次数了
+That's its order.
+
+1009
+01:04:45,090 --> 01:04:52,336
+而它的系数是t1和t2系数之和
+And its coefficient is gotten by adding the coefficient of t1 and the coefficient of t2.
+
+1010
+01:04:55,792 --> 01:04:59,648
+这是一个庞大的递归过程
+There's... This is a big recursive working down of terms,
+
+1011
+01:04:59,680 --> 01:05:03,616
+但其中只有一个符号值得玩味
+but really there's only one interesting symbol in this procedure,
+
+1012
+01:05:04,256 --> 01:05:05,696
+它蕴含了重要的思想
+only one interesting idea.
+
+1013
+01:05:05,900 --> 01:05:08,500
+那就是这个ADD过程
+The interesting idea is this add.
+
+1014
+01:05:12,390 --> 01:05:14,800
+说它有趣是因为
+And the reason that's interesting is because
+
+1015
+01:05:15,424 --> 01:05:17,376
+有一件好事发生
+something completely wonderful just happened.
+
+1016
+01:05:18,220 --> 01:05:21,376
+我们没有把多项式加法
+We reduced adding polynomials,
+
+1017
+01:05:22,560 --> 01:05:26,464
+归约为某种加法 而是归约为通用运算符ADD
+not to sort of plus, but to the generic add.
+
+1018
+01:05:28,820 --> 01:05:32,288
+换句话说 用这种方法实现它之后
+In other words, by implementing it that way,
+
+1019
+01:05:32,890 --> 01:05:34,688
+我们的系统就不光有
+not only do we have our system
+
+1020
+01:05:35,920 --> 01:05:41,664
+有理数、复数还有寻常算术
+where we can have rational numbers, or complex numbers, or ordinary numbers,
+
+1021
+01:05:41,856 --> 01:05:43,824
+我们同时也让它支持多项式运算了
+we've just added on polynomials.
+
+1022
+01:05:48,520 --> 01:05:51,136
+而多项式的系数可以是
+But the coefficients of the polynomials
+
+1023
+01:05:51,248 --> 01:05:52,860
+这个系统能够相加的任何东西
+can be anything that the system can add.
+
+1024
+01:05:53,590 --> 01:05:56,736
+也就是说多项式的系数
+So these could be polynomials whose coefficient
+
+1025
+01:05:57,200 --> 01:06:01,200
+有理数或者复数
+are rational numbers or complex numbers,
+
+1026
+01:06:02,768 --> 01:06:06,992
+复数同时可支持直角坐标形式和极坐标形式
+which in turn could be either rectangular, or polar,
+
+1027
+01:06:09,120 --> 01:06:11,392
+系数还可以是寻常的数字
+or ordinary numbers.
+
+1028
+01:06:18,976 --> 01:06:21,216
+我想说的是
+Rignt? So what I mean precisely is
+
+1029
+01:06:22,060 --> 01:06:24,352
+我们的系统现在可以自动地
+our system right now automatically
+
+1030
+01:06:26,600 --> 01:06:31,504
+处理像这样的式子
+can handle things like adding together polynomials that have this form
+
+1031
+01:06:31,536 --> 01:06:39,696
+比如2/3x^2+5/17x+11/4这样的式子
+2/3 of x squared plus 5/17 x plus 11/4.
+
+1032
+01:06:40,940 --> 01:06:43,488
+也可以自动处理像是
+Or automatically handle polynomials that look like
+
+1033
+01:06:43,824 --> 01:06:52,576
+(3+2i)x^5+(4+7i)这样的式子
+3 plus 2i times x to the fifth plus 4 plus 7i, or something.
+
+1034
+01:06:53,888 --> 01:06:56,210
+系统可以自动处理这些运算
+Right? You can automatically handle those things.
+
+1035
+01:06:56,210 --> 01:06:57,072
+为什么呢？
+Why is that?
+
+1036
+01:06:57,820 --> 01:07:01,504
+仅仅是因为 或者说深层次的原因是
+That's merely because, or profoundly because
+
+1037
+01:07:02,170 --> 01:07:05,936
+我们把多项式相加归约成了把它们的系数相加
+we reduced adding polynomials to adding their coefficients.
+
+1038
+01:07:06,790 --> 01:07:10,224
+而系数的相加是由通用运算符ADD完成的
+And adding coefficients was done by the generic add operator
+
+1039
+01:07:11,088 --> 01:07:12,944
+它说：“我不管你的数据类型是什么”
+which said, I don't care what your types are
+
+1040
+01:07:12,960 --> 01:07:14,080
+“只要我能够处理就行”
+as long as I know how to add you.
+
+1041
+01:07:15,232 --> 01:07:18,864
+于是我们就“免费”获得了处理这些东西的功能
+So automatically for free we get the ability to handle that.
+
+1042
+01:07:20,650 --> 01:07:22,048
+更神奇的是
+What's even better than that,
+
+1043
+01:07:24,510 --> 01:07:26,528
+我们曾把
+one of the things we did
+
+1044
+01:07:27,200 --> 01:07:30,528
+我们放入表格中 用于处理多项式加法
+we put into the table that the way you add polynomials
+
+1045
+01:07:31,280 --> 01:07:32,528
+是用的+poly过程
+is using plus poly.
+
+1046
+01:07:34,660 --> 01:07:38,656
+这就意味着ADD过程也可以处理多项式了
+That means that polynomials themselves are things that can be added.
+
+1047
+01:07:39,424 --> 01:07:42,110
+我举个例子
+So for instance let me write one here.
+
+1048
+01:07:43,184 --> 01:07:46,192
+这是一个多项式
+Here is... Here's a polynomial.
+
+1049
+01:07:50,560 --> 01:07:52,416
+我正在写的这个东西
+So this gadget here I'm writing up,
+
+1050
+01:07:54,128 --> 01:07:58,464
+它是一个以y作为变量的多项式
+this is a polynomial in y
+
+1051
+01:08:01,072 --> 01:08:04,690
+每项的系数是以x作为变量的多项式
+whose coefficients are polynomials in x.
+
+1052
+01:08:08,610 --> 01:08:11,120
+你将看到
+So you see, simply by saying,
+
+1053
+01:08:11,760 --> 01:08:14,064
+由于 “ADD过程能够处理多项式”
+polynomials are themselves things that can be added,
+
+1054
+01:08:14,416 --> 01:08:17,904
+我们可以说 我们的系统现在不光能运算有理数
+we can go off and say, well not only can we deal with rationals,
+
+1055
+01:08:18,270 --> 01:08:20,336
+复数和一般数字
+or complex, or ordinary numbers,
+
+1056
+01:08:20,350 --> 01:08:21,776
+我们还可以处理多项式
+but we can deal with polynomials
+
+1057
+01:08:22,096 --> 01:08:25,392
+多项式的系数可以是有理数、复数、一般数字
+whose coefficients are rationals, or complex, or ordinary numbers,
+
+1058
+01:08:25,504 --> 01:08:27,520
+甚至是多项式
+or polynomials
+
+1059
+01:08:29,150 --> 01:08:30,960
+作为系数的多项式 其系数还可以是有理数
+whose coefficients are rationals,
+
+1060
+01:08:31,696 --> 01:08:36,760
+复数（直角或极坐标形式）或一般数字
+or complex, rectangular, polar, or ordinary numbers,
+
+1061
+01:08:36,944 --> 01:08:41,136
+甚至还可以是系数为有理数的多项式
+or ordinary numbers, or polynomials whose coefficients are rationals,
+
+1062
+01:08:41,800 --> 01:08:43,328
+系数为复数、一般数字的多项式
+complex, or ordinary numbers.
+
+1063
+01:08:43,670 --> 01:08:45,216
+以此类推
+And so on, and so on, and so on.
+
+1064
+01:08:45,950 --> 01:08:47,552
+我们构造出了一座无限延伸的
+So this is sort of an infinite
+
+1065
+01:08:48,496 --> 01:08:52,880
+或者说是递归的类型高塔
+or maybe a recursive tower of types that we've built up.
+
+1066
+01:08:53,880 --> 01:08:57,120
+这一切都来源于那个小小的符号：A-D-D
+And it's all exactly from that one little symbol, A-D-D.
+
+1067
+01:08:57,610 --> 01:09:00,496
+来源于在多项式程序里 用“ADD”来代替“+”
+Writing "add" instead of "plus" in the polynomial thing.
+
+1068
+01:09:02,270 --> 01:09:03,776
+换一种方式来理解它就是
+Slightly different way to think about it
+
+1069
+01:09:03,952 --> 01:09:07,744
+多项式也是一种类型的构造函数
+is that polynomials are a constructor for types.
+
+1070
+01:09:08,740 --> 01:09:11,200
+也就是说你传递给它一个类型 比如整型
+Namely you give it a type, like integer,
+
+1071
+01:09:11,488 --> 01:09:15,744
+然后它就返回一个以整数作为系数的多项式
+and it returns for you polynomials in x whose coefficients are integers.
+
+1072
+01:09:16,270 --> 01:09:17,728
+过程中很重要的一点是
+And the important thing about
+
+1073
+01:09:18,650 --> 01:09:20,736
+就是多项式上的运算
+is that is that the operations on polynomials
+
+1074
+01:09:21,280 --> 01:09:23,376
+归约成了关于系数的运算
+reduce to the operations on the coefficients.
+
+1075
+01:09:23,392 --> 01:09:24,960
+很多地方都与这里类似
+And there are a lot of things like that.
+
+1076
+01:09:25,840 --> 01:09:27,920
+比如 我们再回头看看有理数
+So for example, let's go back and rational numbers.
+
+1077
+01:09:28,870 --> 01:09:32,656
+我们之前把有理数看做 一个整数在另一个上面
+We thought about rational numbers as an integer over an integer
+
+1078
+01:09:32,672 --> 01:09:35,660
+但这并不是关于有理式的一般性记号
+but there's the general notion of a rational object.
+
+1079
+01:09:36,240 --> 01:09:42,032
+比如我们也可以把3x+7放在上面 x^2+1放在下面
+Like we might think about 3x plus 7 over x squared plus 1.
+
+1080
+01:09:43,072 --> 01:09:48,864
+这是一个分子分母都是多项式的广义有理式
+That's general rational object whose numerator and denominator are polynomials.
+
+1081
+01:09:50,310 --> 01:09:52,416
+有理式相加 和有理数相加一样
+And to add two of them we use the same formula,
+
+1082
+01:09:52,440 --> 01:09:55,408
+分子乘分母 加 分母乘分子 结果作为分子
+numerator times denominator plus denominator times numerator
+
+1083
+01:09:55,720 --> 01:09:56,992
+两个分母相乘 结果作为分母
+over product of denominators.
+
+1084
+01:09:57,290 --> 01:09:59,376
+怎么把它安装到我们的系统中呢？
+How could we install that in our system?
+
+1085
+01:09:59,392 --> 01:10:02,976
+这是我们原来的有理数算术程序包
+Well here's our original rational number arithmetic package.
+
+1086
+01:10:04,250 --> 01:10:08,240
+为了让这个系统能够
+And all we have to do in order to make the entire system
+
+1087
+01:10:08,288 --> 01:10:11,584
+支持广义有理式的运算
+continue working with general rational objects,
+
+1088
+01:10:11,850 --> 01:10:16,448
+我们把特定的加法和乘法过程 都改成通用运算符
+is replace these particular pluses and stars by the generic operator.
+
+1089
+01:10:16,480 --> 01:10:19,184
+所以如果我们把原来那个过程变成这个过程
+So if we simply change that procedure to this one,
+
+1090
+01:10:19,712 --> 01:10:22,048
+把+和*换成ADD和MUL
+here we've changed plus and star to add a mul,
+
+1091
+01:10:22,880 --> 01:10:24,480
+这些是唯一的改动
+those are absolutely the only change,
+
+1092
+01:10:24,840 --> 01:10:26,032
+然后霎时间
+then suddenly
+
+1093
+01:10:27,520 --> 01:10:31,408
+我们的整个系统 就知道怎么运算这样的东西了
+our entire system can start talking about objects that look like this.
+
+1094
+01:10:33,728 --> 01:10:38,272
+比如说 这里的这个有理式
+So for example, here is a rational object
+
+1095
+01:10:39,184 --> 01:10:44,864
+它的分子是一个系数是有理数的、关于x的多项式
+whose numerator is a polynomial in x whose coefficients are rational numbers.
+
+1096
+01:10:47,020 --> 01:10:49,568
+而这个有理式
+Or here is a rational object
+
+1097
+01:10:51,104 --> 01:10:54,432
+它的分子是关于x的多项式
+whose numerator is polynomials in x
+
+1098
+01:10:55,152 --> 01:10:58,192
+多项式的系数又是有理式
+whose coefficients are rational objects
+
+1099
+01:10:59,776 --> 01:11:01,536
+有理式又由复数组成
+constructed out of complex numbers.
+
+1100
+01:11:03,390 --> 01:11:04,850
+或者别的像这样的东西
+And then there are a lot of other things like that.
+
+1101
+01:11:04,850 --> 01:11:08,688
+看 只要能够归约成针对各部分的运算
+See, whenever you have a thing where the operations reduce to operations on the pieces,
+
+1102
+01:11:08,896 --> 01:11:10,000
+另一个例子是
+another example would be
+
+1103
+01:11:10,288 --> 01:11:11,424
+2*2的矩阵
+two by two matrices.
+
+1104
+01:11:12,310 --> 01:11:15,440
+假如有这样一个矩阵形式的东西
+I have the idea, there might be a matrix here
+
+1105
+01:11:16,432 --> 01:11:18,336
+不管它里面是什么
+of general things that I don't care about.
+
+1106
+01:11:18,720 --> 01:11:20,144
+但是如果我对两个这种东西调用ADD
+But if I add two of them,
+
+1107
+01:11:22,336 --> 01:11:25,180
+答案就是
+the answer over here is gotten by
+
+1108
+01:11:25,180 --> 01:11:28,144
+把这个和这个相加 而矩阵是怎么相加的
+adding this one and that one,however they like to add.
+
+1109
+01:11:29,030 --> 01:11:31,110
+那么我可以用同样的方法实现
+So I can implement that the same way.
+
+1110
+01:11:31,110 --> 01:11:31,712
+如果我这么做了
+And if I do that,
+
+1111
+01:11:31,960 --> 01:11:34,608
+整个系统就马上可以处理像这样的东西了
+then again suddenly my system can start handling things like this.
+
+1112
+01:11:35,296 --> 01:11:39,184
+比如说一个矩阵 它的元素都是
+So here's a matrix whose elements happen to be--
+
+1113
+01:11:39,460 --> 01:11:42,160
+它的元素是一个有理式
+we'll say this element here is a rational object
+
+1114
+01:11:43,104 --> 01:11:45,152
+这个有理式的分子分母都是多项式
+whose numerator and denominators are polynomials.
+
+1115
+01:11:47,024 --> 01:11:49,568
+我们自然而然地获得了这些功能
+Right? And all that comes for free.
+
+1116
+01:11:51,280 --> 01:11:53,824
+整个过程中发生了什么？
+Right? What's really going on here?
+
+1117
+01:11:53,920 --> 01:11:56,176
+真正发生的是
+What's really going on is
+
+1118
+01:11:57,680 --> 01:12:02,448
+我们摆脱了凡事都想插一手的经理
+getting rid of who's sitting there poking his nose into who everybody's business is.
+
+1119
+01:12:03,120 --> 01:12:06,192
+我们构造了一个“控制去中心化”的系统
+We built a system that has decentralized control.
+
+1120
+01:12:14,784 --> 01:12:18,340
+你进入这个系统的时候 不会有人一边闲逛一边说
+So when you come into and no one's poking around saying,
+
+1121
+01:12:18,352 --> 01:12:22,304
+我看看官方列表中ADD是否能够处理你
+gee, are you in the official list of people who can be added?
+
+1122
+01:12:22,440 --> 01:12:26,224
+你直接就可以用正确的方法 把你和别的东西加起来
+Rather you say, well go off and add yourself how your parts like to be added.
+
+1123
+01:12:27,810 --> 01:12:31,030
+这么做的好处就是 就连这种非常非常
+And the result of that is you can get this very, very, very
+
+1124
+01:12:31,030 --> 01:12:33,870
+复杂的分层对象也可以被分解后
+complex hierarchy where a lot of things just get done and
+
+1125
+01:12:33,870 --> 01:12:35,552
+自动放到正确的地方去处理
+rooted to the right place automatically.
+
+1126
+01:12:37,008 --> 01:12:37,792
+有什么问题吗？
+Let's stop for questions.
+
+1127
+01:12:40,380 --> 01:12:42,320
+学生：你说你“免费”获得了这些功能
+AUDIENCE: You say you get this for free.
+
+1128
+01:12:42,350 --> 01:12:45,824
+但是我在意的是你现在丢掉了
+Um..... One thing that strikes me is that now you've lost
+
+1129
+01:12:46,480 --> 01:12:50,910
+某种上下层之间的清楚界限
+kind of the cleanness of the break between what's on top and what's underneath.
+
+1130
+01:12:50,910 --> 01:12:52,770
+或者说 现在你是在用
+In other words, now you're defining some of the
+
+1131
+01:12:52,770 --> 01:12:56,080
+上层的东西来定义下层的过程
+lower-level procedures in terms of things above their own line.
+
+1132
+01:12:56,610 --> 01:12:59,456
+这不是很危险吗？
+Isn't that dangerous?
+
+1133
+01:13:00,350 --> 01:13:04,496
+或者说 结构会变得混乱？
+Or, if nothing more, a little less structured?
+
+1134
+01:13:05,440 --> 01:13:05,952
+教授：不 我--
+PROFESSOR: No, I--
+
+1135
+01:13:06,416 --> 01:13:07,770
+你问它的结构是否混乱
+the question is whether that's less structured.
+
+1136
+01:13:07,770 --> 01:13:08,690
+这得要看你说的“结构”是指什么
+Depends on what you mean by structure.
+
+1137
+01:13:08,690 --> 01:13:10,176
+整个过程里我们都在做递归
+All this is doing is recursion.
+
+1138
+01:13:11,050 --> 01:13:18,800
+看 就是说要把这些东西相加就要用到这个过程
+See, it's saying that the way you add these guys is to use that.
+
+1139
+01:13:19,152 --> 01:13:21,376
+它是一种递归结构 并不混乱
+And that's not less structured, it's just a recursive structure.
+
+1140
+01:13:22,704 --> 01:13:24,990
+所以我不认为它不清楚
+So I don't think it's particularly any less clean.
+
+1141
+01:13:24,990 --> 01:13:28,160
+学生：那么当你修改乘法或加法运算时
+AUDIENCE: Now when you want to change the multiplier or the add operator
+
+1142
+01:13:29,344 --> 01:13:31,380
+可能会导致
+suddenly you've got tremendous consequences
+
+1143
+01:13:31,380 --> 01:13:34,272
+无法预测的灾难性后果
+underneath that you're not even sure the extent of.
+
+1144
+01:13:34,480 --> 01:13:36,448
+教授：你说得对 但是那要看你的意思是什么
+PROFESSOR: That's right, but it depends what you mean.
+
+1145
+01:13:37,080 --> 01:13:38,470
+从两个角度来讨论
+See, this goes both ways.
+
+1146
+01:13:39,104 --> 01:13:43,248
+举个什么例子好呢？
+Um....What would be a good example?
+
+1147
+01:13:44,690 --> 01:13:47,500
+比如说 之前我忽略了GCD运算
+I ignored greatest common divisor, for instance.
+
+1148
+01:13:47,776 --> 01:13:50,080
+我们忽略了它 是为了简化我们的例子
+I ignored that problem just to keep the example simple.
+
+1149
+01:13:50,280 --> 01:13:56,928
+但是如果突然我觉得 这里的+rat
+But if I suddenly decided that plus rat here
+
+1150
+01:13:57,820 --> 01:14:01,696
+应该把结果约分 然后把这个功能安装到程序里
+should do a GCD computation and install that,
+
+1151
+01:14:03,340 --> 01:14:07,872
+那么这个功能一旦安装 就立刻可以被所有过程调用
+then that immediately becomes available to all of these, to that guy, and that guy,
+
+1152
+01:14:08,032 --> 01:14:10,080
+被这个或者那个 所有的这些
+and that guy, and all the way down.
+
+1153
+01:14:11,560 --> 01:14:13,890
+这取决于你系统的相干性（耦合度）
+So it depends what you mean by the coherence of your system.
+
+1154
+01:14:13,890 --> 01:14:17,030
+确实你可能想设计一个
+It's certainly true that you might want to have a special
+
+1155
+01:14:17,030 --> 01:14:19,568
+不这样递归下降的程序
+different one that didn't filter down through the coefficients
+
+1156
+01:14:19,616 --> 01:14:22,976
+但是我举这个例子的好处 就在于我们通常都是这么做的
+but the nice thing about this particular example is that mostly you do.
+
+1157
+01:14:25,440 --> 01:14:27,630
+学生：是不是有一个问题 我想
+AUDIENCE: Isn't that the problem, I think, that you're
+
+1158
+01:14:27,630 --> 01:14:32,950
+就是你会被这个结构捆绑起来
+getting to tied in with the fact that the structuring, the
+
+1159
+01:14:32,950 --> 01:14:36,330
+这个递归的结构是实际上被执行了的
+recursiveness of that structuring there is actually
+
+1160
+01:14:36,330 --> 01:14:40,340
+而不是仅仅是为了定义类型的需要
+in execution as opposed to just definition of the actual
+
+1161
+01:14:40,340 --> 01:14:41,168
+被这个事实所束缚
+types themselves?
+
+1162
+01:14:44,680 --> 01:14:46,120
+教授：我大概明白你的意思
+PROFESSOR: I think I understand the question.
+
+1163
+01:14:46,120 --> 01:14:47,808
+你是想说在这个系统投入运行之后
+The point is that these types evolve
+
+1164
+01:14:47,824 --> 01:14:50,400
+这些类型还会变得越来越复杂
+and get more and more complex as the thing's actually running.
+
+1165
+01:14:50,400 --> 01:14:50,730
+你是不是想……
+Is that what--
+
+1166
+01:14:50,730 --> 01:14:50,990
+学生：对
+AUDIENCE: Yap.
+
+1167
+01:14:50,990 --> 01:14:51,790
+在它投入运行之后
+As it's running.
+
+1168
+01:14:52,090 --> 01:14:54,180
+学生：而不是作为基本的定义
+AUDIENCE: As opposed to the basic definitions.
+
+1169
+01:14:54,180 --> 01:14:54,830
+教授：对
+PROFESSOR: Right. There's...
+
+1170
+01:14:54,830 --> 01:14:56,704
+我们的类型结构可以说就是递归的
+The type structure is sort of recursive.
+
+1171
+01:14:57,210 --> 01:15:00,224
+它并不是一个 可以在系统投入运行之前
+It's not that you can make this finite list of the
+
+1172
+01:15:01,584 --> 01:15:04,850
+就能把要用到的东西全部包括的列表
+actual things they might look like before the system runs.
+
+1173
+01:15:04,850 --> 01:15:05,792
+它是一个不断演进的东西
+It's something that evolves.
+
+1174
+01:15:06,780 --> 01:15:08,640
+所以如果你想要定制这个系统
+So if you want to specify that system,
+
+1175
+01:15:08,670 --> 01:15:10,960
+你就不能通过有限的表
+you have to do in some other way than by this finite list.
+
+1176
+01:15:11,008 --> 01:15:13,184
+你需要用一个递归结构实现它
+You have to do it by a recursive structure.
+
+1177
+01:15:13,670 --> 01:15:17,900
+学生：因为类型的基本结构是相当简单而明了的
+AUDIENCE: Because the basic structure of the types is pretty clean and simple.
+
+1178
+01:15:17,900 --> 01:15:18,192
+教授：对
+PROFESSOR: Right.
+
+1179
+01:15:20,400 --> 01:15:20,752
+嗯？
+Yes?
+
+1180
+01:15:21,460 --> 01:15:22,870
+学生：我有一个问题
+AUDIENCE: I have a question.
+
+1181
+01:15:22,870 --> 01:15:25,680
+我明白一旦你的数据结构被设计好之后
+I understand once you have your data structure set up,
+
+1182
+01:15:25,712 --> 01:15:28,736
+它是怎么把complex标志拿掉 把它传递给下层
+how it pulls off complex and passes that down,
+
+1183
+01:15:28,736 --> 01:15:30,640
+然后把rect类型拿掉 再传递给下层
+and then pulls off rect, passes that down.
+
+1184
+01:15:30,640 --> 01:15:33,952
+但是如果你只是一个用户 并不知道什么rect或者polar类型
+But if you're just a user and you don't know anything about rect or polar or whatever,
+
+1185
+01:15:34,250 --> 01:15:36,048
+你怎么知道如何去设置这个数据结构
+how do you initially set up that data structure
+
+1186
+01:15:36,090 --> 01:15:38,080
+让所有东西正常运转呢
+so that everything goes to the right spot?
+
+1187
+01:15:38,096 --> 01:15:41,008
+如果我只知道左边的这个算式
+If I just have the equation over there on the left
+
+1188
+01:15:41,024 --> 01:15:42,500
+我只是想把复数加起来或者乘起来
+And I just want to add, multiply complex numbers--
+
+1189
+01:15:42,500 --> 01:15:43,640
+教授：这就是它神奇的地方
+PROFESSOR: Well that's the wonderful thing.
+
+1190
+01:15:43,640 --> 01:15:45,264
+如果你是一个用户 直接调用mul就可以了
+If you're just a user you say "mul."
+
+1191
+01:15:47,730 --> 01:15:49,952
+学生：然后它就能明白我要计算的是复数？
+AUDIENCE: And it figures out that I mean complex numbers?
+
+1192
+01:15:49,968 --> 01:15:51,232
+或者我怎么告诉它我想——
+Or how do I tell it that I want--
+
+1193
+01:15:51,264 --> 01:15:53,056
+教授：只要你给它的是复数它就能明白
+PROFESSOR: Well you're going to have in your hands complex numbers.
+
+1194
+01:15:53,050 --> 01:15:56,304
+作为这个系统的用户
+See what you would have at some level, as a real user,
+
+1195
+01:15:56,320 --> 01:15:58,144
+你能使用的是复数的构造函数
+is a constructor for complex numbers.
+
+1196
+01:15:58,370 --> 01:15:59,552
+学生：那么我需要自己构造复数了？
+AUDIENCE: So then I have to make complex numbers?
+
+1197
+01:15:59,568 --> 01:16:00,350
+教授：那么你需要自己构造它们
+PROFESSOR: So you have to make them.
+
+1198
+01:16:00,350 --> 01:16:04,016
+作为用户 你可能只能够操作命令行
+What you would probably have as a user is some little thing in the reader loop,
+
+1199
+01:16:04,650 --> 01:16:07,568
+它会给你提供一些合理的方法
+which would give you some plausible way
+
+1200
+01:16:07,568 --> 01:16:08,864
+来输入复数
+to type in a complex number,
+
+1201
+01:16:09,312 --> 01:16:11,008
+让你用你喜欢的格式输入
+in however whatever format you like.
+
+1202
+01:16:11,590 --> 01:16:14,360
+也可能你根本就不用输入它们
+Or it might be that you're never typing them in.
+
+1203
+01:16:14,360 --> 01:16:16,170
+只是别人给你一个复数让你计算
+Someone's just handing you a complex number.
+
+1204
+01:16:16,784 --> 01:16:19,824
+学生：好 那么如果我有一个含有多项式的复数
+AUDIENCE: OK, so if I had a complex number that had a polynomial in it,
+
+1205
+01:16:19,824 --> 01:16:21,960
+我就要先构造这个多项式 然后再构造我的复数
+I'd have to make my polynomial and then make my complex number.
+
+1206
+01:16:21,960 --> 01:16:23,968
+教授：如果你是从零开始构造它的话 是这样的
+PROFESSOR: Right if you wanted it constructed from scratch.
+
+1207
+01:16:24,288 --> 01:16:25,710
+可以说你是在从零开始构造
+At some point you construct them from scratch.
+
+1208
+01:16:25,710 --> 01:16:27,056
+而你只要有了要计算的东西
+But what you don't have to know of that
+
+1209
+01:16:27,280 --> 01:16:30,320
+可以直接调用mul运算 然后它们就会被乘起来
+is when you have the object you can just say "mul." And it'll multiply.
+
+1210
+01:16:32,784 --> 01:16:32,992
+说吧
+Yeah?
+
+1211
+01:16:33,270 --> 01:16:35,760
+学生：我想提一个问题 就是……
+AUDIENCE: I think the question that was being posed here is,
+
+1212
+01:16:36,450 --> 01:16:40,016
+比如说我想修改我的复数表示方法
+say if I want to change my presentation of complexes,
+
+1213
+01:16:40,030 --> 01:16:41,440
+或者复数的某些运算
+or some operation of complex,
+
+1214
+01:16:41,520 --> 01:16:47,104
+为了修改一个特定的运算
+how much real code I will have to gets around with,
+
+1215
+01:16:47,152 --> 01:16:51,264
+我得考虑多少代码？
+or change to change it in one specific operation?
+
+1216
+01:16:52,270 --> 01:16:53,490
+教授：得看你想要修改什么
+PROFESSOR: [UNINTELLIGIBLE] what you have to change.
+
+1217
+01:16:53,490 --> 01:16:54,990
+重点在于你只需要改
+And the point is that you only have to change
+
+1218
+01:16:55,392 --> 01:16:56,070
+你想改的那一部分
+what you're changing.
+
+1219
+01:16:56,070 --> 01:17:00,048
+想象一下如果Martha决定她
+See if Martha decides that she would rather--
+
+1220
+01:17:00,320 --> 01:17:01,232
+举个不太好的例子
+let's see something silly--
+
+1221
+01:17:01,440 --> 01:17:02,912
+比如把序对中两个数的顺序调换
+like change the order in the pair.
+
+1222
+01:17:04,040 --> 01:17:08,720
+把模和辐角的顺序反过来
+Like angle and magnitude in the other order,
+
+1223
+01:17:09,390 --> 01:17:10,800
+她只做了局部的修改
+she just makes that change locally.
+
+1224
+01:17:10,970 --> 01:17:13,296
+那么这个改动会准确无误地扩散到整个系统里
+And the whole thing will propagate through the system in the right way.
+
+1225
+01:17:14,790 --> 01:17:18,768
+或者突然你说 我有另一种方法来表示有理数
+Or if suddenly you said, gee, I have another representation for rationals.
+
+1226
+01:17:19,700 --> 01:17:23,904
+我就得不断地在表格中添加运算
+And I'm going to stick it here, by filing those operations in the table.
+
+1227
+01:17:24,820 --> 01:17:27,220
+那么突然之间所有的多项式
+Then suddenly all of these polynomials whose coefficients
+
+1228
+01:17:27,220 --> 01:17:29,104
+它们的系数和系数的系数 或者什么东西
+are coefficients of coefficients, or whatever,
+
+1229
+01:17:29,240 --> 01:17:32,400
+都自动支持用这种表示方法来表示了
+also can automatically have available that representation.
+
+1230
+01:17:32,704 --> 01:17:34,672
+这就是我们这种设计的威力
+That's the power of this particular one.
+
+1231
+01:17:36,112 --> 01:17:38,700
+学生：我提的这个问题可能听起来比较蠢
+AUDIENCE: I'm not sure if I can even pose an intelligent sounding question.
+
+1232
+01:17:38,700 --> 01:17:42,384
+整个这个系统看起来
+But somehow this whole thing went really nicely
+
+1233
+01:17:42,540 --> 01:17:45,888
+非常完美 所有的东西都各就各位
+to this beautiful finish where all the things seemed to fall into place.
+
+1234
+01:17:46,720 --> 01:17:48,672
+完美得有点出乎意料
+And sort of seemed a little contrived.
+
+1235
+01:17:50,930 --> 01:17:52,528
+我相信 这都是为了教学方便
+That's all for the sake, I'm sure, of teaching.
+
+1236
+01:17:52,560 --> 01:17:54,656
+我怀疑的是首先发明了这种做法的人
+I doubt that the guys who first did this--
+
+1237
+01:17:55,100 --> 01:17:55,856
+我可能说得不对
+and I could be wrong--
+
+1238
+01:17:56,608 --> 01:17:59,728
+难道一下子就搞清楚了所有这些东西一起
+figured it all out so that when they just all put it all together,
+
+1239
+01:17:59,776 --> 01:18:03,936
+只要把这些放在一起 你就突然可以对各种对象做各种运算
+you could all of the sudden, blam, do any kind of arithmetic on any kind of object.
+
+1240
+01:18:04,860 --> 01:18:07,200
+我觉得他们应该研究了很长时间
+It seems like maybe they had to play with it for a while
+
+1241
+01:18:07,930 --> 01:18:10,624
+不断地推倒重来
+and had to bash it and rework it.
+
+1242
+01:18:11,800 --> 01:18:14,120
+然后我觉得 当我们设计一个非常复杂的系统
+And it seems like that's the kind of problem we're really
+
+1243
+01:18:14,120 --> 01:18:16,940
+我们也要面对这样的问题
+faced with we start trying to design a really complex system
+
+1244
+01:18:17,310 --> 01:18:20,352
+就是有太多各种各样的部件 我们甚至不知道
+is having lots of different kinds of parts and not even knowing
+
+1245
+01:18:21,088 --> 01:18:24,620
+我们甚至不知道要对这些部件做什么样的操作
+what kinds of operations we're going to want to do on those parts.
+
+1246
+01:18:24,620 --> 01:18:26,544
+在这种时候我怎么用这种良好的方法组织操作
+How to organize the operations in this nice way
+
+1247
+01:18:26,560 --> 01:18:29,630
+才能获得这种 不管怎样只要把它们放在一起
+so that no matter what you do, when you start putting them together
+
+1248
+01:18:29,630 --> 01:18:31,392
+所有事情就正常运转 这样的效果呢
+everything starts falling out for free.
+
+1249
+01:18:31,700 --> 01:18:34,340
+教授：很好 这确实是一个非常聪明的问题
+PROFESSOR: OK, well that's certainly a very intelligent question... Um
+
+1250
+01:18:35,104 --> 01:18:39,520
+要说的一点是我们这种方法论
+Um....One part is this is a very good methodology
+
+1251
+01:18:39,872 --> 01:18:43,888
+受到了符号代数的很多启发
+that people have discovered a lot coming from symbolic algebra.
+
+1252
+01:18:44,590 --> 01:18:45,904
+符号代数相当繁复
+Because there are a lot of complications.
+
+1253
+01:18:47,590 --> 01:18:50,710
+允许你在决定各种运算是什么样子之前
+To allow you to implement these things before you decide
+
+1254
+01:18:50,710 --> 01:18:52,896
+来实现这个系统
+what you want all the operations to be, and all of that.
+
+1255
+01:18:53,310 --> 01:18:57,728
+所以从某种意义上讲 这是人们在这方面长期探索之后得出的答案
+So in some sense it's an answer that people have discovered by wading through this stuff.
+
+1256
+01:18:58,560 --> 01:19:00,752
+从另一个角度来说 这确实是精心设计的例子
+In another sense, it is a very contrived example.
+
+1257
+01:19:02,160 --> 01:19:06,240
+学生：看上去想要设计出这样的系统
+AUDIENCE: It seems like to be able to do this you do have to
+
+1258
+01:19:06,240 --> 01:19:09,010
+一开始先要研究一段时间然后才能变熟练
+wade through it for a certain amount of time before you can become good at it.
+
+1259
+01:19:09,010 --> 01:19:11,888
+教授：我给你看看这个东西是多么的勉强
+PROFESSOR: Let me show you how terribly contrived this is.
+
+1260
+01:19:12,220 --> 01:19:14,130
+你现在可以写下所有的这些程序
+So you can write all these wonderful things.
+
+1261
+01:19:14,130 --> 01:19:16,256
+但是我写在这里的这个系统
+But the system that I wrote here,
+
+1262
+01:19:17,020 --> 01:19:18,960
+如果允许我拖堂半小时的话
+and if we had another half an hour to give this lecture
+
+1263
+01:19:19,310 --> 01:19:20,464
+我会给大家讲
+I would have given this part of it,
+
+1264
+01:19:20,816 --> 01:19:23,024
+如果我让它做一个错误操作
+which says, notice that it breaks down
+
+1265
+01:19:23,200 --> 01:19:29,312
+比如一个愚蠢的命令 用3加上7/2 它就会崩溃
+if I tell it to do something as foolish as add 3 plus 7/2.
+
+1266
+01:19:30,880 --> 01:19:33,424
+因为程序首先会调用operate-2这个过程
+Because what will happen is you'll get to operate-2,
+
+1267
+01:19:33,800 --> 01:19:35,952
+然后operate-2会说 这个是数字类型
+and operate-2 will say, oh this is type number,
+
+1268
+01:19:36,180 --> 01:19:37,376
+那个是有理数类型
+and that's type rational.
+
+1269
+01:19:37,560 --> 01:19:38,810
+我不知道怎么把它们加起来
+I don't know how to add them.
+
+1270
+01:19:41,530 --> 01:19:44,304
+那么你想让这个系统至少能够
+So you'd like the system at least to be able to say something like,
+
+1271
+01:19:45,888 --> 01:19:47,344
+比如说 在做这个操作之前
+gee,before you do that
+
+1272
+01:19:48,592 --> 01:19:50,240
+把3提升为3/1
+change that to 3/1.
+
+1273
+01:19:50,480 --> 01:19:53,216
+把它变成一个有理数 然后交给有理数程序包来处理
+Turn it into a rational number, hand that to the rational package.
+
+1274
+01:19:54,860 --> 01:19:58,704
+课堂上我们来不及讲这个问题了
+That's the thing I didn't talk about in this lecture.
+
+1275
+01:19:58,736 --> 01:20:00,880
+书里面讨论了这个问题
+It's a little bit in the book,which talks about the problem
+
+1276
+01:20:00,880 --> 01:20:01,952
+叫做“类型转换”
+of what's called coercion.
+
+1277
+01:20:03,390 --> 01:20:05,152
+你想要的是
+Where you wanted--
+
+1278
+01:20:05,310 --> 01:20:08,896
+看 我们小心翼翼地把对象按类型分好类
+see, having so carefully set up all of these types as distinct objects
+
+1279
+01:20:08,910 --> 01:20:12,176
+但是有时你也想让它
+a lot of times you want to also put in knowledge
+
+1280
+01:20:12,400 --> 01:20:17,984
+知道怎么把一个普通的数字当成有理数
+about how to view an ordinary number as a kind of rational.
+
+1281
+01:20:19,110 --> 01:20:21,296
+或者把普通的数字当成复数
+Or view an ordinary number as a kind of complex.
+
+1282
+01:20:21,620 --> 01:20:25,168
+到那个时候系统就开始变得复杂了
+That's where the complexity in the system really starts happening
+
+1283
+01:20:25,760 --> 01:20:28,128
+就是你去思考 我应该把这些知识放在哪里的时候
+where you talk about, see where do I put that knowledge?
+
+1284
+01:20:28,420 --> 01:20:32,192
+是应该让有理数知道它们是由普通的数字构成的吗？
+Is it rational to know that ordinary numbers might be pieces of cons of them?
+
+1285
+01:20:33,130 --> 01:20:36,384
+或者我们举一个更加糟糕的例子
+Or they're terrible, terrible examples, like
+
+1286
+01:20:38,144 --> 01:20:47,488
+比如说我想要把一个复数加到有理数上去
+if I might want to add a complex number to a rational number.
+
+1287
+01:20:49,872 --> 01:20:50,760
+这个不好
+Bad example.
+
+1288
+01:20:50,760 --> 01:20:51,584
+5/7
+5/7.
+
+1289
+01:20:53,860 --> 01:20:55,728
+然后整个系统里必须有人知道
+Then somebody's got to know that
+
+1290
+01:20:56,060 --> 01:20:58,160
+他需要把这个东西变成另一种类型
+I have to convert these to another type,
+
+1291
+01:20:58,208 --> 01:21:00,656
+要把它变成一部分是有理数的复数
+which is complex numbers whose parts might be rationals.
+
+1292
+01:21:01,540 --> 01:21:02,680
+那么谁应该去操心这个事情呢
+And who worries about that?
+
+1293
+01:21:02,680 --> 01:21:03,950
+是complex程序包吗？
+Does complex worry about that?
+
+1294
+01:21:03,950 --> 01:21:05,030
+是rational程序包吗？
+Does rational worry about that?
+
+1295
+01:21:05,248 --> 01:21:06,224
+还是plus过程要考虑这个问题？
+Does plus worry about that?
+
+1296
+01:21:06,900 --> 01:21:08,520
+这就是体现复杂性的地方
+That's where the real complexity comes in.
+
+1297
+01:21:08,520 --> 01:21:11,380
+也是这个问题的特别之处
+And that's where it's pretty well sorted out.
+
+1298
+01:21:11,380 --> 01:21:14,128
+同时很多的 实际上是所有的这样的“消息传递”的想法
+And a lot of, in fact, all of this message passing stuff
+
+1299
+01:21:14,640 --> 01:21:16,544
+都是被这样的问题启发的
+was motivated by problems like this.
+
+1300
+01:21:18,460 --> 01:21:20,896
+当你真正深入进去
+And when you really push it, people are--
+
+1301
+01:21:20,912 --> 01:21:24,768
+人们发现 代数操作的问题是如此复杂
+somehow the algebraic manipulation problem seems to be so complex
+
+1302
+01:21:25,184 --> 01:21:27,410
+而那些一直围绕它们工作的人们 确实就处在
+that the people who are always at the edge of it are exactly in
+
+1303
+01:21:27,410 --> 01:21:28,050
+你说的那种状态
+the state you said.
+
+1304
+01:21:28,050 --> 01:21:29,712
+他们在这些问题里艰难跋涉 时不时陷进泥里
+They're wading through this thing, mucking around,
+
+1305
+01:21:29,728 --> 01:21:31,376
+寻找好用的工具 并试着提炼一种通用方法
+seeing what they use, trying to distill stuff.
+
+1306
+01:21:34,200 --> 01:21:37,760
+学生：我想再一次回到这个复杂度的问题上来
+AUDIENCE: I just want to come back to this issue of complexity once more.
+
+1307
+01:21:38,416 --> 01:21:44,550
+在修改底层过程的时候 这个系统
+Um... It certainly seems to be true that you have a great deal of
+
+1308
+01:21:44,550 --> 01:21:48,320
+毫无疑问 体现了非常大的灵活性
+flexibility in altering the lower level kinds of things.
+
+1309
+01:21:49,712 --> 01:21:53,408
+但是确实 在某种意义上讲
+But it is true that you are, in a sense,
+
+1310
+01:21:53,440 --> 01:21:55,264
+冻结了高层运算
+freezing higher level operations.
+
+1311
+01:21:55,450 --> 01:21:58,510
+或者至少如果你修改它们 你不知道
+Or at least if you change them you don't know where all of
+
+1312
+01:21:58,510 --> 01:22:02,060
+改动会体现在哪里 会怎么体现出来
+the changes are going to show up, or how they are.
+
+1313
+01:22:02,208 --> 01:22:04,224
+教授：这个问题真是不能再好了
+PROFESSOR: OK, that's an extremely good question.
+
+1314
+01:22:04,680 --> 01:22:05,872
+我要做的事情就是
+What I have to do is,
+
+1315
+01:22:08,688 --> 01:22:10,848
+如果我决定添加一个通用操作
+if I decide there's a new general operation
+
+1316
+01:22:11,456 --> 01:22:13,072
+比如equality-test
+called equality test,
+
+1317
+01:22:14,960 --> 01:22:17,152
+那么系统中的其它人就要查表格
+then all of these people have to decide
+
+1318
+01:22:18,224 --> 01:22:22,544
+来看他们需不需要支持equality-test
+whether or not they would like to have an equality test by looking in the table.
+
+1319
+01:22:24,650 --> 01:22:26,848
+我们可以让它变得更加去中心化
+There're ways to decentralize it even more.
+
+1320
+01:22:27,870 --> 01:22:30,704
+这就是之前我提示了很多次的事情
+That's what I sort of hinted at last time, where I said
+
+1321
+01:22:31,088 --> 01:22:33,264
+你不但可以通过给对象添加符号标签来体现类型
+you could not only have this type as a symbol,
+
+1322
+01:22:33,408 --> 01:22:38,704
+而是把每一类对象接受的运算也保存在里面
+but you actually might store in each object the operations that it knows of that.
+
+1323
+01:22:40,450 --> 01:22:43,904
+那么你可以添加一个 比如说最大公约数过程
+So you might have things like greatest common divisor,
+
+1324
+01:22:44,432 --> 01:22:46,816
+它只能计算整数
+which is a thing here which is defined only for integers,
+
+1325
+01:22:47,408 --> 01:22:49,216
+而不是对所有有理数都通用
+and not in general for rational numbers.
+
+1326
+01:22:51,030 --> 01:22:53,110
+所以这个系统可能是非常非常碎片化的
+So it might be a very, very fragmented system.
+
+1327
+01:22:53,110 --> 01:22:55,664
+取决于你想让哪一部分比较灵活
+And then depending on where you want your flexibility,
+
+1328
+01:22:56,224 --> 01:22:59,024
+有一系列的地方让你把这个东西放进去
+You...there's a whole spectrum of places that you  can build that in.
+
+1329
+01:22:59,960 --> 01:23:02,560
+但是你也指出了这种设计的弱点
+But you're pointing at the place where this starts being weak,
+
+1330
+01:23:02,608 --> 01:23:06,370
+就是必须在顶层 对于这些通用运算符有一些约定
+that there has to be some agreement on top here about these general operations.
+
+1331
+01:23:06,370 --> 01:23:07,824
+或者至少人们要考虑这件事情
+Or at least people have to think about them.
+
+1332
+01:23:08,390 --> 01:23:10,720
+或者你可以决定 把这个表格设计得非常稀疏
+Or you might decide, you might have a table that's very sparse
+
+1333
+01:23:10,752 --> 01:23:11,968
+里面只放很少的一点东西
+that only has a few things in it.
+
+1334
+01:23:14,010 --> 01:23:15,490
+这个游戏有很多种玩法
+But there are lot of ways to play that game.
+
+1335
+01:23:19,780 --> 01:23:20,432
+谢谢大家
+OK, thank you.
+
+1336
+01:23:23,530 --> 01:23:28,784
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+
+1337
+01:23:28,780 --> 01:23:36,560
+本项目主页
+https://github.com/DeathKing/Learning-SICP
+
+
