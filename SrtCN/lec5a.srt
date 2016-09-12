@@ -6002,32 +6002,32 @@ I have two random numbers.
 I then have to do exactly what I did before.
 
 1201
-01:11:42,410 --> 01:11:45,151
+01:11:42,520 --> 01:11:44,192
 取X1和X2的最大公约数
 I take the GCD of x1 x2.
 
 1202
-01:11:45,150 --> 01:11:47,693
-如果结果是1 则继续循环
-If that's one, then I go around the loop with
+01:11:44,224 --> 01:11:47,152
+如果结果是1 则将x2作为下一个x的值继续循环
+If that's one, then I go around the loop with X2 being the next value of x.
 
 1203
-01:11:47,690 --> 01:11:51,813
-将x2作为下一个x的值
-x2 being the next value of x.
-
-1204
-01:11:54,271 --> 01:11:56,680
+01:11:54,784 --> 01:11:55,984
 这里所发生的
 You see what's happened here
 
+1204
+01:11:56,880 --> 01:11:58,704
+随机数生成器的状态
+is that the state of the random number generator
+
 1205
-01:11:56,680 --> 01:12:01,702
-随机数生成器的状态不再被限制于随机数生成器内部
-is that the state of the random number generator is no longer confined to the insides of the random number generator.
+01:11:58,736 --> 01:12:01,700
+不再被限制于随机数生成器内部
+is no longer confined to the insides of the random number generator.
 
 1206
-01:12:01,700 --> 01:12:03,337
+01:12:01,808 --> 01:12:02,736
 它已经暴露了出来
 It has leaked out.
 
@@ -6037,47 +6037,47 @@ It has leaked out.
 It has leaked out into my procedure
 
 1208
-01:12:05,500 --> 01:12:10,555
+01:12:05,500 --> 01:12:10,080
 我们的的蒙特卡洛实验的过程中
 that does the Monte Carlo experiment.
 
 1209
-01:12:10,550 --> 01:12:11,875
+01:12:10,704 --> 01:12:11,870
 但比那更糟糕的是
 But what's worse than that,
 
 1210
-01:12:11,870 --> 01:12:16,675
+01:12:11,870 --> 01:12:16,240
 Cesaro实验 它也被暴露了
 is it's also, because it was contained inside my experiment itself, Cesaro,
 
 1211
-01:12:16,670 --> 01:12:20,604
-因为Cesaro被调用了两次
-Because Cesaro called twice,
+01:12:16,784 --> 01:12:19,488
+它被暴露了两次 因为Cesaro被调用了两次
+It leaked out that two. Because Cesaro called twice,
 
 1212
-01:12:20,600 --> 01:12:22,471
+01:12:20,864 --> 01:12:22,470
 每次有不同的值
 has to have a different value each time,
 
 1213
-01:12:22,470 --> 01:12:26,106
+01:12:22,470 --> 01:12:25,168
 如果我要进行一个合理的实验的话
 if I going to have a legitimate experimental test.
 
 1214
-01:12:26,100 --> 01:12:30,795
+01:12:26,320 --> 01:12:28,320
 所以Cesaro也不能成为函数了
 So Cesaro can't be a function either,
 
 1215
-01:12:30,790 --> 01:12:36,222
+01:12:31,040 --> 01:12:35,696
 除非我把随机数生成器的种子传给它#TBD
 unless I pass it the seed of the random number generator that is going to go wandering around.
 
 1216
-01:12:36,222 --> 01:12:39,377
+01:12:36,528 --> 01:12:39,370
 所以很不幸 随机数生成器的种子
 So unfortunately, the seed of random number generator
 
@@ -6087,156 +6087,173 @@ So unfortunately, the seed of random number generator
 has leaked out into Cesaro, from the random number generator,
 
 1218
-01:12:42,770 --> 01:12:45,462
+01:12:42,880 --> 01:12:45,168
 被暴露在蒙特卡洛实验中
 that's leaked into the Monte Carlo experiment.
 
 1219
-01:12:45,460 --> 01:12:50,066
+01:12:45,648 --> 01:12:49,120
 很不幸 这里的蒙特卡洛实验不再是通用的了
 And, unfortunately, my Monte Carlo experiment here is no longer general.
 
 1220
-01:12:50,060 --> 01:12:51,951
-这个蒙特卡洛实验
+01:12:50,256 --> 01:12:51,808
+这里的蒙特卡洛实验
 The Monte Carlo experiment here
 
 1221
-01:12:51,950 --> 01:12:58,600
+01:12:52,032 --> 01:12:54,736
 知道了我在实验中需要多少个随机数
 knows how many random numbers I need to do the experiment.
 
 1222
-01:12:58,600 --> 01:13:00,022
+01:12:58,960 --> 01:12:59,744
 这真的很糟糕
 That's sort of horrible.
 
 1223
-01:13:00,020 --> 01:13:03,266
+01:13:00,080 --> 01:13:02,544
 我失去了将问题分解开来的能力
 I lost an ability to decompose a problem into pieces,
 
 1224
-01:13:03,260 --> 01:13:09,368
+01:13:03,440 --> 01:13:09,120
 因为我不愿意接受信息的循环
 because I wasn't willing to accept the little loop of information,
 
 1225
-01:13:09,360 --> 01:13:12,817
+01:13:09,504 --> 01:13:12,432
 反馈的过程
 the feedback process,
 
 1226
-01:13:12,810 --> 01:13:15,946
-发生在随机数生成器内部
+01:13:12,880 --> 01:13:15,940
+发生在随机数生成器内部#TBD
 that happens inside the random number generator before
 
 1227
-01:13:15,940 --> 01:13:22,528
+01:13:15,940 --> 01:13:21,216
 在赋值给一个受限于随机数生成器的状态变量之前
 that was made by having an assignment to a state variable that was confined to the random number generator.
 
 1228
-01:13:22,520 --> 01:13:25,817
+01:13:22,920 --> 01:13:25,488
 所以实际上 随机数生成器是一个对象
 So the fact that the random number generator is an object,
 
 1229
-01:13:25,810 --> 01:13:27,933
+01:13:25,920 --> 01:13:27,376
 它有一个内部状态变量
 with an internal state variable,
 
 1230
-01:13:27,930 --> 01:13:32,671
-它不受任何东西影响 但是它会给你某些东西 把它的力量赐予你
-it's affected by nothing, but it'll give you something, and it will apply it's force to you,
+01:13:28,120 --> 01:13:29,200
+它不受任何东西影响
+it's affected by nothing,
 
 1231
-01:13:32,670 --> 01:13:35,826
+01:13:29,200 --> 01:13:29,232
+但是它会给你某些东西 把它的力量赐予你
+but it'll give you something, and it will apply it's force to you,
+它不受任何东西影响
+it's affected by nothing,
+
+1232
+01:13:29,232 --> 01:13:31,600
+但是它会给你某些东西 把它的力量赐予你
+but it'll give you something, and it will apply it's force to you,
+
+1233
+01:13:32,800 --> 01:13:34,288
 那是我们现在缺少的
 that was what we're missing now.
 
-1232
-01:13:37,820 --> 01:13:40,737
+1234
+01:13:38,000 --> 01:13:40,730
 好 我认为我已经知道了
 OK, well I think we've seen
 
-1233
-01:13:40,737 --> 01:13:42,730
+1235
+01:13:40,730 --> 01:13:42,304
 引入赋值的充分理由
 enough reason for doing this,
 
-1234
-01:13:42,730 --> 01:13:45,382
+1236
+01:13:42,832 --> 01:13:45,248
 并且一些看起来很圆满
 and it all sort of looks very wonderful.
 
-1235
-01:13:45,380 --> 01:13:51,568
+1237
+01:13:45,380 --> 01:13:50,704
 如果赋值是一个好东西
 Wouldn't it be nice if assignment was a good thing
 
-1236
-01:13:51,560 --> 01:13:53,146
-并且赋值是值得的 这不是很好吗？
+1238
+01:13:51,740 --> 01:13:53,040
+并且赋值是值得的 这不是很好吗？ #TBD
 and maybe it's worth it,
 
-1237
-01:13:53,140 --> 01:13:55,231
+1239
+01:13:53,280 --> 01:13:54,144
 我不是很确定
 but I'm not sure.
 
-1238
-01:13:55,230 --> 01:13:57,048
-Mr. Gilbert and Sullivan说过
+1240
+01:13:55,344 --> 01:13:57,040
+Mr. Gilbert和Sullivan说过
 As Mr. Gilbert and Sullivan said,
 
-1239
+1241
 01:13:57,040 --> 01:13:58,515
 事情很少与它们看起来相一致
 things are seldom what they seem,
 
-1240
-01:13:58,510 --> 01:14:01,546
+1242
+01:13:58,510 --> 01:14:00,352
 #TBD
 skim milk masquerades as cream.
 
-1241
-01:14:01,733 --> 01:14:05,862
+1243
+01:14:01,872 --> 01:14:03,904
 谁有什么问题吗？
 Are there any questions?
 
-1242
-01:14:16,740 --> 01:14:19,866
+1244
+01:14:16,976 --> 01:14:18,304
 在座的有哲学家吗？
 Are there any philosophers here?
 
-1243
-01:14:19,860 --> 01:14:24,328
-有人想要讨论objects的问题吗？
+1245
+01:14:20,064 --> 01:14:22,032
+有人想要讨论有关“对象”的问题吗？
 Anybody want to argue about objects?
 
-1244
-01:14:24,320 --> 01:14:27,097
-你们已经被战翻在地了 是吧？
+1246
+01:14:24,320 --> 01:14:25,504
+你们已经一头雾水了是吧？
 You're just floored, right?
 
-1245
-01:14:29,510 --> 01:14:35,360
-你们不完成作业 就遇不到好问题
-And you haven't done your homework yet. You haven't come up with a good question.
+1247
+01:14:29,720 --> 01:14:30,720
+你们还没有完成家庭作业呢
+And you haven't done your homework yet.
 
-1246
-01:14:36,142 --> 01:14:38,140
+1248
+01:14:30,736 --> 01:14:32,000
+你们需要提一个好问题
+You haven't come up with a good question.
+
+1249
+01:14:36,352 --> 01:14:37,440
 好了
 Oh, well.
 
-1247
-01:14:39,970 --> 01:14:42,853
+1250
+01:14:39,970 --> 01:14:42,336
 感谢你们 我们下课吧
 Sure, thank you. Let's take the long break now.
 
-1248
+1251
 01:14:47,900 --> 01:15:05,911
 [音乐]
 [MUSIC PLAYING]
