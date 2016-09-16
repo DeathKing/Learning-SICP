@@ -5987,7 +5987,7 @@ What's that x?
 
 1198
 01:11:12,330 --> 01:11:15,200
-X是随机数生成器的状态
+X是随机数发生器的状态
 That x is the state of the random number generator.
 
 1199
@@ -6002,7 +6002,7 @@ The same random update function that I have over here
 
 1201
 01:11:23,790 --> 01:11:27,152
-是我要在随机数生成器中用的 我可能自己写一个 #TBD
+来自于一个我另外写的随机数发生器
 is the one I would have used in a random number generator if I were building it the other way,
 
 1202
@@ -6011,184 +6011,182 @@ is the one I would have used in a random number generator if I were building it 
 the one I get out of Knuth's books.
 
 1203
-01:11:31,568 --> 01:11:34,368
-X将转化为X1 但我需要两个随机数
-x is going to get transformed into x1, I need two random numbers.
+01:11:31,560 --> 01:11:33,360
+X将转化为X1
+x is going to get transformed into x1,
 
 1204
+01:11:33,376 --> 01:11:34,360
+但我需要两个随机数
+I need two random numbers.
+
+1205
 01:11:34,816 --> 01:11:36,928
 X1将被转化为X2
 And x1 is going to get transformed into x2,
 
-1205
+1206
 01:11:37,264 --> 01:11:38,448
 我有两个随机数
 I have two random numbers.
 
-1206
+1207
 01:11:39,504 --> 01:11:42,144
 然后进行和之前一样的步骤
 I then have to do exactly what I did before.
 
-1207
+1208
 01:11:42,520 --> 01:11:44,192
 取X1和X2的最大公约数
 I take the GCD of x1 x2.
 
-1208
+1209
 01:11:44,224 --> 01:11:47,152
-如果结果是1 则将x2作为下一个x的值继续循环
+如果结果是1 则将X2作为下一个X的值继续循环
 If that's one, then I go around the loop with X2 being the next value of x.
 
-1209
+1210
 01:11:54,784 --> 01:11:55,984
 这里所发生的
 You see what's happened here
 
-1210
+1211
 01:11:56,880 --> 01:11:58,704
-随机数生成器的状态
+随机数发生器的状态
 is that the state of the random number generator
 
-1211
+1212
 01:11:58,736 --> 01:12:01,700
-不再被限制于随机数生成器内部
+不再被限制于其内部
 is no longer confined to the insides of the random number generator.
 
-1212
+1213
 01:12:01,808 --> 01:12:02,736
 它已经暴露了出来
 It has leaked out.
 
-1213
+1214
 01:12:03,330 --> 01:12:05,506
 它已经被暴露在
 It has leaked out into my procedure
 
-1214
+1215
 01:12:05,500 --> 01:12:10,080
 我们的的蒙特卡洛实验的过程中
 that does the Monte Carlo experiment.
 
-1215
+1216
 01:12:10,704 --> 01:12:11,870
 但比那更糟糕的是
 But what's worse than that,
 
-1216
+1217
 01:12:11,870 --> 01:12:16,240
-Cesaro实验 它也被暴露了
+同样的 因为它也被包含在我们的Cesaro实验中
 is it's also, because it was contained inside my experiment itself, Cesaro,
 
-1217
+1218
 01:12:16,784 --> 01:12:19,488
 它被暴露了两次 因为Cesaro被调用了两次
 It leaked out that two. Because Cesaro called twice,
 
-1218
+1219
 01:12:20,864 --> 01:12:22,470
 每次有不同的值
 has to have a different value each time,
 
-1219
+1220
 01:12:22,470 --> 01:12:25,168
 如果我要进行一个合理的实验的话
 if I going to have a legitimate experimental test.
 
-1220
+1221
 01:12:26,320 --> 01:12:28,320
 所以Cesaro也不能成为函数了
 So Cesaro can't be a function either,
 
-1221
+1222
 01:12:31,040 --> 01:12:35,696
-除非我把随机数生成器的种子传给它#TBD
+除非我把随机数发生器的种子传给它
 unless I pass it the seed of the random number generator that is going to go wandering around.
 
-1222
+1223
 01:12:36,528 --> 01:12:39,370
-所以很不幸 随机数生成器的种子
+所以很不幸 随机数发生器的种子
 So unfortunately, the seed of random number generator
 
-1223
+1224
 01:12:39,370 --> 01:12:42,777
-从随机数生成器中暴露到了Cesaro内部
+从随机数发生器中暴露到了Cesaro内部
 has leaked out into Cesaro, from the random number generator,
 
-1224
+1225
 01:12:42,880 --> 01:12:45,168
 被暴露在蒙特卡洛实验中
 that's leaked into the Monte Carlo experiment.
 
-1225
+1226
 01:12:45,648 --> 01:12:49,120
 很不幸 这里的蒙特卡洛实验不再是通用的了
 And, unfortunately, my Monte Carlo experiment here is no longer general.
 
-1226
+1227
 01:12:50,256 --> 01:12:51,808
 这里的蒙特卡洛实验
 The Monte Carlo experiment here
 
-1227
+1228
 01:12:52,032 --> 01:12:54,736
 知道了我在实验中需要多少个随机数
 knows how many random numbers I need to do the experiment.
 
-1228
+1229
 01:12:58,960 --> 01:12:59,744
 这真的很糟糕
 That's sort of horrible.
 
-1229
+1230
 01:13:00,080 --> 01:13:02,544
 我失去了将问题分解开来的能力
 I lost an ability to decompose a problem into pieces,
 
-1230
+1231
 01:13:03,440 --> 01:13:09,120
 因为我不愿意接受信息的循环
 because I wasn't willing to accept the little loop of information,
 
-1231
+1232
 01:13:09,504 --> 01:13:12,432
 反馈的过程
 the feedback process,
 
-1232
+1233
 01:13:12,880 --> 01:13:15,940
-发生在随机数生成器内部#TBD
+这之前都是发生在随机数发生器内部
 that happens inside the random number generator before
 
-1233
+1234
 01:13:15,940 --> 01:13:21,216
-在赋值给一个受限于随机数生成器的状态变量之前
+也就是赋值给一个限制在随机数生成器内部的状态变量
 that was made by having an assignment to a state variable that was confined to the random number generator.
 
-1234
+1235
 01:13:22,920 --> 01:13:25,488
-所以实际上 随机数生成器是一个对象
+所以实际上 随机数发生器是一个对象
 So the fact that the random number generator is an object,
 
-1235
+1236
 01:13:25,920 --> 01:13:27,376
 它有一个内部状态变量
 with an internal state variable,
 
-1236
-01:13:28,120 --> 01:13:29,200
-它不受任何东西影响
-it's affected by nothing,
-
 1237
-01:13:29,200 --> 01:13:29,232
-但是它会给你某些东西 把它的力量赐予你
-but it'll give you something, and it will apply it's force to you,
+01:13:28,064 --> 01:13:29,360
 它不受任何东西影响
 it's affected by nothing,
 
 1238
-01:13:29,232 --> 01:13:31,600
+01:13:29,376 --> 01:13:31,600
 但是它会给你某些东西 把它的力量赐予你
 but it'll give you something, and it will apply it's force to you,
 
@@ -6234,12 +6232,12 @@ As Mr. Gilbert and Sullivan said,
 
 1247
 01:13:57,040 --> 01:13:58,515
-事情很少与它们看起来相一致
+事物往往不像表面看到的那样
 things are seldom what they seem,
 
 1248
 01:13:58,510 --> 01:14:00,352
-#TBD
+脱脂牛奶也能装成奶油
 skim milk masquerades as cream.
 
 1249
