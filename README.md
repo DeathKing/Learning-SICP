@@ -23,7 +23,7 @@
 
 + [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
-+ [百度网盘SICP文件夹（请注意安装目录中的字体文件）](http://pan.baidu.com/s/1bnvO3vT)
++ [百度网盘SICP文件夹（请注意安装目录中的字体文件）](https://pan.baidu.com/s/1pLbeytt)
 
 | 编号 | 标题 | 优酷 | YouTube | 下载地址 | 译者 |
 | ---- | ---- |:----:|:-------:|:--------:| ---- |
