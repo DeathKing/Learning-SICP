@@ -3000,11 +3000,11 @@ I'm going to have to create a new segment.
 
 601
 00:38:11,340 --> 00:38:15,648
-我想把这个segment放在10与30之间
+我想把这个 SEGMENT 放在10与30之间
 I want my time 20 segment to exist between time 10 and time 30.
 
 602
-00:38:17,610 --> 00:38:20,170
+00:38:17,610 --> 00:38:19,328
 这着实要花点功夫
 Well, that takes a little work.
 
@@ -3015,965 +3015,1145 @@ I'm going to have to do a CONS.
 
 604
 00:38:24,260 --> 00:38:29,940
-构建一个新的segment
+我要为这个 AGENDA 构建一个新的 SEGMENT
 I'm going to have to make a new element of the agenda list--list of segments.
 
 605
-00:38:33,600 --> 00:38:35,400
+00:38:33,600 --> 00:38:34,816
 这里的连接必须要变
 I'm going to have to change.
 
 606
-00:38:35,400 --> 00:38:37,540
+00:38:35,400 --> 00:38:36,304
 就像这样
 Here's change.
 
 607
-00:38:37,540 --> 00:38:56,657
-把segment 10的CDR指向新的segment 20，新的segment 20的CDR指向segment 30
-I'm going to have to change the CDR of the CDR of the agenda to point that a new CONS of the new segment and the CDR of the CDR of the CDR of the agenda, the CD-D-D-DR.
+00:38:37,540 --> 00:38:42,800
+我将要修改 AGENDA 的 CDR 部分的 CDR 部分
+I'm going to have to change the CDR of the CDR of the agenda
 
 608
-00:38:56,657 --> 00:39:06,290
-这个segment的时刻为20，队列只有一件事要做
-And this is going to have a new segment now of time 20 with its own queue, which now has one element in it.
+00:38:44,880 --> 00:38:49,456
+让它指向一个新的 SEGMENT 序对
+point that a new CONS of the new segment
 
 609
-00:39:10,730 --> 00:39:20,770
-如果我想在后面添加点什么，就更改这个CDR指向要添加的东西
-If I wanted to add something at the end, I'm going to have to replace the CDR of this, of this list with something.
+00:38:50,112 --> 00:38:54,656
+#TBD
+and the CDR of the CDR of the CDR of the agenda, the CD-D-D-DR.
 
 610
-00:39:20,770 --> 00:39:24,040
-必须对数据结构进行修改
-We're going to have to change that piece of data structure.
+00:38:57,180 --> 00:39:01,888
+我们有一个发生在20时刻的新的SEGMENT
+And this is going to have a new segment now of time 20
 
 611
-00:39:24,040 --> 00:39:27,210
-因此我需要新的基础操作
-So I'm going to need new primitives for doing this.
+00:39:02,304 --> 00:39:03,728
+它自己维护了一个队列
+with its own queue,
 
 612
-00:39:27,210 --> 00:39:29,550
-因为原有的基础操作达不到这一点
-But I'm just showing you why I need them.
+00:39:04,848 --> 00:39:06,290
+这个队列中只有一个元素
+which now has one element in it.
 
 613
-00:39:29,550 --> 00:39:49,400
-如果我想在时刻5做点什么事，按时间顺序来看，就得改变这里的CDR，这也就是我留了一个“头”的原因，可以方便的进行在队列头插入的操作
-And finally, if I wanted to add a thing to be done at time 5, I'm going to have to change this one, because I'm going to have to add it in over here, which is why I planned ahead and had a header cell, which has a place.
+00:39:10,730 --> 00:39:12,528
+如果我想在后面添加点什么
+If I wanted to add something at the end,
 
 614
-00:39:49,400 --> 00:39:53,420
-如果我想做些改变
-If I'm going to change things, I have to have places for the change.
+00:39:12,544 --> 00:39:15,870
+我就需要替换这个东西的 CDR 部分
+I'm going to have to replace the CDR of this,
 
 615
-00:39:53,420 --> 00:39:58,600
-就必须找准哪些地方需要修改
-I have to have a place to make the change.
+00:39:16,992 --> 00:39:19,216
+替换掉这个表的 CDR 部分
+of this list with something.
 
 616
-00:39:58,600 --> 00:40:02,540
-从agenda中删除东西并不困难
-If I remove things from the agenda, that's not so hard.
+00:39:20,592 --> 00:39:23,312
+我们就对该数据结构进行修改
+We're have to change that piece of data structure.
 
 617
-00:40:02,540 --> 00:40:11,220
-删除操作非常简单，我只讲一种情况，先找到第一个segment
-Removing them from the beginning is pretty easy, which is the only case I have. I can go looking for the first, the first segment.
+00:39:24,040 --> 00:39:25,792
+因此我需要新的基本运算
+So I'm going to need new primitives for doing this.
 
 618
-00:40:11,220 --> 00:40:14,510
-判断队列是否为空
-I see if it has a non-empty queue.
+00:39:27,210 --> 00:39:28,624
+因为原有的基础运算达不到这一点
+But I'm just showing you why I need them.
 
 619
-00:40:14,510 --> 00:40:20,100
-如果队列不是空的，就把要移除的事情从队列中删掉
-If it has a non-empty queue, well, I'm going to delete one element from the queue, like that.
+00:39:29,440 --> 00:39:33,888
+如果我想在5时刻做点什么事
+And finally, if I wanted to add a thing to be done at time 5,
 
 620
-00:40:20,100 --> 00:40:24,220
-如果这时队列变为空的，就还要继续把segment删掉
-If the queue ever becomes empty, then I have to delete the whole segment.
+00:39:37,120 --> 00:39:39,200
+我就得去修改这个东西
+I'm going to have to change this one,
 
 621
-00:40:24,220 --> 00:40:28,220
-这里，把“头”的CDR指向这里
-And then this, this changes to point to here.
+00:39:40,816 --> 00:39:42,128
+因为我得添加到这里
+because I'm going to have to add it in over here,
 
 622
-00:40:28,220 --> 00:40:36,440
-这个数据结构操作起来很复杂，很无趣
-So it's quite a complicated data structure manipulation going on, the details of which are not really very exciting.
+00:39:43,290 --> 00:39:46,224
+这也就是我预留了一个“头”序对的原因
+which is why I planned ahead and had a header cell,
 
 623
-00:40:36,440 --> 00:40:38,920
-现在我们来聊聊队列
-Now, let's talk about queues.
+00:39:47,568 --> 00:39:48,592
+它预留了空间
+which has a place.
 
 624
-00:40:38,920 --> 00:40:41,160
+00:39:49,400 --> 00:39:52,112
+我需要有空间去做改变
+If I'm going to change things, I have to have places for the change.
+
+625
+00:39:53,888 --> 00:39:56,560
+需要有存储空间 去改变
+I have to have a place to make the change.
+
+626
+00:39:58,600 --> 00:40:02,540
+从 AGENDA 中删除东西并不困难
+If I remove things from the agenda, that's not so hard.
+
+627
+00:40:02,540 --> 00:40:04,624
+移除第一个元素相当容易
+Removing them from the beginning is pretty easy,
+
+628
+00:40:04,928 --> 00:40:06,144
+这也是我需要考虑的唯一情况
+which is the only case I have.
+
+629
+00:40:06,496 --> 00:40:10,192
+我可以先找到第一个 SEGMENT
+I can go looking for the first, the first segment.
+
+630
+00:40:11,220 --> 00:40:14,000
+先判断它的队列是否为空
+I see if it has a non-empty queue.
+
+631
+00:40:14,810 --> 00:40:16,176
+如果队列不是空的
+If it has a non-empty queue,
+
+632
+00:40:16,320 --> 00:40:18,624
+那么 我就会把元素从中删除
+well, I'm going to delete one element from the queue
+
+633
+00:40:19,216 --> 00:40:19,744
+像这样
+like that.
+
+634
+00:40:20,100 --> 00:40:21,920
+如果这时队列变为空的
+If the queue ever becomes empty,
+
+635
+00:40:22,640 --> 00:40:24,220
+就还要继续把 SEGMENT 删掉
+then I have to delete the whole segment.
+
+636
+00:40:24,220 --> 00:40:26,496
+然后 让这个单元指向这里
+And then this, this changes to point to here.
+
+637
+00:40:28,220 --> 00:40:31,088
+这个数据结构操作起来很复杂
+So it's quite a complicated data structure manipulation going on,
+
+638
+00:40:32,256 --> 00:40:35,376
+它的具体实现也不是很有趣
+the details of which are not really very exciting.
+
+639
+00:40:36,440 --> 00:40:38,480
+现在我们来探讨一下队列
+Now, let's talk about queues.
+
+640
+00:40:38,920 --> 00:40:39,760
 它们很相似
 They're similar.
 
-625
-00:40:41,160 --> 00:40:44,340
-每一个segment都有一个队列
+641
+00:40:41,160 --> 00:40:43,520
+每一个 AGENDA 都有一个队列
 Because each of these agendas has a queue in it.
 
-626
-00:40:44,340 --> 00:40:45,590
+642
+00:40:44,340 --> 00:40:45,024
 队列是什么？
 What's a queue?
 
-627
-00:40:49,079 --> 00:40:52,350
-一个队列有这些基础操作
+643
+00:40:49,472 --> 00:40:51,856
+队列能够进行下述基本运算：
 A queue is going to have the following primitive operations.
 
-628
-00:40:52,350 --> 00:41:02,170
+644
+00:40:52,784 --> 00:41:02,170
 MAKE-QUEUE 构建一个新队列
 To make a queue, this gives me a new queue.
 
-629
-00:41:07,274 --> 00:41:16,850
-INSERT-QUEUE！ 向队列中插入新元素
+645
+00:41:07,776 --> 00:41:17,104
+INSERT-QUEUE! 向队列中插入新元素
 I'm going to have to be able to insert into a queue a new item.
 
-630
-00:41:24,510 --> 00:41:28,740
-DELETE-QUEUE！ 从队列中删除元素
+646
+00:41:24,510 --> 00:41:28,656
+DELETE-QUEUE! 从队列中删除元素
 I'm going to have to be able to delete from a queue the first item in the queue.
 
-631
-00:41:39,988 --> 00:41:52,890
+647
+00:41:40,448 --> 00:41:52,048
 FRONT-QUEUE 查看队列中第一个元素
 And I want to be able to get the first thing in the queue from some queue.
 
-632
-00:41:52,890 --> 00:41:55,140
+648
+00:41:53,136 --> 00:41:55,140
 还需要检测队列是否为空
 I also have to be able to test whether a queue is empty.
 
-633
-00:42:07,110 --> 00:42:15,120
-如果你以后要发明些类似的基础操作，我希望你要注意下命名约定
-And when you invent things like this, I want you to be very careful to use the kinds of conventions I use for naming things.
+649
+00:42:07,110 --> 00:42:08,704
+当你定义像这样的运算时
+And when you invent things like this,
 
-634
-00:42:15,120 --> 00:42:19,870
-有改动的操作加上！，判断的谓词用？
+650
+00:42:09,024 --> 00:42:10,448
+我希望你能够注意
+I want you to be very careful
+
+651
+00:42:10,640 --> 00:42:14,090
+按照我这样的习惯去为它们命名
+to use the kinds of conventions I use for naming things.
+
+652
+00:42:15,120 --> 00:42:19,152
+“!”表示操作具有副作用 “?”代表定义谓词
 Notice that I'm careful to say these change something and that tests it.
 
-635
-00:42:19,870 --> 00:42:24,335
-看起来，和这边的好像差不多
+653
+00:42:19,870 --> 00:42:21,856
+就比如说 这里应该加上一个“!”
 And presumably, I did the same thing over here.
 
-636
-00:42:24,335 --> 00:42:29,240
-嗯，这里也需要一个是否为空的检测
+654
+00:42:24,656 --> 00:42:26,960
+嗯 这里也需要一个是否为空的检测#TBD
 OK, and there should be an empty test over here.
 
-637
-00:42:29,240 --> 00:42:31,720
-好的，我要如何构建一个队列呢？
+655
+00:42:29,240 --> 00:42:30,720
+那么 我要如何构建一个队列呢？
 OK, well, how would I make a queue?
 
-638
-00:42:31,720 --> 00:42:37,840
-队列是一个后进先出的结构
-A queue wants to be something I can add to at the end of, and pick up the thing at the beginning of.
+656
+00:42:31,720 --> 00:42:34,112
+队列是一种 可以向其尾部添加东西
+A queue wants to be something I can add to at the end of,
 
-639
-00:42:37,840 --> 00:42:41,230
-从队列头删除元素，向队列尾添加元素
+657
+00:42:35,120 --> 00:42:36,830
+也可以从前面取出东西的结构
+and pick up the thing at the beginning of.
+
+658
+00:42:37,840 --> 00:42:40,512
+我可以从队列头删除元素 向队列尾添加元素
 I should be able to delete from the beginning and add to the end.
 
-640
-00:42:41,230 --> 00:42:43,740
+659
+00:42:41,230 --> 00:42:43,248
 我可以用一种很简单的结构来实现
 Well, I'm going to show you a very simple structure for that.
 
-641
-00:42:43,740 --> 00:42:47,080
-先有一个序对
+660
+00:42:43,888 --> 00:42:45,728
+我们当然可以使用 CONS 来构造
 We can make this out of CONSes as well.
 
-642
-00:42:47,080 --> 00:42:49,910
-整个队列的开始
+661
+00:42:47,080 --> 00:42:47,792
+这是一个队列
 Here's a queue.
 
-643
-00:42:49,910 --> 00:42:59,610
-这是一个队列“头”，包含一个头指针和一个尾指针
-It has--it has a queue header, which contains two parts-- a front pointer and a rear pointer.
+662
+00:42:49,910 --> 00:42:52,368
+他有一个队列头
+It has--it has a queue header,
 
-644
-00:43:02,930 --> 00:43:09,000
-假如队列一共两个元素
+663
+00:42:53,584 --> 00:42:54,928
+它包含两个部分
+which contains two parts--
+
+664
+00:42:55,280 --> 00:42:56,256
+其中一个是头指针
+a front pointer
+
+665
+00:42:58,784 --> 00:42:59,824
+另一个是尾指针
+and a rear pointer.
+
+666
+00:43:03,120 --> 00:43:06,336
+假设我有一个包含两个元素的队列
 And here I have a queue with two items in it.
 
-645
-00:43:09,000 --> 00:43:12,095
-第一个，值假定是1
+667
+00:43:09,136 --> 00:43:12,090
+假设第一个元素是 1
 The first item, I don't know, it's perhaps a 1.
 
-646
-00:43:12,095 --> 00:43:16,530
-第二个假定是2吧
+668
+00:43:12,464 --> 00:43:16,530
+而第二个元素假定是 2
 And the second item, I don't know, let's give it a 2.
 
-647
-00:43:21,160 --> 00:43:31,850
-需要两个指针的原因在于，向尾部添加元素的时候，就不用一直CDR找到结尾这样费力
-The reason why I want two pointers in here, a front pointer and a rear pointer, is so I can add to the end without having to chase down from the beginning.
+669
+00:43:21,408 --> 00:43:23,520
+我之所以要在这里设置两个指针
+The reason why I want two pointers in here,
 
-648
-00:43:31,850 --> 00:43:47,530
-例如，我想要向队列添加入一个新元素，只需要先用CONS构建一个序对，假如值是3
-So for example, if I wanted to add one more item to this queue, if I want to add on another item to be worried about later, all I have to do is make a CONS, which contains that item, say a 3.
+670
+00:43:24,096 --> 00:43:25,616
+一个头指针和一个尾指针
+a front pointer and a rear pointer,
 
-649
+671
+00:43:25,720 --> 00:43:27,104
+这样 当向尾部添加元素的时候
+is so I can add to the end
+
+672
+00:43:27,488 --> 00:43:29,450
+就不用从最开始开始遍历
+without having to chase down from the beginning.
+
+673
+00:43:31,850 --> 00:43:34,800
+例如 我想要向队列添加入一个新元素
+So for example, if I wanted to add one more item to this queue,
+
+674
+00:43:35,260 --> 00:43:41,024
+如果想添加一个稍后使用的元素
+if I want to add on another item to be worried about later,
+
+675
+00:43:41,088 --> 00:43:42,400
+只需要先用CONS构建一个序对
+all I have to do is make a CONS,
+
+676
+00:43:43,472 --> 00:43:46,592
+假设它包含一个值 -- 3
+which contains that item, say a 3.
+
+677
 00:43:47,530 --> 00:43:51,340
 再添加到队列里
 That's for inserting 3 into the queue.
 
-650
-00:43:51,340 --> 00:44:00,100
-这里就需要把item 2的CDR指向item 3
-Then I have to change this pointer here to here.
+678
+00:43:51,520 --> 00:43:53,776
+这里就需要把这个元素 CDR 部分的指针
+Then I have to change this pointer here
 
-651
+679
+00:43:56,944 --> 00:43:58,760
+指向这个元素
+Okay? to here.
+
+680
 00:44:00,100 --> 00:44:04,320
-尾指针也指到最后
+同时也更新尾指针
 And I have to change this one to point to the new rear.
 
-652
-00:44:09,120 --> 00:44:18,890
-如果我想查看第一个元素，由头指针就可以轻易找到
-If I wish to take the first element of the queue, the first item, I just go chasing down the front pointer until I find the first one and pick it up.
+681
+00:44:09,120 --> 00:44:12,688
+如果我想查看队列的第一个元素
+If I wish to take the first element of the queue, the first item,
 
-653
-00:44:18,890 --> 00:44:27,450
-如果想删除元素，只需要把头指针向后移到就行
-If I wish to delete the first item from the queue, delete-queue, all I do is move the front pointer along this way.
+682
+00:44:12,960 --> 00:44:17,120
+我只需要通过头指针去寻找 即可轻松找到
+I just go chasing down the front pointer until I find the first one and pick it up.
 
-654
-00:44:27,450 --> 00:44:31,700
+683
+00:44:18,890 --> 00:44:23,264
+如果我想调用 DELETE-QUEUE 删除元素
+If I wish to delete the first item from the queue, delete-queue,
+
+684
+00:44:24,144 --> 00:44:26,352
+只需要把头指针向后移到就行
+all I do is move the front pointer along this way.
+
+685
+00:44:27,712 --> 00:44:29,312
 新的头指针指向这里
 The new front of the queue is now this.
 
-655
-00:44:31,700 --> 00:44:34,390
-所以队列比较简单
+686
+00:44:31,700 --> 00:44:33,136
+就是这么简单
 So queues are very simple too.
 
-656
-00:44:34,390 --> 00:44:41,350
-我们需要一些另外的基础操作来支持这种修改操作
-So what you see now is that I need a certain number of new primitive operations.
+687
+00:44:34,480 --> 00:44:35,760
+为了实现这些操作
+So what you see now
 
-657
-00:44:41,350 --> 00:44:42,560
+688
+00:44:37,248 --> 00:44:40,832
+我们还需要一些新的基本运算
+is that I need a certain number of new primitive operations.
+
+689
+00:44:41,488 --> 00:44:42,560
 我先列出它们的名字
 And I'm going to give them some names.
 
-658
-00:44:42,560 --> 00:44:47,350
-然后我们再来看它们是如何使用的
+690
+00:44:42,992 --> 00:44:46,288
+然后我们再来看 它们的原理和使用方法
 And then we're going to look into how they work, and how they're used.
 
-659
-00:44:47,350 --> 00:44:58,940
-SET-CAR！ 改变一个序对的CAR为一个新值
-We have set the CAR of some pair, or a thing produced by CONSing, to a new value.
+691
+00:44:47,350 --> 00:44:55,040
+SET-CAR! 能够为序对的 CAR 部分
+We have set the CAR of some pair,
 
-660
+692
+00:44:55,888 --> 00:44:59,360
+赋予一个新的值
+or a thing produced by CONSing, to a new value.
+
+693
 00:45:02,370 --> 00:45:09,920
-SET-CDR！和它类似
+SET-CDR! 可以为序对的 CDR 部分赋新值
 And set the CDR of a pair to a new value.
 
-661
-00:45:12,680 --> 00:45:16,030
+694
+00:45:13,024 --> 00:45:14,784
 现在来看看它们到底做了什么
 And then we're going to look into how they work.
 
-662
-00:45:16,030 --> 00:45:20,960
-我用SET-CAR！修改头指针的指向，删除第一个元素
+695
+00:45:16,030 --> 00:45:20,512
+为了删除队列中的第一个元素 我需要修改这里的 CAR 部分
 I needed setting CAR over here to delete the first element of the queue.
 
-663
-00:45:20,960 --> 00:45:23,470
-这是CAR，我把它SET为另的值
+696
+00:45:20,960 --> 00:45:22,528
+这是 CAR 部分 我需要修改它的值
 This is the CAR, and I had to set it.
 
-664
-00:45:23,470 --> 00:45:30,160
-同理SET-CDR！修改尾指针的指向来添加元素
-I had to be able to set the CDR to be able to move the rear pointer, or to be able to increment the queue here.
+697
+00:45:23,470 --> 00:45:24,960
+我需要能够修改 CDR 部分
+I had to be able to set the CDR
 
-665
-00:45:30,160 --> 00:45:35,515
-全部的修改工作都是由SET-CAR！ SET-CDR！完成的
-All of the operations I did were made out of those that I just showed you on the, on the last blackboard.
+698
+00:45:25,280 --> 00:45:27,088
+以便我能够移动尾指针
+to be able to move the rear pointer,
 
-666
+699
+00:45:27,216 --> 00:45:28,760
+也使得我能够扩充队列
+or to be able to increment the queue here.
+
+700
+00:45:30,160 --> 00:45:31,600
+之前介绍的所有运算
+All of the operations I did
+
+701
+00:45:31,904 --> 00:45:35,904
+上一块黑板上的所有东西 都是基于这些运算的
+were made out of those that I just showed you on the, on the last blackboard.
+
+702
 00:45:38,230 --> 00:45:38,430
 非常完美
 Good.
 
-667
+703
 00:45:38,430 --> 00:45:40,357
 先讲到这里，大家休息一下
 Let's pause the time, and take a little break then.
 
-668
+704
 00:46:38,346 --> 00:47:21,850
 当我们讲到CONS的时候，我们提到了CONS的原则，(car (cons x y)) => x，(cdr (cons x y )) => y
 When we originally introduced pairs made out of CONS, made by CONS, we only said a few axioms about them, which were of the form-- what were they-- for all X and Y, the CAR of the CONS of X and Y is X and the CDR of the CONS of X and Y is Y. Now, these say nothing about whether a CONS has an identity like a person.
 
-669
+705
 00:47:21,850 --> 00:47:29,740
 这个描述的有点抽象，CONS是由它组成的部分所组成的
 In fact, all they say is something sort of abstract, that a CONS is the parts it's made out of.
 
-670
+706
 00:47:29,740 --> 00:47:37,390
 要是这样来看，如果两个CONS，它们两个的组成部分是相同的，从原则来看，这两个CONS就应该相同
 And of course, two things are made out of the same parts, they're the same, at least from the point of view of these axioms.
 
-671
+707
 00:47:37,390 --> 00:47:49,830
 但是引入了赋值以后，数据变成了变量，值可以通过赋值来改变，比如用SET-CAR！ SET-CDR！，这样来看，这些原则好像没有把CONS描述清楚
 But by introducing assignment-- in fact, mutable data is a kind of assignment, we have a set CAR and a set CDR-- by introducing those, these axioms no longer tell the whole story.
 
-672
+708
 00:47:49,830 --> 00:47:53,250
 但是这里写的也是对的
 And they're still true if written exactly like this.
 
-673
+709
 00:47:53,250 --> 00:47:56,070
 只不过描述的不再完整
 But they don't tell the whole story.
 
-674
+710
 00:47:56,070 --> 00:48:10,090
 如果我用SET-CAR！ SET-CDR！改变两个CONS，使它们的CAR和CDR都相同，这两个CONS是否是完全相同的？
 Because if I'm going to set a particular CAR in a particular CONS, the questions are, well, is that setting all CARs and all CONSes of the same two things or not?
 
-675
+711
 00:48:10,090 --> 00:48:21,570
 假如我用CONS构建两个有理数，两个3/4
 If I--if we use CONSes to make up things like rational numbers, or things like 3 over 4, supposing I had two three-fourths.
 
-676
+712
 00:48:21,570 --> 00:48:25,340
 这两个一样吗？还是不一样？
 Are they the same one-- or are they different?
 
-677
+713
 00:48:25,340 --> 00:48:27,860
 当然，对于数字来说，这并不重要
 Well, in the case of numbers, it doesn't matter.
 
-678
+714
 00:48:27,860 --> 00:48:33,020
 因为这两个有理数表示的大小是一样的，都是3/4
 Because there's no meaning to changing the denominator of a number.
 
-679
+715
 00:48:33,020 --> 00:48:36,840
 你可以改变一个有理数的分母来使它们变的不一样
 What you could do is make a number which has a different denominator.
 
-680
+716
 00:48:36,840 --> 00:48:44,770
 但是这看来很怪异，强制的改变分母使其两个有理数有区别，这也和数学上认知不符合
 But the concept of changing a number which has to have a different denominator is sort of a very weird, and sort of not supported by what you think of as mathematics.
 
-681
+717
 00:48:44,770 --> 00:48:53,690
 但是，如果CONS表示的是现实世界中的物体，修改CAR就像剪掉你的指甲一样，是切实存在的
 However, when these CONSes represent things in the physical world, then changing something like the CAR is like removing a piece of the fingernail.
 
-682
+718
 00:48:53,690 --> 00:48:57,770
 所以，每一个CONS都是不同的，它们有自己的身份
 And so CONSes have an identity.
 
-683
+719
 00:48:57,770 --> 00:49:01,280
 我来先说明“身份”是什么意思
 Let me show you what I mean about identity, first of all.
 
-684
+720
 00:49:01,280 --> 00:49:04,320
 来看些例子
 Let's do some little example here.
 
-685
+721
 00:49:04,320 --> 00:49:15,200
 假如(define a (cons 1 2))
 Supposing I define A to the CONS of 1 and 2.
 
-686
+722
 00:49:18,040 --> 00:49:38,120
 这是什么意思呢？在环境中的某处有一个符号a，它代表了一个序对，CAR指向1，CDR指向2
 Well, what that means, first of all, is that somewhere in some environment I've made a symbol A to have a value which is a pair consisting of pointers to a 1 and a pointer to a 2, just like that.
 
-687
+723
 00:49:38,120 --> 00:50:03,970
 假设再定义一个b，(define b (cons a a))
 Now, supposing I also say define B to be the CONS--  it doesn't matter, but I like it better, it's prettier-- of A and A.
 
-688
+724
 00:50:03,970 --> 00:50:07,840
 这里用了两次a
 Well, first of all, I'm using the name A twice.
 
-689
+725
 00:50:07,840 --> 00:50:11,300
 现在就要考虑序对的身份问题了
 At this moment, I'm going to think of CONSes as having identity.
 
-690
+726
 00:50:11,300 --> 00:50:13,690
 这两个a是一样的，是同一个东西
 This is the same one.
 
-691
+727
 00:50:13,690 --> 00:50:33,260
 所以b是这样的一个序对，CAR与CDR都指向a，对于a来说，有三个别名都代表着它
 And so what that means is I make another pair, which I'm going to call B. And it contains two pointers to A. At this point, I have three names for this object.
 
-692
+728
 00:50:33,260 --> 00:50:34,790
 a是一个
 A is its name.
 
-693
+729
 00:50:34,790 --> 00:50:37,230
 (car b)是一个
 The CAR of B is its name.
 
-694
+730
 00:50:37,230 --> 00:50:39,360
 (cdr b)也是一个
 And the CDR of B is its name.
 
-695
+731
 00:50:39,360 --> 00:50:41,150
 都是这个序对的别名
 It has several aliases, they're called.
 
-696
+732
 00:50:44,230 --> 00:51:07,880
 假设现在执行 (SET-CAR! (CAR B) 3)
 Now, supposing I do something like set-the-CAR, the CAR of the CAR of B to 3.
 
-697
+733
 00:51:12,750 --> 00:51:17,830
 找到b的CAR
 What that means is I find the CAR of B, that's this.
 
-698
+734
 00:51:17,830 --> 00:51:20,935
 把它的CAR设置为3
 I set the CAR of that to be 3, changing this.
 
-699
+735
 00:51:24,760 --> 00:51:35,340
 这样我也就修改了a，现在调用(CAR A)来看一下结果
 I've changed A. If I were to ask what's the CAR of A--of A now?
 
-700
+736
 00:51:35,340 --> 00:51:45,290
 结果是3，尽管上面定义a是(cons 1 2)
 I would get out 3, even though here we see that A was the CONS of 1 and 2.
 
-701
+737
 00:51:45,290 --> 00:51:48,400
 我通过改变b而改变了a
 I caused A to change by changing B.
 
-702
+738
 00:51:48,400 --> 00:51:52,010
 它们共享着一处数据
 There is sharing here.
 
-703
+739
 00:51:52,010 --> 00:51:54,240
 有时候我们需要这样的结构
 That's sometimes what we want.
 
-704
+740
 00:51:54,240 --> 00:52:04,350
 我们之前的队列，就是这样来组织的
 Surely in the queues and things like that, that's exactly what we defined our--organized our data structures to facilitate-- sharing.
 
-705
+741
 00:52:04,350 --> 00:52:25,190
 但是对象之间不合理的共享与操作，是很多复杂系统中bug的来源。所以我们虽然使对象具有身份，可以用很多别名来共享，得到了不少的好处
 But inadvertent sharing, unanticipated interactions between objects, is the source of most of the bugs that occur in complicated programs. So by introducing this possibility of things having identity and sharing and having multiple names for the same thing, we get a lot of power.
 
-706
+742
 00:52:25,190 --> 00:52:28,640
 但是同时也为此引出的bug而付出代价
 But we're going to pay for it with lots of complexity and bugs.
 
-707
+743
 00:52:32,190 --> 00:52:46,560
 还看这里的这个例子，(CADR B)，看起来和(CAR B)没有一点关系
 So also, for example, if I just looked at this just to drive that home, the CADR of B, which has nothing to do with even the CAR of B, apparently.
 
-708
+744
 00:52:46,560 --> 00:52:49,350
 但是它的值是什么？
 The CADR of B, what's that?
 
-709
+745
 00:52:49,350 --> 00:52:53,560
 来找一下
 Take that CDR of B and now take the CAR of that.
 
-710
+746
 00:52:53,560 --> 00:52:56,480
 哦，还是3
 Oh, that's 3 also.
 
-711
+747
 00:52:56,480 --> 00:53:01,120
 有了共享这样的机制，局部的含义也不是那么清楚了
 So I can have non-local interactions by sharing.
 
-712
+748
 00:53:01,120 --> 00:53:02,480
 所以我们要非常小心的操作
 And I have to be very careful of that.
 
-713
+749
 00:53:06,640 --> 00:53:22,820
 目前为止，我已经介绍了SET！ SET-CAR！ SET-CDR！这些赋值操作，或许我应该不用SET-CAR！ SET-CDR！，它们引入太多问题了
 Well, so far, of course, it seems I've introduced several different assignment operators-- set, set CAR, set CDR. Well, maybe I should just get rid of set CAR and set CDR. Maybe they're not worthwhile.
 
-714
+750
 00:53:22,820 --> 00:53:27,170
 不幸的是，一旦你让骆驼的鼻子进了帐篷，相当于你把它放进了帐篷
 Well, the answer is that once you let the camel's nose into the tent, the rest of him follows.
 
-715
+751
 00:53:30,160 --> 00:53:35,850
 我想说的是，只要有set！，这一切不幸的都可能会发生
 All I have to have is set, and I can make all of the--all of the bad things that can happen.
 
-716
+752
 00:53:38,550 --> 00:53:40,690
 我们来分析一下
 Let's play with that a little bit.
 
-717
+753
 00:53:40,690 --> 00:53:52,480
 前些日子讲到复合数据的时候，哈罗德教授向你们展示了用消息接收的方式来定义CONS
 A couple of days ago, when we introduced compound data, you saw Hal show you a definition of CONS in terms of a message acceptor.
 
-718
+754
 00:53:52,480 --> 00:54:04,440
 现在我要用一种更为恐怖的方式来定义CONS
 I'm going to show you even a more horrible thing, a definition of CONS in terms of nothing but air, hot air.
 
-719
+755
 00:54:04,440 --> 00:54:14,580
 过去的那个CONS是怎么定义的来着？一个lambda表达式，一个过程？
 What is the definition of CONS, of the old functional kind, in terms of purely lambdic expressions, procedures?
 
-720
+756
 00:54:17,190 --> 00:54:28,580
 我们这里对CONS的修改是要达到这样的效果，用SET！来代替SET-CAR！ SET-CDR！
 Because I'm going to then modify this definition to get assignment to be only one kind of assignment, to get rid of the set CAR and set CDR in terms of set.
 
-721
+757
 00:54:28,580 --> 00:54:46,320
 这里我定义CONS为一个接受一个参数M的过程，M作用于X与Y
 So what if I define CONS of X and Y to be a procedure of one argument called a message M, which calls that message on X and Y?
 
-722
+758
 00:54:51,120 --> 00:54:57,870
 这是阿隆佐·丘奇发明的方法，他是20世纪最伟大的程序员之一，尽管当时电脑还没有被发明
 This [? idea ?] was invented by Alonzo Church, who was the greatest programmer of the 20th century, although he never saw a computer.
 
-723
+759
 00:54:57,870 --> 00:54:59,130
 那时20世纪30年代的事了
 It was done in the 1930s.
 
-724
+760
 00:54:59,130 --> 00:55:02,220
 他是一个逻辑学家，当时应该是在普林斯顿
 He was a logician, I suppose at Princeton at the time.
 
-725
+761
 00:55:08,660 --> 00:55:46,670
 (DEFINE (CAR X) (X (lambda(A D) A))) (DEFINE (CDR X) (X (lambda(A D) D)))
 Define CAR of X to be the result of applying X to that procedure of two arguments, A and D, which selects A. I will define CDR of X to be that procedure, to be the result of applying X to that procedure of A and D, which selects D.
 
-726
+762
 00:55:46,670 --> 00:55:50,510
 这就是CONS CAR CDR
 Now, you may not recognize this as CAR, CDR, and CONS.
 
-727
+763
 00:55:50,510 --> 00:55:55,210
 我来举例看一下，它是否符合之前所说的CONS的原则
 But I'm going to demonstrate to you that it satisfies the original axioms, just once.
 
-728
+764
 00:55:55,210 --> 00:55:58,290
 简单来看
 And then we're going to do some playing of games.
 
-729
+765
 00:55:58,290 --> 00:56:09,695
 (CAR (CONS 35 47))
 Consider the problem CAR of CONS of, say, 35 and 47.
 
-730
+766
 00:56:09,695 --> 00:56:11,120
 这是什么呢？
 Well, what is that?
 
-731
+767
 00:56:11,120 --> 00:56:19,710
 用代换模型，把CONS换成这边定义的
 It is the result of taking car of the result of substituting 35 and 47 for X and Y in the body of this.
 
-732
+768
 00:56:19,710 --> 00:56:20,690
 非常容易
 Well, that's easy enough.
 
-733
+769
 00:56:20,690 --> 00:56:35,750
 就是(CAR (lambda (M) (M 35 47)))
 That's CAR of the result of substituting into lambda of M, M of 35 and 47.
 
-734
+770
 00:56:35,750 --> 00:56:42,830
 再来代换CAR
 Well, what this is, is the result of substituting this object for X in the body of that.
 
-735
+771
 00:56:42,830 --> 00:57:15,840
 ((lambda (M) (M 35 47)) (lambda (A D) A))
 So that's just lambda of M-- that's substituted, because this object is being substituted for X, which is the beginning of a list, lambda of M-- M of 35 and 47, applied to that procedure of A and D, which gives me A. Well, that's the result of substituting this for M here.
 
-736
+772
 00:57:15,840 --> 00:57:26,026
 继续代换，((lambda (A D) A) 35 47)
 So that's the same thing as lambda of A, D, A, applied to 35 and 47.
 
-737
+773
 00:57:26,026 --> 00:57:27,560
 结果就是35
 Oh, well that's 35.
 
-738
+774
 00:57:27,560 --> 00:57:40,720
 35对应A，47对应的是D。在这种定义里，我什么数据都不需要，甚至连数字都没有
 That's substituting 35 for A and for 47 for D in A. So I don't need any data at all, not even numbers.
 
-739
+775
 00:57:40,720 --> 00:57:42,640
 太佩服丘奇了
 This is Alonso Church's hack.
 
-740
+776
 00:57:52,420 --> 00:57:56,760
 现在呢我们来对这个定义做点修改
 Well, now we're going to do something nasty to him.
 
-741
+777
 00:57:56,760 --> 00:57:58,860
 作为逻辑学家，他可能会不太开心
 Being a logician, he wouldn't like this.
 
-742
+778
 00:57:58,860 --> 00:58:03,260
 但是作为程序员，应该没什么
 But as programmers, let's look at the overhead.
 
-743
+779
 00:58:03,260 --> 00:58:05,390
 我们来看看
 And here we go.
 
-744
+780
 00:58:05,390 --> 00:58:09,570
 修改CONS的定义
 I'm going to change the definition of CONS.
 
-745
+781
 00:58:09,570 --> 00:58:14,520
 和丘奇的定义很相似，但是不完全相同
 It's almost the same as Alonzo Church's, but not quite.
 
-746
+782
 00:58:14,520 --> 00:58:16,070
 具体到底是什么？
 What do we have here?
 
-747
+783
 00:58:16,070 --> 00:58:40,940
 CONS定义为一个过程，这个过程需要一个参数M，但是M作用于4个参数，X，Y 和两个lambda过程
 The CONS of two arguments, X and Y, is going to be that procedure of one argument M, which supplies M to X and Y as before, but also to two permissions, the permission to set X to N and the permission to set Y to N, given that I have an N.
 
-748
+784
 00:58:40,940 --> 00:59:03,365
 所以这里的不同之处在于，M除了应用于x y之外，还应用于两个过程，分别用于修改x与y的值
 So besides the things that I had here in Church's definition, what I have is that the thing that CONS returns will apply its argument to not just the values of the X and Y that the CONS is made of, but also permissions to set X and Y to new values.
 
-749
+785
 00:59:06,540 --> 00:59:11,690
 类似之前，CAR看起来也很相似
 Now, of course, just as before, CAR is exactly the same.
 
-750
+786
 00:59:11,690 --> 00:59:22,550
 (CAR X)也就只是从4个参数里挑出第一个而已
 The CAR of X is nothing more than applying X, as in Church's definition, to a procedure, in this case, of four arguments, which selects out the first one.
 
-751
+787
 00:59:22,550 --> 00:59:37,920
 和之前一样，返回的将会是这个过程中的x
 And just as we did before, that will be the value of X that was contained in the procedure which is the result of evaluating this lambda expression in the environment where X and Y are defined over here.
 
-752
+788
 00:59:41,940 --> 00:59:45,640
 这个过程的整体就是CONS
 That's the value of CONS.
 
-753
+789
 00:59:45,640 --> 00:59:47,730
 接着，最为精彩的一段
 Now, however, the exciting part.
 
-754
+790
 00:59:47,730 --> 00:59:48,960
 CDR，和CAR一样的
 CDR, of course, is the same.
 
-755
+791
 00:59:48,960 --> 00:59:55,800
 SET-CAR！ SET-CDR！的实现着实让人眼前一亮，其实它们也并不复杂
 The exciting part, set CAR and set CDR. Well, they're nothing very complicated anymore.
 
-756
+792
 00:59:55,800 --> 01:00:26,150
 (SET-CAR! X Y)无非就是用一个取到4个参数中第3个参数的过程，去代换实际定义的CONS，取得修改其中X的权限，把其修改为新的值Y
 Set CAR of a CONS X to a new value Y is nothing more than applying that CONS, which is the procedure of four--the procedure of one argument which applies its argument to four things, to a procedure which is of four arguments-- the value of X, the value of Y, permission to set X, the permission to set Y-- and using it--using that permission to set X to the new value.
 
-757
+793
 01:00:31,650 --> 01:00:33,540
 SET-CDR！和它是类似的
 And similarly, set-cdr is the same thing.
 
-758
+794
 01:00:36,120 --> 01:00:40,470
 你也看到了，这里并没有引入新的其它基础操作
 So what you've just seen is that I didn't introduce any new primitives at all.
 
-759
+795
 01:00:40,470 --> 01:00:45,340
 具体要不要这样来实现是一个工程性问题
 Whether or not I want to implement it this way is a matter of engineering.
 
-760
+796
 01:00:45,340 --> 01:00:51,680
 实际上出于一些原因，工程上并不这样来实现
 And the answer is of course I don't implement it this way for reasons that have to do with engineering.
 
-761
+797
 01:00:51,680 --> 01:00:58,765
 原理上逻辑上就是这样，一旦引入了赋值，便可以修改任意的东西
 However in principle, logically, once I introduced one assignment operator, I've assigned--I've introduced them all.
 
-762
+798
 01:01:05,420 --> 01:01:06,670
 有什么问题吗？
 Are there any questions?
 
-763
+799
 01:01:09,200 --> 01:01:12,040
 好的，David
 Yes, David.
 
-764
+800
 01:01:12,040 --> 01:01:15,740
 我可以跟的上你的思路，直到
 AUDIENCE: I can follow you up until you get--I can follow all of that.
 
-765
+801
 01:01:15,740 --> 01:01:24,210
 直到那个lambda (n)那里，我不知道这个参数是什么时候传进来的
 But when we bring in the permissions, defining CONS in terms of the lambda N, I don't follow where N gets passed.
 
-766
+802
 01:01:24,210 --> 01:01:25,100
 哦，抱歉
 PROFESSOR: Oh, I'm sorry.
 
-767
+803
 01:01:25,100 --> 01:01:26,340
 我没讲清楚
 I'll show you.
 
-768
+804
 01:01:26,340 --> 01:01:27,360
 我们来仔细看看
 Let's follow it.
 
-769
+805
 01:01:27,360 --> 01:01:29,180
 当然，我们也可以在黑板上演示
 Of course, we could do it on the blackboard.
 
-770
+806
 01:01:29,180 --> 01:01:30,170
 并不难懂
 It's not so hard.
 
-771
+807
 01:01:30,170 --> 01:01:32,450
 非常简单
 But it's also easy here.
 
-772
+808
 01:01:32,450 --> 01:01:38,520
 来看(set-cdr! x y)
 Supposing I wish to set-cdr of X to Y. See that right there.
 
-773
+809
 01:01:38,520 --> 01:01:46,890
 x是一个CONS
 set-cdr of X to Y. X is presumably a CONS, a thing resulting from evaluating CONS.
 
-774
+810
 01:01:46,890 --> 01:01:58,110
 x可以代换为这一部分，一个lambda表达式
 Therefore X comes from a place over here, that that X is of the result of evaluating this lambda expression.
 
-775
+811
 01:01:58,110 --> 01:01:59,380
 对吧
 Right?
 
-776
+812
 01:01:59,380 --> 01:02:08,950
 这个lambda，是在定义CONS的环境下执行的
 That when I evaluated that lambda expression, I evaluated it in an environment where the arguments to CONS were defined.
 
-777
+813
 01:02:11,750 --> 01:02:29,250
 这意味着，x y都是自由变量，x y所在的frame在这个lambda的上层，因此在这个过程中可以访问到x和y
 That means that as free variables in this lambda expression, there is the--there are in the frame, which is the parent frame of this lambda expression, the procedure resulting from this lambda expression, X and Y have places.
 
-778
+814
 01:02:29,250 --> 01:02:31,910
 也可以对它们赋值
 And it's possible to set them.
 
-779
+815
 01:02:31,910 --> 01:02:37,010
 这里赋值为n，是一个传过来的参数
 I set them to an N, which is the argument of the permission.
 
-780
+816
 01:02:37,010 --> 01:02:47,940
 这个可以进行修改的过程是M的参数，而M又是CONS对象的参数
 The permission is a procedure which is passed to M, which is the argument that the CONS object gets passed.
 
-781
+817
 01:02:47,940 --> 01:02:57,480
 现在再来看看SET-CDR！，第一个参数是一个CONS对象
 Now, let's go back here in the set-cdr The CONS object, which is the first argument of set-cdr gets passed an argument.
 
-782
+818
 01:03:00,260 --> 01:03:07,920
 这是一个有4个参数的过程，作为实参，对应这里的形参M
 That--there's a procedure of four things, indeed, because that's the same thing as this M over here, which is applied to four objects.
 
-783
+819
 01:03:07,920 --> 01:03:12,970
 这边的这个sd，就对应于这个过程
 The object over here, SD, is, in fact, this permission.
 
-784
+820
 01:03:15,470 --> 01:03:19,930
 当我执行sd，应用于Y
 When I use SD, I apply it to Y, right there.
 
-785
+821
 01:03:22,910 --> 01:03:25,740
 y是这里传过来的参数
 So that comes from this.
 
-786
+822
 01:03:25,740 --> 01:03:34,160
 David：那-- 教授：对应起来，这里的y就对应于这里的n
 AUDIENCE: So what do you-- PROFESSOR: So to finish that, the N that was here is the Y which is here.
 
-787
+823
 01:03:34,160 --> 01:03:34,810
 明白了吧
 How's that?
 
-788
+824
 01:03:34,810 --> 01:03:35,750
 了解了
 AUDIENCE: Right, OK.
 
-789
+825
 01:03:35,750 --> 01:03:41,970
 当你执行SET-CDR！的时候，x是CDR要变成的值
 Now, when you do a set-cdr, X is the value the CDR is going to become.
 
-790
+826
 01:03:41,970 --> 01:03:44,742
 这里的x
 PROFESSOR: The X over here.
 
-791
+827
 01:03:44,742 --> 01:03:46,200
 并不全对
 I'm sorry, that's not true.
 
-792
+828
 01:03:46,200 --> 01:03:56,150
 SET-CAR！有两个参数，这个x是我们要改变的CONS对象
 The X is--set-cdr has two arguments-- The CONS I'm changing and the value I'm changing it to.
 
-793
+829
 01:03:56,150 --> 01:03:58,320
 你可以代换回去看看，就很清楚了
 So you have them backwards, that's all.
 
-794
+830
 01:04:01,750 --> 01:04:03,000
 还有什么问题吗？
 Are there any other questions?
 
-795
+831
 01:04:07,880 --> 01:04:08,640
 好的
 Well, thank you.
 
-796
+832
 01:04:08,640 --> 01:04:09,890
 这节课就到这里
 It's time for lunch.
