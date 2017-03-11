@@ -4539,132 +4539,227 @@ Of course, we could do it on the blackboard.
 It's not so hard.
 
 909
-01:01:30,170 --> 01:01:32,450
-非常简单
+01:01:30,170 --> 01:01:31,472
+我就将就用投影仪了
 But it's also easy here.
 
 910
-01:01:32,450 --> 01:01:38,520
-来看(set-cdr! x y)
-Supposing I wish to set-cdr of X to Y. See that right there.
+01:01:32,450 --> 01:01:35,792
+调用 (SET-CDR! X Y) 会发生什么呢？
+Supposing I wish to set-cdr of X to Y.
 
 911
-01:01:38,520 --> 01:01:46,890
-x是一个CONS
-set-cdr of X to Y. X is presumably a CONS, a thing resulting from evaluating CONS.
+01:01:37,790 --> 01:01:39,664
+就在这里 (SET-CDR! X Y)
+See that right there. set cdr x to y
 
 912
-01:01:46,890 --> 01:01:58,110
-x可以代换为这一部分，一个lambda表达式
-Therefore X comes from a place over here, that that X is of the result of evaluating this lambda expression.
+01:01:40,360 --> 01:01:41,920
+X 可能是一个序对
+X is presumably a CONS,
 
 913
-01:01:58,110 --> 01:01:59,380
+01:01:43,312 --> 01:01:45,248
+或者说对一个 CONS 表达式求值得到的结果
+a thing resulting from evaluating CONS.
+
+914
+01:01:45,888 --> 01:01:46,352
+能跟上吧？
+right?
+
+915
+01:01:46,890 --> 01:01:49,968
+#TBD
+Therefore X comes from a place over here,
+
+916
+01:01:52,576 --> 01:01:56,496
+这里的 X 是求值这个 LAMBDA 表达式存储的
+that that X is of the result of evaluating this lambda expression.
+
+917
+01:01:58,110 --> 01:01:58,496
 对吧
 Right?
 
-914
-01:01:59,380 --> 01:02:08,950
-这个lambda，是在定义CONS的环境下执行的
-That when I evaluated that lambda expression, I evaluated it in an environment where the arguments to CONS were defined.
+918
+01:01:59,380 --> 01:02:01,632
+因此当我对这个 LAMBDA 表达式求值时
+That when I evaluated that lambda expression,
 
-915
-01:02:11,750 --> 01:02:29,250
-这意味着，x y都是自由变量，x y所在的frame在这个lambda的上层，因此在这个过程中可以访问到x和y
-That means that as free variables in this lambda expression, there is the--there are in the frame, which is the parent frame of this lambda expression, the procedure resulting from this lambda expression, X and Y have places.
+919
+01:02:04,016 --> 01:02:08,768
+我是在定义 CONS 时的一个环境里求值的
+I evaluated it in an environment where the arguments to CONS were defined.
 
-916
-01:02:29,250 --> 01:02:31,910
+920
+01:02:11,750 --> 01:02:15,184
+这也就是说 作为 LAMBDA 表达式中的自由变量
+That means that as free variables in this lambda expression,
+
+921
+01:02:16,250 --> 01:02:18,688
+X 和 Y 都存储一个框架中
+ there is the--there are in the frame,
+
+922
+01:02:18,720 --> 01:02:22,440
+也就是这整个 LAMBDA 表达式的父框架
+which is the parent frame of this lambda expression,
+
+923
+01:02:23,232 --> 01:02:25,824
+因此在这个 LAMBDA 语句中
+ the procedure resulting from this lambda expression,
+
+924
+01:02:26,656 --> 01:02:28,512
+X 和 Y 都有存储空间
+X and Y have places.
+
+925
+01:02:29,250 --> 01:02:30,832
 也可以对它们赋值
 And it's possible to set them.
 
-917
-01:02:31,910 --> 01:02:37,010
-这里赋值为n，是一个传过来的参数
+926
+01:02:31,910 --> 01:02:36,080
+这里赋值为 N 是通过参数来传递的
 I set them to an N, which is the argument of the permission.
 
-918
-01:02:37,010 --> 01:02:47,940
-这个可以进行修改的过程是M的参数，而M又是CONS对象的参数
-The permission is a procedure which is passed to M, which is the argument that the CONS object gets passed.
+927
+01:02:37,264 --> 01:02:39,312
+“许可”就是一个过程
+The permission is a procedure
 
-919
-01:02:47,940 --> 01:02:57,480
-现在再来看看SET-CDR！，第一个参数是一个CONS对象
-Now, let's go back here in the set-cdr The CONS object, which is the first argument of set-cdr gets passed an argument.
+928
+01:02:41,408 --> 01:02:43,184
+它将作为 M 的一个参数
+which is passed to M,
 
-920
-01:03:00,260 --> 01:03:07,920
-这是一个有4个参数的过程，作为实参，对应这里的形参M
-That--there's a procedure of four things, indeed, because that's the same thing as this M over here, which is applied to four objects.
+929
+01:02:43,296 --> 01:02:46,512
+它实际上是 CONS 生成的对象的一部分
+which is the argument that the CONS object gets passed.
 
-921
-01:03:07,920 --> 01:03:12,970
-这边的这个sd，就对应于这个过程
+930
+01:02:47,940 --> 01:02:50,912
+我们再来看看 SET-CDR!
+Now, let's go back here in the set-cdr
+
+931
+01:02:52,112 --> 01:02:55,424
+SET-CDR! 的第一个参数 X 是一个序对
+ The CONS object, which is the first argument of set-cdr
+
+932
+01:02:56,128 --> 01:02:57,480
+被传递了一个参数
+gets passed an argument.
+
+933
+01:02:59,776 --> 01:03:02,224
+这个是一个四元过程
+That--there's a procedure of four things, indeed,
+
+934
+01:03:02,320 --> 01:03:04,656
+这是因为 它要作为这里的 M
+because that's the same thing as this M over here,
+
+935
+01:03:04,992 --> 01:03:06,560
+要应用在四个对象上
+which is applied to four objects.
+
+936
+01:03:07,920 --> 01:03:13,344
+这边的这个SD 就对应于这个过程
 The object over here, SD, is, in fact, this permission.
 
-922
+937
 01:03:15,470 --> 01:03:19,930
-当我执行sd，应用于Y
+当我执行 SD 把它应用于 Y
 When I use SD, I apply it to Y, right there.
 
-923
-01:03:22,910 --> 01:03:25,740
-y是这里传过来的参数
+938
+01:03:22,910 --> 01:03:24,048
+这个 Y 是这里传过来的
 So that comes from this.
 
-924
-01:03:25,740 --> 01:03:34,160
-David：那-- 教授：对应起来，这里的y就对应于这里的n
-AUDIENCE: So what do you-- PROFESSOR: So to finish that, the N that was here is the Y which is here.
+939
+01:03:25,370 --> 01:03:26,928
+学生：那--
+AUDIENCE: So what do you-- 
 
-925
-01:03:34,160 --> 01:03:34,810
+940
+01:03:27,008 --> 01:03:32,192
+教授：所以说 这里的 N 就对应于这里的 Y
+PROFESSOR: So to finish that, the N that was here is the Y which is here.
+
+941
+01:03:34,048 --> 01:03:34,528
 明白了吧
 How's that?
 
-926
+942
 01:03:34,810 --> 01:03:35,750
 了解了
 AUDIENCE: Right, OK.
 
-927
-01:03:35,750 --> 01:03:41,970
-当你执行SET-CDR！的时候，x是CDR要变成的值
-Now, when you do a set-cdr, X is the value the CDR is going to become.
+943
+01:03:35,750 --> 01:03:37,296
+当你执行SET-CDR!的时候
+Now, when you do a set-cdr,
 
-928
-01:03:41,970 --> 01:03:44,742
-这里的x
+944
+01:03:39,072 --> 01:03:41,970
+X 是 CDR 部分要赋值的新值
+X is the value the CDR is going to become.
+
+945
+01:03:41,970 --> 01:03:44,032
+教授：这里的 X
 PROFESSOR: The X over here.
 
-929
-01:03:44,742 --> 01:03:46,200
-并不全对
+946
+01:03:44,960 --> 01:03:46,200
+哦 指错了
 I'm sorry, that's not true.
 
-930
-01:03:46,200 --> 01:03:56,150
-SET-CAR！有两个参数，这个x是我们要改变的CONS对象
-The X is--set-cdr has two arguments-- The CONS I'm changing and the value I'm changing it to.
+947
+01:03:46,200 --> 01:03:48,336
+这里的 X 是指 -- SET-CDR! 有两个参数
+The X is--set-cdr has two arguments--
 
-931
+948
+01:03:48,912 --> 01:03:50,368
+一个是被修改的序对
+The CONS I'm changing
+
+949
+01:03:51,344 --> 01:03:53,936
+还有就是新值
+and the value I'm changing it to.
+
+950
 01:03:56,150 --> 01:03:58,320
-你可以代换回去看看，就很清楚了
+你可以代换回去看看 就很清楚了
 So you have them backwards, that's all.
 
-932
-01:04:01,750 --> 01:04:03,000
+951
+01:04:02,176 --> 01:04:03,168
 还有什么问题吗？
 Are there any other questions?
 
-933
+952
 01:04:07,880 --> 01:04:08,640
 好的
 Well, thank you.
 
-934
-01:04:08,640 --> 01:04:09,890
+953
+01:04:08,640 --> 01:04:09,520
 这节课就到这里
 It's time for lunch.
 
