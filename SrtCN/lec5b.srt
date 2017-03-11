@@ -3999,391 +3999,671 @@ a definition of CONS in terms of nothing but air,
 hot air.
 
 801
-00:54:04,440 --> 00:54:14,580
-过去的那个CONS是怎么定义的来着？一个lambda表达式，一个过程？
-What is the definition of CONS, of the old functional kind, in terms of purely lambdic expressions, procedures?
+00:54:04,440 --> 00:54:08,128
+过去我们是怎么定义 CONS 的呢？我们用函数式的方法
+What is the definition of CONS, of the old functional kind,
 
 802
-00:54:17,190 --> 00:54:28,580
-我们这里对CONS的修改是要达到这样的效果，用SET！来代替SET-CAR！ SET-CDR！
-Because I'm going to then modify this definition to get assignment to be only one kind of assignment, to get rid of the set CAR and set CDR in terms of set.
+00:54:09,264 --> 00:54:11,664
+纯粹只用 LAMBDA 表达式
+in terms of purely lambdic expressions,
 
 803
-00:54:28,580 --> 00:54:46,320
-这里我定义CONS为一个接受一个参数M的过程，M作用于X与Y
-So what if I define CONS of X and Y to be a procedure of one argument called a message M, which calls that message on X and Y?
+00:54:13,392 --> 00:54:14,400
+把序对表示成过程
+procedures?
 
 804
-00:54:51,120 --> 00:54:57,870
-这是阿隆佐·丘奇发明的方法，他是20世纪最伟大的程序员之一，尽管当时电脑还没有被发明
-This [? idea ?] was invented by Alonzo Church, who was the greatest programmer of the 20th century, although he never saw a computer.
+00:54:17,392 --> 00:54:19,664
+现在我要修改这个定义
+Because I'm going to then modify this definition
 
 805
-00:54:57,870 --> 00:54:59,130
-那时20世纪30年代的事了
-It was done in the 1930s.
+00:54:20,304 --> 00:54:23,168
+使得只具有一种赋值
+to get assignment to be only one kind of assignment,
 
 806
-00:54:59,130 --> 00:55:02,220
-他是一个逻辑学家，当时应该是在普林斯顿
-He was a logician, I suppose at Princeton at the time.
+00:54:24,288 --> 00:54:27,936
+用 SET! 来代替 SET-CAR! 和 SET-CDR!
+to get rid of the set CAR and set CDR in terms of set.
 
 807
-00:55:08,660 --> 00:55:46,670
-(DEFINE (CAR X) (X (lambda(A D) A))) (DEFINE (CDR X) (X (lambda(A D) D)))
-Define CAR of X to be the result of applying X to that procedure of two arguments, A and D, which selects A. I will define CDR of X to be that procedure, to be the result of applying X to that procedure of A and D, which selects D.
+00:54:28,580 --> 00:54:37,392
+如果我把 CONS 定义为
+So what if I define CONS of X and Y
 
 808
-00:55:46,670 --> 00:55:50,510
-这就是CONS CAR CDR
-Now, you may not recognize this as CAR, CDR, and CONS.
+00:54:38,910 --> 00:54:42,560
+定义为一个过程 该过程接收参数 M
+to be a procedure of one argument called a message M,
 
 809
-00:55:50,510 --> 00:55:55,210
-我来举例看一下，它是否符合之前所说的CONS的原则
-But I'm going to demonstrate to you that it satisfies the original axioms, just once.
+00:54:43,392 --> 00:54:46,320
+该过程将 M 应用在 X 与 Y 上
+which calls that message on X and Y?
 
 810
-00:55:55,210 --> 00:55:58,290
-简单来看
-And then we're going to do some playing of games.
+00:54:51,120 --> 00:54:53,104
+这是阿隆佐·丘奇发明的方法
+This idea was invented by Alonzo Church,
 
 811
-00:55:58,290 --> 00:56:09,695
-(CAR (CONS 35 47))
-Consider the problem CAR of CONS of, say, 35 and 47.
+00:54:53,776 --> 00:54:55,728
+他是20世纪最伟大的程序员
+who was the greatest programmer of the 20th century,
 
 812
-00:56:09,695 --> 00:56:11,120
-这是什么呢？
-Well, what is that?
+00:54:55,792 --> 00:54:57,152
+尽管当时电脑还没有被发明
+although he never saw a computer.
 
 813
-00:56:11,120 --> 00:56:19,710
-用代换模型，把CONS换成这边定义的
-It is the result of taking car of the result of substituting 35 and 47 for X and Y in the body of this.
+00:54:57,870 --> 00:54:59,130
+但他在20世纪30年代就提出了这个方法
+It was done in the 1930s.
 
 814
+00:54:59,424 --> 00:55:02,220
+他是一个逻辑学家 在普林斯顿大学做研究
+He was a logician, I suppose at Princeton at the time.
+
+815
+00:55:08,660 --> 00:55:10,432
+定义 (CAR X) 为
+Define CAR of X 
+
+816
+00:55:13,104 --> 00:55:16,928
+把 X 应用在一个二元过程上
+to be the result of applying X to that procedure of two arguments,
+
+817
+00:55:17,152 --> 00:55:20,608
+参数分别是 A 和 D 而结果是选出 A
+A and D, which selects A.
+
+818
+00:55:23,710 --> 00:55:24,976
+而 (CDR X) 则是
+I will define CDR of X
+
+819
+00:55:33,104 --> 00:55:34,784
+这样的一个过程
+to be that procedure,
+
+820
+00:55:35,088 --> 00:55:40,256
+把 X 应用在一个参数分别是 A 和 D 的过程上
+to be the result of applying X to that procedure of A and D,
+
+821
+00:55:40,928 --> 00:55:42,048
+该过程选择出 D
+which selects D.
+
+822
+00:55:46,670 --> 00:55:49,888
+可能你们还没意识到这些就是 CAR、CDR 和 CONS
+Now, you may not recognize this as CAR, CDR, and CONS.
+
+823
+00:55:50,510 --> 00:55:53,616
+但我将要给你们演示它符合之前的公理
+But I'm going to demonstrate to you that it satisfies the original axioms
+
+824
+00:55:54,112 --> 00:55:54,816
+#TBD
+just once.
+
+825
+00:55:55,616 --> 00:55:57,568
+我们来看一下
+And then we're going to do some playing of games.
+
+826
+00:55:58,290 --> 00:56:06,272
+考虑一下语句语句 (CAR (CONS 35 47))
+Consider the problem CAR of CONS of, say, 35 and 47.
+
+827
+00:56:09,936 --> 00:56:10,960
+它的结果是多少呢？
+Well, what is that?
+
+828
+00:56:11,120 --> 00:56:15,248
+它是通过把 35 和 47 代换进
+It is the result of taking car of the result of substituting 35 and 47
+
+829
+00:56:15,376 --> 00:56:18,208
+语句体中的 X 和 Y 得到的
+X and Y in the body of this.
+
+830
 00:56:19,710 --> 00:56:20,690
 非常容易
 Well, that's easy enough.
 
-815
-00:56:20,690 --> 00:56:35,750
-就是(CAR (lambda (M) (M 35 47)))
+831
+00:56:20,690 --> 00:56:30,880
+就是 (CAR (LAMBDA (M) (M 35 47)))
 That's CAR of the result of substituting into lambda of M, M of 35 and 47.
 
-816
-00:56:35,750 --> 00:56:42,830
-再来代换CAR
-Well, what this is, is the result of substituting this object for X in the body of that.
+832
+00:56:35,530 --> 00:56:39,360
+这个的结果是把这个对象
+Well, what this is, is the result of substituting this object
 
-817
-00:56:42,830 --> 00:57:15,840
-((lambda (M) (M 35 47)) (lambda (A D) A))
-So that's just lambda of M-- that's substituted, because this object is being substituted for X, which is the beginning of a list, lambda of M-- M of 35 and 47, applied to that procedure of A and D, which gives me A. Well, that's the result of substituting this for M here.
+833
+00:56:39,440 --> 00:56:41,856
+代换进这里的 X 而得到的
+for X in the body of that.
 
-818
-00:57:15,840 --> 00:57:26,026
-继续代换，((lambda (A D) A) 35 47)
-So that's the same thing as lambda of A, D, A, applied to 35 and 47.
+834
+00:56:42,830 --> 00:56:47,664
+代换的结果是 ((LAMBDA (M --
+So that's just lambda of M--
 
-819
-00:57:26,026 --> 00:57:27,560
+835
+00:56:48,336 --> 00:56:52,192
+用这个对象代换这里的 X
+that's substituted, because this object is being substituted for X,
+
+836
+00:56:52,880 --> 00:56:54,352
+这是表的头部
+which is the beginning of a list,
+
+837
+00:56:54,880 --> 00:57:00,320
+体的部分是 (M 35 47)
+lambda of M-- M of 35 and 47,
+
+838
+00:57:03,104 --> 00:57:07,312
+把它应用于一个参数分别的 A 和 D 的过程上
+applied to that procedure of A and D,
+
+839
+00:57:07,488 --> 00:57:08,672
+后者返回参数 A
+which gives me A.
+
+840
+00:57:10,912 --> 00:57:14,624
+然后我们用这个来代换这里的 M
+Well, that's the result of substituting this for M here.
+
+841
+00:57:15,968 --> 00:57:21,712
+这个就相当于把 (LAMBDA (A D) A)
+So that's the same thing as lambda of A, D, A,
+
+842
+00:57:22,224 --> 00:57:24,848
+应用在 35 和 47 上
+applied to 35 and 47.
+
+843
+00:57:26,330 --> 00:57:27,376
 结果就是35
 Oh, well that's 35.
 
-820
-00:57:27,560 --> 00:57:40,720
-35对应A，47对应的是D。在这种定义里，我什么数据都不需要，甚至连数字都没有
-That's substituting 35 for A and for 47 for D in A. So I don't need any data at all, not even numbers.
+844
+00:57:27,408 --> 00:57:31,210
+它就是用 35  和 47 分别代换 A、D 最后返回 A
+That's substituting 35 for A and for 47 for D in A.
 
-821
-00:57:40,720 --> 00:57:42,640
-太佩服丘奇了
+845
+00:57:35,600 --> 00:57:37,248
+所以我根本不需要任何数据
+So I don't need any data at all.
+
+846
+00:57:37,888 --> 00:57:38,752
+甚至连数字都不需要
+not even numbers.
+
+847
+00:57:40,928 --> 00:57:42,640
+这就是 阿隆佐·邱奇的技巧
 This is Alonso Church's hack.
 
-822
-00:57:52,420 --> 00:57:56,760
+848
+00:57:52,420 --> 00:57:56,176
 现在呢我们来对这个定义做点修改
 Well, now we're going to do something nasty to him.
 
-823
-00:57:56,760 --> 00:57:58,860
-作为逻辑学家，他可能会不太开心
+849
+00:57:56,760 --> 00:57:58,496
+作为逻辑学家 他可能会不太开心
 Being a logician, he wouldn't like this.
 
-824
-00:57:58,860 --> 00:58:03,260
-但是作为程序员，应该没什么
+850
+00:57:59,200 --> 00:58:01,968
+但作为程序员 -- 请看幻灯片
 But as programmers, let's look at the overhead.
 
-825
-00:58:03,260 --> 00:58:05,390
+851
+00:58:03,260 --> 00:58:04,160
 我们来看看
 And here we go.
 
-826
-00:58:05,390 --> 00:58:09,570
-修改CONS的定义
+852
+00:58:05,390 --> 00:58:07,584
+我修改了 CONS 的定义
 I'm going to change the definition of CONS.
 
-827
-00:58:09,570 --> 00:58:14,520
-和丘奇的定义很相似，但是不完全相同
+853
+00:58:09,570 --> 00:58:12,352
+和丘奇的定义很相似 但是不完全相同
 It's almost the same as Alonzo Church's, but not quite.
 
-828
-00:58:14,520 --> 00:58:16,070
+854
+00:58:14,416 --> 00:58:15,504
 具体到底是什么？
 What do we have here?
 
-829
-00:58:16,070 --> 00:58:40,940
-CONS定义为一个过程，这个过程需要一个参数M，但是M作用于4个参数，X，Y 和两个lambda过程
-The CONS of two arguments, X and Y, is going to be that procedure of one argument M, which supplies M to X and Y as before, but also to two permissions, the permission to set X to N and the permission to set Y to N, given that I have an N.
+855
+00:58:16,070 --> 00:58:18,720
+CONS 有两个参数： X 和 Y
+The CONS of two arguments, X and Y,
 
-830
-00:58:40,940 --> 00:59:03,365
-所以这里的不同之处在于，M除了应用于x y之外，还应用于两个过程，分别用于修改x与y的值
-So besides the things that I had here in Church's definition, what I have is that the thing that CONS returns will apply its argument to not just the values of the X and Y that the CONS is made of, but also permissions to set X and Y to new values.
+856
+00:58:19,504 --> 00:58:22,512
+但它返回一个参数为 M 的过程
+is going to be that procedure of one argument M,
 
-831
-00:59:06,540 --> 00:59:11,690
-类似之前，CAR看起来也很相似
-Now, of course, just as before, CAR is exactly the same.
+857
+00:58:23,392 --> 00:58:25,648
+跟之前一样 M 会应用于 X 和 Y 上
+which supplies M to X and Y as before,
 
-832
-00:59:11,690 --> 00:59:22,550
-(CAR X)也就只是从4个参数里挑出第一个而已
-The CAR of X is nothing more than applying X, as in Church's definition, to a procedure, in this case, of four arguments, which selects out the first one.
+858
+00:58:26,192 --> 00:58:29,296
+但它额外还有两个“许可”
+but also to two permissions,
 
-833
-00:59:22,550 --> 00:59:37,920
-和之前一样，返回的将会是这个过程中的x
-And just as we did before, that will be the value of X that was contained in the procedure which is the result of evaluating this lambda expression in the environment where X and Y are defined over here.
+859
+00:58:30,176 --> 00:58:32,016
+其中一个是把 X 赋值为 N
+the permission to set X to N
 
-834
-00:59:41,940 --> 00:59:45,640
-这个过程的整体就是CONS
+860
+00:58:32,608 --> 00:58:34,400
+另一个则是把 Y 赋值为 N
+and the permission to set Y to N,
+
+861
+00:58:34,448 --> 00:58:35,680
+只要我提供了相应的 N
+given that I have an N.
+
+862
+00:58:40,940 --> 00:58:44,720
+所以出了邱奇原本的定义之外
+So besides the things that I had here in Church's definition,
+
+863
+00:58:45,728 --> 00:58:51,664
+最大的不同在于 CONS 的返回值g
+what I have is that the thing that CONS returns
+
+864
+00:58:52,128 --> 00:58:53,824
+不单会把它的参数应用于
+will apply its argument
+
+865
+00:58:54,912 --> 00:58:59,440
+用于构成序对的 X 和 Y 之上
+to not just the values of the X and Y that the CONS is made of,
+
+866
+00:58:59,696 --> 00:59:03,584
+它还有用于为 X 和 Y 赋值的两个“许可”
+but also permissions to set X and Y to new values.
+
+867
+00:59:06,540 --> 00:59:08,080
+当然 就如之前一样
+Now, of course, just as before,
+
+868
+00:59:08,832 --> 00:59:10,512
+CAR 看起来也很相似
+CAR is exactly the same.
+
+869
+00:59:11,690 --> 00:59:14,368
+就像邱奇定义的那样
+The CAR of X is nothing more than applying X,
+
+870
+00:59:14,544 --> 00:59:16,000
+ (CAR X) 只不过是把 X 应用在
+as in Church's definition,
+
+871
+00:59:16,864 --> 00:59:19,008
+过程上 -- 本例中是四个参数
+to a procedure, in this case, of four arguments,
+
+872
+00:59:19,296 --> 00:59:21,040
+然后从中选出第一个
+which selects out the first one.
+
+873
+00:59:22,540 --> 00:59:24,160
+这就和之前一样
+And just as we did before,
+
+874
+00:59:25,424 --> 00:59:26,960
+结果将会返回 X
+that will be the value of X
+
+875
+00:59:29,040 --> 00:59:35,408
+X 的值被包含在求值这个 LAMBDA 表达式所产生的过程中
+that was contained in the procedure which is the result of evaluating this lambda expression
+
+876
+00:59:35,456 --> 00:59:37,840
+X 和 Y 的值也是在这个环境中定义的
+in the environment where X and Y are defined over here.
+
+877
+00:59:41,940 --> 00:59:43,152
+这是我们对 CONS 的定义
 That's the value of CONS.
 
-835
-00:59:45,640 --> 00:59:47,730
-接着，最为精彩的一段
+878
+00:59:45,640 --> 00:59:47,536
+那么 激动人心的地方来了
 Now, however, the exciting part.
 
-836
+879
 00:59:47,730 --> 00:59:48,960
-CDR，和CAR一样的
+当然 CDR 的定义也类似
 CDR, of course, is the same.
 
-837
-00:59:48,960 --> 00:59:55,800
-SET-CAR！ SET-CDR！的实现着实让人眼前一亮，其实它们也并不复杂
-The exciting part, set CAR and set CDR. Well, they're nothing very complicated anymore.
+880
+00:59:49,390 --> 00:59:50,352
+激动人心的地方
+The exciting part,
 
-838
-00:59:55,800 --> 01:00:26,150
-(SET-CAR! X Y)无非就是用一个取到4个参数中第3个参数的过程，去代换实际定义的CONS，取得修改其中X的权限，把其修改为新的值Y
-Set CAR of a CONS X to a new value Y is nothing more than applying that CONS, which is the procedure of four--the procedure of one argument which applies its argument to four things, to a procedure which is of four arguments-- the value of X, the value of Y, permission to set X, the permission to set Y-- and using it--using that permission to set X to the new value.
+881
+00:59:51,232 --> 00:59:52,528
+SET-CAR! 和 SET-CDR! 的实现
+set CAR and set CDR.
 
-839
+882
+00:59:53,456 --> 00:59:55,520
+说实话 它们也不是特别复杂
+Well, they're nothing very complicated anymore.
+
+883
+00:59:55,800 --> 01:00:00,640
+语句 (SET-CAR! X Y)
+Set CAR of a CONS X to a new value Y
+
+884
+01:00:01,632 --> 01:00:03,856
+无非就是把序对 X 应用于
+is nothing more than applying that CONS,
+
+885
+01:00:04,112 --> 01:00:06,768
+注意 X 是一个一元过程
+which is the procedure of four--the procedure of one argument
+
+886
+01:00:07,696 --> 01:00:09,808
+该过程的体是将参数应用在四个对象上
+which applies its argument to four things,
+
+887
+01:00:11,248 --> 01:00:15,856
+我们把 X 应用于一个四元过程上
+to a procedure which is of four arguments--
+
+888
+01:00:16,000 --> 01:00:18,080
+X 的值、Y 的值
+the value of X, the value of Y,
+
+889
+01:00:18,320 --> 01:00:20,544
+修改 X 的许可、修改 Y 的许可
+permission to set X, the permission to set Y--
+
+890
+01:00:21,320 --> 01:00:26,096
+语句的体则是用相应的许可 将 X 设置为新的值
+and using it--using that permission to set X to the new value.
+
+891
 01:00:31,650 --> 01:00:33,540
-SET-CDR！和它是类似的
+当然 SET-CDR! 和它类似
 And similarly, set-cdr is the same thing.
 
-840
-01:00:36,120 --> 01:00:40,470
-你也看到了，这里并没有引入新的其它基础操作
+892
+01:00:36,256 --> 01:00:39,440
+你也看到了 我这里并没有引入新的基本运算
 So what you've just seen is that I didn't introduce any new primitives at all.
 
-841
-01:00:40,470 --> 01:00:45,340
+893
+01:00:40,112 --> 01:00:44,368
 具体要不要这样来实现是一个工程性问题
-Whether or not I want to implement it this way is a matter of engineering.
+I mean, Whether or not I want to implement it this way is a matter of engineering.
 
-842
-01:00:45,340 --> 01:00:51,680
-实际上出于一些原因，工程上并不这样来实现
-And the answer is of course I don't implement it this way for reasons that have to do with engineering.
+894
+01:00:45,340 --> 01:00:47,392
+当然出于工程上的考量
+And the answer is of course I don't implement it this way
 
-843
-01:00:51,680 --> 01:00:58,765
-原理上逻辑上就是这样，一旦引入了赋值，便可以修改任意的东西
-However in principle, logically, once I introduced one assignment operator, I've assigned--I've introduced them all.
+895
+01:00:48,096 --> 01:00:49,630
+我不会这样来实现
+for reasons that have to do with engineering.
 
-844
+896
+01:00:51,680 --> 01:00:53,408
+但是从原理上来说
+However in principle, logically,
+
+897
+01:00:54,288 --> 01:00:56,432
+一旦引入了赋值运算
+I introduced one assignment operator,
+
+898
+01:00:56,960 --> 01:00:58,760
+我就可以进行各种各样的赋值运算了
+I've assigned--I've introduced them all.
+
+899
 01:01:05,420 --> 01:01:06,670
 有什么问题吗？
 Are there any questions?
 
-845
-01:01:09,200 --> 01:01:12,040
-好的，David
+900
+01:01:09,200 --> 01:01:10,896
+请讲
 Yes, David.
 
-846
-01:01:12,040 --> 01:01:15,740
-我可以跟的上你的思路，直到
+901
+01:01:12,040 --> 01:01:15,648
+我可以跟的上你的思路 直到 --
 AUDIENCE: I can follow you up until you get--I can follow all of that.
 
-847
-01:01:15,740 --> 01:01:24,210
-直到那个lambda (n)那里，我不知道这个参数是什么时候传进来的
-But when we bring in the permissions, defining CONS in terms of the lambda N, I don't follow where N gets passed.
+902
+01:01:15,648 --> 01:01:17,616
+在许可那里
+But when we bring in the permissions,
 
-848
-01:01:24,210 --> 01:01:25,100
-哦，抱歉
-PROFESSOR: Oh, I'm sorry.
+903
+01:01:18,144 --> 01:01:21,648
+我们把 CONS 定义为一个参数为 N 的过程
+defining CONS in terms of the lambda N,
 
-849
-01:01:25,100 --> 01:01:26,340
-我没讲清楚
-I'll show you.
+904
+01:01:21,808 --> 01:01:24,210
+我不知道这个参数是什么时候传进来的
+I don't follow where N gets passed.
 
-850
-01:01:26,340 --> 01:01:27,360
-我们来仔细看看
+905
+01:01:24,210 --> 01:01:25,696
+哦 抱歉 我给你演示一下
+PROFESSOR: Oh, I'm sorry. I'll show you.
+
+906
+01:01:26,340 --> 01:01:27,056
+我们来推演一下
 Let's follow it.
 
-851
-01:01:27,360 --> 01:01:29,180
-当然，我们也可以在黑板上演示
+907
+01:01:27,360 --> 01:01:29,072
+我们在黑板上推演一下
 Of course, we could do it on the blackboard.
 
-852
+908
 01:01:29,180 --> 01:01:30,170
 并不难懂
 It's not so hard.
 
-853
+909
 01:01:30,170 --> 01:01:32,450
 非常简单
 But it's also easy here.
 
-854
+910
 01:01:32,450 --> 01:01:38,520
 来看(set-cdr! x y)
 Supposing I wish to set-cdr of X to Y. See that right there.
 
-855
+911
 01:01:38,520 --> 01:01:46,890
 x是一个CONS
 set-cdr of X to Y. X is presumably a CONS, a thing resulting from evaluating CONS.
 
-856
+912
 01:01:46,890 --> 01:01:58,110
 x可以代换为这一部分，一个lambda表达式
 Therefore X comes from a place over here, that that X is of the result of evaluating this lambda expression.
 
-857
+913
 01:01:58,110 --> 01:01:59,380
 对吧
 Right?
 
-858
+914
 01:01:59,380 --> 01:02:08,950
 这个lambda，是在定义CONS的环境下执行的
 That when I evaluated that lambda expression, I evaluated it in an environment where the arguments to CONS were defined.
 
-859
+915
 01:02:11,750 --> 01:02:29,250
 这意味着，x y都是自由变量，x y所在的frame在这个lambda的上层，因此在这个过程中可以访问到x和y
 That means that as free variables in this lambda expression, there is the--there are in the frame, which is the parent frame of this lambda expression, the procedure resulting from this lambda expression, X and Y have places.
 
-860
+916
 01:02:29,250 --> 01:02:31,910
 也可以对它们赋值
 And it's possible to set them.
 
-861
+917
 01:02:31,910 --> 01:02:37,010
 这里赋值为n，是一个传过来的参数
 I set them to an N, which is the argument of the permission.
 
-862
+918
 01:02:37,010 --> 01:02:47,940
 这个可以进行修改的过程是M的参数，而M又是CONS对象的参数
 The permission is a procedure which is passed to M, which is the argument that the CONS object gets passed.
 
-863
+919
 01:02:47,940 --> 01:02:57,480
 现在再来看看SET-CDR！，第一个参数是一个CONS对象
 Now, let's go back here in the set-cdr The CONS object, which is the first argument of set-cdr gets passed an argument.
 
-864
+920
 01:03:00,260 --> 01:03:07,920
 这是一个有4个参数的过程，作为实参，对应这里的形参M
 That--there's a procedure of four things, indeed, because that's the same thing as this M over here, which is applied to four objects.
 
-865
+921
 01:03:07,920 --> 01:03:12,970
 这边的这个sd，就对应于这个过程
 The object over here, SD, is, in fact, this permission.
 
-866
+922
 01:03:15,470 --> 01:03:19,930
 当我执行sd，应用于Y
 When I use SD, I apply it to Y, right there.
 
-867
+923
 01:03:22,910 --> 01:03:25,740
 y是这里传过来的参数
 So that comes from this.
 
-868
+924
 01:03:25,740 --> 01:03:34,160
 David：那-- 教授：对应起来，这里的y就对应于这里的n
 AUDIENCE: So what do you-- PROFESSOR: So to finish that, the N that was here is the Y which is here.
 
-869
+925
 01:03:34,160 --> 01:03:34,810
 明白了吧
 How's that?
 
-870
+926
 01:03:34,810 --> 01:03:35,750
 了解了
 AUDIENCE: Right, OK.
 
-871
+927
 01:03:35,750 --> 01:03:41,970
 当你执行SET-CDR！的时候，x是CDR要变成的值
 Now, when you do a set-cdr, X is the value the CDR is going to become.
 
-872
+928
 01:03:41,970 --> 01:03:44,742
 这里的x
 PROFESSOR: The X over here.
 
-873
+929
 01:03:44,742 --> 01:03:46,200
 并不全对
 I'm sorry, that's not true.
 
-874
+930
 01:03:46,200 --> 01:03:56,150
 SET-CAR！有两个参数，这个x是我们要改变的CONS对象
 The X is--set-cdr has two arguments-- The CONS I'm changing and the value I'm changing it to.
 
-875
+931
 01:03:56,150 --> 01:03:58,320
 你可以代换回去看看，就很清楚了
 So you have them backwards, that's all.
 
-876
+932
 01:04:01,750 --> 01:04:03,000
 还有什么问题吗？
 Are there any other questions?
 
-877
+933
 01:04:07,880 --> 01:04:08,640
 好的
 Well, thank you.
 
-878
+934
 01:04:08,640 --> 01:04:09,890
 这节课就到这里
 It's time for lunch.
