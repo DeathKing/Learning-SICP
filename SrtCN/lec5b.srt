@@ -1,4775 +1,4866 @@
 ﻿1
+00:00:00,016 --> 00:00:02,464
+Learning-SICP学习小组
+倾情制作
+
+2
+00:00:02,608 --> 00:00:05,376
+翻译&&时间轴：张大伟（DreamAndDead）
+压制&&特效：邓雄飞（Dysprosium）
+校对：邓雄飞（Dysprosium）
+
+3
+00:00:05,408 --> 00:00:08,128
+特别感谢：裘宗燕教授
+
+4
+00:00:08,144 --> 00:00:12,400
+计算机程序的构造和解释
+
+5
+00:00:12,496 --> 00:00:17,170
+计算对象
+Computational Objects
+
+6
 00:00:21,170 --> 00:00:24,128
 现在我们已经学习了
 PROFESSOR: Well, now that we've given you some power
 
-2
+7
 00:00:24,432 --> 00:00:27,400
 如何创建局部状态和如何建模对象
 to make independent local state and to model objects,
 
-3
+8
 00:00:28,336 --> 00:00:32,672
 我想我们应该找点复杂的东西
 I thought we'd do a bit of programming of a very complicated kind,
 
-4
+9
 00:00:34,032 --> 00:00:36,368
-来实践一下我们学过的这些知识
+来实践一下学过的这些知识
 just to illustrate what you can do with this sort of thing.
 
-5
+10
 00:00:40,430 --> 00:00:43,488
-假设 我们处在一个物理系统中
+我可以这么说 假设我们处在现实世界中
 I suppose, as I said, we were motivated by physical systems
 
-6
+11
 00:00:44,112 --> 00:00:46,256
-假设，我们处在这样一个物理系统中，系统中的事物驱动彼此，全部的这些事物组成了世界
+我们把这个世界看作是
 the ways we like to think about physical systems,
 
-7
+12
 00:00:46,992 --> 00:00:51,088
-假设，我们处在这样一个物理系统中，系统中的事物驱动彼此，全部的这些事物组成了世界
+由许多的事物构成的
 which is that there are these things that the world is made out of.
 
-8
+13
 00:00:52,060 --> 00:00:55,984
-每一个事物都有其独立的局部状态
+每个事物都有其独立的局部状态
 And each of these things has particular independent local state,
 
-9
+14
 00:00:57,248 --> 00:00:59,872
-每一个事物都有其独立的局部状态
+正是这些独立的状态使其成为事物
 and therefore it is a thing. That's what makes it a thing.
 
-10
+15
 00:01:01,280 --> 00:01:04,272
-我们说 我们有一个真实的世界
+因此我们说 在这个世界的模型中
 And then we're going to say that in the model in the world
 
-11
+16
 00:01:04,288 --> 00:01:09,900
-我们在大脑中和计算机中对那个真实世界建模
+我们在大脑中和计算机中对那个世界建模
 we have a world and a model in our minds and in the computer of that world.
 
-12
+17
 00:01:10,940 --> 00:01:12,544
-我想要把真实世界和计算机中的对象
+我想要建立一种对应关系
 And what I want to make is a correspondence
 
-13
+18
 00:01:12,784 --> 00:01:15,216
-联系对应起来
+把现实世界和计算机中的对象联系起来
 between the objects in the world and the objects in the computer,
 
-14
-00:01:15,872 --> 00:01:21,728
-把真实世界中对象间的关系 与模型中对象间的关系 对应起来
-the relationships between the objects in the world and the relationships between those same obj...--the model objects in the computer,
+19
+00:01:15,870 --> 00:01:17,744
+把现实世界中对象间的关系
+the relationships between the objects in the world
 
-15
-00:01:23,184 --> 00:01:28,112
-真实世界中关联对象的函数 与模型中的函数 对应起来
-and the functions that relate things in the world to the functions that relate things in the computer.
+20
+00:01:17,968 --> 00:01:21,720
+与计算机中的模型对象间的关系 对应起来
+and the relationships between those same obj...--the model objects in the computer,
 
-16
+21
+00:01:23,180 --> 00:01:25,520
+把现实世界中关联对象的函数
+and the functions that relate things in the
+
+22
+00:01:25,936 --> 00:01:28,110
+与计算机中的函数 对应起来
+to the functions that relate things in the computer.
+
+23
 00:01:30,840 --> 00:01:33,824
-这就为我们赢得了模块性
+这让我们获得了模块性
 This buys us modularity.
 
-17
+24
 00:01:34,740 --> 00:01:36,752
-如果我们认为真实世界是像那样的
+如果我们认为现实世界是像那样的
 If we really believe the world is like that,
 
-18
+25
 00:01:37,360 --> 00:01:38,720
 也就是由许多小的事物构成的
 that it's made out of these little pieces,
 
-19
+26
 00:01:39,200 --> 00:01:41,472
 当然 我们可以把世界安排成那样
 and of course we could arrange our world to be like that,
 
-20
+27
 00:01:42,032 --> 00:01:43,952
 我们只能对像那样的事物建模
 we could only model those things that are like that,
 
-21
+28
 00:01:45,456 --> 00:01:49,024
 这样 我们的程序就可以从现实世界中继承模块化
 then we can inherit the modularity in the world into our programming.
 
-22
+29
 00:01:50,450 --> 00:01:53,584
 这就是发明面向对象编程的初衷
 That's why we would invent some of this object-oriented programming.
 
-23
+30
 00:01:55,420 --> 00:01:58,192
 我所见过的最完美的对象（系统）
 Well, let's take the best kind of objects I know.
 
-24
+31
 00:01:58,890 --> 00:02:04,176
 电气系统 就是非常非常完美的对象系统
 They're completely--they're completely wonderful: electrical systems.
 
-25
+32
 00:02:06,400 --> 00:02:12,992
 电气系统真的是物理学家构造的非常非常好的一种对象
 Electrical systems really are the physicist's best, best objects.
 
-26
+33
 00:02:14,220 --> 00:02:16,760
 这里 我有一些机器零件
 You see over here I have some piece of machinery.
 
-27
+34
 00:02:17,120 --> 00:02:18,288
 就是这些零件
 Right here's a piece of machinery.
 
-28
+35
 00:02:20,040 --> 00:02:22,880
 有一个电线连接起了
 And it's got an electrical wire connecting
 
-29
+36
 00:02:23,664 --> 00:02:26,400
 零件的两个部分
 one part of the machinery with another part of the machinery.
 
-30
+37
 00:02:27,568 --> 00:02:30,864
 电气世界中 有一个非常棒的特性
 And one of the wonderful properties of the electrical world
 
-31
+38
 00:02:31,648 --> 00:02:33,120
 就是我可以说这是一个对象
 is that I can say this is an object,
 
-32
+39
 00:02:34,016 --> 00:02:34,976
 这又是一个对象
 and this is an object,
 
-33
+40
 00:02:35,712 --> 00:02:37,536
 它们间的关联一目了然
 and they're-- the connection between them is clear.
 
-34
+41
 00:02:38,240 --> 00:02:43,328
 而且 如果我没有用电线连接 它们便没有关联
 In principle, there is no connection that I didn't describe with these wires.
 
-35
+42
 00:02:44,740 --> 00:02:46,128
 比如我有一个灯泡
 Let's say if I have light bulbs,
 
-36
+43
 00:02:46,528 --> 00:02:50,320
 一个灯泡和一个已经接在插座上的电源
 Let's say if I have light bulbs, a light bulb and a power supply that's plugged into the outlet.
 
-37
+44
 00:02:51,632 --> 00:02:53,536
 关联非常明了
 Then the connection is perfectly clear.
 
-38
+45
 00:02:53,620 --> 00:02:55,424
 这就是已知所有的连接方式了
 There's no other connections that we know of.
 
-39
+46
 00:02:56,220 --> 00:03:02,336
 就算我把连接电灯和电源的电线打个结
 If I were to tie a knot in the wire that connects the light bulb to the power supply,
 
-40
+47
 00:03:02,688 --> 00:03:03,648
 灯仍然是亮的
 the light remains lit up.
 
-41
+48
 00:03:04,040 --> 00:03:04,768
 没什么影响
 It doesn't care.
 
-42
+49
 00:03:07,440 --> 00:03:12,400
 物理学上这样安排 可以使连接变成抽象的
 That the way the physics is arranged is such that the connection can be made abstract,
 
-43
+50
 00:03:13,088 --> 00:03:15,270
 至少在低频状态下是可以的
 at least for low frequencies and things like that.
 
-44
+51
 00:03:17,840 --> 00:03:20,880
 而且这就是全部的关联方式了
 So in fact, we have captured all of the connections there really are.
 
-45
+52
 00:03:22,350 --> 00:03:23,872
 当然 我们来进一步
 Well, as you can go one step further
 
-46
+53
 00:03:23,904 --> 00:03:27,310
 讨论一种在电气系统中最为广泛的抽象
 and talk about the most abstract types of electrical systems we have,
 
-47
+54
 00:03:27,856 --> 00:03:29,420
 数字电路
 digital to dual circuits.
 
-48
+55
 00:03:31,696 --> 00:03:33,664
 这里有一些对象
 And here there are certain kinds of objects.
 
-49
+56
 00:03:34,640 --> 00:03:40,128
 例如 在数字电路里中 我们有非门
 For example, in digital circuits we have things like inverters.
 
-50
+57
 00:03:41,392 --> 00:03:42,784
 有与门
 We have things like and-gates.
 
-51
+58
 00:03:43,990 --> 00:03:45,408
 还有或门
 We have things like or-gates.
 
-52
+59
 00:03:47,210 --> 00:03:50,128
 我们用一种特殊的“电线” 把它们连接起来
 We connect them together by sort-of wires
 
-53
+60
 00:03:52,000 --> 00:03:54,944
 这些“电线”代表抽象信号
 which represent abstract signals.
 
-54
+61
 00:03:55,610 --> 00:03:57,184
 我们不关心具体的物理因素
 We don't really care as physical variables
 
-55
+62
 00:03:57,210 --> 00:03:59,728
 像电压、电流或者组合因素等
 whether these are voltages or currents or some combination
 
-56
+63
 00:04:00,016 --> 00:04:03,440
 又或者是水压 等等
 or water, water pressure.
 
-57
+64
 00:04:05,200 --> 00:04:07,328
 这些抽象变量代表某类信号
 These abstract variables represent certain signals.
 
-58
+65
 00:04:09,420 --> 00:04:12,896
 我们用电路连接元件 构建系统
 And we build systems by wiring these things together with wires.
 
-59
+66
 00:04:14,070 --> 00:04:16,224
 现在 我要向你们介绍一门新的语言
 So today what I'm going to show you, right now,
 
-60
+67
 00:04:17,632 --> 00:04:20,176
 我们要构建一门内嵌于Lisp中的语言
 we're going to build up an invented language in Lisp,
 
-61
+68
 00:04:22,144 --> 00:04:25,088
 这是一种内部DSL 是类似于之前讲过的图形语言那种
 embedded in the same sense that Henderson's picture language was embedded,
 
-62
+69
 00:04:26,160 --> 00:04:27,328
 而不是昨天那种
 which is not the same sense
 
-63
+70
 00:04:27,888 --> 00:04:31,610
 那种模式匹配语言 -- 那是外部DSL
 as the language of pattern match and substitution was done yesterday.
 
-64
+71
 00:04:32,800 --> 00:04:36,300
 模式匹配语言是由Lisp程序所解释的
 The pattern match substitution language was interpreted by a Lisp program.
 
-65
+72
 00:04:38,160 --> 00:04:40,528
 而之前那种图形语言
 But the embedding of Henderson's program
 
-66
+73
 00:04:40,560 --> 00:04:44,270
 是在Lisp中构造我们想要的过程 来封装图形结构
 is that we just build up more and more procedures that encapsulate the structure we want.
 
-67
+74
 00:04:45,480 --> 00:04:46,752
 举例来说
 So for example here,
 
-68
+75
 00:04:47,728 --> 00:04:50,640
 首先我要有一些基本对象
 I'm going to have some various primitive kinds of objects, as you see,
 
-69
+76
 00:04:51,056 --> 00:04:52,128
 比如这个和这个
 that one and that one.
 
-70
+77
 00:04:53,504 --> 00:04:55,184
 然后用电线去组合它们
 I'm going to use wires to combine them.
 
-71
+78
 00:04:55,984 --> 00:04:59,376
-我用 (MAKE-WIRE) 来构造一个电线
+我用(MAKE-WIRE)来构造一个电线
 The way I represent attaching-- I can make wires.
 
-72
+79
 00:04:59,870 --> 00:05:01,248
 A就代表了一根电线
 So let's say A is a wire.
 
-73
+80
 00:05:01,740 --> 00:05:02,690
 B也是
 And B is a wire.
 
-74
+81
 00:05:02,690 --> 00:05:03,460
 C也是
 And C is a wire.
 
-75
+82
 00:05:03,460 --> 00:05:04,230
 D也是
 And D is a wire.
 
-76
+83
 00:05:04,230 --> 00:05:04,830
 还有E
 And E is wire.
 
-77
+84
 00:05:04,830 --> 00:05:05,648
 S也是
 And S is a wire.
 
-78
+85
 00:05:06,880 --> 00:05:12,752
 而或门有两个输入 分别是A和B
 Well, an or-gate that has both inputs, the inputs being A and B,
 
-79
+86
 00:05:13,168 --> 00:05:14,752
 它的输出是D
 and the output being wire D,
 
-80
+87
 00:05:15,072 --> 00:05:16,128
 我们用这样的记号来表示
 you notate like this.
 
-81
+88
 00:05:18,140 --> 00:05:22,144
 与门 输入是A和B 输出是C
 An and-gate, which has inputs A and B and output C,
 
-82
+89
 00:05:22,224 --> 00:05:23,240
 我们这样表示
 we notate like that.
 
-83
+90
 00:05:24,820 --> 00:05:28,464
 通过一系列像这样的声明
 By making such a sequence of declarations,
 
-84
+91
 00:05:29,296 --> 00:05:31,648
 我可以组合出任意的电路
 I can wire together an arbitrary circuit.
 
-85
+92
 00:05:32,750 --> 00:05:34,640
 我已经告诉了你们创建数字电路
 So I've just told you a set of primitives
 
-86
+93
 00:05:35,312 --> 00:05:38,510
 的基本元素和组合方法了
 and means of combination for building digital circuits,
 
-87
+94
 00:05:40,096 --> 00:05:43,040
 然后就该说抽象的方法了
 when I need more in a real language than abstraction.
 
-88
+95
 00:05:43,690 --> 00:05:52,240
 举例来说 这是一个半加器
 And so for example, here I have--here I have a half adder.
 
-89
+96
 00:05:52,672 --> 00:05:55,552
 如果你学过电路设计肯定知道这个东西
 It's something you all know if you've done any digital design.
 
-90
+97
 00:05:56,930 --> 00:06:00,448
 输入两个数A和B
 It's used for adding numbers together on A and B
 
-91
+98
 00:06:00,624 --> 00:06:02,120
 输出两者之和以及进位
 and putting out a sum and a carry.
 
-92
+99
 00:06:04,352 --> 00:06:06,800
 事实上 完全可以用我刚刚说的来组合电路
 And in fact, the wiring diagram is exactly what I told you.
 
-93
+100
 00:06:07,450 --> 00:06:10,992
 盒子外面 半加器盒子的外面有一些接口
 A half adder with things that come out of the box--
 
-94
+101
 00:06:11,136 --> 00:06:14,112
 这些盒子的边界 我们总是抽象成盒子
 you see the box, the boundary, the abstraction is always a box.
 
-95
+102
 00:06:14,790 --> 00:06:19,700
-从盒子里引出A B S C四根线
+从盒子里引出A、B、S、C四根线
 And there are things that come out of it, A, B, S, and C.
 
-96
+103
 00:06:19,700 --> 00:06:21,792
 这些是已经声明了的变量
 Those are the declared variables--
 
-97
+104
 00:06:23,390 --> 00:06:26,256
 由LAMBDA表达式声明的几个变量
 declared variables of a lambda expression,
 
-98
+105
 00:06:26,288 --> 00:06:28,010
 定义了这个半加器
 which is the one that defines half adder.
 
-99
+106
 00:06:31,400 --> 00:06:35,968
 在盒子的内部 我构造了电线D和E
 And internal to that, I make up some more wires, D and E,
 
-100
+107
 00:06:36,000 --> 00:06:37,440
 这是为了连接内部结构
 which I'm going to use for the interconnect--
 
-101
+108
 00:06:37,744 --> 00:06:40,400
 这条是E 这条是D
 here E is this one and D is this wire,
 
-102
+109
 00:06:41,328 --> 00:06:43,504
 内部连接的线路并没有引出盒子之外
 the interconnect that doesn't come through the walls of the box--
 
-103
+110
 00:06:45,056 --> 00:06:46,832
 就像电路图那样连起来
 and wire things together as you just saw.
 
-104
+111
 00:06:48,790 --> 00:06:50,896
 大家可以看得出来
 And the nice thing about this that I've just shown you
 
-105
+112
 00:06:51,056 --> 00:06:53,024
 这个语言非常有层次性
 this language is hierarchical in the right way.
 
-106
+113
 00:06:53,856 --> 00:06:55,712
 如果一门语言没有层次性
 If a language isn't hierarchical in the right way,
 
-107
+114
 00:06:55,952 --> 00:06:59,968
 如果你不能把一个复合对象当成基本对象来使用
 if it turns out that a compound object doesn't look like a primitive,
 
-108
+115
 00:07:00,384 --> 00:07:01,536
 这门语言肯定是有问题的
 there's something wrong with the language--
 
-109
+116
 00:07:02,592 --> 00:07:04,224
 至少我是这么认为的
 at least the way I feel about that.
 
-110
+117
 00:07:06,410 --> 00:07:09,584
 之前 我们都是在研究数学函数
 So here we have--here, instead of starting with mathematical functions,
 
-111
+118
 00:07:09,600 --> 00:07:11,120
 或者是计算数学函数的东西
 or things that compute mathematical functions,
 
-112
+119
 00:07:11,152 --> 00:07:12,650
 这些都是我们之前研究的东西
 which is what we've been doing up until now,
 
-113
+120
 00:07:13,850 --> 00:07:16,656
 而我们现在
 instead of starting with things that look like mathematical functions,
 
-114
+121
 00:07:16,672 --> 00:07:17,630
 不这么做了
 or compute such things,
 
-115
+122
 00:07:17,850 --> 00:07:20,880
 我们从一些电气对象开始
 we are starting with things that are electrical objects
 
-116
+123
 00:07:21,040 --> 00:07:22,640
 构建更多的对象
 and we build up more electrical objects.
 
-117
+124
 00:07:23,350 --> 00:07:28,832
 我们用Lisp里的LAMBDA将其粘合起来
 And the glue we're using is basically the Lisp structure: lambdas.
 
-118
+125
 00:07:30,384 --> 00:07:32,930
 “LAMBDA: 终极之粘合剂”
 Lambda is the ultimate glue, if you will.
 
-119
+126
 00:07:33,320 --> 00:07:36,352
 当然 半加器可以用于
 And of course, half adder itself can be used
 
-120
+127
 00:07:37,648 --> 00:07:41,040
 构造一种更复杂的抽象结构 -- 全加器
 in a more complicated abstraction called a full adder,
 
-121
+128
 00:07:41,600 --> 00:07:45,056
 如这里所示 全加器由两个半加器构成
 which in fact involves two half adders, as you see here,
 
-122
+129
 00:07:45,470 --> 00:07:47,872
 用一些额外的电线连接起来
 hooked together with some extra wires,
 
-123
+130
 00:07:48,080 --> 00:07:51,290
 就像这里所示的S、C1、C2以及一个或门
 that you see here, S, C1, and C2, and an or-gate,
 
-124
+131
 00:07:52,190 --> 00:07:53,600
 而对于一个全加器
 to manufacture a full adder,
 
-125
+132
 00:07:53,872 --> 00:08:00,780
 它的输入有：两个待加的数 一个进位值
 which takes a input number, another input number, a carry in,
 
-126
+133
 00:08:01,360 --> 00:08:04,176
 输出是：两数之和以及进位
 and produces output, a sum and a carry out.
 
-127
+134
 00:08:05,900 --> 00:08:10,704
 构建好全加器以后 还可以把它们链起来组成更大的加法器
 And out of full adders, you can make real adder chains and big adders.
 
-128
+135
 00:08:12,990 --> 00:08:14,832
 现在我们有了一门完整的语言
 So we have here a language so far
 
-129
+136
 00:08:16,064 --> 00:08:21,760
 它有基本元素、组合方法以及抽象方法
 That has primitives, means of combination, and means of abstraction to real language.
 
-130
+137
 00:08:22,270 --> 00:08:23,360
 现在 我们怎样实现这门语言？
 Now, how are we going to implement this?
 
-131
+138
 00:08:25,000 --> 00:08:26,848
 其实并不难
 Well, let's do it easily.
 
-132
+139
 00:08:27,070 --> 00:08:27,968
 首先来看基本元素
 Let's look at the primitives.
 
-133
+140
 00:08:28,128 --> 00:08:30,112
 这是唯一的问题
 The only problem is we have to implement the primitives.
 
-134
+141
 00:08:31,160 --> 00:08:32,560
 不需要再做其它事情了
 Nothing else has to be implemented,
 
-135
+142
 00:08:33,744 --> 00:08:38,000
 因为我们直接借用了Lisp中的组合方法以及抽象方法
 because we're picking up the means of combination and abstraction from Lisp,
 
-136
+143
 00:08:39,968 --> 00:08:41,888
 我们的语言 继承自Lisp并内嵌于其中
 inheriting them in the embedding.
 
-137
+144
 00:08:43,776 --> 00:08:45,440
 好 我们先来看一个基本元素
 OK, so let's look at a particular primitive.
 
-138
+145
 00:08:45,860 --> 00:08:47,400
 就拿非门来说吧
 An inverter is a nice one.
 
-139
+146
 00:08:51,540 --> 00:08:54,672
 非门有两个引脚 分别是输入和输出
 Now, inverter has two wires coming in, an in and an out.
 
-140
+147
 00:08:57,312 --> 00:09:02,624
 它要对输入信号做出响应
 And somehow, it's going to have to know what to do when a signal comes in.
 
-141
+148
 00:09:04,300 --> 00:09:07,008
 它需要对输入电线说 --
 So somehow it's going to have to tell its input wire--
 
-142
+149
 00:09:07,640 --> 00:09:10,144
 我们现在把它们视作对象
 and now we're going to talk about objects
 
-143
+150
 00:09:10,448 --> 00:09:12,416
 其具体细节我们稍后讨论
 and we're going to see this in a little more detail soon--
 
-144
+151
 00:09:13,230 --> 00:09:14,848
 它对其输入电线的说
 but it's going to have to tell its input wire
 
-145
+152
 00:09:15,824 --> 00:09:18,480
 “当你的值变发生改变时 告诉我一声”
 that when you change, tell me.
 
-146
+153
 00:09:20,120 --> 00:09:22,112
 所以非门这个对象
 So this object, the object which is the inverter
 
-147
+154
 00:09:22,416 --> 00:09:24,384
 会对输入电线这个对象说 --
 has to tell the object which is the input wire,
 
-148
+155
 00:09:25,136 --> 00:09:26,400
 “Hi 我是George”
 hi, my name is George.
 
-149
+156
 00:09:26,870 --> 00:09:31,024
 “我的工作就是 对你的变化做出响应”
 And my, my job is to do something with results when you change.
 
-150
+157
 00:09:31,720 --> 00:09:34,192
 “所以当你变化的时候 告诉我一声”
 So when you change, you get a change, tell me about it.
 
-151
+158
 00:09:34,730 --> 00:09:35,728
 “这样我才能进一步的处理”
 Because I've got to do something with that.
 
-152
+159
 00:09:36,880 --> 00:09:40,304
 这是通过在这里 在输入电线上
 Well, that's done down here by adding an action on the input wire called invert-in,
 
-153
+160
 00:09:41,408 --> 00:09:44,640
 添加一个叫做INVERT-IN的动作来实现的
 Well, that's done down here by adding an action on the input wire called invert-in,
 
-154
+161
 00:09:45,070 --> 00:09:46,944
 INVERT-IN在这里定义
 where invert-in is defined over here
 
-155
+162
 00:09:47,056 --> 00:09:48,760
 它是一个无参过程
 to be a procedure of no arguments,
 
-156
+163
 00:09:49,984 --> 00:09:54,592
 它将线路上的信号逻辑取反
 which gets the logical not of the signal on the input wire.
 
-157
+164
 00:09:56,064 --> 00:09:58,640
 经过一段时长为INVERTER-DELAT的延时以后 --
 And after some delay, which is the inverter delay,
 
-158
+165
 00:09:59,264 --> 00:10:01,152
 每个电路对象都有延时 --
 all these electrical objects have delays,
 
-159
+166
 00:10:02,880 --> 00:10:04,460
 然后我们会 --
 we'll do the following thing--
 
-160
+167
 00:10:04,672 --> 00:10:07,140
 我们再把输出设置为新的值
 set the signal on the output wire to the new value.
 
-161
+168
 00:10:10,160 --> 00:10:11,360
 非常简单
 A very simple program.
 
-162
+169
 00:10:12,400 --> 00:10:15,280
 你可以想象输出电线也同样是信号敏感的
 Now, you have to imagine that the output wire has to be sensitive
 
-163
+170
 00:10:15,770 --> 00:10:18,272
 当信号改变的时候
 and know that when its signal changes,
 
-164
+171
 00:10:19,280 --> 00:10:21,150
 它会“告知”其它对象
 it may have to tell other guys,
 
-165
+172
 00:10:21,792 --> 00:10:24,784
 “快醒醒！我的值已经改变啦”
 Hi, wake up. My value has changed.
 
-166
+173
 00:10:26,050 --> 00:10:30,144
 所以当你把非门和与门或者元件连在一起的时候
 So when you hook together inverter with an and-gate or something like that,
 
-167
+174
 00:10:30,464 --> 00:10:32,208
 它们之间将会有大量的通信
 there has to be a lot of communication going on
 
-168
+175
 00:10:32,864 --> 00:10:35,072
 以确保信号正确地传播
 to make sure that the signal propagates right.
 
-169
+176
 00:10:36,810 --> 00:10:38,620
 到目前为止 没什么新奇的东西
 And down here is nothing very exciting.
 
-170
+177
 00:10:38,620 --> 00:10:40,720
 我们只是针对某个特定的表示法
 This is just the definition of logical not
 
-171
+178
 00:10:40,720 --> 00:10:45,240
 也就是这个例子中的1、0 -- 实现了LOGICAL-NOT而已
 for some particular representations of the logical values-- 1, 0 in this case.
 
-172
+179
 00:10:46,736 --> 00:10:49,168
 与门就相对复杂一些
 And we can look at things more complicated like and-gates.
 
-173
+180
 00:10:49,780 --> 00:10:55,808
 与门有两个输入A1和A2 输出是OUTPUT
 And-gates take two inputs, A1 and A2, we'll call them, and produce an output.
 
-174
+181
 00:10:56,736 --> 00:11:00,640
 但是其结构和非门没有什么大的不同
 But the structure of the and-gate is identical to the one we just saw.
 
-175
+182
 00:11:00,860 --> 00:11:03,440
 只不过是 当输入信号改变的时候
 There's one called an and-action procedure that's defined,
 
-176
+183
 00:11:04,528 --> 00:11:09,070
 与门调用的是AND-ACTION过程罢了
 which is the thing that gets called when an input is changed.
 
-177
+184
 00:11:10,910 --> 00:11:12,880
 当然 它所做的只是
 And what it does, of course, is nothing more than
 
-178
+185
 00:11:12,912 --> 00:11:15,370
 对输入信号进行逻辑“与”运算
 compute the logical and of the signals on the inputs.
 
-179
+186
 00:11:16,192 --> 00:11:18,768
 在经过AND-GATE-DELAY的延时之后
 And after some delay, called the and-gate-delay,
 
-180
+187
 00:11:20,464 --> 00:11:24,368
 调用这个过程 更新输出信号值
 calls this procedure, which sets a signal on the output to a new value.
 
-181
+188
 00:11:25,470 --> 00:11:28,350
 那么 我们如何用“按愿望思维”来构造这一切呢？
 Now, how I implement these things is all wishful thinking.
 
-182
+189
 00:11:28,350 --> 00:11:31,088
 如大家所见 这里有一个赋值运算
 As you see here, I have an assignment operation.
 
-183
+190
 00:11:32,020 --> 00:11:32,784
 但并不是SET!
 It's not set.
 
-184
+191
 00:11:34,570 --> 00:11:36,784
 这是一个派生出来的运算
 It's a derived assignment operation in the same way
 
-185
+192
 00:11:36,784 --> 00:11:38,730
 就像可以从CAR和CDR派生出其它函数一样
 we had functions that were derived from CAR and CDR.
 
-186
+193
 00:11:40,800 --> 00:11:44,816
 因此 按照约定 我加上“!”（表示这个过程有副作用）
 So I, by convention, label that with an exclamation point.
 
-187
+194
 00:11:46,340 --> 00:11:49,184
 这里有个过程ADD-ACTION!
 And over here, you see there's an add-action!,
 
-188
+195
 00:11:49,440 --> 00:11:54,672
 它用来提醒与门中的局部线路A1
 which is to inform the wire, called A1 locally in this and-gate,
 
-189
+196
 00:11:55,632 --> 00:11:58,688
 当它改变的时候记得执行过程AND-ACTION-PROCEDURE
 to call the and-action-procedure when it gets changed,
 
-190
+197
 00:11:59,584 --> 00:12:02,912
 A2也是一样
 and the wire A2 to call the and-action procedure when it gets changed.
 
-191
+198
 00:12:06,310 --> 00:12:07,232
 非常简单
 All very simple.
 
-192
+199
 00:12:09,960 --> 00:12:12,096
 现在我们再来看看
 Well, let's talk a little bit about this communication
 
-193
+200
 00:12:12,704 --> 00:12:16,120
 各部分间是如何通信的
 that must occur between these various parts.
 
-194
+201
 00:12:18,544 --> 00:12:19,664
 例如
 Suppose, for example,
 
-195
+202
 00:12:23,120 --> 00:12:24,272
 有一个非常简单的电路
 I have a very simple circuit
 
-196
+203
 00:12:24,272 --> 00:12:30,460
 它有一个与门 带有两个输入A、B
 which contains and-gate with wires a and b.
 
-197
+204
 00:12:31,920 --> 00:12:38,000
 与门通过电线C跟非门相连
 And that connects through a wire called c to an inverter
 
-198
+205
 00:12:39,728 --> 00:12:41,536
 非门的输出是D
 which has a wire output called d.
 
-199
+206
 00:12:44,208 --> 00:12:47,344
 这就是物理世界
 What are the comput...--here's the physical world.
 
-200
+207
 00:12:47,360 --> 00:12:49,024
 一个对物理世界的抽象
 It's an abstraction of the physical world.
 
-201
+208
 00:12:49,860 --> 00:12:53,408
 要不了几分钱就可以从Radio Shack买到这些元件
 Now I can buy these out of little pieces that you get at Radio Shack for a few cents.
 
-202
+209
 00:12:54,880 --> 00:12:56,320
 那些元件的作用和画在这里的差不多
 And there are boxes that act like this,
 
-203
+210
 00:12:57,168 --> 00:13:00,220
 元件上都标有类似于LS04的标签
 which have little numbers on them like LS04 or something.
 
-204
+211
 00:13:01,530 --> 00:13:08,160
 现在来看其中的计算模型
 Now supposing I were to try to say what's the computational model.
 
-205
+212
 00:13:09,010 --> 00:13:10,944
 它又对应着什么
 What is the thing that corresponds to that,
 
-206
+213
 00:13:11,136 --> 00:13:14,096
 计算机中的对象对应着我们思维中的什么
 that part of reality in the mind of us and in the computer?
 
-207
+214
 00:13:15,850 --> 00:13:19,136
 我需要把现实世界中的每个对象与计算机中的对应起来
 Well, I have to assign for every object in the world an object in the computer,
 
-208
+215
 00:13:19,792 --> 00:13:24,272
 把两个世界中对象之间的关系也对应起来
 and for every relationship in the world between them a relationship in the computer.
 
-209
+216
 00:13:26,064 --> 00:13:26,800
 这是我的目标
 That's my goal.
 
-210
+217
 00:13:28,560 --> 00:13:29,456
 让我们来看看怎么做
 So let's do that.
 
-211
+218
 00:13:30,900 --> 00:13:34,208
 这一团东西代表信号A
 Well, I have some sort of thing called the signal, A.
 
-212
+219
 00:13:35,712 --> 00:13:36,944
 这是信号A
 This is A. It's a signal.
 
-213
+220
 00:13:37,940 --> 00:13:39,328
 画得像一团云
 It's a cloudy thing like that.
 
-214
+221
 00:13:39,900 --> 00:13:42,800
 再画另一个信号 -- B
 And I have another one down here which I'm going to call B.
 
-215
+222
 00:13:46,688 --> 00:13:47,470
 它是另一个信号
 It's another signal.
 
-216
+223
 00:13:49,140 --> 00:13:50,912
 这两个信号
 Now this signal--these two signals
 
-217
+224
 00:13:51,104 --> 00:13:52,816
 要通过某种方式连在一起
 are somehow going to have to hook together
 
-218
+225
 00:13:53,728 --> 00:13:58,752
 连在这个盒子上 -- 这就代表与门
 into a box, let's call it this, which is the and-gate, action procedure.
 
-219
+226
 00:14:00,320 --> 00:14:02,040
 这就是与门的动作过程
 That's the and-gate's action procedure.
 
-220
+227
 00:14:07,660 --> 00:14:08,592
 它将产生
 And it's going to produce
 
-221
+228
 00:14:09,152 --> 00:14:13,296
 它将与另外一个称作C的信号对象交互
 well, it's going to interact with a signal object, which we call C--
 
-222
+229
 00:14:16,224 --> 00:14:18,880
 哦 说错了 是一条电线C
 a wire object, excuse me, we call C.
 
-223
+230
 00:14:20,590 --> 00:14:26,288
 这跟电线 又将连在另一个动作过程上
 this is going to put out again, or connect to, another action procedure
 
-224
+231
 00:14:26,288 --> 00:14:30,330
 在我们的电气世界中 这个过程跟一个非门关联
 which is one associated with the inverter in the world, not.
 
-225
+232
 00:14:32,860 --> 00:14:40,656
 我还有另外一根电线 -- D
 And I'm going to have another--another wire, which we'll call D.
 
-226
+233
 00:14:42,970 --> 00:14:45,296
 整体布局就是这样
 So here's my layout of stuff.
 
-227
+234
 00:14:46,000 --> 00:14:49,440
 现在必须来研究它们 有关计算的内部机制了
 Now we have to say what's inside them and what they have to know to compute.
 
-228
+235
 00:14:51,500 --> 00:14:53,696
 每一跟电线都必须知道
 Well, every--every one of these wires has to know
 
-229
+236
 00:14:53,696 --> 00:14:56,360
 自己承载的信号是什么
 what the value of the signal that's on that wire is.
 
-230
+237
 00:14:57,340 --> 00:15:00,000
 我们用变量SIGNAL来表示
 So there's going to be some variable inside here, we'll call it signal.
 
-231
+238
 00:15:02,976 --> 00:15:04,048
 SIGNAL的值就是信号
 And he owns a value.
 
-232
+239
 00:15:05,680 --> 00:15:07,744
 也不要忘了它所关联的环境
 So there must be some environment associated with this.
 
-233
+240
 00:15:08,896 --> 00:15:11,344
 对于每个元件来说 一定有一个环境绑定了信号
 And for each one of these, there must be an environment that binds signal.
 
-234
+241
 00:15:15,400 --> 00:15:16,880
 因此 这里也有一个SIGNAL变量
 And there must be a signal here, therefore.
 
-235
+242
 00:15:19,400 --> 00:15:21,920
 SIGNAL的值不是0就是1
 And presumably, signal's a value that's either 1 or 0,
 
-236
+243
 00:15:22,816 --> 00:15:23,488
 这儿也有个SIGNAL
 and signal.
 
-237
+244
 00:15:28,000 --> 00:15:30,560
 现在 一旦这里的信号改变
 Now, we also have to have some
 
-238
+245
 00:15:31,264 --> 00:15:34,112
 我们需要通知一系列的对象
 list of people to inform if the signal here changes.
 
-239
+246
 00:15:36,660 --> 00:15:37,664
 我们得通知这个与门
 We're going to have to inform this.
 
-240
+247
 00:15:39,300 --> 00:15:43,968
 这里有个表 我们把它叫做AP
 So I've got that list. We'll call it the Action Procedures, AP.
 
-241
+248
 00:15:44,500 --> 00:15:45,600
 它可能是一个表
 And it's presumably a list.
 
-242
+249
 00:15:46,448 --> 00:15:49,008
 在本例中 表里面的第一项条目是这个东西
 But the first thing on the list, in this case, is this guy.
 
-243
+250
 00:15:50,500 --> 00:15:54,810
 这个元件也有一个称为AP的表
 And the action procedures of this one happens to have some list of stuff.
 
-244
+251
 00:15:54,810 --> 00:15:58,176
 也可能有一些其它对象 时刻等待着A来通知“它们”
 There might be other people who are sharing A, who are looking at it.
 
-245
+252
 00:15:59,020 --> 00:16:01,312
 所以这里可能有其它对象 比如
 So there might be other guys on this list, like
 
-246
+253
 00:16:01,728 --> 00:16:03,230
 一些其它我们不知道的对象
 like somebody over there that we don't know about.
 
-247
+254
 00:16:03,630 --> 00:16:04,880
 这些是与A连接的其它对象
 It's the other guy attached to A.
 
-248
+255
 00:16:07,200 --> 00:16:09,648
 这里的AP表
 And the action procedure here also has to point to that,
 
-249
+256
 00:16:11,120 --> 00:16:12,400
 也指向这个与门
 the list of action procedures.
 
-250
+257
 00:16:13,070 --> 00:16:16,352
 相类似的 这里的AP表
 And of course, that means this one, its action procedures
 
-251
+258
 00:16:16,784 --> 00:16:18,530
 也要指向这里
 has to point up to here.
 
-252
+259
 00:16:18,530 --> 00:16:20,896
 这里是C要通知的元件
 This is the things-- the people it has to inform.
 
-253
+260
 00:16:21,770 --> 00:16:23,184
 D也一样
 And this guy has some too.
 
-254
+261
 00:16:24,280 --> 00:16:25,248
 但是我不知道它要通知谁
 But I don't know what they are
 
-255
+262
 00:16:25,264 --> 00:16:26,650
 因为我的图中没有画出来
 because I didn't draw it in my diagram.
 
-256
+263
 00:16:27,190 --> 00:16:28,368
 可能是和D连接起来的其它元件
 It's the things connected to D.
 
-257
+264
 00:16:30,320 --> 00:16:32,624
 同样的
 Now, it's also the case
 
-258
+265
 00:16:33,800 --> 00:16:36,960
 当AND-ACTION过程被唤醒时
 that when the and-action procedure is awakened,
 
-259
+266
 00:16:37,020 --> 00:16:41,312
 也就是说 之前你拜托某人将你唤醒
 saying one of the people who know that you've told
 
-260
+267
 00:16:41,450 --> 00:16:44,848
 你拜托它们 当它们的信号发生改变时通知你
 one of the people you've told to wake you up if their signal changes,
 
-261
+268
 00:16:46,970 --> 00:16:48,816
 你得去检查它的信号是什么
 you have to go look and ask them what's their signal
 
-262
+269
 00:16:49,328 --> 00:16:52,256
 这样你就可以计算逻辑与 输出信号给下一个元件
 so you can do the and, and produce a signal for this one.
 
-263
+270
 00:16:57,090 --> 00:16:58,752
 所里 这里就必须要有
 So there has to be, for example,
 
-264
+271
 00:16:58,848 --> 00:17:03,000
 有信息说 A1是这个元件
 information here saying A1, my A1 is this guy,
 
-265
+272
 00:17:03,900 --> 00:17:06,480
 A2就是这个元件
 my A1 is this guy, and my A2 is this guy.
 
-266
+273
 00:17:08,930 --> 00:17:09,984
 不只是这样
 And not only that,
 
-267
+274
 00:17:11,790 --> 00:17:15,200
 当我在计算逻辑与时 我还得告诉这个元件一些信息
 when I do my and, I'm going to have to tell this guy something.
 
-268
+275
 00:17:16,304 --> 00:17:21,056
 还有一个输出 输出给这个元件
 So I need an output--  being this guy.
 
-269
+276
 00:17:25,800 --> 00:17:30,032
 同样地 非门也有一个输入
 And similarly, this guy's going to have a thing called the input
 
-270
+277
 00:17:32,380 --> 00:17:34,928
 当信号被唤醒并告知它信号被修改时
 that he interrogates to find out
 
-271
+278
 00:17:36,752 --> 00:17:38,640
 非门会询问该信号
 what the value of the signal on the input is,
 
-272
+279
 00:17:38,640 --> 00:17:40,090
 你的值是什么
 when the signal wakes up and says, I've changed,
 
-273
+280
 00:17:41,050 --> 00:17:43,472
 信号通过像这样发消息 告知“信号已改变”
 and sends a message this way saying, I've changed.
 
-274
+281
 00:17:43,520 --> 00:17:45,536
 它就反过来查询这个新的信号值
 This guy says, OK, what's your value now?
 
-275
+282
 00:17:46,900 --> 00:17:50,128
 取到值之后 它将会
 When he gets that value, then he's going to have to say,
 
-276
+283
 00:17:50,144 --> 00:17:55,860
 计算输出 并改变这个信号的值
 OK, output changes this guy, changes this guy.
 
-277
+284
 00:18:00,600 --> 00:18:01,248
 以此类推
 And so on.
 
-278
+285
 00:18:02,848 --> 00:18:04,560
 因此我也必须有这么多的连接
 And so I have to have at least that much connected-ness.
 
-279
+286
 00:18:06,240 --> 00:18:09,232
 现在我们回头观察一下 这个与门
 Now, let's go back and look, for example, at the and-gate.
 
-280
+287
 00:18:10,260 --> 00:18:12,096
 回到这张幻灯片
 Here we are back on this slide.
 
-281
+288
 00:18:13,670 --> 00:18:15,040
 这几个部分的内容
 And we can see some of these parts.
 
-282
+289
 00:18:16,040 --> 00:18:19,328
 对每个与门 都有A1、A2两个输入 一个OUTPUT输出
 For any particular and-gate, there is an A1, there is an A2, and the output.
 
-283
+290
 00:18:21,030 --> 00:18:23,536
 这些都是
 And those are, those are
 
-284
+291
 00:18:25,088 --> 00:18:28,160
 在AND-GATE被调用时的环境中
 an environment that was created at the--those produce a frame
 
-285
+292
 00:18:28,416 --> 00:18:31,248
 这些参数创建了一个框架
 at the time and-gate was called,
 
-286
+293
 00:18:33,310 --> 00:18:35,904
 这个框架用来存放A1、A2和OUTPUT的值
 A frame where A1, A2, and output are--
 
-287
+294
 00:18:36,672 --> 00:18:39,200
 它们都要与电线相绑定
 have as their values, they're bound to
 
-288
+295
 00:18:39,600 --> 00:18:44,256
 这些电线就是通过参数传进来的
 the wires which, they are--which were passed in.
 
-289
+296
 00:18:46,240 --> 00:18:47,312
 在这个环境下
 In that environment,
 
-290
+297
 00:18:47,744 --> 00:18:49,856
 我构建一个过程
 I constructed a procedure
 
-291
+298
 00:18:50,976 --> 00:18:53,680
 就在这里
 this one right there.
 
-292
+299
 00:18:54,590 --> 00:18:57,312
 在该环境下定义的AND-ACTION-PROCEDURE
 And-action-procedure was constructed in that environment.
 
-293
+300
 00:18:58,352 --> 00:19:00,704
 这个实际上是对一个LAMBDA表达式求值
 That was the result of evaluating a lambda expression.
 
-294
+301
 00:19:01,620 --> 00:19:05,488
 它跟求值该LAMBDA表达式时的环境相绑定
 So it hangs onto the frame where these were defined.
 
-295
+302
 00:19:07,168 --> 00:19:09,344
 找到它的局部环境
 Local--part of its local state is that.
 
-296
+303
 00:19:11,700 --> 00:19:13,472
 因此AND-ACTION-PROCEDURE过程能够
 The and-action-procedure, therefore, has
 
-297
+304
 00:19:13,648 --> 00:19:16,940
 存取这里看到的A1、A2和OUTPUT
 access to A1, A2, and output as we see here.
 
-298
+305
 00:19:17,310 --> 00:19:19,645
 A1、A2、OUTPUT
 A1, A2, and output.
 
-299
+306
 00:19:22,360 --> 00:19:23,952
 我们还没有深入探索“电线”的内部结构
 Now, we haven't looked inside of a wire yet.
 
-300
+307
 00:19:26,030 --> 00:19:26,992
 那是仅剩的部分
 That's all that remains.
 
-301
+308
 00:19:29,030 --> 00:19:29,920
 来看看“电线”
 Let's look at a wire.
 
-302
+309
 00:19:33,520 --> 00:19:36,256
 麻烦请开一下投影仪
 Like the overhead, very good.
 
-303
+310
 00:19:39,500 --> 00:19:42,560
 “电线”是有那么一点复杂
 Well, the wire, again, is a, is a somewhat complicated mess.
 
-304
+311
 00:19:43,090 --> 00:19:44,640
 哦 摁错了
 Ooh, wrong one.
 
-305
+312
 00:19:47,056 --> 00:19:48,752
 是非常复杂 像这样
 It's a big complicated mess, like that.
 
-306
+313
 00:19:50,064 --> 00:19:53,104
 但是还是来看一下 到底是什么
 But let's look at it in detail and see what's going on.
 
-307
+314
 00:19:54,720 --> 00:19:56,672
 “电线”是这样的一种东西
 Well, the wire is one of these.
 
-308
+315
 00:19:57,760 --> 00:20:03,520
 有两个主要部分 都是它的状态
 And it has to have two things that are part of it, that it's state.
 
-309
+316
 00:20:05,010 --> 00:20:07,390
 我们这里看到的 一个是信号值
 One of them is the signal we see here.
 
-310
+317
 00:20:07,456 --> 00:20:10,064
 这里 当我们调用MAKE-WIRE创建一条电线时
 Heres, when we call make-wire to make a wire,
 
-311
+318
 00:20:10,464 --> 00:20:13,024
 我们首先要创建一些变量
 then the first thing we do is we create some variables
 
-312
+319
 00:20:14,944 --> 00:20:16,080
 分别是这条电线的
 which are the signal
 
-313
+320
 00:20:17,104 --> 00:20:19,296
 SIGNAL和ACTION-PROCS
 and the action procedures for this wire.
 
-314
+321
 00:20:22,320 --> 00:20:23,440
 在这个上下文中
 And in that context,
 
-315
+322
 00:20:23,760 --> 00:20:27,040
 我们定义了一系列的过程
 we define various functions--or procedures, excuse me, procedures.
 
-316
+323
 00:20:27,840 --> 00:20:31,152
 其中一个是(SET-MY-SIGNAL! NEW)
 One of them is called set-my-signal to a new value.
 
-317
+324
 00:20:32,850 --> 00:20:37,424
 它所做的只是 取一个新值NEW
 And what that does is takes a new value in.
 
-318
+325
 00:20:37,930 --> 00:20:40,360
 如果NEW和SIGNAL一样 信号没有变化 就没必要做什么了
 If that's equal to my current value of my signal, I'm done.
 
-319
+326
 00:20:40,360 --> 00:20:42,624
 否则 把SIGNAL的值赋值为NEW
 Otherwise, I set the signal to the new value
 
-320
+327
 00:20:42,752 --> 00:20:44,608
 再调用ACTION-PROCS里的所有过程
 and call each of the action procedures
 
-321
+328
 00:20:46,528 --> 00:20:52,512
 那些我之前引入的过程
 that I've been, that I've been--what's the right word? --  introduced to.
 
-322
+329
 00:20:54,630 --> 00:21:01,530
 也就是我在定义与门时就定义的过程
 I get introduced when the and-gate was applied to me.
 
-323
+330
 00:21:04,130 --> 00:21:05,600
-是在代码最后调用 ADD-ACTION-PROCEDURE 实现的
+是在代码最后调用ADD-ACTION-PROCEDURE实现的
 By add action procedure at the bottom.
 
-324
+331
 00:21:07,410 --> 00:21:10,800
 然后 我还得定义一个过程 用来接受动作
 Also, I have to define a way of accepting an action procedure--
 
-325
+332
 00:21:10,816 --> 00:21:11,820
 也就是这段代码
 which is what you see here---
 
-326
+333
 00:21:12,800 --> 00:21:15,136
 它增加了AP表
 which increments my action procedures
 
-327
+334
 00:21:15,568 --> 00:21:21,630
-这是通过使用 SET! 将 PROC 与旧的 AP 表 CONS 起来实现的
+这是通过使用SET!将PROC与旧的AP表CONS起来实现的
 using set to the result of CONSing up a new process--a procedure,
 
-328
+335
 00:21:21,792 --> 00:21:24,256
-而这个 PROC 是作为参数传递进来的
+而这个PROC是作为参数传递进来的
 which is passed to me, on to my actions procedures list.
 
-329
+336
 00:21:25,408 --> 00:21:27,584
 由于技术原因 最后还要再运行一次PROC
 And for technical reasons, I have to call that procedure one.
 
-330
+337
 00:21:27,780 --> 00:21:29,200
-我不会再对此展开
+我不会再对此详细展开
 So I'm not going to tell you anything about that,
 
-331
+338
 00:21:29,392 --> 00:21:33,152
 这是一种事件驱动的模拟
 that has to do with event-driven simulations and getting them started,
 
-332
+339
 00:21:34,592 --> 00:21:36,000
 要想把这个讲清楚还是得花点时间
 which takes a little bit of thinking.
 
-333
+340
 00:21:36,950 --> 00:21:39,408
 最后 我还要定义一个“分派器”
 And finally, I'm going to define a thing called the dispatcher,
 
-334
+341
 00:21:39,968 --> 00:21:43,584
 这是一种将消息分派给电线的方法
 which is a way of passing a message to a wire,
 
-335
+342
 00:21:45,376 --> 00:21:48,656
 它将用于从中抽取出不同的信息
 which is going to be used to extract from it various information,
 
-336
+343
 00:21:49,072 --> 00:21:51,488
 比如这里 当前的信号值是多少？
 like what is the current signal value?
 
-337
+344
 00:21:53,820 --> 00:21:55,664
 设置新信号值的方法是什么？
 What is the method of setting your signal?
 
-338
+345
 00:21:57,180 --> 00:21:58,288
 我想要这个方法
 I want to get that out of it.
 
-339
+346
 00:22:00,100 --> 00:22:02,600
 我怎么样去添加另外的动作过程呢？
 How do I--how do I add another action procedure?
 
-340
+347
 00:22:05,510 --> 00:22:09,360
 最后 以DISPATCH过程为返回值返回
 And I'm going to return that dispatch, that procedure as a value.
 
-341
+348
 00:22:09,940 --> 00:22:11,872
 因此 我所构造的电线
 So the wire that I've constructed
 
-342
+349
 00:22:12,000 --> 00:22:13,552
 是一种可以接收消息的对象
 is a message accepting object
 
-343
+350
 00:22:14,256 --> 00:22:16,016
 它接收的消息类似于
 which accepts a message like, like
 
-344
+351
 00:22:16,448 --> 00:22:18,368
 “你的哪个方法可以用来添加动作过程？”
 what's your method of adding action procedures?
 
-345
+352
 00:22:19,920 --> 00:22:21,008
 它返回一个过程
 That it'll give me a procedure,
 
-346
+353
 00:22:21,640 --> 00:22:23,056
-它返回 ADD-ACTION-PROCUDURE
+它返回ADD-ACTION-PROCUDURE
 which is the add action procedure,
 
-347
+354
 00:22:23,072 --> 00:22:26,540
 我可以将其应用在一个动作过程上
 which I can then apply to an action procedure
 
-348
+355
 00:22:27,056 --> 00:22:29,010
-从而实现将一个动作过程加入电线的 AP 表中
+从而实现将一个动作过程加入电线的AP表中
 to create another action procedure in the wire.
 
-349
+356
 00:22:31,620 --> 00:22:32,820
 这是一种“许可”
 So that's a permission.
 
-350
+357
 00:22:33,200 --> 00:22:36,080
 使得你可以去修改自身的AP表
 So it's given me permission to change your action procedures.
 
-351
+358
 00:22:37,824 --> 00:22:40,160
 实际上 你可以在这里看到
 And in fact, you can see that over here.
 
-352
+359
 00:22:41,710 --> 00:22:42,320
 下一张幻灯片
 Next slide.
 
-353
+360
 00:22:43,536 --> 00:22:43,824
 噢
 Ah.
 
-354
+361
 00:22:47,760 --> 00:22:49,120
 没什么有意思的
 This is nothing very interesting.
 
-355
+362
 00:22:49,120 --> 00:22:50,656
-CALL-EACH 调用每个动作过程
+CALL-EACH调用每个动作过程
 The call each of the action procedures
 
-356
+363
 00:22:50,896 --> 00:22:52,576
-这只是对一个表不断做 CDR
+这只是对一个表不断做CDR
 is just a CDRing down a list.
 
-357
+364
 00:22:52,736 --> 00:22:54,608
 没什么好说的
 And I'm not going to even talk about that anymore.
 
-358
+365
 00:22:54,990 --> 00:22:56,256
 我们早就知道了
 We're too advanced for that.
 
-359
+366
 00:22:57,560 --> 00:23:00,672
 然而 如果我想知道线路上的信号值
 However, if I want to get a signal from a wire,
 
-360
+367
 00:23:01,024 --> 00:23:02,544
 我询问该线路：你的 --
 I ask the wire-- which is,
 
-361
+368
 00:23:02,544 --> 00:23:03,090
 回想一下 什么是线路？
 what is the wire?
 
-362
+369
 00:23:03,090 --> 00:23:05,408
 线路对象只是在创建它时所返回的分派过程而已
 The wire is the dispatch returned by creating the wire.
 
-363
+370
 00:23:05,860 --> 00:23:06,480
 只是一个过程
 It's a procedure.
 
-364
+371
 00:23:06,830 --> 00:23:12,272
-我向该分派器发送一个消息 'GET-SIGNAL
+我向该分派器发送一个消息'GET-SIGNAL
 I call that dispatch on the message get-signal.
 
-365
+372
 00:23:12,912 --> 00:23:15,408
 实际得到的是一个方法 用于取得线路信号值
 And what I should expect to get is a method of getting a signal.
 
-366
+373
 00:23:16,900 --> 00:23:17,968
 进一步 我就可以得到信号值
 Or actually, I get the signal.
 
-367
+374
 00:23:19,220 --> 00:23:20,528
 如果我想要设置一个信号值
 If I want to set a signal,
 
-368
+375
 00:23:22,656 --> 00:23:23,968
 我想要改变一个信号值
 I want to change a signal,
 
-369
+376
 00:23:24,512 --> 00:23:26,768
 我要做的是
 then what I'm going to do
 
-370
+377
 00:23:26,928 --> 00:23:29,696
 以一个线路和信号的新值作为参数
 is take a wire as an argument and a new value for the signal,
 
-371
+378
 00:23:30,016 --> 00:23:32,432
 我向线路请求许可 来设置它的信号值
 I would ask the wire for permission to set the signal
 
-372
+379
 00:23:32,848 --> 00:23:37,616
 我会用该许可 -- 也就是一个过程 -- 应用在一个新值上
 and use that permission, which is a procedure, on the new value.
 
-373
+380
 00:23:38,700 --> 00:23:40,512
 我们再过来看投影
 And if we go back to the overhead here,
 
-374
+381
 00:23:41,648 --> 00:23:43,248
 好的 谢谢
 Okay, thank you,
 
-375
+382
 00:23:44,208 --> 00:23:45,632
 我们看这里的投影
 we go back to the overhead here,
 
-376
+383
 00:23:45,920 --> 00:23:48,752
 我们看到 如果我请求设置信号的方法
 we see that the method-- if I ask for the method of setting the signal,
 
-377
+384
 00:23:49,344 --> 00:23:50,448
 也就是这段代码
 that's over here,
 
-378
+385
 00:23:52,256 --> 00:23:55,696
-返回的是一个定义在线路内部的 SET-MY-SIGNAL! 方法
+返回的是一个定义在线路内部的SET-MY-SIGNAL!方法
 it's set-my-signal, a procedure that's defined inside the wire,
 
-379
+386
 00:23:56,256 --> 00:23:57,696
 回过头来看它的定义
 which if we look over here
 
-380
+387
 00:23:58,720 --> 00:23:59,744
 它的定义是
 is the thing that says
 
-381
+388
 00:24:00,432 --> 00:24:02,688
-将我的一个内部变量 SIGNAL 的值设为
+将我的一个内部变量SIGNAL的值设为
 set my internal value called the signal,
 
-382
+389
 00:24:02,736 --> 00:24:05,504
 这个内部变量 用于存储信号值
 my internal variable, which is the signal,
 
-383
+390
 00:24:07,616 --> 00:24:10,030
-将其值设为通过参数传递的 NEW
+将其值设为通过参数传递的NEW
 to the new value, which is passed to me as an argument,
 
-384
+391
 00:24:10,784 --> 00:24:13,010
-然后调用 AP 表中的过程 来唤醒它们
+然后调用AP表中的过程 来唤醒它们
 and then call each of the action procedures waking them up.
 
-385
+392
 00:24:16,340 --> 00:24:16,992
 非常简单
 Very simple.
 
-386
+393
 00:24:19,248 --> 00:24:20,768
 回头来看刚才的幻灯片
 Ok, Going back to that slide,
 
-387
+394
 00:24:22,480 --> 00:24:24,320
 还有最后一点
 we also have the one last thing--
 
-388
+395
 00:24:24,368 --> 00:24:27,310
 我想你们现在应该很轻易地就能理解了
 which I suppose now you can easily work out for yourself--
 
-389
+396
 00:24:27,776 --> 00:24:29,152
 关于我们如何添加新的动作过程
 is the way you add an action.
 
-390
+397
 00:24:30,100 --> 00:24:35,184
-我们需要 WIRE 和 ACTION-PROC两个参数
+我们需要WIRE和ACTION-PROC两个参数
 You take a wire--a wire and an action procedure.
 
-391
+398
 00:24:36,470 --> 00:24:39,312
 然后请求添加动作过程的许可
 And I ask the wire for permission to add an action.
 
-392
+399
 00:24:40,050 --> 00:24:44,224
 得到许可后 用该许可去添加新的动作过程
 Getting that permission, I use that permission to give it an action procedure.
 
-393
+400
 00:24:45,840 --> 00:24:47,088
-所以 这确实是一个“对象” 
+所以 这确实是一个“对象”
 So that's a real object.
 
-394
+401
 00:24:48,570 --> 00:24:50,320
 还有些细节
 There's a few more details about this.
 
-395
+402
 00:24:52,460 --> 00:24:58,390
 比如 我怎么来控制它？
 For example, how am I going to control this thing?
 
-396
+403
 00:24:58,390 --> 00:24:59,696
 这些延时怎么实现？
 How do I do these delays?
 
-397
+404
 00:25:00,992 --> 00:25:02,540
 我们来快速过一遍
 Okay? Let's look at that for a second.
 
-398
+405
 00:25:05,504 --> 00:25:07,984
 下一张
 The next one here.
 
-399
+406
 00:25:08,360 --> 00:25:08,880
 我们来看看
 Let's see.
 
-400
+407
 00:25:09,570 --> 00:25:14,176
 我们细看与门、或门的定义
 We know when we looked at the and-gate or the not-gate
 
-401
+408
 00:25:15,312 --> 00:25:17,008
 会发现当输入信号改变时
 that when a signal changed on the input,
 
-402
+409
 00:25:17,248 --> 00:25:18,192
 会有“延时”
 there was a delay.
 
-403
+410
 00:25:18,770 --> 00:25:21,248
 然后它将调用过程
 And then it was going to call the procedure,
 
-404
+411
 00:25:21,632 --> 00:25:23,008
 来改变输出
 which was going to change the output.
 
-405
+412
 00:25:26,040 --> 00:25:27,920
 这个要如何实现？
 Well, how are we going to do this?
 
-406
+413
 00:25:28,120 --> 00:25:29,920
 我们将要建立一种机制
 We're going to make up some mechanism,
 
-407
+414
 00:25:30,304 --> 00:25:32,000
 一种相当复杂的机制
 a fairly complicated mechanism at that,
 
-408
+415
 00:25:32,336 --> 00:25:33,760
 我们得非常细心地来看
 which we're going to have to be very careful about.
 
-409
+416
 00:25:34,720 --> 00:25:37,232
 一段延时之后 我们将执行一个动作
 But after a delay, we're going to do an action.
 
-410
+417
 00:25:37,390 --> 00:25:38,128
-DELAY 是一个数
+DELAY是一个数
 A delay is a number,
 
-411
+418
 00:25:38,160 --> 00:25:39,230
-而 ACTION 是一个过程
+而ACTION是一个过程
 and an action is a procedure.
 
-412
+419
 00:25:40,590 --> 00:25:43,728
-我们引入一种称为 THE-AGENDA 的特殊数据结构
+我们引入一种称为THE-AGENDA的特殊数据结构
 What that's going to be is they're going to have a special structure called an agenda,
 
-413
+420
 00:25:45,504 --> 00:25:48,800
 用于组织时间与动作
 which is a thing that organizes time and actions.
 
-414
+421
 00:25:49,510 --> 00:25:50,880
 一会儿再来仔细研究
 And we're going to see that in a while.
 
-415
+422
 00:25:50,880 --> 00:25:52,544
 先把这里说完
 I don't want to get into that right now.
 
-416
+423
 00:25:53,070 --> 00:25:58,288
-THE-AGENDA 将记录执行动作的时刻
+THE-AGENDA将记录执行动作的时刻
 But the agenda has a moment at which--at which something happens.
 
-417
+424
 00:25:59,130 --> 00:26:02,464
 我们把它设定在未来的某个时刻
 We're setting up for later at some moment,
 
-418
+425
 00:26:02,510 --> 00:26:05,680
-也就是在 CURRENT-TIME + DELAT 的时间之后
+也就是在CURRENT-TIME加上DELAT的时刻
 which is the sum of the time, which is the delay time plus the current time,
 
-419
+426
 00:26:05,696 --> 00:26:07,130
 触发关联的动作
 which the agenda thinks is now.
 
-420
+427
 00:26:09,024 --> 00:26:10,560
 我们把准备好要执行的动作
 We're going to set up to do this action,
 
-421
+428
 00:26:11,024 --> 00:26:12,400
-添加入 THE-AGENDA 中
+添加入THE-AGENDA中
 and add that to the agenda.
 
-422
+429
 00:26:15,280 --> 00:26:18,032
 要使这个“机器”运行起来并不困难
 And the way this machine will now run is very simple.
 
-423
+430
 00:26:18,660 --> 00:26:21,488
-我们利用这个 PROPAGATE 过程来完成这件事
+我们利用这个PROPAGATE过程来完成这件事
 We have a thing called propagate, which is the way things run.
 
-424
+431
 00:26:22,710 --> 00:26:25,952
-如果 THE-AGENDA 为空 就没有要做的
+如果THE-AGENDA为空 就没有要做的
 If the agenda is empty, we're done--if there's nothing more to be done.
 
-425
+432
 00:26:27,440 --> 00:26:28,160
 否则
 Otherwise,
 
-426
+433
 00:26:29,760 --> 00:26:31,536
 我们就取出THE-AGENDA的第一个元素
 we're going to take the first item off the agenda,
 
-427
+434
 00:26:31,712 --> 00:26:33,340
 它是一个无参过程
 and that's a procedure of no arguments.
 
-428
+435
 00:26:34,200 --> 00:26:36,030
 所以这里有额外的括号
 So that we're going to see extra parentheses here.
 
-429
+436
 00:26:36,030 --> 00:26:37,856
 我们对其进行无参调用
 We call that on no arguments.
 
-430
+437
 00:26:39,190 --> 00:26:40,176
 这就执行了之前存入的动作
 That takes the action.
 
-431
+438
 00:26:42,200 --> 00:26:44,176
-然后我们从 THE-AGENDA 中删除第一个元素
+然后我们从THE-AGENDA中删除第一个元素
 Then we remove that first item from the agenda,
 
-432
+439
 00:26:44,592 --> 00:26:46,144
 然后再进入传播循环
 and we go around the propagation loop.
 
-433
+440
 00:26:48,912 --> 00:26:50,750
 这就是整体的结构
 So that's the overall structure of this thing.
 
-434
+441
 00:26:53,380 --> 00:26:55,936
 还有点其它的
 Now, there's a, a few other things we can look at.
 
-435
+442
 00:26:57,430 --> 00:27:00,016
-现在 我们来看看 THE-AGENDA 的内部结构
+现在 我们来看看THE-AGENDA的内部结构
 And then we're going to look into the agenda a little while from now.
 
-436
+443
 00:27:00,576 --> 00:27:01,552
 请看投影仪
 Now the overhead again.
 
-437
+444
 00:27:02,800 --> 00:27:04,672
-#TBD
+该如何使用这个玩意儿呢？
 Well, in order to set this thing going,
 
-438
+445
 00:27:04,672 --> 00:27:07,410
-#TBD
+我需要给你们说明下这个模拟器的用法
 I just want to show you some behavior out of this simulator.
 
-439
+446
 00:27:07,856 --> 00:27:09,936
 你们可能觉得这个模拟器太简陋了
 By the way, you may think this simulator is very simple,
 
-440
+447
 00:27:10,400 --> 00:27:12,016
 甚至你们认为它根本没什么用
 and probably too simple to be useful.
 
-441
+448
 00:27:12,576 --> 00:27:13,760
 而实际上是
 The fact of the matter is
 
-442
+449
 00:27:13,984 --> 00:27:15,392
 这样的模拟器曾被用于
 that this simulator has been used
 
-443
+450
 00:27:15,728 --> 00:27:17,440
 操纵相当大型的计算机
 to manufacture a fairly large computer.
 
-444
+451
 00:27:18,680 --> 00:27:20,640
 那是一个真实的事例
 So this is a real live example.
 
-445
+452
 00:27:22,360 --> 00:27:24,064
 当然 并不完全是这里的这个模拟器
 Actually, not exactly this simulator，
 
-446
+453
 00:27:24,064 --> 00:27:25,392
 我会告诉你它们的区别
 because I'll tell you the difference.
 
-447
+454
 00:27:25,840 --> 00:27:28,704
 区别就是 操纵大型机的模拟器有更多的基本元素
 The difference is that there were many more different kinds of primitives.
 
-448
+455
 00:27:29,820 --> 00:27:32,224
 不只是有非门 与门之类的
 There's not just the word inverter or and-gate.
 
-449
+456
 00:27:33,200 --> 00:27:35,728
 还有边缘触发器
 There were things like edge-triggered,
 
-450
+457
 00:27:36,256 --> 00:27:39,888
 翻转触发器 锁存器
 flip-flops, and latches
 
-451
+458
 00:27:40,704 --> 00:27:44,520
 电平触发器 加法器等等之类的
 transparent latches, and adders, and things like that.
 
-452
+459
 00:27:45,170 --> 00:27:47,312
 困难之处在于
 And the difficulty with that
 
-453
+460
 00:27:47,456 --> 00:27:50,864
 就在于需要很多页的文档
 is there's pages and pages of the definitions of all these primitives
 
-454
+461
 00:27:51,200 --> 00:27:52,896
 来描述这些基本元素
 with numbers like LS04.
 
-455
+462
 00:27:54,690 --> 00:27:56,740
 同时它们还有很多的参数
 And then there's many more parameters for them.
 
-456
+463
 00:27:56,740 --> 00:27:57,984
 不是只有一个延时这么简单
 It's not just one delay.
 
-457
+464
 00:27:58,480 --> 00:28:00,816
 还有建立时间 维持时间之类的
 There's things like set up times and hold times and all that.
 
-458
+465
 00:28:01,220 --> 00:28:03,408
 但是 如果不算上那部分的复杂度
 But with the exception of that part of the complexity,
 
-459
+466
 00:28:03,820 --> 00:28:08,208
 我们用来构建真实计算机的模拟器的结构
 the structure of the simulator that we use for building a real computer,
 
-460
+467
 00:28:09,088 --> 00:28:12,896
 跟你们在这里看到的的是一致的
 that works is exactly what you're seeing here.
 
-461
+468
 00:28:15,110 --> 00:28:19,270
 无论如何 这里都是一些简单的东西
 Well in any case, what we have here is a few simple things.
 
-462
+469
 00:28:19,270 --> 00:28:22,592
 像这个 设置非门的延时时间 构建一个 AGENDA
 Like, there's inverter delays being set up and making a new agenda.
 
-463
+470
 00:28:23,030 --> 00:28:25,520
 我们可以构建一些输入（线路）
 And then we can make some inputs.
 
-464
+471
 00:28:26,032 --> 00:28:29,184
-这里的四条线路分别是：INPUT-1 INPUT-2 SUM CARRY
+这里的四条线路分别是：INPUT-1、INPUT-2、SUM和CARRY
 Ok? There's input-1, input-2, a sum and a carry, which are wires.
 
-465
+472
 00:28:29,460 --> 00:28:31,888
 我将要放置一种被称为“探针”的特殊对象
 I'm going to put a special kind of object called a probe
 
-466
+473
 00:28:32,512 --> 00:28:34,640
 放在一些线路上
 onto, onto some of the wires,
 
-467
+474
 00:28:34,976 --> 00:28:36,240
-放在 SUM 和 CARRY 上
+放在SUM和CARRY上
 onto sum and onto carry.
 
-468
+475
 00:28:37,230 --> 00:28:40,560
-探针是一种对象 它可以--
+探针是一种对象 它可以 --
 A probe is a, can object that has the property
 
-469
+476
 00:28:40,704 --> 00:28:43,600
 当你改变它所附着线路的信号时
 that when you change a wire it's attached to,
 
-470
+477
 00:28:43,728 --> 00:28:44,832
 它会输出一条消息
 it types out a message.
 
-471
+478
 00:28:46,120 --> 00:28:46,928
 这很容易实现
 It's an easy thing to do.
 
-472
+479
 00:28:48,448 --> 00:28:49,520
 一旦我们设置好它们
 And then once we have that,
 
-473
+480
 00:28:49,552 --> 00:28:51,456
 当你在放置探针的时候
 of course, then when you put the probe on,
 
-474
+481
 00:28:51,450 --> 00:28:52,416
 它首先会输出
 the first thing it does, it says,
 
-475
+482
 00:28:52,672 --> 00:28:56,016
-SUM 在 0 时刻的值为 0
+SUM在0时刻的值为0
 the current value of the sum at time 0 is 0
 
-476
+483
 00:28:57,296 --> 00:28:58,432
 这个我已经注意到了
 And because I just noticed it.
 
-477
+484
 00:28:59,400 --> 00:29:04,752
-CARRY 在 0 时刻的值也是 0
+CARRY在0时刻的值也是0
 And the value of the carry at time 0, this is the time, is 0.
 
-478
+485
 00:29:06,048 --> 00:29:09,280
 我们继续来构建更多结构
 And then we go off and we build some structure.
 
-479
+486
 00:29:09,620 --> 00:29:12,288
 比如 可以像这里一样构建一种结构
 Like, we can build a structure here that says
 
-480
+487
 00:29:14,064 --> 00:29:18,208
-用 INPUT-1 INPUT-2 SUM 和 CARRY 组成一个半加器
+用INPUT-1、INPUT-2、SUM和CARRY组成一个半加器
 you have a half-adder on input-1, input-2, sum, and carry.
 
-481
+488
 00:29:18,420 --> 00:29:20,420
-然后我们把 INPUT-1 上的信号变为1
+然后我们把INPUT-1上的信号变为1
 And we're going to set the signal on input-1 to 1.
 
-482
+489
 00:29:20,624 --> 00:29:21,728
 然后开始传播
 We do some propagation.
 
-483
+490
 00:29:21,880 --> 00:29:22,848
-在时刻 8 的时候
+在时刻8的时候
 At time 8,
 
-484
+491
 00:29:23,904 --> 00:29:26,128
 如果你想的话 也可以单步跟踪传播过程
 which you could see going through this thing if you wanted to,
 
-485
+492
 00:29:26,528 --> 00:29:29,200
-SUM的值变为 1
+SUM的值变为1
 the new value of sum became 1.
 
-486
+493
 00:29:29,520 --> 00:29:30,448
 然后就结束了
 And the thing says I'm done.
 
-487
+494
 00:29:31,168 --> 00:29:32,256
 好像没什么意思
 That wasn't very interesting.
 
-488
+495
 00:29:32,630 --> 00:29:33,904
 我们还可以设置信号
 But we can send it some more signals.
 
-489
+496
 00:29:34,064 --> 00:29:36,736
-把 INPUT-2 也变为 1
+把INPUT-2也变为1
 Like, we set-signal on input-2 to be one.
 
-490
+497
 00:29:36,890 --> 00:29:38,096
 如果再进行传播
 And at that time if we propagate,
 
-491
+498
 00:29:38,368 --> 00:29:39,952
-在时刻 11
+在时刻11
 then it carried at 11,
 
-492
+499
 00:29:40,128 --> 00:29:41,424
-CARRY 变为 1
+CARRY变为1
 the carry becomes 1,
 
-493
+500
 00:29:41,552 --> 00:29:44,192
-在时刻16 SUM 变为 0
+在时刻16 SUM变为0
 and at 16, the sum's new value becomes 0.
 
-494
+501
 00:29:45,392 --> 00:29:48,990
 如果你仔细研究那个电路图
 And you might want to work out that, if you like, about the digital circuitry.
 
-495
+502
 00:29:48,990 --> 00:29:50,128
 它确实是这个结果
 It's true, and it works.
 
-496
+503
 00:29:50,620 --> 00:29:51,535
 也并没有什么特别的
 And it's not very interesting.
 
-497
+504
 00:29:51,530 --> 00:29:54,128
 但是却清楚地表明了这一些都是如何运作的
 But that's the kind of behavior we get out of this thing.
 
-498
+505
 00:30:01,830 --> 00:30:03,296
 我现在给你们展示的是
 So what I've shown you right now
 
-499
+506
 00:30:03,488 --> 00:30:05,520
 一种宏观的图景
 is a large-scale picture,
 
-500
+507
 00:30:06,600 --> 00:30:08,560
 你如何在一个很大的规模中
 how you, at a bigger, big scale,
 
-501
+508
 00:30:08,720 --> 00:30:12,040
 你何去实现某种事件驱动的模拟
 you implement an event-driven simulation of some sort.
 
-502
+509
 00:30:13,296 --> 00:30:14,560
 你应该如何去组织
 And how you might organize it
 
-503
+510
 00:30:14,880 --> 00:30:16,704
 来获得良好的层次性结构
 to have nice hierarchical structure
 
-504
+511
 00:30:16,992 --> 00:30:21,008
 使得你可以构建可具体化的抽象盒子
 allowing you to build abstract boxes that you can instantiate.
 
-505
+512
 00:30:21,568 --> 00:30:24,960
-但我还没有告诉你 AGENDA 是如何运作的
+但我还没有告诉你AGENDA是如何运作的
 But I haven't told you any of the details about how this agenda and things like that work.
 
-506
+513
 00:30:25,780 --> 00:30:26,544
 下一小节再说
 That we'll do next.
 
-507
+514
 00:30:28,630 --> 00:30:32,944
 这将涉及到一些关于数据变化之类的事情
 And that's going to involve change and mutation of data and things like that.
 
-508
+515
 00:30:34,310 --> 00:30:35,860
 在我继续之前 有什么问题吗？
 Are there any questions now, before I go on?
 
-509
+516
 00:30:47,160 --> 00:30:48,240
 没有的话 那就休息一下
 Thank you. Let's take a break.
 
-510
+517
+00:30:50,240 --> 00:31:00,624
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+518
+00:31:00,620 --> 00:31:06,000
+《计算机程序的构造和解释》
+
+519
+00:31:11,230 --> 00:31:17,696
+讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+
+520
+00:31:17,760 --> 00:31:21,344
+《计算机程序的构造和解释》
+
+521
+00:31:21,340 --> 00:31:25,184
+计算对象
+
+522
 00:31:28,940 --> 00:31:35,060
 我们已经做了一个模拟器
 Well, we've been making a simulation.
 
-511
+523
 00:31:35,392 --> 00:31:37,776
 这是一种事件驱动的模拟
 And the simulation is an event-driven simulation
 
-512
+524
 00:31:38,176 --> 00:31:42,752
 其中 计算机中的对象与现实中的对象一一对应
 where the objects in the world are the objects in the computer.
 
-513
+525
 00:31:43,920 --> 00:31:47,280
 现实世界中按时发生的状态改变
 And the changes of state that are happening in the world in time
 
-514
+526
 00:31:47,984 --> 00:31:50,832
 被组织成了计算机中的时间
 are organized to be time in the computer,
 
-515
+527
 00:31:52,992 --> 00:31:56,048
 如果现实中某件事后于另一件事发生
 so that if something happens after something else in the world,
 
-516
+528
 00:31:56,460 --> 00:31:57,968
 那么在计算机中
 then we have it happen after,
 
-517
+529
 00:31:58,896 --> 00:32:02,256
 两个事件也保持同样的先后顺序发生
 after the corresponding events happen in the same order in the computer.
 
-518
+530
 00:32:04,420 --> 00:32:07,168
 排列这些时间 就是我们要用到赋值的地方
 That's where we have assignments, when we make that alignment.
 
-519
+531
 00:32:08,220 --> 00:32:11,216
 现在我要介绍一种方法来组织时间
 Right now I want to show you a way of organizing time,
 
-520
+532
 00:32:11,808 --> 00:32:14,864
 AGENDA -- 或者有时候所谓的“优先队列”
 which is an agenda or priority queue, it's sometimes called.
 
-521
+533
 00:32:16,040 --> 00:32:18,576
 我们首先需要认识到
 We'll do some--we'll do a little bit of just understanding
 
-522
+534
 00:32:18,624 --> 00:32:21,008
 为了创建AGENDA 我们需要些什么东西？
 what are the things we need to be able to do to make agendas.
 
-523
+535
 00:32:28,330 --> 00:32:31,280
 首先我要在这里写下一些
 And so we're going to have--and so right now over here, I'm going to write down a bunch
 
-524
+536
 00:32:31,392 --> 00:32:33,888
 用于操作AGENDA的基本运算
 of primitive operations for manipulating agendas.
 
-525
+537
 00:32:35,960 --> 00:32:37,952
 我不会给出具体代码
 I'm not going to show you the code for them
 
-526
+538
 00:32:38,144 --> 00:32:39,584
 因为它们都非常简单
 because they're all very simple,
 
-527
+539
 00:32:40,320 --> 00:32:42,608
 而且你们手上也有
 Iand you've got listings of all that anyway.
 
-528
+540
 00:32:43,680 --> 00:32:44,380
 有哪些运算呢？
 So what do we have?
 
-529
+541
 00:32:44,380 --> 00:32:53,504
-MAKE-AGENDA 可以新建一个 AGENDA
+MAKE-AGENDA可以新建一个AGENDA
 We have things like make-agenda which produces a new agenda.
 
-530
+542
 00:32:57,360 --> 00:33:01,770
-CURRENT-TIME 可以获得一个 AGENDA 的当前时间
+CURRENT-TIME可以获得一个AGENDA的当前时间
 We can ask--we get the current-time of an agenda,
 
-531
+543
 00:33:07,472 --> 00:33:12,800
 返回一个数 -- 也就是当前时间
 of an agenda, which gives me a number, a time.
 
-532
+544
 00:33:16,990 --> 00:33:21,376
-EMPTY-AGENDA? 可用于判断一个 AGENDA 是否为空
+EMPTY-AGENDA?可用于判断一个AGENDA是否为空
 We can get--we can ask whether an agenda is empty, empty-agenda.
 
-533
+545
 00:33:30,200 --> 00:33:32,570
-返回 TRUE 或 FALSE
+返回TRUE或FALSE
 And that produces either a true or a false.
 
-534
+546
 00:33:42,720 --> 00:33:44,720
-我们也可以向 AGENDA 中添加对象
+我们也可以向AGENDA中添加对象
 We can add an object to an agenda.
 
-535
+547
 00:33:52,710 --> 00:33:56,064
-实际上 向 AGENDA 中添加的是一个运算 -- 或者说是需要完成的操作
+实际上 向AGENDA中添加的是一个运算 -- 或者说是需要完成的操作
 Actually, what we add to an agenda is an operation--an action to be done.
 
-536
+548
 00:33:56,910 --> 00:33:58,144
-它需要时间 TIME
+它需要时间TIME
 And that takes a time,
 
-537
+549
 00:33:59,632 --> 00:34:00,560
-待添加的动作 ACTION
+待添加的动作ACTION
 the action itself,
 
-538
+550
 00:34:02,864 --> 00:34:04,640
-以及 AGENDA 本身
+以及AGENDA本身
 and the agenda I want to add it to.
 
-539
+551
 00:34:07,584 --> 00:34:10,256
-它把 ACTION 放入 AGENDA 中合适的地方
+它把ACTION 放入AGENDA中合适的地方
 OK? That inserts it in the appropriate place in the agenda.
 
-540
+552
 00:34:10,710 --> 00:34:12,736
-FIRST-ITEM 用于从 AGENDA 取出第一个事项
+FIRST-ITEM用于从AGENDA取出第一个事项
 I can get the first item off an agenda,
 
-541
+553
 00:34:14,240 --> 00:34:15,392
 那是我首先需要做的事情
 the first thing I have to do,
 
-542
+554
 00:34:21,840 --> 00:34:23,840
 该事项是一个动作
 which is going to give me an action.
 
-543
+555
 00:34:26,464 --> 00:34:28,736
-我还可以把第一个事项从 AGENDA 中移除
+我还可以把第一个事项从AGENDA中移除
 And I can remove the first item from an agenda.
 
-544
+556
 00:34:29,540 --> 00:34:31,168
-这是操作 AGENDA 的一个必要运算
+这是操作AGENDA的一个必要运算
 That's what I have to be able to do with agendas.
 
-545
+557
 00:34:31,409 --> 00:34:33,020
 这个运算实现起来非常繁杂
 That is a big complicated mess.
 
-546
+558
 00:34:42,530 --> 00:34:43,360
-从 AGENDA 中移除
+从AGENDA中移除
 From an agenda.
 
-547
+559
 00:34:45,984 --> 00:34:49,856
 现在我们来看如何具体组织数据结构
 Well, let's see how we can organize this thing as a data structure a bit.
 
-548
+560
 00:34:52,960 --> 00:34:56,048
-AGENDA 应该是一种表
+AGENDA应该是一种表
 Well, an agenda is going to be some kind of list.
 
-549
+561
 00:34:58,432 --> 00:35:01,200
 一种可修改的表
 And it's going to be a list that I'm going to have to be able to modify.
 
-550
+562
 00:35:01,570 --> 00:35:04,032
 因为我们要向其中添加元素
 So we have to talk about modifying of lists,
 
-551
+563
 00:35:05,808 --> 00:35:06,896
 删除元素等等
 because I'm going to add things to it,
 
-552
+564
 00:35:07,776 --> 00:35:10,272
 所以我们需要一种可修改的表
 and delete things from it, and things like that.
 
-553
+565
 00:35:11,070 --> 00:35:12,512
 它通过时间组织起来
 It's organized by time.
 
-554
+566
 00:35:13,820 --> 00:35:15,570
 让它有序 也许会有益处
 It's probably good to keep it in sorted order.
 
-555
+567
 00:35:18,330 --> 00:35:20,880
 但是也有可能同一时间会发生很多事
 But sometimes there are lots of things that happen at the same time
 
-556
+568
 00:35:22,048 --> 00:35:23,420
 或者说几乎同时
 approximate same time.
 
-557
+569
 00:35:23,800 --> 00:35:24,720
 因此我们需要
 What I have to do is say,
 
-558
+570
 00:35:24,912 --> 00:35:27,520
 把它们按发生时间为事件分组
 group things by the time at which they're supposed to happen.
 
-559
+571
 00:35:29,040 --> 00:35:31,616
-所以我要把 AGENDA 组织成由 SEGMENT 构成的表
+所以我要把AGENDA组织成由SEGMENT构成的表
 So I'm going to make an agenda as a list of segments.
 
-560
+572
 00:35:32,780 --> 00:35:35,696
 我来画一下这个结构
 And so I'm going to draw you a data structure for an agenda,
 
-561
+573
 00:35:36,688 --> 00:35:37,936
 方便理解
 a perfectly reasonable one.
 
-562
+574
 00:35:39,620 --> 00:35:40,496
-这是一个 AGENDA
+这是一个AGENDA
 Here's an agenda.
 
-563
+575
 00:35:41,110 --> 00:35:42,870
 以一个名字开始
 It's a thing that begins with a name.
 
-564
+576
 00:35:47,856 --> 00:35:50,192
 我把它画在表结构的外部
 I'm going to do it right now out of list structure.
 
-565
+577
 00:35:52,608 --> 00:35:53,392
 这是它的头部
 It's got a header.
 
-566
+578
 00:35:54,144 --> 00:35:55,440
 这个头部的存在也是很必要的
 There's a reason for the header.
 
-567
+579
 00:35:55,840 --> 00:35:57,630
 待会你就会知道
 We're going to see the reason soon.
 
-568
+580
 00:36:00,680 --> 00:36:03,408
-再画一个 SEGMENT
+再画一个SEGMENT
 And it will have a segment. We will have--
 
-569
+581
 00:36:03,968 --> 00:36:05,620
-这是一个由 SEGMENT 构成的表
+这是一个由SEGMENT构成的表
 It will have--it will be a list of segments.
 
-570
+582
 00:36:08,310 --> 00:36:10,544
-假设这个 AGENDA 有两个 SEGMENT
+假设这个AGENDA有两个SEGMENT
 Supposing this agenda has two segments,
 
-571
+583
 00:36:11,584 --> 00:36:15,072
-不断对这个表取 CAR 即可得到
+不断对这个表取CAR即可得到
 OK, they're the car's-- successive car's of this list.
 
-572
+584
 00:36:16,416 --> 00:36:20,576
-每个 SEGMENT 都有一个时间
+每个SEGMENT都有一个时间
 Each segment is going to have a time--
 
-573
+585
 00:36:24,208 --> 00:36:26,640
 比如说这里是10
 say for example, 10--
 
-574
+586
 00:36:26,832 --> 00:36:30,512
-也就是说 这个 SEGMENT 里的事件发生在10时刻
+也就是说 这个SEGMENT里的事件发生在10时刻
 that says that the things that happen in this segment are at time 10.
 
-575
+587
 00:36:33,160 --> 00:36:36,528
 这里是另外一种数据结构
 And what I'm going to have in here is another data structure
 
-576
+588
 00:36:36,560 --> 00:36:38,010
 我先不具体描述
 which I'm not going to describe,
 
-577
+589
 00:36:38,496 --> 00:36:41,088
 它是一个队列 表示在10时刻要做的事
 which is a queue of things to do at time 10.
 
-578
+590
 00:36:42,240 --> 00:36:43,330
 它是一个队列
 It's a queue.
 
-579
+591
 00:36:43,330 --> 00:36:44,704
 一会儿再细说
 And we'll talk about that in a second.
 
-580
+592
 00:36:45,200 --> 00:36:50,352
 不过抽象地看 队列就是一系列在固定时间要做的事
 But abstractly, the queue is just a list of things to do at a particular time.
 
-581
+593
 00:36:50,400 --> 00:36:52,048
 我可以向其中添加其它要做的事
 And I can add things to a queue.
 
-582
+594
 00:36:53,100 --> 00:36:53,808
 这是一个队列
 This is a queue.
 
-583
+595
 00:36:56,140 --> 00:36:59,115
-这个是时间 这个是 SEGMENT
+这个是时间 这个是SEGMENT
 There's a time, there's a segment.
 
-584
+596
 00:37:03,232 --> 00:37:06,368
-在这个 AGENDA 中 还有另一个 SEGMENT
+在这个AGENDA中 还有另一个SEGMENT
 Now, I may have another segment in this agenda.
 
-585
+597
 00:37:08,940 --> 00:37:11,200
 假设它在30时刻发生
 Supposing this is stuff that happens at time 30.
 
-586
+598
 00:37:13,500 --> 00:37:15,920
 类似地 它也有一个队列
 It has, of course, another queue
 
-587
+599
 00:37:16,928 --> 00:37:20,240
 里面是在30时刻要去做的事
 of things that are queued up to be done at time 30.
 
-588
+600
 00:37:23,210 --> 00:37:25,664
-当然 我们的 AGENDA 还需要支持其它操作
+当然 我们的AGENDA还需要支持其它操作
 Well, there are various things I have to be able to do to an agenda.
 
-589
+601
 00:37:27,090 --> 00:37:29,200
 假设我想将一个在10时刻发生的事
 Supposing I want to add to an agenda
 
-590
+602
 00:37:29,472 --> 00:37:31,616
-添加到 AGENDA 中
+添加到AGENDA中
 another thing to be done at time 10.
 
-591
+603
 00:37:33,030 --> 00:37:34,160
 这并不难
 Well, that's not very hard.
 
-592
+604
 00:37:34,700 --> 00:37:38,656
-我遍历到这里 找到时刻是10的 SEGMENT
+我遍历到这里 找到时刻是10的SEGMENT
 I'm going to walk down here, looking for the segment of time 10.
 
-593
+605
 00:37:39,730 --> 00:37:42,144
-这样的 SEGMENT 也可能不存在
+这样的SEGMENT也可能不存在
 It is possible that there is no segment of time 10.
 
-594
+606
 00:37:42,930 --> 00:37:44,560
 一会儿再考虑这种情况
 We'll cover that case in a second.
 
-595
+607
 00:37:45,420 --> 00:37:47,568
-如果我找到了时刻为10的 SEGMENT
+如果我找到了时刻为10的SEGMENT
 But if I find a segment of time 10,
 
-596
+608
 00:37:47,872 --> 00:37:50,432
 如果我想要把一个事情放入其中
 then if I want to add another thing to be done at time 10,
 
-597
+609
 00:37:50,560 --> 00:37:52,160
 我只要增加该队列即可
 I just increase that queue--
 
-598
+610
 00:37:53,856 --> 00:37:56,224
-这个说起来倒是很容易 #TBD
+这个说起来倒是很容易
 "just increase" isn't such an obvious idea.
 
-599
+611
 00:37:56,576 --> 00:37:59,264
 我在这里添加需要在那时做的事
 But I increase the things to be done at that time.
 
-600
+612
 00:38:01,430 --> 00:38:04,256
 现在 假设我想在时刻20做点什么
 Now, supposing I want to add something to be done at time 20.
 
-601
+613
 00:38:05,312 --> 00:38:07,904
-然而并没有时刻是20的segment
+然而并没有时刻是20的SEGMENT
 There is no segment for time 20.
 
-602
+614
 00:38:08,992 --> 00:38:10,640
-我不得不构造一个新的 SEGMENT
+我不得不构造一个新的SEGMENT
 I'm going to have to create a new segment.
 
-603
+615
 00:38:11,340 --> 00:38:15,648
-我想把这个 SEGMENT 放在10与30之间
+我想把这个SEGMENT 放在10与30之间
 I want my time 20 segment to exist between time 10 and time 30.
 
-604
+616
 00:38:17,610 --> 00:38:19,328
 这着实要花点功夫
 Well, that takes a little work.
 
-605
+617
 00:38:20,170 --> 00:38:21,525
 先用CONS
 I'm going to have to do a CONS.
 
-606
+618
 00:38:24,260 --> 00:38:29,940
-我要为这个 AGENDA 构建一个新的 SEGMENT
+我要为这个AGENDA构建一个新的SEGMENT
 I'm going to have to make a new element of the agenda list--list of segments.
 
-607
+619
 00:38:33,600 --> 00:38:34,816
 这里的连接必须要变
 I'm going to have to change.
 
-608
+620
 00:38:35,400 --> 00:38:36,304
 就像这样
 Here's change.
 
-609
+621
 00:38:37,540 --> 00:38:42,800
-我将要修改 AGENDA 的 CDR 部分的 CDR 部分
+我将要修改AGENDA的CDR部分的CDR部分
 I'm going to have to change the CDR of the CDR of the agenda
 
-610
+622
 00:38:44,880 --> 00:38:49,456
-让它指向一个新的 CONS 单元
+让它指向一个新的CONS单元
 point that a new CONS of the new segment
 
-611
+623
 00:38:50,112 --> 00:38:54,656
 由一个新的SEGMENT和AGENDA的CDDDDR部分所构成的单元
 and the CDR of the CDR of the CDR of the agenda, the CD-D-D-DR.
 
-612
+624
 00:38:57,180 --> 00:39:01,888
 我们有一个发生在20时刻的新的SEGMENT
 And this is going to have a new segment now of time 20
 
-613
+625
 00:39:02,304 --> 00:39:03,728
 它自己维护了一个队列
 with its own queue,
 
-614
+626
 00:39:04,848 --> 00:39:06,290
 这个队列中只有一个元素
 which now has one element in it.
 
-615
+627
 00:39:10,730 --> 00:39:12,528
 如果我想在后面添加点什么
 If I wanted to add something at the end,
 
-616
+628
 00:39:12,544 --> 00:39:15,870
-我就需要替换这个东西的 CDR 部分
+我就需要替换这个东西的CDR部分
 I'm going to have to replace the CDR of this,
 
-617
+629
 00:39:16,992 --> 00:39:19,216
-替换掉这个表的 CDR 部分
+替换掉这个表的CDR部分
 of this list with something.
 
-618
+630
 00:39:20,592 --> 00:39:23,312
 我们就对该数据结构进行修改
 We're have to change that piece of data structure.
 
-619
+631
 00:39:24,040 --> 00:39:25,792
 因此我需要新的基本运算
 So I'm going to need new primitives for doing this.
 
-620
+632
 00:39:27,210 --> 00:39:28,624
 因为原有的基础运算达不到这一点
 But I'm just showing you why I need them.
 
-621
+633
 00:39:29,440 --> 00:39:33,888
 如果我想在5时刻做点什么事
 And finally, if I wanted to add a thing to be done at time 5,
 
-622
+634
 00:39:37,120 --> 00:39:39,200
 我就得去修改这个东西
 I'm going to have to change this one,
 
-623
+635
 00:39:40,816 --> 00:39:42,128
 因为我得添加到这里
 because I'm going to have to add it in over here,
 
-624
+636
 00:39:43,290 --> 00:39:46,224
 这也就是我预留了一个“头”序对的原因
 which is why I planned ahead and had a header cell,
 
-625
+637
 00:39:47,568 --> 00:39:48,592
 它预留了空间
 which has a place.
 
-626
+638
 00:39:49,400 --> 00:39:52,112
 我需要有空间去做改变
 If I'm going to change things, I have to have places for the change.
 
-627
+639
 00:39:53,888 --> 00:39:56,560
 需要有存储空间 去改变
 I have to have a place to make the change.
 
-628
+640
 00:39:58,600 --> 00:40:02,540
-从 AGENDA 中删除东西并不困难
+从AGENDA中删除东西并不困难
 If I remove things from the agenda, that's not so hard.
 
-629
+641
 00:40:02,540 --> 00:40:04,624
 移除第一个元素相当容易
 Removing them from the beginning is pretty easy,
 
-630
+642
 00:40:04,928 --> 00:40:06,144
 这也是我需要考虑的唯一情况
 which is the only case I have.
 
-631
+643
 00:40:06,496 --> 00:40:10,192
-我可以先找到第一个 SEGMENT
+我可以先找到第一个SEGMENT
 I can go looking for the first, the first segment.
 
-632
+644
 00:40:11,220 --> 00:40:14,000
 先判断它的队列是否为空
 I see if it has a non-empty queue.
 
-633
+645
 00:40:14,810 --> 00:40:16,176
 如果队列不是空的
 If it has a non-empty queue,
 
-634
+646
 00:40:16,320 --> 00:40:18,624
 那么 我就会把元素从中删除
 well, I'm going to delete one element from the queue
 
-635
+647
 00:40:19,216 --> 00:40:19,744
 像这样
 like that.
 
-636
+648
 00:40:20,100 --> 00:40:21,920
 如果这时队列变为空的
 If the queue ever becomes empty,
 
-637
+649
 00:40:22,640 --> 00:40:24,220
-就还要继续把 SEGMENT 删掉
+就还要继续把SEGMENT删掉
 then I have to delete the whole segment.
 
-638
+650
 00:40:24,220 --> 00:40:26,496
 然后 让这个单元指向这里
 And then this, this changes to point to here.
 
-639
+651
 00:40:28,220 --> 00:40:31,088
 这个数据结构操作起来很复杂
 So it's quite a complicated data structure manipulation going on,
 
-640
+652
 00:40:32,256 --> 00:40:35,376
 它的具体实现也不是很有趣
 the details of which are not really very exciting.
 
-641
+653
 00:40:36,440 --> 00:40:38,480
 现在我们来探讨一下队列
 Now, let's talk about queues.
 
-642
+654
 00:40:38,920 --> 00:40:39,760
 它们很相似
 They're similar.
 
-643
+655
 00:40:41,160 --> 00:40:43,520
-每一个 AGENDA 都有一个队列
+每一个AGENDA都有一个队列
 Because each of these agendas has a queue in it.
 
-644
+656
 00:40:44,340 --> 00:40:45,024
 队列是什么？
 What's a queue?
 
-645
+657
 00:40:49,472 --> 00:40:51,856
 队列能够进行下述基本运算：
 A queue is going to have the following primitive operations.
 
-646
+658
 00:40:52,784 --> 00:41:02,170
-MAKE-QUEUE 构建一个新队列
+MAKE-QUEUE构建一个新队列
 To make a queue, this gives me a new queue.
 
-647
+659
 00:41:07,776 --> 00:41:17,104
-INSERT-QUEUE! 向队列中插入新元素
+INSERT-QUEUE!向队列中插入新元素
 I'm going to have to be able to insert into a queue a new item.
 
-648
+660
 00:41:24,510 --> 00:41:28,656
-DELETE-QUEUE! 从队列中删除元素
+DELETE-QUEUE!从队列中删除元素
 I'm going to have to be able to delete from a queue the first item in the queue.
 
-649
+661
 00:41:40,448 --> 00:41:52,048
-FRONT-QUEUE 查看队列中第一个元素
+FRONT-QUEUE查看队列中第一个元素
 And I want to be able to get the first thing in the queue from some queue.
 
-650
+662
 00:41:53,136 --> 00:41:55,140
 还需要检测队列是否为空
 I also have to be able to test whether a queue is empty.
 
-651
+663
 00:42:07,110 --> 00:42:08,704
 当你定义像这样的运算时
 And when you invent things like this,
 
-652
+664
 00:42:09,024 --> 00:42:10,448
 我希望你能够注意
 I want you to be very careful
 
-653
+665
 00:42:10,640 --> 00:42:14,090
 按照我这样的习惯去为它们命名
 to use the kinds of conventions I use for naming things.
 
-654
+666
 00:42:15,120 --> 00:42:19,152
 “!”表示操作具有副作用 “?”代表定义谓词
 Notice that I'm careful to say these change something and that tests it.
 
-655
+667
 00:42:19,870 --> 00:42:21,856
 就比如说 这里应该加上一个“!”
 And presumably, I did the same thing over here.
 
-656
+668
 00:42:24,656 --> 00:42:26,960
 嗯 空检测谓词的“?”也不要遗漏了
 OK, and there should be an empty test over here.
 
-657
+669
 00:42:29,240 --> 00:42:30,720
 那么 我要如何构建一个队列呢？
 OK, well, how would I make a queue?
 
-658
+670
 00:42:31,720 --> 00:42:34,112
 队列是一种 可以向其尾部添加东西
 A queue wants to be something I can add to at the end of,
 
-659
+671
 00:42:35,120 --> 00:42:36,830
 也可以从前面取出东西的结构
 and pick up the thing at the beginning of.
 
-660
+672
 00:42:37,840 --> 00:42:40,512
 我可以从队列头删除元素 向队列尾添加元素
 I should be able to delete from the beginning and add to the end.
 
-661
+673
 00:42:41,230 --> 00:42:43,248
 我可以用一种很简单的结构来实现
 Well, I'm going to show you a very simple structure for that.
 
-662
+674
 00:42:43,888 --> 00:42:45,728
-我们当然可以使用 CONS 来构造
+我们当然可以使用CONS来构造
 We can make this out of CONSes as well.
 
-663
+675
 00:42:47,080 --> 00:42:47,792
 这是一个队列
 Here's a queue.
 
-664
+676
 00:42:49,910 --> 00:42:52,368
 它有一个队列头
 It has--it has a queue header,
 
-665
+677
 00:42:53,584 --> 00:42:54,928
 它包含两个部分
 which contains two parts--
 
-666
+678
 00:42:55,280 --> 00:42:56,256
 其中一个是头指针
 a front pointer
 
-667
+679
 00:42:58,784 --> 00:42:59,824
 另一个是尾指针
 and a rear pointer.
 
-668
+680
 00:43:03,120 --> 00:43:06,336
 假设我有一个包含两个元素的队列
 And here I have a queue with two items in it.
 
-669
+681
 00:43:09,136 --> 00:43:12,090
-假设第一个元素是 1
+假设第一个元素是1
 The first item, I don't know, it's perhaps a 1.
 
-670
+682
 00:43:12,464 --> 00:43:16,530
-而第二个元素假定是 2
+而第二个元素假定是2
 And the second item, I don't know, let's give it a 2.
 
-671
+683
 00:43:21,408 --> 00:43:23,520
 我之所以要在这里设置两个指针
 The reason why I want two pointers in here,
 
-672
+684
 00:43:24,096 --> 00:43:25,616
 一个头指针和一个尾指针
 a front pointer and a rear pointer,
 
-673
+685
 00:43:25,720 --> 00:43:27,104
 这样 当向尾部添加元素的时候
 is so I can add to the end
 
-674
+686
 00:43:27,488 --> 00:43:29,450
 就不用从最开始开始遍历
 without having to chase down from the beginning.
 
-675
+687
 00:43:31,850 --> 00:43:34,800
 例如 我想要向队列添加入一个新元素
 So for example, if I wanted to add one more item to this queue,
 
-676
+688
 00:43:35,260 --> 00:43:41,024
 如果想添加一个稍后使用的元素
 if I want to add on another item to be worried about later,
 
-677
+689
 00:43:41,088 --> 00:43:42,400
 只需要先用CONS构建一个序对
 all I have to do is make a CONS,
 
-678
+690
 00:43:43,472 --> 00:43:46,592
 假设它包含一个值 -- 3
 which contains that item, say a 3.
 
-679
+691
 00:43:47,530 --> 00:43:51,340
 再添加到队列里
 That's for inserting 3 into the queue.
 
-680
+692
 00:43:51,520 --> 00:43:53,776
-这里就需要把这个元素 CDR 部分的指针
+这里就需要把这个元素CDR部分的指针
 Then I have to change this pointer here
 
-681
+693
 00:43:56,944 --> 00:43:58,760
 指向这个元素
 Okay? to here.
 
-682
+694
 00:44:00,100 --> 00:44:04,320
 同时也更新尾指针 让它指向新的地方
 And I have to change this one to point to the new rear.
 
-683
+695
 00:44:09,120 --> 00:44:12,688
 如果我想查看队列的第一个元素
 If I wish to take the first element of the queue, the first item,
 
-684
+696
 00:44:12,960 --> 00:44:17,120
 我只需要通过头指针去寻找 即可轻松找到
 I just go chasing down the front pointer until I find the first one and pick it up.
 
-685
+697
 00:44:18,890 --> 00:44:23,264
-如果我想调用 DELETE-QUEUE 删除元素
+如果我想调用DELETE-QUEUE删除元素
 If I wish to delete the first item from the queue, delete-queue,
 
-686
+698
 00:44:24,144 --> 00:44:26,352
 只需要把头指针向后移到就行
 all I do is move the front pointer along this way.
 
-687
+699
 00:44:27,712 --> 00:44:29,312
 新的头指针指向这里
 The new front of the queue is now this.
 
-688
+700
 00:44:31,700 --> 00:44:33,136
 就是这么简单
 So queues are very simple too.
 
-689
+701
 00:44:34,480 --> 00:44:35,760
 为了实现这些操作
 So what you see now
 
-690
+702
 00:44:37,248 --> 00:44:40,832
 我们还需要一些新的基本运算
 is that I need a certain number of new primitive operations.
 
-691
+703
 00:44:41,488 --> 00:44:42,560
 我先列出它们的名字
 And I'm going to give them some names.
 
-692
+704
 00:44:42,992 --> 00:44:46,288
 然后我们再来看 它们的原理和使用方法
 And then we're going to look into how they work, and how they're used.
 
-693
+705
 00:44:47,350 --> 00:44:55,040
-SET-CAR! 能够为序对的 CAR 部分
+SET-CAR!能够为序对的CAR部分
 We have set the CAR of some pair,
 
-694
+706
 00:44:55,888 --> 00:44:59,360
 赋予一个新的值
 or a thing produced by CONSing, to a new value.
 
-695
+707
 00:45:02,370 --> 00:45:09,920
-SET-CDR! 可以为序对的 CDR 部分赋新值
+SET-CDR!可以为序对的CDR部分赋新值
 And set the CDR of a pair to a new value.
 
-696
+708
 00:45:13,024 --> 00:45:14,784
 现在来看看它们到底做了什么
 And then we're going to look into how they work.
 
-697
+709
 00:45:16,030 --> 00:45:20,512
-为了删除队列中的第一个元素 我需要修改这里的 CAR 部分
+为了删除队列中的第一个元素 我需要修改这里的CAR部分
 I needed setting CAR over here to delete the first element of the queue.
 
-698
+710
 00:45:20,960 --> 00:45:22,528
-这是 CAR 部分 我需要修改它的值
+这是CAR部分 我需要修改它的值
 This is the CAR, and I had to set it.
 
-699
+711
 00:45:23,470 --> 00:45:24,960
-我需要能够修改 CDR 部分
+我需要能够修改CDR部分
 I had to be able to set the CDR
 
-700
+712
 00:45:25,280 --> 00:45:27,088
 以便我能够移动尾指针
 to be able to move the rear pointer,
 
-701
+713
 00:45:27,216 --> 00:45:28,760
 也使得我能够扩充队列
 or to be able to increment the queue here.
 
-702
+714
 00:45:30,160 --> 00:45:31,600
 之前介绍的所有运算
 All of the operations I did
 
-703
+715
 00:45:31,904 --> 00:45:35,904
 上一块黑板上的所有东西 都是基于这些运算的
 were made out of those that I just showed you on the, on the last blackboard.
 
-704
+716
 00:45:38,176 --> 00:45:40,140
 先讲到这里 大家休息一下
 Good. Let's pause the time, and take a little break then.
 
-705
+717
+00:45:41,240 --> 00:45:52,672
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+718
+00:45:52,670 --> 00:45:57,840
+《计算机程序的构造和解释》
+
+719
+00:46:18,640 --> 00:46:22,800
+讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+
+720
+00:46:22,800 --> 00:46:27,152
+《计算机程序的构造和解释》
+
+721
+00:46:27,168 --> 00:46:30,768
+计算对象
+
+722
 00:46:38,816 --> 00:46:43,536
-最初 我们说序对是通过 CONS 构造而来的
+最初 我们说序对是通过CONS构造而来的
 When we originally introduced pairs made out of CONS, made by CONS,
 
-706
+723
 00:46:44,576 --> 00:46:46,800
 我们提到了几条公理
 we only said a few axioms about them,
 
-707
+724
 00:46:48,096 --> 00:46:50,768
 它们是怎样的呢？ 它们是形如 --
 which were of the form-- what were they--
 
-708
+725
 00:46:52,280 --> 00:47:03,648
 对于任意的X和Y (CAR (CONS X Y)) = X
 for all X and Y, the CAR of the CONS of X and Y is X
 
-709
+726
 00:47:05,312 --> 00:47:12,928
 以及 (CDR (CONS X Y)) = Y
 and Y is X and the CDR of the CONS of X and Y is Y.
 
-710
+727
 00:47:14,800 --> 00:47:20,000
 但是 它们并没有陈述CONS单元 是否有像人一样的“身份”
 Now, these say nothing about whether a CONS has an identity like a person.
 
-711
+728
 00:47:21,850 --> 00:47:25,584
 实际上 它描述的是一种抽象
 In fact, all they say is something sort of abstract,
 
-712
+729
 00:47:25,744 --> 00:47:27,952
-也就是 CONS 是由几个部分组成
+也就是CONS是由几个部分组成
 that a CONS is the parts it's made out of.
 
-713
+730
 00:47:29,740 --> 00:47:33,184
 如果两个CONS组成部分相同的  它俩则是同样的
 And of course, two things are made out of the same parts, they're the same,
 
-714
+731
 00:47:33,936 --> 00:47:35,712
 至少从这些公理来看是这样的
 at least from the point of view of these axioms.
 
-715
+732
 00:47:37,328 --> 00:47:39,216
 但是引入了赋值以后
 But by introducing assignment--
 
-716
+733
 00:47:39,840 --> 00:47:42,320
 实际上 可变数据就是一种赋值
 in fact, mutable data is a kind of assignment,
 
-717
+734
 00:47:42,880 --> 00:47:44,432
-我们有 SET-CAR! 和 SET-CDR!
+我们有SET-CAR!和SET-CDR!
 we have a set CAR and a set CDR--
 
-718
+735
 00:47:45,552 --> 00:47:48,944
 引入这些运算后 这些公理就不完整了
 by introducing those, these axioms no longer tell the whole story.
 
-719
+736
 00:47:49,830 --> 00:47:52,032
 但是这里写的也是对的
 And they're still true if written exactly like this.
 
-720
+737
 00:47:53,250 --> 00:47:54,944
 只不过描述的不再完整
 But they don't tell the whole story.
 
-721
+738
 00:47:56,070 --> 00:48:01,680
-因为如果我要修改一个特定的 CONS 的 CAR 部分
+因为如果我要修改一个特定的CONS的CAR部分
 Because if I'm going to set a particular CAR in a particular CONS,
 
-722
+739
 00:48:03,024 --> 00:48:04,032
 问题是
 the questions are,
 
-723
+740
 00:48:04,240 --> 00:48:08,640
 我会同时修改到相同CONS单元的CAR部分么？
 well, is that setting all CARs and all CONSes of the same two things or not?
 
-724
+741
 00:48:10,090 --> 00:48:13,040
 假如我用CONS来构建有理数
 If I--if we use CONSes to make up things like rational numbers,
 
-725
+742
 00:48:14,864 --> 00:48:17,104
 比如说3/4
 or things like 3 over 4,
 
-726
+743
 00:48:17,344 --> 00:48:20,256
 假设我有两个3/4
 supposing I had two three-fourths.
 
-727
+744
 00:48:21,570 --> 00:48:22,752
 这两个一样吗？
 Are they the same one--
 
-728
+745
 00:48:24,064 --> 00:48:24,890
 或者又不一样？
 or are they different?
 
-729
+746
 00:48:25,340 --> 00:48:26,960
 当然 对于数字来说 这并不重要
 Well, in the case of numbers, it doesn't matter.
 
-730
+747
 00:48:27,860 --> 00:48:30,496
 修改一个数的分母并没有数学意义
 Because there's no meaning to changing the denominator of a number.
 
-731
+748
 00:48:33,020 --> 00:48:35,328
 我们只能够说创建一个数 具有不同的分母
 What you could do is make a number which has a different denominator.
 
-732
+749
 00:48:36,840 --> 00:48:39,888
 而直接修改一个数的分母这种观念
 But the concept of changing a number which has to have a different denominator
 
-733
+750
 00:48:40,000 --> 00:48:43,584
 在数学意义上是一种非常奇怪而不受支持的行为
 is sort of a very weird, and sort of not supported by what you think of as mathematics.
 
-734
+751
 00:48:44,770 --> 00:48:47,408
-然而 当这些 CONS 单元表示的是现实世界中的事物
+然而 当这些CONS单元表示的是现实世界中的事物
 However, when these CONSes represent things in the physical world,
 
-735
+752
 00:48:48,976 --> 00:48:50,432
-那么修改它的 CAR 部分
- then changing something like the CAR
+那么修改它的CAR部分
+then changing something like the CAR
 
-736
+753
 00:48:50,608 --> 00:48:52,208
 就像除掉指甲壳的一块一样
 like removing a piece of the fingernail.
 
-737
+754
 00:48:53,690 --> 00:48:56,560
-所以 每一个 CONS 都有自己的“身份”
+所以 每一个CONS都有自己的“身份”
 And so CONSes have an identity.
 
-738
+755
 00:48:57,770 --> 00:48:59,920
 我来先说明“身份”是什么意思
 Let me show you what I mean about identity, first of all.
 
-739
+756
 00:49:01,280 --> 00:49:03,056
 来看些例子
 Let's do some little example here.
 
-740
+757
 00:49:04,320 --> 00:49:15,200
-假如 (DEFINE A (CONS 1 2))
+假如(DEFINE A (CONS 1 2))
 Supposing I define A to the CONS of 1 and 2.
 
-741
+758
 00:49:18,320 --> 00:49:19,760
 这是代表什么呢？ 首先
 Well, what that means, first of all,
 
-742
+759
 00:49:20,672 --> 00:49:25,200
-这是说我在某个环境中创建了符号 A
+这是说我在某个环境中创建了符号A
 is that somewhere in some environment I've made a symbol A
 
-743
+760
 00:49:25,968 --> 00:49:28,672
 而它的值是一个序对
 to have a value which is a pair
 
-744
+761
 00:49:29,472 --> 00:49:34,064
-这个序对由两个分别指向 1 和 2 的指针组成
+这个序对由两个分别指向1和2的指针组成
 consisting of pointers to a 1 and a pointer to a 2,
 
-745
+762
 00:49:35,344 --> 00:49:36,160
 就像这样
 just like that.
 
-746
+763
 00:49:38,120 --> 00:49:39,600
 又假设
 Now, supposing I also say
 
-747
+764
 00:49:40,224 --> 00:49:47,584
 (DEFINE B (CONS A A))
 define B to be the CONS--
 
-748
+765
 00:49:53,888 --> 00:49:56,816
 虽然无所谓 不过我还是更喜欢用大写
- it doesn't matter, but I like it better, it's prettier--
+it doesn't matter, but I like it better, it's prettier--
 
-749
+766
 00:49:57,632 --> 00:49:59,888
 (DEFINE B (CONS A A))
 of A and A.
 
-750
+767
 00:50:03,970 --> 00:50:06,032
 这里用了两次A
 Well, first of all, I'm using the name A twice.
 
-751
+768
 00:50:07,840 --> 00:50:10,576
 现在就要考虑序对的身份问题了
 At this moment, I'm going to think of CONSes as having identity.
 
-752
+769
 00:50:11,300 --> 00:50:12,640
-这两个 A 是同一个东西
+这两个A是同一个东西
 This is the same one.
 
-753
+770
 00:50:13,690 --> 00:50:14,816
 这也就是说
 And so what that means
 
-754
+771
 00:50:15,296 --> 00:50:17,616
 我创建了另一个序对
 is I make another pair,
 
-755
+772
 00:50:18,810 --> 00:50:20,208
-我把它记作 B
+我把它记作B
 which I'm going to call B.
 
-756
+773
 00:50:22,384 --> 00:50:27,600
-它由两个指向 A 的指针组成
+它由两个指向A的指针组成
 And it contains two pointers to A.
 
-757
+774
 00:50:28,928 --> 00:50:32,208
 对于这个对象来说 此时我有三个名字来指称它
 At this point, I have three names for this object.
 
-758
+775
 00:50:33,104 --> 00:50:34,160
-A 是一个
+A是一个
 A is its name.
 
-759
+776
 00:50:34,880 --> 00:50:36,464
-(CAR B) 是一个
+(CAR B)是一个
 The CAR of B is its name.
 
-760
+777
 00:50:37,230 --> 00:50:38,864
-(CDR B) 也是一个
+(CDR B)也是一个
 And the CDR of B is its name.
 
-761
+778
 00:50:39,360 --> 00:50:41,150
 都是这个序对的别名
 It has several aliases, they're called.
 
-762
+779
 00:50:44,230 --> 00:50:49,280
 假设现在我要执行
 Now, supposing I do something like set-the-CAR,
 
-763
+780
 00:50:53,776 --> 00:51:08,380
 (SET-CAR! (CAR B) 3)
 the CAR of the CAR of B to 3.
 
-764
+781
 00:51:12,750 --> 00:51:17,456
-我先去找 B 的 CAR 部分 也就是它
+我先去找B的CAR部分 也就是它
 What that means is I find the CAR of B, that's this.
 
-765
+782
 00:51:17,830 --> 00:51:20,935
-再修改它的 CAR 部分 修改为3
+再修改它的CAR部分 修改为3
 I set the CAR of that to be 3, changing this.
 
-766
+783
 00:51:24,760 --> 00:51:25,696
-这样我也就修改了 A
+这样我也就修改了A
 I've changed A.
 
-767
+784
 00:51:27,248 --> 00:51:33,648
-如果我问 现在 A 的 CAR 部分是多少
+如果我问 现在A的CAR部分是多少
 If I were to ask what's the CAR of A--of A now?
 
-768
+785
 00:51:35,340 --> 00:51:37,568
 结果是3
 I would get out 3,
 
-769
+786
 00:51:38,688 --> 00:51:43,392
-尽管在这里 A 是由 1 和 2 构成的序对
+尽管在这里 A是由1和2构成的序对
 even though here we see that A was the CONS of 1 and 2.
 
-770
+787
 00:51:45,290 --> 00:51:47,440
-我通过改变 B 而改变了 A
+我通过改变B而改变了A
 I caused A to change by changing B.
 
-771
+788
 00:51:48,560 --> 00:51:49,648
 它们之间存在共享
 There is sharing here.
 
-772
+789
 00:51:52,256 --> 00:51:53,472
 有时候我们需要这样的结构
 That's sometimes what we want.
 
-773
+790
 00:51:54,240 --> 00:51:56,128
 当然 在类似于队列这类的数据结构中
 Surely in the queues and things like that,
 
-774
+791
 00:51:56,240 --> 00:52:02,384
 我们正是这样来定义、组织数据结果来获得数据共享的
 that's exactly what we defined our--organized our data structures to facilitate-- sharing.
 
-775
+792
 00:52:04,350 --> 00:52:05,664
 但是有一些非预期的共享
 But inadvertent sharing,
 
-776
+793
 00:52:07,760 --> 00:52:09,728
 对象间的非预期交互
 unanticipated interactions between objects,
 
-777
+794
 00:52:10,784 --> 00:52:14,080
-是大型程序中产生的 BUG 的主要来源
+是大型程序中产生的BUG的主要来源
 is the source of most of the bugs that occur in complicated programs.
 
-778
+795
 00:52:15,440 --> 00:52:21,664
 通过使对象具有“身份”、允许共享
 So by introducing this possibility of things having identity and sharing
 
-779
+796
 00:52:21,870 --> 00:52:23,760
 给同一个对象取多个别名
 and having multiple names for the same thing,
 
-780
+797
 00:52:24,080 --> 00:52:25,056
 我们获得了强大的能力
 we get a lot of power.
 
-781
+798
 00:52:25,136 --> 00:52:28,464
-但是同时也为此引出的 BUG 和复杂度而付出代价
+但是同时也为此引出的BUG和复杂度而付出代价
 But we're going to pay for it with lots of complexity and bugs.
 
-782
+799
 00:52:32,190 --> 00:52:36,240
 为了把这个讲透彻一点 我们再举一个例子
 So also, for example, if I just looked at this just to drive that home,
 
-783
+800
 00:52:37,104 --> 00:52:39,872
-比如 (CADR B)
+比如(CADR B)
 the CADR of B,
 
-784
+801
 00:52:42,464 --> 00:52:46,560
-看起来和 (CAR B) 没有一点关系
+看起来和(CAR B)没有一点关系
 which has nothing to do with even the CAR of B, apparently.
 
-785
+802
 00:52:46,880 --> 00:52:49,024
 但是它的值是什么？
 The CADR of B, what's that?
 
-786
+803
 00:52:49,350 --> 00:52:53,560
-先取 B 的 CDR 部分 再取结果的 CAR 部分
+先取B的CDR部分 再取结果的CAR部分
 Take that CDR of B and now take the CAR of that.
 
-787
+804
 00:52:53,560 --> 00:52:54,864
 哦 还是3
 Oh, that's 3 also.
 
-788
+805
 00:52:56,480 --> 00:53:00,432
 有了共享这样的机制 局部的含义也不是那么清楚了
 So I can have non-local interactions by sharing.
 
-789
+806
 00:53:01,120 --> 00:53:02,480
 所以我们要非常小心的操作
 And I have to be very careful of that.
 
-790
+807
 00:53:06,640 --> 00:53:12,640
 目前为止 我已经介绍了好几个赋值运算
 Well, so far, of course, it seems I've introduced several different assignment operators--
 
-791
+808
 00:53:13,184 --> 00:53:17,616
-比如 SET!、SET-CAR!、SET-CDR! 
+比如SET!、SET-CAR!、SET-CDR!
 set, set CAR, set CDR.
 
-792
+809
 00:53:18,512 --> 00:53:21,392
-或许我应该不用 SET-CAR! SET-CDR! 它们引入太多问题了
+或许我应该不用SET-CAR!、SET-CDR! 它们引入太多问题了
 Well, maybe I should just get rid of set CAR and set CDR. Maybe they're not worthwhile.
 
-793
+810
 00:53:22,820 --> 00:53:23,664
 而事实则是
 Well, the answer is
 
-794
-00:53:24,128 --> 00:53:27,344
-一旦你把骆驼的鼻子牵进帐篷 它自己就会跟着 #TBD 太极生两仪 两仪生四象
-that once you let the camel's nose into the tent, the rest of him follows.
+811
+00:53:24,120 --> 00:53:26,112
+一旦把骆驼的鼻子牵进帐篷
+that once you let the camel's nose into the tent,
 
-795
+812
+00:53:26,240 --> 00:53:27,340
+它的身体可就自己跟进来了
+the rest of him follows.
+
+813
 00:53:30,160 --> 00:53:31,264
-我想说的是 只要有SET!
+只要有SET!
 All I have to have is set,
 
-796
+814
 00:53:31,616 --> 00:53:35,850
 这些糟糕的东西都可能发生
 and I can make all of the--all of the bad things that can happen.
 
-797
+815
 00:53:38,550 --> 00:53:39,808
 我们来分析一下
 Let's play with that a little bit.
 
-798
+816
 00:53:40,690 --> 00:53:43,728
 前些日子 讲到复合数据的时候
 A couple of days ago, when we introduced compound data,
 
-799
+817
 00:53:45,136 --> 00:53:51,200
-哈罗德教授向你们展示了 用消息接收的方式来定义 CONS
+哈罗德教授向你们展示了 用消息接收的方式来定义CONS
 you saw Hal show you a definition of CONS in terms of a message acceptor.
 
-800
+818
 00:53:52,480 --> 00:53:56,064
 我将给你们展示一种更加糟糕的方式
 I'm going to show you even a more horrible thing,
 
-801
+819
 00:53:57,136 --> 00:54:00,048
-凭“空”定义 CONS
+凭“空”定义CONS
 a definition of CONS in terms of nothing but air,
 
-802
+820
 00:54:02,560 --> 00:54:03,024
-“什么都不用”#TBD
+“什么”都不用
 hot air.
 
-803
+821
 00:54:04,440 --> 00:54:08,128
-过去我们是怎么定义 CONS 的呢？我们用函数式的方法
+用传统的函数式的方法如何定义CONS呢？
 What is the definition of CONS, of the old functional kind,
 
-804
+822
 00:54:09,264 --> 00:54:11,664
-纯粹只用 LAMBDA 表达式
+纯粹只用LAMBDA表达式
 in terms of purely lambdic expressions,
 
-805
+823
 00:54:13,392 --> 00:54:14,400
 把序对表示成过程
 procedures?
 
-806
+824
 00:54:17,392 --> 00:54:19,664
 现在我要修改这个定义
 Because I'm going to then modify this definition
 
-807
+825
 00:54:20,304 --> 00:54:23,168
 使得只具有一种赋值
 to get assignment to be only one kind of assignment,
 
-808
+826
 00:54:24,288 --> 00:54:27,936
-用 SET! 来代替 SET-CAR! 和 SET-CDR!
+用SET!来代替SET-CAR!和SET-CDR!
 to get rid of the set CAR and set CDR in terms of set.
 
-809
+827
 00:54:28,580 --> 00:54:37,392
-如果我把 CONS 定义为
+如果我把CONS定义为
 So what if I define CONS of X and Y
 
-810
+828
 00:54:38,910 --> 00:54:42,560
-定义为一个过程 该过程接收参数 M
+定义为一个过程 该过程接收参数M
 to be a procedure of one argument called a message M,
 
-811
+829
 00:54:43,392 --> 00:54:46,320
-该过程将 M 应用在 X 与 Y 上
+该过程将M应用在X与Y上
 which calls that message on X and Y?
 
-812
+830
 00:54:51,120 --> 00:54:53,104
 这是阿隆佐·丘奇发明的方法
 This idea was invented by Alonzo Church,
 
-813
+831
 00:54:53,776 --> 00:54:55,728
 他是20世纪最伟大的程序员
 who was the greatest programmer of the 20th century,
 
-814
+832
 00:54:55,792 --> 00:54:57,152
 尽管当时电脑还没有被发明
 although he never saw a computer.
 
-815
+833
 00:54:57,870 --> 00:54:59,130
 但他在20世纪30年代就提出了这个方法
 It was done in the 1930s.
 
-816
+834
 00:54:59,424 --> 00:55:02,220
 他是一个逻辑学家 在普林斯顿大学做研究
 He was a logician, I suppose at Princeton at the time.
 
-817
+835
 00:55:08,660 --> 00:55:10,432
-定义 (CAR X) 为
-Define CAR of X 
+定义(CAR X)为
+Define CAR of X
 
-818
+836
 00:55:13,104 --> 00:55:16,928
-把 X 应用在一个二元过程上
+把X应用在一个二元过程上
 to be the result of applying X to that procedure of two arguments,
 
-819
+837
 00:55:17,152 --> 00:55:20,608
-参数分别是 A 和 D 而结果是选出 A
+参数分别是A和D 而结果是选出A
 A and D, which selects A.
 
-820
+838
 00:55:23,710 --> 00:55:24,976
-而 (CDR X) 则是
+而(CDR X)则是
 I will define CDR of X
 
-821
+839
 00:55:33,104 --> 00:55:34,784
 这样的一个过程
 to be that procedure,
 
-822
+840
 00:55:35,088 --> 00:55:40,256
-把 X 应用在一个参数分别是 A 和 D 的过程上
+把X应用在一个参数分别是A和D的过程上
 to be the result of applying X to that procedure of A and D,
 
-823
+841
 00:55:40,928 --> 00:55:42,048
-该过程选择出 D
+该过程选择出D
 which selects D.
 
-824
+842
 00:55:46,670 --> 00:55:49,888
-可能你们还没意识到这些就是 CAR、CDR 和 CONS
+可能你们还没意识到这些就是CAR、CDR和CONS
 Now, you may not recognize this as CAR, CDR, and CONS.
 
-825
+843
 00:55:50,510 --> 00:55:53,616
 但我将要给你们演示它符合之前的公理
 But I'm going to demonstrate to you that it satisfies the original axioms
 
-826
+844
 00:55:54,112 --> 00:55:54,816
 举一个例子
 just once.
 
-827
+845
 00:55:55,616 --> 00:55:57,568
 我们来看一下
 And then we're going to do some playing of games.
 
-828
+846
 00:55:58,290 --> 00:56:06,272
-考虑一下语句语句 (CAR (CONS 35 47))
+考虑一下语句语句(CAR (CONS 35 47))
 Consider the problem CAR of CONS of, say, 35 and 47.
 
-829
+847
 00:56:09,936 --> 00:56:10,960
 它的结果是多少呢？
 Well, what is that?
 
-830
+848
 00:56:11,120 --> 00:56:15,248
-它是通过把 35 和 47 代换进
+它是通过把35和47代换进
 It is the result of taking car of the result of substituting 35 and 47
 
-831
+849
 00:56:15,376 --> 00:56:18,208
-语句体中的 X 和 Y 得到的
+语句体中的X和Y得到的
 X and Y in the body of this.
 
-832
+850
 00:56:19,710 --> 00:56:20,690
 非常容易
 Well, that's easy enough.
 
-833
+851
 00:56:20,690 --> 00:56:30,880
 就得到了语句(CAR (LAMBDA (M) (M 35 47)))
 That's CAR of the result of substituting into lambda of M, M of 35 and 47.
 
-834
+852
 00:56:35,530 --> 00:56:39,360
 这个的结果是把这个对象
 Well, what this is, is the result of substituting this object
 
-835
+853
 00:56:39,440 --> 00:56:41,856
-代换进这里的 X 而得到的
+代换进这里的X而得到的
 for X in the body of that.
 
-836
+854
 00:56:42,830 --> 00:56:47,664
-代换的结果是 ((LAMBDA (M --
+代换的结果是((LAMBDA (M --
 So that's just lambda of M--
 
-837
+855
 00:56:48,336 --> 00:56:52,192
-用这个对象代换这里的 X
+用这个对象代换这里的X
 that's substituted, because this object is being substituted for X,
 
-838
+856
 00:56:52,880 --> 00:56:54,352
 这是表的头部
 which is the beginning of a list,
 
-839
+857
 00:56:54,880 --> 00:57:00,320
-体的部分是 (M 35 47)
+体的部分是(M 35 47)
 lambda of M-- M of 35 and 47,
 
-840
+858
 00:57:03,104 --> 00:57:07,312
-把它应用于一个参数分别的 A 和 D 的过程上
+把它应用于一个参数分别的A和D的过程上
 applied to that procedure of A and D,
 
-841
+859
 00:57:07,488 --> 00:57:08,672
-后者返回参数 A
+后者返回参数A
 which gives me A.
 
-842
+860
 00:57:10,912 --> 00:57:14,624
-然后我们用这个来代换这里的 M
+然后我们用这个来代换这里的M
 Well, that's the result of substituting this for M here.
 
-843
+861
 00:57:15,968 --> 00:57:21,712
-这个就相当于把 (LAMBDA (A D) A)
+这个就相当于把(LAMBDA (A D) A)
 So that's the same thing as lambda of A, D, A,
 
-844
+862
 00:57:22,224 --> 00:57:24,848
-应用在 35 和 47 上
+应用在35和47上
 applied to 35 and 47.
 
-845
+863
 00:57:26,330 --> 00:57:27,376
 结果就是35
 Oh, well that's 35.
 
-846
+864
 00:57:27,408 --> 00:57:31,210
-它就是用 35  和 47 分别代换 A、D 最后返回 A
+它就是用35和47分别代换A、D 最后返回A
 That's substituting 35 for A and for 47 for D in A.
 
-847
+865
 00:57:35,600 --> 00:57:37,248
 所以我根本不需要任何数据
 So I don't need any data at all.
 
-848
+866
 00:57:37,888 --> 00:57:38,752
 甚至连数字都不需要
 not even numbers.
 
-849
+867
 00:57:40,928 --> 00:57:42,640
 这就是 阿隆佐·邱奇的技巧
 This is Alonso Church's hack.
 
-850
+868
 00:57:52,420 --> 00:57:56,176
 现在呢我们来对这个定义做点修改
 Well, now we're going to do something nasty to him.
 
-851
+869
 00:57:56,760 --> 00:57:58,496
 作为逻辑学家 他可能会不太开心
 Being a logician, he wouldn't like this.
 
-852
+870
 00:57:59,200 --> 00:58:01,968
 但作为程序员 -- 请看投影仪
 But as programmers, let's look at the overhead.
 
-853
+871
 00:58:03,260 --> 00:58:04,160
 我们来看看
 And here we go.
 
-854
+872
 00:58:05,390 --> 00:58:07,584
-我修改了 CONS 的定义
+我修改了CONS的定义
 I'm going to change the definition of CONS.
 
-855
+873
 00:58:09,570 --> 00:58:12,352
 和丘奇的定义很相似 但是不完全相同
 It's almost the same as Alonzo Church's, but not quite.
 
-856
+874
 00:58:14,416 --> 00:58:15,504
 具体到底是什么？
 What do we have here?
 
-857
+875
 00:58:16,070 --> 00:58:18,720
-CONS 有两个参数： X 和 Y
+CONS有两个参数：X和Y
 The CONS of two arguments, X and Y,
 
-858
+876
 00:58:19,504 --> 00:58:22,512
-但它返回一个参数为 M 的过程
+但它返回一个参数为M的过程
 is going to be that procedure of one argument M,
 
-859
+877
 00:58:23,392 --> 00:58:25,648
-跟之前一样 M 会应用于 X 和 Y 上
+跟之前一样M会应用于X和Y上
 which supplies M to X and Y as before,
 
-860
+878
 00:58:26,192 --> 00:58:29,296
 但它额外还有两个“许可”
 but also to two permissions,
 
-861
+879
 00:58:30,176 --> 00:58:32,016
-其中一个是把 X 赋值为 N
+其中一个是把X赋值为N
 the permission to set X to N
 
-862
+880
 00:58:32,608 --> 00:58:34,400
-另一个则是把 Y 赋值为 N
+另一个则是把Y赋值为N
 and the permission to set Y to N,
 
-863
+881
 00:58:34,448 --> 00:58:35,680
-只要我提供了相应的 N
+只要我提供了相应的N
 given that I have an N.
 
-864
+882
 00:58:40,940 --> 00:58:44,720
 所以出了邱奇原本的定义之外
 So besides the things that I had here in Church's definition,
 
-865
+883
 00:58:45,728 --> 00:58:51,664
-最大的不同在于 CONS 的返回值
+最大的不同在于CONS的返回值
 what I have is that the thing that CONS returns
 
-866
+884
 00:58:52,128 --> 00:58:53,824
 不单会把它的参数应用于
 will apply its argument
 
-867
+885
 00:58:54,912 --> 00:58:59,440
-用于构成序对的 X 和 Y 之上
+用于构成序对的X和Y之上
 to not just the values of the X and Y that the CONS is made of,
 
-868
+886
 00:58:59,696 --> 00:59:03,584
-它还有用于为 X 和 Y 赋值的两个“许可”
+它还有用于为X和Y赋值的两个“许可”
 but also permissions to set X and Y to new values.
 
-869
+887
 00:59:06,540 --> 00:59:08,080
 当然 就如之前一样
 Now, of course, just as before,
 
-870
+888
 00:59:08,832 --> 00:59:10,512
-CAR 看起来也很相似
+CAR看起来也很相似
 CAR is exactly the same.
 
-871
+889
 00:59:11,690 --> 00:59:14,368
 就像邱奇定义的那样
 The CAR of X is nothing more than applying X,
 
-872
+890
 00:59:14,544 --> 00:59:16,000
- (CAR X) 只不过是把 X 应用在
+(CAR X)只不过是把X应用在
 as in Church's definition,
 
-873
+891
 00:59:16,864 --> 00:59:19,008
 过程上 -- 本例中是四个参数
 to a procedure, in this case, of four arguments,
 
-874
+892
 00:59:19,296 --> 00:59:21,040
 然后从中选出第一个
 which selects out the first one.
 
-875
+893
 00:59:22,540 --> 00:59:24,160
 这就和之前一样
 And just as we did before,
 
-876
+894
 00:59:25,424 --> 00:59:26,960
-结果将会返回 X
+结果将会返回X
 that will be the value of X
 
-877
+895
 00:59:29,040 --> 00:59:35,408
-X 的值被包含在求值这个 LAMBDA 表达式所产生的过程中
+X的值被包含在求值这个LAMBDA表达式所产生的过程中
 that was contained in the procedure which is the result of evaluating this lambda expression
 
-878
+896
 00:59:35,456 --> 00:59:37,840
-X 和 Y 的值也是在这个环境中定义的
+X和Y的值也是在这个环境中定义的
 in the environment where X and Y are defined over here.
 
-879
+897
 00:59:41,940 --> 00:59:43,152
-这是我们对 CONS 的定义
+这是我们对CONS的定义
 That's the value of CONS.
 
-880
+898
 00:59:45,640 --> 00:59:47,536
 那么 激动人心的地方来了
 Now, however, the exciting part.
 
-881
+899
 00:59:47,730 --> 00:59:48,960
-当然 CDR 的定义也类似
+当然CDR的定义也类似
 CDR, of course, is the same.
 
-882
+900
 00:59:49,390 --> 00:59:50,352
 激动人心的地方
 The exciting part,
 
-883
+901
 00:59:51,232 --> 00:59:52,528
-SET-CAR! 和 SET-CDR! 的实现
+SET-CAR!和SET-CDR!的实现
 set CAR and set CDR.
 
-884
+902
 00:59:53,456 --> 00:59:55,520
 说实话 它们也不是特别复杂
 Well, they're nothing very complicated anymore.
 
-885
+903
 00:59:55,800 --> 01:00:00,640
-语句 (SET-CAR! X Y)
+语句(SET-CAR! X Y)
 Set CAR of a CONS X to a new value Y
 
-886
+904
 01:00:01,632 --> 01:00:03,856
-无非就是把序对 X 应用于
+无非就是把序对X应用于
 is nothing more than applying that CONS,
 
-887
+905
 01:00:04,112 --> 01:00:06,768
-注意 X 是一个一元过程
+注意X是一个一元过程
 which is the procedure of four--the procedure of one argument
 
-888
+906
 01:00:07,696 --> 01:00:09,808
 该过程的体是将参数应用在四个对象上
 which applies its argument to four things,
 
-889
+907
 01:00:11,248 --> 01:00:15,856
-我们把 X 应用于一个四元过程上
+我们把X应用于一个四元过程上
 to a procedure which is of four arguments--
 
-890
+908
 01:00:16,000 --> 01:00:18,080
-X 的值、Y 的值
+X的值、Y的值
 the value of X, the value of Y,
 
-891
+909
 01:00:18,320 --> 01:00:20,544
-修改 X 的许可、修改 Y 的许可
+修改X的许可、修改Y的许可
 permission to set X, the permission to set Y--
 
-892
+910
 01:00:21,320 --> 01:00:26,096
-语句的体则是用相应的许可 将 X 设置为新的值
+语句的体则是用相应的许可 将X设置为新的值
 and using it--using that permission to set X to the new value.
 
-893
+911
 01:00:31,650 --> 01:00:33,540
-当然 SET-CDR! 和它类似
+当然SET-CDR!和它类似
 And similarly, set-cdr is the same thing.
 
-894
+912
 01:00:36,256 --> 01:00:39,440
 你也看到了 我这里并没有引入新的基本运算
 So what you've just seen is that I didn't introduce any new primitives at all.
 
-895
+913
 01:00:40,112 --> 01:00:44,368
 具体要不要这样来实现是一个工程性问题
 I mean, Whether or not I want to implement it this way is a matter of engineering.
 
-896
+914
 01:00:45,340 --> 01:00:47,392
 当然出于工程上的考量
 And the answer is of course I don't implement it this way
 
-897
+915
 01:00:48,096 --> 01:00:49,630
 我不会这样来实现
 for reasons that have to do with engineering.
 
-898
+916
 01:00:51,680 --> 01:00:53,408
 但是从原理上来说
 However in principle, logically,
 
-899
+917
 01:00:54,288 --> 01:00:56,432
 一旦引入了赋值运算
 I introduced one assignment operator,
 
-900
+918
 01:00:56,960 --> 01:00:58,760
 我就可以进行各种各样的赋值运算了
 I've assigned--I've introduced them all.
 
-901
+919
 01:01:05,420 --> 01:01:06,670
 有什么问题吗？
 Are there any questions?
 
-902
+920
 01:01:09,200 --> 01:01:10,896
 请讲
 Yes, David.
 
-903
+921
 01:01:12,040 --> 01:01:15,648
 我可以跟的上你的思路 直到 --
 AUDIENCE: I can follow you up until you get--I can follow all of that.
 
-904
+922
 01:01:15,648 --> 01:01:17,616
 在许可那里
 But when we bring in the permissions,
 
-905
+923
 01:01:18,144 --> 01:01:21,648
-我们把 CONS 定义为一个参数为 N 的过程
+我们把CONS定义为一个参数为N的过程
 defining CONS in terms of the lambda N,
 
-906
+924
 01:01:21,808 --> 01:01:24,210
 我不知道这个参数是什么时候传进来的
 I don't follow where N gets passed.
 
-907
+925
 01:01:24,210 --> 01:01:25,696
 教授：哦 抱歉 我给你演示一下
 PROFESSOR: Oh, I'm sorry. I'll show you.
 
-908
+926
 01:01:26,340 --> 01:01:27,056
 我们来推演一下
 Let's follow it.
 
-909
+927
 01:01:27,360 --> 01:01:29,072
-我们在黑板上推演一下
+虽然在黑板上推演更清晰
 Of course, we could do it on the blackboard.
 
-910
+928
 01:01:29,180 --> 01:01:30,170
-并不难懂
+但这并不难懂
 It's not so hard.
 
-911
+929
 01:01:30,170 --> 01:01:31,472
 我就将就用投影仪了
 But it's also easy here.
 
-912
+930
 01:01:32,450 --> 01:01:35,792
-调用 (SET-CDR! X Y) 会发生什么呢？
+调用(SET-CDR! X Y)会发生什么呢？
 Supposing I wish to set-cdr of X to Y.
 
-913
+931
 01:01:37,790 --> 01:01:39,664
-就在这里 (SET-CDR! X Y)
+就在这里(SET-CDR! X Y)
 See that right there. set cdr x to y
 
-914
+932
 01:01:40,360 --> 01:01:41,920
-X 可能是一个序对
+X可能是一个序对
 X is presumably a CONS,
 
-915
+933
 01:01:43,312 --> 01:01:45,248
-或者说对一个 CONS 表达式求值得到的结果
+或者说对一个CONS表达式求值得到的结果
 a thing resulting from evaluating CONS.
 
-916
+934
 01:01:45,888 --> 01:01:46,352
 能跟上吧？
 right?
 
-917
+935
 01:01:46,890 --> 01:01:49,968
 也就是说 X是由这里的代码构造出来的
 Therefore X comes from a place over here,
 
-918
+936
 01:01:52,576 --> 01:01:56,496
-这里的 X 是求值这个 LAMBDA 表达式得到的
+这里的X是求值这个LAMBDA表达式得到的
 that that X is of the result of evaluating this lambda expression.
 
-919
+937
 01:01:58,110 --> 01:01:58,496
 对吧
 Right?
 
-920
+938
 01:01:59,380 --> 01:02:01,632
-因此当我对这个 LAMBDA 表达式求值时
+因此当我对这个LAMBDA表达式求值时
 That when I evaluated that lambda expression,
 
-921
+939
 01:02:04,016 --> 01:02:08,768
-我是在定义 CONS 时的一个环境里求值的
+我是在定义CONS时的一个环境里求值的
 I evaluated it in an environment where the arguments to CONS were defined.
 
-922
+940
 01:02:11,750 --> 01:02:15,184
-这也就是说 作为 LAMBDA 表达式中的自由变量
+这也就是说 作为LAMBDA表达式中的自由变量
 That means that as free variables in this lambda expression,
 
-923
+941
 01:02:16,250 --> 01:02:18,688
-X 和 Y 都存储一个框架中
- there is the--there are in the frame,
+X和Y都存储一个框架中
+there is the--there are in the frame,
 
-924
+942
 01:02:18,720 --> 01:02:22,440
-也就是这整个 LAMBDA 表达式的父框架
+也就是这整个LAMBDA表达式的父框架
 which is the parent frame of this lambda expression,
 
-925
+943
 01:02:23,232 --> 01:02:25,824
-因此在这个 LAMBDA 语句中
- the procedure resulting from this lambda expression,
+因此在这个LAMBDA语句中
+the procedure resulting from this lambda expression,
 
-926
+944
 01:02:26,656 --> 01:02:28,512
-X 和 Y 都有存储空间
+X和Y都有存储空间
 X and Y have places.
 
-927
+945
 01:02:29,250 --> 01:02:30,832
 也可以对它们赋值
 And it's possible to set them.
 
-928
+946
 01:02:31,910 --> 01:02:36,080
-这里赋值为 N 是通过参数来传递的
+这里赋值为N是通过参数来传递的
 I set them to an N, which is the argument of the permission.
 
-929
+947
 01:02:37,264 --> 01:02:39,312
 “许可”就是一个过程
 The permission is a procedure
 
-930
+948
 01:02:41,408 --> 01:02:43,184
-它将作为 M 的一个参数
+它将作为M的一个参数
 which is passed to M,
 
-931
+949
 01:02:43,296 --> 01:02:46,512
-它实际上是 CONS 生成的对象的一部分
+它实际上是CONS生成的对象的一部分
 which is the argument that the CONS object gets passed.
 
-932
+950
 01:02:47,940 --> 01:02:50,912
-我们再来看看 SET-CDR!
+我们再来看看SET-CDR!
 Now, let's go back here in the set-cdr
 
-933
+951
 01:02:52,112 --> 01:02:55,424
-SET-CDR! 的第一个参数 X 是一个序对
- The CONS object, which is the first argument of set-cdr
+SET-CDR!的第一个参数X是一个序对
+The CONS object, which is the first argument of set-cdr
 
-934
+952
 01:02:56,128 --> 01:02:57,480
 被传递了一个参数
 gets passed an argument.
 
-935
+953
 01:02:59,776 --> 01:03:02,224
 这个是一个四元过程
 That--there's a procedure of four things, indeed,
 
-936
+954
 01:03:02,320 --> 01:03:04,656
-这是因为 它要作为这里的 M
+这是因为 它要作为这里的M
 because that's the same thing as this M over here,
 
-937
+955
 01:03:04,992 --> 01:03:06,560
 要应用在四个对象上
 which is applied to four objects.
 
-938
+956
 01:03:07,920 --> 01:03:13,344
 这边的这个SD 就对应于这个过程
 The object over here, SD, is, in fact, this permission.
 
-939
+957
 01:03:15,470 --> 01:03:19,930
-当我执行 SD 把它应用于 Y
+当我执行SD 把它应用于Y
 When I use SD, I apply it to Y, right there.
 
-940
+958
 01:03:22,910 --> 01:03:24,048
-这个 Y 是这里传过来的
+这个Y是这里传过来的
 So that comes from this.
 
-941
+959
 01:03:25,370 --> 01:03:26,928
 学生：那--
-AUDIENCE: So what do you-- 
+AUDIENCE: So what do you--
 
-942
+960
 01:03:27,008 --> 01:03:32,192
-教授：所以说 这里的 N 就对应于这里的 Y
+教授：所以说 这里的N就对应于这里的Y
 PROFESSOR: So to finish that, the N that was here is the Y which is here.
 
-943
+961
 01:03:34,048 --> 01:03:34,528
 明白了吧
 How's that?
 
-944
+962
 01:03:34,810 --> 01:03:35,750
 了解了
 AUDIENCE: Right, OK.
 
-945
+963
 01:03:35,750 --> 01:03:37,296
 当你执行SET-CDR!的时候
 Now, when you do a set-cdr,
 
-946
+964
 01:03:39,072 --> 01:03:41,970
-X 是 CDR 部分要赋值的新值
+X是CDR部分要赋值的新值
 X is the value the CDR is going to become.
 
-947
+965
 01:03:41,970 --> 01:03:44,032
-教授：这里的 X
+教授：这里的X
 PROFESSOR: The X over here.
 
-948
+966
 01:03:44,960 --> 01:03:46,200
 哦 指错了
 I'm sorry, that's not true.
 
-949
+967
 01:03:46,200 --> 01:03:48,336
-这里的 X 是指 -- SET-CDR! 有两个参数
+这里的X是指 -- SET-CDR!有两个参数
 The X is--set-cdr has two arguments--
 
-950
+968
 01:03:48,912 --> 01:03:50,368
 一个是被修改的序对
 The CONS I'm changing
 
-951
+969
 01:03:51,344 --> 01:03:53,936
 还有就是新值
 and the value I'm changing it to.
 
-952
+970
 01:03:56,150 --> 01:03:58,320
 你可以代换回去看看 就很清楚了
 So you have them backwards, that's all.
 
-953
+971
 01:04:02,176 --> 01:04:03,168
 还有什么问题吗？
 Are there any other questions?
 
-954
+972
 01:04:07,880 --> 01:04:08,640
 好的
 Well, thank you.
 
-955
+973
 01:04:08,640 --> 01:04:09,520
 这节课就到这里
 It's time for lunch.
+
+974
+01:04:10,448 --> 01:04:17,392
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+975
+01:04:17,408 --> 01:04:28,736
+本项目主页
+https://github.com/DeathKing/Learning-SICP
 
