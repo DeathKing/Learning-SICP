@@ -1336,7 +1336,7 @@ is going to be x
 268
 00:16:16,144 --> 00:16:27,456
 (TAIL (CONS-STREAM X Y)) = Y
- and the tail of CONS-stream of x and y is going to be y.
+and the tail of CONS-stream of x and y is going to be y.
 
 269
 00:16:28,440 --> 00:16:34,750
@@ -1486,7 +1486,7 @@ This is the procedure map that we did with lists.
 298
 00:18:10,950 --> 00:18:12,608
 除了判断EMPTY-STREAM的部分
-And you see it's exactly map, 
+And you see it's exactly map,
 
 299
 00:18:12,608 --> 00:18:14,650
@@ -1499,2531 +1499,2781 @@ except we're testing for empty-stream.
 Oh, I forgot to mention that.
 
 301
-00:18:15,560 --> 00:18:20,510
-empty-stream?就和null?差不多，如果是空的，就生成一个空的流
-Empty-stream is like the null test. So if it's empty, we generate the empty stream. #LAST
+00:18:15,560 --> 00:18:17,152
+EMPTY-STREAM?就和NULL?差不多
+Empty-stream is like the null test.
 
 302
-00:18:20,510 --> 00:18:33,140
-否则，就生成一个新的流，第一个元素是过程作用于流的HEAD的值，剩下的是map-stream对流的TAIL作用的结果
-Otherwise, we form a new stream whose first element is the procedure applied to the head of the stream, and whose rest is gotten by mapping along with the procedure down the tail of the stream.
+00:18:18,030 --> 00:18:20,480
+如果是空的 就返回一个空的流
+So if it's empty, we generate the empty stream.
 
 303
-00:18:33,140 --> 00:18:37,030
-看起来着实太像我们之前所讲的map了
-So that looks exactly like the map procedure we looked at before.
+00:18:20,510 --> 00:18:22,288
+否则 就生成一个新的流
+Otherwise, we form a new stream
 
 304
-00:18:37,030 --> 00:18:38,350
-还有另一件事
-Here's another useful thing.
+00:18:23,520 --> 00:18:27,184
+其第一个元素是PROC应用在流头部的结果
+whose first element is the procedure applied to the head of the stream,
 
 305
-00:18:38,350 --> 00:18:40,460
-过滤器，就是那个用来过滤的盒子
-Filter, this is our filter box.
+00:18:28,512 --> 00:18:29,328
+剩下的是
+and whose rest
 
 306
+00:18:29,600 --> 00:18:32,432
+是MAP-STREAM对流尾部应用的结果
+is gotten by mapping along with the procedure down the tail of the stream.
+
+307
+00:18:33,140 --> 00:18:35,904
+太像我们之前讲的MAP了
+So that looks exactly like the map procedure we looked at before.
+
+308
+00:18:37,030 --> 00:18:38,208
+还有一个有用的函数
+Here's another useful thing.
+
+309
+00:18:38,350 --> 00:18:40,460
+过滤器 就是那个用来过滤的盒子
+Filter, this is our filter box.
+
+310
 00:18:40,460 --> 00:18:43,890
 以一个谓词和一个流作为参数
 We're going to have a predicate and a stream.
 
-307
-00:18:43,890 --> 00:18:50,160
-生成一个新的流，包含了所有在流s中满足谓词pred的元素
-We're going to make a new stream that consists of all the elements of the original one that satisfy the predicate.
-
-308
-00:18:50,160 --> 00:18:51,270
-分条件来看
-That's case analysis.
-
-309
-00:18:51,270 --> 00:18:56,280
-当流s是空的，就返回一个空流
-When there's nothing in the stream, we return the empty stream.
-
-310
-00:18:56,280 --> 00:19:00,060
-这里，用谓词来判断流的头元素
-We test the predicate on the head of the stream.
-
 311
-00:19:00,060 --> 00:19:08,220
-如果为真，就把这个元素和过滤流的尾元素得到的结果连接在一起
-And if it's true, we add the head of the stream onto the result of filtering the tail of the stream.
+00:18:43,890 --> 00:18:45,088
+它将生成一个新的流
+We're going to make a new stream
 
 312
-00:19:08,220 --> 00:19:13,500
-否则，如果谓词判断为假，就只返回过滤流的尾元素的结果
-And otherwise, if that predicate was false, we just filter the tail of the stream.
+00:18:45,808 --> 00:18:48,176
+包含了在流S中所有
+consists of all the elements of the original one that satisfy the predicate.
 
 313
-00:19:13,500 --> 00:19:16,595
+00:18:48,336 --> 00:18:49,488
+满足谓词PRED的元素
+that satisfy the predicate.
+
+314
+00:18:50,384 --> 00:18:51,312
+这是一个“按条件分析语句”
+That's case analysis.
+
+315
+00:18:51,328 --> 00:18:54,224
+如果流是空的 就返回一个空流
+When there's nothing in the stream, we return the empty stream.
+
+316
+00:18:56,280 --> 00:18:59,184
+这里 用谓词来判断流的头元素
+We test the predicate on the head of the stream.
+
+317
+00:19:00,060 --> 00:19:01,040
+如果为真
+And if it's true,
+
+318
+00:19:01,530 --> 00:19:02,832
+就把这个元素
+we add the head of the stream onto the result
+
+319
+00:19:03,024 --> 00:19:06,220
+和过滤流的尾元素得到的结果连接在一起
+the result of filtering the tail of the stream.
+
+320
+00:19:08,220 --> 00:19:10,048
+否则 如果谓词判断为假
+And otherwise, if that predicate was false,
+
+321
+00:19:10,496 --> 00:19:11,984
+就只返回过滤流的尾元素的结果
+we just filter the tail of the stream.
+
+322
+00:19:13,500 --> 00:19:14,464
 这就是过滤器的原理
 Right, so there's filter.
 
-314
+323
 00:19:16,595 --> 00:19:18,560
 剩下的我快速过一遍
 Let me run through a couple more rather quickly.
 
-315
-00:19:18,560 --> 00:19:20,880
-这些在书上都有，下去可以自己看
+324
+00:19:18,560 --> 00:19:20,704
+这些在书上都有 你们可以自己看
 They're all in the book and you can look at them.
 
-316
-00:19:20,880 --> 00:19:22,110
+325
+00:19:20,880 --> 00:19:21,808
 来马上过一遍
 Let me just flash through.
 
-317
-00:19:22,110 --> 00:19:23,260
-过程accumulate
+326
+00:19:22,110 --> 00:19:22,944
+过程ACCUMULATE
 Here's accumulate.
 
-318
-00:19:23,260 --> 00:19:31,560
-accumulate以一种连接事物的方式，将初始值和流粘合在一起
-Accumulate takes a way of combining things and an initial value in a stream and sticks them all together.
+327
+00:19:23,260 --> 00:19:26,928
+ACCUMULATE的参数有：一个组合器
+Accumulate takes a way of combining things
 
-319
-00:19:31,560 --> 00:19:33,970
-如果流为空，返回初始值
+328
+00:19:27,360 --> 00:19:29,056
+一个初始值和一个流
+an initial value in a stream
+
+329
+00:19:29,968 --> 00:19:31,136
+将它们组合在一起
+and sticks them all together.
+
+330
+00:19:31,560 --> 00:19:33,696
+如果流为空 返回初始值
 If the stream's empty, it's just the initial value.
 
-320
-00:19:33,970 --> 00:19:40,900
-否则，就连接流的头和accumulate流的尾的结果
-Otherwise, we combine the head of the stream with the result of accumulating the tail of the stream starting from the initial value.
+331
+00:19:33,970 --> 00:19:36,208
+否则 我们就把流头部
+Otherwise, we combine the head of the stream
 
-321
+332
+00:19:36,320 --> 00:19:37,824
+和流尾部做ACCUMLATE的结果
+with the result of accumulating
+
+333
+00:19:38,016 --> 00:19:40,240
+组合起来
+the tail of the stream starting from the initial value.
+
+334
 00:19:40,900 --> 00:19:42,830
-这就是我把事物累积在一起的方法
+这就是把流中元素累积在一起的方法
 So that's what I'd use to add up everything in the stream.
 
-322
-00:19:42,830 --> 00:19:45,830
-用加法来累积
+335
+00:19:42,830 --> 00:19:43,984
+我会用加法来累积
 I'd accumulate with plus.
 
-323
-00:19:45,830 --> 00:19:48,060
-如何枚举树上的叶子节点呢？
+336
+00:19:45,830 --> 00:19:47,568
+如何枚举树上的叶节点呢？
 How would I enumerate the leaves of a tree?
 
-324
-00:19:48,060 --> 00:19:56,640
-如果这个树只是一个叶子节点，我就构造一个只是一个叶子节点的树
-Well, if the tree is just a leaf itself, I make something which only has that node in it.
+337
+00:19:48,060 --> 00:19:52,896
+如果这个树只是一个叶节点
+Well, if the tree is just a leaf itself,
 
-325
-00:19:56,640 --> 00:20:04,340
-否则，就把左、右子树枚举的结果合并起来
-Otherwise, I append together the stuff of enumerating the left branch and the right branch.
+338
+00:19:53,792 --> 00:19:55,904
+我就构造一个只含有一个叶子节点的流
+I make something which only has that node in it.
 
-326
-00:20:04,340 --> 00:20:08,130
-就像之前对列表的操作一样
+339
+00:19:56,640 --> 00:19:59,328
+否则的话 我就把
+Otherwise, I append together the stuff of enumerating
+
+340
+00:19:59,616 --> 00:20:02,352
+左、右子树枚举的结果合并起来
+the left branch and the right branch.
+
+341
+00:20:04,340 --> 00:20:08,320
+这里的APPEND-STREAM跟表上的APPEND类似
 And then append here is like the ordinary append on lists.
 
-327
+342
 00:20:13,190 --> 00:20:13,850
 再来看这个
 You can look at that.
 
-328
-00:20:13,850 --> 00:20:19,150
-和合并两个列表的操作太相似了
+343
+00:20:13,850 --> 00:20:17,536
+这跟和合并两个表的过程太相似了
 That's analogous to the ordinary procedure for appending two lists.
 
-329
-00:20:19,150 --> 00:20:21,810
-如何枚举整数呢？
-How would I enumerate an interval?
+344
+00:20:18,912 --> 00:20:20,608
+如何枚举一个区间呢？
+Ah... How would I enumerate an interval?
 
-330
-00:20:21,810 --> 00:20:28,106
-两个参数，一个小的一个大的，生成一个包含从小到大所有整数的流
-This will take two integers, low and high, and generate a stream of the integers going from low to high.
+345
+00:20:21,968 --> 00:20:23,776
+它有两个参数 LOW和HIGH
+This will take two integers, low and high,
 
-331
-00:20:28,106 --> 00:20:31,890
-由此，我们就可以构造这一整串的元件
+346
+00:20:23,880 --> 00:20:27,008
+生成一个包含从LOW到HIGH的所有整数的流
+and generate a stream of the integers going from low to high.
+
+347
+00:20:28,320 --> 00:20:29,888
+由此 我们就可以构造这一整串的元件
 And we can make a whole bunch of pieces.
 
-332
-00:20:31,890 --> 00:20:37,670
-这就是我们说的用来操作流的语言，当我们有了流，就可以用操纵它们来做点事情
-So that's a little language of talking about streams. Once we have streams, we can build things for manipulating them.
+348
+00:20:31,890 --> 00:20:34,480
+这就是一门用来讨论流的小型语言
+So that's a little language of talking about streams.
 
-333
-00:20:37,670 --> 00:20:40,200
-又一次地，我们构建了新的语言
+349
+00:20:34,490 --> 00:20:35,328
+当我们有了流
+Once we have streams,
+
+350
+00:20:35,328 --> 00:20:37,670
+就可以构建由于操作它们的过程
+we can build things for manipulating them.
+
+351
+00:20:37,670 --> 00:20:39,040
+请注意 我们正在构建一门语言
 Again, we're making a language.
 
-334
-00:20:40,200 --> 00:20:43,060
-现在，就用这种语言来描述上面的东西
+352
+00:20:40,200 --> 00:20:42,224
+现在 我们可以用这门语言来表达我们的想法
 And now we can start expressing things in this language.
 
-335
+353
 00:20:43,060 --> 00:20:47,310
-这是累加奇数平方的过程
+这是累加树中奇数的平方的原始过程
 Here's our original procedure for summing the odd squares in a tree.
 
-336
-00:20:47,310 --> 00:20:54,590
-你会发现，看起来完全和用信号处理画出的块状图相吻合
-And you'll notice it looks exactly now like the block diagram, like the signal processing block diagram.
+354
+00:20:47,310 --> 00:20:52,624
+现在你会发现 它和那些方块图如出一辙
+And you'll notice it looks exactly now like the block diagram,
 
-337
-00:20:54,590 --> 00:21:01,320
-要计算树上奇数平方和，先枚举树上的叶子节点
-So to sum the odd squares in a tree, we enumerate the leaves of the tree.
+355
+00:20:52,640 --> 00:20:54,590
+跟我们的信号处理方块图相吻合
+like the signal processing block diagram.
 
-338
-00:21:01,320 --> 00:21:04,830
+356
+00:20:54,590 --> 00:20:57,536
+要计算树上奇数平方和
+So to sum the odd squares in a tree,
+
+357
+00:20:58,064 --> 00:21:00,800
+先枚举树上的叶子节点
+we enumerate the leaves of the tree.
+
+358
+00:21:01,320 --> 00:21:03,728
 过滤出奇数
 We filter that for oddness.
 
-339
-00:21:04,830 --> 00:21:06,220
-用平方来映射
+359
+00:21:04,830 --> 00:21:06,544
+再用平方来做映射
 We map that for squareness.
 
-340
-00:21:09,320 --> 00:21:14,760
-最后用加法来累积，初始值是0
+360
+00:21:09,320 --> 00:21:13,344
+最后用加法来累积 初始值是0
 And we accumulate the result of that using addition, starting from 0.
 
-341
-00:21:14,760 --> 00:21:17,290
-这就是我们想要的
+361
+00:21:14,760 --> 00:21:17,200
+#TBD
 So we can see the pieces that we wanted.
 
-342
-00:21:17,290 --> 00:21:22,050
-求奇数婓波那契数，和这个是相似地
-Similarly, the Fibonacci one, how do we get the odd Fibs?
+362
+00:21:17,290 --> 00:21:19,360
+类似地 斐波那契数的那个问题
+Similarly, the Fibonacci one,
 
-343
-00:21:22,050 --> 00:21:30,920
-从1到n枚举整数，用计算婓波那契数的过程作映射
-Well, we enumerate the interval from 1 to n, we map along that, computing the Fibonacci of each one.
+363
+00:21:20,048 --> 00:21:21,888
+我们如何获得奇斐波那契数呢？
+how do we get the odd Fibs?
 
-344
-00:21:30,920 --> 00:21:34,810
+364
+00:21:22,050 --> 00:21:24,576
+从1到N枚举整数
+Well, we enumerate the interval from 1 to n,
+
+365
+00:21:26,320 --> 00:21:28,640
+再把FIB过程映射到上面
+we map along that,
+
+366
+00:21:28,992 --> 00:21:30,704
+用来求取每项斐波那契数
+computing the Fibonacci of each one.
+
+367
+00:21:30,920 --> 00:21:33,792
 过滤出奇数的部分
 We filter the result of those for oddness.
 
-345
-00:21:34,810 --> 00:21:43,650
-最后用CONS连接起来，初始值是空列表
-And we accumulate all of that stuff using CONS starting from the empty-list.
+368
+00:21:34,810 --> 00:21:36,640
+最后 以空表为初始值
+And we accumulate all of that stuff
 
-346
-00:21:43,650 --> 00:21:47,680
-大功告成，这么做有什么优势呢？
+369
+00:21:36,880 --> 00:21:39,120
+用CONS将它们积累起来
+using CONS starting from the empty-list.
+
+370
+00:21:43,650 --> 00:21:47,536
+那么 这么做有什么优势呢？
 OK, what's the advantage of this?
 
-347
-00:21:47,680 --> 00:21:51,880
-先是，这些构造出的元件可以随意的混合搭配
-Well, for one thing, we now have pieces that we can start mixing and matching.
+371
+00:21:47,680 --> 00:21:48,592
+首先一点
+Well, for one thing,
 
-348
-00:21:51,880 --> 00:22:06,210
-举个例子，如果我把这里改变一下，想要计算整数的平方再进行过滤，我只需要简单的拿一个像square的元件放在这里就行
-So for instance, if I wanted to change this, if I wanted to compute the squares of the integers and then filter them, all I need to do is pick up a standard piece like this in that square and put it in.
+372
+00:21:48,688 --> 00:21:51,152
+我们现在有可以“混合与匹配”的元件了 #TBD
+we now have pieces that we can start mixing and matching.
 
-349
-00:22:06,210 --> 00:22:18,030
-或者，我想计算整个树上的婓波那契数而不是树叶节点的序列，只需要替换这个枚举器
-Or if we wanted to do this whole Fibonacci computation on the leaves of a tree rather than a sequence, all I need to do is replace this enumerator with that one.
+373
+00:21:51,880 --> 00:21:52,640
+比如说
+So for instance,
 
-350
-00:22:18,030 --> 00:22:38,130
-看，流处理的优势是，我们建立了 -- 这是课程中一个相对大一些的课题 -- 我们构造了合理的接口，还可以随意粘合起来
-See, the advantage of this stream processing is that we're establishing-- this is one of the big themes of the course-- we're establishing conventional interfaces that allow us to glue things together.
+374
+00:21:52,912 --> 00:21:55,088
+如果我想把这里改变一下
+if I wanted to change this, if I wanted to ah...
 
-351
-00:22:38,130 --> 00:22:45,750
-像这样如map和filter的标准组件，我们可以拿过来随意组合去构造程序
-Things like map and filter are a standard set of components that we can start using for pasting together programs in all sorts of ways.
+375
+00:21:58,192 --> 00:22:00,320
+想要计算整数的平方再进行过滤
+compute the squares of the integers and then filter them,
 
-352
-00:22:45,750 --> 00:22:50,090
-还可以看到程序的共性
+376
+00:22:00,336 --> 00:22:01,344
+我只需要
+all I need to do
+
+377
+00:22:01,904 --> 00:22:03,648
+拿个像这里的MAP SQUARE这样的元件
+is pick up a standard piece like this
+
+378
+00:22:03,680 --> 00:22:05,408
+放进去就行了
+it's a map square and put it in.
+
+379
+00:22:06,576 --> 00:22:07,600
+又或者 如果我们想
+Or if we wanted to do
+
+380
+00:22:07,690 --> 00:22:11,456
+寻找树的叶节点对应的斐波那契数
+this whole Fibonacci computation on the leaves of a tree
+
+381
+00:22:11,584 --> 00:22:12,360
+而不是一个序列所对应的
+rather than a sequence,
+
+382
+00:22:12,384 --> 00:22:13,248
+我只需要
+all I need to do
+
+383
+00:22:13,408 --> 00:22:15,936
+用这个枚举器替换这个枚举器
+is replace this enumerator with that one.
+
+384
+00:22:18,030 --> 00:22:19,824
+看到了吧 流处理的优势就是
+See, the advantage of this stream processing
+
+385
+00:22:20,240 --> 00:22:21,536
+我们建立了 -- 
+is that we're establishing--
+
+386
+00:22:22,368 --> 00:22:24,960
+这也是本课中的一个重要主题 --
+this is one of the big themes of the course--
+
+387
+00:22:25,296 --> 00:22:27,488
+我们建立了一个通用的接口
+we're establishing conventional interfaces
+
+388
+00:22:32,896 --> 00:22:37,152
+通用接口可以让我们把事物粘合起来
+conventional interfaces that allow us to glue things together.
+
+389
+00:22:38,304 --> 00:22:39,552
+像MAP和FILTER这样的东西
+Things like map and filter
+
+390
+00:22:39,792 --> 00:22:41,648
+可以作为一组标准的组件
+are a standard set of components
+
+391
+00:22:41,680 --> 00:22:44,768
+我们可以拿过来随意组合去构造程序
+that we can start using for pasting together programs in all sorts of ways.
+
+392
+00:22:45,750 --> 00:22:48,816
+它让我们看到了程序的共性
 It allows us to see the commonality of programs.
 
-353
-00:22:50,090 --> 00:22:53,860
-我应该说一下，现在仅仅展示了两个过程而已
-I just ought to mention, I've only showed you two procedures.
+393
+00:22:49,950 --> 00:22:50,928
+虽然在这里
+I just ought to mention,
 
-354
-00:22:53,860 --> 00:23:01,410
-强调一下，像这种把map，filter，accumulate组合起来构建程序的方式是非常非常通用的
-But let me emphasize that this way of putting things together with maps, filters, and accumulators is very, very general.
+394
+00:22:51,088 --> 00:22:53,070
+我只是给你们演示了两个过程而已
+I've only showed you two procedures.
 
-355
-00:23:01,410 --> 00:23:30,710
-这是生成和测试程序的范式。举例来看，Richarc Waters，MIT的毕业生，开展过一项研究，他分析了IBM的科学计算程序库，发现其中60%的部分都可以用这样的范式来准确的表示出来，而且只用map，filter，accumulate这三个东西
-It's the generate and test paradigm for programs. And as an example of that, Richard Waters, who was at MIT when he was a graduate student, as part of his thesis research went and analyzed a large chunk of the IBM scientific subroutine library, and discovered that about 60% of the programs in it could be expressed exactly in terms using no more than what we've put here-- map, filter, and accumulate.
+395
+00:22:53,860 --> 00:22:55,168
+但是我要告诉你
+But let me emphasize
 
-356
+396
+00:22:55,200 --> 00:22:57,776
+像这种用MAP、FILTER和ACCUMULATE
+that this way of putting things together
+
+397
+00:22:57,808 --> 00:23:01,008
+组合起来构建程序的方式是非常非常通用的
+with maps, filters, and accumulators is very, very general.
+
+398
+00:23:01,410 --> 00:23:07,280
+这是一种“生成-测试”的编程范式
+It's the generate and test paradigm for programs.
+
+399
+00:23:07,770 --> 00:23:09,104
+举例来看
+And as an example of that,
+
+400
+00:23:09,392 --> 00:23:12,940
+Richarc Waters -- MIT的一名硕士生
+Richard Waters, who was at MIT when he was a graduate student,
+
+401
+00:23:12,960 --> 00:23:15,264
+他的学位论文的一部分调研了
+as part of his thesis research went and analyzed
+
+402
+00:23:15,808 --> 00:23:19,210
+IBM的科学计算程序库
+a large chunk of the IBM scientific subroutine library,
+
+403
+00:23:19,824 --> 00:23:23,312
+发现其中60%的程序
+and discovered that about 60% of the programs in it
+
+404
+00:23:24,064 --> 00:23:28,256
+都可以用这样的范式来准确的表示出来
+could be expressed exactly in terms using no more than what we've put here--
+
+405
+00:23:28,864 --> 00:23:30,176
+只用MAP、FILTER和ACCUMULATE
+map, filter, and accumulate.
+
+406
 00:23:30,710 --> 00:23:31,960
 好，让我们休息一会
 All right, let's take a break.
 
-357
+407
 00:23:36,620 --> 00:23:37,870
 有问题吗？
 Questions?
 
-358
+408
 00:23:40,470 --> 00:23:48,380
 整件事情的本质好像只是因为你用了一个统一、简单的数据结构 -- 流
 AUDIENCE: It seems like the essence of this whole thing is just that you have a very uniform, simple data structure to work with, the stream.
 
-359
+409
 00:23:48,380 --> 00:23:48,920
 嗯啊
 PROFESSOR: Right.
 
-360
+410
 00:23:48,920 --> 00:23:53,710
 本质应该是，那些约定接口的定义
 The essence is that you, again, it's this sense of conventional interfaces.
 
-361
+411
 00:23:53,710 --> 00:23:55,610
 然后才可以把东西组合起来
 So you can start putting a lot of things together.
 
-362
+412
 00:23:55,610 --> 00:24:00,890
 流只是，就像你说的，只是一种可以支持那样统一操作的数据结构而已
 And the stream is as you say, the uniform data structure that supports that.
 
-363
+413
 00:24:00,890 --> 00:24:03,600
 从某种程度来看，这非常像APL
 This is very much like APL, by the way.
 
-364
+414
 00:24:03,600 --> 00:24:09,560
 APL有着相似的思想，除了在APL中，你可以不用流，用数组和向量也是可以的
 APL is very much the same idea, except in APL, instead of this stream, you have arrays and vectors.
 
-365
+415
 00:24:09,560 --> 00:24:14,815
 而且APL的威力就在于此
 And a lot of the power of APL is exactly the same reason of the power of this.
 
-366
+416
 00:24:19,910 --> 00:24:20,910
 明白了，谢谢
 OK, thank you.
 
-367
+417
 00:24:20,910 --> 00:24:22,160
 休息一下
 Let's take a break.
 
-368
+418
 00:24:57,470 --> 00:24:57,610
 好的
 All right.
 
-369
+419
 00:24:57,610 --> 00:25:10,810
 我们已经见识过了如何用流来组织计算过程。下面我再举一些更复杂的例子
 We've been looking at ways of organizing computations using streams. What I want to do now is just show you two somewhat more complicated examples of that.
 
-370
+420
 00:25:10,810 --> 00:25:16,810
 我们来思考一下这样一种有用的过程
 Let's start by thinking about the following kind of utility procedure that will come in useful.
 
-371
+421
 00:25:16,810 --> 00:25:19,960
 假如我有一个流
 Suppose I've got a stream.
 
-372
+422
 00:25:19,960 --> 00:25:23,730
 流中的元素本身就是一个流
 And the elements of this stream are themselves streams.
 
-373
+423
 00:25:23,730 --> 00:25:26,530
 一开始是1，2，3
 So the first thing might be 1, 2, 3.
 
-374
+424
 00:25:32,600 --> 00:25:33,880
 就是这个流
 So I've got a stream.
 
-375
+425
 00:25:33,880 --> 00:25:40,100
 流中的元素也是一个流
 And each element of the stream is itself a stream.
 
-376
+426
 00:25:40,100 --> 00:25:52,080
 现在我想用一个流把其中的所有元素都聚集在一起，即把所有元素从子流中提取出来最后放在一起
 And what I'd like to do is build a stream that collects together all of the elements, pulls all of the elements out of these sub-streams and strings them all together in one thing.
 
-377
+427
 00:25:52,080 --> 00:25:56,960
 只是想给你们展示一下这个语言其它的使用方式，很简单，把这个过程叫做flatten
 So just to show you the use of this language, how easy it is, call that flatten.
 
-378
+428
 00:25:56,960 --> 00:26:13,960
 现在来定义这个过程，去flatten流中的子流，这是到底是什么？
 And I can define to flatten this stream of streams. Well, what is that?
 
-379
+429
 00:26:13,960 --> 00:26:16,240
 也就是一个累积的过程
 That's just an accumulation.
 
-380
+430
 00:26:16,240 --> 00:26:26,450
 我想用append来做累积，连接地累积
 I want to accumulate using append, by successively appending.
 
-381
+431
 00:26:26,450 --> 00:26:54,370
 APPEND-STREAM作为组合过程，THE-EMPTY-STREAM为初始值，累积这个流
 So I accumulate using append streams, starting with the-empty-stream down that stream of streams.
 
-382
+432
 00:26:54,370 --> 00:27:00,830
 这就是一个明显的例子，你可以用高阶的东西去做更有趣的事情
 OK, so there's an example of how you can start using these higher order things to do some interesting operations.
 
-383
+433
 00:27:00,830 --> 00:27:05,100
 事实上，还有另外有用的东西
 In fact, there's another useful thing that I want to do.
 
-384
+434
 00:27:05,100 --> 00:27:21,840
 定义一个过程flat-map，以一个过程和一个流作为参数
 I want to define a procedure called flat-map, flat map of some function and a stream.
 
-385
+435
 00:27:21,840 --> 00:27:25,720
 And what this is going to do is f will be a stream of elements.
 And what this is going to do is f will be a stream of elements.
 
-386
+436
 00:27:25,720 --> 00:27:31,950
 f是一个过程，它操作一个流，生成另一个流
 f is going to be a function that for each element in the stream produces another stream.
 
-387
+437
 00:27:31,950 --> 00:27:36,000
 我要做的是把所有的元素和所有的流合并起来
 And what I want to do is take all of the elements and all of those streams and combine them together.
 
-388
+438
 00:27:36,000 --> 00:27:51,350
 所以就是 (FLATTEN (MAP F S))
 So that's just going to be the flatten of map f down s.
 
-389
+439
 00:27:51,350 --> 00:27:54,290
 每次我调用F，就得到另一个流
 Each time I apply f to an element of s, I get a stream.
 
-390
+440
 00:27:54,290 --> 00:27:58,385
 如果用F来映射S中的子流，我就得到另一个“流的流”，然后再进行flatten
 If I map it all the way down, I get a stream of streams, and I'll flatten that.
 
-391
+441
 00:27:58,385 --> 00:28:06,360
 好的，我想再使用这种方式来解决另一个大家很熟悉的问题
 Well, I want to use that to show you a new way to do a familiar kind of problem.
 
-392
+442
 00:28:06,360 --> 00:28:14,190
 这个问题和你以前看到过的许多问题一样，尽管不是很特别
 The problem's going to be like a lot of problems you've seen, although maybe not this particular one.
 
-393
+443
 00:28:14,190 --> 00:28:15,490
 一个整数n
 I'm going to give you an integer, n.
 
-394
+444
 00:28:18,480 --> 00:28:51,910
 找出所有的序对 ( i j )，0 < j < i <= n，并且 i + j 是一个质数
 And the problem is going to be find all pairs and integers i and j, between 0 and i, with j less than i, up to n, such that i plus j is prime.
 
-395
+445
 00:28:55,740 --> 00:29:06,640
 如果 n = 6，画一个小表格，这里 i，j，i + j
 So for example, if n equals 6, let's make a little table here, i and j and i plus j.
 
-396
+446
 00:29:09,700 --> 00:29:15,520
 I = 2，J = 1，I + J就是3
 So for, say, i equals 2 and j equals 1, I'd get 3.
 
-397
+447
 00:29:15,520 --> 00:29:21,210
 然后 I = 3，J = 2，I + J就是5
 And for i equals 3, I could have j equals 2, and that would be 5.
 
-398
+448
 00:29:21,210 --> 00:29:28,400
 4，1，5也是一样的，等等，直到 I 到了6
 And 4 and 1 would be 5 and so on, up until i goes to 6.
 
-399
+449
 00:29:28,400 --> 00:29:37,350
 我想要这个过程返回的是由这样的 I J I+J 三元组组成的流
 And what I'd like to return is to produce a stream of all the triples like this, let's say i, j, and i plus j.
 
-400
+450
 00:29:37,350 --> 00:29:41,530
 对于整数n，我想得到一个这样流
 So for each n, I want to generate this stream.
 
-401
+451
 00:29:41,530 --> 00:29:43,680
 好的，听起来很简单
 OK, well, that's easy.
 
-402
+452
 00:29:43,680 --> 00:29:47,230
 开始做做看
 Let's build it up.
 
-403
+453
 00:29:47,230 --> 00:29:50,150
 先这样开始
 We start like this.
 
-404
+454
 00:29:50,150 --> 00:29:56,440
 对于每一个整数 I，生成一个流
 We're going to say for each i, we're going to generate a stream.
 
-405
+455
 00:29:56,440 --> 00:30:00,660
 i 从 1 取到 n，每个 i 都生成一个流
 For each i in the interval 1 through n, we're going to generate a stream.
 
-406
+456
 00:30:00,660 --> 00:30:02,230
 这个流将会是什么样子？
 What's that stream going to be?
 
-407
+457
 00:30:02,230 --> 00:30:04,180
 先从生成所有的开始
 We're going to start by generating all the pairs.
 
-408
+458
 00:30:04,180 --> 00:30:20,710
 对于每个 i 来说，生成的结果是这样的：对于整数 j，1 <= j <= i - 1，生成 (i j) 的序对
 So for each i, we're going to generate, for each j in the interval 1 to i minus 1, we'll generate the pair, or the list with two elements i and j.
 
-409
+459
 00:30:23,780 --> 00:30:30,712
 对于 j 的每个取值，都生成一个序对
 So we map along the interval, generating the pairs.
 
-410
+460
 00:30:30,712 --> 00:30:33,170
 对于每个 i，都生成一个序对的流
 And for each i, that generates a stream of pairs.
 
-411
+461
 00:30:33,170 --> 00:30:34,590
 最后进行flatmap
 And we flatmap it.
 
-412
+462
 00:30:34,590 --> 00:30:38,730
 现在，我们就得到了所有满足要求的序对了
 Now we have all the pairs i and j, such that i is less than j.
 
-413
+463
 00:30:38,730 --> 00:30:39,850
 就是这样
 So that builds that.
 
-414
+464
 00:30:39,850 --> 00:30:42,990
 来测试一下
 Now we're got to test them.
 
-415
+465
 00:30:42,990 --> 00:30:51,660
 刚才flatmap得到的结果，进行过滤
 Well, we take that thing we just built, the flatmap, and we filter it to see whether the i-- see, we had an i and a j.
 
-416
+466
 00:30:51,660 --> 00:31:02,070
 i 是列表第一个元素，j 是第二个，这里的谓词用来检测 i + j 的值是否是质数
 i was the first thing in the list, j was the second thing in the list. So we have a predicate which says in that list of two elements is the sum of the CAR and the CDR prime.
 
-417
+467
 00:31:02,070 --> 00:31:06,540
 用这个lambda对所有的序对进行过滤
 And we filter that collection of pairs we just built.
 
-418
+468
 00:31:06,540 --> 00:31:09,420
 剩下的就是我们想要的
 So those are the pairs we want.
 
-419
+469
 00:31:09,420 --> 00:31:19,610
 然后我们继续，把过滤得到的结果再次进行map操作，得到 i j i+j 的三元组
 Now we go ahead and we take the result of that filter and we map along it, generating the list i and j and i plus j.
 
-420
+470
 00:31:19,610 --> 00:31:22,910
 这就是过程 prime-sum-pairs
 And that's our procedure prime-sum-pairs.
 
-421
+471
 00:31:22,910 --> 00:31:24,480
 最后只需要过一遍，这就是整个过程
 And then just to flash it up, here's the whole procedure.
 
-422
+472
 00:31:27,945 --> 00:31:30,750
 一个map，一个filter，一个flatmap
 A map, a filter, a flatmap.
 
-423
+473
 00:31:34,850 --> 00:31:37,120
 所有的东西都在这里了，尽管看起来可读性不是那么好
 There's the whole thing, even though this isn't particularly readable.
 
-424
+474
 00:31:37,120 --> 00:31:40,000
 这只是flatmap的一个延伸
 It's just expanding that flatmap.
 
-425
+475
 00:31:40,000 --> 00:31:54,200
 这个例子很好的体现了嵌套循环的要点。看起来就像map的flatmap的flatmap的flatmap
 So there's an example which illustrates the general point that nested loops in this procedure start looking like compositions of flatmaps of flatmaps of flatmaps of maps and things.
 
-426
+476
 00:31:54,200 --> 00:32:03,230
 所以我们不仅仅枚举单个个体，还要通过使用flatmap，达到像其它语言中嵌套循环的效果
 So not only can we enumerate individual things, but by using flatmaps, we can do what would correspond to nested loops in most other languages.
 
-427
+477
 00:32:03,230 --> 00:32:08,410
 当然，一直写这些flatmap很烦人
 Of course, it's pretty awful to keep writing these flatmaps of flatmaps of flatmaps.
 
-428
+478
 00:32:08,410 --> 00:32:15,480
 尽管prime-sum-pairs其中单独的部分很容易，但整体看起来还是十分复杂
 Prime-sum-pairs you saw looked fairly complicated, even though the individual pieces were easy.
 
-429
+479
 00:32:15,480 --> 00:32:21,040
 如果你喜欢，可以引进一个叫collect的语法糖
 So what you can do, if you like, is introduced some syntactic sugar that's called collect.
 
-430
+480
 00:32:21,040 --> 00:32:26,160
 collect只是一个对嵌套flatmap的缩写
 And collect is just an abbreviation for that nest of flatmaps and filters arranged in that particular way.
 
-431
+481
 00:32:26,160 --> 00:32:29,620
 这里我们用collect把prime-sum-pairs写一遍
 Here's prime-sum-pairs again, written using collect.
 
-432
+482
 00:32:29,620 --> 00:32:58,040
 它的意思是这样，我想collect这样的结果，元素以 i j i+j 三元组的形式，i 从1到n，j 从1到i-1，还要满足 i+j 是质数
 It says to find all those pairs, I'm going to collect together a result, which is the list i, j, and i plus j, that's going to be generated as i runs through the interval from 1 to n and as j runs through the interval from 1 to i minus 1, such that i plus j is prime.
 
-433
+483
 00:32:58,040 --> 00:33:00,690
 我可以认为这个collect过程是通用的
 So I'm not going to say what collect does in general.
 
-434
+484
 00:33:00,690 --> 00:33:03,420
 你可以在书上找到它的详细定义
 You can look at that by looking at it in the book.
 
-435
+485
 00:33:03,420 --> 00:33:08,820
 当然，你可以把这个元件看作和以前的元件一样
 But pretty much, you can see that the pieces of this are the pieces of that original procedure I wrote.
 
-436
+486
 00:33:08,820 --> 00:33:16,310
 collect这个过程不过是一个可以自动生成嵌套flatmap的语法糖罢了
 And this collect is just some syntactic sugar for automatically generating that nest of flatmaps and flatmaps.
 
-437
+487
 00:33:16,310 --> 00:33:22,120
 好的，我们再来看另一个例子
 OK, well, let me do one more example that shows you the same kind of thing.
 
-438
+488
 00:33:22,120 --> 00:33:30,200
 这是一个十分出名的例子，经常用来演示回溯算法，就是“八皇后问题”
 Here's a very famous problem that's used to illustrate a lot of so-called backtracking computer algorithms. This is the eight queens problem.
 
-439
+489
 00:33:30,200 --> 00:33:32,370
 这是一个棋盘
 This is a chess board.
 
-440
+490
 00:33:32,370 --> 00:33:38,000
 八皇后问题是说，找到一种放置皇后的方式，使得任意的两个皇后不会相互攻击
 And the eight queens problem says, find a way to put down eight queens on a chess board so that no two are attacking each other.
 
-441
+491
 00:33:38,000 --> 00:33:41,430
 这是一个解
 And here's a particular solution to the eight queens problem.
 
-442
+492
 00:33:41,430 --> 00:33:51,410
 使得任意两个皇后不在同一行，同一列而且不在同一对角线上
 So I have to make sure to put down queens so that no two are in the same row or the same column or sit along the same diagonal.
 
-443
+493
 00:33:51,410 --> 00:33:56,400
 有一个解决这个问题的标准解法
 Now, there's sort of a standard way of doing that.
 
-444
+494
 00:33:59,740 --> 00:34:04,940
 首先我们要做是，站在George的层面
 Well, first we need to do is below the surface, at George's level.
 
-445
+495
 00:34:04,940 --> 00:34:08,095
 找到一种表示棋盘与位置的方式
 We have to find some way to represent a board, and represent positions.
 
-446
+496
 00:34:08,095 --> 00:34:09,800
 这个并不需要太担心
 And we'll not worry about that.
 
-447
+497
 00:34:09,800 --> 00:34:12,540
 假设我们有一个谓词safe
 But let's assume that there's a predicate called safe.
 
-448
+498
 00:34:16,040 --> 00:34:25,400
 safe要做的是，假如一些皇后已经放在棋盘上，判断在另一个点再放置一个皇后是否是安全的？
 And what safe is going to do is going to say given that I have a bunch of queens down on the chess board, is it OK to put a queen in this particular spot?
 
-449
+499
 00:34:25,400 --> 00:34:32,889
 safe的参数，一个row，一个column
 So safe is going to take a row and a column.
 
-450
+500
 00:34:32,889 --> 00:34:42,370
 那将是我尝试放下一个皇后的地方和剩下的位置
 That's going to be a place where I'm going to try and put down the next queen, and the rest of positions.
 
-451
+501
 00:34:45,420 --> 00:34:58,300
 safe要判断的是在剩下的皇后已经放置的情况下，再放置一个皇后是否是安全的
 And what safe will say is given that I already have queens down in these positions, is it safe to put another queen down in that row and that column?
 
-452
+502
 00:34:58,300 --> 00:34:59,360
 不用过分深究这个
 And let's not worry about that.
 
-453
+503
 00:34:59,360 --> 00:35:01,380
 那是George的问题，也不难写出来
 That's George's problem. and it's not hard to write.
 
-454
+504
 00:35:01,380 --> 00:35:10,530
 只需要检测行，列，对角线而已
 You just have to check whether this thing contains any things on that row or that column or in that diagonal.
 
-455
+505
 00:35:10,530 --> 00:35:13,590
 嗯，那这个程序要怎么组织呢？
 Now, how would you organize the program given that?
 
-456
+506
 00:35:13,590 --> 00:35:20,116
 有一种经典的方式，我们称为“回溯”
 And there's sort of a traditional way to organize it called backtracking.
 
-457
+507
 00:35:20,116 --> 00:35:31,290
 它说的是这个，考虑把第一个皇后放在第一列的方式
 And it says, well, let's think about all the ways of putting the first queen down in the first column.
 
-458
+508
 00:35:31,290 --> 00:35:32,580
 有8种
 There are eight ways.
 
-459
+509
 00:35:32,580 --> 00:35:35,880
 试一下第一个
 Well, let's say try the first column.
 
-460
+510
 00:35:35,880 --> 00:35:37,300
 第一行第一列
 Try column 1, row 1.
 
-461
+511
 00:35:37,300 --> 00:35:43,360
 分支表示了每一层所有的可能性
 These branches are going to represent the possibilities at each level.
 
-462
+512
 00:35:43,360 --> 00:35:45,875
 我试着把皇后放在第一列
 So I'll try and put a queen down in the first column.
 
-463
+513
 00:35:45,875 --> 00:35:49,980
 好的，已经放下了，现在就在这个基础上放置第二列的皇后
 And now given that it's in the first column, I'll try and put the next queen down in the first column.
 
-464
+514
 00:35:53,035 --> 00:35:56,920
 我试试把第一个皇后，在第一列上的那个皇后，放在第一行
 I'll try and put the first queen, the one in the first column, down in the first row.
 
-465
+515
 00:35:56,920 --> 00:35:59,050
 不好意思
 I'm sorry.
 
-466
+516
 00:35:59,050 --> 00:36:01,390
 然后，把第二个皇后也放在第一行
 And then given that, we'll put the next queen down in the first row.
 
-467
+517
 00:36:01,390 --> 00:36:02,090
 这不行
 And that's no good.
 
-468
+518
 00:36:02,090 --> 00:36:04,200
 所以又回到这里
 So I'll back up to here.
 
-469
+519
 00:36:04,200 --> 00:36:07,510
 然后，我们把这个皇后放在第二行吗？
 And I'll say, oh, can I put the first queen down in the second row?
 
-470
+520
 00:36:07,510 --> 00:36:08,550
 对角线冲突了，也不好
 Well, that's no good.
 
-471
+521
 00:36:08,550 --> 00:36:09,760
 第三行怎么样？
 Oh, can I put it down in the third row?
 
-472
+522
 00:36:09,760 --> 00:36:12,790
 这样可以
 Well, that's good.
 
-473
+523
 00:36:12,790 --> 00:36:15,380
 下一个皇后可以放在第一行吗？
 Well, now can I put the next queen down in the first column?
 
-474
+524
 00:36:15,380 --> 00:36:19,195
 我不再想像更多的棋盘，假设这是对的
 Well, I can't visualize this chess board anymore, but I think that's right.
 
-475
+525
 00:36:19,195 --> 00:36:20,450
 我就尝试下一个
 And I try the next one.
 
-476
+526
 00:36:20,450 --> 00:36:24,170
 在每一个地方，尽可能的沿着树往下
 And at each place, I go as far down this tree as I can.
 
-477
+527
 00:36:24,170 --> 00:36:25,640
 然后倒退
 And I back up.
 
-478
+528
 00:36:25,640 --> 00:36:33,260
 如果到了这里，不能再往下了，就回到这里，生成这个子树
 If I get down to here and find no possibilities below there, I back all the way up to here, and now start again generating this sub-tree.
 
-479
+529
 00:36:33,260 --> 00:36:35,050
 绕来绕去
 And I sort of walk around.
 
-480
+530
 00:36:35,050 --> 00:36:40,090
 最后，一路求解下来，就会得到答案
 And finally, if I ever manage to get all the way down, I've found a solution.
 
-481
+531
 00:36:40,090 --> 00:36:45,930
 这是以前人工智能编程的经典范式
 So that's a typical sort of paradigm that's used a lot in AI programming.
 
-482
+532
 00:36:45,930 --> 00:36:47,300
 回溯查找
 It's called backtracking search.
 
-483
+533
 00:36:57,470 --> 00:37:03,860
 这真的没有必要
 And it's really unnecessary.
 
-484
+534
 00:37:03,860 --> 00:37:06,550
 当我想像这个东西时感到很疑惑
 You saw me get confused when I was visualizing this thing.
 
-485
+535
 00:37:06,550 --> 00:37:08,550
 你也看到了，这很复杂
 And you see the complication.
 
-486
+536
 00:37:08,550 --> 00:37:10,760
 而且这种复杂还很难描述
 This is a complicated thing to say.
 
-487
+537
 00:37:10,760 --> 00:37:12,390
 为什么会这样？
 Why is it complicated?
 
-488
+538
 00:37:12,390 --> 00:37:18,580
 程序太费时间了
 Its because somehow this program is too inordinately concerned with time.
 
-489
+539
 00:37:18,580 --> 00:37:22,320
 耗时太长了，试试那个，试试这个，又回来，直到没有其它可能性
 It's too much-- I try this one, and I try this one, and I go back to the last possibility.
 
-490
+540
 00:37:22,320 --> 00:37:24,340
 很复杂
 And that's a complicated thing.
 
-491
+541
 00:37:24,340 --> 00:37:31,200
 如果我不担心时间，就有一个更简单的方式来描述
 If I stop worrying about time so much, then there's a much simpler way to describe this.
 
-492
+542
 00:37:31,200 --> 00:37:43,400
 假设我有一个k-1层的树
 It says, let's imagine that I have in my hands the tree down to k minus 1 levels.
 
-493
+543
 00:37:43,400 --> 00:37:53,560
 现在，我需要去找到在第k列放置皇后的所有方式
 See, suppose I had in my hands all possible ways to put down queens in the first k columns.
 
-494
+544
 00:37:53,560 --> 00:37:54,610
 假设是这样
 Suppose I just had that.
 
-495
+545
 00:37:54,610 --> 00:37:57,070
 不要担心我是怎么得到的
 Let's not worry about how we get it.
 
-496
+546
 00:37:57,070 --> 00:37:59,200
 现在，如果扩充下去呢？
 Well, then, how do I extend that?
 
-497
+547
 00:37:59,200 --> 00:38:02,480
 怎样找到所有在下一列中放皇后的可能性呢？
 How do I find all possible ways to put down queens in the next column?
 
-498
+548
 00:38:02,480 --> 00:38:03,620
 很简单
 It's really easy.
 
-499
+549
 00:38:03,620 --> 00:38:16,160
 对于已有的位置，把下个皇后放在每一行上
 For each of these positions I have, I think about putting down a queen in each row to make the next thing.
 
-500
+550
 00:38:16,160 --> 00:38:22,080
 然后，把所有放置的位置，用safe进行过滤
 And then for each one I put down, I filter those by the ones that are safe.
 
-501
+551
 00:38:22,080 --> 00:38:26,860
 不像之前那样，把树的生成一步一步想的那么清楚，假设树已经生成了
 So instead of thinking about this tree as generated step by step, suppose I had it all there.
 
-502
+552
 00:38:29,680 --> 00:38:37,800
 为了从k-1层扩展到k层，需要尝试所有可能性最后保留安全的排列
 And to extend it from level k minus 1 to level k, I just need to extend each thing in all possible ways and only keep the ones that are safe.
 
-503
+553
 00:38:37,800 --> 00:38:39,300
 就得到一个k层树的结果
 And that will give me the tree to level k.
 
-504
+554
 00:38:39,300 --> 00:38:44,530
 这是一个解决八皇后的递归策略
 And that's a recursive strategy for solving the eight queens problem.
 
-505
+555
 00:38:44,530 --> 00:38:45,780
 好的，我们来看看
 All right, well, let's look at it.
 
-506
+556
 00:38:50,280 --> 00:39:01,030
 在特定大小的棋盘解决八皇后问题，我们写一个子过程 fill-columns
 To solve the eight queens problem on a board of some specified size, we write a sub-procedure called fill-columns.
 
-507
+557
 00:39:01,030 --> 00:39:06,086
 这个过程把皇后一直放置到列k
 Fill-columns is going to put down queens up through column k.
 
-508
+558
 00:39:06,086 --> 00:39:07,700
 这是一个递归的模式
 And here's the pattern of the recursion.
 
-509
+559
 00:39:07,700 --> 00:39:12,990
 最后用棋盘具体的大小作为参数来调用fill-columns
 I'm going to call fill-columns with the size eventually.
 
-510
+560
 00:39:12,990 --> 00:39:20,360
 fill-columns是用来说明如何在 k 列 size 行的棋盘上放置皇后
 So fill-columns says how to put down queens safely in the first k columns of this chess board with a size number of rows in it.
 
-511
+561
 00:39:20,360 --> 00:39:23,940
 如果k是0，就不用做什么
 If k is equal to 0, well, then I don't have to put anything down.
 
-512
+562
 00:39:23,940 --> 00:39:26,710
 结果是一个空的棋盘
 So my solution is just an empty chess board.
 
-513
+563
 00:39:26,710 --> 00:39:28,070
 否则就做点别的
 Otherwise, I'm going to do some stuff.
 
-514
+564
 00:39:28,070 --> 00:39:30,522
 这里将要使用collect
 And I'm going to use collect.
 
-515
+565
 00:39:30,522 --> 00:39:31,772
 这是collect
 And here's the collect.
 
-516
+566
 00:39:34,530 --> 00:39:41,910
 我找到了所有在前k-1列中放皇后的方法
 I find all ways to put down queens in the first k minus 1 columns.
 
-517
+567
 00:39:41,910 --> 00:39:43,320
 这是我设置的
 And this was just what I set for.
 
-518
+568
 00:39:43,320 --> 00:39:48,880
 想像这棵树下降直到k-1层
 Imagine I have this tree down to k minus 1 levels.
 
-519
+569
 00:39:48,880 --> 00:39:54,130
 然后我尝试每一行
 And then I find all ways of trying a row, that's just each of the possible rows.
 
-520
+570
 00:39:54,130 --> 00:39:58,040
 总行数就是size，枚举了所有行数
 They're size rows, so that's enumerate interval.
 
-521
+571
 00:39:58,040 --> 00:40:08,950
 现在要做的是，将第k列上所有的可能性与已经放置的皇后整合
 And now what I do is I collect together the new row I'm going to try and column k with the rest of the queens.
 
-522
+572
 00:40:08,950 --> 00:40:10,200
 整合在一起
 I adjoin a position.
 
-523
+573
 00:40:10,200 --> 00:40:11,290
 这是George的问题了
 This is George's problem.
 
-524
+574
 00:40:11,290 --> 00:40:13,640
 像safe一样
 An adjoined position is like safe.
 
-525
+575
 00:40:13,640 --> 00:40:19,660
 我们要做的就是，拿一行，一列和剩下的位置，然后做一个新的位置集合
 It's a thing that takes a row and a column and the rest of the positions and makes a new position collection.
 
-526
+576
 00:40:19,660 --> 00:40:34,620
 我把第k列可放置的行的位置和剩下的皇后结合起来，而剩下的皇后都已经摆放好了
 So I adjoin a position of a new row and a new column to the rest of the queens, where the rest of the queens runs through all possible ways of solving the problem in k minus 1 columns.
 
-527
+577
 00:40:34,620 --> 00:40:43,240
 新的行遍历了所有的可能性，过滤出安全的位置
 And the new row runs through all possible rows such that it was safe to put one there.
 
-528
+578
 00:40:43,240 --> 00:40:46,500
 这就是整个程序了
 And that's the whole program.
 
-529
+579
 00:40:46,500 --> 00:40:49,840
 整个过程
 There's the whole procedure.
 
-530
+580
 00:40:49,840 --> 00:40:56,680
 不只这样，不仅解决了八皇后问题，还顺便给出了所有的解
 Not only that, that doesn't just solve the eight queens problem, it gives you all solutions to the eight queens problem.
 
-531
+581
 00:40:56,680 --> 00:40:58,480
 运行结束之后，就得到一个流
 When you're done, you have a stream.
 
-532
+582
 00:40:58,480 --> 00:41:01,900
 流中的元素是所有的解
 And the elements of that stream are all possible ways of solving that problem.
 
-533
+583
 00:41:05,310 --> 00:41:06,260
 为什么这个更简单一点呢？
 Why is that simpler?
 
-534
+584
 00:41:06,260 --> 00:41:12,720
 我们已经描述了整个想法，它是一些在时间中发生，有状态的过程
 Well, we threw away the whole idea that this is some process that happens in time with state.
 
-535
+585
 00:41:12,720 --> 00:41:14,420
 我们只说，这是这个东西的整个集合
 And we just said it's a whole collection of stuff.
 
-536
+586
 00:41:14,420 --> 00:41:18,260
 这就是更加简单的原因
 And that's why it's simpler.
 
-537
+587
 00:41:18,260 --> 00:41:20,110
 我们已经转变了观念
 We've changed our view.
 
-538
+588
 00:41:20,110 --> 00:41:22,820
 记住，这就是我们的开始
 Remember, that's where we started today.
 
-539
+589
 00:41:22,820 --> 00:41:26,230
 我们转变了建模的观念
 We've changed our view of what it is we're trying to model.
 
-540
+590
 00:41:26,230 --> 00:41:31,750
 我们停止对那些随着时间变化的，有过程与状态的东西进行建模
 we stop modeling things that evolve in time and have steps and have state.
 
-541
+591
 00:41:31,750 --> 00:41:40,750
 代为替代，我们对全局进行建模，就像粉笔飞行那样而不时关注其每一时刻的状态
 And instead, we're trying to model this global thing like the whole flight of the chalk, rather than its state at each instant.
 
-542
+592
 00:41:40,750 --> 00:41:42,000
 有什么问题吗？
 Any questions?
 
-543
+593
 00:41:43,810 --> 00:41:54,030
 在我看来回溯会搜索到第一个解，而这个递归搜索却找到了所有的解
 AUDIENCE: It looks to me like backtracking would be searching for the first solution it can find, whereas this recursive search would be looking for all solutions.
 
-544
+594
 00:41:54,030 --> 00:42:01,360
 如果搜索的空间足够的大，这样来搜索好像不太可能吧
 And it seems that if you have a large enough area to search, that the second is going to become impossible.
 
-545
+595
 00:42:01,360 --> 00:42:08,570
 嗯，这个问题的答案是剩下的课要讲的内容
 PROFESSOR: OK, the answer to that question is the whole rest of this lecture.
 
-546
+596
 00:42:08,570 --> 00:42:10,540
 很好的问题
 It's exactly the right question.
 
-547
+597
 00:42:13,522 --> 00:42:22,220
 先不要尝试去预见后面的课，你应该对这个要点产生怀疑，这的确十分让人起疑
 And without trying to anticipate the lecture too much, you should start being suspicious at this point, and exactly those kinds of suspicions.
 
-548
+598
 00:42:22,220 --> 00:42:24,830
 尽管这个看起来不错，难道不低效吗？
 It's wonderful, but isn't it so terribly inefficient?
 
-549
+599
 00:42:24,830 --> 00:42:28,100
 这就是用尝试另一种方式的原因
 That's where we're going.
 
-550
+600
 00:42:28,100 --> 00:42:30,020
 因此这个问题之后我再回答
 So I won't answer now, but I'll answer later.
 
-551
+601
 00:42:33,350 --> 00:42:34,600
 好的，休息时间
 OK, let's take a break.
 
-552
+602
 00:43:29,650 --> 00:43:35,600
 现在你应该也开始怀疑了
 Well, by now you should be starting to get suspicious.
 
-553
+603
 00:43:35,600 --> 00:43:53,740
 我已经展示了这种简单优雅的组合程序的方法，不像那些传统的累积奇数或者计算奇数的斐波那契数
 See, I've showed your this simple, elegant way of putting programs together, very unlike these other traditional programs that sum the odd squares or compute the odd Fibonacci numbers.
 
-554
+604
 00:43:53,740 --> 00:44:00,440
 也不像这些混合enumerator filter和accumulator的方法
 Very unlike these programs that mix up the enumerator and the filter and the accumulator.
 
-555
+605
 00:44:00,440 --> 00:44:13,800
 使用这种混合的方式来构建程序，我们并没有完全发挥流的这种概念性的优势
 And by mixing it up, we don't have all of these wonderful conceptual advantages of these streams pieces, these wonderful mix and match components for putting together lots and lots of programs.
 
-556
+606
 00:44:13,800 --> 00:44:18,340
 另一方面，不这样来组合的其它的程序都很丑陋
 On the other hand, most of the programs you've seen look like these ugly ones.
 
-557
+607
 00:44:18,340 --> 00:44:19,460
 为什么会这样？
 Why's that?
 
-558
+608
 00:44:19,460 --> 00:44:33,620
 可能是计算机科学家没有注意到 你只做了这件事就在编程上获得了难得的优雅性？
 Can it possibly be that computer scientists are so obtuse that they don't notice that if you'd merely did this thing, then you can get this great programming elegance?
 
-559
+609
 00:44:33,620 --> 00:44:36,760
 肯定有什么窍门
 There's got to be a catch.
 
-560
+610
 00:44:36,760 --> 00:44:39,510
 事实上这一窍门也很容易发现
 And it's actually pretty easy to see what the catch is.
 
-561
+611
 00:44:39,510 --> 00:44:42,030
 我们来看看接下来的这个问题
 Let's think about the following problem.
 
-562
+612
 00:44:42,030 --> 00:44:54,105
 假设我让你找到1,000到1,000,000这间的第二个素数，或者10,000到100,000,000的第二个素数或者什么之类的
 Suppose I tell you to find the second prime between 10,000 and 1 million, or if your computer's larger, say between 10,000 and 100 billion, or something.
 
-563
+613
 00:44:54,105 --> 00:44:55,550
 可能你想，这很容易
 And you say, oh, that's easy.
 
-564
+614
 00:44:55,550 --> 00:44:57,080
 我可以用流来解决
 I can do that with a stream.
 
-565
+615
 00:44:57,080 --> 00:45:04,160
 我需要做的就是从10,000枚举到1,000,000
 All I do is I enumerate the interval from 10,000 to 1 million.
 
-566
+616
 00:45:04,160 --> 00:45:06,800
 从中挑出每一个数字
 So I get all those integers from 10,000 to 1 million.
 
-567
+617
 00:45:06,800 --> 00:45:11,762
 用检测素数性的谓词来过滤全部的数
 I filter them for prime-ness, so test all of them and see if they're prime.
 
-568
+618
 00:45:11,762 --> 00:45:13,170
 取出其中的第二个，就是我们想要的
 And I take the second element.
 
-569
+619
 00:45:13,170 --> 00:45:16,130
 正是TAIL的HEAD
 That's the head of the tail.
 
-570
+620
 00:45:16,130 --> 00:45:17,380
 这看起来非常的荒谬
 Well, that's clearly pretty ridiculous.
 
-571
+621
 00:45:21,660 --> 00:45:27,040
 我们的机器都没有这么大的空间来存放这些整数，更别说来检测它们了
 We'd not even have room in the machine to store the integers in the first place, much less to test them.
 
-572
+622
 00:45:27,040 --> 00:45:29,810
 然后我只取其中的第二个
 And then I only want the second one.
 
-573
+623
 00:45:29,810 --> 00:45:45,090
 看吧，这种组合enumerate，accumulate的编程方式很有威力，但也有弱点
 See, the power of this traditional programming style is exactly its weakness, that we're mixing up the enumerating and the testing and the accumulating.
 
-574
+624
 00:45:45,090 --> 00:45:46,670
 所以关键在于，我们不需要做所有的事
 So we don't do it all.
 
-575
+625
 00:45:46,670 --> 00:45:55,210
 这个在概念上更加丑陋的东西使它更高效了
 So the very thing that makes it conceptually ugly is the very thing that makes it efficient.
 
-576
+626
 00:45:55,210 --> 00:45:57,800
 是这样来混合的
 It's this mixing up.
 
-577
+627
 00:45:57,800 --> 00:46:00,420
 我今天一早上所做的好像都是在迷惑你们一样
 So it seems that all I've done this morning so far is just confuse you.
 
-578
+628
 00:46:00,420 --> 00:46:05,840
 我给你们展示了这种优雅的编程方式，除了这个不行
 I showed you this wonderful way that programming might work, except that it doesn't.
 
-579
+629
 00:46:05,840 --> 00:46:09,040
 不卖关子了，接下来，见证奇迹的时刻
 Well, here's where the wonderful thing happens.
 
-580
+630
 00:46:09,040 --> 00:46:14,870
 这个游戏里，我们有蛋糕，并且还可以吃它
 It turns out in this game that we really can have our cake and eat it too.
 
-581
+631
 00:46:14,870 --> 00:46:36,310
 我的意思是，我们完全可以用流来这样的组织程序，当机器真正运行的时候，和那种生成与检测混合在一起的程序一样高效
 And what I mean by that is that we really can write stream programs exactly like the ones I wrote and arrange things so that when the machine actually runs, it's as efficient as running this traditional programming style that mixes up the generation and the test.
 
-582
+632
 00:46:36,310 --> 00:46:40,770
 听起来不可思议
 Well, that sounds pretty magic.
 
-583
+633
 00:46:40,770 --> 00:46:43,690
 关键在于，流不是列表
 The key to this is that streams are not lists.
 
-584
+634
 00:46:48,090 --> 00:46:52,115
 一会儿我们就会看到，现在，先来看看幻灯片
 We'll see this carefully in a second, but for now, let's take a look at that slide again.
 
-585
+635
 00:46:52,115 --> 00:47:05,360
 类比于信号处理系统，这个例子里是一些整数
 The image you should have here of this signal processing system is that what's going to happen is there's this box that has the integers sitting in it.
 
-586
+636
 00:47:05,360 --> 00:47:10,940
 这里的filter和它连接在一起并且揪住了它们
 And there's this filter that's connected to it and it's tugging on them.
 
-587
+637
 00:47:10,940 --> 00:47:16,790
 这里可以放置另外的东西来揪住filter的输出
 And then there's someone who's tugging on this stuff saying what comes out of the filter.
 
-588
+638
 00:47:16,790 --> 00:47:24,590
 想像这样的图景，有人想要得到第一个质数，从filter中揪出来
 And the image you should have is that someone says, well, what's the first prime, and tugs on this filter.
 
-589
+639
 00:47:24,590 --> 00:47:28,020
 filter相继地去揪出一个整数来计算
 And the filter tugs on the integers.
 
-590
+640
 00:47:28,020 --> 00:47:30,930
 看完这些之后，然后想，哦，想要第二个质数
 And you look only at that much, and then say, oh, I really wanted the second one.
 
-591
+641
 00:47:30,930 --> 00:47:33,710
 第二个是什么？
 What's the second prime?
 
-592
+642
 00:47:33,710 --> 00:47:40,500
 当你不去尝试揪出东西时，就不会有计算发生
 And that no computation gets done except when you tug on these things.
 
-593
+643
 00:47:40,500 --> 00:47:41,410
 我们再来试试
 Let me try that again.
 
-594
+644
 00:47:41,410 --> 00:47:43,815
 这是一个小设备
 This is a little device.
 
-595
+645
 00:47:43,815 --> 00:47:49,830
 Eric Grimson发明的，他曾经也在MIT教这门课
 This is a little stream machine invented by Eric Grimson who's been teaching this course at MIT.
 
-596
+646
 00:47:49,830 --> 00:47:54,780
 把这个比作流，就像一串整数一样
 And the image is here's a stream of stuff, like a whole bunch of the integers.
 
-597
+647
 00:47:54,780 --> 00:47:58,700
 这些是一些处理工序
 And here's some processing elements.
 
-598
+648
 00:47:58,700 --> 00:48:02,600
 就像是map，filter之类的东西
 And if, say, it's filter of filter of map, or something.
 
-599
+649
 00:48:05,570 --> 00:48:12,670
 如果我把流当作列表来演示这个过程，来看看，先进行第一个filter
 And if I really tried to implement that with streams as lists, what I'd say is, well, I've got this list of things, and now I do the first filter.
 
-600
+650
 00:48:12,670 --> 00:48:14,070
 这些全都要处理
 So do all this processing.
 
-601
+651
 00:48:14,070 --> 00:48:19,610
 针对这个流，不断的处理，处理
 And I take this and I process and I process and I process and I process.
 
-602
+652
 00:48:19,610 --> 00:48:21,910
 然后得到一个新的流
 And now I'm got this new stream.
 
-603
+653
 00:48:21,910 --> 00:48:24,070
 结果现在在我的手上
 Now I take that result in my hand someplace.
 
-604
+654
 00:48:24,070 --> 00:48:25,260
 然后和第二个接通
 And I put that through the second one.
 
-605
+655
 00:48:25,260 --> 00:48:28,110
 又处理了全部的流
 And I process the whole thing.
 
-606
+656
 00:48:28,110 --> 00:48:29,510
 得到一个新流
 And there's this new stream.
 
-607
+657
 00:48:32,130 --> 00:48:36,360
 然后类似地，取这个结果，用相同的方式再次处理
 And then I take the result and I put it all the way through this one the same way.
 
-608
+658
 00:48:36,360 --> 00:48:43,860
 如果把流仅仅当做列表的话，计算的过程就是这样的
 That's what would happen to these stream programs if streams were just lists.
 
-609
+659
 00:48:43,860 --> 00:48:50,230
 但是事实上，流不是列表，流就是流。你应该这样来想像
 But in fact, streams aren't lists, they're streams. And the image you should have is something a little bit more like this.
 
-610
+660
 00:48:50,230 --> 00:48:57,130
 我把这些小玩意连接起来，数据在其中流动
 I've got these gadgets connected up by this data that's flowing out of them.
 
-611
+661
 00:48:59,960 --> 00:49:05,980
 这里是流的来源，开始生成整数
 And here's my original source of the streams. It might be starting to generate the integers.
 
-612
+662
 00:49:05,980 --> 00:49:07,580
 如果我想要一个整数，会发生什么？
 And now, what happens if I want a result?
 
-613
+663
 00:49:07,580 --> 00:49:10,200
 我揪住最后的这里
 I tug on the end here.
 
-614
+664
 00:49:10,200 --> 00:49:13,090
 这个元素可能会说，哥们，我需要更多的数据
 And this element says, gee, I need some more data.
 
-615
+665
 00:49:13,090 --> 00:49:15,830
 所以，这个到这里，又开始揪住那个
 So this one comes here and tugs on that one.
 
-616
+666
 00:49:15,830 --> 00:49:17,890
 同样说，哥们，给我来点数据
 And it says, gee, I need some more data.
 
-617
+667
 00:49:17,890 --> 00:49:21,640
 然后这个又揪住了下一个东西，可能是一个fiiler，哥们，来点数据啊
 And this one tugs on this thing, which might be a filter, and says, gee, I need some more data.
 
-618
+668
 00:49:21,640 --> 00:49:25,780
 最后的这一点东西，只有在去揪它的时候才会生成
 And only as much of this thing at the end here gets generated as I tugged.
 
-619
+669
 00:49:25,780 --> 00:49:30,760
 只有我去揪住末尾这里的时候，才会有数据通过这些元件得到处理
 And only as much of this stuff goes through the processing units as I'm pulling on the end I need.
 
-620
+670
 00:49:30,760 --> 00:49:37,830
 把流当作流和把流当作列表，就是这样的区别
 That's the image you should have of the difference between implementing what we're actually going to do and if streams were lists.
 
-621
+671
 00:49:40,600 --> 00:49:42,430
 说了这么多，到底怎么来实现呢？
 Well, how do we make this thing?
 
-622
+672
 00:49:42,430 --> 00:49:43,400
 我希望你们这样来想
 I hope you have the image.
 
-623
+673
 00:49:43,400 --> 00:49:44,947
 窍门在于如何构造流
 The trick is how to make it.
 
-624
+674
 00:49:47,930 --> 00:49:56,920
 我们想要把流组织成一种有需要时才会逐渐计算得到自身元素的数据结构
 We want to arrange for a stream to be a data structure that computes itself incrementally, an on-demand data structure.
 
-625
+675
 00:49:59,220 --> 00:50:04,490
 基本思想在于，再次强调，这种思想贯穿整个课程
 And the basic idea is, again, one of the very basic ideas that we're seeing throughout the whole course.
 
-626
+676
 00:50:04,490 --> 00:50:09,240
 那就是，数据与过程之间并没有绝对的界限
 And that is that there's not a firm distinction between programs and data.
 
-627
+677
 00:50:09,240 --> 00:50:16,810
 流会是这样的一种结构，你可以想象树的叶子的流
 So what a stream is going to be is simultaneously this data structure that you think of, like the stream of the leaves of this tree.
 
-628
+678
 00:50:16,810 --> 00:50:23,550
 但是不得不说，其中包含着计算方法的过程着实很精妙
 But at the same time, it's going to be a very clever procedure that has the method of computing in it.
 
-629
+679
 00:50:23,550 --> 00:50:25,930
 好吧，实际来看一下
 Well, let me try this.
 
-630
+680
 00:50:25,930 --> 00:50:28,460
 事实上我们不需要其它高深的原理
 It's going to turn out that we don't need any more mechanism.
 
-631
+681
 00:50:28,460 --> 00:50:35,460
 这个事实已经有了我们所需要的一切东西，那就是了解如何把过程作为一级对象来处理
 We already have everything we need simply from the fact that we know how to handle procedures as first-class objects.
 
-632
+682
 00:50:35,460 --> 00:50:36,880
 来看看这个关键之处
 Well, let's go back to the key.
 
-633
+683
 00:50:36,880 --> 00:50:39,030
 关键是，记住，我们有实际的操作方法
 The key is, remember, we had these operations.
 
-634
+684
 00:50:39,030 --> 00:50:48,080
 CONS-STREAM HEAD TAIL
 CONS-stream and head and tail.
 
-635
+685
 00:50:48,080 --> 00:50:55,080
 一开始，你可以把这个想像成CONS，这个是CAR，这个是CDR，事实上没这么简单
 When I started, I said you can think about this as CONS and think about this as CAR and think about that as CDR, but it's not.
 
-636
+686
 00:50:55,080 --> 00:50:57,550
 现在我们来具体看看它们到底是什么
 Now, let's look at what they really are.
 
-637
+687
 00:50:57,550 --> 00:51:19,540
 (CONS-STREAM X Y) 是这个东西的缩写形式
 Well, CONS-stream of x and y is going to be an abbreviation for the following thing.
 
-638
+688
 00:51:19,540 --> 00:51:28,000
 (CONS X (DELAY Y))
 CONS form a pair, ordinary CONS, of x to a thing called delay of y.
 
-639
+689
 00:51:31,188 --> 00:51:39,790
 在我具体解释清楚之前，先把剩下的写完，(HEAD S) 就是 (CAR S)
 And before I explain that, let me go and write the rest. The head of a stream is going to be just the CAR.
 
-640
+690
 00:51:42,380 --> 00:51:56,120
 (TAIL S) 是 (FORCE (CDR S))
 And the tail of a stream is going to be a thing called force the CDR of the stream.
 
-641
+691
 00:51:56,120 --> 00:51:58,060
 我来具体解释一下
 Now let me explain this.
 
-642
+692
 00:51:58,060 --> 00:52:01,420
 DELAY看起来很神奇
 Delay is going to be a special magic thing.
 
-643
+693
 00:52:01,420 --> 00:52:10,600
 DELAY所做是取一个表达式，然后做了一个约定，有需要的时候再来计算我
 What delay does is take an expression and produce a promise to compute that expression when you ask for it.
 
-644
+694
 00:52:10,600 --> 00:52:11,980
 这里并没有做实际的计算
 It doesn't do any computation here.
 
-645
+695
 00:52:11,980 --> 00:52:14,820
 只是一个延期的约定
 It just gives you a rain check.
 
-646
+696
 00:52:14,820 --> 00:52:17,110
 承诺要做这样的事
 It produces a promise.
 
-647
+697
 00:52:17,110 --> 00:52:25,360
 CONS-STREAM所做的就是把X和一个计算Y的约定相组合
 And CONS-stream says I'm going to put together in a pair x and a promise to compute y.
 
-648
+698
 00:52:28,230 --> 00:52:31,840
 如果你想取头，就是序对的CAR
 Now, if I want the head, that's just the CAR that I put in the pair.
 
-649
+699
 00:52:31,840 --> 00:52:39,110
 关键在于尾操作，对承诺进行FORCE调用
 And the key is that the tail is going to be-- force calls in that promise.
 
-650
+700
 00:52:39,110 --> 00:52:44,610
 TAIL会说，好吧，遵守承诺进行计算
 Tail says, well, take that promise and now call in that promise.
 
-651
+701
 00:52:44,610 --> 00:52:47,430
 这才开始实际的计算
 And then we compute that thing.
 
-652
+702
 00:52:47,430 --> 00:52:48,740
 这就是它的实际工作方式
 That's how this is going to work.
 
-653
+703
 00:52:48,740 --> 00:52:51,550
 这就是CONS-STREAM，HEAD，TAIL的真实面目了
 That's what CONS-stream, head, and tail really are.
 
-654
+704
 00:52:54,196 --> 00:52:55,570
 具体演示一下
 Now, let's see how this works.
 
-655
+705
 00:52:55,570 --> 00:52:58,410
 我会非常小心的过一遍
 And we'll go through this fairly carefully.
 
-656
+706
 00:52:58,410 --> 00:53:08,650
 现在从计算10,000到1,000,1000中的第二个质数这个实例来看，那具体是怎么运行的
 We're going to see how this works in this example of computing the second prime between 10,000 and a million.
 
-657
+707
 00:53:08,650 --> 00:53:11,610
 好的，我们从这个表达式开始
 OK, so we start off and we have this expression.
 
-658
+708
 00:53:15,820 --> 00:53:26,710
 第二个质数 -- 就是(HEAD (TAIL (FILTER (PRIME? (E-I 10000 1000000)))))
 The second prime-- the head of the tail of the result of filtering for primality the integers between 10,000 and 1 million.
 
-659
+709
 00:53:26,710 --> 00:53:28,400
 这究竟是什么？
 Now, what is that?
 
-660
+710
 00:53:28,400 --> 00:53:40,250
 就是10,000至1,000,000之间到底是什么？好，如果你开始枚举之间的整数，就构造了一个流
 What that is, that interval between 10,000 and 1 million, well, if you trace through enumerate interval, there builds a CONS-stream.
 
-661
+711
 00:53:40,250 --> 00:53:54,480
 CONS-STREAM实际代换过来是(CONS 10000 (DELAY (E-I 10001 1000000)))
 And the CONS-stream is the CONS of 10,000 to a promise to compute the integers between 10,001 and 1 million.
 
-662
+712
 00:53:54,480 --> 00:53:55,750
 这也就是上面这个表达式
 So that's what this expression is.
 
-663
+713
 00:53:55,750 --> 00:53:57,640
 现在我使用代换模型
 Here I'm using the substitution model.
 
-664
+714
 00:53:57,640 --> 00:54:01,010
 我们可以用代换模型的原因是这里并没有涉及时间与状态的副作用
 And we can use the substitution model because we don't have side effects and state.
 
-665
+715
 00:54:04,270 --> 00:54:08,380
 这里还有一个计算10001至1000000的承诺
 So I have CONS of 10,000 to a promise to compute the rest of the integers.
 
-666
+716
 00:54:08,380 --> 00:54:09,850
 所以到现在为止，只有一个整数被枚举了出来
 So only one integer, so far, got enumerated.
 
-667
+717
 00:54:14,380 --> 00:54:16,580
 然后用filter去过滤
 Well, I'm going to filter that thing for primality.
 
-668
+718
 00:54:19,900 --> 00:54:22,360
 我们再来细看filter这个东西
 Again, you go back and look at the filter code.
 
-669
+719
 00:54:22,360 --> 00:54:25,460
 filter首先测试 (HEAD S)
 What the filter will first do is test the head.
 
-670
+720
 00:54:25,460 --> 00:54:33,500
 这里，测试到的是10,000，不是素数
 So in this case, the filter will test 10,000 and say, oh, 10,000's not prime.
 
-671
+721
 00:54:33,500 --> 00:54:39,220
 然后就开始递归的过滤TAIL的部分
 Therefore, what I have to do recursively is filter the tail.
 
-672
+722
 00:54:39,220 --> 00:54:46,340
 TAIL是什么呢？就是那个继续计算的承诺
 And what's the tail of it, well, that's the tail of this pair with a promise in it.
 
-673
+723
 00:54:46,340 --> 00:54:49,680
 开始计算尾了，尾说，好，我履行承诺继续计算
 Tail now comes in and says, well, I'm going to force that.
 
-674
+724
 00:54:49,680 --> 00:55:00,880
 履行承诺的意思是继续枚举10,001到1,000,000之间的整数
 I'm going to force that promise, which means now I'm going to compute the integers between 10,001 and 1 million.
 
-675
+725
 00:55:00,880 --> 00:55:02,970
 现在看起来像是这样
 OK, so this filter now is looking at that.
 
-676
+726
 00:55:07,810 --> 00:55:11,960
 现在，就又回到了最开始枚举的部分
 That enumerate itself, well, now we're back in the original enumerate situation.
 
-677
+727
 00:55:11,960 --> 00:55:19,740
 (CONS 10001 (DELAY (E-I 10002 1000000))))
 The enumerate is the CONS of the first thing, 10,001, onto a promise to compute the rest.
 
-678
+728
 00:55:19,740 --> 00:55:23,060
 现在filter又开始针对10,001进行过滤了
 So now the primality filter is going to go look at 10,001.
 
-679
+729
 00:55:23,060 --> 00:55:25,120
 又要开始判断是不是质数
 It's going to decide if it likes that or not.
 
-680
+730
 00:55:25,120 --> 00:55:27,550
 结果不是
 It turns out 10,001 isn't prime.
 
-681
+731
 00:55:27,550 --> 00:55:29,610
 然后再继续履行承诺计算下去
 So it'll force it again and again and again.
 
-682
+732
 00:55:32,920 --> 00:55:37,100
 然后，我觉得第一个质数可能是10,009
 And finally, I think the first prime it hits is 10,009.
 
-683
+733
 00:55:37,100 --> 00:55:40,465
 在这个点才停下来
 And at that point, it'll stop.
 
-684
+734
 00:55:40,465 --> 00:55:45,240
 这只是第一个质数，我们需要的是第二个
 And that will be the first prime, and then eventually, it'll need the second prime.
 
-685
+735
 00:55:45,240 --> 00:55:47,030
 所以，又开始了
 So at that point, it will go again.
 
-686
+736
 00:55:47,030 --> 00:55:53,130
 你会发现，你需要多少，它才生成多少，不多不少
 So you see what happens is that no more gets generated than you actually need.
 
-687
+737
 00:55:56,690 --> 00:56:04,930
 enumerator不会生成比filter的要求更多的数要它去过滤
 That enumerator is not going to generate any more integers than the filter asks it for as it's pulling in things to check for primality.
 
-688
+738
 00:56:04,930 --> 00:56:11,255
 filter也不会生成比你的要求更多的东西
 And the filter is not going to generate any more stuff than you ask it for, which is the head of the tail.
 
-689
+739
 00:56:11,255 --> 00:56:28,160
 看吧，这样的程序实际运行起来就像是传统的那种程序一样，尽管外表看起来不像
 You see, what's happened is we've put that mixing of generation and test into what actually happens in the computer, even though that's not apparently what's happening from looking at our programs.
 
-690
+740
 00:56:28,160 --> 00:56:30,230
 一切都很简单
 OK, well, that seemed easy.
 
-691
+741
 00:56:30,230 --> 00:56:33,326
 这种机制的所有神奇之处在于DELAY
 All of this mechanism got put into this magic delay.
 
-692
+742
 00:56:33,326 --> 00:56:36,900
 所以你会想，啊，这肯定是最难以理解的地方
 So you're saying, gee, that must be where the magic is.
 
-693
+743
 00:56:36,900 --> 00:56:39,070
 但是并不是
 But see there's no magic there either.
 
-694
+744
 00:56:39,070 --> 00:56:40,610
 其实你应该知道DELAY是什么
 You know what delay is.
 
-695
+745
 00:56:40,610 --> 00:56:56,490
 表达式的DELAY只是一个缩略词，那么，这个要履行计算的承诺到底是什么？
 Delay on some expression is just an abbreviation for--  well, what's a promise to compute an expression?
 
-696
+746
 00:56:56,490 --> 00:57:03,000
 (lambda () <exp>)，就这么简单
 Lambda of nil, procedure of no arguments, which is that expression.
 
-697
+747
 00:57:03,000 --> 00:57:03,930
 这就是整个过程
 That's what a procedure is.
 
-698
+748
 00:57:03,930 --> 00:57:06,050
 它的意思是，这个表达式将会被计算
 It says I'm going to compute an expression.
 
-699
+749
 00:57:06,050 --> 00:57:07,460
 FORCE又是什么？
 What's force?
 
-700
+750
 00:57:07,460 --> 00:57:10,800
 如何履行承诺？
 How do I take up a promise?
 
-701
+751
 00:57:10,800 --> 00:57:15,890
 FORCE一些过程，只是简单地运行它们
 Well, force of some procedure, a promise, is just run it.
 
-702
+752
 00:57:18,710 --> 00:57:20,120
 结束了，就是这样
 Done.
 
-703
+753
 00:57:20,120 --> 00:57:23,580
 并没有什么离奇
 So there's no magic there at all.
 
-704
+754
 00:57:23,580 --> 00:57:26,440
 总结一下，我们都做了点什么？
 Well, what have we done?
 
-705
+755
 00:57:26,440 --> 00:57:30,960
 我们说，传统的编程方式更有效
 We said the old style, traditional style of programming is more efficient.
 
-706
+756
 00:57:30,960 --> 00:57:35,260
 使用流来编程，程序更为明晰
 And the stream thing is more perspicuous.
 
-707
+757
 00:57:35,260 --> 00:57:43,350
 我们设法用DELAY，使流获得了和其它过程一样的运行效果
 And we managed to make the stream procedures run like the other procedures by using delay.
 
-708
+758
 00:57:43,350 --> 00:57:54,440
 DELAY所做的就是，把我们程序中的事件顺序与实际发生在机器中的事件顺序分离开来
 And the thing that delay did for us was to de-couple the apparent order of events in our programs from the actual order of events that happened in the machine.
 
-709
+759
 00:57:54,440 --> 00:57:56,540
 这就是DELAY的作用
 That's really what delay is doing.
 
-710
+760
 00:57:56,540 --> 00:57:58,290
 也是全部的重点
 That's exactly the whole point.
 
-711
+761
 00:57:58,290 --> 00:58:09,182
 我们放弃了这种想法，即过程结构与实际运行映射出清晰的时间性
 We've given up the idea that our procedures, as they run, or as we look at them, mirror some clear notion of time.
 
-712
+762
 00:58:09,182 --> 00:58:16,690
 放弃这种想法，我们给予DELAY以改变计算顺序的自由
 And by giving that up, we give delay the freedom to arrange the order of events in the computation the way it likes.
 
-713
+763
 00:58:16,690 --> 00:58:17,610
 整个思想就是这样
 That's the whole idea.
 
-714
+764
 00:58:17,610 --> 00:58:24,200
 我们分离了程序表面上的顺序与实际运行的顺序
 We de-couple the apparent order of events in our programs from the actual order of events in the computer.
 
-715
+765
 00:58:24,200 --> 00:58:25,770
 对了，还有一个细节
 OK, well there's one more detail.
 
-716
+766
 00:58:25,770 --> 00:58:29,730
 一个技术性的细节，但是也非常重要
 It's just a technical detail, but it's actually an important one.
 
-717
+767
 00:58:29,730 --> 00:58:39,320
 当你运行一些递归的过程时，就像(TAIL (TAIL (TAIL ... 这样
 As you run through these recursive programs unwinding, you'll see a lot of things that look like tail of the tail of the tail.
 
-718
+768
 00:58:39,320 --> 00:58:43,860
 它就会不断在流中通过CONS来计算构造新元素
 That's the kind of thing that would happen as I go CONSing down a stream all the way.
 
-719
+769
 00:58:43,860 --> 00:59:05,290
 每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
 And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
 
-720
+770
 00:59:05,290 --> 00:59:20,390
 我们把DELAY稍微改写一下，就可以让整件事变得 -- 我先写一下
 So there's one little hack to slightly change what delay is, and make it a thing which is-- I'll write it this way.
 
-721
+771
 00:59:20,390 --> 00:59:31,000
 (DELAY <exp>)的具体内容是(MEMO-PROC (lambda () <exp>))
 The actual implementation, delay is an abbreviation for this thing, memo-proc of a procedure.
 
-722
+772
 00:59:31,000 --> 00:59:35,150
 MEMO-PROC改变一个过程
 Memo-proc is a special thing that transforms a procedure.
 
-723
+773
 00:59:35,150 --> 00:59:44,806
 取一个没有参数的过程，转变其为只需要执行一次计算的过程
 What it does is it takes a procedure of no arguments and it transforms it into a procedure that'll only have to do its computation once.
 
-724
+774
 00:59:44,806 --> 00:59:48,700
 我们意思是，你给它一个过程
 And what I mean by that is, you give it a procedure.
 
-725
+775
 00:59:48,700 --> 01:00:02,360
 MEMO-PROC的结果是一个新的过程，第一次运行的时候，它计算<exp>，记下来它的结果，从那之后，每次你再运行这个过程，就不用再计算了
 The result of memo-proc will be a new procedure, which the first time you call it, will run the original procedure, remember what result it got, and then from ever on after, when you call it, it just won't have to do the computation.
 
-726
+776
 01:00:02,360 --> 01:00:05,200
 它会把结果存储在一个地方
 It will have cached that result someplace.
 
-727
+777
 01:00:05,200 --> 01:00:06,550
 可以这样来实现MEMO-PROC
 And here's an implementation of memo-proc.
 
-728
+778
 01:00:11,210 --> 01:00:12,710
 一旦你了解怎么做，实现就很容易了
 Once you have the idea, it's easy to implement.
 
-729
+779
 01:00:12,710 --> 01:00:17,390
 MEMO-PROC中，有两个标记变量
 Memo-proc is this little thing that has two little flags in there.
 
-730
+780
 01:00:17,390 --> 01:00:20,320
 一个是，记录是否运行过
 It says, have I already been run?
 
-731
+781
 01:00:20,320 --> 01:00:23,620
 初始值是NO，还没运行过
 And initially it says, no, I haven't already been run.
 
-732
+782
 01:00:23,620 --> 01:00:29,070
 上一次运行后，它的结果是什么？
 And what was the result I got the last time I was run?
 
-733
+783
 01:00:29,070 --> 01:00:34,360
 MEMO-PROC取一个参数为PROC，返回一个没有参数的过程
 So memo-proc takes a procedure called proc, and it returns a new procedure of no arguments.
 
-734
+784
 01:00:34,360 --> 01:00:38,610
 PROC也是一个没有参数的过程
 Proc is supposed to be a procedure of no arguments.
 
-735
+785
 01:00:38,610 --> 01:00:44,430
 如果没有运行过，就做下面的事情
 And it says, oh, if I'm not already run, then I'm going to do a sequence of things.
 
-736
+786
 01:00:44,430 --> 01:00:48,450
 计算PROC，存储它的值
 I'm going to compute proc, I'm going to save that.
 
-737
+787
 01:00:48,450 --> 01:00:51,140
 存储在变量RESULT中
 I'm going to stash that in the variable result.
 
-738
+788
 01:00:51,140 --> 01:00:56,610
 然后对already-run?赋值，提醒自己已经运行过了，最后返回result
 I'm going to make a note to myself that I've already been run, and then I'll return the result.
 
-739
+789
 01:00:56,610 --> 01:00:59,010
 所以整件事即如果你没有运行过，就计算一次
 So that's if you compute it if it's not already run.
 
-740
+790
 01:00:59,010 --> 01:01:03,420
 如果已经运行过，直接返回结果就好了
 If you call it and it's already been run, it just returns the result.
 
-741
+791
 01:01:03,420 --> 01:01:08,400
 这是一种叫“记忆化”的小技巧
 So that's a little clever hack called memorization.
 
-742
+792
 01:01:08,400 --> 01:01:15,270
 这样的话，这一串东西就不会来反复的计算TAIL了
 And in this case, it short circuits having to re-compute the tail of the tail of the tail of the tail of the tail.
 
-743
+793
 01:01:15,270 --> 01:01:17,810
 不再那样的没效率了
 So there isn't even that kind of inefficiency.
 
-744
+794
 01:01:17,810 --> 01:01:24,210
 事实上，这样做甚至和传统的那种程序效率是一样的
 And in fact, the streams will run with pretty much the same efficiency as the other programs precisely.
 
-745
+795
 01:01:24,210 --> 01:01:33,610
 记住，再次提醒，整个的思想在于，过程与数据之间没有一个明确的分界线
 And remember, again, the whole idea of this is that we've used the fact that there's no really good dividing line between procedures and data.
 
-746
+796
 01:01:33,610 --> 01:01:38,760
 这个数据结构看起来，有点像一个过程
 We've written data structures that, in fact, are sort of like procedures.
 
-747
+797
 01:01:38,760 --> 01:01:49,620
 它使我们可以在这里放置一个结构，不断的迭代计算自身
 And what that's allowed us to do is take an example of a common control structure, in this place iteration.
 
-748
+798
 01:01:49,620 --> 01:01:55,496
 我们构造的这个数据结构，其中有一个过程，这个过程可以通过迭代，产生新的结构
 And we've built a data structure which, since itself is a procedure, kind of has this iteration control structure in it.
 
-749
+799
 01:01:55,496 --> 01:01:58,650
 这就是流的实质
 And that's really what streams are.
 
-750
+800
 01:01:58,650 --> 01:01:59,900
 好的，大家有什么问题吗？
 OK, questions?
 
-751
+801
 01:02:03,950 --> 01:02:13,052
 我是这样理解的，你刚才说(TAIL (TAIL (TAIL ...，没有没有MEMO-PROC的话，FORCE仅仅只是执行了一次过程而已
 AUDIENCE: Your description of tail-tail-tail, if I understand it correctly, force is actually execution of a procedure, if it's done without this memo-proc thing.
 
-752
+802
 01:02:13,052 --> 01:02:16,380
 你说使用那个MEMO-PROC就不会有那样的问题
 And you implied that memo-proc gets around that problem.
 
-753
+803
 01:02:16,380 --> 01:02:23,910
 难道(TAIL (TAIL (TAIL ... 不是每次都在进行计算吗？ -- [教授]哦，对的
 Doesn't it only get around it if tail-tail-tail is always executing exactly the same-- PROFESSOR: Oh, that's-- sure.
 
-754
+804
 01:02:23,910 --> 01:02:26,050
 我忘记说了
 PROFESSOR: I guess I missed that point.
 
-755
+805
 01:02:26,050 --> 01:02:26,540
 你是对的
 PROFESSOR: Oh, sure.
 
-756
+806
 01:02:26,540 --> 01:02:31,290
 不小心漏掉了这点
 I mean the point is--  yeah.
 
-757
+807
 01:02:31,290 --> 01:02:34,160
 我的意思是，不用重复计算也可以得到结果
 I mean I have to do a computation to get the answer.
 
-758
+808
 01:02:34,160 --> 01:02:42,980
 关键在于，一旦你计算过(TAIL STREAM)，当你计算(TAIL (TAIL STREAM))的时候，就不用再计算第一个TAIL了
 But the point is, once I've found the tail of the stream, to get the tail of the tail, I shouldn't have had to re-compute the first tail.
 
-759
+809
 01:02:42,980 --> 01:02:46,460
 明白了吧，如果我没有用MEMO-PROC，还要再计算一遍(TAIL STREAM)
 See, and if I didn't use memo-proc, that re-computation would have been done.
 
-760
+810
 01:02:46,460 --> 01:02:47,710
 明白了
 AUDIENCE: I understand now.
 
-761
+811
 01:02:50,830 --> 01:02:56,830
 之前的例子中你提到过，我们可以使用代换模型因为这里没有副作用
 AUDIENCE: In one of your examples, you mentioned that we were able to use the substitution model because there are no side effects.
 
-762
+812
 01:02:56,830 --> 01:03:03,620
 如果流通过的一个处理单元 -- 如果有副作用呢？如果有了状态？
 What if we had a single processing unit-- if we had a side effect, if we had a state?
 
-763
+813
 01:03:03,620 --> 01:03:09,120
 我们还可以用这种流的结构吗？
 Could we still practically build the stream model?
 
-764
+814
 01:03:09,120 --> 01:03:09,530
 可能吧
 PROFESSOR: Maybe.
 
-765
+815
 01:03:09,530 --> 01:03:10,540
 很难说
 That's a hard question.
 
-766
+816
 01:03:10,540 --> 01:03:18,960
 我可能会花很长时间来探讨代换模型和副作用无法共存
 I'm going to talk a little bit later about the places where substitution and side effects don't really mix very well.
 
-767
+817
 01:03:18,960 --> 01:03:25,170
 通常情况下，除非你非常小心，否则副作用会把一切弄的很糟糕
 But in general, I think the answer is unless you're very careful, any amount of side effect is going to mess up everything.
 
-768
+818
 01:03:35,490 --> 01:03:39,410
 我不是很理解MEMO-PROC这个过程
 AUDIENCE: Sorry, I didn't quite understand the memo-proc operation.
 
-769
+819
 01:03:39,410 --> 01:03:41,990
 当你执行lambda的时候
 When do you execute the lambda?
 
-770
+820
 01:03:41,990 --> 01:03:47,600
 换句话说，当MEMO-PROC执行的时候，只生成了lambda表达式
 In other words, when memo-proc is executed, just this lambda expression is being generated.
 
-771
+821
 01:03:47,600 --> 01:03:50,390
 但是我不太清楚是什么时候执行的
 But it's not clear to me when it's executed.
 
-772
+822
 01:03:50,390 --> 01:03:51,350
 好的
 PROFESSOR: Right.
 
-773
+823
 01:03:51,350 --> 01:03:57,930
 MEMO-PROC所做的 -- 作为MEMO-PROC参数是PROC，一个没有参数的过程
 What memo-proc does-- remember, the thing that's going into memo-proc, the thing proc, is a procedure of no arguments.
 
-774
+824
 01:03:57,930 --> 01:04:00,390
 某个时刻，你会调用到它
 And someday, you're going to call it.
 
-775
+825
 01:04:00,390 --> 01:04:06,620
 MEMO-PROC把一个过程转化为另一个过程，某个时刻你会调用到它
 Memo-proc translates that procedure into another procedure of no arguments, which someday you're going to call.
 
-776
+826
 01:04:06,620 --> 01:04:09,890
 就是这个lambda
 That's that lambda.
 
-777
+827
 01:04:09,890 --> 01:04:24,100
 这里，当这一部分构造成为流的TAIL的时候，这个没有参数的过程，会在之后的某个时刻被调用到
 So here, where I initially built as my tail of the stream, say, this procedure of no arguments, which someday I'll call.
 
-778
+828
 01:04:24,100 --> 01:04:30,650
 相对应的，我把这一部分理解为是MEMO-PROC，某个时刻会被调用到的
 Instead, I'm going to have the tail of the stream be memo-proc of it, which someday I'll call.
 
-779
+829
 01:04:30,650 --> 01:04:47,642
 所以这个lambda，会在你调用MEMO-PROC得到结果的时候被调用，正如你之前设置过的一样
 So that lambda of nil, that gets called when you call the memo-proc, when you call the result of that memo-proc, which would be ordinarily when you would have called the original thing that you set it.
 
-780
+830
 01:04:47,642 --> 01:04:52,610
 我的意思是，你调用MEMO-PROC的时候，你只是返回了一个lambda
 AUDIENCE: OK, the reason I ask is I had a feeling that when you call memo-proc, you just return this lambda.
 
-781
+831
 01:04:52,610 --> 01:04:53,770
 对啊
 PROFESSOR: That's right.
 
-782
+832
 01:04:53,770 --> 01:04:58,100
 你调用MEMO-PROC的时候，返回了一个lambda
 When you call memo-proc, you return the lambda.
 
-783
+833
 01:04:58,100 --> 01:05:02,270
 你也没有执行<exp>，直到你第一次需要执行它的时候
 You never evaluate the expression at all, until the first time that you would have evaluated it.
 
-784
+834
 01:05:07,590 --> 01:05:14,240
 我这样理解对吗？你构造了一个列表，其中的元素还没有被计算
 AUDIENCE: Do I understand it right that you actually have to build the list up, but the elements of the list don't get evaluated?
 
-785
+835
 01:05:14,240 --> 01:05:15,630
 表达式没有被计算？
 The expressions don't get evaluated?
 
-786
+836
 01:05:15,630 --> 01:05:18,540
 但在在每一个阶段，你还是构造了列表
 But at each stage, you actually are building a list.
 
-787
+837
 01:05:18,540 --> 01:05:20,700
 嗯，我应该这样说
 PROFESSOR: That's-- I really should have said this.
 
-788
+838
 01:05:20,700 --> 01:05:22,270
 这个问题不错
 That's a really good point.
 
-789
+839
 01:05:22,270 --> 01:05:23,660
 但是，也不全对
 No, it's not quite right.
 
-790
+840
 01:05:23,660 --> 01:05:25,080
 因为实际发生的事情是这样的
 Because what happens is this.
 
-791
+841
 01:05:25,080 --> 01:05:26,890
 我先把这个画成序对
 Let me draw this as pairs.
 
-792
+842
 01:05:26,890 --> 01:05:32,740
 假设我要构造一个特别大的流，比如枚举整数，从1到1,000,000,000
 Suppose I'm going to make a big stream, like enumerate interval, 1 through 1 billion.
 
-793
+843
 01:05:32,740 --> 01:05:43,045
 就是1，和一个计算的约定
 What that is, is a pair with a 1 and a promise.
 
-794
+844
 01:05:46,520 --> 01:05:47,890
 就是这样
 That's exactly what it is.
 
-795
+845
 01:05:47,890 --> 01:05:49,140
 什么都没有构造
 Nothing got built up.
 
-796
+846
 01:05:51,600 --> 01:05:56,370
 当我继续的时候，FORCE这一部分，会发生什么？
 When I go and force this, and say, what happens?
 
-797
+847
 01:05:56,370 --> 01:06:00,530
 这个东西递归的产生了CONS
 Well, this thing is now also recursively a CONS.
 
-798
+848
 01:06:00,530 --> 01:06:11,350
 这个约定生成了下一个东西，就是2和一个约定
 So that this promise now is the next thing, which is a 2 and a promise to do more.
 
-799
+849
 01:06:11,350 --> 01:06:14,470
 一直这样下去
 And so on and so on and so on.
 
-800
+850
 01:06:14,470 --> 01:06:18,200
 所以你沿着流这样下来，并没有构造什么
 So nothing gets built up until you walk down the stream.
 
-801
+851
 01:06:18,200 --> 01:06:25,500
 因为这个东西不是列表，只是一个生成列表的约定，技术上来说，是一个过程
 Because what's sitting here is not the list, but a promise to generate the list. And by promise, technically I mean procedure.
 
-802
+852
 01:06:28,050 --> 01:06:30,485
 因此并没有构造列表
 So it doesn't get built up.
 
-803
+853
 01:06:30,485 --> 01:06:34,280
 我应该早点说的
 Yeah, I should have said that before this point.
 
-804
+854
 01:06:34,280 --> 01:06:34,490
 好吧
 OK.
 
-805
+855
 01:06:34,490 --> 01:06:34,790
 就到这里
 Thank you.
 
-806
+856
 01:06:34,790 --> 01:06:36,340
 大家休息一下吧
 Let's take a break.
