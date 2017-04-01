@@ -23,7 +23,7 @@
 
 + [中译版视频专辑列表（优酷）](http://www.youku.com/playlist_show/id_18958522.html)
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
-+ [百度网盘SICP文件夹（请注意安装目录中的字体文件）](http://pan.baidu.com/s/1bnvO3vT)
++ [百度网盘SICP文件夹（请注意安装目录中的字体文件）](http://pan.baidu.com/s/1o78bsYA)
 
 | 编号 | 标题 | 优酷 | YouTube | 下载地址 | 译者 |
 | ---- | ---- |:----:|:-------:|:--------:| ---- |
@@ -36,17 +36,17 @@
 | Lec4a | 《模式匹配：基于规则的代换》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XMTM4NTY5NzE3Ng.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=5kYFPWnYHiM) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1c0Hjs1U) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
 | Lec4b | 《通用运算符》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XMTQ3NDEwODUyNA==.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=qcCNy6-Kgh0) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1mhyap3E) | [rtmagic](https://github.com/rtmagic) |
 | Lec5a | 《赋值，状态和副作用》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XMTczMjIxNTM2NA==.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](https://www.youtube.com/watch?v=iqZsYsojljc) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](https://pan.baidu.com/s/1sl7wgqx) | Windfarer |
+| Lec5b | 《计算对象》 | [![优酷](https://cloud.githubusercontent.com/assets/895809/7487453/7ad84a02-f3ea-11e4-9af4-2f8c4dc8679d.png)](http://v.youku.com/v_show/id_XMjY0NzE3NzQ2MA==.html) | [![YouTube](https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png)](#) | [![百度网盘](https://cloud.githubusercontent.com/assets/895809/7487452/7aca0af0-f3ea-11e4-97a2-9ad4af3c6e2e.png)](http://pan.baidu.com/s/1kVc9BHt) | DreamAndDead |
 
 ## 任务队列
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec5b | DreamAndDead | 待校订 | 30%  |
-| lec6a | 匿名、DreamAndDead | 待校订 | 0%  |
-| lec6b | DreamAndDead | 待校订 | 0%  |
-| lec7a | DreamAndDead | 待校订 | 0%  |
-| lec7b | DreamAndDead | 待校订 | 0%  |
-| lec8a | sillyg00se | 待校订 | 0%  |
+| lec6a | 匿名、DreamAndDead | 校对中 | 0%  |
+| lec6b | DreamAndDead | 待校对 | 0%  |
+| lec7a | DreamAndDead | 待校对 | 0%  |
+| lec7b | DreamAndDead | 待校对 | 0%  |
+| lec8a | sillyg00se | 待校对 | 0%  |
 | lec8b | sillyg00se | 已认领 | 0%  |
 | lec9a | loucq123  | 翻译中 | 65% |
 | lec10a | Windfarer | 已认领 | 0% |
