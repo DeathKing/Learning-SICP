@@ -9,7 +9,8 @@ AUTHORS = {
   "endyul"         => "https://github.com/endyul",
   "Michael Savior" => "https://github.com/mut0u",
   "rtmagic"        => "https://github.com/rtmagic",
-  "Windfarer"      => "https://github.com/Windfarer"
+  "Windfarer"      => "https://github.com/Windfarer",
+  "DreamAndDead"   => "https://github.com/DreamAndDead",
 }
 
 FORMAT = "| %-s | %-s | %-s | %-s | %-s | %-s |"
@@ -76,7 +77,4 @@ puts divider
 db.each do |row|
   puts itemize(row)
 end
-
-
-
 
