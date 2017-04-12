@@ -4499,866 +4499,1106 @@ Well, let's go back to the key.
 The key is, remember, we had these operations.
 
 901
-00:50:39,030 --> 00:50:48,080
-CONS-STREAM HEAD TAIL
-CONS-stream and head and tail. #LAST
+00:50:39,030 --> 00:50:47,520
+CONS-STREAM、HEAD和TAIL
+CONS-stream and head and tail.
 
 902
-00:50:48,080 --> 00:50:55,080
-一开始，你可以把这个想像成CONS，这个是CAR，这个是CDR，事实上没这么简单
-When I started, I said you can think about this as CONS and think about this as CAR and think about that as CDR, but it's not.
+00:50:48,080 --> 00:50:49,360
+刚开始的时候我说
+When I started, I said 
 
 903
-00:50:55,080 --> 00:50:57,550
-现在我们来具体看看它们到底是什么
-Now, let's look at what they really are.
+00:50:49,920 --> 00:50:51,360
+你们可以把这个看作CONS
+you can think about this as CONS
 
 904
-00:50:57,550 --> 00:51:19,540
-(CONS-STREAM X Y) 是这个东西的缩写形式
-Well, CONS-stream of x and y is going to be an abbreviation for the following thing.
+00:50:51,400 --> 00:50:52,624
+把HEAD看作CAR
+and think about this as CAR
 
 905
-00:51:19,540 --> 00:51:28,000
+00:50:52,624 --> 00:50:53,520
+把TAIL看作CDR
+and think about that as CDR
+
+906
+00:50:53,552 --> 00:50:54,160
+事实上没这么简单
+but it's not.
+
+907
+00:50:55,080 --> 00:50:56,320
+现在 们来看看它们到底是什么
+Now, let's look at what they really are.
+
+908
+00:50:57,712 --> 00:51:05,840
+(CONS-STREAM X Y)
+Well, CONS-stream of x and y
+
+909
+00:51:07,488 --> 00:51:17,792
+是这个东西的缩写形式
+is going to be an abbreviation for the following thing.
+
+910
+00:51:19,540 --> 00:51:28,320
 (CONS X (DELAY Y))
 CONS form a pair, ordinary CONS, of x to a thing called delay of y.
 
-906
-00:51:31,188 --> 00:51:39,790
-在我具体解释清楚之前，先把剩下的写完，(HEAD S) 就是 (CAR S)
-And before I explain that, let me go and write the rest. The head of a stream is going to be just the CAR.
-
-907
-00:51:42,380 --> 00:51:56,120
-(TAIL S) 是 (FORCE (CDR S))
-And the tail of a stream is going to be a thing called force the CDR of the stream.
-
-908
-00:51:56,120 --> 00:51:58,060
-我来具体解释一下
-Now let me explain this.
-
-909
-00:51:58,060 --> 00:52:01,420
-DELAY看起来很神奇
-Delay is going to be a special magic thing.
-
-910
-00:52:01,420 --> 00:52:10,600
-DELAY所做是取一个表达式，然后做了一个约定，有需要的时候再来计算我
-What delay does is take an expression and produce a promise to compute that expression when you ask for it.
-
 911
-00:52:10,600 --> 00:52:11,980
-这里并没有做实际的计算
-It doesn't do any computation here.
+00:51:31,680 --> 00:51:33,536
+我先把它们写完再来解释
+And before I explain that, let me go and write the rest.
 
 912
-00:52:11,980 --> 00:52:14,820
-只是一个延期的约定
-It just gives you a rain check.
+00:51:34,528 --> 00:51:35,536
+而(HEAD S)
+The head of a stream
 
 913
-00:52:14,820 --> 00:52:17,110
+00:51:38,096 --> 00:51:39,790
+就是 (CAR S)
+is going to be just the CAR.
+
+914
+00:51:42,380 --> 00:51:44,256
+而(TAIL S) 
+And the tail of a stream
+
+915
+00:51:46,680 --> 00:51:54,608
+则是(FORCE (CDR S))
+is going to be a thing called force the CDR of the stream.
+
+916
+00:51:56,120 --> 00:51:57,040
+我来解释一下
+Now let me explain this.
+
+917
+00:51:58,060 --> 00:51:59,888
+DELAY是一个特殊而神奇的东西
+Delay is going to be a special magic thing.
+
+918
+00:52:01,420 --> 00:52:02,336
+DELAY所做是
+What delay does
+
+919
+00:52:03,856 --> 00:52:05,312
+取一个表达式
+is take an expression
+
+920
+00:52:05,504 --> 00:52:06,864
+然后产生一个承诺
+and produce a promise
+
+921
+00:52:07,120 --> 00:52:09,152
+该承诺在你有需要时 会计算那个表达式
+to compute that expression when you ask for it.
+
+922
+00:52:10,600 --> 00:52:11,980
+但在此时没有做任何计算
+It doesn't do any computation here.
+
+923
+00:52:11,980 --> 00:52:14,320
+只是一个延期的承诺
+Just sort of... It just gives you a rain check.
+
+924
+00:52:14,820 --> 00:52:16,208
 承诺要做这样的事
 It produces a promise.
 
-914
-00:52:17,110 --> 00:52:25,360
-CONS-STREAM所做的就是把X和一个计算Y的约定相组合
-And CONS-stream says I'm going to put together in a pair x and a promise to compute y.
+925
+00:52:17,110 --> 00:52:18,208
+CONS-STREAM所做的就是
+And CONS-stream says
 
-915
-00:52:28,230 --> 00:52:31,840
-如果你想取头，就是序对的CAR
-Now, if I want the head, that's just the CAR that I put in the pair.
+926
+00:52:18,816 --> 00:52:21,968
+把X和一个计算Y的承诺
+I'm going to put together in a pair x
 
-916
-00:52:31,840 --> 00:52:39,110
-关键在于尾操作，对承诺进行FORCE调用
-And the key is that the tail is going to be-- force calls in that promise.
+927
+00:52:23,312 --> 00:52:25,360
+放在在一个序对里
+and a promise to compute y.
 
-917
-00:52:39,110 --> 00:52:44,610
-TAIL会说，好吧，遵守承诺进行计算
-Tail says, well, take that promise and now call in that promise.
+928
+00:52:28,230 --> 00:52:28,992
+如果我需要头部分
+Now, if I want the head,
 
-918
-00:52:44,610 --> 00:52:47,430
+929
+00:52:28,992 --> 00:52:30,750
+那么就是这个序对的CAR部分
+that's just the CAR that I put in the pair.
+
+930
+00:52:31,840 --> 00:52:33,712
+关键在于 它的尾部分
+And the key is that the tail is going to be--
+
+931
+00:52:34,624 --> 00:52:36,656
+强制会调用该承诺
+force calls in that promise.
+
+932
+00:52:38,220 --> 00:52:39,888
+而TAIL会说
+Force -- Tail says, well,
+
+933
+00:52:40,032 --> 00:52:41,024
+好吧 取出该承诺
+well, take that promise
+
+934
+00:52:41,850 --> 00:52:44,528
+然后调用该承诺
+and now call in that promise.
+
+935
+00:52:44,560 --> 00:52:46,032
 这才开始实际的计算
 And then we compute that thing.
 
-919
-00:52:47,430 --> 00:52:48,740
+936
+00:52:47,696 --> 00:52:48,720
 这就是它的实际工作方式
 That's how this is going to work.
 
-920
+937
 00:52:48,740 --> 00:52:51,550
-这就是CONS-STREAM，HEAD，TAIL的真实面目了
+这就是CONS-STREAM、HEAD和TAIL的真正定义
 That's what CONS-stream, head, and tail really are.
 
-921
-00:52:54,196 --> 00:52:55,570
+938
+00:52:54,608 --> 00:52:55,570
 具体演示一下
 Now, let's see how this works.
 
-922
-00:52:55,570 --> 00:52:58,410
-我会非常小心的过一遍
-And we'll go through this fairly carefully.
+939
+00:52:55,570 --> 00:52:57,504
+我们小心翼翼地来审查一遍
+And we'll go through this fairly carefully. Let's --
 
-923
-00:52:58,410 --> 00:53:08,650
-现在从计算10,000到1,000,1000中的第二个质数这个实例来看，那具体是怎么运行的
-We're going to see how this works in this example of computing the second prime between 10,000 and a million.
+940
+00:52:58,768 --> 00:53:00,624
+现在从计算10,000到1,000,000中的
+We're going to see how this
 
-924
-00:53:08,650 --> 00:53:11,610
-好的，我们从这个表达式开始
+941
+00:53:01,328 --> 00:53:03,664
+第二个质数这个实例来看
+example of computing the second prime
+
+942
+00:53:05,504 --> 00:53:07,168
+看看是怎么运行的
+right? between 10,000 and a million.
+
+943
+00:53:08,650 --> 00:53:12,032
+好的 我们从这个表达式开始
 OK, so we start off and we have this expression.
 
-925
-00:53:15,820 --> 00:53:26,710
-第二个质数 -- 就是(HEAD (TAIL (FILTER (PRIME? (E-I 10000 1000000)))))
-The second prime-- the head of the tail of the result of filtering for primality the integers between 10,000 and 1 million.
+944
+00:53:15,360 --> 00:53:16,624
+第二个质数就是
+Right? The second prime--
 
-926
-00:53:26,710 --> 00:53:28,400
-这究竟是什么？
+945
+00:53:16,640 --> 00:53:21,904
+就是(HEAD (TAIL (FILTER PRIME? ... )))
+the head of the tail of the result of filtering for primality
+
+946
+00:53:22,832 --> 00:53:25,312
+枚举的范围是(E-I 10000 1000000)
+the integers between 10,000 and 1 million.
+
+947
+00:53:26,710 --> 00:53:27,616
+这是什么呢？
 Now, what is that?
 
-927
-00:53:28,400 --> 00:53:40,250
-就是10,000至1,000,000之间到底是什么？好，如果你开始枚举之间的整数，就构造了一个流
-What that is, that interval between 10,000 and 1 million, well, if you trace through enumerate interval, there builds a CONS-stream.
+948
+00:53:28,400 --> 00:53:29,200
+那就是
+What that is,
 
-928
-00:53:40,250 --> 00:53:54,480
-CONS-STREAM实际代换过来是(CONS 10000 (DELAY (E-I 10001 1000000)))
-And the CONS-stream is the CONS of 10,000 to a promise to compute the integers between 10,001 and 1 million.
+949
+00:53:31,632 --> 00:53:34,176
+枚举的这个10,000至1,000,000的区间
+that interval between 10,000 and 1 million,
 
-929
-00:53:54,480 --> 00:53:55,750
+950
+00:53:35,728 --> 00:53:37,328
+如果你追踪这个枚举区间
+well, if you trace through enumerate interval,
+
+951
+00:53:37,344 --> 00:53:38,780
+会发现它构造了一个流
+there builds a CONS-stream.
+
+952
+00:53:39,920 --> 00:53:41,392
+CONS-STREAM实际代换过来是
+And the CONS-stream is
+
+953
+00:53:41,968 --> 00:53:43,616
+把10,000
+the CONS of 10,000
+
+954
+00:53:44,512 --> 00:53:48,928
+和一个计算10,001到1,000,000之间整数的承诺结合起来
+to a promise to compute the integers between 10,001 and 1 million.
+
+955
+00:53:54,000 --> 00:53:55,750
 这也就是上面这个表达式
-So that's what this expression is.
+Okay? So that's what this expression is.
 
-930
-00:53:55,750 --> 00:53:57,640
+956
+00:53:55,750 --> 00:53:57,328
 现在我使用代换模型
 Here I'm using the substitution model.
 
-931
-00:53:57,640 --> 00:54:01,010
-我们可以用代换模型的原因是这里并没有涉及时间与状态的副作用
-And we can use the substitution model because we don't have side effects and state.
-
-932
-00:54:04,270 --> 00:54:08,380
-这里还有一个计算10001至1000000的承诺
-So I have CONS of 10,000 to a promise to compute the rest of the integers.
-
-933
-00:54:08,380 --> 00:54:09,850
-所以到现在为止，只有一个整数被枚举了出来
-So only one integer, so far, got enumerated.
-
-934
-00:54:14,380 --> 00:54:16,580
-然后用filter去过滤
-Well, I'm going to filter that thing for primality.
-
-935
-00:54:19,900 --> 00:54:22,360
-我们再来细看filter这个东西
-Again, you go back and look at the filter code.
-
-936
-00:54:22,360 --> 00:54:25,460
-filter首先测试 (HEAD S)
-What the filter will first do is test the head.
-
-937
-00:54:25,460 --> 00:54:33,500
-这里，测试到的是10,000，不是素数
-So in this case, the filter will test 10,000 and say, oh, 10,000's not prime.
-
-938
-00:54:33,500 --> 00:54:39,220
-然后就开始递归的过滤TAIL的部分
-Therefore, what I have to do recursively is filter the tail.
-
-939
-00:54:39,220 --> 00:54:46,340
-TAIL是什么呢？就是那个继续计算的承诺
-And what's the tail of it, well, that's the tail of this pair with a promise in it.
-
-940
-00:54:46,340 --> 00:54:49,680
-开始计算尾了，尾说，好，我履行承诺继续计算
-Tail now comes in and says, well, I'm going to force that.
-
-941
-00:54:49,680 --> 00:55:00,880
-履行承诺的意思是继续枚举10,001到1,000,000之间的整数
-I'm going to force that promise, which means now I'm going to compute the integers between 10,001 and 1 million.
-
-942
-00:55:00,880 --> 00:55:02,970
-现在看起来像是这样
-OK, so this filter now is looking at that.
-
-943
-00:55:07,810 --> 00:55:11,960
-现在，就又回到了最开始枚举的部分
-That enumerate itself, well, now we're back in the original enumerate situation.
-
-944
-00:55:11,960 --> 00:55:19,740
-(CONS 10001 (DELAY (E-I 10002 1000000))))
-The enumerate is the CONS of the first thing, 10,001, onto a promise to compute the rest.
-
-945
-00:55:19,740 --> 00:55:23,060
-现在filter又开始针对10,001进行过滤了
-So now the primality filter is going to go look at 10,001.
-
-946
-00:55:23,060 --> 00:55:25,120
-又要开始判断是不是质数
-It's going to decide if it likes that or not.
-
-947
-00:55:25,120 --> 00:55:27,550
-结果不是
-It turns out 10,001 isn't prime.
-
-948
-00:55:27,550 --> 00:55:29,610
-然后再继续履行承诺计算下去
-So it'll force it again and again and again.
-
-949
-00:55:32,920 --> 00:55:37,100
-然后，我觉得第一个质数可能是10,009
-And finally, I think the first prime it hits is 10,009.
-
-950
-00:55:37,100 --> 00:55:40,465
-在这个点才停下来
-And at that point, it'll stop.
-
-951
-00:55:40,465 --> 00:55:45,240
-这只是第一个质数，我们需要的是第二个
-And that will be the first prime, and then eventually, it'll need the second prime.
-
-952
-00:55:45,240 --> 00:55:47,030
-所以，又开始了
-So at that point, it will go again.
-
-953
-00:55:47,030 --> 00:55:53,130
-你会发现，你需要多少，它才生成多少，不多不少
-So you see what happens is that no more gets generated than you actually need.
-
-954
-00:55:56,690 --> 00:56:04,930
-enumerator不会生成比filter的要求更多的数要它去过滤
-That enumerator is not going to generate any more integers than the filter asks it for as it's pulling in things to check for primality.
-
-955
-00:56:04,930 --> 00:56:11,255
-filter也不会生成比你的要求更多的东西
-And the filter is not going to generate any more stuff than you ask it for, which is the head of the tail.
-
-956
-00:56:11,255 --> 00:56:28,160
-看吧，这样的程序实际运行起来就像是传统的那种程序一样，尽管外表看起来不像
-You see, what's happened is we've put that mixing of generation and test into what actually happens in the computer, even though that's not apparently what's happening from looking at our programs.
-
 957
-00:56:28,160 --> 00:56:30,230
-一切都很简单
-OK, well, that seemed easy.
+00:53:57,640 --> 00:53:59,328
+我们可以用代换模型的原因是
+And we can use the substitution model
 
 958
+00:53:59,344 --> 00:54:01,010
+这里并没有涉及状态和副作用
+because we don't have side effects and state.
+
+959
+00:54:03,560 --> 00:54:06,384
+所以我有10,000
+Okay? So I have CONS of 10,000
+
+960
+00:54:06,416 --> 00:54:08,272
+和一个计算剩余整数构成的流
+to a promise to compute the rest of the integers.
+
+961
+00:54:08,320 --> 00:54:10,496
+而到现在为止 只有一个整数被枚举了出来
+So only one integer, so far, got enumerated.
+
+962
+00:54:14,380 --> 00:54:16,960
+然后过滤器会对它做素性测试
+Well, I'm going to filter that thing for primality.
+
+963
+00:54:19,440 --> 00:54:21,904
+我们再来仔细看看过滤器的代码
+Again, you go back and look at the filter code.
+
+964
+00:54:22,360 --> 00:54:24,464
+过滤器首先测试流的首部分
+What the filter will first do is test the head.
+
+965
+00:54:25,460 --> 00:54:28,256
+这里 过滤器会测试10,000
+So in this case, the filter will test 10,000
+
+966
+00:54:30,304 --> 00:54:32,976
+然后输出：10,000不是质数
+oh, 10,000's not prime.
+
+967
+00:54:33,500 --> 00:54:35,856
+因此我只需要
+Therefore, what I have to do recursively
+
+968
+00:54:36,256 --> 00:54:37,390
+递归地过滤尾部分
+is filter the tail.
+
+969
+00:54:39,220 --> 00:54:40,144
+尾部分是什么呢？
+And what's the tail of it,
+
+970
+00:54:40,160 --> 00:54:43,760
+就是这个流的尾部分 -- 一个承诺
+well, that's the tail of this pair with a promise in it.
+
+971
+00:54:46,340 --> 00:54:48,064
+我们进入到尾部分
+Tail now comes in and says,
+
+972
+00:54:48,288 --> 00:54:49,504
+强制（计算）该承诺
+well, I'm going to force that.
+
+973
+00:54:49,680 --> 00:54:50,944
+我强制计算该承诺
+I'm going to force that promise,
+
+974
+00:54:52,304 --> 00:54:54,368
+这就意味着 我现在要
+which means now I'm going to compute
+
+975
+00:54:55,584 --> 00:54:57,968
+枚举10,001到1,000,000之间的整数
+the integers between 10,001 and 1 million.
+
+976
+00:55:00,800 --> 00:55:02,970
+现在 过滤器处理的是这个东西
+OK? So this filter now is looking at that.
+
+977
+00:55:07,810 --> 00:55:08,928
+这个枚举器枚举了它自己
+That enumerate itself,
+
+978
+00:55:08,944 --> 00:55:11,230
+我们又回到了最初那种枚举情况
+now we're back in the original enumerate situation.
+
+979
+00:55:11,960 --> 00:55:13,008
+我们的枚举器的
+The enumerate is
+
+980
+00:55:14,128 --> 00:55:16,448
+首部分是整数10,001
+CONS of the first thing, 10,001,
+
+981
+00:55:16,608 --> 00:55:18,208
+尾部分是计算剩余部分的承诺
+onto a promise to compute the rest.
+
+982
+00:55:19,740 --> 00:55:22,752
+因此现在素性过滤器将会测试10,001
+So now the primality filter is going to go look at 10,001.
+
+983
+00:55:23,232 --> 00:55:25,120
+开始判断它是不是质数
+It's going to decide if it likes that or not.
+
+984
+00:55:25,120 --> 00:55:27,088
+结果10,001不是质数
+It turns out 10,001 isn't prime.
+
+985
+00:55:27,550 --> 00:55:29,610
+然后再不断地强制求值承诺
+So it'll force it again and again and again.
+
+986
+00:55:32,920 --> 00:55:35,808
+最后 我觉得它找到的第一个质数可能是10,009
+And finally, I think the first prime it hits is 10,009.
+
+987
+00:55:37,100 --> 00:55:38,336
+它会在这个时候停止
+And at that point, it'll stop.
+
+988
+00:55:40,848 --> 00:55:41,936
+这只是第一个质数
+And that will be the first prime,
+
+989
+00:55:41,968 --> 00:55:43,488
+然而 我们需要的是第二个
+and then eventually, it'll need the second prime.
+
+990
+00:55:45,240 --> 00:55:46,848
+所以 这时它又启动了
+So at that point, it will go again.
+
+991
+00:55:47,030 --> 00:55:48,256
+你会发现
+So you see what happens is that
+
+992
+00:55:48,528 --> 00:55:50,496
+你需要多少
+no more gets generated
+
+993
+00:55:51,856 --> 00:55:52,912
+它就只会生成多少
+than you actually need.
+
+994
+00:55:56,480 --> 00:55:59,920
+枚举器生成整数的数量
+That enumerator is not going to generate any more integers
+
+995
+00:56:00,128 --> 00:56:01,450
+不会比过滤器所要求的多
+than the filter asks it for
+
+996
+00:56:01,472 --> 00:56:03,456
+#TBD
+as it's pulling in things to check for primality.
+
+997
+00:56:04,700 --> 00:56:06,512
+过滤器也不会生成
+And the filter is not going to generate
+
+998
+00:56:06,544 --> 00:56:08,048
+比你的要求更多的东西
+any more stuff than you ask it for,
+
+999
+00:56:08,064 --> 00:56:09,104
+也就是尾部分的首部分
+which is the head of the tail.
+
+1000
+00:56:11,616 --> 00:56:13,264
+你们看
+You see, what's happened is
+
+1001
+00:56:14,704 --> 00:56:18,240
+我们把计算机运行中实际进行的
+we've put that mixing of generation and test
+
+1002
+00:56:18,672 --> 00:56:20,656
+生成与测试过程混合在了一起
+into what actually happens in the computer,
+
+1003
+00:56:21,520 --> 00:56:22,672
+尽管
+even though
+
+1004
+00:56:23,184 --> 00:56:25,630
+我们的程序“看起来”显然不是这样
+that's not apparently what's happening from looking at our programs.
+
+1005
+00:56:28,160 --> 00:56:30,230
+一切都很简单
+OK, well, that seemed easy. #LAST
+
+1006
 00:56:30,230 --> 00:56:33,326
 这种机制的所有神奇之处在于DELAY
 All of this mechanism got put into this magic delay.
 
-959
+1007
 00:56:33,326 --> 00:56:36,900
 所以你会想，啊，这肯定是最难以理解的地方
 So you're saying, gee, that must be where the magic is.
 
-960
+1008
 00:56:36,900 --> 00:56:39,070
 但是并不是
 But see there's no magic there either.
 
-961
+1009
 00:56:39,070 --> 00:56:40,610
 其实你应该知道DELAY是什么
 You know what delay is.
 
-962
+1010
 00:56:40,610 --> 00:56:56,490
 表达式的DELAY只是一个缩略词，那么，这个要履行计算的承诺到底是什么？
 Delay on some expression is just an abbreviation for--  well, what's a promise to compute an expression?
 
-963
+1011
 00:56:56,490 --> 00:57:03,000
 (lambda () <exp>)，就这么简单
 Lambda of nil, procedure of no arguments, which is that expression.
 
-964
+1012
 00:57:03,000 --> 00:57:03,930
 这就是整个过程
 That's what a procedure is.
 
-965
+1013
 00:57:03,930 --> 00:57:06,050
 它的意思是，这个表达式将会被计算
 It says I'm going to compute an expression.
 
-966
+1014
 00:57:06,050 --> 00:57:07,460
 FORCE又是什么？
 What's force?
 
-967
+1015
 00:57:07,460 --> 00:57:10,800
 如何履行承诺？
 How do I take up a promise?
 
-968
+1016
 00:57:10,800 --> 00:57:15,890
 FORCE一些过程，只是简单地运行它们
 Well, force of some procedure, a promise, is just run it.
 
-969
+1017
 00:57:18,710 --> 00:57:20,120
 结束了，就是这样
 Done.
 
-970
+1018
 00:57:20,120 --> 00:57:23,580
 并没有什么离奇
 So there's no magic there at all.
 
-971
+1019
 00:57:23,580 --> 00:57:26,440
 总结一下，我们都做了点什么？
 Well, what have we done?
 
-972
+1020
 00:57:26,440 --> 00:57:30,960
 我们说，传统的编程方式更有效
 We said the old style, traditional style of programming is more efficient.
 
-973
+1021
 00:57:30,960 --> 00:57:35,260
 使用流来编程，程序更为明晰
 And the stream thing is more perspicuous.
 
-974
+1022
 00:57:35,260 --> 00:57:43,350
 我们设法用DELAY，使流获得了和其它过程一样的运行效果
 And we managed to make the stream procedures run like the other procedures by using delay.
 
-975
+1023
 00:57:43,350 --> 00:57:54,440
 DELAY所做的就是，把我们程序中的事件顺序与实际发生在机器中的事件顺序分离开来
 And the thing that delay did for us was to de-couple the apparent order of events in our programs from the actual order of events that happened in the machine.
 
-976
+1024
 00:57:54,440 --> 00:57:56,540
 这就是DELAY的作用
 That's really what delay is doing.
 
-977
+1025
 00:57:56,540 --> 00:57:58,290
 也是全部的重点
 That's exactly the whole point.
 
-978
+1026
 00:57:58,290 --> 00:58:09,182
 我们放弃了这种想法，即过程结构与实际运行映射出清晰的时间性
 We've given up the idea that our procedures, as they run, or as we look at them, mirror some clear notion of time.
 
-979
+1027
 00:58:09,182 --> 00:58:16,690
 放弃这种想法，我们给予DELAY以改变计算顺序的自由
 And by giving that up, we give delay the freedom to arrange the order of events in the computation the way it likes.
 
-980
+1028
 00:58:16,690 --> 00:58:17,610
 整个思想就是这样
 That's the whole idea.
 
-981
+1029
 00:58:17,610 --> 00:58:24,200
 我们分离了程序表面上的顺序与实际运行的顺序
 We de-couple the apparent order of events in our programs from the actual order of events in the computer.
 
-982
+1030
 00:58:24,200 --> 00:58:25,770
 对了，还有一个细节
 OK, well there's one more detail.
 
-983
+1031
 00:58:25,770 --> 00:58:29,730
 一个技术性的细节，但是也非常重要
 It's just a technical detail, but it's actually an important one.
 
-984
+1032
 00:58:29,730 --> 00:58:39,320
 当你运行一些递归的过程时，就像(TAIL (TAIL (TAIL ... 这样
 As you run through these recursive programs unwinding, you'll see a lot of things that look like tail of the tail of the tail.
 
-985
+1033
 00:58:39,320 --> 00:58:43,860
 它就会不断在流中通过CONS来计算构造新元素
 That's the kind of thing that would happen as I go CONSing down a stream all the way.
 
-986
+1034
 00:58:43,860 --> 00:59:05,290
 每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
 And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
 
-987
+1035
 00:59:05,290 --> 00:59:20,390
 我们把DELAY稍微改写一下，就可以让整件事变得 -- 我先写一下
 So there's one little hack to slightly change what delay is, and make it a thing which is-- I'll write it this way.
 
-988
+1036
 00:59:20,390 --> 00:59:31,000
 (DELAY <exp>)的具体内容是(MEMO-PROC (lambda () <exp>))
 The actual implementation, delay is an abbreviation for this thing, memo-proc of a procedure.
 
-989
+1037
 00:59:31,000 --> 00:59:35,150
 MEMO-PROC改变一个过程
 Memo-proc is a special thing that transforms a procedure.
 
-990
+1038
 00:59:35,150 --> 00:59:44,806
 取一个没有参数的过程，转变其为只需要执行一次计算的过程
 What it does is it takes a procedure of no arguments and it transforms it into a procedure that'll only have to do its computation once.
 
-991
+1039
 00:59:44,806 --> 00:59:48,700
 我们意思是，你给它一个过程
 And what I mean by that is, you give it a procedure.
 
-992
+1040
 00:59:48,700 --> 01:00:02,360
 MEMO-PROC的结果是一个新的过程，第一次运行的时候，它计算<exp>，记下来它的结果，从那之后，每次你再运行这个过程，就不用再计算了
 The result of memo-proc will be a new procedure, which the first time you call it, will run the original procedure, remember what result it got, and then from ever on after, when you call it, it just won't have to do the computation.
 
-993
+1041
 01:00:02,360 --> 01:00:05,200
 它会把结果存储在一个地方
 It will have cached that result someplace.
 
-994
+1042
 01:00:05,200 --> 01:00:06,550
 可以这样来实现MEMO-PROC
 And here's an implementation of memo-proc.
 
-995
+1043
 01:00:11,210 --> 01:00:12,710
 一旦你了解怎么做，实现就很容易了
 Once you have the idea, it's easy to implement.
 
-996
+1044
 01:00:12,710 --> 01:00:17,390
 MEMO-PROC中，有两个标记变量
 Memo-proc is this little thing that has two little flags in there.
 
-997
+1045
 01:00:17,390 --> 01:00:20,320
 一个是，记录是否运行过
 It says, have I already been run?
 
-998
+1046
 01:00:20,320 --> 01:00:23,620
 初始值是NO，还没运行过
 And initially it says, no, I haven't already been run.
 
-999
+1047
 01:00:23,620 --> 01:00:29,070
 上一次运行后，它的结果是什么？
 And what was the result I got the last time I was run?
 
-1000
+1048
 01:00:29,070 --> 01:00:34,360
 MEMO-PROC取一个参数为PROC，返回一个没有参数的过程
 So memo-proc takes a procedure called proc, and it returns a new procedure of no arguments.
 
-1001
+1049
 01:00:34,360 --> 01:00:38,610
 PROC也是一个没有参数的过程
 Proc is supposed to be a procedure of no arguments.
 
-1002
+1050
 01:00:38,610 --> 01:00:44,430
 如果没有运行过，就做下面的事情
 And it says, oh, if I'm not already run, then I'm going to do a sequence of things.
 
-1003
+1051
 01:00:44,430 --> 01:00:48,450
 计算PROC，存储它的值
 I'm going to compute proc, I'm going to save that.
 
-1004
+1052
 01:00:48,450 --> 01:00:51,140
 存储在变量RESULT中
 I'm going to stash that in the variable result.
 
-1005
+1053
 01:00:51,140 --> 01:00:56,610
 然后对already-run?赋值，提醒自己已经运行过了，最后返回result
 I'm going to make a note to myself that I've already been run, and then I'll return the result.
 
-1006
+1054
 01:00:56,610 --> 01:00:59,010
 所以整件事即如果你没有运行过，就计算一次
 So that's if you compute it if it's not already run.
 
-1007
+1055
 01:00:59,010 --> 01:01:03,420
 如果已经运行过，直接返回结果就好了
 If you call it and it's already been run, it just returns the result.
 
-1008
+1056
 01:01:03,420 --> 01:01:08,400
 这是一种叫“记忆化”的小技巧
 So that's a little clever hack called memorization.
 
-1009
+1057
 01:01:08,400 --> 01:01:15,270
 这样的话，这一串东西就不会来反复的计算TAIL了
 And in this case, it short circuits having to re-compute the tail of the tail of the tail of the tail of the tail.
 
-1010
+1058
 01:01:15,270 --> 01:01:17,810
 不再那样的没效率了
 So there isn't even that kind of inefficiency.
 
-1011
+1059
 01:01:17,810 --> 01:01:24,210
 事实上，这样做甚至和传统的那种程序效率是一样的
 And in fact, the streams will run with pretty much the same efficiency as the other programs precisely.
 
-1012
+1060
 01:01:24,210 --> 01:01:33,610
 记住，再次提醒，整个的思想在于，过程与数据之间没有一个明确的分界线
 And remember, again, the whole idea of this is that we've used the fact that there's no really good dividing line between procedures and data.
 
-1013
+1061
 01:01:33,610 --> 01:01:38,760
 这个数据结构看起来，有点像一个过程
 We've written data structures that, in fact, are sort of like procedures.
 
-1014
+1062
 01:01:38,760 --> 01:01:49,620
 它使我们可以在这里放置一个结构，不断的迭代计算自身
 And what that's allowed us to do is take an example of a common control structure, in this place iteration.
 
-1015
+1063
 01:01:49,620 --> 01:01:55,496
 我们构造的这个数据结构，其中有一个过程，这个过程可以通过迭代，产生新的结构
 And we've built a data structure which, since itself is a procedure, kind of has this iteration control structure in it.
 
-1016
+1064
 01:01:55,496 --> 01:01:58,650
 这就是流的实质
 And that's really what streams are.
 
-1017
+1065
 01:01:58,650 --> 01:01:59,900
 好的，大家有什么问题吗？
 OK, questions?
 
-1018
+1066
 01:02:03,950 --> 01:02:13,052
 我是这样理解的，你刚才说(TAIL (TAIL (TAIL ...，没有没有MEMO-PROC的话，FORCE仅仅只是执行了一次过程而已
 AUDIENCE: Your description of tail-tail-tail, if I understand it correctly, force is actually execution of a procedure, if it's done without this memo-proc thing.
 
-1019
+1067
 01:02:13,052 --> 01:02:16,380
 你说使用那个MEMO-PROC就不会有那样的问题
 And you implied that memo-proc gets around that problem.
 
-1020
+1068
 01:02:16,380 --> 01:02:23,910
 难道(TAIL (TAIL (TAIL ... 不是每次都在进行计算吗？ -- [教授]哦，对的
 Doesn't it only get around it if tail-tail-tail is always executing exactly the same-- PROFESSOR: Oh, that's-- sure.
 
-1021
+1069
 01:02:23,910 --> 01:02:26,050
 我忘记说了
 PROFESSOR: I guess I missed that point.
 
-1022
+1070
 01:02:26,050 --> 01:02:26,540
 你是对的
 PROFESSOR: Oh, sure.
 
-1023
+1071
 01:02:26,540 --> 01:02:31,290
 不小心漏掉了这点
 I mean the point is--  yeah.
 
-1024
+1072
 01:02:31,290 --> 01:02:34,160
 我的意思是，不用重复计算也可以得到结果
 I mean I have to do a computation to get the answer.
 
-1025
+1073
 01:02:34,160 --> 01:02:42,980
 关键在于，一旦你计算过(TAIL STREAM)，当你计算(TAIL (TAIL STREAM))的时候，就不用再计算第一个TAIL了
 But the point is, once I've found the tail of the stream, to get the tail of the tail, I shouldn't have had to re-compute the first tail.
 
-1026
+1074
 01:02:42,980 --> 01:02:46,460
 明白了吧，如果我没有用MEMO-PROC，还要再计算一遍(TAIL STREAM)
 See, and if I didn't use memo-proc, that re-computation would have been done.
 
-1027
+1075
 01:02:46,460 --> 01:02:47,710
 明白了
 AUDIENCE: I understand now.
 
-1028
+1076
 01:02:50,830 --> 01:02:56,830
 之前的例子中你提到过，我们可以使用代换模型因为这里没有副作用
 AUDIENCE: In one of your examples, you mentioned that we were able to use the substitution model because there are no side effects.
 
-1029
+1077
 01:02:56,830 --> 01:03:03,620
 如果流通过的一个处理单元 -- 如果有副作用呢？如果有了状态？
 What if we had a single processing unit-- if we had a side effect, if we had a state?
 
-1030
+1078
 01:03:03,620 --> 01:03:09,120
 我们还可以用这种流的结构吗？
 Could we still practically build the stream model?
 
-1031
+1079
 01:03:09,120 --> 01:03:09,530
 可能吧
 PROFESSOR: Maybe.
 
-1032
+1080
 01:03:09,530 --> 01:03:10,540
 很难说
 That's a hard question.
 
-1033
+1081
 01:03:10,540 --> 01:03:18,960
 我可能会花很长时间来探讨代换模型和副作用无法共存
 I'm going to talk a little bit later about the places where substitution and side effects don't really mix very well.
 
-1034
+1082
 01:03:18,960 --> 01:03:25,170
 通常情况下，除非你非常小心，否则副作用会把一切弄的很糟糕
 But in general, I think the answer is unless you're very careful, any amount of side effect is going to mess up everything.
 
-1035
+1083
 01:03:35,490 --> 01:03:39,410
 我不是很理解MEMO-PROC这个过程
 AUDIENCE: Sorry, I didn't quite understand the memo-proc operation.
 
-1036
+1084
 01:03:39,410 --> 01:03:41,990
 当你执行lambda的时候
 When do you execute the lambda?
 
-1037
+1085
 01:03:41,990 --> 01:03:47,600
 换句话说，当MEMO-PROC执行的时候，只生成了lambda表达式
 In other words, when memo-proc is executed, just this lambda expression is being generated.
 
-1038
+1086
 01:03:47,600 --> 01:03:50,390
 但是我不太清楚是什么时候执行的
 But it's not clear to me when it's executed.
 
-1039
+1087
 01:03:50,390 --> 01:03:51,350
 好的
 PROFESSOR: Right.
 
-1040
+1088
 01:03:51,350 --> 01:03:57,930
 MEMO-PROC所做的 -- 作为MEMO-PROC参数是PROC，一个没有参数的过程
 What memo-proc does-- remember, the thing that's going into memo-proc, the thing proc, is a procedure of no arguments.
 
-1041
+1089
 01:03:57,930 --> 01:04:00,390
 某个时刻，你会调用到它
 And someday, you're going to call it.
 
-1042
+1090
 01:04:00,390 --> 01:04:06,620
 MEMO-PROC把一个过程转化为另一个过程，某个时刻你会调用到它
 Memo-proc translates that procedure into another procedure of no arguments, which someday you're going to call.
 
-1043
+1091
 01:04:06,620 --> 01:04:09,890
 就是这个lambda
 That's that lambda.
 
-1044
+1092
 01:04:09,890 --> 01:04:24,100
 这里，当这一部分构造成为流的TAIL的时候，这个没有参数的过程，会在之后的某个时刻被调用到
 So here, where I initially built as my tail of the stream, say, this procedure of no arguments, which someday I'll call.
 
-1045
+1093
 01:04:24,100 --> 01:04:30,650
 相对应的，我把这一部分理解为是MEMO-PROC，某个时刻会被调用到的
 Instead, I'm going to have the tail of the stream be memo-proc of it, which someday I'll call.
 
-1046
+1094
 01:04:30,650 --> 01:04:47,642
 所以这个lambda，会在你调用MEMO-PROC得到结果的时候被调用，正如你之前设置过的一样
 So that lambda of nil, that gets called when you call the memo-proc, when you call the result of that memo-proc, which would be ordinarily when you would have called the original thing that you set it.
 
-1047
+1095
 01:04:47,642 --> 01:04:52,610
 我的意思是，你调用MEMO-PROC的时候，你只是返回了一个lambda
 AUDIENCE: OK, the reason I ask is I had a feeling that when you call memo-proc, you just return this lambda.
 
-1048
+1096
 01:04:52,610 --> 01:04:53,770
 对啊
 PROFESSOR: That's right.
 
-1049
+1097
 01:04:53,770 --> 01:04:58,100
 你调用MEMO-PROC的时候，返回了一个lambda
 When you call memo-proc, you return the lambda.
 
-1050
+1098
 01:04:58,100 --> 01:05:02,270
 你也没有执行<exp>，直到你第一次需要执行它的时候
 You never evaluate the expression at all, until the first time that you would have evaluated it.
 
-1051
+1099
 01:05:07,590 --> 01:05:14,240
 我这样理解对吗？你构造了一个列表，其中的元素还没有被计算
 AUDIENCE: Do I understand it right that you actually have to build the list up, but the elements of the list don't get evaluated?
 
-1052
+1100
 01:05:14,240 --> 01:05:15,630
 表达式没有被计算？
 The expressions don't get evaluated?
 
-1053
+1101
 01:05:15,630 --> 01:05:18,540
 但在在每一个阶段，你还是构造了列表
 But at each stage, you actually are building a list.
 
-1054
+1102
 01:05:18,540 --> 01:05:20,700
 嗯，我应该这样说
 PROFESSOR: That's-- I really should have said this.
 
-1055
+1103
 01:05:20,700 --> 01:05:22,270
 这个问题不错
 That's a really good point.
 
-1056
+1104
 01:05:22,270 --> 01:05:23,660
 但是，也不全对
 No, it's not quite right.
 
-1057
+1105
 01:05:23,660 --> 01:05:25,080
 因为实际发生的事情是这样的
 Because what happens is this.
 
-1058
+1106
 01:05:25,080 --> 01:05:26,890
 我先把这个画成序对
 Let me draw this as pairs.
 
-1059
+1107
 01:05:26,890 --> 01:05:32,740
 假设我要构造一个特别大的流，比如枚举整数，从1到1,000,000,000
 Suppose I'm going to make a big stream, like enumerate interval, 1 through 1 billion.
 
-1060
+1108
 01:05:32,740 --> 01:05:43,045
 就是1，和一个计算的约定
 What that is, is a pair with a 1 and a promise.
 
-1061
+1109
 01:05:46,520 --> 01:05:47,890
 就是这样
 That's exactly what it is.
 
-1062
+1110
 01:05:47,890 --> 01:05:49,140
 什么都没有构造
 Nothing got built up.
 
-1063
+1111
 01:05:51,600 --> 01:05:56,370
 当我继续的时候，FORCE这一部分，会发生什么？
 When I go and force this, and say, what happens?
 
-1064
+1112
 01:05:56,370 --> 01:06:00,530
 这个东西递归的产生了CONS
 Well, this thing is now also recursively a CONS.
 
-1065
+1113
 01:06:00,530 --> 01:06:11,350
 这个约定生成了下一个东西，就是2和一个约定
 So that this promise now is the next thing, which is a 2 and a promise to do more.
 
-1066
+1114
 01:06:11,350 --> 01:06:14,470
 一直这样下去
 And so on and so on and so on.
 
-1067
+1115
 01:06:14,470 --> 01:06:18,200
 所以你沿着流这样下来，并没有构造什么
 So nothing gets built up until you walk down the stream.
 
-1068
+1116
 01:06:18,200 --> 01:06:25,500
 因为这个东西不是列表，只是一个生成列表的约定，技术上来说，是一个过程
 Because what's sitting here is not the list, but a promise to generate the list. And by promise, technically I mean procedure.
 
-1069
+1117
 01:06:28,050 --> 01:06:30,485
 因此并没有构造列表
 So it doesn't get built up.
 
-1070
+1118
 01:06:30,485 --> 01:06:34,280
 我应该早点说的
 Yeah, I should have said that before this point.
 
-1071
+1119
 01:06:34,280 --> 01:06:34,490
 好吧
 OK.
 
-1072
+1120
 01:06:34,490 --> 01:06:34,790
 就到这里
 Thank you.
 
-1073
+1121
 01:06:34,790 --> 01:06:36,340
 大家休息一下吧
 Let's take a break.
