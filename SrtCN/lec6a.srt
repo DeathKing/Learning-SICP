@@ -4311,7 +4311,7 @@ And it says, gee, I need some more data.
 863
 00:49:17,890 --> 00:49:19,568
 然后这个又从下一个单元拉取
-And this one tugs on this thing, 
+And this one tugs on this thing,
 
 864
 00:49:19,568 --> 00:49:20,288
@@ -4506,7 +4506,7 @@ CONS-stream and head and tail.
 902
 00:50:48,080 --> 00:50:49,360
 刚开始的时候我说
-When I started, I said 
+When I started, I said
 
 903
 00:50:49,920 --> 00:50:51,360
@@ -4565,7 +4565,7 @@ is going to be just the CAR.
 
 914
 00:51:42,380 --> 00:51:44,256
-而(TAIL S) 
+而(TAIL S)
 And the tail of a stream
 
 915
@@ -5019,586 +5019,711 @@ even though
 that's not apparently what's happening from looking at our programs.
 
 1005
-00:56:28,160 --> 00:56:30,230
-一切都很简单
-OK, well, that seemed easy. #LAST
+00:56:28,128 --> 00:56:29,408
+看起来都很简单
+OK, well, that seemed easy.
 
 1006
-00:56:30,230 --> 00:56:33,326
-这种机制的所有神奇之处在于DELAY
+00:56:30,230 --> 00:56:32,672
+这种机制的神奇之处在于DELAY
 All of this mechanism got put into this magic delay.
 
 1007
-00:56:33,326 --> 00:56:36,900
-所以你会想，啊，这肯定是最难以理解的地方
+00:56:33,680 --> 00:56:35,664
+所以你也许会说 这全是因为DELAY很强大
 So you're saying, gee, that must be where the magic is.
 
 1008
-00:56:36,900 --> 00:56:39,070
-但是并不是
+00:56:36,900 --> 00:56:38,576
+但其实并不是
 But see there's no magic there either.
 
 1009
-00:56:39,070 --> 00:56:40,610
-其实你应该知道DELAY是什么
+00:56:39,070 --> 00:56:39,984
+DELAY其实很简单
 You know what delay is.
 
 1010
-00:56:40,610 --> 00:56:56,490
-表达式的DELAY只是一个缩略词，那么，这个要履行计算的承诺到底是什么？
-Delay on some expression is just an abbreviation for--  well, what's a promise to compute an expression?
+00:56:40,610 --> 00:56:45,072
+(DELAY <EXP>)
+Delay on some expression
 
 1011
-00:56:56,490 --> 00:57:03,000
-(lambda () <exp>)，就这么简单
-Lambda of nil, procedure of no arguments, which is that expression.
+00:56:48,256 --> 00:56:50,048
+只是一个缩略表达
+is just an abbreviation for--
 
 1012
-00:57:03,000 --> 00:57:03,930
-这就是整个过程
-That's what a procedure is.
+00:56:53,360 --> 00:56:55,632
+它是-- 创建用于计算一个表达式的承诺#TBD
+well, what's a promise to compute an expression?
 
 1013
-00:57:03,930 --> 00:57:06,050
-它的意思是，这个表达式将会被计算
-It says I'm going to compute an expression.
+00:56:56,490 --> 00:57:01,120
+(LAMBDA () <EXP>) 这样的一个表达式
+Lambda of nil, procedure of no arguments, which is that expression.
 
 1014
-00:57:06,050 --> 00:57:07,460
-FORCE又是什么？
-What's force?
+00:57:02,832 --> 00:57:03,840
+这就是整个过程
+Right? That's what a procedure is.
 
 1015
-00:57:07,460 --> 00:57:10,800
-如何履行承诺？
-How do I take up a promise?
+00:57:03,984 --> 00:57:05,530
+这个承诺将要计算表达式<EXP>
+It says I'm going to compute an expression.
 
 1016
-00:57:10,800 --> 00:57:15,890
-FORCE一些过程，只是简单地运行它们
-Well, force of some procedure, a promise, is just run it.
+00:57:06,050 --> 00:57:06,736
+FORCE过程又是什么？
+What's force?
 
 1017
-00:57:18,710 --> 00:57:20,120
-结束了，就是这样
-Done.
+00:57:07,344 --> 00:57:10,800
+如何履行承诺？#TBD
+Right, how do I take up a promise?
 
 1018
-00:57:20,120 --> 00:57:23,580
-并没有什么离奇
-So there's no magic there at all.
+00:57:10,800 --> 00:57:14,112
+FROCE一个PROMISE -- 也就是某个过程
+Well, force of some procedure, a promise,
 
 1019
-00:57:23,580 --> 00:57:26,440
-总结一下，我们都做了点什么？
-Well, what have we done?
+00:57:14,784 --> 00:57:15,408
+只是简单地运行它们
+is just run it.
 
 1020
-00:57:26,440 --> 00:57:30,960
-我们说，传统的编程方式更有效
-We said the old style, traditional style of programming is more efficient.
+00:57:19,232 --> 00:57:19,568
+结束了 就是这样
+Done.
 
 1021
-00:57:30,960 --> 00:57:35,260
-使用流来编程，程序更为明晰
-And the stream thing is more perspicuous.
+00:57:20,240 --> 00:57:21,376
+所以这里并没有什么魔法
+So there's no magic there at all.
 
 1022
-00:57:35,260 --> 00:57:43,350
-我们设法用DELAY，使流获得了和其它过程一样的运行效果
-And we managed to make the stream procedures run like the other procedures by using delay.
+00:57:23,520 --> 00:57:24,240
+总结一下 我们都干了些什么？
+Well, what have we done?
 
 1023
-00:57:43,350 --> 00:57:54,440
-DELAY所做的就是，把我们程序中的事件顺序与实际发生在机器中的事件顺序分离开来
-And the thing that delay did for us was to de-couple the apparent order of events in our programs from the actual order of events that happened in the machine.
+00:57:26,440 --> 00:57:27,504
+我们说
+We said the old style,
 
 1024
-00:57:54,440 --> 00:57:56,540
-这就是DELAY的作用
-That's really what delay is doing.
+00:57:28,144 --> 00:57:30,816
+传统的编程方式更有效
+traditional style of programming is more efficient.
 
 1025
-00:57:56,540 --> 00:57:58,290
+00:57:30,960 --> 00:57:33,920
+而流程序却更加清晰
+And the stream thing is more perspicacious.
+
+1026
+00:57:35,504 --> 00:57:38,720
+我们设法用DELAY
+And we managed to make the stream procedures
+
+1027
+00:57:38,816 --> 00:57:43,232
+使流程序和其它过程一样高效
+run like the other procedures by using delay.
+
+1028
+00:57:43,350 --> 00:57:46,432
+DELAY所做的就是把
+And the thing that delay did for us was to de-couple
+
+1029
+00:57:46,688 --> 00:57:50,400
+我们程序中 事件发生的逻辑顺序
+the apparent order of events in our programs
+
+1030
+00:57:51,216 --> 00:57:53,840
+和机器中 事件发生的实际顺序 解耦开来
+from the actual order of events that happened in the machine.
+
+1031
+00:57:54,440 --> 00:57:55,936
+这是DELAY的实质作用
+That's really what delay is doing.
+
+1032
+00:57:57,152 --> 00:57:58,290
 也是全部的重点
 That's exactly the whole point.
 
-1026
-00:57:58,290 --> 00:58:09,182
-我们放弃了这种想法，即过程结构与实际运行映射出清晰的时间性
-We've given up the idea that our procedures, as they run, or as we look at them, mirror some clear notion of time.
+1033
+00:57:58,290 --> 00:58:01,920
+我们放弃了那种想法
+We've given up, right, we've given up the idea
 
-1027
-00:58:09,182 --> 00:58:16,690
-放弃这种想法，我们给予DELAY以改变计算顺序的自由
-And by giving that up, we give delay the freedom to arrange the order of events in the computation the way it likes.
+1034
+00:58:02,300 --> 00:58:04,176
+即程序的运行
+that our procedures, as they run,
 
-1028
+1035
+00:58:04,672 --> 00:58:05,952
+或者源码的编排
+or as we look at them,
+
+1036
+00:58:06,336 --> 00:58:08,256
+其时间都是镜像的#TBD
+mirror some clear notion of time.
+
+1037
+00:58:09,456 --> 00:58:10,576
+一旦放弃了这种想法
+And by giving that up,
+
+1038
+00:58:11,216 --> 00:58:13,328
+我们能使用DELAY
+we give delay the freedom to arrange the order
+
+1039
+00:58:13,344 --> 00:58:15,200
+自由地安排计算顺序
+of events in the computation the way it likes.
+
+1040
 00:58:16,690 --> 00:58:17,610
 整个思想就是这样
 That's the whole idea.
 
-1029
-00:58:17,610 --> 00:58:24,200
-我们分离了程序表面上的顺序与实际运行的顺序
-We de-couple the apparent order of events in our programs from the actual order of events in the computer.
+1041
+00:58:17,610 --> 00:58:19,456
+我们分离了
+We de-couple the apparent order
 
-1030
-00:58:24,200 --> 00:58:25,770
-对了，还有一个细节
+1042
+00:58:19,952 --> 00:58:21,136
+程序的逻辑顺序
+of events in our programs
+
+1043
+00:58:21,168 --> 00:58:22,896
+和其实际运行的顺序
+from the actual order of events in the computer.
+
+1044
+00:58:24,096 --> 00:58:25,770
+对了 还有一个细节
 OK, well there's one more detail.
 
-1031
-00:58:25,770 --> 00:58:29,730
-一个技术性的细节，但是也非常重要
-It's just a technical detail, but it's actually an important one.
+1045
+00:58:25,770 --> 00:58:27,216
+一个技术性的细节
+It's just a technical detail,
 
-1032
-00:58:29,730 --> 00:58:39,320
-当你运行一些递归的过程时，就像(TAIL (TAIL (TAIL ... 这样
-As you run through these recursive programs unwinding, you'll see a lot of things that look like tail of the tail of the tail.
+1046
+00:58:27,216 --> 00:58:28,432
+但是也非常重要
+but it's actually an important one.
 
-1033
-00:58:39,320 --> 00:58:43,860
-它就会不断在流中通过CONS来计算构造新元素
-That's the kind of thing that would happen as I go CONSing down a stream all the way.
+1047
+00:58:29,730 --> 00:58:32,016
+#TBD
+As you run through these recursive programs unwinding,
 
-1034
-00:58:43,860 --> 00:59:05,290
+1048
+00:58:32,160 --> 00:58:33,584
+你会看到很多像是
+you'll see a lot of things that look like
+
+1049
+00:58:33,648 --> 00:58:37,872
+(TAIL (TAIL (TAIL ... 这样的东西
+tail of the tail of the tail.
+
+1050
+00:58:39,200 --> 00:58:41,024
+如果流是通过嵌套的CONS构造起来的
+Right. That's the kind of thing that would happen
+
+1051
+00:58:41,024 --> 00:58:42,880
+就会出现这种情况
+as I go CONSing down a stream all the way.
+
+1052
+00:58:43,860 --> 00:58:46,096
+如果我每次都要执行一次
+And if each time I'm doing that,
+
+1053
+00:58:46,144 --> 00:58:47,584
+如果我每次都要计算TAIL
+each time to compute a tail,#LAST
+
+1054
+00:58:48,224 --> 00:58:50,880
 每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
 And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
 
-1035
+1055
+00:58:51,072 --> 00:58:53,072
+每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
+And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
+
+1056
+00:58:53,100 --> 00:58:55,408
+每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
+And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
+
+1057
+00:58:55,504 --> 00:58:56,880
+每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
+And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
+
+1058
+00:58:57,776 --> 00:59:00,560
+每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
+And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
+
+1059
+00:59:01,168 --> 00:59:04,000
+每次我这样做，计算TAIL，都要执行过程计算出新元素，每次执行TAIL，都要再次计算，看起来这效率非常低，还不如列表，因为我进行了多余的重复
+And if each time I'm doing that, each time to compute a tail, I evaluate a procedure which then has to go re-compute its tail, and re-compute its tail and recompute its tail each time, you can see that's very inefficient compared to just having a list where the elements are all there, and I don't have to re-compute each tail every time I get the next tail.
+
+1060
 00:59:05,290 --> 00:59:20,390
 我们把DELAY稍微改写一下，就可以让整件事变得 -- 我先写一下
 So there's one little hack to slightly change what delay is, and make it a thing which is-- I'll write it this way.
 
-1036
+1061
 00:59:20,390 --> 00:59:31,000
 (DELAY <exp>)的具体内容是(MEMO-PROC (lambda () <exp>))
 The actual implementation, delay is an abbreviation for this thing, memo-proc of a procedure.
 
-1037
+1062
 00:59:31,000 --> 00:59:35,150
 MEMO-PROC改变一个过程
 Memo-proc is a special thing that transforms a procedure.
 
-1038
+1063
 00:59:35,150 --> 00:59:44,806
 取一个没有参数的过程，转变其为只需要执行一次计算的过程
 What it does is it takes a procedure of no arguments and it transforms it into a procedure that'll only have to do its computation once.
 
-1039
+1064
 00:59:44,806 --> 00:59:48,700
 我们意思是，你给它一个过程
 And what I mean by that is, you give it a procedure.
 
-1040
+1065
 00:59:48,700 --> 01:00:02,360
 MEMO-PROC的结果是一个新的过程，第一次运行的时候，它计算<exp>，记下来它的结果，从那之后，每次你再运行这个过程，就不用再计算了
 The result of memo-proc will be a new procedure, which the first time you call it, will run the original procedure, remember what result it got, and then from ever on after, when you call it, it just won't have to do the computation.
 
-1041
+1066
 01:00:02,360 --> 01:00:05,200
 它会把结果存储在一个地方
 It will have cached that result someplace.
 
-1042
+1067
 01:00:05,200 --> 01:00:06,550
 可以这样来实现MEMO-PROC
 And here's an implementation of memo-proc.
 
-1043
+1068
 01:00:11,210 --> 01:00:12,710
 一旦你了解怎么做，实现就很容易了
 Once you have the idea, it's easy to implement.
 
-1044
+1069
 01:00:12,710 --> 01:00:17,390
 MEMO-PROC中，有两个标记变量
 Memo-proc is this little thing that has two little flags in there.
 
-1045
+1070
 01:00:17,390 --> 01:00:20,320
 一个是，记录是否运行过
 It says, have I already been run?
 
-1046
+1071
 01:00:20,320 --> 01:00:23,620
 初始值是NO，还没运行过
 And initially it says, no, I haven't already been run.
 
-1047
+1072
 01:00:23,620 --> 01:00:29,070
 上一次运行后，它的结果是什么？
 And what was the result I got the last time I was run?
 
-1048
+1073
 01:00:29,070 --> 01:00:34,360
 MEMO-PROC取一个参数为PROC，返回一个没有参数的过程
 So memo-proc takes a procedure called proc, and it returns a new procedure of no arguments.
 
-1049
+1074
 01:00:34,360 --> 01:00:38,610
 PROC也是一个没有参数的过程
 Proc is supposed to be a procedure of no arguments.
 
-1050
+1075
 01:00:38,610 --> 01:00:44,430
 如果没有运行过，就做下面的事情
 And it says, oh, if I'm not already run, then I'm going to do a sequence of things.
 
-1051
+1076
 01:00:44,430 --> 01:00:48,450
 计算PROC，存储它的值
 I'm going to compute proc, I'm going to save that.
 
-1052
+1077
 01:00:48,450 --> 01:00:51,140
 存储在变量RESULT中
 I'm going to stash that in the variable result.
 
-1053
+1078
 01:00:51,140 --> 01:00:56,610
 然后对already-run?赋值，提醒自己已经运行过了，最后返回result
 I'm going to make a note to myself that I've already been run, and then I'll return the result.
 
-1054
+1079
 01:00:56,610 --> 01:00:59,010
 所以整件事即如果你没有运行过，就计算一次
 So that's if you compute it if it's not already run.
 
-1055
+1080
 01:00:59,010 --> 01:01:03,420
 如果已经运行过，直接返回结果就好了
 If you call it and it's already been run, it just returns the result.
 
-1056
+1081
 01:01:03,420 --> 01:01:08,400
 这是一种叫“记忆化”的小技巧
 So that's a little clever hack called memorization.
 
-1057
+1082
 01:01:08,400 --> 01:01:15,270
 这样的话，这一串东西就不会来反复的计算TAIL了
 And in this case, it short circuits having to re-compute the tail of the tail of the tail of the tail of the tail.
 
-1058
+1083
 01:01:15,270 --> 01:01:17,810
 不再那样的没效率了
 So there isn't even that kind of inefficiency.
 
-1059
+1084
 01:01:17,810 --> 01:01:24,210
 事实上，这样做甚至和传统的那种程序效率是一样的
 And in fact, the streams will run with pretty much the same efficiency as the other programs precisely.
 
-1060
+1085
 01:01:24,210 --> 01:01:33,610
 记住，再次提醒，整个的思想在于，过程与数据之间没有一个明确的分界线
 And remember, again, the whole idea of this is that we've used the fact that there's no really good dividing line between procedures and data.
 
-1061
+1086
 01:01:33,610 --> 01:01:38,760
 这个数据结构看起来，有点像一个过程
 We've written data structures that, in fact, are sort of like procedures.
 
-1062
+1087
 01:01:38,760 --> 01:01:49,620
 它使我们可以在这里放置一个结构，不断的迭代计算自身
 And what that's allowed us to do is take an example of a common control structure, in this place iteration.
 
-1063
+1088
 01:01:49,620 --> 01:01:55,496
 我们构造的这个数据结构，其中有一个过程，这个过程可以通过迭代，产生新的结构
 And we've built a data structure which, since itself is a procedure, kind of has this iteration control structure in it.
 
-1064
+1089
 01:01:55,496 --> 01:01:58,650
 这就是流的实质
 And that's really what streams are.
 
-1065
+1090
 01:01:58,650 --> 01:01:59,900
 好的，大家有什么问题吗？
 OK, questions?
 
-1066
+1091
 01:02:03,950 --> 01:02:13,052
 我是这样理解的，你刚才说(TAIL (TAIL (TAIL ...，没有没有MEMO-PROC的话，FORCE仅仅只是执行了一次过程而已
 AUDIENCE: Your description of tail-tail-tail, if I understand it correctly, force is actually execution of a procedure, if it's done without this memo-proc thing.
 
-1067
+1092
 01:02:13,052 --> 01:02:16,380
 你说使用那个MEMO-PROC就不会有那样的问题
 And you implied that memo-proc gets around that problem.
 
-1068
+1093
 01:02:16,380 --> 01:02:23,910
 难道(TAIL (TAIL (TAIL ... 不是每次都在进行计算吗？ -- [教授]哦，对的
 Doesn't it only get around it if tail-tail-tail is always executing exactly the same-- PROFESSOR: Oh, that's-- sure.
 
-1069
+1094
 01:02:23,910 --> 01:02:26,050
 我忘记说了
 PROFESSOR: I guess I missed that point.
 
-1070
+1095
 01:02:26,050 --> 01:02:26,540
 你是对的
 PROFESSOR: Oh, sure.
 
-1071
+1096
 01:02:26,540 --> 01:02:31,290
 不小心漏掉了这点
 I mean the point is--  yeah.
 
-1072
+1097
 01:02:31,290 --> 01:02:34,160
 我的意思是，不用重复计算也可以得到结果
 I mean I have to do a computation to get the answer.
 
-1073
+1098
 01:02:34,160 --> 01:02:42,980
 关键在于，一旦你计算过(TAIL STREAM)，当你计算(TAIL (TAIL STREAM))的时候，就不用再计算第一个TAIL了
 But the point is, once I've found the tail of the stream, to get the tail of the tail, I shouldn't have had to re-compute the first tail.
 
-1074
+1099
 01:02:42,980 --> 01:02:46,460
 明白了吧，如果我没有用MEMO-PROC，还要再计算一遍(TAIL STREAM)
 See, and if I didn't use memo-proc, that re-computation would have been done.
 
-1075
+1100
 01:02:46,460 --> 01:02:47,710
 明白了
 AUDIENCE: I understand now.
 
-1076
+1101
 01:02:50,830 --> 01:02:56,830
 之前的例子中你提到过，我们可以使用代换模型因为这里没有副作用
 AUDIENCE: In one of your examples, you mentioned that we were able to use the substitution model because there are no side effects.
 
-1077
+1102
 01:02:56,830 --> 01:03:03,620
 如果流通过的一个处理单元 -- 如果有副作用呢？如果有了状态？
 What if we had a single processing unit-- if we had a side effect, if we had a state?
 
-1078
+1103
 01:03:03,620 --> 01:03:09,120
 我们还可以用这种流的结构吗？
 Could we still practically build the stream model?
 
-1079
+1104
 01:03:09,120 --> 01:03:09,530
 可能吧
 PROFESSOR: Maybe.
 
-1080
+1105
 01:03:09,530 --> 01:03:10,540
 很难说
 That's a hard question.
 
-1081
+1106
 01:03:10,540 --> 01:03:18,960
 我可能会花很长时间来探讨代换模型和副作用无法共存
 I'm going to talk a little bit later about the places where substitution and side effects don't really mix very well.
 
-1082
+1107
 01:03:18,960 --> 01:03:25,170
 通常情况下，除非你非常小心，否则副作用会把一切弄的很糟糕
 But in general, I think the answer is unless you're very careful, any amount of side effect is going to mess up everything.
 
-1083
+1108
 01:03:35,490 --> 01:03:39,410
 我不是很理解MEMO-PROC这个过程
 AUDIENCE: Sorry, I didn't quite understand the memo-proc operation.
 
-1084
+1109
 01:03:39,410 --> 01:03:41,990
 当你执行lambda的时候
 When do you execute the lambda?
 
-1085
+1110
 01:03:41,990 --> 01:03:47,600
 换句话说，当MEMO-PROC执行的时候，只生成了lambda表达式
 In other words, when memo-proc is executed, just this lambda expression is being generated.
 
-1086
+1111
 01:03:47,600 --> 01:03:50,390
 但是我不太清楚是什么时候执行的
 But it's not clear to me when it's executed.
 
-1087
+1112
 01:03:50,390 --> 01:03:51,350
 好的
 PROFESSOR: Right.
 
-1088
+1113
 01:03:51,350 --> 01:03:57,930
 MEMO-PROC所做的 -- 作为MEMO-PROC参数是PROC，一个没有参数的过程
 What memo-proc does-- remember, the thing that's going into memo-proc, the thing proc, is a procedure of no arguments.
 
-1089
+1114
 01:03:57,930 --> 01:04:00,390
 某个时刻，你会调用到它
 And someday, you're going to call it.
 
-1090
+1115
 01:04:00,390 --> 01:04:06,620
 MEMO-PROC把一个过程转化为另一个过程，某个时刻你会调用到它
 Memo-proc translates that procedure into another procedure of no arguments, which someday you're going to call.
 
-1091
+1116
 01:04:06,620 --> 01:04:09,890
 就是这个lambda
 That's that lambda.
 
-1092
+1117
 01:04:09,890 --> 01:04:24,100
 这里，当这一部分构造成为流的TAIL的时候，这个没有参数的过程，会在之后的某个时刻被调用到
 So here, where I initially built as my tail of the stream, say, this procedure of no arguments, which someday I'll call.
 
-1093
+1118
 01:04:24,100 --> 01:04:30,650
 相对应的，我把这一部分理解为是MEMO-PROC，某个时刻会被调用到的
 Instead, I'm going to have the tail of the stream be memo-proc of it, which someday I'll call.
 
-1094
+1119
 01:04:30,650 --> 01:04:47,642
 所以这个lambda，会在你调用MEMO-PROC得到结果的时候被调用，正如你之前设置过的一样
 So that lambda of nil, that gets called when you call the memo-proc, when you call the result of that memo-proc, which would be ordinarily when you would have called the original thing that you set it.
 
-1095
+1120
 01:04:47,642 --> 01:04:52,610
 我的意思是，你调用MEMO-PROC的时候，你只是返回了一个lambda
 AUDIENCE: OK, the reason I ask is I had a feeling that when you call memo-proc, you just return this lambda.
 
-1096
+1121
 01:04:52,610 --> 01:04:53,770
 对啊
 PROFESSOR: That's right.
 
-1097
+1122
 01:04:53,770 --> 01:04:58,100
 你调用MEMO-PROC的时候，返回了一个lambda
 When you call memo-proc, you return the lambda.
 
-1098
+1123
 01:04:58,100 --> 01:05:02,270
 你也没有执行<exp>，直到你第一次需要执行它的时候
 You never evaluate the expression at all, until the first time that you would have evaluated it.
 
-1099
+1124
 01:05:07,590 --> 01:05:14,240
 我这样理解对吗？你构造了一个列表，其中的元素还没有被计算
 AUDIENCE: Do I understand it right that you actually have to build the list up, but the elements of the list don't get evaluated?
 
-1100
+1125
 01:05:14,240 --> 01:05:15,630
 表达式没有被计算？
 The expressions don't get evaluated?
 
-1101
+1126
 01:05:15,630 --> 01:05:18,540
 但在在每一个阶段，你还是构造了列表
 But at each stage, you actually are building a list.
 
-1102
+1127
 01:05:18,540 --> 01:05:20,700
 嗯，我应该这样说
 PROFESSOR: That's-- I really should have said this.
 
-1103
+1128
 01:05:20,700 --> 01:05:22,270
 这个问题不错
 That's a really good point.
 
-1104
+1129
 01:05:22,270 --> 01:05:23,660
 但是，也不全对
 No, it's not quite right.
 
-1105
+1130
 01:05:23,660 --> 01:05:25,080
 因为实际发生的事情是这样的
 Because what happens is this.
 
-1106
+1131
 01:05:25,080 --> 01:05:26,890
 我先把这个画成序对
 Let me draw this as pairs.
 
-1107
+1132
 01:05:26,890 --> 01:05:32,740
 假设我要构造一个特别大的流，比如枚举整数，从1到1,000,000,000
 Suppose I'm going to make a big stream, like enumerate interval, 1 through 1 billion.
 
-1108
+1133
 01:05:32,740 --> 01:05:43,045
 就是1，和一个计算的约定
 What that is, is a pair with a 1 and a promise.
 
-1109
+1134
 01:05:46,520 --> 01:05:47,890
 就是这样
 That's exactly what it is.
 
-1110
+1135
 01:05:47,890 --> 01:05:49,140
 什么都没有构造
 Nothing got built up.
 
-1111
+1136
 01:05:51,600 --> 01:05:56,370
 当我继续的时候，FORCE这一部分，会发生什么？
 When I go and force this, and say, what happens?
 
-1112
+1137
 01:05:56,370 --> 01:06:00,530
 这个东西递归的产生了CONS
 Well, this thing is now also recursively a CONS.
 
-1113
+1138
 01:06:00,530 --> 01:06:11,350
 这个约定生成了下一个东西，就是2和一个约定
 So that this promise now is the next thing, which is a 2 and a promise to do more.
 
-1114
+1139
 01:06:11,350 --> 01:06:14,470
 一直这样下去
 And so on and so on and so on.
 
-1115
+1140
 01:06:14,470 --> 01:06:18,200
 所以你沿着流这样下来，并没有构造什么
 So nothing gets built up until you walk down the stream.
 
-1116
+1141
 01:06:18,200 --> 01:06:25,500
 因为这个东西不是列表，只是一个生成列表的约定，技术上来说，是一个过程
 Because what's sitting here is not the list, but a promise to generate the list. And by promise, technically I mean procedure.
 
-1117
+1142
 01:06:28,050 --> 01:06:30,485
 因此并没有构造列表
 So it doesn't get built up.
 
-1118
+1143
 01:06:30,485 --> 01:06:34,280
 我应该早点说的
 Yeah, I should have said that before this point.
 
-1119
+1144
 01:06:34,280 --> 01:06:34,490
 好吧
 OK.
 
-1120
+1145
 01:06:34,490 --> 01:06:34,790
 就到这里
 Thank you.
 
-1121
+1146
 01:06:34,790 --> 01:06:36,340
 大家休息一下吧
 Let's take a break.
