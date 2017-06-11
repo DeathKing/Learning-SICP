@@ -42,16 +42,15 @@ def render_as_mdpiclink(picurl, text, link)
   render_as_mdlink render_as_mdpic(text, picurl), link
 end
 
-# [优酷] [YouTube] [bilibili] [MKV-外挂字幕] [MP4-内嵌字幕]
 def itemize(row)
   FORMAT % [
     row["id"],
     "《" + row["title"] + "》",
-    render_as_mdlink(       " [优酷] ", row["youku"]),
-    render_as_mdlink(    " [YouTube] ", row["youtube"]),
-    render_as_mdlink(   " [bilibili] ", row["bilibili"]),
-    render_as_mdlink(" [MKV-外挂字幕] ", row["baidu"]),
-    render_as_mdlink(" [MP4-内嵌字幕] ", row["baidu-mp4"]),
+    render_as_mdlink(" [优酷] ",      row["youku"]),
+    render_as_mdlink(" [YouTube] ",  row["youtube"]),
+    render_as_mdlink(" [bilibili] ", row["bilibili"]),
+    render_as_mdlink(" [MKV] ",      row["baidu"]),
+    render_as_mdlink(" [MP4] ",      row["baidu-mp4"]),
     render_authors(row["translator"])
   ]
 end
