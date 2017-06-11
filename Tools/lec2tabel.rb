@@ -13,7 +13,8 @@ AUTHORS = {
   "DreamAndDead"   => "https://github.com/DreamAndDead",
 }
 
-FORMAT = "| %-s | %-s | %-s | %-s | %-s | %-s |"
+# [优酷] [YouTube] [bilibili] [MKV-外挂字幕] [MP4-内嵌字幕]
+FORMAT = "| %-s | %-s | %-s %-s %-s %-s %-s | %-s |"
 
 ICON = {
   "youtube" => "https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png",
@@ -29,8 +30,8 @@ def render_authors(authors)
   res.join(", ")
 end
 
-def render_as_mdlink(text, link)
-  "[#{text}](#{link})"
+def render_as_mdlink(text, link=nil)
+  link.nil? ? text : "[#{text}](#{link})"
 end
 
 def render_as_mdpic(alt, link)
@@ -41,30 +42,26 @@ def render_as_mdpiclink(picurl, text, link)
   render_as_mdlink render_as_mdpic(text, picurl), link
 end
 
+# [优酷] [YouTube] [bilibili] [MKV-外挂字幕] [MP4-内嵌字幕]
 def itemize(row)
   FORMAT % [
     row["id"],
     "《" + row["title"] + "》",
-    render_as_mdpiclink(ICON["youku"],      "优酷", row["youku"]),
-    render_as_mdpiclink(ICON["youtube"], "YouTube", row["youtube"]),
-    render_as_mdpiclink(ICON["baidu"],   "百度网盘", row["baidu"]),
+    render_as_mdlink(       " [优酷] ", row["youku"]),
+    render_as_mdlink(    " [YouTube] ", row["youtube"]),
+    render_as_mdlink(   " [bilibili] ", row["bilibili"]),
+    render_as_mdlink(" [MKV-外挂字幕] ", row["baidu"]),
+    render_as_mdlink(" [MP4-内嵌字幕] ", row["baidu-mp4"]),
     render_authors(row["translator"])
   ]
 end
 
 def table_head
-  FORMAT % [
-    "编号",
-    "标题",
-    "优酷",
-    "YouTube",
-    "下载地址",
-    "译者"
-  ]
+  "| 编号 | 标题 | 下载地址 | 译者 |"
 end
 
 def divider
-  "| ---- | ---- |:----:|:-------:|:--------:| ---- |"
+  "| ---- | ---- |:-----------------------:| ---- |"
 end
 
 content = File.open('lec.json').read
