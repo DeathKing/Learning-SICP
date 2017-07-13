@@ -31,7 +31,7 @@ def render_authors(authors)
 end
 
 def render_as_mdlink(text, link=nil)
-  link.nil? ? text : "[#{text}](#{link})"
+  (link.nil? || link == '#')  ? text : "[#{text}](#{link})"
 end
 
 def render_as_mdpic(alt, link)
