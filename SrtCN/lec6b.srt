@@ -3199,1216 +3199,1631 @@ and they do these prime things and eight queens things,
 just without anything special.
 
 641
-00:38:14,970 --> 00:38:17,790
-DELAY已经内建入语言了
+00:38:14,970 --> 00:38:16,352
+这些都是语言的内建功能
 It's all built in there.
 
 642
-00:38:17,790 --> 00:38:19,040
-但是这样也有不足之处
+00:38:17,936 --> 00:38:18,912
+但这样做也要付出代价
 But there's a price.
 
 643
-00:38:21,190 --> 00:38:23,170
-还记得我们为什么引入流了吗
+00:38:21,190 --> 00:38:22,368
+还记得我们为什么引入流了吗 #TBD
 Remember how we got here.
 
 644
 00:38:23,170 --> 00:38:27,480
-我们把程序的时间和它实际执行的时间相分离
+我们解耦了程序的时间和它实际执行的时间
 We're decoupling time in the programs from time in the machines.
 
 645
-00:38:27,480 --> 00:38:33,140
-如果我们在所有地方都引入了DELAY，这也是我们现在正在做的
-And if we put delay, that sort of decouples it everywhere, not just in streams. Remember what we're trying to do.
+00:38:27,968 --> 00:38:28,880
+如果我们引入了 DELAY
+And if we put delay,
 
 646
-00:38:33,140 --> 00:38:39,300
-编程就完全是单纯地描述解决方案的事了
-We're trying to think about programming as a way to specify processes.
+00:38:29,040 --> 00:38:30,336
+这样就在所有的地方完成了解耦
+that sort of decouples it everywhere,
 
 647
-00:38:39,300 --> 00:38:47,030
-我们完全放弃了对时间的控制，尽管语言变的优雅起来，但是牺牲了太多东西
-And if we give up too much time, our language becomes more elegant, but it becomes a little bit less expressive.
+00:38:30,400 --> 00:38:31,424
+而不单单是在流中
+not just in streams.
 
 648
-00:38:47,030 --> 00:38:51,480
-并且还有一些致命的缺陷
-There are certain distinctions that we can't draw.
+00:38:32,192 --> 00:38:33,140
+#TBD
+Remember what we're trying to do.
 
 649
-00:38:51,480 --> 00:38:53,980
+00:38:33,140 --> 00:38:38,112
+#TBD
+We're trying to think about programming as a way to specify processes.
+
+650
+00:38:39,300 --> 00:38:40,624
+如果我们放弃了对时间的控制
+And if we give up too much time,
+
+651
+00:38:40,656 --> 00:38:42,416
+尽管语言变得优雅起来
+our language becomes more elegant,
+
+652
+00:38:43,744 --> 00:38:45,872
+但是它的表达力却有所下降
+but it becomes a little bit less expressive.
+
+653
+00:38:47,030 --> 00:38:49,840
+并且还有一些致命的缺陷 #TBD
+There are certain distinctions that we can't draw.
+
+654
+00:38:51,480 --> 00:38:53,152
 其中之一就是迭代
 One of them, for instance, is iteration.
 
-650
-00:38:53,980 --> 00:39:01,230
-我们以前写过，迭代的来求阶乘
-Remember this old procedure, iterative factorial, that we looked at quite a long time ago.
-
-651
-00:39:01,230 --> 00:39:12,120
-fact-iter内部定义一个过程iter，它时刻记录着product和counter的状态，就这样迭代的求解
-Iterative factorial had a thing, and it said there was an internal procedure, and there was a state which was a product and a counter, and we iterate that going around the loop.
-
-652
-00:39:12,120 --> 00:39:15,730
-我们说这是一个迭代过程是因为它并没有把状态堆积给解释器
-And we said that was an iterative procedure because it didn't build up state.
-
-653
-00:39:15,730 --> 00:39:23,900
-因为状态时刻作为参数传递给了自身
-And the reason it didn't build up state is because this iter that's called is just passing these things around to itself.
-
-654
-00:39:23,900 --> 00:39:31,660
-也可以用代换具体的实践来看，这个迭代的过程，并没有状态堆积导致表达式增长的情况
-Or in the substitution model, you could see in the substitution model that Jerry did, that in an iterative procedure, that state doesn't have to grow.
-
 655
-00:39:31,660 --> 00:39:34,840
+00:38:53,980 --> 00:38:56,448
+还记得这个程序吗？
+Remember this old procedure,
+
+656
+00:38:56,960 --> 00:38:58,288
+迭代式的阶乘
+iterative factorial,
+
+657
+00:38:58,448 --> 00:39:00,480
+这是我们很早之前就研究过的
+that we looked at quite a long time ago.
+
+658
+00:39:01,230 --> 00:39:02,976
+过程 FACT-ITER 
+Iterative factorial had a thing,
+
+659
+00:39:03,040 --> 00:39:04,912
+有一个内部过程 ITER
+and it said there was an internal procedure,
+
+660
+00:39:05,184 --> 00:39:07,504
+它含有两个状态 PRODUCT 和 COUNTER
+and there was a state which was a product and a counter,
+
+661
+00:39:08,704 --> 00:39:10,960
+它们随着循环不断迭代
+and we iterate that going around the loop.
+
+662
+00:39:12,120 --> 00:39:13,680
+之所以说这个过程是迭代的
+And we said that was an iterative procedure
+
+663
+00:39:13,712 --> 00:39:14,832
+是因为它没有创建新状态
+because it didn't build up state.
+
+664
+00:39:15,730 --> 00:39:17,456
+之所以没有创建新状态
+And the reason it didn't build up state is
+
+665
+00:39:17,472 --> 00:39:20,256
+是因为在调用 ITER 时
+because this iter that's called
+
+666
+00:39:20,304 --> 00:39:22,864
+作为参数传递的始终是这些东西（位置）
+is just passing these things around to itself.
+
+667
+00:39:23,900 --> 00:39:25,392
+在代换模型中
+Or in the substitution model that,
+
+668
+00:39:25,552 --> 00:39:27,792
+Jerry 教授给你们讲解过
+you could see in the substitution model that Jerry did,
+
+669
+00:39:28,720 --> 00:39:30,016
+在迭代过程中
+that in an iterative procedure,
+
+670
+00:39:30,032 --> 00:39:31,440
+状态并不需要增长
+that state doesn't have to grow.
+
+671
+00:39:31,824 --> 00:39:34,224
 因此这是一个迭代过程
 And in fact, we said it doesn't, so this is an iteration.
 
-656
-00:39:34,840 --> 00:39:41,150
-但是现在用正则序的思维来看
-But now think about this exact same text if we had a normal-order language.
+672
+00:39:34,992 --> 00:39:37,472
+但是如果用正则序语言
+But now think about this exact same text
 
-657
-00:39:41,150 --> 00:39:45,650
-这个迭代过程会变成什么样子
-What would happen is this would no longer be an iterative procedure?
+673
+00:39:37,472 --> 00:39:39,104
+来运行这段程序
+if we had a normal-order language.
 
-658
-00:39:45,650 --> 00:39:52,330
-如果你用正则序去进行代换，一直代换下去表达式就会变得越来越长
-And if you really think about the details of the substitution model, which I'm not going to do here, this expression would grow.
+674
+00:39:41,150 --> 00:39:42,176
+这就会导致
+What would happen is
 
-659
-00:39:52,330 --> 00:39:53,280
+675
+00:39:42,880 --> 00:39:44,960
+这个过程不再是迭代式了
+this would no longer be an iterative procedure
+
+676
+00:39:45,650 --> 00:39:48,672
+如果你仔细地思考代换模型
+And if you really think about the details of the substitution model,
+
+677
+00:39:48,672 --> 00:39:49,904
+在这里我就不细说了
+which I'm not going to do here,
+
+678
+00:39:51,200 --> 00:39:52,352
+这个表达式会不断增长
+this expression would grow.
+
+679
+00:39:52,368 --> 00:39:53,184
 为什么会这样？
 Why would it grow?
 
-660
-00:39:53,280 --> 00:39:58,080
-因为iter递归的调用自己，把product代换为(* counter product)
-It's because when iter calls itself, it calls itself with this product.
+680
+00:39:53,280 --> 00:39:55,200
+因为当 ITER 调用自己时
+It's because when iter calls itself,
 
-661
-00:39:58,080 --> 00:40:02,510
-在正则序里，这个乘法在这里并没有求值
-If it's a normal-order language, that multiplication is not going to get done.
+681
+00:39:55,856 --> 00:39:57,312
+参数是这个乘法表达式
+it calls itself with this product.
 
-662
-00:40:02,510 --> 00:40:06,670
-传递并代换的只是这个乘法计算的约定
+682
+00:39:58,080 --> 00:39:59,360
+而在正则序语言中
+If it's a normal-order language,
+
+683
+00:39:59,392 --> 00:40:01,168
+这个乘法并不会在这里求值
+that multiplication is not going to get done.
+
+684
+00:40:02,510 --> 00:40:05,680
+传递并代换的只是这个乘法计算的 PROMISE
 That's going to say I'm to call myself with a promise to compute this product.
 
-663
-00:40:06,670 --> 00:40:09,760
-然后iter继续代换下去
+685
+00:40:06,670 --> 00:40:08,032
+然后继续代换下去
 And now iter goes around again.
 
-664
-00:40:09,760 --> 00:40:18,400
-用这样的计算约定反复的递归代换
-And I'm going to call myself with a promise to compute this product where now one of the one factors is a promise.
+686
+00:40:09,760 --> 00:40:11,552
+我调用自己
+And I'm going to call myself
 
-665
+687
+00:40:11,840 --> 00:40:14,048
+用的是计算这个乘式的 PROMISE
+with a promise to compute this product
+
+688
+00:40:14,048 --> 00:40:17,820
+但其中的一个因数也是个 PROMISE
+where now one of the one factors is a promise.
+
+689
 00:40:18,400 --> 00:40:19,430
-代换
+然后我又自调用
 And I call myself again.
 
-666
-00:40:19,430 --> 00:40:31,790
-如果你实际模拟下这个过程，你会清楚的看到状态的堆积，所有的约定直到最后才被计算
-And if you write out the substitution model for that iterative process, you'll see exactly the same growth in state, all those promises that are getting remembered that have to get called in at the very end.
+690
+00:40:19,430 --> 00:40:21,136
+如果你用代换模型
+And if you write out the substitution model
 
-667
-00:40:31,790 --> 00:40:36,980
-所以正则序不能表达迭代的计算过程
-So one of the disadvantages is that you can't really express iteration.
+691
+00:40:21,984 --> 00:40:23,600
+来推演这个迭代步骤
+for that iterative process,
 
-668
-00:40:36,980 --> 00:40:54,610
-或许这个问题有更深层次的理论上的原因，事实上许多写操作系统的人都很头疼这类问题。比如你用这类语言实现了一个文本编辑器
-Maybe that's a little theoretical reason why not, but in fact, people who are trying to write real operating systems in these languages are running into exactly these types of problems. Like it's perfectly possible to implement a text editor in languages like these.
+692
+00:40:23,776 --> 00:40:26,832
+你会发现同样的状态增长
+you'll see exactly the same growth in state,
 
-669
-00:40:54,610 --> 00:41:10,230
-但是你才用了一会儿，就会发现已经占用了3MB空间，充斥了未被计算的约定，这个应该是被称为拖尾问题，就因为不能表示迭代过程的缘故
-But after you work a while, you suddenly have 3 megabytes of stuff, which is-- I guess they call them the dragging tail problem of people who are looking at these, of promises that sort of haven't been called in because you couldn't quite express an iteration.
+693
+00:40:27,160 --> 00:40:28,960
+所有的 PROMISE 都需要被记住
+all those promises that are getting remembered
 
-670
-00:41:10,230 --> 00:41:20,110
-一个针对这种语言的研究方向就是如何采用一种编译技术来避免拖尾问题
-And one of the research questions in these kinds of languages are figuring out the right compiler technology to get rid of the so-called dragging tails.
+694
+00:40:28,976 --> 00:40:30,760
+以便在最后被调用
+that have to get called in at the very end.
 
-671
-00:41:20,110 --> 00:41:23,940
-非常困难
+695
+00:40:31,790 --> 00:40:35,024
+所以 正则序的缺点之一
+So one of the disadvantages
+
+696
+00:40:35,056 --> 00:40:36,864
+就是无法有效地表达迭代
+is that you can't really express iteration.
+
+697
+00:40:36,980 --> 00:40:39,600
+也许这个理由有点偏理论
+Maybe that's a little theoretical reason why not,
+
+698
+00:40:39,616 --> 00:40:43,904
+但事实上 那些使用这类语言来编写
+but in fact, people who are trying to write real operating systems
+
+699
+00:40:44,272 --> 00:40:47,568
+实际操作系统的人 也都遇到了这类问题
+in these languages are running into exactly these types of problems.
+
+700
+00:40:48,208 --> 00:40:50,752
+当然 完全可以
+Like it's perfectly possible to
+
+701
+00:40:51,648 --> 00:40:54,384
+用这类语言实现一个文本编辑器
+implement a text editor in languages like these.
+
+702
+00:40:54,610 --> 00:40:56,080
+但是你才用了一会儿
+But after you work a while,
+
+703
+00:40:56,720 --> 00:40:59,392
+就发现已经占用了 3MB 空间
+you suddenly have 3 megabytes of stuff,
+
+704
+00:40:59,440 --> 00:41:02,048
+我想 那些遇到这类问题的人
+which is-- I guess they call them
+
+705
+00:41:02,160 --> 00:41:05,600
+把它叫做 “拖尾问题”
+the dragging tail problem who are looking at these,
+
+706
+00:41:05,824 --> 00:41:08,208
+#TBD
+of stuff of promises that sort of haven't been called in
+
+707
+00:41:08,240 --> 00:41:10,464
+#TBD
+because you couldn't quite express an iteration.
+
+708
+00:41:10,720 --> 00:41:14,816
+针对这种语言的一个研究方向就是
+And one of the research questions in these kinds of languages
+
+709
+00:41:14,832 --> 00:41:17,488
+找出一种有效的编译器技术
+are figuring out the right compiler technology
+
+710
+00:41:17,824 --> 00:41:19,856
+来避免这种所谓的“拖尾问题”
+to get rid of the so-called dragging tails.
+
+711
+00:41:20,176 --> 00:41:21,616
+这并不简单
 It's not simple.
 
-672
-00:41:23,940 --> 00:41:32,056
-在不能表示迭代之外，正则序求值还有另一个缺点
-But there's another kind of more striking issue about why you just don't go ahead and make your language normal order.
+712
+00:41:23,940 --> 00:41:27,312
+但是 还有一个很突出的问题
+But there's another kind of more striking issue
 
-673
-00:41:32,056 --> 00:41:42,000
-很遗憾的是，正则序求值与赋值副作用是不相容的
-And the reason is that normal-order evaluation and side effects just don't mix.
+713
+00:41:27,968 --> 00:41:31,040
+使你不能让你的语言使用正则序
+about why you just don't go ahead and make your language normal order.
 
-674
-00:41:42,000 --> 00:41:45,350
-它们在一起效果并不好
+714
+00:41:32,512 --> 00:41:33,296
+原因就是
+And the reason is
+
+715
+00:41:35,056 --> 00:41:38,096
+正则序和副作用
+that normal-order evaluation and side effects
+
+716
+00:41:38,896 --> 00:41:40,192
+是不相容的
+just don't mix.
+
+717
+00:41:42,000 --> 00:41:43,968
+它们不能很好地相互配合
 They just don't go together very well.
 
-675
-00:41:45,350 --> 00:42:00,400
-你不能对有局部状态的对象同时应用正则序求值来分离时间延时求值
-Somehow, you can't-- it's sort of you can't simultaneously go around trying to model objects with local state and change and at the same time do these normal-order tricks of de-coupling time.
+718
+00:41:45,440 --> 00:41:46,656
+这是因为 你不能
+Somehow, you can't-
 
-676
-00:42:00,400 --> 00:42:03,790
+719
+00:41:48,288 --> 00:41:50,800
+你不能一边
+it's sort of you can't simultaneously
+
+720
+00:41:51,008 --> 00:41:54,336
+建模具有局部状态的对象
+go around trying to model objects with local state and change 
+
+721
+00:41:55,728 --> 00:41:56,960
+同时又
+at the same time
+
+722
+00:41:57,184 --> 00:41:59,552
+使用正则序的技巧来解耦时间
+do these normal-order tricks of de-coupling time.
+
+723
+00:42:00,400 --> 00:42:03,552
 我来举一个非常简单的例子
 Let me just show you a really simple example, very, very simple.
 
-677
-00:42:03,790 --> 00:42:07,520
+724
+00:42:03,790 --> 00:42:05,504
 假设语言是正则序求值
 Suppose we had a normal-order language.
 
-678
+725
 00:42:07,520 --> 00:42:09,550
 例子是这样的
 And I'm going to start out in this language.
 
-679
+726
 00:42:09,550 --> 00:42:10,520
 注意现在是正则序求值
 This is now normal order.
 
-680
-00:42:10,520 --> 00:42:13,570
-定义x是0
+727
+00:42:10,520 --> 00:42:12,224
+(DEFINE X 0)
 I'm going to define x to be 0.
 
-681
-00:42:13,570 --> 00:42:15,750
-初始化的变量
+728
+00:42:13,570 --> 00:42:15,568
+这只是变量的初始化
 It's just some variable I'll initialize.
 
-682
-00:42:15,750 --> 00:42:22,640
-下面这个过程 id 比较有趣
-And now I'm going to define this little funny function, which is an identity function.
+729
+00:42:15,750 --> 00:42:17,696
+现在我要定义一个有趣的函数
+And now I'm going to define this little funny function,
 
-683
-00:42:22,640 --> 00:42:26,770
-它用x来记录上一次id过程的参数值
-And what it does, it keeps track of the last time you called it using x.
+730
+00:42:18,576 --> 00:42:20,448
+它就是恒等函数
+which is an identity function.
 
-684
-00:42:31,620 --> 00:42:36,760
-这个过程最后只是返回了n，但是还把x赋值为n
-So the identity of n just returns n, but it sets x to be n.
+731
+00:42:22,640 --> 00:42:23,904
+它所做的就是
+And what it does,
 
-685
-00:42:36,760 --> 00:42:42,580
-最后再定义一个过程inc，也非常简单
-And now I'll define a little increment function, which is a very little, simple scenario.
+732
+00:42:24,112 --> 00:42:26,608
+用 X 来记录上一次调用它时 N 的值
+it keeps track of the last time you called it using x.
 
-686
-00:42:42,580 --> 00:42:47,230
-假设在正则序求值的语言里，求值下面的表达式
-Now, imagine I'm interacting with this in the normal-order language, and I type the following.
+733
+00:42:31,400 --> 00:42:34,160
+因此 (ID N) 就返回 N
+Right? So the identity of n just returns n,
 
-687
-00:42:47,230 --> 00:42:54,190
-(define y (inc (id 3)))，y的值应该是4
-I say define y to be increment the identity function of 3, so y is going to be 4.
+734
+00:42:34,176 --> 00:42:35,390
+但还要把 X 赋值为 N
+but it sets x to be n.
 
-688
-00:42:57,410 --> 00:42:59,520
-x应该是多少呢？
+735
+00:42:36,760 --> 00:42:38,544
+最后再定义一个过程 INC
+And now I'll define a little increment function,
+
+736
+00:42:39,552 --> 00:42:42,304
+也非常简单
+which is a very little, simple scenario.
+
+737
+00:42:42,580 --> 00:42:45,344
+假设在正则序求值的语言里
+Now, imagine I'm interacting with this in the normal-order language,
+
+738
+00:42:46,272 --> 00:42:47,230
+求值下面的表达式
+and I type the following.
+
+739
+00:42:47,230 --> 00:42:52,832
+我输入 (DEFINE Y (INC (ID 3)))
+I say define y to be increment the identity function of 3,
+
+740
+00:42:52,832 --> 00:42:53,968
+因此 Y 的值应该是 4
+so y is going to be 4.
+
+741
+00:42:57,410 --> 00:42:58,352
+X 应该是多少呢？
 Now, I say what's x?
 
-689
-00:42:59,520 --> 00:43:04,710
-x应该是上一次我们执行过程id的参数值
-Well, x should have been the value that was remembered last when I called the identity function.
+742
+00:42:59,520 --> 00:43:02,160
+X 应该是最后一次被记住的值
+Well, x should have been the value that was remembered last
 
-690
-00:43:04,710 --> 00:43:08,530
-你可能会想，这里x应该是3，但是并不是这样
-So you'd expect to say, well, x is 3 at this point, but it's not.
+743
+00:43:02,640 --> 00:43:04,016
+也就是我调用 ID 函数的时候
+when I called the identity function.
 
-691
-00:43:08,530 --> 00:43:17,000
-因为我定义y的时候，只是一个计算的约定
-Because when I defined y here, what I really defined y to be increment of a promise to do this thing.
+744
+00:43:04,710 --> 00:43:06,736
+你可能会想 这里 X 应该是 3
+So you'd expect to say, well, x is 3 at this point,
 
-692
-00:43:17,000 --> 00:43:21,560
-所以(id 3)的这部分并没有求值
-So I didn't look at y, so that identity function didn't get run.
+745
+00:43:06,912 --> 00:43:07,520
+但是并不是这样
+but it's not.
 
-693
-00:43:21,560 --> 00:43:25,320
-我输入这个定义之后，x并没有改变，还是0
-So if I type in this definition and look at x, I'm going to get 0.
+746
+00:43:08,530 --> 00:43:11,152
+这是因为当我在这里定义 Y 的时候
+Because when I defined here, y here,
 
-694
-00:43:28,360 --> 00:43:38,342
-现在我输入y，要求对y求值，y就是4，(id 3)就在求值y的过程中被求值
-Now, if I go look at y and say what's y, say y is 4, looking at y, that very active looking at y caused the identity function to be run.
+747
+00:43:11,792 --> 00:43:13,456
+Y 的真正定义却是
+what I really defined y to be
 
-695
-00:43:38,342 --> 00:43:40,740
-所以再来看x，x就应该是3
+748
+00:43:13,472 --> 00:43:15,712
+一个调用 ID 函数的 PROMISE 的增量
+increment of a promise to do this thing.
+
+749
+00:43:17,000 --> 00:43:18,176
+因为我没有访问 Y
+So I didn't look at y,
+
+750
+00:43:18,368 --> 00:43:20,256
+所以增量函数没有运行
+so that identity function didn't get run.
+
+751
+00:43:21,560 --> 00:43:23,200
+我输入这个定义之后
+So if I type in this definition
+
+752
+00:43:23,312 --> 00:43:24,800
+然后查询 X 得到的结果是 0
+and look at x, I'm going to get 0.
+
+753
+00:43:28,360 --> 00:43:31,200
+现在 我输入 Y 查询它的值
+Now, if I go look at y and say what's y,
+
+754
+00:43:31,520 --> 00:43:32,432
+就会得到结果 4
+say y is 4,
+
+755
+00:43:32,670 --> 00:43:35,168
+对 Y 的主动查询
+looking at y, that very active looking at y
+
+756
+00:43:35,296 --> 00:43:37,424
+会导致恒等函数运行
+caused the identity function to be run.
+
+757
+00:43:38,720 --> 00:43:40,480
+现在 X=3 就被记住
 And now x will get remembered as 3.
 
-696
-00:43:40,740 --> 00:43:42,020
-上面这里的x是0
+758
+00:43:40,740 --> 00:43:41,872
+所以上面这里的 X 就应该是 0
 So here x will be 0.
 
-697
-00:43:42,020 --> 00:43:43,280
-下面这里是3
+759
+00:43:41,936 --> 00:43:42,960
+下面这里是 3
 Here, x will be 3.
 
-698
-00:43:43,280 --> 00:43:57,100
-这是一个非常简单的模拟场景，但是你可以观察到当你用正则序求值，甚至连变量的值都很难弄清楚
-That's a tiny, little, simple scenario, but you can see what kind of a mess that's going to make for debugging interactive programs when you have normal-order evaluation.
+760
+00:43:43,280 --> 00:43:46,160
+这是一个非常简单的场景
+That's a tiny, little, simple scenario,
 
-699
-00:43:57,100 --> 00:43:59,690
+761
+00:43:46,304 --> 00:43:49,280
+但你会发现 对于正则序的语言
+but you can see what kind of a mess that's going to make
+
+762
+00:43:50,368 --> 00:43:53,344
+调试交互式的程序
+for debugging interactive programs
+
+763
+00:43:54,128 --> 00:43:55,888
+会变得相当混乱
+when you have normal-order evaluation.
+
+764
+00:43:57,100 --> 00:43:58,128
 很令人迷惑
 It's very confusing.
 
-700
-00:43:59,690 --> 00:44:09,780
-深层次的原因，我想应该是所有都有了DELAY之后，我们也就完全脱离了时间的概念
-But it's very confusing for a very deep reason, which is that the whole idea of putting in delays is that you throw away time.
+765
+00:43:59,690 --> 00:44:02,048
+导致这样的深层次的原因
+But it's very confusing for a very deep reason,
 
-701
+766
+00:44:02,800 --> 00:44:06,416
+也就是引入 DELAY 的根本理念
+which is that the whole idea of putting in delays
+
+767
+00:44:06,928 --> 00:44:08,432
+是因为我们抛弃了时间的概念
+is that you throw away time.
+
+768
 00:44:09,780 --> 00:44:11,750
 也因为如此我们可以处理一些无穷的情况
 That's why we can have these infinite processes.
 
-702
-00:44:11,750 --> 00:44:17,790
-脱离了时间之后，就没有必要非要等到哪一刻才开始运行，不是吗？
-Since we've thrown away time, we don't have to wait for them to run, right?
+769
+00:44:11,750 --> 00:44:12,976
+我们抛弃了时间
+Since we've thrown away time,
 
-703
-00:44:17,790 --> 00:44:28,760
-这样我就把程序所表示的时间顺序与实际运行的时间顺序分离开来。但是当我们谈及状态、赋值和改变，它们都和时间相关
-We decouple the order of events in the computer from what we write in our programs. But when we talk about state and set and change, that's exactly what we do want control of.
+770
+00:44:12,992 --> 00:44:14,270
+就没有必要等它们运行
+we don't have to wait for them to run,
 
-704
-00:44:28,760 --> 00:44:34,570
-从根本上相矛盾
+771
+00:44:17,550 --> 00:44:20,448
+我们把计算机中事件发生的顺序
+Right? We decouple the order of events in the computer
+
+772
+00:44:20,832 --> 00:44:22,112
+与程序中的顺序 分离开来
+from what we write in our programs.
+
+773
+00:44:22,352 --> 00:44:25,280
+但是当我们谈及状态、赋值和改变的时候
+But when we talk about state and set and change,
+
+774
+00:44:25,488 --> 00:44:27,424
+这些又都是我们想要控制的
+that's exactly what we do want control of.
+
+775
+00:44:28,760 --> 00:44:33,824
+我们的目的有着根本性的矛盾
 So it's almost as if there's this fundamental contradiction in what you want.
 
-705
-00:44:34,570 --> 00:44:42,410
-这仿佛是一个哲学问题，从什么样的角度观察世界，构建什么样的模型
-And that brings us back to these sort of philosophical mutterings about what is it that you're trying to model and how do you look at the world.
+776
+00:44:34,570 --> 00:44:39,120
+这又让我们进入了一个哲学问题
+And that brings us back to these sort of philosophical mutterings
 
-706
-00:44:42,410 --> 00:44:47,140
-有时这也被称为“函数式程序设计的争论”
-Or sometimes this is called the debate over functional programming.
+777
+00:44:39,136 --> 00:44:40,752
+用什么样的模型
+what is it that you're trying to model
 
-707
-00:44:53,570 --> 00:45:00,440
-所谓完全函数式的语言是那种完全没有副作用的语言
-A so-called purely functional language is one that just doesn't have any side effects.
+778
+00:44:40,784 --> 00:44:41,776
+和从什么角度来看这个世界
+and how do you look at the world.
 
-708
-00:45:00,440 --> 00:45:06,360
-没有副作用，没有赋值，也不用担心有什么糟糕的后果
-Since you have no side effects, there's no assignment operator, so there are no terrible consequences of it.
+779
+00:44:42,410 --> 00:44:44,304
+有时这也被称为
+Or sometimes this is called the
 
-709
+780
+00:44:44,768 --> 00:44:46,608
+“函数式程序设计的争论”
+the debate over functional programming.
+
+781
+00:44:54,192 --> 00:44:56,608
+所谓的“纯函数式语言”
+A so-called purely functional language
+
+782
+00:44:57,072 --> 00:44:59,200
+是完全没有副作用的
+is one that just doesn't have any side effects.
+
+783
+00:45:00,440 --> 00:45:03,024
+没有赋值运算符 也就没有副作用
+Since you have no side effects, there's no assignment operator,
+
+784
+00:45:03,344 --> 00:45:05,728
+也就没有什么糟糕的后果
+so there are no terrible consequences of it.
+
+785
 00:45:06,360 --> 00:45:07,930
-可以使用代换模型
+可以使用类似代换模型
 You can use a substitution-like thing.
 
-710
-00:45:07,930 --> 00:45:15,050
-程序更像是数学计算，而不是构建模型或对象
-Programs really are like mathematics and not like models in the real world, not like objects in the real world.
+786
+00:45:07,930 --> 00:45:10,480
+程序更像是数学
+Programs really are like mathematics and not like
 
-711
+787
+00:45:10,768 --> 00:45:13,824
+而不像识现实世界中的模型和对象
+not like models in the real world, not like objects in the real world.
+
+788
 00:45:15,050 --> 00:45:17,170
 函数式语言有很多了不起的特性
 There are a lot of wonderful things about functional languages.
 
-712
-00:45:17,170 --> 00:45:29,260
-没有时间的概念，所以完全不用担心同步的问题。如果你把这些应用在并行算法上，就可以并行计算不同的部分
-Since there's no time, you never have any synchronization problems. And if you want to put something into a parallel algorithm, you can run the pieces of that parallel processing any way you want.
+789
+00:45:17,170 --> 00:45:19,632
+没有时间的概念 所以完全不用担心同步的问题
+Since there's no time, you never have any synchronization problems.
 
-713
-00:45:29,260 --> 00:45:33,640
-从来不担心同步问题，这几乎是与生俱来的
-There's just never any synchronization to worry that, and it's a very congenial environment for doing this.
+790
+00:45:20,640 --> 00:45:23,728
+如果你想在并行算法中应用一些东西
+And if you want to put something into a parallel algorithm,
 
-714
-00:45:33,640 --> 00:45:35,450
-代价是放弃了赋值
+791
+00:45:24,720 --> 00:45:28,208
+#TBD
+you can run the pieces of that parallel processing any way you want.
+
+792
+00:45:29,408 --> 00:45:31,440
+从来不担心同步问题
+There's just never any synchronization to worry that,
+
+793
+00:45:31,504 --> 00:45:33,344
+在这种环境下这样做是非常方便的
+and it's a very congenial environment for doing this.
+
+794
+00:45:33,640 --> 00:45:35,712
+代价则是 放弃了赋值
 The price is you give up assignment.
 
-715
-00:45:39,060 --> 00:45:44,520
-一些函数式编程的狂热分子会说，这点代价算不了什么
-So an advocate of a functional language would say, gee, that's just a tiny price to pay.
+795
+00:45:39,104 --> 00:45:41,328
+函数式语言的支持者会认为
+So an advocate of a functional language would say,
 
-716
+796
+00:45:41,344 --> 00:45:43,040
+这点代价算不了什么
+gee, that's just a tiny price to pay.
+
+797
 00:45:44,520 --> 00:45:46,510
-确实，在大部分情况下不用赋值也可以
+在大部分情况下 你都不应该使用赋值
 You probably shouldn't use assignment most of the time anyway.
 
-717
-00:45:46,510 --> 00:45:54,190
-如果用你用赋值，就得想办法用其它方式来解决原来用对象解决的问题
-And if you just give up assignment, you can be in this much, much nicer world than this place with objects.
+798
+00:45:46,880 --> 00:45:48,272
+如果用你放弃了赋值
+And if you just give up assignment,
 
-718
+799
+00:45:48,432 --> 00:45:51,408
+#TBD
+you can be in this much, much nicer world
+
+800
+00:45:51,968 --> 00:45:53,248
+#TBD
+than this place with objects.
+
+801
 00:45:54,190 --> 00:45:56,300
 有没有什么例子呢？
 Well, what's the rejoinder to that?
 
-719
+802
 00:45:56,300 --> 00:46:00,300
 想想我们如何走到这一步的
 Remember how we got into this mess.
 
-720
+803
 00:46:00,300 --> 00:46:04,440
 我们构造有独立状态的对象
 We started trying to model things that had local state.
 
-721
+804
 00:46:04,440 --> 00:46:06,840
 还记得Jerry的随机数生成器吧
 So remember Jerry's random number generator.
 
-722
+805
 00:46:06,840 --> 00:46:14,080
 随机数生成器内部有一个状态，根据这个状态计算下一个随机数，下下一个等等
 There was this random number generator that had some little state in it to compute the next random number and the next random number and the next random number.
 
-723
+806
 00:46:14,080 --> 00:46:21,050
 我们可以将随机数生成与蒙特卡洛算法分离开来，因此赋值在这里就异常重要了
 And we wanted to hide that state away from the Cesaro compute part process, and that's why we needed set.
 
-724
+807
 00:46:21,050 --> 00:46:24,070
 我们用模块化来封装状态
 We wanted to package that stated modularly.
 
-725
+808
 00:46:24,070 --> 00:46:27,560
 使用函数式编程的程序员可能会说，“你搞错了”
 Well, a functional programming person would say, well, you're just all wet.
 
-726
+809
 00:46:27,560 --> 00:46:29,840
 “我的意思是，你能写出另一种更具模块化的程序”
 I mean, you can write a perfectly good modular program.
 
-727
+810
 00:46:29,840 --> 00:46:33,250
 “从另一种角度来思考模块化”
 It's just you're thinking about modularity wrong.
 
-728
+811
 00:46:33,250 --> 00:46:36,880
 一直为生成一个又一个的随机数所烦恼
 You're hung up in this next random number and the next random number and the next random number.
 
-729
+812
 00:46:36,880 --> 00:46:39,880
 为什么不写一个这样的程序
 Why don't you just say let's write a program.
 
-730
+813
 00:46:39,880 --> 00:46:44,445
 写一个枚举器，生成一个无穷的随机数的流
 Let's write an enumerator which just generates an infinite stream of random numbers.
 
-731
+814
 00:46:49,010 --> 00:46:54,540
 一次性就生成所有的随机数，而且还可以为其它地方使用
 We can sort of have that stream all at once, and that's going to be our source of random numbers.
 
-732
+815
 00:46:54,540 --> 00:47:06,880
 如果你想的话，就可以把这个流接过来，到这个蒙特卡洛测试的过程
 And then if you like, you can put that through some sort of processor, which is-- I don't know-- a Cesaro test, and that can do what it wants.
 
-733
+816
 00:47:06,880 --> 00:47:28,140
 输出的是一个流，其中是一连串的对PI的估计值
 And what would come out of there would be a stream of successive approximations to pi.
 
-734
+817
 00:47:28,140 --> 00:47:35,540
 和前面讲的类似，这样用流的连接，可以“拖出“无限个随机数来计算蒙特卡洛测试
 So as we looked further down this stream, we'd tug on this Cesaro thing, and it would pull out more and more random numbers.
 
-735
+818
 00:47:35,540 --> 00:47:39,720
 我们使用的随机数越多，最后对PI的估计值就越准
 And the further and further we look down the stream, the better an approximation we'd get to pi.
 
-736
+819
 00:47:39,720 --> 00:47:43,890
 具体的计算过程还是一样的，只不过使用了另一种模块化的方式
 And it would do exactly the same as the other computation, except we're thinking about the modularity different.
 
-737
+820
 00:47:43,890 --> 00:47:49,400
 我们假如一次性生成了所有的随机数
 We're saying imagine we had all those infinite streams of random numbers all at once.
 
-738
+821
 00:47:49,400 --> 00:47:53,860
 这个过程的细节在书上有
 You can see the details of this procedure in the book.
 
-739
+822
 00:47:53,860 --> 00:48:03,280
 相似地还有别的例子，我们也习惯于一次一次来，但完全可以不这么来想
 Similarly, there are other things that we tend to get locked into on this one and that one and the next one and the next one, which don't have to be that way.
 
-740
+823
 00:48:03,280 --> 00:48:08,900
 我们来思考一下银行系统
 Like you might think about like a banking system, which is a very simple idea.
 
-741
+824
 00:48:08,900 --> 00:48:12,210
 假设我们这里这个程序代表了银行帐户
 Imagine we have a program that sort of represents a bank account.
 
-742
+825
 00:48:18,810 --> 00:48:31,510
 如果我们以信息传递的角度来看，银行帐户应该是一个对象，内部保存着局部状态balance金额
 The bank account might have in it-- if we looked at this in a sort of message-passing view of the world, we'd say a bank account is an object that has some local state in there, which is the balance, say.
 
-743
+826
 00:48:34,110 --> 00:48:48,560
 如果一个用户发出交易申请，比如存钱，这个银行帐户就会用最新的balance金额作出回应
 And a user using this system comes and sends a transaction request. So the user sends a transaction request, like deposit some money, and the bank account maybe-- let's say the bank account always responds with what the current balance is.
 
-744
+827
 00:48:48,560 --> 00:48:54,350
 比如我们存点钱，帐户就会返回存钱后总金额是多少
 The user says let's deposits some money, and the bank account sends back a message which is the balance.
 
-745
+828
 00:48:54,350 --> 00:48:59,150
 用户发出信息，帐户反馈信息
 And the user says deposit some more, and the bank account sends back a message.
 
-746
+829
 00:48:59,150 --> 00:49:03,200
 就随机数生成器一样，我们得用赋值才可以
 And just like the random number generator, you'd say, gee, we would like to use set.
 
-747
+830
 00:49:03,200 --> 00:49:09,570
 帐户的内部保存了局部状态balance，因此就把用户的状态和帐户的状态分离开来
 We'd like to have balance be a piece of local state inside this bank account because we want to separate the state of the user from the state of the bank account.
 
-748
+831
 00:49:13,280 --> 00:49:16,420
 这是从信息传递的角度来看
 Well, that's the message-processing view.
 
-749
+832
 00:49:16,420 --> 00:49:22,740
 如果从流的角度来看，就不需要赋值或副作用之类
 There's a stream view with that thing, which does the same thing without any set or side effects.
 
-750
+833
 00:49:22,740 --> 00:49:31,180
 我们不想任何有关局部状态的事
 And the idea is again we don't think about anything having local state.
 
-751
+834
 00:49:31,180 --> 00:49:38,640
 可以认为银行帐户是一个处理一系列交易请求的东西
 We think about the bank account as something that's going to process a stream of transaction requests.
 
-752
+835
 00:49:38,640 --> 00:49:49,490
 帐户不是一个处理信息的对象了，而是处理交易请求流的东西
 So think about this bank account not as something that goes message by message, but something that takes in a stream of transaction requests like maybe successive deposit announced.
 
-753
+836
 00:49:49,490 --> 00:49:55,940
 比如1 2 2 4，连续的存钱交易
 1, 2, 2, 4, those might be successive amounts to deposit.
 
-754
+837
 00:49:55,940 --> 00:50:03,770
 从帐户出来的流应该是1 3 5 9
 And then coming out of it is the successive balances 1, 3, 5, 9.
 
-755
+838
 00:50:03,770 --> 00:50:10,820
 帐户没有局部状态，它只是一个流处理器
 So we think of the bank account not as something that has state, but something that acts sort of on the infinite stream of requests.
 
-756
+839
 00:50:10,820 --> 00:50:12,370
 记住，这样想的话，就没有了时间的概念
 But remember, we've thrown away time.
 
-757
+840
 00:50:12,370 --> 00:50:30,010
 如果这里有一个用户，我们把他的所有交易看做是无穷的流，帐户一次处理一个元素，所有的balance金额也作为一个流
 So what we can do is if the user's here, we can have this infinite stream of requests being generated one at a time coming from the user and this transaction stream coming back on a printer being printed one at a time.
 
-758
+841
 00:50:30,010 --> 00:50:39,560
 如果在这里划一条线，用户从外面来看，根本不能分辨银行帐户到底有没有状态
 And if we drew a little line here, right there to the user, the user couldn't tell that this system doesn't have state.
 
-759
+842
 00:50:39,560 --> 00:50:42,660
 因为它们对外表现是一样的
 It looks just like the other one, but there's no state in there.
 
-760
+843
 00:50:45,120 --> 00:50:53,835
 哦，顺便提一个，这里有一个具体的代码实现 -- 假设我们只存钱
 And by the way, just to show you, here's an actual implementation of this-- we'll call it make deposit account because you can only deposit.
 
-761
+844
 00:50:53,835 --> 00:51:00,020
 这个过程接受一个balance初始值和一个存钱交易流
 It takes an initial balance and then a stream of deposits you might make.
 
-762
+845
 00:51:00,020 --> 00:51:00,820
 具体怎么做呢？
 And what is it?
 
-763
+846
 00:51:00,820 --> 00:51:18,300
 很简单，只不过是用CONS-STREAM把初始金额和递归调用make-deposit-account的结果组合在一起，递归调用的时候，金额参数要加上第一次要存的钱，流参数变为交易流的TAIL
 Well, it's just cons-stream of the balance onto make a new account stream whose initial balance is the old balance plus the first thing in the deposit stream and make deposit account works on the rest of which is the tail of the deposit stream.
 
-764
+847
 00:51:18,300 --> 00:51:28,790
 原来用面向对象解决的问题，我们用流就可以解决
 So there's sort of a very typical message-passing, object-oriented thing that's done without side effects at all.
 
-765
+848
 00:51:28,790 --> 00:51:32,250
 很多地方都可以这样思考
 There are very many things you can do this way.
 
-766
+849
 00:51:32,250 --> 00:51:36,400
 可能你会想了，我能不用赋值做所有的事情吗？
 Well, can you do everything without assignment?
 
-767
+850
 00:51:36,400 --> 00:51:40,050
 可以只用纯函数式语言来编程吗？
 Can everybody go over to purely functional languages?
 
-768
+851
 00:51:40,050 --> 00:51:48,100
 这个问题谁也说不清，好像有些地方用函数式编程不太妥当
 Well, we don't know, but there seem to be places where purely functional programming breaks down.
 
-769
+852
 00:51:48,100 --> 00:51:58,850
 比如关于银行帐户的一个更复杂的例子，函数式也会有点吃力因为我们混入了共享的问题，这里两个用户共享一个帐户
 Where it starts hurting is when you have things like this, but you also mix it up with the other things that we had to worry that, which are objects and sharing and two independent agents being the same.
 
-770
+853
 00:51:58,850 --> 00:52:02,960
 在这种情况下，假如你来扩展这个帐户
 So under a typical one, suppose you want to extend this bank account.
 
-771
+854
 00:52:02,960 --> 00:52:04,210
 这是一个帐户
 So here's a bank account.
 
-772
+855
 00:52:12,220 --> 00:52:18,780
 帐户取一个交易流，生成一个新的流
 Bank accounts take in a stream of transaction requests and put out streams of, say, balances or responses to that.
 
-773
+856
 00:52:18,780 --> 00:52:26,090
 假如这个帐户是两个独立的用户共享的会怎么样
 But suppose you want to model the fact that this is a joint bank account between two independent people.
 
-774
+857
 00:52:26,090 --> 00:52:33,140
 假设两个人Bill和Dave，共享一个帐户
 So suppose there are two people, say, Bill and Dave, who have a joint bank account.
 
-775
+858
 00:52:35,960 --> 00:52:36,850
 怎么来建模呢？
 How would you model this?
 
-776
+859
 00:52:36,850 --> 00:52:45,880
 Bill有一个交易流，Dave也有一个交易流，可以把这两个流合并在一起再输入帐户
 Well, Bill puts out a stream of transaction requests, and Dave puts out a stream of transaction requests, and somehow, they have to merge into this bank account.
 
-777
+860
 00:52:45,880 --> 00:53:01,190
 所以我们只需要一个merge的过程，将这两个流合并为一个流就行
 So what you might do is write a little stream processing thing called merge, which sort of takes these, merges them together, produces a single stream for the bank account.
 
-778
+861
 00:53:01,190 --> 00:53:03,610
 现在他们就共享一个帐户了
 Now they're both talking to the same bank account.
 
-779
+862
 00:53:03,610 --> 00:53:06,600
 看起来不错，问题是怎么来实现merge
 That's all great, but how do you write merge?
 
-780
+863
 00:53:06,600 --> 00:53:09,730
 merge根据什么来合并？
 What's this procedure merge?
 
-781
+864
 00:53:09,730 --> 00:53:12,760
 而且要合并的合理
 You want to do something that's reasonable.
 
-782
+865
 00:53:12,760 --> 00:53:24,150
 第一反应可能这样想，两个流依次一个一个取，但是如果突然Dave外出度假了两年会怎么样？
 Your first guess might be to say, well, we'll take alternate requests from Bill and Dave. But what happens if suddenly in the middle of this thing, Dave goes away on vacation for two years?
 
-783
+866
 00:53:24,150 --> 00:53:27,690
 Bill的交易就完全被阻塞了
 Then Bill's sort of stuck.
 
-784
+867
 00:53:27,690 --> 00:53:29,750
 你想要的是
 So what you want to do is-- well, it's hard to describe.
 
-785
+868
 00:53:29,750 --> 00:53:33,380
 是一种公平的合并
 What you want to do is what people call fair merge.
 
-786
+869
 00:53:38,410 --> 00:53:46,010
 这个所谓公平的合并应该是交替地一次处理一个，但是如果一个人没有了交易，应该继续去处理另一个人的交易
 The idea of fair merge is it sort of should do them alternately, but if there's nothing waiting here, it should take one twice.
 
-787
+870
 00:53:46,010 --> 00:53:48,450
 你们可以注意到我完全没有谈论时间
 Notice I can't even say that without talking about time.
 
-788
+871
 00:53:51,300 --> 00:54:18,010
 一个在函数式编程研究方面比较活跃的课题之一就是发明一种公平合并的方式，取代原来用面向对象开发的系统，避免赋值与状态带来的问题
 So one of the other active researcher areas in functional languages is inventing little things like fair merge and maybe some others, which will take the places where I used to need side effects and objects and sort of hide them away in some very well-defined modules of the system so that all the problems of assignment don't sort of leak out all over the system but are captured in some fairly well-understood things.
 
-789
+872
 00:54:20,780 --> 00:54:38,360
 你们也看到了，我现在所触及的是计算机科学方面非常根本的一个问题，如何开发一种语言，使其可以延时求值同时又可以面向对象
 More generally, I think what you're seeing is that we're running across what I think is a very basic problem in computer science, which is how to define languages that somehow can talk about delayed evaluation, but also be able to reflect this view that there are objects in the world.
 
-790
+873
 00:54:38,360 --> 00:54:41,230
 怎么样才能两者兼有之？
 How do we somehow get both?
 
-791
+874
 00:54:41,230 --> 00:54:43,040
 想来这很困难
 And I think that's a very hard problem.
 
-792
+875
 00:54:43,040 --> 00:54:53,840
 但是这个很困难的问题却和计算机科学的关系不大，它真正涉及的是两个看待世界不同的方式
 And it may be that it's a very hard problem that has almost nothing to do with computer science, that it really is a problem having to do with two very incompatible ways of looking at the world.
 
-793
+876
 00:54:53,840 --> 00:54:55,090
 大家有问题吗？
 OK, questions?
 
-794
+877
 00:55:17,556 --> 00:55:25,890
 你之前提到过，一旦引入了赋值，就不能使用代换模型了
 AUDIENCE: You mentioned earlier that once you introduce assignment, the general rule for using the substitution model is you can't.
 
-795
+878
 00:55:25,890 --> 00:55:27,570
 除非你非常小心
 Unless you're very careful, you can't.
 
-796
+879
 00:55:27,570 --> 00:55:28,260
 对的
 PROFESSOR: Right.
 
-797
+880
 00:55:28,260 --> 00:55:40,300
 有什么方法或者什么原则来说明清楚这个“很小心”是怎么回事吗？
 AUDIENCE: Is there a set of techniques or a set of guidelines for localizing the effects of assignment so that the very careful becomes defined?
 
-798
+881
 00:55:40,300 --> 00:55:42,890
 我不知道
 PROFESSOR: I don't know.
 
-799
+882
 00:55:42,890 --> 00:55:45,430
 我想想
 Let me think.
 
-800
+883
 00:55:45,430 --> 00:55:51,480
 当然，在实现DELAY中的memo-proc也使用了赋值，但是它被隐藏了起来
 Well, certainly, there was an assignment inside memo proc, but that was sort of hidden away.
 
-801
+884
 00:55:51,480 --> 00:55:53,480
 因为它没有对结果造成其它的不同
 It ended up not making any difference.
 
-802
+885
 00:55:53,480 --> 00:56:00,390
 部分原因之一在于一旦这个过程被求值，得到answer，answer就不会再变化了
 Part of the reason for that is once this thing triggered that it had run and gotten an answer, that answer will never change.
 
-803
+886
 00:56:00,390 --> 00:56:02,080
 有点像一次赋值
 So that was sort of a one-time assignment.
 
-804
+887
 00:56:02,080 --> 00:56:11,250
 所以如果你只用这种一次赋值并且它不再改变，我想应该不会有太大问题
 So one very general thing you can do is if you only do what's called a one-time assignment and never change anything, then you can do better.
 
-805
+888
 00:56:11,250 --> 00:56:18,490
 还有一个问题在于merge -- 让我想想对不对
 One of the problems in this merge thing, people have-- let me see if this is right.
 
-806
+889
 00:56:18,490 --> 00:56:30,820
 我认为有了公平合并这一技术，在其它的地方你都可以有效的来模拟赋值
 I think it's true that with fair merge, with just fair merge, you can begin effectively simulating assignment in the rest of the language.
 
-807
+890
 00:56:30,820 --> 00:56:39,520
 这有点像你把要做的事转移到了外面 -- 我不知道这对于公平合并是否准确，但是对一些更广泛的事是适用的
 It seems like anything you do to go outside-- I'm not quite sure that's true for fair merge, but it's true of a little bit more general things that people have been doing.
 
-808
+891
 00:56:39,520 --> 00:56:47,970
 所以可能真的实现了这种技术，突然你能用这种语言来做任何事，其实应该和你拥有了赋值一样也会遇到糟糕的情况
 So it might be that any little bit you put in, suddenly if they allow you to build arbitrary stuff, it's almost as bad as having assignment altogether.
 
-809
+892
 00:56:47,970 --> 00:56:51,590
 这也是人们在研究的一个领域
 But that's an area that people are thinking about now.
 
-810
+893
 00:56:51,590 --> 00:57:04,730
 在merge这一点我有点问题，如是Bill是一个过程，当我调用Bill的时候，Bill就应该来存款或者说构造一个元素来输入
 AUDIENCE: I guess I don't see the problem here with merge if I call Bill, if Bill is a procedure, then Bill is going to increment the bank account or build the list that 's going to put in the next element.
 
-811
+894
 00:57:04,730 --> 00:57:07,170
 如果我调用Dave两次，他肯定也会存款两次
 If I call Dave twice in a row, that will do that.
 
-812
+895
 00:57:07,170 --> 00:57:09,350
 所以何来的公平合并呢
 I'm not sure where fair merge has to be involved.
 
-813
+896
 00:57:09,350 --> 00:57:11,200
 关键在于你得把这些当作真人一样
 PROFESSOR: The problem is imagine these really as people.
 
-814
+897
 00:57:11,200 --> 00:57:14,850
 就是，这里有一个用户来操作帐户
 See, here I have the user who's interacting with this bank account.
 
-815
+898
 00:57:14,850 --> 00:57:17,070
 请求一次，得到结果
 Put in a request, get an answer.
 
-816
+899
 00:57:17,070 --> 00:57:18,200
 对
 AUDIENCE: Right.
 
-817
+900
 00:57:18,200 --> 00:57:24,220
 但是如果我交替的来处理两个人的请求 AUDIENCE：为什么要交替着？
 PROFESSOR: But if the only way I can process request is to alternate them from two people-- AUDIENCE: Well, why would you alternate them?
 
-818
+901
 00:57:24,220 --> 00:57:25,070
 为什么不呢？
 PROFESSOR: Why don't I?
 
-819
+902
 00:57:25,070 --> 00:57:26,140
 嗯？
 AUDIENCE: Yes.
 
-820
+903
 00:57:26,140 --> 00:57:26,580
 为什么要？
 Why do you?
 
-821
+904
 00:57:26,580 --> 00:57:27,640
 假设这些是现实中的人，对吗？
 PROFESSOR: Think of them as real people, right?
 
-822
+905
 00:57:27,640 --> 00:57:29,280
 这个人外出一年
 This guy might go away for a year.
 
-823
+906
 00:57:29,280 --> 00:57:35,480
 你只能空守在帐户旁边就是不能处理两个请求，因为你还得等这个度假的人
 And you're sitting here at the bank account window, and you can't put in two requests because it's waiting for this guy.
 
-824
+907
 00:57:35,480 --> 00:57:37,380
 为什么非得等他呢？
 AUDIENCE: Why does it have to be waiting for one?
 
-825
+908
 00:57:37,380 --> 00:57:39,110
 因为这里是在计算一个函数
 PROFESSOR: Because it's trying to compute a function.
 
-826
+909
 00:57:39,110 --> 00:57:41,720
 我必须定义一个函数
 I have to define a function.
 
-827
+910
 00:57:41,720 --> 00:57:51,690
 换种方式来说，merge的输出并不是merge输入的函数
 Another way to say that is the answer to what comes out of this merge box is not a function of what goes in.
 
-828
+911
 00:57:51,690 --> 00:57:53,490
 明白了吗？再来看看这个merge是怎么运行的
 Because, see, what would the function be?
 
-829
+912
 00:57:53,490 --> 00:58:03,470
 假设Bill输入 1 1 1 1，Dave输入2 2 2 2
 Suppose he puts in 1, 1, 1, 1, and he puts in 2, 2, 2, 2.
 
-830
+913
 00:58:03,470 --> 00:58:05,910
 merge应该输出什么呢？
 What's the answer supposed to be?
 
-831
+914
 00:58:05,910 --> 00:58:08,740
 这里应该是1 2 1 2 1 2
 It's not good enough to say it's 1, 2, 1, 2, 1, 2.
 
-832
+915
 00:58:08,740 --> 00:58:09,390
 我明白了
 AUDIENCE: I understand.
 
-833
+916
 00:58:09,390 --> 00:58:11,560
 当Bill再输入1 1，merge再输出两个11
 But when Bill puts in 1, 1 goes in.
 
-834
+917
 00:58:11,560 --> 00:58:13,950
 Dave再输入两个2，merge就输出两个2
 When Dave puts in 2 twice, 2 goes in twice.
 
-835
+918
 00:58:13,950 --> 00:58:15,450
 就是这样
 When Bill puts in-- PROFESSOR: Right.
 
-836
+919
 00:58:15,450 --> 00:58:23,980
 为什么不能在输入的数据上加上时间信息呢？PROFESSOR：因为这里没有时间这个概念
 AUDIENCE: Why can't it be hooked to the time of the input-- the actual procedural-- PROFESSOR: Because I don't have time.
 
-837
+920
 00:58:23,980 --> 00:58:26,900
 我只是定义一个函数
 See, all I can say is I'm going to define a function.
 
-838
+921
 00:58:26,900 --> 00:58:28,150
 没有时间概念
 I don't have time.
 
-839
+922
 00:58:32,070 --> 00:58:38,420
 除掉那种没人在需要等他的情况，如果我们交替的来merge
 There's no concept if it's going to alternate, except if nobody's there, it's going to wait a while for him.
 
-840
+923
 00:58:38,420 --> 00:58:47,810
 这里有两个流，一个是Dave生成的与时间无关的无穷长度的流
 It's just going to say I have the stream of requests, the timeless infinite streams of all the requests that Dave would have made, right?
 
-841
+924
 00:58:47,810 --> 00:58:51,690
 另一个是Bill的，我现在要操作这些东西
 And the timeless infinite stream of all the requests Bill would have made, and I want to operate on them.
 
-842
+925
 00:58:51,690 --> 00:58:53,510
 这就是银行帐户的工作原理
 See, that's how this bank account is working.
 
-843
+926
 00:58:56,710 --> 00:59:05,340
 带来的问题就是倒霉的人可能提出了交易，但是并不能及时的得到回复
 And the problem is that these poor people who are sitting at the bank account windows have the misfortune to exist in time.
 
-844
+927
 00:59:05,340 --> 00:59:10,070
 他们也没有意识到他们所做过的交易是以一种流的方式来处理的
 They don't see their infinite stream of all the requests they would have ever made.
 
-845
+928
 00:59:10,070 --> 00:59:11,550
 他们只是等着，等待帐户的响应
 They're waiting now, and they want an answer.
 
-846
+929
 00:59:14,290 --> 00:59:25,290
 假设你坐在屏幕前操作着一台分时系统的计算机，你输入一些指令想看到结果
 So if you're sitting there-- if this is the screen operation on some time-sharing system and it's working functionally, you want an answer then when you talk the character.
 
-847
+930
 00:59:25,290 --> 00:59:30,910
 但是你并不想主机在处理完所有其它人的命令之后再来处理你的命令
 You don't want it to have to wait for everybody in the whole system to have typed one character before it can get around to service you.
 
-848
+931
 00:59:30,910 --> 00:59:33,890
 这就是问题所在
 So that's the problem.
 
-849
+932
 00:59:33,890 --> 00:59:36,850
 我的意思是，人们总能及时的得到结果
 I mean, the fact that people live in time, apparently.
 
-850
+933
 00:59:36,850 --> 00:59:38,620
 如果没有，这也不能算作一个问题
 If they didn't, it wouldn't be a problem.
 
-851
+934
 00:59:49,100 --> 00:59:54,740
 我想我还是不太理解这个银行交易中没有时间概念这一要点
 AUDIENCE: I'm afraid I miss the point of having no time in this banking transaction.
 
-852
+935
 00:59:54,740 --> 00:59:56,880
 时间不重要吗？
 Isn't time very important?
 
-853
+936
 00:59:56,880 --> 01:00:00,790
 举例说，有一系列事件
 For instance, the sequence of events.
 
-854
+937
 01:00:00,790 --> 01:00:08,400
 比如Dave取款$100，这些顺序应该很重要才对
 If Dave take out $100, then the timing sequence should be important.
 
-855
+938
 01:00:08,400 --> 01:00:11,260
 你怎么能把它们看作是流呢？
 How do you treat transactions as streams?
 
-856
+939
 01:00:11,260 --> 01:00:14,260
 这个问题非常好
 PROFESSOR: Well, that's the thing I'm saying.
 
-857
+940
 01:00:14,260 --> 01:00:17,510
 在这个例子中确实做不到那一点
 This is an example where you can't.
 
-858
+941
 01:00:17,510 --> 01:00:18,610
 做不到
 You can't.
 
-859
+942
 01:00:18,610 --> 01:00:24,170
 关键在于这里的输出不只是这两个流的函数
 The point is what comes out of here is simply not a function of the stream going in here and the stream going in here.
 
-860
+943
 01:00:24,170 --> 01:00:32,860
 它是这两个流和某种关于时间的信息的函数，但是由于正则序语言的原因，这种时间信息表示不出来
 It's a function of the stream going in here and the stream going in here and some kind of information about time, which is precisely what a normal-order language won't let you say.
 
-861
+944
 01:00:34,810 --> 01:00:46,400
 为了让这个银行系统更为有效，我们能不能把时间戳信息加在Bill和Dave的交易请求之前，以便merge可以根据这个来运作？
 AUDIENCE: In order to brings this back into a more functional perspective, could we just explicitly time stamp all the inputs from Bill and Dave and define fair merge to just be the sort on those time stamps?
 
-862
+945
 01:00:49,150 --> 01:00:49,550
 当然，当然可以
 PROFESSOR: Yeah, you can do that.
 
-863
+946
 01:00:49,550 --> 01:00:50,600
 你可以那样做
 You can do that sort of thing.
 
-864
+947
 01:00:50,600 --> 01:01:00,970
 我们可以想像这个merge每毫秒读一次输入，如果这个时间点没有请求，就什么都不做
 Another thing you could say is imagine that really what this function is, is that it does a read every microsecond, and then if there's none there, that's considered an empty one.
 
-865
+948
 01:01:00,970 --> 01:01:03,610
 这和你刚刚说的那种方式是相同的
 That's about equivalent to what you said.
 
-866
+949
 01:01:03,610 --> 01:01:07,110
 当然可以这样做，但是那不是我们关注的重点
 And yes, you can do that, but that's a clg.
 
-867
+950
 01:01:07,110 --> 01:01:10,170
 我们不只是关心函数的具体实现
 So it's not quite only implementation we're worried about.
 
-868
+951
 01:01:10,170 --> 01:01:18,824
 我们更关心语言的表现力，现在我们遇到的问题主要在于我们能轻松表达出来的和我们想要表达的不相符
 We're worried about expressive power in the language, and what we're running across is a real mismatch between what we can say easily and what we'd like to say.
 
-869
+952
 01:01:18,824 --> 01:01:26,080
 听起来好像如果两个人同时发出请求，这个方法就会出问题
 AUDIENCE: It sounds like where we're getting hung up with that is the fact it expects one input from both Bill and Dave at the same time.
 
-870
+953
 01:01:26,080 --> 01:01:28,530
 也不是特指这一个问题，而是关乎你如何来定义这个函数的问题
 PROFESSOR: It's not quite one, but it's anything you define.
 
-871
+954
 01:01:28,530 --> 01:01:36,110
 你也可以说Dave一次性处理两个请求，但是如果你预先定义些什么，这种方式也会出问题
 So you can say Dave can go twice as often, but if anything you predefine, it's not the right thing.
 
-872
+955
 01:01:36,110 --> 01:01:41,930
 所以说交易有很多种方式，你无法根据特定的交易情况来决定如何定义
 You can't decide at some particular function of their input requests.
 
-873
+956
 01:01:41,930 --> 01:01:47,290
 有一个更坏的消息是，甚至有一些情况连merge也处理不了
 Worse yet, I mean, worse yet, there are things that even merge can't do.
 
-874
+957
 01:01:47,290 --> 01:01:52,470
 假如你把更多的人关联在这个银行帐户上
 One thing you might want to do that's even more general is suddenly you add somebody else to this bank account system.
 
-875
+958
 01:01:52,470 --> 01:01:56,030
 假如这个人是John
 You go and you add John to this bank account system.
 
-876
+959
 01:01:56,030 --> 01:02:02,040
 这个流我就先不往上画了，也同样连接在merge上
 And now there's yet another stream that's going to come into the picture at some time which we haven't prespecified.
 
-877
+960
 01:02:02,040 --> 01:02:08,860
 这种情况甚至公平合并也无法给出合理的合并，我们称其为natagers还是什么我记不清了
 So that's something even fair merge can't do, and they're things called-- I forget-- natagers or something.
 
-878
+961
 01:02:08,860 --> 01:02:11,790
 需要一种更为广泛化的公平合并也解决
 That's a generalization of fair merge to allow that.
 
-879
+962
 01:02:11,790 --> 01:02:19,580
 有很多研究都在讨论，引入越来越多的机制，函数式思维能达到怎样的程度？
 There's a whole sort of research discipline saying how far can you push this functional perspective by adding more and more mechanism?
 
-880
+963
 01:02:19,580 --> 01:02:25,610
 到什么样的程度它也会出问题，就和我们使用赋值一样
 And how far does that go before the whole thing breaks down and you might as well been using set anyway.
 
-881
+964
 01:02:25,610 --> 01:02:28,960
 干脆自动取款好了
 AUDIENCE: You need to set him up on automatic deposit.
 
-882
+965
 01:02:28,960 --> 01:02:39,630
 [笑声]
 [LAUGHTER]
 
-883
+966
 01:02:39,630 --> 01:02:40,880
 好的，今天就到这里
 PROFESSOR: OK, thank you.
