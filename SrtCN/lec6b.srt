@@ -4538,12 +4538,12 @@ and this transaction stream
 
 910
 00:50:26,570 --> 00:50:28,800
-则会一次一个地打印在输出器上
+则会逐个打印在屏幕上
 coming back on a printer being printed one at a time.
 
 911
 00:50:30,010 --> 00:50:31,376
-如果在这里划一条线
+如果在这里画一条线
 And if we drew a little line here,
 
 912
@@ -4583,7 +4583,7 @@ just to show you, here's an actual implementation
 
 919
 00:50:50,528 --> 00:50:52,304
-我们把它叫做 MAKE-DEPOSIT-ACCOUNT
+我们把它叫做MAKE-DEPOSIT-ACCOUNT
 of this-- we'll call it make deposit account
 
 920
@@ -4608,7 +4608,7 @@ And what is it?
 
 924
 00:51:00,820 --> 00:51:02,544
-它只是用 CONS-STREAM 把余额 BALANCE
+它只是用CONS-STREAM把余额BALANCE
 Well, it's just cons-stream of the balance
 
 925
@@ -4623,7 +4623,7 @@ whose initial balance
 
 927
 00:51:07,488 --> 00:51:10,272
-就是之前 BALANCE 的值加上存款流的第一个元素
+就是之前BALANCE的值加上存款流的第一个元素
 is the old balance plus the first thing in the deposit stream
 
 928
@@ -4633,7 +4633,7 @@ whose rest, right and,
 
 929
 00:51:13,760 --> 00:51:17,376
-存款流的 TAIL 部分
+存款流的尾部分
 make deposit account works on the rest of which is the tail of the deposit stream.
 
 930
@@ -4678,17 +4678,17 @@ where purely functional programming breaks down.
 
 938
 00:51:48,100 --> 00:51:50,272
-#TBD
+当遇到像这样的系统时 问题就变得棘手起来
 Where it starts hurting is when you have things like this,
 
 939
 00:51:50,432 --> 00:51:52,320
-#TBD
+特别是当你
 but you also mix it up with
 
 940
 00:51:52,608 --> 00:51:54,272
-#TBD
+还需要考虑其它因素的时候
 the other things that we had to worry that,
 
 941
@@ -4733,7 +4733,7 @@ But suppose you want to model the fact
 
 949
 00:52:20,176 --> 00:52:24,368
-而由两个独立的用户共享
+而由两个独立用户共享
 that this is a joint bank account between two independent people.
 
 950
@@ -4743,7 +4743,7 @@ Right? I don't know. So suppose there are two people,
 
 951
 00:52:28,976 --> 00:52:30,960
-比如说 Bill 和 Dave
+比如说Bill和Dave
 say, Bill and Dave,
 
 952
@@ -4758,12 +4758,12 @@ How would you model this?
 
 954
 00:52:36,880 --> 00:52:39,800
-你或许会让 Bill 输出一个交易请求流
+你或许会让Bill输出一个交易请求流
 Well, you might, Bill puts out a stream of transaction requests,
 
 955
 00:52:40,240 --> 00:52:42,256
-Dave 也产生一个这样的流
+Dave也产生一个这样的流
 and Dave puts out a stream of transaction requests,
 
 956
@@ -4772,961 +4772,966 @@ and Dave puts out a stream of transaction requests,
 and somehow, they have to merge into this bank account.
 
 957
-00:52:45,880 --> 00:52:50,656
-因此你需要编写一个 MERGE 过程来处理这些流
-So what you might do is write a little stream processing thing called merge,
+00:52:45,880 --> 00:52:47,856
+因此你需要编写一个MERGE过程
+So what you might do is write a little stream
 
 958
+00:52:47,904 --> 00:52:50,650
+来处理这些流
+processing thing called merge,
+
+959
 00:52:57,232 --> 00:52:59,136
 它把这些流合并在一起
 which sort of takes these, merges them together,
 
-959
+960
 00:52:59,344 --> 00:53:01,190
 形成单个流 送入银行账户
 produces a single stream for the bank account.
 
-960
+961
 00:53:01,190 --> 00:53:02,992
 现在他们就共享一个帐户了
 Now they're both talking to the same bank account.
 
-961
+962
 00:53:03,610 --> 00:53:05,488
-看起来不错 问题是怎么来实现 MERGE
+看起来不错 问题是怎么来实现MERGE
 That's all great, but how do you write merge?
 
-962
+963
 00:53:05,936 --> 00:53:08,240
-MERGE 怎么来合并？
+MERGE怎么来合并？
 What, What's this procedure merge?
 
-963
+964
 00:53:09,730 --> 00:53:11,424
 需要合理的合并依据
 You want to do something that's reasonable.
 
-964
+965
 00:53:12,380 --> 00:53:13,808
-你可能首先会想这样来结局
+你可能首先会想
 Your first guess might be to say,
 
-965
+966
 00:53:13,808 --> 00:53:16,688
-我们从 Bill 和 Dave 中选一个请求来处理
+我们从Bill和Dave中选一个请求来处理
 well, we'll take alternate requests from Bill and Dave.
 
-966
+967
 00:53:18,190 --> 00:53:20,976
 但是如果在这中途
 But what happens if But what happens if suddenly in the middle thing
 
-967
+968
 00:53:21,184 --> 00:53:23,088
-Dave 突然外出度假两年 会怎么样？
+Dave突然外出度假两年 会怎么样？
 Dave goes away on vacation for two years?
 
-968
+969
 00:53:24,150 --> 00:53:25,408
-Bill 的交易就完全被阻塞了
+Bill的交易就完全被阻塞了
 Then Bill's sort of stuck.
 
-969
+970
 00:53:27,690 --> 00:53:29,750
 你想要的是
 So what you want to do is-- well, it's hard to describe.
 
-970
+971
 00:53:29,750 --> 00:53:33,648
 是一种公平的合并
 What you want to do is what people call fair merge.
 
-971
+972
 00:53:38,410 --> 00:53:40,176
 这个所谓公平的合并
 The idea of fair merge is
 
-972
+973
 00:53:40,736 --> 00:53:42,464
 应该是交替地一次处理一个
 is it sort of should do them alternately,
 
-973
+974
 00:53:42,496 --> 00:53:43,920
 但是如果一个人没有了交易
 but if there's nothing waiting here,
 
-974
+975
 00:53:43,968 --> 00:53:44,912
 应该继续去处理另一个人的交易
 it should take one twice.
 
-975
+976
 00:53:46,010 --> 00:53:48,450
-你们可以注意到我完全没有谈论时间 #TBD
+但是没有时间 我就不能这样做
 Notice I can't even say that without talking about time.
 
-976
+977
 00:53:51,300 --> 00:53:56,416
 函数式语言的另一个活跃研究领域就是
 So one of the other active researcher areas in functional languages
 
-977
+978
 00:53:56,432 --> 00:53:59,488
 发明类似于“公平合并”的算法
 is inventing little things like fair merge
 
-978
+979
 00:54:00,350 --> 00:54:01,312
 又或者是其它的东西
 maybe some others,
 
-979
+980
 00:54:01,568 --> 00:54:06,256
-用于取代原来的副作用和对象
+用于取代原来需要副作用和对象的地方
 which will take the places where I used to need side effects and objects
 
-980
+981
 00:54:06,800 --> 00:54:10,528
 用一种良好定义的模块化系统来隐藏它们
 and sort of hide them away in some very well-defined modules of the system
 
-981
+982
 00:54:10,860 --> 00:54:13,504
 这样 系统中就不会到处产生
 so that all the problems of assignment
 
-982
+983
 00:54:13,520 --> 00:54:15,344
 赋值所带来的问题
 don't sort of leak out all over the system but
 
-983
+984
 00:54:15,408 --> 00:54:17,880
-因为赋值可以被一些容易理解的概念所描述 #TBD
+因为它可以被理解透彻的概念所描述
 are captured in some fairly well-understood things.
 
-984
+985
 00:54:20,780 --> 00:54:22,704
 推而广之 我想你们也发现了
 More generally, I think what you're seeing
 
-985
+986
 00:54:23,120 --> 00:54:24,064
 我们正面对
 is that we're running across
 
-986
+987
 00:54:24,080 --> 00:54:26,670
 我所认为的 计算机科学中最基本的问题
 what I think is a very basic problem in computer science,
 
-987
+988
 00:54:26,976 --> 00:54:27,824
 也就是
 which is how to
 
-988
+989
 00:54:28,240 --> 00:54:32,032
 我们如何定义一门支持延迟求值的语言
 how to define languages that somehow can talk about delayed evaluation
 
-989
+990
 00:54:34,144 --> 00:54:35,088
 但同时又能够
 But also
 
-990
+991
 00:54:35,872 --> 00:54:38,256
 又能够把事物看做对象来操作
 be able to reflect this view that there are objects in the world.
 
-991
+992
 00:54:38,360 --> 00:54:40,368
 怎么样才能两者兼有之？
 How do we somehow get both?
 
-992
+993
 00:54:41,230 --> 00:54:43,040
 我认为这个问题很困难
 And I think that's a very hard problem.
 
-993
+994
 00:54:43,040 --> 00:54:45,520
 但是这个很困难的问题
 And it may be that it's a very hard problem
 
-994
+995
 00:54:45,856 --> 00:54:48,176
 却和计算机科学的关系不大
 that has almost nothing to do with computer science,
 
-995
+996
 00:54:48,590 --> 00:54:50,240
 它真正涉及的是
 that it really is a problem having to do with
 
-996
+997
 00:54:50,272 --> 00:54:52,736
 两种不相容的看待世界的方式
 two very incompatible ways of looking at the world.
 
-997
+998
 00:54:54,144 --> 00:54:54,720
 有问题吗？
 OK, questions?
 
-998
+999
 00:55:17,550 --> 00:55:19,200
 学生：你之前提到过
 AUDIENCE: You mentioned earlier that
 
-999
+1000
 00:55:20,112 --> 00:55:21,328
 一旦引入了赋值
 once you introduce assignment,
 
-1000
+1001
 00:55:21,328 --> 00:55:25,890
 就不能使用代换模型了
 the general rule for using the substitution model is you can't.
 
-1001
+1002
 00:55:25,890 --> 00:55:27,570
 除非你非常小心
 Unless you're very careful, you can't.
 
-1002
+1003
 00:55:27,570 --> 00:55:27,968
 教授：对的
 PROFESSOR: Right.
 
-1003
+1004
 00:55:28,260 --> 00:55:33,280
 学生：有什么技术或者指导方针
 AUDIENCE: Is there a set of techniques or a set of guidelines
 
-1004
+1005
 00:55:33,424 --> 00:55:35,920
 来确定赋值的影响
 for localizing the effects of assignment
 
-1005
+1006
 00:55:36,528 --> 00:55:40,300
 以便说g清楚这个“很小心”是怎么回事吗？
 so that the very careful becomes defined?
 
-1006
+1007
 00:55:40,300 --> 00:55:42,608
 教授：我不知道
 PROFESSOR: I don't know. Um...
 
-1007
+1008
 00:55:42,890 --> 00:55:43,584
 我想想
 Let me think.
 
-1008
+1009
 00:55:45,430 --> 00:55:48,944
 当然 实现 MEM-PROC 也使用了赋值
 Well, certainly, there was an assignment inside memo proc,
 
-1009
+1010
 00:55:50,128 --> 00:55:51,480
 但是它被隐藏了起来
 but that was sort of hidden away.
 
-1010
+1011
 00:55:51,480 --> 00:55:53,008
 因为它没有对结果造成影响
 It ended up not making any difference.
 
-1011
+1012
 00:55:53,480 --> 00:55:56,448
 部分原因之一在于 一旦触发这个过程
 Part of the reason for that is once this thing triggered
 
-1012
+1013
 00:55:57,152 --> 00:55:58,832
 它被求值并得到结果
 that it had run and gotten an answer,
 
-1013
+1014
 00:55:58,832 --> 00:56:00,064
 这个结果不会再变化
 that answer will never change.
 
-1014
+1015
 00:56:00,608 --> 00:56:02,336
 有点像单次赋值
 So that was sort of a one-time assignment.
 
-1015
+1016
 00:56:02,350 --> 00:56:03,856
 一个一般性原则就是
 So one very general thing you can do
 
-1016
+1017
 00:56:04,304 --> 00:56:06,352
 如果你只用这种单次赋值
 is if you only do what's called a one-time assignment
 
-1017
+1018
 00:56:08,048 --> 00:56:10,544
 并且它不再改变 我想应该不会有太大问题
 and never change anything, then you can do better.
 
-1018
+1019
 00:56:11,250 --> 00:56:14,128
 还有一个问题在于 MERGE --
 One of the problems in this merge thing, people have--
 
-1019
+1020
 00:56:14,672 --> 00:56:18,320
 让我想想对不对
 people have-- let me see if this is right.
 
-1020
+1021
 00:56:18,490 --> 00:56:21,552
 我认为有了公平合并这一技术
 I think it's true that with fair merge,
 
-1021
+1022
 00:56:22,256 --> 00:56:26,096
 有了这一技术 你可以在语言的其它地方
 with just fair merge, you can begin effectively simulating
 
-1022
+1023
 00:56:27,024 --> 00:56:28,896
 有效地模拟赋值
 assignment in the rest of the language.
 
-1023
+1024
 00:56:30,820 --> 00:56:33,296
 #TBD
 It seems like anything you do to go outside--
 
-1024
+1025
 00:56:33,504 --> 00:56:35,504
 #TBD
 I'm not quite sure that's true for fair merge,
 
-1025
+1026
 00:56:35,536 --> 00:56:39,312
 #TBD
 but it's true of a little bit more general things that people have been doing.
 
-1026
+1027
 00:56:39,520 --> 00:56:41,344
 所以可能真的实现了这种技术 #TBD
 So it might be that any little bit you put in,
 
-1027
+1028
 00:56:41,616 --> 00:56:44,144
 突然你能用这种语言来做任何事 #TBD
 suddenly if they allow you to build arbitrary stuff,
 
-1028
+1029
 00:56:44,160 --> 00:56:46,512
 其实应该和你拥有了赋值一样也会遇到糟糕的情况 #TBD
 it's almost as bad as having assignment altogether.
 
-1029
+1030
 00:56:47,970 --> 00:56:50,672
 这也是人们在研究的一个领域
 But that's an area that people are thinking about now.
 
-1030
+1031
 00:56:51,590 --> 00:56:54,304
 
 AUDIENCE: I guess I don't see the problem here with merge
 
-1031
+1032
 00:56:54,830 --> 00:56:59,200
 如果我调用 Bill 它是个过程
 if, you know the sense, I call Bill, if Bill is a procedure,
 
-1032
+1033
 00:56:59,216 --> 00:57:02,416
 那么 Bill 就会增加银行账户
 then Bill is going to increment the bank account
 
-1033
+1034
 00:57:02,448 --> 00:57:04,730
 或者创建一个表 用于放置下一个存款
 or build the list that 's going to put in the next element.
 
-1034
+1035
 00:57:04,730 --> 00:57:06,848
 如果我调用Dave两次 他肯定也会存款两次 #TBD
 If I call Dave twice in a row, that will do that.
 
-1035
+1036
 00:57:07,170 --> 00:57:09,350
 我并不清楚 FAIR-MERGE 是在哪里被调用的
 I'm not sure where fair merge has to be involved.
 
-1036
+1037
 00:57:09,350 --> 00:57:11,200
 教授：关键在于你得把这些当作真人一样
 PROFESSOR: The problem is imagine these really as people.
 
-1037
+1038
 00:57:11,200 --> 00:57:14,208
 这里有一个用户在操作帐户
 See, here I have the user who's interacting with this bank account.
 
-1038
+1039
 00:57:14,850 --> 00:57:17,070
 请求一次 得到结果
 Put in a request, get an answer. Put in a request, get an answer.
 
-1039
+1040
 00:57:17,200 --> 00:57:17,568
 学生：对
 AUDIENCE: Right.
 
-1040
+1041
 00:57:18,200 --> 00:57:22,256
 教授：但是如果我交替的来处理两个人的请求
 PROFESSOR: But if the only way I can process request is to alternate them from two people--
 
-1041
+1042
 00:57:22,912 --> 00:57:24,220
 学生：为什么要交替着？
 AUDIENCE: Well, why would you alternate them?
 
-1042
+1043
 00:57:24,220 --> 00:57:25,232
 教授：为什么不呢？
 PROFESSOR: Why don't I?
 
-1043
+1044
 00:57:25,456 --> 00:57:25,808
 学生：对啊 为什么要这样呢？
 AUDIENCE: Yes. Why do you?
 
-1044
+1045
 00:57:26,608 --> 00:57:27,728
 教授：假设这些是现实中的人，对吗？
 PROFESSOR: Think of them as real people, right?
 
-1045
+1046
 00:57:27,760 --> 00:57:28,976
 这个人外出一年
 This guy might go away for a year.
 
-1046
+1047
 00:57:29,280 --> 00:57:31,744
 你只能在银行账户窗口旁边等待
 And you're sitting here at the bank account window,
 
-1047
+1048
 00:57:32,430 --> 00:57:33,728
 就是不能处理两个请求
 and you can't put in two requests
 
-1048
+1049
 00:57:33,744 --> 00:57:34,944
 因为你还得等这个人
 because it's waiting for this guy.
 
-1049
+1050
 00:57:35,480 --> 00:57:37,072
 学生：为什么非得等他呢？
 AUDIENCE: Why does it have to be waiting for one?
 
-1050
+1051
 00:57:37,380 --> 00:57:39,110
 教授：因为这里是在计算一个函数
 PROFESSOR: Because it's trying to compute a function.
 
-1051
+1052
 00:57:39,110 --> 00:57:40,928
 我必须定义一个函数
 I have to define a function.
 
-1052
+1053
 00:57:41,720 --> 00:57:42,608
 换种方式来说
 Another way to say that
 
-1053
+1054
 00:57:42,848 --> 00:57:44,992
 这个 MERGE 盒子的输出
 is the answer to what comes out of this merge box
 
-1054
+1055
 00:57:46,240 --> 00:57:49,488
 并不是输入的函数
 is not a function of what goes in.
 
-1055
+1056
 00:57:51,690 --> 00:57:53,490
 明白了吗？再来看看这个 MERGE 是怎么运行的
 Because, see, what would the function be?
 
-1056
+1057
 00:57:53,490 --> 00:57:58,864
 假设 Bill 输入 1 1 1 1
 Suppose he puts in 1, 1, 1, 1,
 
-1057
+1058
 00:57:59,824 --> 00:58:02,784
 Dave输入2 2 2 2
 and he puts in 2, 2, 2, 2.
 
-1058
+1059
 00:58:03,470 --> 00:58:04,800
 MERGE 应该输出什么呢？
 What's the answer supposed to be?
 
-1059
+1060
 00:58:05,584 --> 00:58:08,740
 这里并不一定是 1 2 1 2 1 2
 It's not good enough to say it's 1, 2, 1, 2, 1, 2.
 
-1060
+1061
 00:58:08,740 --> 00:58:09,390
 学生：我明白了
 AUDIENCE: I understand.
 
-1061
+1062
 00:58:09,390 --> 00:58:11,560
 当 Bill 再输入 1  1 也就进去了
 But when Bill puts in 1, 1 goes in.
 
-1062
+1063
 00:58:11,560 --> 00:58:13,950
 Dave 再输入两个 2 MERGE 就输出两个 2
 When Dave puts in 2, twice 2 goes in twice.
 
-1063
+1064
 00:58:13,950 --> 00:58:14,736
 学生：当 Bill 输入
 AUDIENCE: When Bill puts in--
 
-1064
+1065
 00:58:14,768 --> 00:58:15,088
 教授：对的
 PROFESSOR: Right.
 
-1065
+1066
 00:58:15,130 --> 00:58:18,432
 学生：为什么不能在输入的数据
 AUDIENCE: Why can't it be hooked to the time of the input--
 
-1066
+1067
 00:58:18,592 --> 00:58:20,064
 上加上时间信息呢？
 the actual procedural--
 
-1067
+1068
 00:58:20,128 --> 00:58:21,840
 PROFESSOR：因为这里没有时间这个概念
 PROFESSOR: Because I don't have time.
 
-1068
+1069
 00:58:23,980 --> 00:58:26,900
 我只是定义一个函数
 See, all I can say is I'm going to define a function.
 
-1069
+1070
 00:58:26,900 --> 00:58:28,150
 没有时间概念
 I don't have time.
 
-1070
+1071
 00:58:32,000 --> 00:58:34,192
 #TBD
 There's no concept if it's going to alternate,
 
-1071
+1072
 00:58:34,192 --> 00:58:36,544
 #TBD
 except if nobody's there, it's going to wait a while for him.
 
-1072
+1073
 00:58:38,420 --> 00:58:41,360
 它只会说 我有一个请求流
 It's just going to say I have the stream of requests,
 
-1073
+1074
 00:58:41,740 --> 00:58:43,344
 这是是 Dave 生成的
 the timeless infinite streams
 
-1074
+1075
 00:58:43,360 --> 00:58:45,296
 没有时刻的、无穷长度的请求流
 of all the requests that Dave would have made, right?
 
-1075
+1076
 00:58:47,550 --> 00:58:50,416
 Bill 可能生成的没有时刻的无穷请求流
 And the timeless infinite stream of all the requests Bill would have made,
 
-1076
+1077
 00:58:50,544 --> 00:58:51,690
 我想对这些东西做运算
 and I want to operate on them.
 
-1077
+1078
 00:58:51,690 --> 00:58:53,510
 这就是银行帐户的工作原理
 See, that's how this bank account is working.
 
-1078
+1079
 00:58:56,710 --> 00:58:57,584
 问题是
 And the problem is
 
-1079
+1080
 00:58:57,610 --> 00:59:00,752
 这些坐在银行窗口前的倒霉蛋们
 that these poor people who are sitting at the bank account windows
 
-1080
+1081
 00:59:00,768 --> 00:59:03,824
 来得并不是时候
 have the misfortune to exist in time.
 
-1081
+1082
 00:59:05,296 --> 00:59:07,136
 #TBD
 They don't see their infinite stream
 
-1082
+1083
 00:59:07,696 --> 00:59:09,536
 #TBD
 of all the requests they would have ever made.
 
-1083
+1084
 00:59:10,070 --> 00:59:11,550
 他们只是等着 等待帐户的响应
 They're waiting now, and they want an answer.
 
-1084
+1085
 00:59:14,480 --> 00:59:15,760
 假设你坐在屏幕前
 So if you're sitting there--
 
-1085
+1086
 00:59:16,240 --> 00:59:20,864
 操作着一台分时系统的计算机
 if this is the screen operation on some time-sharing system
 
-1086
+1087
 00:59:21,520 --> 00:59:22,608
 而且它还是函数式的
 and it's working functionally,
 
-1087
+1088
 00:59:22,640 --> 00:59:24,592
 输入指令后你就希望看到结果
 you want an answer then when you talk the character.
 
-1088
+1089
 00:59:25,290 --> 00:59:27,424
 但是你并不想主机在处理完所有其它人的命令
 You don't want it to have to wait for everybody in the whole system
 
-1089
+1090
 00:59:27,456 --> 00:59:29,920
 之后再来处理你的命令
 to have typed one character before it can get around to service you.
 
-1090
+1091
 00:59:30,910 --> 00:59:31,920
 这就是问题所在
 So that's the problem.
 
-1091
+1092
 00:59:34,000 --> 00:59:36,384
 我的意思就是 用户的世界当然是存在时间概念的
 I mean, the fact that people live in time, apparently.
 
-1092
+1093
 00:59:37,216 --> 00:59:38,620
 如果没有 这就不构成问题
 If they didn't, it wouldn't be a problem.
 
-1093
+1094
 00:59:49,100 --> 00:59:51,024
 学生：我想我还是不太理解
 AUDIENCE: I'm afraid I miss the point of
 
-1094
+1095
 00:59:51,088 --> 00:59:54,240
 银行交易中为什么没有时间概念这一要点
 having no time in this banking transaction.
 
-1095
+1096
 00:59:54,740 --> 00:59:56,656
 难道时间不是非常重要吗？
 Isn't time very important?
 
-1096
+1097
 00:59:56,880 --> 00:59:59,056
 举例说 有一系列事件
 For instance, the sequence of events.
 
-1097
+1098
 00:59:59,950 --> 01:00:05,024
 比如 Dave 取款 $100
 As if, If Dave take out $100, and then
 
-1098
+1099
 01:00:06,304 --> 01:00:08,400
 比如Dave取款$100，这些顺序应该很重要才对
 As if, If Dave take out $100, then the timing sequence should be important.
 
-1099
+1100
 01:00:08,400 --> 01:00:10,864
 你怎么能把它们看作是流呢？
 How do you treat transactions as streams?
 
-1100
+1101
 01:00:11,260 --> 01:00:14,260
 这个问题非常好
 PROFESSOR: Well, that's the thing I'm saying.
 
-1101
+1102
 01:00:14,260 --> 01:00:15,616
 在这个例子中确实做不到那一点
 This is an example where you can't.
 
-1102
+1103
 01:00:17,510 --> 01:00:18,128
 做不到
 You can't.
 
-1103
+1104
 01:00:18,160 --> 01:00:20,080
 关键在于 这里的输出
 What goes, The point is what comes out of here
 
-1104
+1105
 01:00:20,240 --> 01:00:21,888
 并不是这两个输入流
  is simply not a function of the stream going in here
 
-1105
+1106
 01:00:21,920 --> 01:00:23,600
 的函数
 going in here and the stream going in here.
 
-1106
+1107
 01:00:24,170 --> 01:00:25,984
 这个函数跟这个输入流有关
 It's a function of the stream going in here
 
-1107
+1108
 01:00:26,192 --> 01:00:27,264
 还跟这个输入流有关
 and the stream going in here
 
-1108
+1109
 01:00:27,360 --> 01:00:29,072
 还包括某种有关时间的信息
 and some kind of information about time,
 
-1109
+1110
 01:00:29,376 --> 01:00:32,368
 这也正是正则序语言不想让你知道的
 which is precisely what a normal-order language won't let you say.
 
-1110
+1111
 01:00:34,810 --> 01:00:37,952
 学生：为了让这个系统更加函数式
 AUDIENCE: In order to brings this back into a more functional perspective,
 
-1111
+1112
 01:00:38,544 --> 01:00:42,048
 我们能不能把 Bill 和 Dave 的交易请求附上时间戳
 could we just explicitly time stamp all the inputs from Bill and Dave
 
-1112
+1113
 01:00:42,544 --> 01:00:46,400
 而使用时间戳作为公平合并的依据？
 and define fair merge to just be the sort on those time stamps?
 
-1113
+1114
 01:00:48,416 --> 01:00:49,550
 教授：当然 当然可以
 PROFESSOR: Yeah, you can do that.
 
-1114
+1115
 01:00:49,550 --> 01:00:50,600
 你可以那样做
 You can do that sort of thing.
 
-1115
+1116
 01:00:50,600 --> 01:00:52,560
 或者 我们可以这样来想象
 Another thing you could say is imagine
 
-1116
+1117
 01:00:52,768 --> 01:00:54,448
 我们把这个函数看作是
 that really what this function is,
 
-1117
+1118
 01:00:54,784 --> 01:00:56,880
 MERGE 每毫秒读一次输入
 is that it does a read every microsecond,
 
-1118
+1119
 01:00:58,864 --> 01:01:00,970
 如果没有读到东西 就认为没有请求
 and then if there's none there, that's considered an empty one.
 
-1119
+1120
 01:01:00,970 --> 01:01:03,392
 这和你刚刚说的那种方式是等价的
 That's about equivalent to what you said.
 
-1120
+1121
 01:01:03,610 --> 01:01:06,080
 当然可以这样做 但是那不是我们关注的重点 #TBD
 And yes, you can do that, but that's a glitch.
 
-1121
+1122
 01:01:07,110 --> 01:01:10,144
 我们不只是关心函数的具体实现 #TBD
 So it's not quite only implementation we're worried about.
 
-1122
+1123
 01:01:10,768 --> 01:01:12,736
 我们关心的是语言的表达力
 We're worried about expressive power in the language,
 
-1123
+1124
 01:01:12,752 --> 01:01:14,672
 我们遇到的困难是
 and what we're running across is a real mismatch
 
-1124
+1125
 01:01:14,992 --> 01:01:17,440
 我们不能很容易地表达我们想要表达的东西
 between what we can say easily and what we'd like to say.
 
-1125
+1126
 01:01:19,880 --> 01:01:22,016
 学生：听起来好像如果两个人同时发出请求
 AUDIENCE: It sounds like where we're getting hung up with that
 
-1126
+1127
 01:01:22,064 --> 01:01:26,090
 这个方法就会出问题
 one input from both Bill and Dave at the same time.
 
-1127
+1128
 01:01:26,120 --> 01:01:28,432
 也不是特指这一个问题，而是关乎你如何来定义这个函数的问题 #TBD
 PROFESSOR: It's not quite one, but it's anything you define.
 
-1128
+1129
 01:01:28,530 --> 01:01:30,576
 你也可以说Dave一次性处理两个请求 #TBD
 So you can say Dave can go twice as often,
 
-1129
+1130
 01:01:30,720 --> 01:01:32,320
 但是如果你预先定义些什么 #TBD
 but if anything you predefine,
 
-1130
+1131
 01:01:32,688 --> 01:01:33,872
 这种方式也会出问题 #TBD
 it's not the right thing.
 
-1131
+1132
 01:01:36,110 --> 01:01:40,704
 #TBD
 You can't decide at some particular function of their input requests.
 
-1132
+1133
 01:01:41,930 --> 01:01:43,376
 但是还有更坏的情况
 Worse yet, I mean, worse yet,
 
-1133
+1134
 01:01:44,128 --> 01:01:45,728
 有一些情况甚至 MERGE 也处理不了
 there are things that even merge can't do.
 
-1134
+1135
 01:01:47,290 --> 01:01:49,696
 比如突然有一天你想要
 One thing you might want to do that's even more general is suddenly
 
-1135
+1136
 01:01:50,240 --> 01:01:52,470
 把另一个人关联在这个银行帐户上
 you add somebody else to this bank account system.
 
-1136
+1137
 01:01:52,470 --> 01:01:54,512
 假如这个人是 John
 You go and you add John to this bank account system.
 
-1137
+1138
 01:01:56,030 --> 01:01:58,896
 现在图上就要多一个流
 And now there's yet another stream that's going to come into the picture
 
-1138
+1139
 01:01:58,912 --> 01:02:00,704
 在一个我们未曾指定的时候
 at some time which we haven't prespecified.
 
-1139
+1140
 01:02:02,040 --> 01:02:04,000
 这种情况甚至公平合并也无法给出合理的合并
 So that's something even fair merge can't do,
 
-1140
+1141
 01:02:04,000 --> 01:02:08,256
 还需要有经理一类的东西#TBD
 and they're things called-- I forget-- manager or something.
 
-1141
+1142
 01:02:08,860 --> 01:02:11,790
 需要一种更一般性的公平合并来解决
 That's a generalization of fair merge to allow that.
 
-1142
+1143
 01:02:11,790 --> 01:02:13,984
 有很多研究都在讨论
 There's a whole sort of research discipline saying
 
-1143
+1144
 01:02:14,000 --> 01:02:16,300
 通过不断引入新机制
 how far can you push this functional perspective
 
-1144
+1145
 01:02:16,592 --> 01:02:18,720
 函数式思维能应用到哪种程度？
 by adding more and more mechanism?
 
-1145
+1146
 01:02:19,580 --> 01:02:21,792
 在我们不得不使用赋值之前
 And how far does that go before the whole thing breaks down
 
-1146
+1147
 01:02:21,824 --> 01:02:23,408
 函数式程序设计能干成什么样？
 and you might as well been using set anyway.
 
-1147
+1148
 01:02:25,984 --> 01:02:28,000
 学生：看来自动存款就不行
 AUDIENCE: But not automatic deposit.
 
-1148
+1149
 01:02:39,328 --> 01:02:40,496
 教授：好的 下课
 PROFESSOR: OK, thank you.
