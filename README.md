@@ -39,12 +39,12 @@
 | Lec5a | 《赋值，状态和副作用》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTczMjIxNTM2NA==.html) [ [YouTube] ](https://youtu.be/ozss6dvq7ZU) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_9.html) [ [MKV] ](https://pan.baidu.com/s/1sl7wgqx) [ [MP4] ](https://pan.baidu.com/s/1boWiMWB) | [Windfarer](https://github.com/Windfarer) |
 | Lec5b | 《计算对象》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjY0NzE3NzQ2MA==.html) [ [YouTube] ](https://youtu.be/2Iz7agtk614) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_10.html) [ [MKV] ](https://pan.baidu.com/s/1kVG8SNP) [ [MP4] ](https://pan.baidu.com/s/1c1FRLIg) | [DreamAndDead](https://github.com/DreamAndDead) |
 | Lec6a | 《流 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjg4NTkwNzU3Ng==.html) [ [YouTube] ](https://youtu.be/z7jvvATswFE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_11.html)  [MKV]  [ [MP4] ](https://pan.baidu.com/s/1pLlvcLH) | [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec6b | 《流 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAyMjI0MjAzNg==.html) [ [YouTube] ](https://youtu.be/0lQ6fThLhYw)  [bilibili]   [MKV]  [ [MP4] ](https://pan.baidu.com/s/1b3kbWq) | [DreamAndDead](https://github.com/DreamAndDead) |
 
 ## 任务队列
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec6b | DreamAndDead | 待校对 | 0%  |
 | lec7a | DreamAndDead | 待校对 | 0%  |
 | lec7b | DreamAndDead | 待校对 | 0%  |
 | lec8a | sillyg00se | 待校对 | 0%  |
