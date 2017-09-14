@@ -21,7 +21,7 @@
 
 ## 视频地址
 
-+ [中译版视频专辑列表（优酷）](https://www.youku.com/playlist_show/id_18958522.html)
++ [中译版视频专辑列表（优酷）](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522)
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
 + [百度网盘SICP文件夹（请注意安装目录中的字体文件）](https://pan.baidu.com/s/1o78bsYA)
