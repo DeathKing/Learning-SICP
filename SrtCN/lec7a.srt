@@ -1494,142 +1494,142 @@ Let's just look at them and see what they are.
 
 300
 00:17:21,780 --> 00:17:24,128
-我们稍后再定义EVCOND
+我们还要定义EVCOND
 We're going to have to do this later, evcond.
 
 301
 00:17:25,480 --> 00:17:26,672
-我得定义apply
+我得定义APPLY
 We have to write apply.
 
 302
 00:17:27,570 --> 00:17:28,624
-还有evlist，lookup
-We're going to have to write EVLIST. We're going to write LOOKUP.
+还有EVLIST
+We're going to have to write EVLIST.
 
 303
 00:17:28,944 --> 00:17:30,208
-还有evlist，lookup
-We're going to have to write EVLIST. We're going to write LOOKUP.
+以及LOOKUP
+We're going to write LOOKUP.
 
 304
 00:17:31,790 --> 00:17:33,430
-我看看，没别的了吧？
+我看看 没别的了吧？
 I think that's everything, isn't there?
 
 305
-00:17:33,430 --> 00:17:37,184
-剩下的就是一些简单基本的东西了
-Everything else is something which is simple, or primitive, or something like that.
+00:17:33,430 --> 00:17:35,168
+剩下的东西都很简单
+Everything else is something which is simple,
 
 306
-00:17:38,570 --> 00:17:39,488
-当然，这里可以写很多特殊形式，但是对于一个语言来说无疑很糟糕
-And, of course, we could many more special forms here, but that would be a bad idea in general in a language.
+00:17:35,168 --> 00:17:37,184
+比如基本元素之类的东西
+or primitive, or something like that.
 
 307
-00:17:39,696 --> 00:17:42,064
-当然，这里可以写很多特殊形式，但是对于一个语言来说无疑很糟糕
-And, of course, we could many more special forms here, but that would be a bad idea in general in a language.
+00:17:38,570 --> 00:17:39,488
+当然
+And, of course,
 
 308
-00:17:42,256 --> 00:17:44,450
-当然，这里可以写很多特殊形式，但是对于一个语言来说无疑很糟糕
-And, of course, we could many more special forms here, but that would be a bad idea in general in a language.
+00:17:39,696 --> 00:17:42,064
+在这里 可以扩充很多特殊形式
+we could many more special forms here,
 
 309
-00:17:44,450 --> 00:17:45,920
-那会让语言变得很复杂
-You make a language very complicated by putting a lot of things in there.
+00:17:42,256 --> 00:17:44,450
+但如果在通用语言中这么做就很糟糕
+but that would be a bad idea in general in a language.
 
 310
-00:17:46,000 --> 00:17:47,488
-那会让语言变得很复杂
-You make a language very complicated by putting a lot of things in there.
+00:17:44,450 --> 00:17:45,920
+在这里添加大量的东西
+You make a language very complicated
 
 311
-00:17:47,690 --> 00:17:50,352
-保留字就不该比你能记住几个手指脚指的数目还多
-The number of reserve words that should exist in a language should be no more than a person could remember on his fingers and toes.
+00:17:46,000 --> 00:17:47,488
+会让语言变得复杂
+by putting a lot of things in there.
 
 312
-00:17:50,768 --> 00:17:53,616
-保留字就不该比你能记住几个手指脚指的数目还多
-The number of reserve words that should exist in a language should be no more than a person could remember on his fingers and toes.
+00:17:47,690 --> 00:17:50,352
+语言中的保留字
+The number of reserve words that should exist in a language
 
 313
-00:17:54,160 --> 00:17:55,536
-看到有些语言的保留字有上百个，我都不知道该说什么
-And I get very upset with languages which have hundreds of reserve words.
+00:17:50,768 --> 00:17:53,616
+不该比你能用几个手指、脚指记住的数目多
+should be no more than a person could remember on his fingers and toes.
 
 314
-00:17:55,568 --> 00:17:58,208
-看到有些语言的保留字有上百个，我都不知道该说什么
-And I get very upset with languages which have hundreds of reserve words.
+00:17:54,160 --> 00:17:55,536
+有些语言的保留字有成百上千个
+And I get very upset with languages
 
 315
-00:17:59,410 --> 00:18:00,710
-特殊形式也就是所谓定义保留字的地方
-But that's where the reserve words go.
+00:17:55,568 --> 00:17:58,208
+我都不知道该说什么了
+which have hundreds of reserve words.
 
 316
-00:18:04,750 --> 00:18:06,544
-好的，接下来，我们来看第二个核心的部分，apply
-Well, now let's get to the next part of this, the kernel, apply.
+00:17:59,410 --> 00:18:00,710
+保留字就是在这里定义的
+But that's where the reserve words go.
 
 317
-00:18:06,560 --> 00:18:07,690
-好的，接下来，我们来看第二个核心的部分，apply
-Well, now let's get to the next part of this, the kernel, apply.
+00:18:04,750 --> 00:18:06,544
+好 接下来 我们来看下一个部分
+Well, now let's get to the next part of this,
 
 318
+00:18:06,560 --> 00:18:07,690
+求值器的核心 APPLY
+the kernel, apply.
+
+319
 00:18:09,640 --> 00:18:10,752
 它还做些什么呢？
 What else is this doing?
 
-319
-00:18:11,590 --> 00:18:14,944
-apply主要是将过程应用于实际参数，这里所说的是过程和参数的符号求值的结果，而不是过程和参数的符号
-Well, apply's job is to take a procedure and apply it to its arguments after both have been evaluated to come up with a procedure and the arguments rather the operator symbols and the operand symbols, whatever they are-- symbolic expressions.
-
 320
-00:18:15,888 --> 00:18:17,552
-apply主要是将过程应用于实际参数，这里所说的是过程和参数的符号求值的结果，而不是过程和参数的符号
-Well, apply's job is to take a procedure and apply it to its arguments after both have been evaluated to come up with a procedure and the arguments rather the operator symbols and the operand symbols, whatever they are-- symbolic expressions.
+00:18:11,590 --> 00:18:17,536
+APPLY把符号状态的求值运算符和运算对象
+Well, apply's job is to take a procedure and apply it to its arguments
 
 321
 00:18:17,664 --> 00:18:20,688
-apply主要是将过程应用于实际参数，这里所说的是过程和参数的符号求值的结果，而不是过程和参数的符号
-Well, apply's job is to take a procedure and apply it to its arguments after both have been evaluated to come up with a procedure and the arguments rather the operator symbols and the operand symbols, whatever they are-- symbolic expressions.
+求值为相应的过程以及参数值
+after both have been evaluated to come up with a procedure and the arguments
 
 322
 00:18:20,912 --> 00:18:23,856
-apply主要是将过程应用于实际参数，这里所说的是过程和参数的符号求值的结果，而不是过程和参数的符号
-Well, apply's job is to take a procedure and apply it to its arguments after both have been evaluated to come up with a procedure and the arguments rather the operator symbols and the operand symbols, whatever they are-- symbolic expressions.
+然后把得到的过程应用在参数上
+rather the operator symbols and the operand symbols,
 
 323
 00:18:24,096 --> 00:18:26,960
-apply主要是将过程应用于实际参数，这里所说的是过程和参数的符号求值的结果，而不是过程和参数的符号
-Well, apply's job is to take a procedure and apply it to its arguments after both have been evaluated to come up with a procedure and the arguments rather the operator symbols and the operand symbols, whatever they are-- symbolic expressions.
+无论它们是什么符号表达式
+whatever they are-- symbolic expressions.
 
 324
 00:18:33,270 --> 00:18:35,088
-所以我们定义apply过程，接受两个参数分别代表将应用的过程和这个过程的参数列表
-So we will define apply to be a procedure of two arguments, a procedure and arguments.
+我们把APPLY定义为
+So we will define apply
 
 325
 00:18:38,352 --> 00:18:40,656
-所以我们定义apply过程，接受两个参数分别代表将应用的过程和这个过程的参数列表
-So we will define apply to be a procedure of two arguments, a procedure and arguments.
+接收两个参数的过程
+to be a procedure of two arguments,
 
 326
 00:18:40,752 --> 00:18:43,440
-所以我们定义apply过程，接受两个参数分别代表将应用的过程和这个过程的参数列表
-So we will define apply to be a procedure of two arguments, a procedure and arguments.
+一个过程和对应的参数
+a procedure and arguments.
 
 327
 00:18:47,248 --> 00:18:48,128
-具体怎么来写呢？
+它要怎么做呢？
 And what does it do?
 
 328
@@ -1644,63 +1644,63 @@ It's got two cases.
 
 330
 00:18:53,580 --> 00:18:55,168
-如果这个过程是基本过程 -- 我不知道这个谓词具体是根据什么来判断的
-Either the procedure is primitive--  And I don't know exactly how that is done.
+如果这个过程是基本过程--
+Either the procedure is primitive--
 
 331
 00:19:03,424 --> 00:19:06,416
-如果这个过程是基本过程 -- 我不知道这个谓词具体是根据什么来判断的
-Either the procedure is primitive--  And I don't know exactly how that is done.
+我不知道这个谓词具体是如何判断的
+And I don't know exactly how that is done.
 
 332
 00:19:06,864 --> 00:19:10,240
-可能原理就像我们用'closure标志来表示组合结构的类型一样，我想可能是这样
-It's possible there's some type information just like we made closure for, here, being the description of the type of a compound thing-- probably so.
+可能这里面有某种类型信息
+It's possible there's some type information
 
 333
 00:19:10,384 --> 00:19:12,416
-可能原理就像我们用'closure标志来表示组合结构的类型一样，我想可能是这样
-It's possible there's some type information just like we made closure for, here, being the description of the type of a compound thing-- probably so.
+就像我们在这里用'CLOSURE
+just like we made closure for, here,
 
 334
 00:19:12,688 --> 00:19:15,056
-可能原理就像我们用'closure标志来表示组合结构的类型一样，我想可能是这样
-It's possible there's some type information just like we made closure for, here, being the description of the type of a compound thing-- probably so.
+来描述一些符合对象一样
+being the description of the type of a compound thing--
 
 335
 00:19:16,336 --> 00:19:17,792
-可能原理就像我们用'closure标志来表示组合结构的类型一样，我想可能是这样
-It's possible there's some type information just like we made closure for, here, being the description of the type of a compound thing-- probably so.
+我想可能是这样
+OK? probably so.
 
 336
 00:19:18,550 --> 00:19:20,208
-但是深究这个谓词并不必要，事实上你可能已经知道或是演绎过，我们并不需要任何基本过程
-But it is not essential how that works, and, in fact, it turns out, as you probably know or have deduced, that you don't need any primitives anyway.
+但是具体怎么判断并不重要
+But it is not essential how that works,
 
 337
 00:19:20,688 --> 00:19:22,016
-但是深究这个谓词并不必要，事实上你可能已经知道或是演绎过，我们并不需要任何基本过程
-But it is not essential how that works, and, in fact, it turns out, as you probably know or have deduced, that you don't need any primitives anyway.
+事实上
+in fact, it turns out,
 
 338
 00:19:22,192 --> 00:19:23,856
-但是深究这个谓词并不必要，事实上你可能已经知道或是演绎过，我们并不需要任何基本过程
-But it is not essential how that works, and, in fact, it turns out, as you probably know or have deduced, that you don't need any primitives anyway.
+你可能已经知道或者推断过
+as you probably know or have deduced,
 
 339
 00:19:23,872 --> 00:19:25,472
-但是深究这个谓词并不必要，事实上你可能已经知道或是演绎过，我们并不需要任何基本过程
-But it is not essential how that works, and, in fact, it turns out, as you probably know or have deduced, that you don't need any primitives anyway.
+我们并不需要任何基本过程
+that you don't need any primitives anyway.
 
 340
 00:19:27,350 --> 00:19:29,280
-我们没有基本过程只用lambda也照样可以正常计算
-You can compute anything without them because some of the lambda that I've been playing with.
+就算没有它们 照样可以进行计算
+You can compute anything because without
 
 341
 00:19:30,464 --> 00:19:33,190
-我们没有基本过程只用lambda也照样可以正常计算
-You can compute anything without them because some of the lambda that I've been playing with.
+因为我们可以使用一直在用的LAMBDA
+because some of the lambda that I've been playing with.
 
 342
 00:19:33,616 --> 00:19:34,768
@@ -1709,33 +1709,33 @@ But it's nice to have them.
 
 343
 00:19:34,816 --> 00:19:37,472
-接下来就是精彩的部分了，我先不细讲
+我在这里略施魔法 但不会去解释
 So here we're going to do some magic which I'm not going to explain.
 
 344
 00:19:38,060 --> 00:19:41,440
-转到机器语言，执行apply-primop
+转到机器语言 执行APPLY-PRIMOP
 Go to machine language, apply primop.
 
 345
 00:19:42,912 --> 00:19:43,808
-加法就是这样运算的
+加法是在这里运算的
 Here's how it adds.
 
 346
-00:19:44,992 --> 00:19:46,100
+00:19:44,784 --> 00:19:46,100
 执行加法指令
 Execute an add instruction.
 
 347
-00:19:50,620 --> 00:19:52,224
-然而一门语言有趣的部分在于谓词是如何组合在一起的
-However, the interesting part of a language is the glue by which the predicates are glued together.
+00:19:50,620 --> 00:19:52,112
+然而一门语言有趣的部分
+However, the interesting part of a language
 
 348
-00:19:52,240 --> 00:19:54,272
-然而一门语言有趣的部分在于谓词是如何组合在一起的
-However, the interesting part of a language is the glue by which the predicates are glued together.
+00:19:52,144 --> 00:19:54,270
+在于组合基本元素的粘合剂
+is the glue by which the primitives are glued together.
 
 349
 00:19:54,912 --> 00:19:55,904
@@ -1743,256 +1743,254 @@ However, the interesting part of a language is the glue by which the predicates 
 So let's look at that.
 
 350
-00:19:56,910 --> 00:20:00,768
-另一种可能就是这是一个求值lambda得到的过程，一个复合过程
-Well, the other possibility is that this is a compound made up by executing a lambda expression, this is a compound procedure.
+00:19:56,910 --> 00:19:58,384
+另一种可能就是
+Well, the other possibility
 
 351
-00:20:00,912 --> 00:20:04,144
-另一种可能就是这是一个求值lambda得到的过程，一个复合过程
-Well, the other possibility is that this is a compound made up by executing a lambda expression, this is a compound procedure.
+00:19:58,752 --> 00:20:04,128
+这个复合对象是求值LAMBDA表达式得到的
+this is a compound made up by executing a lambda expression,
 
 352
 00:20:04,976 --> 00:20:07,056
-另一种可能就是这是一个求值lambda得到的过程，一个复合过程
-Well, the other possibility is that this is a compound made up by executing a lambda expression, this is a compound procedure.
+这是个复合过程
+this is a compound procedure.
 
 353
 00:20:07,620 --> 00:20:09,360
-我们检测它的类型标志
+检测它的类型标志
 Well, we'll check its type.
 
 354
 00:20:10,110 --> 00:20:17,072
-如果是'closure，我就得求值这个过程体
-If it is closure, if it's one of those, then I have to do an eval of the body.
+如果是'CLOSURE
+If it is closure,
 
 355
 00:20:20,512 --> 00:20:24,096
-如果是'closure，我就得求值这个过程体
-If it is closure, if it's one of those, then I have to do an eval of the body.
+如果是的话 我就得求值这个过程体
+if it's one of those, then I have to do an eval of the body.
 
 356
-00:20:24,190 --> 00:20:25,472
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+00:20:24,190 --> 00:20:27,392
+#TBD
+The way I do this, the wat I deal with this at all
 
 357
-00:20:25,760 --> 00:20:27,328
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+00:20:28,080 --> 00:20:31,696
+#TBD
+is the way I evaluate the application of a procedure to its arguments,
 
 358
-00:20:28,080 --> 00:20:31,696
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+00:20:31,720 --> 00:20:33,710
+#TBD
+is by evaluating the body of the procedure
 
 359
-00:20:31,720 --> 00:20:33,710
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+00:20:34,192 --> 00:20:37,808
+#TBD
+in the environment resulting from extending the environment of the procedure
 
 360
-00:20:34,192 --> 00:20:37,808
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+00:20:37,920 --> 00:20:40,480
+#TBD
+with the bindings of the formal parameters
 
 361
-00:20:37,920 --> 00:20:40,480
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
+00:20:41,024 --> 00:20:43,680
+#TBD
+of the procedure to the arguments that were passed to it.
 
 362
-00:20:41,024 --> 00:20:43,680
-这里我要将过程应用于其参数，也就是 将形参与实参绑定，添加入过程的运行环境，然后在此环境下对过程求值
-The way I do this, the way I deal with this at all, is the way I evaluate the application of a procedure to its arguments, is by evaluating the body of the procedure in the environment resulting from extending the environment of the procedure with the bindings of the formal parameters of the procedure to the arguments that were passed to it.
-
-363
 00:20:46,704 --> 00:20:47,872
 这句话很长
 That was a long sentence.
 
-364
+363
 00:20:51,130 --> 00:20:52,160
-但是描述的内容足够简单
+但其实简单
 Well that's easy enough.
 
-365
+364
 00:20:52,820 --> 00:20:54,480
-一会儿可能会出现许多CAR CDR CADR ...
+一会儿可能会出现许多CAR CDR...
 Now here's going to be a lot of CAR-CDRing.
 
-366
-00:20:56,384 --> 00:20:58,112
+365
+00:20:56,464 --> 00:20:58,110
 现在我先要得到过程体
 I have to get the body of the procedure.
 
-367
+366
 00:20:59,400 --> 00:21:02,304
-过程体如何取出呢？
+如何取出过程体呢？
 Where's the body of the procedure in here?
 
-368
+367
 00:21:02,960 --> 00:21:04,080
-这一部分是CAR，剩下的是CDR部分
-Well here's the CAR, here's the CDR is the whole rest of this.
+这里是CAR部分
+Well here's the CAR,
+
+368
+00:21:04,496 --> 00:21:06,130
+这一块是剩下部分的CDR部分
+here's the CDR is the whole rest of this.
 
 369
-00:21:04,496 --> 00:21:06,130
-这一部分是CAR，剩下的是CDR部分
-Well here's the CAR, here's the CDR is the whole rest of this.
+00:21:06,130 --> 00:21:06,960
+因此这就是CADR
+So here's the CADR.
 
 370
-00:21:06,130 --> 00:21:06,960
-然后这里就是CADR，我看看，过程体就在整个过程第二部分的第二部分
-So here's the CADR. And so I see, what I have here is the body is the second element of the second element of the procedure.
+00:21:07,400 --> 00:21:09,456
+所以这里我得到的过程体
+And so I see, what I have here is the body
 
 371
-00:21:07,400 --> 00:21:08,912
-然后这里就是CADR，我看看，过程体就在整个过程第二部分的第二部分
-So here's the CADR. And so I see, what I have here is the body is the second element of the second element of the procedure.
+00:21:09,456 --> 00:21:13,040
+是过程对象第二个元素的第二个元素
+is the second element of the second element of the procedure.
 
 372
-00:21:08,928 --> 00:21:13,040
-然后这里就是CADR，我看看，过程体就在整个过程第二部分的第二部分
-So here's the CADR. And so I see, what I have here is the body is the second element of the second element of the procedure.
-
-373
 00:21:13,200 --> 00:21:15,152
-也就是CADR的CADR，或者简写为CADADR
+因此CADR的CADR 也就是CADADR
 So it's the CADR of the CADR or the CADADR.
 
-374
-00:21:19,170 --> 00:21:27,495
-这里取整个过程的CADADR
+373
+00:21:19,170 --> 00:21:27,680
+这里取过程对象的CADADR部分
 It's the C-A-D-A-D-R, CADADR of the procedure.
 
+374
+00:21:30,260 --> 00:21:31,560
+为了求值过程体？
+To evaluate the body
+
 375
-00:21:30,260 --> 00:21:33,824
-为了在参数绑定后的新环境之中执行这个过程，我还得取到过程的形式参数，形参怎么取呢？
-To evaluate the body in the result of binding that's making up more environment, well I need the formal parameters of the of the procedure, what is that?
+00:21:31,984 --> 00:21:36,480
+要在参数绑定后的新环境之中进行
+in the result of binding that's making up more environment,
 
 376
-00:21:34,944 --> 00:21:36,480
-为了在参数绑定后的新环境之中执行这个过程，我还得取到过程的形式参数，形参怎么取呢？
-To evaluate the body in the result of binding that's making up more environment, well I need the formal parameters of the of the procedure, what is that?
+00:21:38,096 --> 00:21:42,064
+我还得获取过程的形式参数
+well I need the formal parameters of the of the procedure,
 
 377
-00:21:38,096 --> 00:21:42,720
-为了在参数绑定后的新环境之中执行这个过程，我还得取到过程的形式参数，形参怎么取呢？
-To evaluate the body in the result of binding that's making up more environment, well I need the formal parameters of the of the procedure, what is that?
+00:21:42,064 --> 00:21:42,720
+要怎么取呢？
+what is that?
 
 378
 00:21:43,500 --> 00:21:45,136
-就是CDR的CAR，很混乱不是吗？
-That's the CAR of the CDR. It's horrible isn't it?
+就是CADR部分的CAR部分
+That's the CAR of the CADR.
 
 379
 00:21:46,528 --> 00:21:48,780
-就是CDR的CAR，很混乱不是吗？
-That's the CAR of the CDR. It's horrible isn't it?
+这很糟糕不是吗？
+OK? It's horrible isn't it?
 
 380
 00:21:52,656 --> 00:21:53,632
-过程的CADR
+过程的CADR部分
 --of the procedure.
 
 381
 00:21:55,440 --> 00:22:00,864
-绑定形参实参添加进环境中，环境也是随着过程被传递进来
-Bind that to the arguments that were passed in the environment, which is passed also as part of the procedure.
+在随着过程一起传递过来的环境中
+Bind that to the arguments that were passed in the environment,
 
 382
 00:22:00,896 --> 00:22:04,144
-绑定形参实参添加进环境中，环境也是随着过程被传递进来
-Bind that to the arguments that were passed in the environment, which is passed also as part of the procedure.
+把形参和由环境传递过来的实参绑定起来
+which is passed also as part of the procedure.
 
 383
 00:22:04,540 --> 00:22:07,904
-也就是CDR的CDR的CAR，过程的CADDR
-Well, that's the CAR of the CDR of the CDR of this, CADDR, of the procedure.
+也就是CDR的CDR的CAR
+Well, that's the CAR of the CDR of the CDR of this,
 
 384
 00:22:09,792 --> 00:22:16,624
-也就是CDR的CDR的CAR，过程的CADDR
-Well, that's the CAR of the CDR of the CDR of this, CADDR, of the procedure.
+也就是过程的CADDR部分
+CADDR, of the procedure.
 
 385
 00:22:20,290 --> 00:22:24,960
-(bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+（闭合括号中）
+Bind, eval, pair, COND, lamda, define--
 
 386
 00:22:26,144 --> 00:22:29,680
-(bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+当然 如果我非常追求整洁
+ Now, of course, if I were being really a neat character,
 
 387
 00:22:29,872 --> 00:22:31,344
-(bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+并且又非常谨慎
+and I was being very careful,
 
 388
-00:22:32,240 --> 00:22:34,040
-(bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+00:22:32,240 --> 00:22:34,128
+我会在后面多加一个情况
+I would actually put an extra case here
 
 389
 00:22:34,384 --> 00:22:35,984
-(bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+来判断是否出错
+for checking for certain errors like,
 
 390
 00:22:36,176 --> 00:22:38,416
-(bind (caadr proc) args (caddr proc)) 如果我有点强迫症，这里就会非常谨慎，我会在后面多加一个判断来处理错误情况，比如你对参数应用的是一个过程吗？
-Bind, eval, pair, COND, lamda, define-- Now, of course, if I were being really a neat character, and I was being very careful, I would actually put an extra case here for checking for certain errors like, did you try to apply one to an argument?
+比如应用在参数上的是一个过程吗？
+did you try to apply one to an argument?
 
 391
 00:22:39,000 --> 00:22:41,696
-如果不是，这里就是未定义的过程类型
+如果不是 这里就是未定义的过程类型
 You get a undefined procedure type.
 
 392
 00:22:42,570 --> 00:22:44,096
-这里保持原样
+我在这里也会这么做
 So I may as well do that anyway.
 
 393
 00:22:45,808 --> 00:22:55,968
-下面加上else，如果出现错误情况
+像这样 在ELSE子句中返回错误
 --else, some sort of error, like that.
 
 394
 00:22:57,610 --> 00:23:01,616
-插个话，目前很多专业用途的系统中，内部的结构也与这类似，主要是分条件判断，分配处理不同情况
-Now, of course, again, in some sort of more real system, written for professional reasons, this would be written with a case analysis done by some sort of dispatch.
+当然 在现实中的一些系统中
+Now, of course, again, in some sort of more real system,
 
 395
 00:23:02,560 --> 00:23:04,224
-插个话，目前很多专业用途的系统中，内部的结构也与这类似，主要是分条件判断，分配处理不同情况
-Now, of course, again, in some sort of more real system, written for professional reasons, this would be written with a case analysis done by some sort of dispatch.
+出于专业设计的考虑
+written for professional reasons,
 
 396
-00:23:05,320 --> 00:23:09,904
-插个话，目前很多专业用途的系统中，内部的结构也与这类似，主要是分条件判断，分配处理不同情况
-Now, of course, again, in some sort of more real system, written for professional reasons, this would be written with a case analysis done by some sort of dispatch.
+00:23:05,320 --> 00:23:08,000
+这里可能会根据某种分派
+this would be written with a case analysis
 
 397
-00:23:10,750 --> 00:23:12,672
-回到这里，我可能还会添加新的条件判断，比如这是编译过的代码吗？
-Over here, I would probably have other cases like, is this compiled code?
+00:23:08,368 --> 00:23:09,900
+来进行“分情况处理”
+done by some sort of dispatch.
 
 398
-00:23:12,672 --> 00:23:12,688
-回到这里，我可能还会添加新的条件判断，比如这是编译过的代码吗？
-Over here, I would probably have other cases like, is this compiled code?
-回到这里，我可能还会添加新的条件判断，比如这是编译过的代码吗？
-Over here, I would probably have other cases like, is this compiled code?
+00:23:10,750 --> 00:23:12,688
+回到这里 我可能还会添加新的条件来检查
+Over here, I would probably have other cases
 
 399
-00:23:12,688 --> 00:23:14,160
-回到这里，我可能还会添加新的条件判断，比如这是编译过的代码吗？
-Over here, I would probably have other cases like, is this compiled code?
+00:23:12,704 --> 00:23:14,144
+比如 这是编译过的代码吗？
+like, is this compiled code?
 
 400
 00:23:16,220 --> 00:23:16,848
@@ -2002,7 +2000,7 @@ It's very important.
 401
 00:23:16,880 --> 00:23:18,352
 这样的话我就可以区分一段代码是我通过解释代码对lambda求值得到的结果还是通过编译器编译代码得到的结果
-I might have distinguished the kind of code that's produced by a directly evaluating a lambda in interpretation from code that was produced by somebody's compiler or something like that.
+I might have distinguished the kind of code
 
 402
 00:23:18,384 --> 00:23:22,336
