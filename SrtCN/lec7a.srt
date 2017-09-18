@@ -3975,17 +3975,17 @@ That means I have to make a new environment
 
 797
 00:49:38,864 --> 00:49:40,528
-来构造一个新环境
+就是这个过程的指针
 by copying this pointer,
 
 798
 00:49:41,568 --> 00:49:43,216
-就是这个过程的指针
+来构造一个新环境
 which was the pointer of the procedure,
 
 799
 00:49:44,944 --> 00:49:48,960
-同时还得在这个环境中 把参数Y跟值4绑定
+同时还得把参数Y跟值4绑定
 which binds y equal 4 with that environment.
 
 800
@@ -3995,218 +3995,218 @@ And here's my new environment, which I'll call e2.
 
 801
 00:49:56,030 --> 00:49:58,120
-接着就是在环境e2中求值过程体(+ x y)
-And, of course, this application then is evaluate the body in e2.
+当然 这里的这个应用
+And, of course, this application then
 
 802
 00:49:58,224 --> 00:50:00,336
-接着就是在环境e2中求值过程体(+ x y)
-And, of course, this application then is evaluate the body in e2.
+其过程体的求值 是在<E2>中进行的 
+is evaluate the body in e2.
 
 803
 00:50:01,584 --> 00:50:07,872
-然后变换为，(eval '(+ x y) <e2>)
-So this is eval, the body, which is plus x y, in the environment e2.
+所以这就变成了对过程体的求值
+So this is eval, the body,
 
 804
 00:50:07,904 --> 00:50:10,000
-然后变换为，(eval '(+ x y) <e2>)
-So this is eval, the body, which is plus x y, in the environment e2.
+也就是 (EVAL '(+ X Y) <E2>)
+which is plus x y, in the environment e2.
 
 805
-00:50:10,496 --> 00:50:11,856
-然后变换为，(eval '(+ x y) <e2>)
-So this is eval, the body, which is plus x y, in the environment e2.
+00:50:13,710 --> 00:50:14,944
+但由于这是一个应用
+But this is an application,
 
 806
-00:50:13,710 --> 00:50:14,944
-继续变换，(apply (eval '+ <e2>) (evlist '(x y) <e2>))
-But this is an application, so this is the apply, of eval, plus in e2, an EVLIST, quote, open, x y, in e2.
+00:50:15,480 --> 00:50:23,888
+所以又代换为 (APPLY (EVAL '+ <E2>)
+so this is the apply, of eval, plus in e2,
 
 807
-00:50:15,480 --> 00:50:23,888
-继续变换，(apply (eval '+ <e2>) (evlist '(x y) <e2>))
-But this is an application, so this is the apply, of eval, plus in e2, an EVLIST, quote, open, x y, in e2.
+00:50:26,336 --> 00:50:37,340
+(EVLIST '(X Y) <E2>))
+an EVLIST, quote, open, x y, in e2.
 
 808
-00:50:26,336 --> 00:50:37,340
-继续变换，(apply (eval '+ <e2>) (evlist '(x y) <e2>))
-But this is an application, so this is the apply, of eval, plus in e2, an EVLIST, quote, open, x y, in e2.
-
-809
 00:50:44,880 --> 00:50:45,590
 我们来看
 Well, but let's see.
 
-810
+809
 00:50:45,590 --> 00:50:51,712
-接着写，(apply ，eval这部分在环境中寻找符号'+
-That is apply, the object which is a result of that and plus.
+下一步代换为 (APPLY
+That is apply, the object
+
+810
+00:50:52,080 --> 00:50:53,872
+求值‘+得到的结果
+which is a result of that and plus.
 
 811
-00:50:52,080 --> 00:50:53,872
-接着写，(apply ，eval这部分在环境中寻找符号'+
-That is apply, the object which is a result of that and plus.
+00:50:54,190 --> 00:50:55,664
+所以我们从<E2>开始找
+So here we are in e2,
 
 812
-00:50:54,190 --> 00:50:55,664
-所以我们从e2开始找，它不在这里，也不在e1，哦，它是一个基本操作符
-So here we are in e2, plus is not here, it's not here, oh, yes, but's here as some primitive operator.
+00:50:55,696 --> 00:50:57,728
+'+既不在<E2> 也不在<E1>
+plus is not here, it's not here,
 
 813
-00:50:55,696 --> 00:50:57,728
-所以我们从e2开始找，它不在这里，也不在e1，哦，它是一个基本操作符
-So here we are in e2, plus is not here, it's not here, oh, yes, but's here as some primitive operator.
+00:50:57,744 --> 00:51:01,056
+‘+是<E0>中的基本运算符
+yes, but's here as some primitive operator.
 
 814
-00:50:57,744 --> 00:51:01,056
-所以我们从e2开始找，它不在这里，也不在e1，哦，它是一个基本操作符
-So here we are in e2, plus is not here, it's not here, oh, yes, but's here as some primitive operator.
-
-815
 00:51:01,780 --> 00:51:04,745
-用于做加法
+这个基本运算符是用于加法的
 So it's the primitive operator for addition.
 
-816
+815
 00:51:07,472 --> 00:51:14,128
-把它应用于x y在e2中解析到的结果
+把它应用于 在<E2>中求值X和Y的结果
 Apply that to the result of evaluating x and y in e2.
 
-817
+816
 00:51:14,370 --> 00:51:17,008
-我们知道x是3 y是4
+我们知道X是3 Y是4
 But we can see that x is three and y is four.
 
-818
+817
 00:51:18,112 --> 00:51:23,312
-所以这里写'(3 4)
+所以这里是'(3 4)
 So that's a three and four, here.
 
-819
+818
 00:51:24,160 --> 00:51:26,280
-然后就神奇的得到结果7
+然后就神奇地得到结果7
 And that magically produces for me a seven.
 
-820
+819
 00:51:30,520 --> 00:51:32,448
-我把这个例子具体的演示一遍是想让你们清楚的看到，求值过程中实际传递的是什么，每一部分的职能又是什么
-I wanted to go through this so you would see, essentially, one important ingredient, which is what's being passed around, and who owns what, and what his job is.
+我再来整理一下这个过程 这样你们
+I wanted to go through this so you would see,
+
+820
+00:51:32,704 --> 00:51:34,736
+就能了解这其中的重要本质
+essentially, one important ingredient,
 
 821
-00:51:32,704 --> 00:51:34,736
-我把这个例子具体的演示一遍是想让你们清楚的看到，求值过程中实际传递的是什么，每一部分的职能又是什么
-I wanted to go through this so you would see, essentially, one important ingredient, which is what's being passed around, and who owns what, and what his job is.
+00:51:35,760 --> 00:51:37,296
+这个过程中传递了些什么？
+which is what's being passed around,
 
 822
-00:51:35,760 --> 00:51:37,296
-我把这个例子具体的演示一遍是想让你们清楚的看到，求值过程中实际传递的是什么，每一部分的职能又是什么
-I wanted to go through this so you would see, essentially, one important ingredient, which is what's being passed around, and who owns what, and what his job is.
+00:51:37,312 --> 00:51:39,568
+每个模块持有什么 又负责什么？
+and who owns what, and what his job is.
 
 823
-00:51:37,312 --> 00:51:39,568
-我把这个例子具体的演示一遍是想让你们清楚的看到，求值过程中实际传递的是什么，每一部分的职能又是什么
-I wanted to go through this so you would see, essentially, one important ingredient, which is what's being passed around, and who owns what, and what his job is.
-
-824
 00:51:40,470 --> 00:51:41,616
-所以这里是一些什么呢？
+有哪些模块呢？
 So what do we have here?
 
-825
+824
 00:51:41,700 --> 00:51:42,624
-一个eval，一个apply，两个主角
-We have eval, and we have apply, the two main players.
+一个是EVAL
+We have eval,
+
+825
+00:51:44,800 --> 00:51:45,640
+还有个APPLY
+We have eval, and we have apply,
 
 826
-00:51:44,800 --> 00:51:45,640
-一个eval，一个apply，两个主角
-We have eval, and we have apply, the two main players.
+00:51:45,664 --> 00:51:46,624
+两个主要角色
+the two main players.
 
 827
-00:51:45,664 --> 00:51:46,624
-一个eval，一个apply，两个主角
-We have eval, and we have apply, the two main players.
-
-828
 00:51:49,370 --> 00:51:51,568
-在它们之间是一个大循环
+它们之间有个像这样的大回环
 And there is a big loop the goes around like this.
 
-829
+828
 00:51:52,320 --> 00:52:04,576
-eval将过程与参数传递予apply
+其中 EVAL为APPLY生成过程和参数
 Which is eval produces a procedure and arguments for apply.
 
-830
+829
 00:52:06,270 --> 00:52:08,576
-也有些事情eval可以自己做
+也有些事情 EVAL也可以自己做
 Now some things eval could do by itself.
 
-831
+830
 00:52:09,504 --> 00:52:10,860
-一些内部的事情吧
+都是一些细小的事情
 Those are little self things here.
 
-832
+831
 00:52:10,860 --> 00:52:11,744
-没多大意思
+并不十分有趣
 They're not interesting.
 
-833
+832
 00:52:12,700 --> 00:52:15,600
-eval也逐个解析每个形参
+同时 EVAL也逐个求值所有的参数
 Also eval evaluates all of the arguments, one after another.
 
-834
+833
 00:52:16,240 --> 00:52:17,280
 也没什么意思
 That's not very interesting.
 
+834
+00:52:17,650 --> 00:52:20,096
+APPLY可以应用像+这类的过程
+Apply can apply some procedures like plus,
+
 835
-00:52:17,650 --> 00:52:22,048
-apply实际执行一些过程比如+
-Apply can apply some procedures like plus, not very interesting.
+00:52:21,024 --> 00:52:22,040
+这很普通
+not very interesting.
 
 836
 00:52:22,300 --> 00:52:24,640
-然而如果不是基本过程不能直接执行，它就再度将表达式与环境传递予eval
-However, if apply can't apply a procedure like plus, it produces an expression and environment for eval.
+然而 如果APPLY不能应用像+这样的过程
+However, if apply can't apply a procedure like plus,
 
 837
 00:52:25,312 --> 00:52:33,312
-然而如果不是基本过程不能直接执行，它就再度将表达式与环境传递予eval
-However, if apply can't apply a procedure like plus, it produces an expression and environment for eval.
+它就为EVAL生成一个表达式及相应的环境
+it produces an expression and environment for eval.
 
 838
 00:52:35,470 --> 00:52:37,616
-参数和过程记录了计算的状态和环境下的表达式
-The procedural arguments wrap up essentially the state of a computation and, certainly, the expression of environment.
+过程的参数封装了
+The procedural arguments wrap up
 
 839
 00:52:38,240 --> 00:52:40,608
-参数和过程记录了计算的状态和环境下的表达式
-The procedural arguments wrap up essentially the state of a computation and, certainly, the expression of environment.
+计算所必需的状态
+essentially the state of a computation
 
 840
 00:52:41,664 --> 00:52:43,424
-参数和过程记录了计算的状态和环境下的表达式
-The procedural arguments wrap up essentially the state of a computation and, certainly, the expression of environment.
+以及相应的环境
+and, certainly, the expression of environment.
 
 841
 00:52:43,740 --> 00:52:45,312
-我们接下来并不是对全局状态一下得出结果，因为它并不知道全局状态是什么
-And so what we're actually going to do next is not the complete state, because it doesn't say who wants the answers.
+所以实际上 我们接下来
+And so what we're actually going to do next
 
 842
 00:52:45,328 --> 00:52:46,464
-我们接下来并不是对全局状态一下得出结果，因为它并不知道全局状态是什么
-And so what we're actually going to do next is not the complete state, because it doesn't say who wants the answers.
+#TBD
+is not the complete state,
 
 843
 00:52:46,480 --> 00:52:48,820
-我们接下来并不是对全局状态一下得出结果，因为它并不知道全局状态是什么
-And so what we're actually going to do next is not the complete state, because it doesn't say who wants the answers.
+#TBD
+because it doesn't say who wants the answers.
 
 844
 00:52:51,280 --> 00:52:52,896
