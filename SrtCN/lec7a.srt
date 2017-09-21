@@ -2114,4809 +2114,4834 @@ there's an assumption built in that this is Lisp,
 because I'm using CARs and CDRs.
 
 424
-00:23:43,840 --> 00:23:46,640
-用CAR来取运算符 用CDR来取运算对象
-CAR means the operator, and CDR means the operand.
+00:23:43,840 --> 00:23:45,104
+用CAR来取运算符
+CAR means the operator,
 
 425
+00:23:45,280 --> 00:23:46,640
+用CDR来取运算对象
+and CDR means the operand.
+
+426
 00:23:46,750 --> 00:23:49,968
 教科书上给出了一个用抽象语法编写的求值器
 In the text, there is an abstract syntax evaluator
 
-426
+427
 00:23:50,350 --> 00:23:53,152
 它使用的都是抽象的名字
 which these could be-- these are given abstract names
 
-427
+428
 00:23:53,160 --> 00:23:54,096
 比如OPERATOR、OPERAND
 like operator, and operand,
 
-428
+429
 00:23:54,144 --> 00:23:55,820
 以及类似的名字
 and all these other things are like that.
 
-429
+430
 00:23:56,160 --> 00:23:56,864
 那样的话
 And, in that case,
 
-430
+431
 00:23:57,024 --> 00:24:00,912
 你可以毫无问题地用ALGOL来重新实现
 you could reprogram it to be ALGOL with no problem.
 
-431
+432
 00:24:03,360 --> 00:24:06,400
 写完APPLY之后
 Well, here we have added another couple of things
 
-432
+433
 00:24:07,200 --> 00:24:08,432
 又有一些东西没有定义
 that we haven't defined.
 
-433
+434
 00:24:10,810 --> 00:24:12,576
 我先不操心这两个
 I don't think I'll worry about these at all,
 
-434
+435
 00:24:13,392 --> 00:24:15,050
 我们稍后讨论这个很重要的BIND
 however, this one will be interesting later.
 
-435
+436
 00:24:17,184 --> 00:24:19,760
 现在我们来快速过一遍 结束这一部分
 Let's just proceed through this and get it done.
 
-436
+437
 00:24:20,550 --> 00:24:22,656
 只剩下两块黑板了 不能够写太长
 There's only two more blackboards so it can't be very long.
 
-437
+438
 00:24:27,408 --> 00:24:29,088
 我还得悉心裁剪才能刚好写下
 It's carefully tailored to exactly fit.
 
-438
+439
 00:24:30,070 --> 00:24:30,980
 嗯 还剩下点什么？
 Well, what do we have left?
 
-439
+440
 00:24:30,980 --> 00:24:33,200
 我们得定义这里的EVLIST
 We have to define EVLIST, which is over here.
 
-440
+441
 00:24:33,730 --> 00:24:35,072
 EVLIST只不过是
 And EVLIST is nothing more
 
-441
+442
 00:24:35,264 --> 00:24:43,088
 在运算对象上映射某个函数得到参数
 than a map down a bunch of operands producing arguments.
 
-442
+443
 00:24:44,304 --> 00:24:45,408
 但是我还是要写出来看看
 But I'm going to write it out.
 
-443
+444
 00:24:45,820 --> 00:24:48,304
 我把它写出来的原因有点神秘
 And one of the reasons I'm going to write this out is for a mystical reason,
 
-444
+445
 00:24:49,888 --> 00:24:52,048
 我想让这个求值器简单得
 which is I want to make this evaluator so simple
 
-445
+446
 00:24:52,064 --> 00:24:53,568
 可以求值自身
 that it can understand itself.
 
-446
+447
 00:24:56,450 --> 00:24:58,096
-这一点还是有点重要的 #TBD
+我真的很在意这一点
 I'm going to really worry about that a little bit.
 
-447
+448
 00:25:00,230 --> 00:25:01,744
 现在我就把它完全写在这里
 So let's write it out completely.
 
-448
+449
 00:25:02,850 --> 00:25:04,240
 我并不关心
 See, I don't want to worry about
 
-449
+450
 00:25:04,272 --> 00:25:06,080
-它能否以过程为参数进行传递
+它能否把过程作为参数传递
 whether or not the thing can pass functional arguments.
 
-450
+451
 00:25:06,272 --> 00:25:08,064
 求值器并不会用到这些参数
 The value evaluator is not going to use them.
 
-451
+452
 00:25:08,980 --> 00:25:10,784
 求值器也不会生成一个是过程的值
 The evaluator is not going to produce functional values.
 
-452
+453
 00:25:10,880 --> 00:25:12,672
 因此 如果另外有个不同的语言
 So even if there were a different, alternative language
 
-453
+454
 00:25:12,800 --> 00:25:13,968
 跟这个又非常相似
 that were very close to this,
 
-454
+455
 00:25:15,160 --> 00:25:17,792
 这个求值器能够求值像Scheme这样的复杂语言
 this evaluates a complex language like Scheme
 
-455
+456
 00:25:17,808 --> 00:25:23,120
 Scheme是能够把过程当做参数传递的
 which does allow procedural arguments, procedural values, and procedural data.
 
-456
+457
 00:25:24,070 --> 00:25:25,952
 但当我在求值ALGOL时
 But even if I were evaluating ALGOL,
 
-457
+458
 00:25:27,344 --> 00:25:28,960
 尽管ALGOL并不支持过程值
 which doesn't allow procedural values,
 
-458
+459
 00:25:29,472 --> 00:25:30,592
 这个求值器也能正常工作
 I could use this evaluator.
 
-459
+460
 00:25:31,580 --> 00:25:33,920
-因为这个解释器并没有对这些事情做过什么假定
+因为这个解释器 并没有对这个做过什么假定
 And this evaluator is not making any assumptions about that.
 
-460
+461
 00:25:34,270 --> 00:25:36,032
-#TBD
+实际上 就算这个求值器
 And, in fact, if this evaluator were to be restricted
 
-461
-00:25:36,272 --> 00:25:37,050
-#TBD
-to not being able to that,
-
 462
-00:25:37,104 --> 00:25:39,930
-#TBD
-it wouldn't matter, because it doesn't use any of those clever things.
+00:25:36,270 --> 00:25:37,504
+被限制不允许那么做 也没有什么关系
+to not being able to that, it wouldn't matter
 
 463
+00:25:37,520 --> 00:25:40,030
+因为它没有使用那些高级功能
+because it doesn't use any of those clever things.
+
+464
 00:25:40,640 --> 00:25:42,416
 这就是我为什么要把它设计得非常简单
 So that's why I'm arranging this to be super simple.
 
-464
+465
 00:25:44,070 --> 00:25:46,464
 这几乎是所有可能的语言求值器的核心
 This is sort of the kernel of all possible language evaluators.
 
-465
+466
 00:25:47,810 --> 00:25:48,480
 回到这个定义上来
 How about that?
 
-466
+467
 00:25:49,420 --> 00:25:53,568
 EVLIST -- 它是什么呢？
 Evlist--  well, what is it?
 
-467
+468
 00:25:53,820 --> 00:25:57,040
 这个过程接收两个参数 L和ENV
 It's the procedure of two arguments, l and an environment,
 
-468
+469
 00:25:58,096 --> 00:25:59,088
 其中L是个表
 where l is a list
 
-469
+470
 00:25:59,584 --> 00:26:08,272
 这样的话 如果参数表是空表
 such that if the list of arguments is the empty list,
 
-470
+471
 00:26:10,192 --> 00:26:12,688
-那么结果就是空表 #TBD
+那么结果就是空表
 then the result is the empty list.
 
-471
+472
 00:26:14,032 --> 00:26:19,232
-否则的话 我就要把 #TBD
+否则的话 我就要组合
 Otherwise, I want to cons up
 
-472
+473
 00:26:20,752 --> 00:26:26,672
-在ENV中求值运算对象表的CAR部分 #TBD
+在ENV中求值运算对象表的CAR部分
 result of evaluating the CAR of the
 
-473
+474
 00:26:28,160 --> 00:26:32,512
 在ENV中求值运算对象CAR部分的结果
 the CAR of the list of operands in the environment.
 
-474
+475
 00:26:33,344 --> 00:26:35,712
 我想先求值第一个运算对象
 So I want the first operand evaluated,
 
-475
+476
 00:26:35,984 --> 00:26:38,400
-返回的结果将是一个新表 #TBD
+返回的结果将是一个新表
 and I'm going to make a list of the results
 
-476
-00:26:38,976 --> 00:26:45,424
-是通过把这个和用CDR递归EVLIST的结果组合得到的 #TBD
-by CONSing that onto the result of this EVLISTing as a CDR recursion,
-
 477
+00:26:38,970 --> 00:26:40,768
+是通过把这个和
+by CONSing that onto the result
+
+478
+00:26:41,088 --> 00:26:45,420
+用CDR递归EVLIST的结果组合得到的
+of this EVLISTing as a CDR recursion,
+
+479
 00:26:46,224 --> 00:26:50,130
 在同样的ENV下 L的CDR部分
 the CDR of the list relative to the same environment.
 
-478
+480
 00:26:53,088 --> 00:26:58,240
 （闭合括号中）
 Evlist, cons, else, COND, lambda, define--
 
-479
-00:26:59,664 --> 00:27:03,360
-还有一个过程我也想写在这里
-OK? And I have one more that I want to put on the blackboard.
+481
+00:26:59,660 --> 00:27:01,840
+还有一个过程
+OK? And I have one more
 
-480
+482
+00:27:01,840 --> 00:27:03,360
+我也想写在这里
+that I want to put on the blackboard.
+
+483
 00:27:03,620 --> 00:27:05,216
 它是这整个的关键
 It's the essence of this whole thing.
 
-481
+484
 00:27:05,648 --> 00:27:08,130
 还要深入一个层次
 And there's some sort of next layer down.
 
-482
+485
 00:27:14,540 --> 00:27:15,440
 也就是COND语句
 Conditionals--
 
-483
-00:27:15,696 --> 00:27:18,170
-在剩下的东西中 EVCOND是唯一一个非常重要的过程
-conditionals are the only thing left that are sort of substantial.
+486
+00:27:15,690 --> 00:27:16,992
+在剩下的东西中
+conditionals are the only thing left
 
-484
+487
+00:27:17,024 --> 00:27:18,170
+EVCOND是唯一的重要过程
+that are sort of substantial.
+
+488
 00:27:18,880 --> 00:27:20,752
 解决完这个后
 Then below that, we have to worry about
 
-485
+489
 00:27:21,072 --> 00:27:22,944
 我们再讨论LOOKUP和BIND
 things like lookup and bind,
 
-486
+490
 00:27:23,568 --> 00:27:25,360
 稍后再来讨论
 and we'll look at that in a second.
 
-487
+491
 00:27:25,530 --> 00:27:27,936
 在这个层次上 这是非常重要的
 But of the substantial stuff at this level of detail,
 
-488
+492
 00:27:28,656 --> 00:27:30,624
 下一个重要的事就是如何处理COND语句
 next important thing is how you deal with conditionals.
 
-489
+493
 00:27:31,600 --> 00:27:33,330
 那么 我们怎么来处理呢？
 Well, how do we have a conditional thing?
 
-490
-00:27:36,976 --> 00:27:45,008
-它是一个过程 参数是一组子句CLAUSES和环境ENV
-It's a procedure of a set of clauses and an environment.
+494
+00:27:36,970 --> 00:27:38,560
+它是一个过程
+It's a procedure
 
-491
+495
+00:27:39,488 --> 00:27:45,000
+参数是一组子句CLAUSES和环境ENV
+of clauses and an environment.
+
+496
 00:27:47,712 --> 00:27:48,512
 它做些什么呢？
 And what does it do?
 
-492
+497
 00:27:49,820 --> 00:27:55,472
 如果子句为空
 It says, if I've no more clauses,
 
-493
+498
 00:28:02,608 --> 00:28:03,968
 我得有一个返回值
 well, I have to give this a value.
 
-494
+499
 00:28:04,704 --> 00:28:05,872
 可能是一个错误
 It could be that it was an error.
 
-495
+500
 00:28:06,540 --> 00:28:08,592
 如果遍历完了所有条件 都没有符合的
 Supposing it run off the end of a conditional,
 
-496
+501
 00:28:09,152 --> 00:28:10,060
 那么它可能有任意的行为
 it's pretty arbitrary.
 
-497
+502
 00:28:10,060 --> 00:28:12,880
 这完全取决于程序员要怎么处理
 It's up to me as programmer to choose what I want to happen.
 
-498
+503
 00:28:13,650 --> 00:28:15,456
 现在对我来说最方便的是
 It's convenient for me, right now, to write down
 
-499
+504
 00:28:15,632 --> 00:28:17,536
 让它返回一个空表
 this has a value which is the empty list,
 
-500
+505
 00:28:18,144 --> 00:28:18,832
 这无所谓
 doesn't matter.
 
-501
+506
 00:28:20,100 --> 00:28:20,880
 为了检查出错误
 For error checking,
 
-502
+507
 00:28:20,896 --> 00:28:22,760
 有些人喜欢在这里写点别的
 some people might prefer something else.
 
-503
+508
 00:28:23,110 --> 00:28:24,816
 下面的更有意思
 But the interesting things are the following ones.
 
-504
+509
 00:28:25,392 --> 00:28:27,248
 如果我遇到了ELSE子句
 If I've got an else clause--
 
-505
+510
 00:28:31,000 --> 00:28:32,736
 请看 我们有一个由子句组成的表
 You see, if I have a list of clauses,
 
-506
+511
 00:28:33,216 --> 00:28:34,416
 其中每个子句也是一个表
 then each clause is a list.
 
-507
+512
 00:28:35,440 --> 00:28:40,528
 因此谓词就应该是CLAUSES的CAAR部分
 And so the predicate part is the CAAR of the clauses.
 
-508
+513
 00:28:43,560 --> 00:28:45,024
 它是
 It's the CAR,
 
-509
+514
 00:28:45,040 --> 00:28:49,008
 CLAUSES表中第一个元素的CAR部分
 which is the first part of the first clause in the list of clauses.
 
-510
+515
 00:28:51,090 --> 00:28:51,840
 如果它是'ELSE的话
 If it's an else,
 
-511
+516
 00:28:54,320 --> 00:28:56,510
 就意味着整个COND表达式的结果
 then it means I want my result of the conditional
 
-512
+517
 00:28:56,640 --> 00:28:59,152
 就是求值匹配表达式的结果
 to be the result of evaluating the matching expression.
 
-513
+518
 00:29:00,128 --> 00:29:04,320
 所以我求值CADAR部分
 So I eval the CADAR.
 
-514
+519
 00:29:07,008 --> 00:29:09,568
 这是第一个子句的
 So this is the first clause,
 
-515
+520
 00:29:10,128 --> 00:29:11,632
 第二个元素 也就是CADAR
 the second element of it, CADAR--
 
-516
+521
 00:29:12,810 --> 00:29:17,088
 也就是CLAUSES的CAR部分的CADR部分
 CADR of a CAR-- of the clauses,
 
-517
+522
 00:29:21,232 --> 00:29:22,576
 求值的环境是ENV
 with respect to the environment.
 
-518
+523
 00:29:26,620 --> 00:29:28,608
 下一种可能性更有意思
 Now the next possibility is more interesting.
 
-519
+524
 00:29:29,630 --> 00:29:30,448
 如果它返回FALSE的话 #TBD
 If it's false,
 
-520
+525
 00:29:33,056 --> 00:29:35,104
 如果谓词表中的第一个谓词
 if the first predicate in the predicate list
 
-521
+526
 00:29:35,744 --> 00:29:37,680
 既不是ELSE子句 又不是FALSE #TBD
 is not an else, and it's not false,
 
-522
+527
 00:29:38,320 --> 00:29:39,504
 也就是它不是保留字ELSE
 if it's not the word else,
 
-523
+528
 00:29:40,160 --> 00:29:42,000
 并且也不是一个值为FALSE的东西
 and if it's not a false thing--
 
-524
+529
 00:29:42,032 --> 00:29:43,664
 #TBD
 Let's write down what it is if it's a false thing.
 
-525
+530
 00:29:44,360 --> 00:29:50,080
 如果在相应的环境中
 If the result of evaluating the first clause -- first predicate,
 
-526
+531
 00:29:52,336 --> 00:29:56,768
 求值子句中第一个谓词的结果
 the clauses--  respect the environment,
 
-527
+532
 00:29:58,190 --> 00:30:01,008
 如果求值的结果是FALSE的话
 if that evaluation yields false,
 
-528
+533
 00:30:01,696 --> 00:30:03,824
 这就意味着 还得接着判断后面的子句
 then it means, I want to look at the next clause.
 
-529
+534
 00:30:04,368 --> 00:30:05,744
 第一个就扔掉不管了
 So I want to discard the first one.
 
-530
+535
 00:30:06,250 --> 00:30:08,336
 所以就进入下一个EVCOND循环
 So we just go around loop, evcond,
 
-531
+536
 00:30:09,952 --> 00:30:16,496
 在对应的环境中继续判断子句的CDR部分
 the CDR of the clauses relative to that environment.
 
-532
+537
 00:30:19,952 --> 00:30:25,150
 又或者 我遇到了求值为真的子句
 And otherwise, I had a true clause,
 
-533
+538
 00:30:26,848 --> 00:30:28,960
 这样的话 我想在对应的环境中
 what I want is to evaluate
 
-534
+539
 00:30:31,856 --> 00:30:41,456
 求值子句组的CADAR部分
 the CADAR of the clauses relative to that environment.
 
-535
+540
 00:30:48,208 --> 00:30:49,616
 快了 快完成了
 Boy, it's almost done.
 
-536
+541
 00:30:51,210 --> 00:30:52,800
 基本上完整了
 It's quite close to done.
 
-537
+542
 00:30:53,730 --> 00:30:55,872
 把这一部分结束
 I think we're going to finish this part off.
 
-538
+543
 00:30:56,210 --> 00:30:58,576
 再回顾一下这个求值器
 So just buzzing through this evaluator,
 
-539
+544
 00:30:58,816 --> 00:31:00,704
 它基本上就是这样了
 but so far you're seeing almost everything.
 
-540
+545
 00:31:01,088 --> 00:31:04,040
 接着来看一张幻灯片
 Let's look at the next transparency here.
 
-541
+546
 00:31:06,320 --> 00:31:10,432
 这是BIND的定义
 And see IS, Here is bind.
 
-542
+547
 00:31:11,980 --> 00:31:14,544
 BIND用于在环境中添加新的绑定
 Bind is for making more table.
 
-543
+548
 00:31:15,460 --> 00:31:18,672
 我们要在这里
 And what we are going to do here is make a--
 
-544
+549
 00:31:19,248 --> 00:31:22,800
 为环境结构创建一个框架 #TBD
 we're going to make a no-frame for an environment structure.
 
-545
+550
 00:31:22,800 --> 00:31:25,424
 环境结构是通过由框架组成的表
 The environment structure is going to be represented
 
-546
+551
 00:31:25,936 --> 00:31:27,200
 来表示的
 as a list of frames.
 
-547
+552
 00:31:28,080 --> 00:31:30,192
 给定一个已有的环境
 So given an existing environment structure,
 
-548
+553
 00:31:30,320 --> 00:31:32,112
 我可以通过把一个新建的框架
 I'm going to make a new environment structure
 
-549
+554
 00:31:32,256 --> 00:31:33,824
 CONS在已有的环境上
 by consing a new frame
 
-550
+555
 00:31:33,936 --> 00:31:35,696
 来获得新的环境
 onto the existing environment structure,
 
-551
+556
 00:31:36,624 --> 00:31:40,368
 正在应用的过程中 那些被绑定变量
 where the new frame consists of the result of pairing up the variables,
 
-552
+557
 00:31:41,050 --> 00:31:43,790
 与传递给过程的参数值结合在一起
 which are the bound variables of the procedure I'm applying,
 
-553
+558
 00:31:44,128 --> 00:31:48,256
 组成了我们所创建的新框架
 to the values which are the arguments that were passed that procedure.
 
-554
+559
 00:31:49,690 --> 00:31:50,656
 BIND其实就是创建表
 This is just making a list,
 
-555
+560
 00:31:51,648 --> 00:31:54,064
 环境就是一组由框架组成的表
 adding a new element to our list of frames,
 
-556
+561
 00:31:54,300 --> 00:31:55,600
 把新的元素加入其中
 which is an environment structure,
 
-557
+562
 00:31:55,744 --> 00:31:56,896
 也就形成了新的环境
 to make a new environment.
 
-558
+563
 00:31:58,656 --> 00:32:00,656
 而PAIR-UP的定义非常简单
 Where pair-up is very simple.
 
-559
+564
 00:32:01,540 --> 00:32:02,848
 PAIR-UP只不过是
 Pair-up is nothing more
 
-560
+565
 00:32:03,136 --> 00:32:05,568
 如果我们有一个变量表和一个值表
 than if I have a list of variables and a list of values,
 
-561
+566
 00:32:05,936 --> 00:32:08,624
 那么 如果它俩的元素个数又相同
 well, if I run out of variables and if I run out of values,
 
-562
+567
 00:32:08,624 --> 00:32:09,584
 就可以让它们一一对应
 everything's OK.
 
-563
+568
 00:32:09,720 --> 00:32:11,488
 否则的话 就是参数传递多了
 Otherwise, I've given too many arguments.
 
-564
+569
 00:32:12,512 --> 00:32:15,984
 如果值的个数比变量的个数多
 If I've not run out of variables, but I've run out of values,
 
-565
+570
 00:32:16,064 --> 00:32:17,376
 那就说明参数传递少了
 that I have too few arguments.
 
-566
+571
 00:32:18,512 --> 00:32:19,632
 通常的情况是
 And in the general case,
 
-567
+572
 00:32:19,632 --> 00:32:21,488
 如果没有出错 又没有完成的话
 where I don't have any errors, and I'm not done,
 
-568
+573
 00:32:22,064 --> 00:32:30,160
 #TBD
 OK? Then I really am just adding a new pair of the first variable with the first argument,
 
-569
+574
 00:32:30,944 --> 00:32:32,128
 #TBD
 the first value,
 
-570
+575
 00:32:32,760 --> 00:32:36,400
 #TBD
 onto a list resulting from pairing-up the rest of the variables with the rest of the values.
 
-571
+576
 00:32:37,120 --> 00:32:40,640
 #TBD
 the rest of the variables with the rest of the values.
 
-572
+577
 00:32:42,950 --> 00:32:44,784
 LOOKUP也同样简单
 Lookup is of course equally simple.
 
-573
+578
 00:32:46,288 --> 00:32:49,632
 加入我要在环境中查找一个符号
 If I have to look up a symbol in an environment,
 
-574
+579
 00:32:49,936 --> 00:32:51,392
 那么 如果是空环境
 well, if the environment is empty,
 
-575
+580
 00:32:51,568 --> 00:32:53,008
 那么就说明 该变量尚未绑定
 then I've got an unbound variable.
 
-576
+581
 00:32:54,650 --> 00:32:55,472
 否则
 Otherwise,
 
-577
+582
 00:32:56,864 --> 00:33:00,368
 我就要使用一个特殊的关联表查找过程
 what I'm going to do is use a special pair list lookup procedure,
 
-578
+583
 00:33:00,384 --> 00:33:01,872
 我们不久就会看到它的定义
 which we'll have very shortly,
 
-579
+584
 00:33:02,240 --> 00:33:05,440
 用它在环境的第一个框架中查找该符号
 of the symbol in the first frame of the environment.
 
-580
+585
 00:33:05,930 --> 00:33:07,216
 由于我知道这个环境不是空的
 Since I know the environment is not empty,
 
-581
+586
 00:33:07,232 --> 00:33:08,400
 因此 它至少有一个框架
 it must have a first frame.
 
-582
+587
 00:33:09,200 --> 00:33:11,140
 所以 我就在它第一个框架中查找
 So I lookup the symbol in the first frame.
 
-583
+588
 00:33:11,568 --> 00:33:13,584
 找到的序对会传递给这里的VCELL
 That becomes the value cell here.
 
-584
+589
 00:33:14,380 --> 00:33:17,616
 如果VCELL为空
 OK? And then, if the value cell is empty,
 
-585
+590
 00:33:18,448 --> 00:33:20,576
 那就说明当前框架中没有这个符号
 if there is no such value cell,
 
-586
+591
 00:33:20,704 --> 00:33:22,848
 我就需要在环境中剩下的框架中查找
 then I have to continue and look at the rest of the frames.
 
-587
+592
 00:33:23,720 --> 00:33:25,040
 VCELL为空 意味着当前框架没有相应的符号
 It means there was nothing found there.
 
-588
+593
 00:33:25,990 --> 00:33:28,896
 如果没有找到
 So that's a property of ASSQ is it returns emptiness
 
-589
+594
 00:33:29,520 --> 00:33:30,800
 ASSQ就会返回空表
 if it doesn't find something.
 
-590
+595
 00:33:32,320 --> 00:33:33,856
 如果找到了
 but if it did find something,
 
-591
+596
 00:33:33,856 --> 00:33:36,064
 那么我就使用VCELL的CDR部分
 then I'm going to use the CDR of the value cell here,
 
-592
+597
 00:33:36,464 --> 00:33:40,256
 因为VCELL是变量和值组成的序对
 which is the thing that was the pair consisting of the variable and the value.
 
-593
+598
 00:33:41,050 --> 00:33:43,936
 因此可以用CDR取得对应的值
 So the CDR of it is the value part. OK?
 
-594
+599
 00:33:45,000 --> 00:33:47,824
 ASSQ这个过程你们之前见过
 Finally, ASSQ is something you've probably seen already.
 
-595
+600
 00:33:47,970 --> 00:33:50,832
 ASSQ的参数是一个符号和一个由序对组成的表
 ASSQ takes a symbol and a list of pairs,
 
-596
+601
 00:33:51,424 --> 00:33:53,408
 如果表为空 它就返回空表
 and if the list is empty, it's empty.
 
-597
+602
 00:33:53,520 --> 00:33:56,304
 如果这个符号是ALIST的第一个元素
 If the symbol is the first thing in the list--
 
-598
+603
 00:33:58,064 --> 00:33:58,912
 这里写错了
 That's an error.
 
-599
+604
 00:33:59,820 --> 00:34:02,176
 应该是CAAR
 That should be CAAR, C-A-A-R.
 
-600
+605
 00:34:03,168 --> 00:34:04,160
 大家注意一下
 Everybody note that.
 
-601
+606
 00:34:07,632 --> 00:34:09,376
 就是这里 看到了吗？
 Right there, OK?
 
-602
+607
 00:34:13,424 --> 00:34:14,416
 总之
 And in any case,
 
-603
+608
 00:34:14,560 --> 00:34:16,816
 如果符号等于表的CAAR
 f the symbol is the CAAR of the A list,
 
-604
+609
 00:34:17,160 --> 00:34:20,976
 那么我就返回表中第一个序对
 then I want the first, the first pair, in the list.
 
-605
+610
 00:34:22,080 --> 00:34:25,504
 换句话说 这个键匹配了正确的条目
 So, in other words, if this is the key matching the right entry,
 
-606
+611
 00:34:26,240 --> 00:34:26,976
 否则的话
 otherwise,
 
-607
+612
 00:34:27,088 --> 00:34:28,944
 我就需要在剩下的表中继续查找
 I want to look up that symbol in the rest.
 
-608
+613
 00:34:30,080 --> 00:34:33,312
 这里有个笔误 很抱歉
 Sorry for producing a bug, bugs appear.
 
-609
+614
 00:34:35,190 --> 00:34:36,288
 好了 不管如何
 Well, in any case,
 
-610
+615
 00:34:37,056 --> 00:34:39,488
 你们基本上已经看到了全貌
 you're pretty much seeing the whole thing now.
 
-611
+616
 00:34:41,880 --> 00:34:43,296
 虽然我们的代码风格非常丑陋
 It's a very beautiful thing,
 
-612
+617
 00:34:44,192 --> 00:34:46,000
 但是作为所有语言的核心
 even though it's written in an ugly style,
 
-613
+618
 00:34:46,768 --> 00:34:48,304
 它真是非常美妙
 being the kernel of every language.
 
-614
+619
 00:34:49,600 --> 00:34:51,376
 我提议 让我们再欣赏一会儿
 I suggest that we just-- let's look at it for a while.
 
-615
+620
 00:35:00,320 --> 00:35:47,024
 [音乐]
 [ALSO SPRACH ZARATHUSTRA]
 
-616
+621
 00:35:49,750 --> 00:35:50,912
 大家有什么问题吗？
 Are there any questions?
 
-617
+622
 00:36:01,180 --> 00:36:03,296
 没有的话就休息一会儿吧
 Alright, I suppose it's time to take a small break then.
 
-618
+623
 00:36:04,040 --> 00:36:10,736
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-619
+624
 00:36:13,880 --> 00:36:17,648
 《计算机程序的构造和解释》
 
-620
+625
 00:36:40,800 --> 00:36:43,936
 讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
 
-621
+626
 00:36:43,950 --> 00:36:47,984
 《计算机程序的构造和解释》
 
-622
+627
 00:36:48,060 --> 00:36:51,936
 元循环求值器 I
 
-623
+628
 00:36:56,780 --> 00:36:58,992
 现在 我们将用一个实例
 OK, now we're just going to do a little bit of practice
 
-624
+629
 00:36:59,296 --> 00:37:02,672
 来理解一下求值器的运作过程
 understanding what it is we've just shown you. OK?
 
-625
+630
 00:37:03,470 --> 00:37:05,488
 我们通过手工进行代换
 What we're going to do is go through, in detail,
 
-626
+631
 00:37:05,504 --> 00:37:10,368
 来深入解释器的详细工作原理
 an evaluation by informally substituting through the interpreter.
 
-627
+632
 00:37:11,500 --> 00:37:14,944
 由于我们的求值器不支持赋值和定义
 And since we have no assignments or definitions in this interpreter,
 
-628
+633
 00:37:15,200 --> 00:37:17,344
 我们也就不用担心副作用
 we have no possible side effects,
 
-629
+634
 00:37:17,984 --> 00:37:22,032
 因此我们可以放心大胆地进行代换
 and so the we can do substitution with impunity
 
-630
+635
 00:37:22,528 --> 00:37:24,592
 不用担心任何副作用
 and not worry about results.
 
-631
+636
 00:37:25,330 --> 00:37:27,808
 我们将要尝试去手工代换
 So the particular problem I'd like to look at
 
-632
+637
 00:37:28,064 --> 00:37:29,632
 这个复杂的表达式
 is it an interesting one.
 
-633
+638
 00:37:30,690 --> 00:37:34,096
 (EVAL
 It's the evaluation of
 
-634
+639
 00:37:34,910 --> 00:37:48,080
 '(((LAMBDA (X) (LAMBDA (Y) (+ X Y)))
 quote, open, open, open, lambda of x, lambda of y plus x y,
 
-635
+640
 00:37:50,300 --> 00:37:52,624
 （闭合括号中）
 lambda, lambda,
 
-636
+641
 00:37:53,040 --> 00:37:56,128
 要把它应用在3和4上
 applied to three, applied to four,
 
-637
+642
 00:37:56,944 --> 00:37:59,580
 求值过程是发生在全局环境E0中的
 in some global environment which I'll call e0.
 
-638
+643
 00:38:04,930 --> 00:38:05,968
 这里的这个表达式
 So what we have here
 
-639
+644
 00:38:06,368 --> 00:38:08,048
 是个参数为X的一元过程
 is a procedure of one argument x,
 
-640
+645
 00:38:08,090 --> 00:38:11,056
 返回一个参数为Y的一元过程
 which produces as its value a procedure of one argument y,
 
-641
+646
 00:38:11,072 --> 00:38:12,128
 后者计算X+Y
 which adds x to y.
 
-642
+647
 00:38:14,300 --> 00:38:17,960
 外层的这个过程应用于数字3
 We are applying the procedure of one argument x to three.
 
-643
+648
 00:38:17,960 --> 00:38:19,392
 所以X应该是3
 So x should become three.
 
-644
+649
 00:38:21,400 --> 00:38:23,984
 返回的结果是一个参数为Y的一元过程
 And the result of that should be procedure of one argument y,
 
-645
+650
 00:38:24,336 --> 00:38:25,824
 该过程将应用于数字4
 which will then apply to 4.
 
-646
+651
 00:38:28,910 --> 00:38:30,320
 然后要做的也很简单
 And there is a very simple case,
 
-647
+652
 00:38:31,040 --> 00:38:32,736
 计算X+Y即可
 they will then add those results.
 
-648
+653
 00:38:34,790 --> 00:38:35,824
 具体做之前
 And now in order to do that,
 
-649
+654
 00:38:35,840 --> 00:38:37,760
 先来构造一个非常简单的环境模型
 I want to make a very simple environment model.
 
-650
+655
 00:38:37,904 --> 00:38:40,480
 到了现在 我相信你们已经想到
 And at this point, you should already have in your mind
 
-651
+656
 00:38:40,992 --> 00:38:42,592
 这个过程产生的环境了
 the environments that this produces.
 
-652
+657
 00:38:44,460 --> 00:38:46,624
 我们从全局环境开始
 But we're going to start out with a global environment,
 
-653
+658
 00:38:48,592 --> 00:38:50,064
 我们把它记作E0
 which I'll call e0,
 
-654
+659
 00:38:54,608 --> 00:38:55,472
 就像这样
 which is that.
 
-655
+660
 00:38:56,740 --> 00:39:02,464
 里面应该有过程+、*的定义
 And it's going to have in it things, definitions for plus, and times,
 
-656
+661
 00:39:06,304 --> 00:39:10,368
 这里 我们用希腊字母来表示过程对象 这样有趣点
 and-- using Greek letters, isn't that interesting, for the objects--
 
-657
+662
 00:39:11,216 --> 00:39:27,936
 -、/、CAR、CDR、CONS以及EQ?
 and minus, and quotient, and CAR, and CDR, and CONS, and EQ,
 
-658
+663
 00:39:28,592 --> 00:39:31,056
 其它需要的基本过程都在全局环境中
 and everything else you might imagine in a global environment.
 
-659
+664
 00:39:31,270 --> 00:39:33,824
 每个符号都对应着一个过程对象
 It's got something there for each of those things,
 
-660
+665
 00:39:34,620 --> 00:39:36,096
 这些是解释器都是解释器自带的
 something the machine is born with,
 
-661
+666
 00:39:37,104 --> 00:39:38,090
 这就是E0
 that's e0.
 
-662
+667
 00:39:39,220 --> 00:39:41,840
 现在 这个求值要怎样进行呢？
 Now what does it mean to do this evaluation?
 
-663
+668
 00:39:42,940 --> 00:39:45,184
 我们来看看这些特殊形式
 Well, we go through the set of special forms.
 
-664
+669
 00:39:45,696 --> 00:39:47,056
 首先 这不是数字
 First of all, this is not a number.
 
-665
+670
 00:39:48,670 --> 00:39:50,380
 也不是符号
 This is not a symbol.
 
-666
+671
 00:39:53,136 --> 00:39:55,600
 这不是一个引用表达式
 Gee, it's not a quoted expression.
 
-667
+672
 00:39:56,608 --> 00:39:58,384
 虽然外层是一个引用表达式
 This is a quoted expression,
 
-668
+673
 00:39:59,470 --> 00:40:00,800
 但并不是我想要去求值的那个
 but that's not what I mentioned.
 
-669
+674
 00:40:00,832 --> 00:40:01,360
 我想问的是
 The question is,
 
-670
+675
 00:40:01,392 --> 00:40:04,960
 被引用的这个表达式 是否也是个引用表达式？
 whether or not the thing which is quoted is quoted expression?
 
-671
+676
 00:40:05,890 --> 00:40:07,960
 我是在求值一个表达式
 I'm evaluating an expression.
 
-672
+677
 00:40:07,960 --> 00:40:09,984
 这个引号是为了引用这个特定表达式
 This just says it's this particular expression.
 
-673
+678
 00:40:11,410 --> 00:40:12,660
 而被引用的并非引用表达式
 This is not a quoted expression.
 
-674
+679
 00:40:13,712 --> 00:40:17,216
 当然 它也不是以LAMBDA开头
 OK? It's not a thing that begins with lambda.
 
-675
+680
 00:40:19,120 --> 00:40:20,672
 也不以COND开头
 It's not a thing that begins with COND.
 
-676
+681
 00:40:22,030 --> 00:40:25,952
 因此它是过程的应用
 Therefore, it's an application of its of an operated operands.
 
-677
+682
 00:40:26,310 --> 00:40:27,120
 这是一个组合式
 It's a combination.
 
-678
+683
 00:40:28,570 --> 00:40:30,704
 既然它是组合式
 The combination thus has
 
-679
+684
 00:40:30,896 --> 00:40:36,480
 这就是它的运算符 而这是它的运算对象
 this as the operator and this is the operands.
 
-680
+685
 00:40:40,130 --> 00:40:42,416
 这就意味着 我要
 Well, that means that what I'm going to do is
 
-681
+686
 00:40:42,570 --> 00:40:47,904
 把它转换成
 transform this into apply of eval,
 
-682
+687
 00:40:50,128 --> 00:40:57,616
 (APPLY (EVAL '((LAMBDA (X) (LAMBDA (y)
 of quote, open, open lambda of x, lambda of y--
 
-683
+688
 00:40:57,880 --> 00:40:59,120
 也就是在E0环境中
 I'm evaluating the operator--
 
-684
+689
 00:40:59,952 --> 00:41:04,192
 #TBD
 plus x y, in the environment,
 
-685
+690
 00:41:07,264 --> 00:41:08,640
 #TBD
 also e0,
 
-686
+691
 00:41:12,784 --> 00:41:15,200
 #TBD
 with the operands that I'm going to apply this to,
 
-687
+692
 00:41:15,260 --> 00:41:17,280
 #TBD
 the arguments being the result of EVLIST,
 
-688
+693
 00:41:21,216 --> 00:41:24,496
 #TBD
 the list containing four, fin e0.
 
-689
+694
 00:41:29,010 --> 00:41:31,264
 我用这个特殊的记号来表示E0
 I'm using this funny notation here for e0
 
-690
+695
 00:41:32,320 --> 00:41:34,832
 是为了强调 #TBD
 because this should be that environment.
 
-691
+696
 00:41:35,450 --> 00:41:37,770
 我无法为它命名
 I haven't a name for it,
 
-692
+697
 00:41:37,808 --> 00:41:39,152
 因为我没有环境来存放E0的名字
 because I have no environment to name it in.
 
-693
+698
 00:41:41,960 --> 00:41:46,190
 这些就是引用表达式的表示形式
 So this is just a representation of what would be a quoted expression, if you will.
 
-694
+699
 00:41:47,730 --> 00:41:51,168
 环境是那样来表示的 #TBD
 The data structure, which is the environment, goes there.
 
-695
+700
 00:41:53,040 --> 00:41:55,040
 好的 这是变换后的结果
 Well, that's what we're seeing here.
 
-696
+701
 00:41:55,850 --> 00:41:56,672
 为了执行这个表达式
 Well in order to do this,
 
-697
+702
 00:41:56,688 --> 00:41:58,048
 我还得求值这两个表达式
 I have to do this, and I have to do that.
 
-698
+703
 00:41:59,610 --> 00:42:03,296
 EVLIST简单点 我们先计算这个吧
 Well this one's easy, so why don't we do that one first. OK?
 
-699
+704
 00:42:03,770 --> 00:42:07,440
 这就被归约为
 This turns into apply of eval--
 
-700
+705
 00:42:07,456 --> 00:42:08,832
 上面的某些部分直接抄过来就好
 just copying something now.
 
-701
+706
 00:42:09,424 --> 00:42:11,000
 代换的过程中少不了照抄
 Most of the substitution rule is copying.
 
-702
+707
 00:42:18,530 --> 00:42:21,248
 抄写的时候我就不多加解释了
 So I'm going to not say the words when I copy,
 
-703
+708
 00:42:21,712 --> 00:42:23,872
 这样能快一点儿
 because it's faster.
 
-704
+709
 00:42:26,410 --> 00:42:28,640
 EVLIST的部分就代换成为
 And then the EVLIST is going to turn into a
 
-705
+710
 00:42:28,656 --> 00:42:36,720
 (CONS (EVAL '4 <E0>)
 cons, of eval, of four, in e0--
 
-706
+711
 00:42:38,784 --> 00:42:40,176
 因为它不是空表
 because it was not an empty list--
 
-707
+712
 00:42:41,440 --> 00:42:49,392
 (EVLIST '() <E0>))
 onto the result of EVLISTing, on the empty list, in e0.
 
-708
+713
 00:42:52,580 --> 00:42:54,208
 我要省略一些过程了#TBD
 And I'm going to start leaving out steps soon,
 
-709
+714
 00:42:54,240 --> 00:42:55,360
 因为太详细就有些无聊了
 because it's going to get boring.
 
-710
+715
 00:42:59,870 --> 00:43:05,424
 下一步跟上面基本上一样
 But this is basically the same thing as apply, of eval--
 
-711
+716
 00:43:07,504 --> 00:43:08,544
 继续照抄
 I'm going to keep doing this--
 
-712
+717
 00:43:10,688 --> 00:43:20,240
 (((LAMBDA (x) (LAMBDA (y) (+ X Y)) 3) 4) <E0>)
 the lambda of x, the lambda of y, plus xy, 3, close, e0.
 
-713
+718
 00:43:20,240 --> 00:43:21,200
 看来我还宝刀未老嘛
 I'm a pretty good machine.
 
-714
+719
 00:43:24,240 --> 00:43:26,240
 下面对4求值
 Well, eval of four,
 
-715
+720
 00:43:26,560 --> 00:43:28,440
 4是一个数字
 that's meets the question, is it a number.
 
-716
+721
 00:43:29,008 --> 00:43:33,904
 结果就应该是(CONS 4
 So that's cons, right, cons of 4.
 
-717
+722
 00:43:34,032 --> 00:43:37,472
 EVLIST对空表求值 结果也是空表
 And EVLIST of the empty list is the empty list,
 
-718
+723
 00:43:38,336 --> 00:43:39,240
 也就是这个
 so that's this.
 
-719
+724
 00:43:42,620 --> 00:43:45,088
 这个非常容易理解
 OK. And that's very simple to understand,
 
-720
+725
 00:43:45,104 --> 00:43:47,440
 就是一个只含有4的表
 because that means the list containing four itself.
 
-721
+726
 00:43:48,710 --> 00:43:53,840
 继续代换为 (APPLY (EVAL
 So this is nothing more than apply of eval,
 
-722
+727
 00:43:55,280 --> 00:44:02,512
 '((LAMBDA (X) (LAMBDA (Y) (+ X Y))
 quote, open, open, lambda of x, lambda of y, plus x y,
 
-723
+728
 00:44:03,400 --> 00:44:07,488
 3) 4) <E0>)
 three applied to, e0, applied to the list four--
 
-724
+729
 00:44:08,688 --> 00:44:12,608
 应用在'(4)上 这样就完成了
 applied to the list four-- bang
 
-725
+730
 00:44:13,940 --> 00:44:15,056
 这是这一步的结果
 So that's that step.
 
-726
+731
 00:44:17,008 --> 00:44:19,968
 现在让我们进行下一步 更有意思的一步
 Now let's look at the next, more interesting thing.
 
-727
+732
 00:44:20,360 --> 00:44:21,728
 这行代码要如何求值？
 What do I do to evaluate that?
 
-728
+733
 00:44:23,070 --> 00:44:24,448
 为了求值这一部分
 Evaluating this means
 
-729
+734
 00:44:25,200 --> 00:44:28,656
 我得先求值-- 首先 它不是--
 means I have to evaluate-- Well, it's not.
 
-730
+735
 00:44:29,460 --> 00:44:31,040
 这是一个应用
 It's nothing but an application.
 
-731
+736
 00:44:31,680 --> 00:44:33,104
 它并不是特殊形式
 It's not one of the special things.
 
-732
+737
 00:44:33,570 --> 00:44:36,512
 如果应用中的运算符
 If the application of this operator,
 
-733
+738
 00:44:36,510 --> 00:44:37,376
 就是这里
 which we see here--
 
-734
+739
 00:44:37,664 --> 00:44:38,944
 这就是运算符
 here's the operator--
 
-735
+740
 00:44:40,190 --> 00:44:41,770
 应用在这个运算对象上
 applied to this operands,
 
-736
+741
 00:44:44,544 --> 00:44:45,744
 形成了一个组合式
 that combination.
 
-737
+742
 00:44:46,720 --> 00:44:48,256
 现在我们要如何来求值呢？
 But we know how to do that,
 
-738
+743
 00:44:48,848 --> 00:44:52,370
 它是COND语句中的最后一种情况
 because that's the last case of the conditional.
 
-739
+744
 00:44:52,370 --> 00:44:55,520
 在这步求值中 进行的代换是
 So substituting in for this evaluation,
 
-740
+745
 00:44:55,710 --> 00:44:57,472
 把EVLIST中求值运算符的结果
 it's apply of eval of the operator
 
-741
+746
 00:44:57,504 --> 00:44:59,000
 应用在EVLIST的运算对象上#TBD
 in the EVLIST of the operands.
 
-742
+747
 00:45:01,160 --> 00:45:08,208
 这也就是 (APPLY (APPLY (EVAL
 Well, it's apply, of apply, of eval,
 
-743
+748
 00:45:10,576 --> 00:45:21,072
 '(LAMBDA (X) (LAMBDA (Y) (+ X Y)))
 of quote, open, lambda of x, lambda of y, plus x y,
 
-744
+749
 00:45:21,800 --> 00:45:23,450
 （闭合括号中）
 lambda, lambda,
 
-745
+750
 00:45:23,744 --> 00:45:25,424
 <E0>)
 in environment e0.
 
-746
+751
 00:45:30,520 --> 00:45:32,672
 我就直接给出运算对象的求值结果了
 I'm going to short circuit the evaluation of the operands,
 
-747
+752
 00:45:32,688 --> 00:45:34,144
 具体过程跟之前是一样的
 because they're the same as they were before.
 
-748
+753
 00:45:35,230 --> 00:45:36,480
 我有一个表'(3)
 I got a list containing three,
 
-749
+754
 00:45:36,512 --> 00:45:39,160
 把它应用于'(4)
 apply that, and apply that to four.
 
-750
+755
 00:45:42,448 --> 00:45:43,568
 我们接着看
 Well let's see.
 
-751
+756
 00:45:44,410 --> 00:45:46,384
 对一个LAMBDA表达式求值
 Eval of a lambda expression
 
-752
+757
 00:45:48,016 --> 00:45:49,450
 会产生一个过程对象
 produces a procedure object.
 
-753
+758
 00:45:52,030 --> 00:45:57,888
 继续变换就是 (APPLY (APPLY
 So this is apply, of apply,
 
-754
+759
 00:46:00,304 --> 00:46:02,272
 然后是一个过程对象 '(CLOSURE
 of the procedure object closure,
 
-755
+760
 00:46:04,520 --> 00:46:08,688
 它里面包含了过程的体
 which contains the body of the procedure, x,
 
-756
+761
 00:46:08,944 --> 00:46:11,920
 它绑定了变量X
 which is lambda, which binds x [UNINTELLIGIBLE]
 
-757
+762
 00:46:12,130 --> 00:46:15,408
 然后是函数体内部
 the internals of the body,
 
-758
+763
 00:46:15,808 --> 00:46:18,176
 它返回一个参数为Y的单参过程
 it returns the procedure of one argument y,
 
-759
+764
 00:46:18,560 --> 00:46:20,630
 这个过程计算X+Y
 which adds x to y.
 
-760
+765
 00:46:23,210 --> 00:46:25,504
 这个过程对象捕获了环境<E0>
 Environment e0 is now captured in it,
 
-761
+766
 00:46:27,248 --> 00:46:29,632
 因为这些求值都是在<E0>中发生的
 because this was evaluated with respect to e0.
 
-762
+767
 00:46:30,112 --> 00:46:32,432
 现在 E0也是CLOSURE对象的一部分
 e0 is part now of the closure object.
 
-763
+768
 00:46:33,040 --> 00:46:38,192
 先应用于'(3)
 Apply that to open, three, close, apply,
 
-764
+769
 00:46:38,816 --> 00:46:41,300
 再应用于'(4)
 to open, 4, close, apply.
 
-765
+770
 00:46:47,390 --> 00:46:49,296
 在这步到这步的过程中
 So going from this step to this step
 
-766
+771
 00:46:49,312 --> 00:46:50,896
 我构建了一个过程对象
 meant that I made up a procedure object
 
-767
+772
 00:46:50,912 --> 00:46:55,984
 它捕获了<E0> 并将其作为本身的一部分
 which captured in it e0 as part of the procedure object.
 
-768
+773
 00:46:57,150 --> 00:46:58,512
 现在 要把它们传递给APPLY了
 Now, we're going to pass those to apply.
 
-769
+774
 00:46:58,520 --> 00:46:59,712
 我们得把这个过程
 We have to apply this procedure
 
-770
+775
 00:47:00,480 --> 00:47:01,580
 应用在对应的参数上
 to that set of arguments.
 
-771
+776
 00:47:02,710 --> 00:47:06,512
 这里的过程并不是基本过程
 Well, but that procedure is not primitive.
 
-772
+777
 00:47:07,380 --> 00:47:09,888
 它有一个类型标志'CLOSURE
 It's, in fact, a thing which has got the tag closure,
 
-773
+778
 00:47:10,240 --> 00:47:12,096
 因此还需要进行参数绑定
 and, therefore, what we have to do is do a bind.
 
-774
+779
 00:47:13,710 --> 00:47:14,720
 必须要绑定
 We have to bind.
 
-775
+780
 00:47:15,830 --> 00:47:19,408
 在这里构造的新环境
 A new environment is made at this point,
 
-776
+781
 00:47:20,448 --> 00:47:22,800
 它有一个父环境
 which has as its parent environment
 
-777
+782
 00:47:22,944 --> 00:47:27,568
 父环境是这里的E0
 the one over here, e0, that environment.
 
-778
+783
 00:47:30,320 --> 00:47:31,570
 我们把新环境记作E1
 And we'll call this one, e1.
 
-779
+784
 00:47:34,620 --> 00:47:35,744
 这里要绑定些什么呢？
 Now what's bound in there?
 
-780
+785
 00:47:36,040 --> 00:47:37,488
 变量X绑定为值3
 x is bound to three.
 
-781
+786
 00:47:38,620 --> 00:47:40,448
 这里写X=3
 So I have x equal three.
 
-782
+787
 00:47:41,480 --> 00:47:42,336
 就是这些
 That's what's in there.
 
-783
+788
 00:47:44,940 --> 00:47:46,240
 新环境记作E1
 And we'll call that e1.
 
-784
+789
 00:47:46,240 --> 00:47:48,448
 而这个表达式会变换为
 So what this transforms into
 
-785
+790
 00:47:49,130 --> 00:47:50,720
 对一个过程体的求值
 is an eval of the body
 
-786
+791
 00:47:51,728 --> 00:47:53,070
 就是这个 在这里
 of this, which is this,
 
-787
+792
 00:47:54,400 --> 00:47:55,728
 这个过程的体
 the body of that procedure,
 
-788
+793
 00:47:56,448 --> 00:47:58,528
 在刚才创建的E1中进行求值
 in the environment that you just saw.
 
-789
+794
 00:48:00,290 --> 00:48:05,056
 也就是 (APPLY (EVAL
 So that's an apply, of eval,
 
-790
+795
 00:48:06,920 --> 00:48:16,432
 '(LAMBDA (Y) (+ X Y)) <E1>)
 quote, open, lambda of y, plus x y-- the body-- in e1.
 
-791
+796
 00:48:20,496 --> 00:48:22,480
 应用于4
 And apply the result of that to four,
 
-792
+797
 00:48:23,680 --> 00:48:26,736
 也就是'(4)
 open, close, 4-- list of arguments.
 
-793
+798
 00:48:28,432 --> 00:48:29,872
 到了这里就很清晰了
 Well, that's sensible enough
 
-794
+799
 00:48:30,080 --> 00:48:32,272
 我知道该如何求值LAMBDA表达式
 because evaluating a lambda, I know what to do.
 
-795
+800
 00:48:33,110 --> 00:48:34,176
 也就是(APPLY
 That means I apply,
 
-796
+801
 00:48:37,168 --> 00:48:38,928
 一个过程对象'(CLOSURE
 the procedure which is closure,
 
-797
+802
 00:48:43,744 --> 00:48:46,848
 它绑定参数Y 计算X+Y
 binds one argument y, adds x to y,
 
-798
+803
 00:48:49,280 --> 00:48:52,150
 并且捕获了环境<E1>
 with e1 captured in it.
 
-799
+804
 00:48:55,790 --> 00:48:57,424
 你应该已经见过了 对吧？
 And you should really see this. Right?
 
-800
+805
 00:48:57,800 --> 00:49:00,140
 我构造了一个CLOSURE对象
 I somehow manufactured a closure.
 
-801
+806
 00:49:00,140 --> 00:49:01,168
 放在这里
 I should've put this here.
 
-802
+807
 00:49:01,790 --> 00:49:03,040
 之前的那个也是
 There was one over here too.
 
-803
+808
 00:49:05,904 --> 00:49:07,472
 这是现在的这个
 OK? Well, there's one here now.
 
-804
+809
 00:49:08,080 --> 00:49:09,808
 它捕获了环境<E1>
 I've captured e1,
 
-805
+810
 00:49:10,416 --> 00:49:14,256
 而这个是参数为Y的一元过程
 and this is the procedure of one argument y,
 
-806
+811
 00:49:15,456 --> 00:49:16,704
 先不管它具体是什么
 whatever this is.
 
-807
+812
 00:49:18,096 --> 00:49:20,720
 我们只知道它是一个CLOSURE
 That's what that is there, that closure.
 
-808
+813
 00:49:22,576 --> 00:49:26,464
 将这个过程应用于'(4)
 OK? I'm going to apply that to four.
 
-809
+814
 00:49:30,288 --> 00:49:31,776
 很简单
 OK. Well, that's easy enough.
 
-810
+815
 00:49:36,830 --> 00:49:38,736
 我需要通过复制一个指针
 That means I have to make a new environment
 
-811
+816
 00:49:38,864 --> 00:49:40,528
 就是这个过程的指针
 by copying this pointer,
 
-812
+817
 00:49:41,568 --> 00:49:43,216
 来构造一个新环境
 which was the pointer of the procedure,
 
-813
+818
 00:49:44,944 --> 00:49:48,960
 同时还得把参数Y跟值4绑定
 which binds y equal 4 with that environment.
 
-814
+819
 00:49:49,824 --> 00:49:52,224
 我把这个新环境 记作E2
 And here's my new environment, which I'll call e2.
 
-815
+820
 00:49:56,030 --> 00:49:58,120
 当然 这里的这个应用
 And, of course, this application then
 
-816
+821
 00:49:58,224 --> 00:50:00,336
 其过程体的求值 是在<E2>中进行的
 is evaluate the body in e2.
 
-817
+822
 00:50:01,584 --> 00:50:07,872
 所以这就变成了对过程体的求值
 So this is eval, the body,
 
-818
+823
 00:50:07,904 --> 00:50:10,000
 也就是 (EVAL '(+ X Y) <E2>)
 which is plus x y, in the environment e2.
 
-819
+824
 00:50:13,710 --> 00:50:14,944
 但由于这是一个应用
 But this is an application,
 
-820
+825
 00:50:15,480 --> 00:50:23,888
 所以又代换为 (APPLY (EVAL '+ <E2>)
 so this is the apply, of eval, plus in e2,
 
-821
+826
 00:50:26,336 --> 00:50:37,340
 (EVLIST '(X Y) <E2>))
 an EVLIST, quote, open, x y, in e2.
 
-822
+827
 00:50:44,880 --> 00:50:45,590
 我们来看
 Well, but let's see.
 
-823
+828
 00:50:45,590 --> 00:50:51,712
 下一步代换为 (APPLY
 That is apply, the object
 
-824
+829
 00:50:52,080 --> 00:50:53,872
 求值‘+得到的结果
 which is a result of that and plus.
 
-825
+830
 00:50:54,190 --> 00:50:55,664
 所以我们从<E2>开始找
 So here we are in e2,
 
-826
+831
 00:50:55,696 --> 00:50:57,728
 '+既不在<E2> 也不在<E1>
 plus is not here, it's not here,
 
-827
+832
 00:50:57,744 --> 00:51:01,056
 ‘+是<E0>中的基本运算符
 yes, but's here as some primitive operator.
 
-828
+833
 00:51:01,780 --> 00:51:04,745
 这个基本运算符是用于加法的
 So it's the primitive operator for addition.
 
-829
+834
 00:51:07,472 --> 00:51:14,128
 把它应用于 在<E2>中求值X和Y的结果
 Apply that to the result of evaluating x and y in e2.
 
-830
+835
 00:51:14,370 --> 00:51:17,008
 我们知道X是3 Y是4
 But we can see that x is three and y is four.
 
-831
+836
 00:51:18,112 --> 00:51:23,312
 所以这里是'(3 4)
 So that's a three and four, here.
 
-832
+837
 00:51:24,160 --> 00:51:26,280
 然后就神奇地得到结果7
 And that magically produces for me a seven.
 
-833
+838
 00:51:30,520 --> 00:51:32,448
 我再来整理一下这个过程 这样你们
 I wanted to go through this so you would see,
 
-834
+839
 00:51:32,704 --> 00:51:34,736
 就能了解这其中的重要本质
 essentially, one important ingredient,
 
-835
+840
 00:51:35,760 --> 00:51:37,296
 这个过程中传递了些什么？
 which is what's being passed around,
 
-836
+841
 00:51:37,312 --> 00:51:39,568
 每个模块持有什么 又负责什么？
 and who owns what, and what his job is.
 
-837
+842
 00:51:40,470 --> 00:51:41,616
 有哪些模块呢？
 So what do we have here?
 
-838
+843
 00:51:41,700 --> 00:51:42,624
 一个是EVAL
 We have eval,
 
-839
+844
 00:51:44,800 --> 00:51:45,640
 还有个APPLY
 We have eval, and we have apply,
 
-840
+845
 00:51:45,664 --> 00:51:46,624
 两个主要角色
 the two main players.
 
-841
+846
 00:51:49,370 --> 00:51:51,568
 它们之间有个像这样的大回环
 And there is a big loop the goes around like this.
 
-842
+847
 00:51:52,320 --> 00:52:04,576
 其中 EVAL为APPLY生成过程和参数
 Which is eval produces a procedure and arguments for apply.
 
-843
+848
 00:52:06,270 --> 00:52:08,576
 也有些事情 EVAL也可以自己做
 Now some things eval could do by itself.
 
-844
+849
 00:52:09,504 --> 00:52:10,860
 都是一些细小的事情
 Those are little self things here.
 
-845
+850
 00:52:10,860 --> 00:52:11,744
 并不十分有趣
 They're not interesting.
 
-846
+851
 00:52:12,700 --> 00:52:15,600
 同时 EVAL也逐个求值所有的参数
 Also eval evaluates all of the arguments, one after another.
 
-847
+852
 00:52:16,240 --> 00:52:17,280
 也没什么意思
 That's not very interesting.
 
-848
+853
 00:52:17,650 --> 00:52:20,096
 APPLY可以应用像+这类的过程
 Apply can apply some procedures like plus,
 
-849
+854
 00:52:21,024 --> 00:52:22,040
 这很普通
 not very interesting.
 
-850
+855
 00:52:22,300 --> 00:52:24,640
 然而 如果APPLY不能应用像+这样的过程
 However, if apply can't apply a procedure like plus,
 
-851
+856
 00:52:25,312 --> 00:52:33,312
 它就为EVAL生成一个表达式及相应的环境
 it produces an expression and environment for eval.
 
-852
+857
 00:52:35,470 --> 00:52:37,616
 过程的参数封装了
 The procedural arguments wrap up
 
-853
+858
 00:52:38,240 --> 00:52:40,608
 计算所必需的状态
 essentially the state of a computation
 
-854
+859
 00:52:41,664 --> 00:52:43,424
 以及相应的环境
 and, certainly, the expression of environment.
 
-855
+860
 00:52:43,740 --> 00:52:45,312
 所以实际上 我们接下来
 And so what we're actually going to do next
 
-856
+861
 00:52:45,328 --> 00:52:46,464
 #TBD
 is not the complete state,
 
-857
+862
 00:52:46,480 --> 00:52:48,820
 #TBD
 because it doesn't say who wants the answers.
 
-858
+863
 00:52:51,280 --> 00:52:52,208
 我们要做的就是
 But what we're going to do--
 
-859
+864
 00:52:52,240 --> 00:52:54,800
 总是把某个表达式以及相应的环境
 it's always got something like an expression of environment
 
-860
+865
 00:52:54,992 --> 00:52:56,144
 或者过程对象以及其参数
 or procedure and arguments
 
-861
+866
 00:52:56,288 --> 00:52:58,080
 在这个循环之间不断传递
 as the main loop that we're going around.
 
-862
+867
 00:52:58,970 --> 00:53:01,808
 这里还有一些小型的子循环 比如EVLIST
 There are minor little sub loops like eval through EVLIST,
 
-863
+868
 00:53:04,496 --> 00:53:06,768
 又或者是EVAL中的EVCOND循环
 or eval through evcond,
 
-864
+869
 00:53:09,104 --> 00:53:11,968
 甚至于APPLY调用PRIMITIVE-APPLY
 or apply through a primitive apply.
 
-865
+870
 00:53:16,140 --> 00:53:17,648
 但是它们并不是最主要的
 But they're not the essential things.
 
-866
+871
 00:53:18,864 --> 00:53:20,288
 这整个就是我想让你们看到的
 So that's what I wanted you to see.
 
-867
+872
 00:53:21,860 --> 00:53:22,880
 有什么问题吗？
 Are there any questions?
 
-868
+873
 00:53:25,930 --> 00:53:27,376
 David 请说
 Yes. David
 
-869
+874
 00:53:27,740 --> 00:53:33,310
 学生：我不明白为什么X是3
 AUDIENCE: I'm trying to understand how x got down to three
 
-870
+875
 00:53:34,016 --> 00:53:36,304
 而不是4
 instead of four.
 
-871
+876
 00:53:37,070 --> 00:53:38,520
 在那个部分
 At the early part of the--
 
-872
+877
 00:53:38,560 --> 00:53:40,544
 教授：是在这里
 PROFESSOR: Here.
 
-873
+878
 00:53:41,310 --> 00:53:43,310
 你想知道X是如何跟3绑定的
 You want to know how x got down to three?
 
-874
+879
 00:53:43,520 --> 00:53:47,424
 学生：因为X是外层过程的参数
 AUDIENCE: Because x is the outer procedure,
 
-875
+880
 00:53:48,464 --> 00:53:50,992
 而内层过程中既有X又有Y
 and x and y are the inner procedure.
 
-876
+881
 00:53:51,264 --> 00:53:51,888
 教授：明白了
 PROFESSOR: Fine.
 
-877
+882
 00:53:52,848 --> 00:53:54,624
 代换的过程中 我已经非常小心了
 Well, I was very careful and mechanical.
 
-878
+883
 00:53:55,020 --> 00:53:56,928
 或许首先 我应该把这些过程
 First of all, I should write those procedures
 
-879
+884
 00:53:56,944 --> 00:53:58,410
 重新编排得更易读一点
 again for you, pretty printed.
 
-880
+885
 00:54:00,610 --> 00:54:01,472
 你之所以有所疑惑
 First order of business,
 
-881
+886
 00:54:01,488 --> 00:54:02,990
 或许是因为你把程序看岔了
 because you're probably not reading them well.
 
-882
+887
 00:54:03,830 --> 00:54:04,704
 所以这里应该是
 So I have here
 
-883
+888
 00:54:05,152 --> 00:54:11,888
 一个以X为参数的过程 它返回
 that procedure of-- was it x over there-- which is--
 
-884
+889
 00:54:12,784 --> 00:54:14,992
 一个以Y为参数的过程
 value of that procedure of y
 
-885
+890
 00:54:15,728 --> 00:54:18,440
 后者计算X+Y
 which adds x to y,
 
-886
+891
 00:54:19,824 --> 00:54:21,104
 （闭合括号中）
 lambda, lambda,
 
-887
+892
 00:54:21,408 --> 00:54:22,896
 外面的过程应用到3上
 applied that to three,
 
-888
+893
 00:54:24,080 --> 00:54:26,128
 把得到的结果应用到4上
 takes the result of that, and applied that to four.
 
-889
+894
 00:54:26,140 --> 00:54:28,810
 这个和之前那个是一样的 对吧？
 Is that not what I wrote? OK?
 
-890
+895
 00:54:28,810 --> 00:54:32,336
 现在 你可以立马发现
 Now, you should immediately see that
 
-891
+896
 00:54:33,776 --> 00:54:34,944
 这里是一个应用
 here is an application--
 
-892
+897
 00:54:35,168 --> 00:54:36,464
 我先换根白粉笔
 let me get a white piece of chalk--
 
-893
+898
 00:54:37,328 --> 00:54:41,120
 这一部分是应用 是一个组合式
 here is an application, a combination.
 
-894
+899
 00:54:43,440 --> 00:54:46,400
 这部分是组合式的运算符
 OK? That combination has this as the operator
 
-895
+900
 00:54:48,144 --> 00:54:49,552
 而这时运算对象
 and this as the operand.
 
-896
+901
 00:54:51,040 --> 00:54:53,056
 这个3会跟这里的X绑定
 The three is going in for the x here.
 
-897
+902
 00:54:54,900 --> 00:54:56,368
 而这个组合式的结果
 The result of this
 
-898
+903
 00:54:56,560 --> 00:54:58,464
 是一个参数为Y的一元过程
 is a procedure of one argument y,
 
-899
+904
 00:54:58,736 --> 00:54:59,792
 它将应用于4
 which gets applied to four.
 
-900
+905
 00:55:00,880 --> 00:55:01,584
 明白了吧？
 OK?
 
-901
+906
 00:55:02,208 --> 00:55:04,080
 所以你可能只是看岔了
 So you just weren't reading the expression right.
 
-902
+907
 00:55:04,400 --> 00:55:07,856
 而你们在这里看到的
 The way you see that over here. OK.
 
-903
+908
 00:55:09,424 --> 00:55:12,960
 是一个实际的过程对象 它有一个参数X
 is that here I have the actual procedure object, x.
 
-904
+909
 00:55:13,340 --> 00:55:15,312
 这个CLOSURE将应用于3
 It's getting applied to three,
 
-905
+910
 00:55:15,952 --> 00:55:17,072
 也就是'(3)
 the list containing three.
 
-906
+911
 00:55:18,980 --> 00:55:21,344
 得到的结果再应用于'(4)
 What I'm left over with is something which gets applied to four.
 
-907
+912
 00:55:24,080 --> 00:55:25,200
 还有疑问吗？
 Are there any other questions?
 
-908
+913
 00:55:28,352 --> 00:55:31,376
 那就休息一下吧
 Time for our next small break then. Thank you.
 
-909
+914
 00:55:33,730 --> 00:55:41,408
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-910
+915
 00:55:42,128 --> 00:55:47,440
 《计算机程序的构造和解释》
 
-911
+916
 00:55:50,700 --> 00:55:54,080
 讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
 
-912
+917
 00:55:54,120 --> 00:55:59,168
 《计算机程序的构造和解释》
 
-913
+918
 00:55:59,232 --> 00:56:03,952
 元循环求值器 I
 
-914
+919
 00:56:08,410 --> 00:56:11,296
 教授：课上到这里
 PROFESSOR: Let's see, at this point,
 
-915
+920
 00:56:13,328 --> 00:56:14,592
 你们可能开始觉得
 you should be getting the feeling,
 
-916
+921
 00:56:14,752 --> 00:56:17,960
 Sussman教授又在胡说八道些什么
 what's this nonsense this Sussman character is feeding me?
 
-917
+922
 00:56:20,740 --> 00:56:23,920
 他讲的东西奇怪、愚蠢又毫无意义
 There's an awful lot of strange nonsense here.
 
-918
+923
 00:56:24,800 --> 00:56:27,408
 他还宣称要给我们解释Lisp
 After all, he purported to explain to me Lisp,
 
-919
+924
 00:56:28,016 --> 00:56:29,904
 然后在黑板上给我们写了一个Lisp程序
 and he wrote me a Lisp program on the blackboard.
 
-920
+925
 00:56:31,232 --> 00:56:33,536
 他还说：“这个Lisp程序就是Lisp解释器”
 The Lisp program was intended to be interpreted for Lisp,
 
-921
+926
 00:56:33,850 --> 00:56:35,024
 但是为了运行这个Lisp程序
 but you need a Lisp interpreter
 
-922
+927
 00:56:35,040 --> 00:56:36,300
 你还先得有一个Lisp解释器啊
 in order to understand that program.
 
-923
+928
 00:56:38,370 --> 00:56:40,192
 那个程序怎么能告诉我
 How could that program have told me anything
 
-924
+929
 00:56:40,224 --> 00:56:43,200
 有什么关于Lisp的知识呢？
 there is to be known about Lisp?
 
-925
+930
 00:56:44,150 --> 00:56:46,224
 这不是很空洞吗？#TBD
 How is that not completely vacuous?
 
-926
+931
 00:56:48,490 --> 00:56:50,256
 而且非常诡异#TBD
 It's a very strange thing.
 
-927
+932
 00:56:50,990 --> 00:56:52,430
 它究竟告诉了我什么？
 Does it tell me anything at all?
 
-928
+933
 00:56:56,070 --> 00:56:57,200
 我们发现 其实这整件事
 Well, you see, the whole thing
 
-929
+934
 00:56:57,328 --> 00:56:59,790
 非常像我们在这张幻灯片上看到的
 is sort of like these Escher's hands
 
-930
+935
 00:57:00,464 --> 00:57:03,552
 Escher所画的手
 that we see on this slide.
 
-931
+936
 00:57:06,180 --> 00:57:07,728
 是的 EVAL和APPLY
 Yes, eval and apply
 
-932
+937
 00:57:07,760 --> 00:57:10,160
 彼此画出彼此
 each sort of draw each other
 
-933
+938
 00:57:11,504 --> 00:57:14,160
 并且构造出了真实的东西
 and construct the real thing,
 
-934
+939
 00:57:14,864 --> 00:57:16,304
 它完全是自己画出了自己
 which can sit out and draw itself.
 
-935
+940
 00:57:17,110 --> 00:57:18,464
 Escher真是绝顶聪明
 Escher was a very brilliant man,
 
-936
+941
 00:57:18,688 --> 00:57:20,416
 他只不过叫不出这些精灵的名字
 he just didn't know the names of these spirits.
 
-937
+942
 00:57:23,910 --> 00:57:25,008
 我现在要做的就是
 Well, I'm going to do now,
 
-938
+943
 00:57:26,096 --> 00:57:28,000
 使你们相信
 is I'm going to try to convince you
 
-939
+944
 00:57:28,160 --> 00:57:29,872
 这一切都是有意义的
 that both this mean something,
 
-940
+945
 00:57:30,160 --> 00:57:31,980
 并且
 and, as a aside,
 
-941
+946
 00:57:32,992 --> 00:57:34,720
 我将要解释为什么我们不需要定义
 I'm going to show you why you don't need definitions.
 
-942
+947
 00:57:36,090 --> 00:57:37,712
 #TBD
 Just turns out that sort of falls out,
 
-943
+948
 00:57:38,096 --> 00:57:41,120
 为了进行数学意义上的计算
 why definitions are not essential in a mathematical sense
 
-944
+949
 00:57:42,512 --> 00:57:44,890
 “定义”并不是必需的
 for doing all the things we need to do for computing.
 
-945
+950
 00:57:49,104 --> 00:57:50,032
 我们来看一下
 Well, let's see here.
 
-946
+951
 00:57:50,690 --> 00:57:53,312
 考虑下面的一小段程序
 Consider the following small program,
 
-947
+952
 00:57:53,744 --> 00:57:54,640
 它有什么作用？
 what does it mean?
 
-948
+953
 00:57:54,870 --> 00:57:57,648
 这是一个计算指数的程序
 This is a program for computing exponentials.
 
-949
+954
 00:58:07,270 --> 00:58:13,232
 EXPT计算X的N次方
 The exponential of x to the nth power is if--
 
-950
+955
 00:58:16,832 --> 00:58:18,128
 如果N为0
 n is zero,
 
-951
+956
 00:58:19,200 --> 00:58:20,768
 那么结果就是1
 then the result is one.
 
-952
+957
 00:58:22,070 --> 00:58:22,816
 否则
 Otherwise,
 
-953
+958
 00:58:25,568 --> 00:58:28,480
 结果就是X乘以
 I want the product of x
 
-954
+959
 00:58:28,752 --> 00:58:33,930
 (EXPT X (- N 1))))
 and the result of exponentiating x to the n minus one power.
 
-955
+960
 00:58:43,696 --> 00:58:44,560
 应该没错
 I think I got it right.
 
-956
+961
 00:58:46,630 --> 00:58:48,720
 一个递归定义
 Now this is a recursive definition.
 
-957
+962
 00:58:49,470 --> 00:58:52,176
 用EXPT自身
 It's a definition of the exponentiation
 
-958
+963
 00:58:52,464 --> 00:58:54,780
 来定义EXPT过程自己
 procedure in terms of itself.
 
-959
+964
 00:58:56,410 --> 00:58:58,320
 就像我之前说的那样
 And, as it has been mentioned before,
 
-960
+965
 00:58:59,280 --> 00:59:01,680
 你们高中数学老师在教这些东西的时候
 your high school geometry teacher
 
-961
+966
 00:59:01,840 --> 00:59:04,048
 你们一定学得很痛苦
 probably gave you a hard time about things like that.
 
-962
+967
 00:59:05,650 --> 00:59:06,736
 这样定义合理吗？
 Was that justified?
 
-963
+968
 00:59:07,910 --> 00:59:10,848
 为什么这种自引用的定义
 Why does this self referential definition
 
-964
+969
 00:59:10,960 --> 00:59:12,040
 能够说得通呢？
 make any sense?
 
-965
+970
 00:59:13,430 --> 00:59:15,104
 首先我要说的是
 Well, first of all, I'm going to convince you that
 
-966
+971
 00:59:15,136 --> 00:59:17,600
 #TBD
 your high school geometry teacher was I telling you nonsense.
 
-967
+972
 00:59:20,370 --> 00:59:23,424
 考虑下面的几组方程
 Consider the following set of definitions here.
 
-968
+973
 00:59:24,270 --> 00:59:27,424
 X+Y=3
 x plus y equals three,
 
-969
+974
 00:59:28,240 --> 00:59:32,240
 X-Y=1
 and x minus y equal one.
 
-970
+975
 00:59:33,070 --> 00:59:35,568
 这个方程用Y来告诉你X
 Well, gee, this tells you x in terms of y,
 
-971
+976
 00:59:35,584 --> 00:59:37,840
 而这个方程或许是用X来告诉你Y
 and this one tells you y in terms of x, presumably.
 
-972
+977
 00:59:40,150 --> 00:59:42,950
 碰巧这组方程有唯一的解
 And yet this happens to have a unique solution in x and y.
 
-973
+978
 00:59:55,910 --> 00:59:58,112
 然而 我也可能有这样的方程
 However, I could also write
 
-974
+979
 00:59:59,872 --> 01:00:04,256
 2X+2Y=6
 two x plus two y is six.
 
-975
+980
 01:00:06,832 --> 01:00:09,872
 这两个方程有无穷多个解
 These two equations have an infinite number solutions.
 
-976
+981
 01:00:15,730 --> 01:00:17,424
 我还可以有像这样的方程
 And I could write you, for example,
 
-977
+982
 01:00:18,896 --> 01:00:21,536
 X-Y=2
 x minus y equal 2,
 
-978
+983
 01:00:22,144 --> 01:00:24,416
 而下面的这两个方程没有解
 and these two equations have no solutions.
 
-979
+984
 01:00:29,820 --> 01:00:33,040
 这里 我有三组线性方程组
 Well, I have here three sets of simultaneous linear equations,
 
-980
+985
 01:00:35,456 --> 01:00:39,510
 分别是这组、这组和这组
 this set, this set, and this set.
 
-981
+986
 01:00:39,888 --> 01:00:41,792
 它们的解的数目完全不同
 But they have different numbers of solutions.
 
-982
+987
 01:00:42,900 --> 01:00:45,760
 解的数目并不取决于方程的形式
 The number of solutions is not in the form of the equations.
 
-983
+988
 01:00:46,336 --> 01:00:48,208
 三组方程都有一样的形式
 They all three sets have the same form.
 
-984
+989
 01:00:48,544 --> 01:00:50,416
 解的数目取决于方程的内容
 The number of solutions is in the content.
 
-985
+990
 01:00:53,000 --> 01:00:55,152
 我不能通过观察方程的形式
 I can't tell by looking at the form of a definition
 
-986
+991
 01:00:55,168 --> 01:00:56,240
 来判断解的数目
 whether it makes sense,
 
-987
+992
 01:00:56,864 --> 01:00:58,608
 必须要仔细辨别它的内容
 only by its detailed content.
 
-988
+993
 01:00:59,660 --> 01:01:00,880
 比如 对于线性方程组
 What are the coefficients,
 
-989
+994
 01:01:01,344 --> 01:01:03,392
 它的系数都是什么？
 for example, in the case of linear equations?
 
-990
+995
 01:01:05,100 --> 01:01:06,720
 我不能够通过观察
 So I shouldn't expect to be able to tell
 
-991
+996
 01:01:06,992 --> 01:01:08,336
 像这样的简单情况
 looking at something like this,
 
-992
+997
 01:01:08,592 --> 01:01:09,952
 来判定
 from some simple things like,
 
-993
+998
 01:01:10,080 --> 01:01:14,496
 EXPT就是这个递归方程的解
 oh yes, EXPT is the solution of this recursion equation.
 
-994
+999
 01:01:16,030 --> 01:01:18,416
 我不能说 EXPT就是那个过程
 Expt is the procedure
 
-995
+1000
 01:01:18,912 --> 01:01:21,104
 如果我们把它代换入其中
 which if substituted in here,
 
-996
+1001
 01:01:22,048 --> 01:01:24,064
 它就能给我们返回EXPT
 gives me expt back.
 
-997
+1002
 01:01:25,328 --> 01:01:25,680
 能跟上吗？
 OK?
 
-998
+1003
 01:01:26,040 --> 01:01:29,248
 通过观察这个形式 我也无法判别
 I can't tell, looking at this form,
 
-999
+1004
 01:01:29,808 --> 01:01:32,608
 EXPT是否有唯一解
 whether or not there's a single, unique solution for EXPT,
 
-1000
+1005
 01:01:33,232 --> 01:01:35,312
 有无穷个解 还是根本没有解
 an infinite number of solutions, or no solutions.
 
-1001
+1006
 01:01:37,200 --> 01:01:38,624
 我们要了解它是如何计数的
 It's got to be how it counts
 
-1002
+1007
 01:01:38,640 --> 01:01:40,144
 或者是一些类似的计算细节
 and things like that, the details.
 
-1003
+1008
 01:01:40,608 --> 01:01:42,752
 这可比在线性代数难多了
 And it's harder in programming than linear algebra.
 
-1004
+1009
 01:01:43,280 --> 01:01:45,210
 程序设计中可用的定理并不多
 There aren't too many theorems about it in programming.
 
-1005
+1010
 01:01:48,450 --> 01:01:51,216
 我想把这些方程稍稍重写一下
 Well, I want to rewrite these equations a little bit,
 
-1006
+1011
 01:01:51,936 --> 01:01:53,776
 就是这里的方程
 these over here.
 
-1007
+1012
 01:01:53,970 --> 01:01:56,624
 因为我们要研究的是这种形式的方程
 Because what we're investigating is equations like this.
 
-1008
+1013
 01:01:57,000 --> 01:01:58,384
 但是我想用我们比较了解的方程
 But I want to play a little with equations
 
-1009
+1014
 01:01:58,400 --> 01:01:59,530
 来做演示
 like this that we understand,
 
-1010
+1015
 01:02:00,704 --> 01:02:02,912
 以便于对于这类问题有深入的洞见
 just so we get some insight into this kind of question.
 
-1011
+1016
 01:02:04,720 --> 01:02:06,432
 我们可以把这里的方程 改写为
 We could rewrite our equations here,
 
-1012
+1017
 01:02:06,752 --> 01:02:08,672
 这样的一种有趣形式
 say these two, the ones that are interesting,
 
-1013
+1018
 01:02:09,776 --> 01:02:14,864
 X=3-Y
 as x equals three minus y,
 
-1014
+1019
 01:02:15,888 --> 01:02:19,680
 Y=X-1
 and y equals x minus one.
 
-1015
+1020
 01:02:22,010 --> 01:02:24,050
 我们把这种变换叫什么来着？
 What do we call this transformation?
 
-1016
+1021
 01:02:24,050 --> 01:02:26,528
 这是一个线性变换 记为T
 This is a linear transformation, t.
 
-1017
+1022
 01:02:29,430 --> 01:02:32,256
 我们这里就得到了一个方程
 Then what we're getting here is an equation
 
-1018
+1023
 01:02:32,976 --> 01:02:37,370
  <X Y> = T<X Y>
 x y equals t of x y.
 
-1019
+1024
 01:02:42,990 --> 01:02:43,984
 我要去找什么呢？
 What am I looking for?
 
-1020
+1025
 01:02:44,560 --> 01:02:46,016
 我在找T的不动点
 I'm looking for a fixed point of t.
 
-1021
+1026
 01:02:46,976 --> 01:02:59,424
 T的不动点就是方程的解
 The solution is a fixed point of t.
 
-1022
+1027
 01:03:01,910 --> 01:03:05,536
 所以 如果我们能用解方程的方法
 So the methods we should have for looking for solutions to equations,
 
-1023
+1028
 01:03:05,904 --> 01:03:07,488
 来求解不动点
 if I can do it by fixed points,
 
-1024
+1029
 01:03:08,656 --> 01:03:09,872
 这看来是可行的
 might be applicable.
 
-1025
+1030
 01:03:10,880 --> 01:03:12,368
 如果我可以用不动点
 If I have a means of finding a solution
 
-1026
+1031
 01:03:12,384 --> 01:03:14,320
 来求解方程
 to an equations by fixed points--
 
-1027
+1032
 01:03:15,520 --> 01:03:18,192
 当然 也许它不可行
 just, might not work--
 
-1028
+1033
 01:03:18,570 --> 01:03:19,800
 不过也可以借鉴来
 but it might be applicable
 
-1029
+1034
 01:03:20,096 --> 01:03:22,272
 研究如何求解这类方程
 to investigating solutions of equations like this.
 
-1030
+1035
 01:03:27,240 --> 01:03:29,488
 重要的是 我想让你们把它看成一个方程
 But what I want you to feel is that this is an equation.
 
-1031
+1036
 01:03:30,260 --> 01:03:33,584
 它是一个表达式 其中有不同的变量
 It's an expression with several instances of various names
 
-1032
+1037
 01:03:34,704 --> 01:03:37,664
 这些名字还得满足一定的约束
 which puts a constraint on the name,
 
-1033
+1038
 01:03:38,432 --> 01:03:40,528
 这些名字限定了对应变量的取值
 saying what that name could have as its value,
 
-1034
+1039
 01:03:41,488 --> 01:03:45,010
 我们不能够随意、机械地代换
 rather than some sort of mechanical process of substitution right now.
 
-1035
+1040
 01:03:47,740 --> 01:03:49,776
 这就是我尝试求解的方程
 This is an equation which I'm going to try to solve.
 
-1036
+1041
 01:03:51,220 --> 01:03:52,432
 我们来试试看
 Well, let's play around and solve it.
 
-1037
+1042
 01:03:53,960 --> 01:03:55,664
 首先我需要写下
 First of all, I want to write down
 
-1038
+1043
 01:03:56,640 --> 01:03:59,008
 跟T相对应的函数
 the function which corresponds to t.
 
-1039
+1044
 01:04:00,320 --> 01:04:03,008
 我写下的这个T对应的函数
 First I want to write down the function which corresponds to t
 
-1040
+1045
 01:04:04,496 --> 01:04:06,960
 它的不动点就是这个方程的解
 whose fixed point is the answer to this question.
 
-1041
+1046
 01:04:10,760 --> 01:04:11,280
 能明白吗？
 OK?
 
-1042
+1047
 01:04:12,256 --> 01:04:14,304
 让我们来看下面这个过程F
 Well, let's consider the following procedure f.
 
-1043
+1048
 01:04:16,870 --> 01:04:18,304
 我说 F计算的是这样一个函数
 I claim it computes that function.
 
-1044
+1049
 01:04:19,340 --> 01:04:22,912
 F本身是一个参数为G的一元过程
 f is that procedure of one argument g,
 
-1045
+1050
 01:04:25,232 --> 01:04:25,936
 它返回
 which is
 
-1046
+1051
 01:04:26,400 --> 01:04:32,000
 一个参数为X和N的过程
 that procedure of two arguments x and n.
 
-1047
+1052
 01:04:33,430 --> 01:04:34,736
 这个过程的定义是：
 Which have the property that
 
-1048
+1053
 01:04:36,720 --> 01:04:40,432
 如果N为0
 if n is zero,
 
-1049
+1054
 01:04:41,728 --> 01:04:43,200
 那么结果就是1
 then the result is one,
 
-1050
+1055
 01:04:45,344 --> 01:04:46,176
 否则的话
 otherwise,
 
-1051
+1056
 01:04:49,900 --> 01:05:01,408
 结果就是(* X (G X (- N 1)))
 the result is the product of x and g, applied to x, and minus n1.
 
-1052
+1057
 01:05:03,370 --> 01:05:07,808
 （闭合括号中）
 g, times, else, COND, lambda, lambda--
 
-1053
+1058
 01:05:08,944 --> 01:05:09,408
 没问题吧
 OK?
 
-1054
+1059
 01:05:12,304 --> 01:05:14,624
 这里 F是一个过程
 Here f is a procedure,
 
-1055
+1060
 01:05:15,050 --> 01:05:17,792
 如果我能解出这个方程
 which if I had a solution to that equation,
 
-1056
+1061
 01:05:19,040 --> 01:05:22,048
 如果我找到了一个良好的指数过程
 if I had a good exponentiation procedure,
 
-1057
+1062
 01:05:23,420 --> 01:05:26,320
 我把这个F应用到那个过程上
 and I applied f to that procedure,
 
-1058
+1063
 01:05:27,600 --> 01:05:31,248
 那么返回的应该也是一个良好的指数过程
 then the result would be a good exponentiation procedure.
 
-1059
+1064
 01:05:37,460 --> 01:05:38,576
 这是为什么呢？
 Because, what does it do?
 
-1060
+1065
 01:05:39,420 --> 01:05:40,880
 这是因为
 Well, all it is
 
-1061
+1066
 01:05:42,368 --> 01:05:44,640
 F假设G是一个良好的指数过程
 is exposing g were a good exponentiation procedure,
 
-1062
+1067
 01:05:45,632 --> 01:05:47,584
 那么这里就会返回
 well then this would produce, as its value,
 
-1063
+1068
 01:05:47,840 --> 01:05:49,680
 一个参数为X和N的过程
 a procedure to arguments x and n,
 
-1064
+1069
 01:05:50,490 --> 01:05:51,520
 其中如果N=0
 such that if n were 0,
 
-1065
+1070
 01:05:51,552 --> 01:05:52,416
 结果就是1
 the result would be one,
 
-1066
+1071
 01:05:52,448 --> 01:05:54,160
 这是非常符合定义的
 which is certainly true of exponentiation.
 
-1067
+1072
 01:05:54,640 --> 01:05:57,056
 否则 就返回X乘以
 Otherwise, it will be the result of multiplying x
 
-1068
+1073
 01:05:57,264 --> 01:05:59,264
 用给定的指数过程G
 by the exponentiation procedure given to me
 
-1069
+1074
 01:06:00,176 --> 01:06:02,448
 计算(G X (- N 1))
 with x and n minus one as arguments.
 
-1070
+1075
 01:06:03,470 --> 01:06:04,784
 因此如果G能够
 So if this computed the correct
 
-1071
+1076
 01:06:04,816 --> 01:06:06,300
 正确计算X^(N-1)
 exponentiation for n minus one,
 
-1072
+1077
 01:06:07,872 --> 01:06:11,280
 那么这个表达式就能正确计算X^N
 then this would be the correct exponentiation for exponent n,
 
-1073
+1078
 01:06:12,176 --> 01:06:14,416
 所以整个就会是一个正确的求指数过程
 so this would have been the right exponentiation procedure.
 
-1074
+1079
 01:06:17,500 --> 01:06:19,824
 因此 我在这里真正想指出的是
 So what I really want to say here is
 
-1075
+1080
 01:06:21,020 --> 01:06:32,448
 过程EXPT是函数F的不动点
 E-X-P-T is a fixed point of f.
 
-1076
+1081
 01:06:36,990 --> 01:06:38,352
 现在我们的问题在于
 Now our problem is
 
-1077
+1082
 01:06:38,352 --> 01:06:39,680
 不动点可能不止一个
 there might be more than one fixed point.
 
-1078
+1083
 01:06:40,060 --> 01:06:42,192
 也可能没有不动点
 There might be no fixed points.
 
-1079
+1084
 01:06:43,270 --> 01:06:44,810
 所以我们必须求出不动点
 I have to go hunting for the fixed points.
 
-1080
+1085
 01:06:48,224 --> 01:06:49,376
 需要来解这个方程
 Got to solve this equation.
 
-1081
+1086
 01:06:52,160 --> 01:06:54,288
 求不动点的方法有很多种
 Well there are various ways to hunt for fixed points.
 
-1082
+1087
 01:06:55,580 --> 01:06:57,088
 本门课程的第一节课
 Of course, the one we played with
 
-1083
+1088
 01:06:57,248 --> 01:07:01,160
 我们就用余弦函数做了演示
 at the beginning of this term worked for cosine.
 
-1084
+1089
 01:07:06,080 --> 01:07:07,696
 先把你的计算器调成弧度制
 Go into radians mode on your calculator
 
-1085
+1090
 01:07:07,856 --> 01:07:10,512
 然后一直按COS键
 and push cosine, and just keep doing it,
 
-1086
+1091
 01:07:11,840 --> 01:07:15,456
 最后数字会稳定在0.73、0.74左右
 and you get to some number which is about 0.73 or 0.74.
 
-1087
+1092
 01:07:16,090 --> 01:07:17,184
 我记不清是哪个了
 I can't remember which.
 
-1088
+1093
 01:07:20,576 --> 01:07:22,640
 通过迭代一个过程
 By iterating a procedure, which has
 
-1089
+1094
 01:07:22,816 --> 01:07:24,400
 我们不断迭代
 By iterating a function,
 
-1090
+1095
 01:07:25,600 --> 01:07:27,168
 想要寻找不动点的函数
 whose fixed point I'm searching for,
 
-1091
+1096
 01:07:27,500 --> 01:07:31,136
 有时候 它就会收敛在一个点上
 it is sometimes the case that that function will converge 
 
-1092
+1097
 01:07:31,872 --> 01:07:33,088
 这就是不动点
 in producing the fixed point.
 
-1093
+1098
 01:07:33,770 --> 01:07:35,440
 碰碰运气
 I think we luck out in this case,
 
-1094
+1099
 01:07:36,448 --> 01:07:37,216
 来试试这种方法
 so let's look for it.
 
-1095
+1100
 01:07:39,910 --> 01:07:46,288
 来看这张幻灯片
 Let's look at this overhead, this slide.
 
-1096
+1101
 01:07:48,030 --> 01:07:51,712
 考虑这么一连串的过程
 Consider the following sequence of procedures.
 
-1097
+1102
 01:07:56,400 --> 01:07:57,792
 这里的E0
 e0 over here
 
-1098
+1103
 01:07:59,248 --> 01:08:01,632
 这个E0过程什么也不做
 the procedure which does nothing at all.
 
-1099
+1104
 01:08:02,890 --> 01:08:05,104
 无论你给它传递什么参数
 It's the procedure which produces an error
 
-1100
+1105
 01:08:05,104 --> 01:08:06,240
 它都会产生ERROR
 for any arguments you give it.
 
-1101
+1106
 01:08:07,780 --> 01:08:09,030
 基本上没什么用
 It's basically useless.
 
-1102
+1107
 01:08:14,480 --> 01:08:20,080
 然而 我可以做近似
 Well, however, I can make an approximation.
 
-1103
+1108
 01:08:20,080 --> 01:08:23,936
 让我们考虑下指数过程的最坏近似
 Let's consider it the worst possible approximation to exponentiation,
 
-1104
+1109
 01:08:24,736 --> 01:08:25,536
 因为它什么也做不了
 because it does nothing.
 
-1105
+1110
 01:08:26,990 --> 01:08:29,680
 假设我调用F
 Well, supposing I substituted e0
 
-1106
+1111
 01:08:30,352 --> 01:08:33,260
 用E0去代换G
 for g by calling f,
 
-1107
+1112
 01:08:33,792 --> 01:08:36,304
 这里 G就被代换为了E0
 as you see over here on e0.
 
-1108
+1113
 01:08:37,380 --> 01:08:39,776
 所以在这里就是E0
 So you see over here, have e0 there.
 
-1109
+1114
 01:08:40,848 --> 01:08:42,352
 那么E1又成了什么呢？
 Then gee, what's e1?
 
-1110
+1115
 01:08:43,630 --> 01:08:46,032
 如果用E1来计算X^0
 e1 is a procedure which exponentiate things
 
-1111
+1116
 01:08:46,672 --> 01:08:48,784
 没什么问题
 to the 0th power, with no trouble.
 
-1112
+1117
 01:08:49,600 --> 01:08:50,752
 它返回的结果是正确的
 It gets the right answer,
 
-1113
+1118
 01:08:51,050 --> 01:08:52,352
 任何数的0次幂都是1
 anything to the zero is one,
 
-1114
+1119
 01:08:52,688 --> 01:08:54,250
 然而计算其它次幂就会出错
 and it makes an error on anything else.
 
-1115
+1120
 01:08:57,390 --> 01:09:01,568
 现在如果我用E1来调用F
 Well, now what if I take e1
 
-1116
+1121
 01:09:02,304 --> 01:09:07,408
 把G代换为E1 会发生什么？
 and substituted it for g by calling f on e1?
 
-1117
+1122
 01:09:09,580 --> 01:09:11,180
 这样的话
 Oh gosh,
 
-1118
+1123
 01:09:12,016 --> 01:09:15,024
 我就会得到这个二元过程
 I have here a procedure of two arguments.
 
-1119
+1124
 01:09:15,670 --> 01:09:16,848
 想一想 E1这个过程
 Now remember e1
 
-1120
+1125
 01:09:16,960 --> 01:09:19,664
 只能正确计算X^0
 was appropriate for taking exponentiations of 0,
 
-1121
+1126
 01:09:21,472 --> 01:09:23,376
 它只能计算0次幂
 for raising to the 0 exponent.
 
-1122
+1127
 01:09:24,200 --> 01:09:25,008
 所以这里
 So here,
 
-1123
+1128
 01:09:25,520 --> 01:09:27,280
 如果N为0 结果就是1
 if is n is 0, the result is one,
 
-1124
+1129
 01:09:27,296 --> 01:09:28,672
 E2的这部分也正确
 so this guy is good for that too.
 
-1125
+1130
 01:09:29,520 --> 01:09:32,016
 然而 我可以通过把0次幂乘以X 
 However, I can use something for raising to the 0th power
 
-1126
+1131
 01:09:32,512 --> 01:09:35,264
 来计算1次幂
 to multiply it by x to raise something to the first power.
 
-1127
+1132
 01:09:35,979 --> 01:09:39,670
 所以E2可以正确计算0次幂和1次幂
 So e2 is good for both power 0 and 1.
 
-1128
+1133
 01:09:41,600 --> 01:09:41,920
 对吧？
 OK?
 
-1129
+1134
 01:09:43,712 --> 01:09:46,672
 E3的构造过程和E2是类似的
 And e3 is constructed from e2 in the same way.
 
-1130
+1135
 01:09:47,890 --> 01:09:50,240
 当然 E3具有同样的参数
 And e3, of course, by the same argument
 
-1131
+1136
 01:09:50,320 --> 01:09:53,370
 能够正确计算0、1、2次幂
 is good for powers 0, one, and two.
 
-1132
+1137
 01:09:55,120 --> 01:09:55,408
 对吧？
 OK?
 
-1133
+1138
 01:09:56,090 --> 01:09:59,080
 因此我就不加证明地告诉你结论
 And so I will assert for you, without proof,
 
-1134
+1139
 01:09:59,664 --> 01:10:01,728
 因为这个证明过程太难了
 because the proof is horribly difficult.
 
-1135
+1140
 01:10:02,520 --> 01:10:03,600
 这种事情
 And that's the sort of thing that
 
-1136
+1141
 01:10:03,632 --> 01:10:06,368
 是由人们所谓“指称语义学家”完成的
 people called denotational semanticists do.
 
-1137
+1142
 01:10:06,590 --> 01:10:07,648
 这个伟大的想法
 I suppose it was invented
 
-1138
+1143
 01:10:07,872 --> 01:10:10,592
 应该是由Scott和Strachey提出的
 This great idea was invented by Scott and Strachey.
 
-1139
+1144
 01:10:11,648 --> 01:10:16,320
 他们是非常著名的数学家
 Ah, sort of. They're very famous mathematician types
 
-1140
+1145
 01:10:16,864 --> 01:10:21,216
 他们发明了这些程序的解释方式
 who invented the interpretation for these programs that we have
 
-1141
+1146
 01:10:22,368 --> 01:10:24,000
 就是我刚才讲的那些
 that I'm talking to you about right now.
 
-1142
+1147
 01:10:24,240 --> 01:10:26,176
 他们通过拓扑学的方法证明了
 And they proved, by topology
 
-1143
+1148
 01:10:27,040 --> 01:10:29,328
 在我们刚才那种情况下
 that there is such a fixed point
 
-1144
+1149
 01:10:29,824 --> 01:10:31,264
 不动点是存在的
 in the cases that we want.
 
-1145
+1150
 01:10:32,220 --> 01:10:33,248
 这个结论就是：
 But the assertion is
 
-1146
+1151
 01:10:33,400 --> 01:10:44,240
 当N趋近于无穷时 EXPT是E(N)的极限
 E-X-P-T is limit as n goes to infinity of em.
 
-1147
+1152
 01:10:45,520 --> 01:10:47,900
 我们是通过下面这种方式来构造这个极限的
 and And that we've constructed this by the following way.
 
-1148
+1153
 01:10:50,520 --> 01:10:55,664
 EXPT=(F (F (F (F ....
 --is Well, it's f of, f of, f of, f of, f of--
 
-1149
+1154
 01:10:57,616 --> 01:11:00,192
 (F 丄)
 f applied to anything at all.
 
-1150
+1155
 01:11:01,120 --> 01:11:02,464
 它是什么都无所谓
 It didn't matter what that was,
 
-1151
+1156
 01:11:03,184 --> 01:11:05,008
 因为它总会生成一个错误
 because, in fact, this always produces an error.
 
-1152
+1157
 01:11:07,456 --> 01:11:08,416
 （闭合括号中）
 Applied to this--
 
-1153
+1158
 01:11:12,896 --> 01:11:14,480
 这是F无穷嵌套调用
 That's by infinite nesting of f's.
 
-1154
+1159
 01:11:16,380 --> 01:11:17,712
 现在我们的问题
 So now my problem
 
-1155
+1160
 01:11:18,224 --> 01:11:19,760
 又变成了如何构造出无穷调用
 is to make some infinite things.
 
-1156
+1161
 01:11:22,590 --> 01:11:24,080
 我们需要它们
 We need some infinite things.
 
-1157
+1162
 01:11:24,920 --> 01:11:26,256
 我怎样才能把F
 How am I going to nest up an f
 
-1158
+1163
 01:11:26,560 --> 01:11:27,808
 嵌套无穷层呢？
 an infinite number of times?
 
-1159
+1164
 01:11:28,980 --> 01:11:30,128
 我得把它构造出来
 I'd better construct this.
 
-1160
+1165
 01:11:32,380 --> 01:11:32,930
 好吧 我不知道
 Well, I don't know.
 
-1161
+1166
 01:11:32,930 --> 01:11:34,320
 到底怎么样构建一个无穷循环呢？
 How would I make an infinite loop at all?
 
-1162
+1167
 01:11:34,810 --> 01:11:36,320
 我们先来看个非常简单的无穷循环
 Let's take a very simple infinite loop,
 
-1163
+1168
 01:11:36,576 --> 01:11:38,340
 能想到的最简单的无穷循环
 the simplest infinite loop imaginable.
 
-1164
+1169
 01:11:43,550 --> 01:11:47,552
 把这样一个参数为X的函数过程
 If I were to take that procedure of one argument x
 
-1165
+1170
 01:11:48,000 --> 01:11:49,792
 过程体是(X X)
 which applies x to x
 
-1166
+1171
 01:11:53,552 --> 01:11:53,920
 看到了吧？
 OK?
 
-1167
+1172
 01:11:55,056 --> 01:11:58,416
 应用在一个参数为X过程上
 and apply that to the procedure of one argument x
 
-1168
+1173
 01:11:59,360 --> 01:12:01,056
 后者的过程体也是(X X)
 which applies x to x,
 
-1169
+1174
 01:12:04,832 --> 01:12:06,000
 这就形成了一个无穷循环
 then this is an infinite loop.
 
-1170
+1175
 01:12:07,216 --> 01:12:09,312
 这个循环之所以是无穷的
 The reason why this is an infinite loop is as follows.
 
-1171
+1176
 01:12:09,980 --> 01:12:11,312
 是因为
 The way I understand this
 
-1172
+1177
 01:12:11,520 --> 01:12:13,696
 我用实际参数代换掉
 is I substitute the argument
 
-1173
+1178
 01:12:14,224 --> 01:12:16,592
 过程体的形式参数
 for the formal parameter in the body.
 
-1174
+1179
 01:12:18,850 --> 01:12:21,600
 这样做了以后 这里的每个X
 But if I do that, I take for each of these x's,
 
-1175
+1180
 01:12:22,400 --> 01:12:23,760
 都被代换为了这个
 I substitute one of these,
 
-1176
+1181
 01:12:24,368 --> 01:12:26,960
 相当于把最初的表达式又复制了一遍
 making a copy of the original expression I just started with,
 
-1177
+1182
 01:12:28,352 --> 01:12:29,376
 这就是最简单的无穷循环
 the simplest infinite loop.
 
-1178
+1183
 01:12:35,440 --> 01:12:39,296
 现在 我要介绍一个特殊的运算符
 Now I want to tell you about a particular operator
 
-1179
+1184
 01:12:40,384 --> 01:12:43,090
 它是通过对这个无穷循环稍作修改而来
 which is constructed by a perturbation from this infinite loop.
 
-1180
+1185
 01:12:46,960 --> 01:12:47,920
 我把它记作“Y”
 I'll call it y.
 
-1181
+1186
 01:12:52,520 --> 01:12:55,824
 它的全称是：Curry矛盾Y组合子 #TBD
 This is called Curry's Paradoxical Combinator of y
 
-1182
+1187
 01:12:56,624 --> 01:12:58,992
 这是用二十世纪三十年代的逻辑学家
 after a fellow by the name of Curry,
 
-1183
+1188
 01:12:59,344 --> 01:13:01,856
 Curry的名字来命名的
 who was a logician of the 1930s also.
 
-1184
+1189
 01:13:04,480 --> 01:13:06,880
 Y组合子是一个参数为F的过程
 And if I have a procedure of one argument f,
 
-1185
+1190
 01:13:08,176 --> 01:13:09,330
 它的过程体是什么呢？
 what's it going to have in it?
 
-1186
+1191
 01:13:09,330 --> 01:13:11,200
 它的内部是某种无穷循环
 It's going to have a kind of infinite loop in it,
 
-1187
+1192
 01:13:11,984 --> 01:13:15,472
 是一个参数为X的过程
 which is that procedure of one argument x
 
-1188
+1193
 01:13:15,952 --> 01:13:18,800
 它调用(F (X X))
 which applies f to x of x,
 
-1189
+1194
 01:13:21,630 --> 01:13:24,750
 这个过程应用在一个参数为X的过程上
 applied to that procedure of one argument x,
 
-1190
+1195
 01:13:25,104 --> 01:13:27,344
 后者调用(F (X X))
 which applies f to f of x.
 
-1191
+1196
 01:13:32,300 --> 01:13:33,136
 这个是怎么运作的？
 Now what's this do?
 
-1192
+1197
 01:13:34,800 --> 01:13:36,060
 假设执行(Y F)
 Suppose we apply y to F.
 
-1193
+1198
 01:13:41,312 --> 01:13:42,576
 这非常简单
 OK? Well, that's easy enough.
 
-1194
+1199
 01:13:43,152 --> 01:13:44,624
 这里的F跟那边的是同一个
 That's this capital F over here.
 
-1195
+1200
 01:13:46,910 --> 01:13:48,160
 在这里 很简单
 Well, the easiest thing to say there
 
-1196
+1201
 01:13:48,304 --> 01:13:49,920
 我把F代换到这里来
 is, I substitute F for here.
 
-1197
+1202
 01:13:55,320 --> 01:13:57,072
 基本上 我就会得到
 So that's going to give me, basically--
 
-1198
+1203
 01:13:58,752 --> 01:14:02,800
 因为我待会儿要用这个表达式 代换这里的X
 because then I'm going to substitute this for x in here.
 
-1199
+1204
 01:14:04,176 --> 01:14:05,232
 这里就是(F
 That F of
 
-1200
+1205
 01:14:08,970 --> 01:14:10,096
 我还是把这步写出来吧
 Let me actually do it in steps,
 
-1201
+1206
 01:14:10,224 --> 01:14:11,456
 这样你们就能看得更全面
 so you can see it completely.
 
-1202
+1207
 01:14:11,920 --> 01:14:14,272
 我会非常小心 好吗？
 I'm going to be very careful. OK?
 
-1203
+1208
 01:14:15,020 --> 01:14:18,256
 这里是 ((LAMBDA (X)
 This is open, open, lambda of x ,
 
-1204
+1209
 01:14:19,088 --> 01:14:22,112
 (F (X X))
 capital F, x, x,
 
-1205
+1210
 01:14:26,880 --> 01:14:35,552
 把它应用到自身 (LAMBDA (X) (F (X X)))
 applied to itself, F of x of x.
 
-1206
+1211
 01:14:37,910 --> 01:14:39,664
 把这个表达式代换进去
 Substituting this for this in here,
 
-1207
+1212
 01:14:40,064 --> 01:14:40,912
 就得到
 this is
 
-1208
+1213
 01:14:43,130 --> 01:14:48,352
 把这个代进去 得到什么呢？
 F applied to-- what is it-- substituting this in here
 
-1209
+1214
 01:14:48,656 --> 01:14:54,810
 (F (lambda(x) (F (x x)))
 open, open, lambda of x, F, of x and x,
 
-1210
+1215
 01:14:57,072 --> 01:14:58,176
 应用到
 applied to
 
-1211
+1216
 01:14:59,180 --> 01:15:06,480
 (lambda(x) (F (x x))))
 lambda of x, F of x of x, F,
 
-1212
+1217
 01:15:06,992 --> 01:15:10,448
 （闭合括号中）
 lambda, pair, F.
 
-1213
+1218
 01:15:11,510 --> 01:15:12,400
 哇 这又是什么？
 Oh, but what is this?
 
-1214
+1219
 01:15:13,420 --> 01:15:16,352
 我刚才计算的这一部分
 This thing over here that I just computed,
 
-1215
+1220
 01:15:17,136 --> 01:15:18,560
 就是这里的这部分
 is this thing over here.
 
-1216
+1221
 01:15:20,192 --> 01:15:21,840
 只不过它被包在另一个F里面
 But I just wrapped another F around it.
 
-1217
+1222
 01:15:23,370 --> 01:15:24,672
 因此 通过把Y应用在F上
 So by applying y to F,
 
-1218
+1223
 01:15:24,688 --> 01:15:26,224
 我构造出了F的无穷嵌套
 I make an infinite series of F's.
 
-1219
+1224
 01:15:27,850 --> 01:15:29,450
 我如果让它一直这样进行下去
 If I just let this run forever,
 
-1220
+1225
 01:15:29,696 --> 01:15:31,776
 我在外层就会得到越来越多的F
 I'll just keep making more and more F's outside.
 
-1221
+1226
 01:15:33,170 --> 01:15:34,800
 #TBD
 I ran an infinite loop which is useless,
 
-1222
+1227
 01:15:35,200 --> 01:15:37,024
 #TBD
 but it doesn't matter that the inside is useless.
 
-1223
+1228
 01:15:39,856 --> 01:15:47,856
 因此 我们有 (Y F)=(F (Y F))
 OK? So y of F is F applied to y of F.
 
-1224
+1229
 01:15:50,336 --> 01:15:52,144
 Y组合子十分神奇
 So y is a magical thing
 
-1225
+1230
 01:15:53,856 --> 01:15:56,256
 如果把它应用于某个函数
 which, when applied to some function,
 
-1226
+1231
 01:15:57,376 --> 01:16:00,384
 它就会返回这个函数的不动点
 produces the object which is the fixed point of that function,
 
-1227
+1232
 01:16:01,696 --> 01:16:04,256
 当然是在不动点存在的前提下
 if it exists, and if this all works.
 
-1228
+1233
 01:16:07,910 --> 01:16:10,080
 这是因为 如果我把(Y F)带入F
 Because, indeed, if I take y of F
 
-1229
+1234
 01:16:10,128 --> 01:16:11,120
 结果还是(Y F)
 I get y of F out.
 
-1230
+1235
 01:16:16,240 --> 01:16:18,864
 #TBD
 Now I want you to think this in terms of
 
-1231
+1236
 01:16:19,856 --> 01:16:22,384
 #TBD
 the eval-apply interpreter for a bit.
 
-1232
+1237
 01:16:23,860 --> 01:16:26,272
 我在这里写了一大堆递归方程组
 I wrote down a whole bunch of recursion equations out there.
 
-1233
+1238
 01:16:28,540 --> 01:16:30,224
 那些联立方程组像
 They're simultaneous in the same way
 
-1234
+1239
 01:16:30,224 --> 01:16:31,232
 这些方程一样联立起来
 these are simultaneous equations.
 
-1235
+1240
 01:16:31,470 --> 01:16:33,310
 但EXPT不是联立方程
 Exponentiation was not a simultaneous equation.
 
-1236
+1241
 01:16:33,310 --> 01:16:35,792
 只是一个需要我赋义的变量
 It was only one variable I was looking for a meaning for.
 
-1237
+1242
 01:16:38,150 --> 01:16:40,768
 而Lisp则是某个过程的不动点
 But what Lisp is is the fixed point of the process
 
-1238
+1243
 01:16:40,816 --> 01:16:42,570
 对这个过程来说 如果我知道Lisp的定义
 that's which says, if I knew what Lisp was
 
-1239
+1244
 01:16:42,592 --> 01:16:46,512
 然后在递归方程等号的右边
 and substituted it in for eval, and apply, and so on,
 
-1240
+1245
 01:16:46,590 --> 01:16:49,792
 用它来代换EVAL、APPLY等变量
  on the right hand sides of all those recursion equations,
 
-1241
+1246
 01:16:50,940 --> 01:16:53,968
 如果它是一个良好定义的Lisp的话
 then if it was a real good Lisp, is a real one,
 
-1242
+1247
 01:16:54,368 --> 01:16:56,304
 那么递归方程等号左边 也是一个良好定义的Lisp
 then the left hand side would also be Lisp.
 
-1243
+1248
 01:16:58,220 --> 01:16:59,824
 这样 那个定义就讲得通了
 So I made sense of that definition.
 
-1244
+1249
 01:17:02,420 --> 01:17:05,410
 不过是否有解却不太明显
 Now whether or not there's an answer isn't so obvious.
 
-1245
+1250
 01:17:05,696 --> 01:17:06,752
 我也说不清
 I can't attack that.
 
-1246
+1251
 01:17:07,740 --> 01:17:10,304
 #TBD
 Now these arguments that I'm giving you now are quite dangerous.
 
-1247
+1252
 01:17:10,660 --> 01:17:11,648
 具体看这里
 Let's look over here.
 
-1248
+1253
 01:17:13,056 --> 01:17:14,610
 这些都是关于极限的争论
 On the. These are limit arguments.
 
-1249
+1254
 01:17:14,610 --> 01:17:15,392
 我们要讨论的极限
 We're talking about limits,
 
-1250
+1255
 01:17:15,456 --> 01:17:17,680
 是微积分或者拓扑学的概念
 and it's really calculus, or topology,
 
-1251
+1256
 01:17:17,872 --> 01:17:20,032
 或者说是类似的 数学分析中的概念
 or something like that, a kind of analysis.
 
-1252
+1257
 01:17:20,768 --> 01:17:23,380
 #TBD
 OK？Now here's an argument that you all believe.
 
-1253
+1258
 01:17:23,380 --> 01:17:25,296
 我想让你们意识到
 And I want to make sure you realize
 
-1254
+1259
 01:17:25,424 --> 01:17:27,664
 我可以把你们耍得团团转
 that I could be bullshitting you.
 
-1255
+1260
 01:17:28,864 --> 01:17:30,480
 准备好了吗？ 这是什么？
 Alright? What is this?
 
-1256
+1261
 01:17:34,250 --> 01:17:39,520
 u = 1 + 1/2 + 1/4 + .......
 u is the sum of 1/2, 1/4, and 1/8, and so on,
 
-1257
+1262
 01:17:39,744 --> 01:17:41,328
 这是几何级数求和
 the sum of a geometric series.
 
-1258
+1263
 01:17:42,820 --> 01:17:44,688
 当然 我也可以耍点小把戏
 And, of course, I could play a game here.
 
-1259
+1264
 01:17:44,820 --> 01:17:47,570
 u - 1 = 1/2 + 1/4 + 1/8 ......
 u minus one is 1/2, plus 1/4, plus 1/8, and so on.
 
-1260
+1265
 01:17:53,590 --> 01:17:54,544
 这里我可以
 What I could do here--
 
-1261
+1266
 01:17:56,096 --> 01:17:57,936
 糟糕了 这里漏掉了括号
 Ooops. There is a parentheses error here.
 
-1262
+1267
 01:17:58,920 --> 01:18:01,456
 这里应该是
 But I can put here two times u minus one
 
-1263
+1268
 01:18:01,744 --> 01:18:03,990
 2(u - 1) = 1 + 1/2 + 1/4 + 1/8 ........
 is one plus 1/2, plus 1/4, plus 1/8.
 
-1264
+1269
 01:18:07,570 --> 01:18:08,544
 这里能修改一下吗？
 Can I fix that?
 
-1265
+1270
 01:18:14,010 --> 01:18:16,430
 哦 可以
 Yes, well.
 
-1266
+1271
 01:18:18,192 --> 01:18:18,656
 看到了吗？
 OK?
 
-1267
+1272
 01:18:19,520 --> 01:18:20,640
 这样 我就得到
 But that gives me back
 
-1268
+1273
 01:18:23,536 --> 01:18:26,640
 2(u - 1) = u
 two times u minus one is u,
 
-1269
+1274
 01:18:27,808 --> 01:18:29,584
 因此我们推断出 u=2
 therefore, we conclude that u is two.
 
-1270
+1275
 01:18:30,300 --> 01:18:31,376
 这是正确的
 And this actually is true.
 
-1271
+1276
 01:18:31,968 --> 01:18:33,328
 这个推理过程没有问题
 There's no problem like that.
 
-1272
+1277
 01:18:34,048 --> 01:18:37,552
 但如果我要是做点别的什么呢？
 But supposing I did something different.
 
-1273
+1278
 01:18:38,540 --> 01:18:39,488
 假设我要求和的式子
 Supposing I start up with something
 
-1274
+1279
 01:18:39,504 --> 01:18:41,200
 明显没有和
 which manifestly has no sum.
 
-1275
+1280
 01:18:41,568 --> 01:18:46,992
 v = 1 + 2 + 4 + ........
 v is one, plus two, plus four, plus 8, plus dot, dot, dot. OK?
 
-1276
+1281
 01:18:47,390 --> 01:18:51,392
 v - 1 = 2 + 4 + 8 + ......
 Well, v minus one is surely two, plus four, plus eight, plus dot, dot, dot. Right?
 
-1277
+1282
 01:18:52,272 --> 01:18:56,032
 (v - 1)/2 = v
 v minus one over two, gee, that looks like v again.
 
-1278
+1283
 01:18:57,410 --> 01:19:00,544
 这里我就可以推断出
 From that I should be able to conclude that--
 
-1279
+1284
 01:19:01,376 --> 01:19:02,912
 显然这里又写错了
 that's also wrong, apparently.
 
-1280
+1285
 01:19:03,070 --> 01:19:04,510
 应该是 v = -1
 v equals minus one.
 
-1281
+1286
 01:19:12,450 --> 01:19:13,824
 这里应该是-1
 That should be a minus one.
 
-1282
+1287
 01:19:15,280 --> 01:19:16,912
 这个结论明显是错误的
 And that's certainly a false conclusion.
 
-1283
+1288
 01:19:22,000 --> 01:19:23,472
 当你计算极限的时候
 So when you play with limits,
 
-1284
+1289
 01:19:24,224 --> 01:19:27,856
 #TBD
 arguments that may work in one case
 
-1285
+1290
 01:19:29,424 --> 01:19:30,750
 在其它情况下可能又不行了
 they may not work in some other case.
 
-1286
+1291
 01:19:30,750 --> 01:19:31,696
 要多加注意
 You have to be very careful.
 
-1287
+1292
 01:19:32,240 --> 01:19:33,872
 参数必须具有良好的形式
 The arguments have to be well-formed.
 
-1288
+1293
 01:19:36,144 --> 01:19:39,232
 #TBD
 And I don't know, in general,
 
-1289
+1294
 01:19:39,856 --> 01:19:41,936
 #TBD
 what the story is about arguments like this.
 
-1290
+1295
 01:19:43,270 --> 01:19:45,248
 我们要研习一大堆拓扑学文献来寻找答案
 We can read a pile of topology and find out.
 
-1291
+1296
 01:19:46,272 --> 01:19:48,640
 但是至少你现在理解了
 But, surely, at least you understand now,
 
-1292
+1297
 01:19:49,104 --> 01:19:51,136
 #TBD
 why I might be some meaning
 
-1293
+1298
 01:19:51,152 --> 01:19:52,768
 #TBD
 to the things we've been writing on the blackboard.
 
-1294
+1299
 01:19:53,664 --> 01:19:55,616
 你们明白了它们意味着什么
 And you understand what that might mean.
 
-1295
+1300
 01:19:56,480 --> 01:19:58,352
 我想现在是时候
 So, I suppose, it's almost about time
 
-1296
+1301
 01:19:59,070 --> 01:20:03,840
 祝贺你们成为
 for you to merit being made a member
 
-1297
+1302
 01:20:04,280 --> 01:20:05,552
 神圣的递归秩序中的
 of the grand recursive order
 
-1298
+1303
 01:20:05,568 --> 01:20:07,040
 一名LAMBDA演算黑客了
 of lambda calculus hackers.
 
-1299
+1304
 01:20:08,848 --> 01:20:10,176
 这是我们的徽章
 I would. This is the badge.
 
-1300
+1305
 01:20:10,820 --> 01:20:12,544
 因为你已经理解了
 Because you now understand, for example,
 
-1301
+1306
 01:20:13,400 --> 01:20:15,200
 它上面的那句话
 what it says at the very top,
 
-1302
+1307
 01:20:16,896 --> 01:20:18,416
 (Y F) = (F (Y F))
 y F equals F y F.
 
-1303
+1308
 01:20:21,040 --> 01:20:21,664
 这节课讲完了
 Thank you.
 
-1304
+1309
 01:20:21,856 --> 01:20:22,752
 有什么问题吗？
 Are there any questions?
 
-1305
+1310
 01:20:24,710 --> 01:20:25,150
 Lev 请说
 Yes, Lev.
 
-1306
+1311
 01:20:25,370 --> 01:20:27,392
 学生：目前的状况来看
 AUDIENCE: With this, it seems that
 
-1307
+1312
 01:20:27,408 --> 01:20:30,224
 正如你指出的那样 我们不再需要DEFINE
 there's no need to define, as you imply,
 
-1308
+1313
 01:20:30,240 --> 01:20:32,704
 不需要先存储一个值 以后再用
 to just remember a value, to apply it later.
 
-1309
+1314
 01:20:32,992 --> 01:20:33,328
 教授：对
 PROFESSOR: Yeah.
 
-1310
+1315
 01:20:33,504 --> 01:20:36,448
 DEFINE在语言中好像有一些副作用
 AUDIENCE: Defines were kind of a side-effect it seemed in the language.
 
-1311
+1316
 01:20:36,490 --> 01:20:38,528
 （听不清）并且依赖于时序
 [INTERPOSING] are order dependent.
 
-1312
+1317
 01:20:39,300 --> 01:20:42,064
 不用DEFINE 是否消除了副作用？
 Does this eliminate the side-effect from the.
 
-1313
+1318
 01:20:42,280 --> 01:20:44,688
 教授： 实际上
 PROFESSOR: Well. The answer is,
 
-1314
+1319
 01:20:44,880 --> 01:20:46,440
 解释器并不是像这样实现的
 this is not the way these things were implemented.
 
-1315
+1320
 01:20:47,520 --> 01:20:47,936
 明白了吧？
 OK?
 
-1316
+1321
 01:20:48,920 --> 01:20:53,152
 在实际的实现中 DEFINE这个运算
 Define, indeed is implemented as an operation
 
-1317
+1322
 01:20:53,184 --> 01:20:55,536
 确实修改了环境
 that actually modifies an environment structure,
 
-1318
+1323
 01:20:57,952 --> 01:21:02,336
 改变了执行DEFINE的那个框架
 changes the frame that the define is executed in.
 
-1319
+1324
 01:21:03,690 --> 01:21:06,512
 这样做是有很多原因的
 And there are many reasons for that,
 
-1320
+1325
 01:21:07,390 --> 01:21:08,640
 其中之一就是
 but a lot of this has to do with
 
-1321
+1326
 01:21:08,672 --> 01:21:10,090
 方便交互式系统
 making an interactive system.
 
-1322
+1327
 01:21:11,340 --> 01:21:14,128
 就是说 如果你构造了一个系统
 What this is saying is that if you've made a system,
 
-1323
+1328
 01:21:14,350 --> 01:21:15,200
 而且你知道
 and you know
 
-1324
+1329
 01:21:15,424 --> 01:21:17,550
 你不打算进行调试 或之类的事儿
 and you know you're not going to do any debugging or anything like that,
 
-1325
+1330
 01:21:17,840 --> 01:21:20,720
 你想立马知道所有的东西
 and you know everything there is all at once,
 
-1326
+1331
 01:21:20,750 --> 01:21:21,248
 你想知道的是
 and you want to say,
 
-1327
+1332
 01:21:21,264 --> 01:21:23,120
 方程组的最终解是什么？
 what is the meaning of a final set of equations?
 
-1328
+1333
 01:21:24,090 --> 01:21:25,264
 然后系统返回你相应的值
 This gives you a meaning for it.
 
-1329
+1334
 01:21:25,790 --> 01:21:27,456
 但如果想要让系统变成交互式的
 But in order to make an interactive system,
 
-1330
+1335
 01:21:27,456 --> 01:21:28,752
 这样你可以在不影响其它部分的情况下
 where you can change the meaning of one
 
-1331
+1336
 01:21:28,768 --> 01:21:31,680
 增量式地修改某一部分
 without changing everything else, incrementally,
 
-1332
+1337
 01:21:32,336 --> 01:21:35,040
 没有DEFINE的话 就不能这么做了
 you can't do that by implementing it this way.
 
-1333
+1338
 01:21:40,990 --> 01:21:41,248
 你说
 Yes.
 
-1334
+1339
 01:21:42,304 --> 01:21:44,256
 学生：就是那张“危险”的幻灯片
 AUDIENCE: Another question on your danger slide.
 
-1335
+1340
 01:21:44,650 --> 01:21:47,136
 好像你举的两个例子
 It seemed that the two examples that you gave
 
-1336
+1341
 01:21:47,160 --> 01:21:49,070
 与其收敛与否有关系？
 had to do with convergence and non-convergence?
 
-1337
+1342
 01:21:49,184 --> 01:21:49,568
 教授：是的
 PROFESSOR: Right.
 
-1338
+1343
 01:21:50,300 --> 01:21:52,624
 #TBD
 And that may or may not have something to do with
 
-1339
+1344
 01:21:52,760 --> 01:21:54,688
 #TBD
 with function theory in a way which
 
-1340
+1345
 01:21:54,720 --> 01:21:56,600
 #TBD
 would lead you to think of it in terms of linear systems,
 
-1341
+1346
 01:21:57,744 --> 01:21:59,008
 #TBD
 or non-linear systems.
 
-1342
+1347
 01:21:59,344 --> 01:22:01,760
 #TBD
 How does this convergence relate to being able to
 
-1343
+1348
 01:22:02,352 --> 01:22:05,536
 #TBD
 see a priori what properties of that might be violated?
 
-1344
+1349
 01:22:05,792 --> 01:22:06,576
 教授：我不知道
 PROFESSOR: I don't know.
 
-1345
+1350
 01:22:07,680 --> 01:22:10,096
 我也不知道它需要什么条件
 The answer is, I don't know under what circumstances.
 
-1346
+1351
 01:22:10,610 --> 01:22:12,048
 我不知道怎么在一节课内
 I don't know how to translate that
 
-1347
+1352
 01:22:12,528 --> 01:22:14,736
 就给你们讲清楚
 into less than an hour of talk more.
 
-1348
+1353
 01:22:16,910 --> 01:22:18,480
 有什么条件来判别它们
 What are the conditions under which,
 
-1349
+1354
 01:22:18,864 --> 01:22:20,768
 是否收敛？
 for which we know that these things converge?
 
-1350
+1355
 01:22:22,864 --> 01:22:23,312
 确实
 And indeed,
 
-1351
+1356
 01:22:23,328 --> 01:22:26,350
 #TBD
 all that was telling you that arguments that are based on convergence
 
-1352
+1357
 01:22:28,240 --> 01:22:29,472
 都不可靠
 are flaky
 
-1353
+1358
 01:22:29,664 --> 01:22:31,584
 如果你事先不知道收敛性的话
 if you don't know the convergence beforehand.
 
-1354
+1359
 01:22:32,810 --> 01:22:34,208
 你能构造错误的参数
 You can make wrong arguments.
 
-1355
+1360
 01:22:34,440 --> 01:22:37,312
 你可以先假设知道了答案 然后进行演绎
 You can make deductions, as if you know the answer,
 
-1356
+1361
 01:22:37,392 --> 01:22:39,936
 看它会不会产生什么明显的矛盾
 and not be stopped somewhere by some obvious contradiction.
 
-1357
+1362
 01:22:40,976 --> 01:22:42,288
 学生：我们是否可以说
 AUDIENCE: So can we say then that
 
-1358
+1363
 01:22:42,336 --> 01:22:44,880
 如果数学表达式F收敛
 if F is a convergent mathematical expression,
 
-1359
+1364
 01:22:45,008 --> 01:22:47,360
 那么它的递归性质就--
 then the recursion property can be--
 
-1360
+1365
 01:22:47,584 --> 01:22:51,296
 教授：我认为 在技术上有一类F
 PROFESSOR: Well, I think there's a technical kind of F,
 
-1361
+1366
 01:22:52,128 --> 01:22:55,904
 通过一些技术准则 我们可以找到这样的F
 OK? There is a technical description of those F's that have the property
 
-1362
+1367
 01:22:55,984 --> 01:23:01,312
 当你像这样迭代地应用它们时
 that when you iteratively apply them like this,
 
-1363
+1368
 01:23:01,520 --> 01:23:02,256
 它一定会收敛
 you converge.
 
-1364
+1369
 01:23:03,020 --> 01:23:06,512
 这类准则包括：单调、连续
 Things that are monotonic, and continuous,
 
-1365
+1370
 01:23:07,328 --> 01:23:07,952
 我想想
 OK?
 
-1366
+1371
 01:23:08,384 --> 01:23:09,370
 我把其它的准则忘了
 and I forgot what else.
 
-1367
+1372
 01:23:09,370 --> 01:23:11,136
 还有一些列像这样的
 There is a whole bunch of little conditions like that
 
-1368
+1373
 01:23:11,680 --> 01:23:12,992
 判别准则
 which have this property.
 
-1369
+1374
 01:23:13,430 --> 01:23:16,000
 现在的难点是 给定F然后进行推理
 Now the real problem is deducing from looking at the F,
 
-1370
+1375
 01:23:16,928 --> 01:23:17,888
 这是F的定义
 its definition here,
 
-1371
+1376
 01:23:18,170 --> 01:23:19,660
 它满足这些准则吗？
 whether not it has those properties,
 
-1372
+1377
 01:23:20,272 --> 01:23:21,328
 这很难判断
 and that's very hard.
 
-1373
+1378
 01:23:22,010 --> 01:23:24,000
 那些准则都很简单得可以写下来
 The properties are easy. You can write them down.
 
-1374
+1379
 01:23:24,580 --> 01:23:26,320
 你可以看Joe Stoy写的一本书
 You can look in a book by Joe Stoy.
 
-1375
+1380
 01:23:26,672 --> 01:23:29,584
 那本书非常不错
 It's a great book-- Stoy.
 
-1376
+1381
 01:23:32,220 --> 01:23:34,064
 叫做The Scott-Strachey
 It's called, The Scott-Strachey
 
-1377
+1382
 01:23:34,496 --> 01:23:38,460
 《指称语义：基于Scott-Strachey方法》
 The Scott-Strachey Method of Denotational Semantics,
 
-1378
+1383
 01:23:39,552 --> 01:23:40,768
 作者是Joe Stoy
 and it's by Joe Stoy,
 
-1379
+1384
 01:23:40,800 --> 01:23:41,760
 由MIT出版社出版
 MIT Press.
 
-1380
+1385
 01:23:48,064 --> 01:23:49,888
 他把这一方面讲得非常详细
 And he works out all this in great detail,
 
-1381
+1386
 01:23:50,208 --> 01:23:51,376
 绝对会让你吓一大跳
 enough to horrify you.
 
-1382
+1387
 01:23:55,056 --> 01:23:56,192
 但是这本书仍然值得一读
 But it really is readable.
 
-1383
+1388
 01:24:09,150 --> 01:24:10,080
 好吧 谢谢大家
 OK, well, thank you.
 
-1384
+1389
 01:24:11,490 --> 01:24:12,992
 这节课到此为止
 Time for the bigger break, I suppose.
 
-1385
+1390
 01:24:14,176 --> 01:24:20,928
 MIT OpenCourseWare
 http://ocw.mit.edu
 
 
-1386
+1391
 01:24:20,920 --> 01:24:34,496
 本项目主页
 https://github.com/DeathKing/Learning-SICP
