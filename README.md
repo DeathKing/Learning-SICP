@@ -40,12 +40,13 @@
 | Lec5b | 《计算对象》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjY0NzE3NzQ2MA==.html) [ [YouTube] ](https://youtu.be/2Iz7agtk614) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_10.html) [ [MKV] ](https://pan.baidu.com/s/1kVG8SNP) [ [MP4] ](https://pan.baidu.com/s/1c1FRLIg) | [DreamAndDead](https://github.com/DreamAndDead) |
 | Lec6a | 《流 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjg4NTkwNzU3Ng==.html) [ [YouTube] ](https://youtu.be/z7jvvATswFE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_11.html) [ [MKV] ](https://pan.baidu.com/s/1hs7rNwg) [ [MP4] ](https://pan.baidu.com/s/1pLlvcLH) | [DreamAndDead](https://github.com/DreamAndDead) |
 | Lec6b | 《流 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAyMjI0MjAzNg==.html) [ [YouTube] ](https://youtu.be/0lQ6fThLhYw)  [bilibili]  [ [MKV] ](https://pan.baidu.com/s/1micH5OW) [ [MP4] ](https://pan.baidu.com/s/1b3kbWq) | [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec7a | 《元循环求值器 I》 | [ [优酷] ](http://v.youku.com/v_show/id_XMzAzODg2ODczNg==.html) [ [YouTube] ](https://youtu.be/RXUqgWJES0w)  [bilibili]  [ [MKV] ](https://pan.baidu.com/s/1kUYGlVp) [ [MP4] ](https://pan.baidu.com/s/1kV1M0ab) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
+
 ## 任务队列
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec7a | DreamAndDead | 校对中 | 0%  |
-| lec7b | DreamAndDead | 待校对 | 0%  |
+| lec7b | DreamAndDead | 校对中 | 0%  |
 | lec8a | sillyg00se | 待校对 | 0%  |
 | lec8b | sillyg00se | 已认领 | 0%  |
 | lec9a | loucq123  | 翻译中 | 65% |
