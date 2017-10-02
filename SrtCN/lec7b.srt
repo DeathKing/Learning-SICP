@@ -4495,222 +4495,362 @@ People tend to write this thing, and then they leave this one out.
 There's a place where you have to force.
 
 902
-00:56:20,510 --> 00:56:25,990
+00:56:20,510 --> 00:56:23,104
 条件式必须先知道谓词的真假
 Conditionals have to know whether or not the answer is true or false.
 
 903
-00:56:25,990 --> 00:56:28,550
+00:56:24,208 --> 00:56:25,904
+条件式必须先知道谓词的真假
+Conditionals have to know whether or not the answer is true or false.
+
+904
+00:56:25,990 --> 00:56:26,832
 就像一个基本过程一样
 It's like a primitive.
 
-904
-00:56:28,550 --> 00:56:31,890
+905
+00:56:28,550 --> 00:56:30,560
 当你定义条件式的时候，你必须需要force
 When you do a conditional, you have to force.
 
-905
-00:56:31,890 --> 00:56:34,350
+906
+00:56:31,728 --> 00:56:33,952
 剩下的细节就没什么特别的了
 Now, I'm not going to look at any more of this in any detail.
 
-906
-00:56:34,350 --> 00:56:36,750
+907
+00:56:34,624 --> 00:56:36,288
 就先不深究了
 It isn't very exciting.
 
-907
+908
 00:56:36,750 --> 00:56:38,990
 剩下的就是delay的实现了
 And what's left is how you make delays.
 
-908
-00:56:38,990 --> 00:56:44,840
+909
+00:56:38,990 --> 00:56:40,912
 delay就是一个数据结构，其中包括了类型'trunk，表达式和环境
 Well, delays are data structures which contain an expression, an environment, and a type on them.
 
-909
-00:56:44,840 --> 00:56:46,680
+910
+00:56:41,312 --> 00:56:44,752
+delay就是一个数据结构，其中包括了类型'trunk，表达式和环境
+Well, delays are data structures which contain an expression, an environment, and a type on them.
+
+911
+00:56:44,840 --> 00:56:46,368
 'thunk标明这是一个trunk
 And it says they're a thunk.
 
-910
-00:56:46,680 --> 00:56:52,970
+912
+00:56:46,960 --> 00:56:48,464
 是从ALGOL借用过来的，原义大概是把什么压在栈中
 That comes from ALGOL language, and it's claimed to be the sound of something being pushed on a stack.
 
-911
+913
+00:56:49,072 --> 00:56:50,816
+是从ALGOL借用过来的，原义大概是把什么压在栈中
+That comes from ALGOL language, and it's claimed to be the sound of something being pushed on a stack.
+
+914
+00:56:50,832 --> 00:56:52,064
+是从ALGOL借用过来的，原义大概是把什么压在栈中
+That comes from ALGOL language, and it's claimed to be the sound of something being pushed on a stack.
+
+915
 00:56:52,970 --> 00:56:53,410
 记不清了
 I don't know.
 
-912
-00:56:53,410 --> 00:56:58,740
+916
+00:56:53,410 --> 00:56:57,120
 我对ALGOL了解的不深入
 I was not an ALGOLician or an ALGOLite or whatever, so I don't know.
 
-913
-00:56:58,740 --> 00:57:00,270
+917
+00:56:57,600 --> 00:56:58,384
+我对ALGOL了解的不深入
+I was not an ALGOLician or an ALGOLite or whatever, so I don't know.
+
+918
+00:56:58,740 --> 00:56:59,648
 但是我们就在这里借用它了
 But that's what was claimed.
 
-914
-00:57:00,270 --> 00:57:07,860
+919
+00:57:00,270 --> 00:57:01,568
 undelay不断递归的force求值，直到遇到不是'trunk的对象
 And undelay is something which will recursively undelay thunks until the thunk becomes something which isn't a thunk.
 
-915
-00:57:07,860 --> 00:57:12,050
+920
+00:57:01,776 --> 00:57:04,336
+undelay不断递归的force求值，直到遇到不是'trunk的对象
+And undelay is something which will recursively undelay thunks until the thunk becomes something which isn't a thunk.
+
+921
+00:57:04,496 --> 00:57:06,000
+undelay不断递归的force求值，直到遇到不是'trunk的对象
+And undelay is something which will recursively undelay thunks until the thunk becomes something which isn't a thunk.
+
+922
+00:57:07,728 --> 00:57:10,944
 这就是具体的实现
 This is the way you implement a call by name like thing in ALGOL.
 
-916
-00:57:12,050 --> 00:57:15,210
+923
+00:57:12,050 --> 00:57:13,760
 全部都在这里了
 And that's about all there is.
 
-917
-00:57:15,210 --> 00:57:16,460
+924
+00:57:15,210 --> 00:57:16,256
 有什么问题吗？
 Are there any questions?
 
-918
-00:57:26,840 --> 00:57:27,560
+925
+00:57:26,688 --> 00:57:27,520
 Gerry？
 AUDIENCE: Gerry?
 
-919
-00:57:27,560 --> 00:57:29,626
+926
+00:57:28,096 --> 00:57:28,800
 你说，Vesko
 PROFESSOR: Yes, Vesko?
 
-920
-00:57:29,626 --> 00:57:39,350
+927
+00:57:30,030 --> 00:57:34,896
 我注意到，在调用基本过程的时候，你避免用名字传递参数，这样做有什么原因吗？
 AUDIENCE: I noticed you avoided calling by name in the primitive procedures, I was wondering what cause you have on that?
 
-921
-00:57:39,350 --> 00:57:40,070
+928
+00:57:36,410 --> 00:57:38,384
+我注意到，在调用基本过程的时候，你避免用名字传递参数，这样做有什么原因吗？
+AUDIENCE: I noticed you avoided calling by name in the primitive procedures, I was wondering what cause you have on that?
+
+929
+00:57:38,416 --> 00:57:39,216
 需要这样吗？
 You never need that?
 
-922
-00:57:40,070 --> 00:57:47,140
+930
+00:57:40,070 --> 00:57:41,616
 Vesko想问的是 基本过程的参数如果按名字传递是否合理？
 PROFESSOR: Vesko is asking if it's ever reasonable to call a primitive procedure by name?
 
-923
-00:57:47,140 --> 00:57:49,270
+931
+00:57:42,064 --> 00:57:44,160
+Vesko想问的是 基本过程的参数如果按名字传递是否合理？
+PROFESSOR: Vesko is asking if it's ever reasonable to call a primitive procedure by name?
+
+932
+00:57:44,192 --> 00:57:46,000
+Vesko想问的是 基本过程的参数如果按名字传递是否合理？
+PROFESSOR: Vesko is asking if it's ever reasonable to call a primitive procedure by name?
+
+933
+00:57:47,140 --> 00:57:48,704
 答案是 是的
 The answer is, yes.
 
-924
-00:57:49,270 --> 00:57:52,930
+934
+00:57:49,270 --> 00:57:52,320
 有一种情况下是可以的，哦两种
 There's one particular case where it's reasonable, actually two.
 
-925
-00:57:56,050 --> 00:58:03,690
+935
+00:57:55,536 --> 00:57:58,272
 比如用cons来构建一个数组的数据结构
 Construction of a data structure like cons where making an array if you have arrays with any number of elements.
 
-926
-00:58:03,690 --> 00:58:07,440
+936
+00:57:59,024 --> 00:58:00,240
+比如用cons来构建一个数组的数据结构
+Construction of a data structure like cons where making an array if you have arrays with any number of elements.
+
+937
+00:58:00,256 --> 00:58:02,048
+比如用cons来构建一个数组的数据结构
+Construction of a data structure like cons where making an array if you have arrays with any number of elements.
+
+938
+00:58:03,264 --> 00:58:07,440
 没必要求值参数
 It's unnecessary to evaluate those arguments.
 
-927
-00:58:07,440 --> 00:58:11,160
+939
+00:58:07,440 --> 00:58:08,832
 你只需要一个约定，一个需要计算参数的时候就可以得到结果的约定
 All you need is promises to evaluate those arguments if you look at them.
 
-928
-00:58:11,160 --> 00:58:21,830
+940
+00:58:09,104 --> 00:58:10,816
+你只需要一个约定，一个需要计算参数的时候就可以得到结果的约定
+All you need is promises to evaluate those arguments if you look at them.
+
+941
+00:58:11,504 --> 00:58:15,088
 如果我用cons把两个东西连接起来，连接两个约定和连接两个实际的东西一样简单
 If I cons together two things, then I could cons together the promises just as easily as I can cons together the things.
 
-929
-00:58:21,830 --> 00:58:24,840
+942
+00:58:16,240 --> 00:58:17,776
+如果我用cons把两个东西连接起来，连接两个约定和连接两个实际的东西一样简单
+If I cons together two things, then I could cons together the promises just as easily as I can cons together the things.
+
+943
+00:58:17,808 --> 00:58:19,936
+如果我用cons把两个东西连接起来，连接两个约定和连接两个实际的东西一样简单
+If I cons together two things, then I could cons together the promises just as easily as I can cons together the things.
+
+944
+00:58:21,150 --> 00:58:23,376
 甚至在用CAR CDR取出的时候也不用计算
 And it's not even when I CAR CDR them that I have to look at them.
 
-930
-00:58:24,840 --> 00:58:28,260
+945
+00:58:23,392 --> 00:58:24,304
+甚至在用CAR CDR取出的时候也不用计算
+And it's not even when I CAR CDR them that I have to look at them.
+
+946
+00:58:24,840 --> 00:58:26,976
 直接把约定传递给其它人
 That just gets out the promises and passes them to somebody.
 
-931
-00:58:28,260 --> 00:58:34,420
+947
+00:58:28,260 --> 00:58:30,544
 这也是阿隆佐 丘奇用lambda演算定义的cons能够说得通的原因
 That's why the lambda calculus definition, the Alonzo Church definition of CAR, CDR, and cons makes sense.
 
-932
-00:58:34,420 --> 00:58:40,760
+948
+00:58:30,576 --> 00:58:34,032
+这也是阿隆佐 丘奇用lambda演算定义的cons能够说得通的原因
+That's why the lambda calculus definition, the Alonzo Church definition of CAR, CDR, and cons makes sense.
+
+949
+00:58:34,420 --> 00:58:36,320
 因为在cons car cdr中并没有什么计算，它们不过是存东西取东西而已
 It's because no work is done in CAR, CDR, and cons, it's just shuffling data, it's just routing, if you will.
 
-933
-00:58:40,760 --> 00:58:45,280
+950
+00:58:36,384 --> 00:58:37,472
+因为在cons car cdr中并没有什么计算，它们不过是存东西取东西而已
+It's because no work is done in CAR, CDR, and cons, it's just shuffling data, it's just routing, if you will.
+
+951
+00:58:38,080 --> 00:58:39,968
+因为在cons car cdr中并没有什么计算，它们不过是存东西取东西而已
+It's because no work is done in CAR, CDR, and cons, it's just shuffling data, it's just routing, if you will.
+
+952
+00:58:40,990 --> 00:58:42,208
 然而像 + 这样的过程必须要了解参数是什么
 However, the things that do have to look at data are things like plus.
 
-934
-00:58:45,280 --> 00:58:52,460
+953
+00:58:42,240 --> 00:58:43,840
+然而像 + 这样的过程必须要了解参数是什么
+However, the things that do have to look at data are things like plus.
+
+954
+00:58:45,280 --> 00:58:46,912
 因为 + 需要和实际组成数字的比特打交道，如果遇到一个lambda就搞笑了
 Because they have a look at the bits that the numbers are made out of, unless they're lambda calculus numbers which are funny.
 
-935
-00:58:52,460 --> 00:58:55,880
+955
+00:58:47,120 --> 00:58:48,304
+因为 + 需要和实际组成数字的比特打交道，如果遇到一个lambda就搞笑了
+Because they have a look at the bits that the numbers are made out of, unless they're lambda calculus numbers which are funny.
+
+956
+00:58:48,320 --> 00:58:51,888
+因为 + 需要和实际组成数字的比特打交道，如果遇到一个lambda就搞笑了
+Because they have a look at the bits that the numbers are made out of, unless they're lambda calculus numbers which are funny.
+
+957
+00:58:52,460 --> 00:58:53,632
 它要从数字的比特层面来实际计算
 They have to look at the bits to be able to crunch them together to do the add.
 
-936
-00:58:59,210 --> 00:59:13,300
+958
+00:58:53,728 --> 00:58:55,536
+它要从数字的比特层面来实际计算
+They have to look at the bits to be able to crunch them together to do the add.
+
+959
+00:58:59,210 --> 00:58:59,920
 可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
 So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
 
-937
-00:59:16,460 --> 00:59:18,700
+960
+00:59:00,192 --> 00:59:02,784
+可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
+So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
+
+961
+00:59:03,248 --> 00:59:05,504
+可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
+So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
+
+962
+00:59:06,270 --> 00:59:09,760
+可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
+So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
+
+963
+00:59:11,344 --> 00:59:13,392
+可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
+So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
+
+964
+00:59:16,460 --> 00:59:16,992
 话说回来判断数据结构的谓词还是需要force的
 On the other hand predicates on data structures have to.
 
-938
-00:59:21,710 --> 00:59:23,560
+965
+00:59:17,024 --> 00:59:18,700
+话说回来判断数据结构的谓词还是需要force的
+On the other hand predicates on data structures have to.
+
+966
+00:59:19,616 --> 00:59:22,656
 这是一个序对吗？
 Is this a pair?
 
-939
-00:59:23,560 --> 00:59:24,640
+967
+00:59:23,560 --> 00:59:24,400
 或者是一个符号？
 Or is it a symbol?
 
-940
+968
 00:59:24,640 --> 00:59:25,690
 最好搞清楚是什么
 Well, you better find out.
 
-941
-00:59:25,690 --> 00:59:26,940
+969
+00:59:25,690 --> 00:59:26,592
 这点还是挺重要的
 You got to look at it then.
 
-942
-00:59:30,300 --> 00:59:31,550
+970
+00:59:30,300 --> 00:59:31,184
 还有问题吗？
 Any other questions?
 
-943
+971
 00:59:40,050 --> 00:59:41,610
 没了，下面是休息时间
 Oh, well, I suppose it's time for a break.
 
-944
-00:59:41,610 --> 00:59:42,106
-下课
-Thank you.
+972
+00:59:42,100 --> 00:59:55,840
+MIT OpenCourseWare
+http://ocw.mit.edu
 
-945
-00:59:42,106 --> 01:00:02,950
-[MUSIC PLAYING]
-[MUSIC PLAYING]
+973
+00:59:55,840 --> 01:00:04,560
+本项目主页
+https://github.com/DeathKing/Learning-SICP
 
