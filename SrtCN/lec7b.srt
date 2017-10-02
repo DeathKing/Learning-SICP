@@ -3995,471 +3995,721 @@ And such that the forcing of a delayed expression was same thing as calling that
 And such that the forcing of a delayed expression was same thing as calling that with no arguments.
 
 802
-00:51:21,090 --> 00:51:24,100
+00:51:21,090 --> 00:51:22,288
 和上面恰恰相对
 It's just the opposite of this.
 
 803
-00:51:24,100 --> 00:51:33,132
+00:51:24,100 --> 00:51:26,944
 为过程调用生成了新的环境就是在过程定义的时候所附加的新frame
 Producing an environment of the call which is, in fact, the environment where this was defined with an extra frame in it that's empty.
 
 804
-00:51:33,132 --> 00:51:36,240
+00:51:27,360 --> 00:51:29,904
+为过程调用生成了新的环境就是在过程定义的时候所附加的新frame
+Producing an environment of the call which is, in fact, the environment where this was defined with an extra frame in it that's empty.
+
+805
+00:51:30,816 --> 00:51:32,368
+为过程调用生成了新的环境就是在过程定义的时候所附加的新frame
+Producing an environment of the call which is, in fact, the environment where this was defined with an extra frame in it that's empty.
+
+806
+00:51:33,232 --> 00:51:34,416
 这里就不细细讨论了
 I don't care about that.
 
-805
-00:51:36,240 --> 00:51:51,980
+807
+00:51:36,240 --> 00:51:39,408
 我们再来看这张幻灯片，仔细看一会儿，会发现大部分都是相同的，只有最下面处理组合式的地方不同
 Well, if we go back to this slide, since it's the case, if we look at this for a second, everything is the same as it was before except the case of applications or combinations.
 
-806
-00:51:51,980 --> 00:51:54,680
+808
+00:51:40,992 --> 00:51:43,728
+我们再来看这张幻灯片，仔细看一会儿，会发现大部分都是相同的，只有最下面处理组合式的地方不同
+Well, if we go back to this slide, since it's the case, if we look at this for a second, everything is the same as it was before except the case of applications or combinations.
+
+809
+00:51:44,144 --> 00:51:46,128
+我们再来看这张幻灯片，仔细看一会儿，会发现大部分都是相同的，只有最下面处理组合式的地方不同
+Well, if we go back to this slide, since it's the case, if we look at this for a second, everything is the same as it was before except the case of applications or combinations.
+
+810
+00:51:46,350 --> 00:51:50,656
+我们再来看这张幻灯片，仔细看一会儿，会发现大部分都是相同的，只有最下面处理组合式的地方不同
+Well, if we go back to this slide, since it's the case, if we look at this for a second, everything is the same as it was before except the case of applications or combinations.
+
+811
+00:51:51,980 --> 00:51:53,712
 这种情况有两个部分
 And combinations are going to do two things.
 
-807
-00:51:54,680 --> 00:52:00,425
+812
+00:51:54,680 --> 00:51:57,792
 一是我得先求值操作符
 One, is I have to evaluate the procedure-- forget the procedure-- by evaluating the operator.
 
-808
-00:52:00,425 --> 00:52:02,380
+813
+00:51:57,920 --> 00:51:59,888
+一是我得先求值操作符
+One, is I have to evaluate the procedure-- forget the procedure-- by evaluating the operator.
+
+814
+00:52:00,704 --> 00:52:01,696
 也就是这一部分
 That's what you see right here.
 
-809
-00:52:02,380 --> 00:52:10,730
+815
+00:52:02,380 --> 00:52:04,352
 这里我要保证它已经被求出值的，也即用undelay来确保操作符不再是延时对象
 I have to make sure that that's current, that is not a delayed object, and evaluate that to the point where it's forced now.
 
-810
-00:52:10,730 --> 00:52:18,460
+816
+00:52:04,464 --> 00:52:05,760
+这里我要保证它已经被求出值的，也即用undelay来确保操作符不再是延时对象
+I have to make sure that that's current, that is not a delayed object, and evaluate that to the point where it's forced now.
+
+817
+00:52:06,368 --> 00:52:09,856
+这里我要保证它已经被求出值的，也即用undelay来确保操作符不再是延时对象
+I have to make sure that that's current, that is not a delayed object, and evaluate that to the point where it's forced now.
+
+818
+00:52:10,730 --> 00:52:12,080
 然后应用于操作数
 And then I have to somehow apply that to the operands.
 
-811
-00:52:18,460 --> 00:52:21,530
+819
+00:52:12,240 --> 00:52:17,328
+然后应用于操作数
+And then I have to somehow apply that to the operands.
+
+820
+00:52:18,032 --> 00:52:20,928
 这里还要保存下当前的环境，作为第三个参数传递过去
 But I have to keep the environment, pass that environmental along.
 
-812
+821
 00:52:21,530 --> 00:52:23,710
 如果有一些参数是延时了的
 So some of those operands I may have to delay.
 
-813
-00:52:23,710 --> 00:52:29,302
+822
+00:52:23,710 --> 00:52:27,536
 就需要用此时的环境来求值
 I may have to attach that environment to those operands.
 
-814
-00:52:29,302 --> 00:52:32,990
+823
+00:52:29,664 --> 00:52:31,520
 看起来已经十分复杂了
 This is a rather complicated thing happening here.
 
-815
+824
 00:52:32,990 --> 00:52:34,240
 再来看看apply
 Looking at that in apply.
 
-816
-00:52:36,400 --> 00:52:42,610
+825
+00:52:36,400 --> 00:52:38,672
 这一部分还是判断基本过程，和之前一样
 Apply, well it has a primitive procedure thing just like before.
 
-817
-00:52:42,610 --> 00:52:44,390
+826
+00:52:39,408 --> 00:52:40,640
+这一部分还是判断基本过程，和之前一样
+Apply, well it has a primitive procedure thing just like before.
+
+827
+00:52:42,610 --> 00:52:44,688
 组合过程的部分就比较有意思了
 But the compound one is a little more interesting.
 
-818
-00:52:47,250 --> 00:53:00,290
+828
+00:52:47,250 --> 00:52:49,520
 我要在过程定义时绑定的环境下求值过程，但是参数要在和延时参数关联起来的环境下求值
 I have to evaluate the body, just as before, in an environment which is the result of binding some formal parameters to arguments in the environment.
 
-819
-00:53:00,290 --> 00:53:01,530
+829
+00:52:50,480 --> 00:52:51,984
+我要在过程定义时绑定的环境下求值过程，但是参数要在和延时参数关联起来的环境下求值
+I have to evaluate the body, just as before, in an environment which is the result of binding some formal parameters to arguments in the environment.
+
+830
+00:52:52,288 --> 00:52:54,976
+我要在过程定义时绑定的环境下求值过程，但是参数要在和延时参数关联起来的环境下求值
+I have to evaluate the body, just as before, in an environment which is the result of binding some formal parameters to arguments in the environment.
+
+831
+00:52:55,616 --> 00:53:00,290
+我要在过程定义时绑定的环境下求值过程，但是参数要在和延时参数关联起来的环境下求值
+I have to evaluate the body, just as before, in an environment which is the result of binding some formal parameters to arguments in the environment.
+
+832
+00:53:00,290 --> 00:53:01,072
 两个环境
 That's true.
 
-820
+833
 00:53:01,530 --> 00:53:03,820
 这个环境是定义过程时关联的环境
 The environment is the one that comes from the procedure now.
 
-821
-00:53:03,820 --> 00:53:08,040
+834
+00:53:03,820 --> 00:53:06,656
 静态绑定
 It's a lexical language, statically bound.
 
-822
-00:53:08,040 --> 00:53:12,960
+835
+00:53:08,040 --> 00:53:10,480
 我还需要的是去掉name声明，获得变量的实际名字
 However, one thing I have to do is strip off the declarations to get the names of the variables.
 
-823
-00:53:12,960 --> 00:53:15,450
+836
+00:53:10,650 --> 00:53:12,848
+我还需要的是去掉name声明，获得变量的实际名字
+However, one thing I have to do is strip off the declarations to get the names of the variables.
+
+837
+00:53:12,848 --> 00:53:15,200
 也就是vnames过程所要做的
 That's what this guy does, vnames.
 
-824
-00:53:15,450 --> 00:53:33,770
+838
+00:53:15,450 --> 00:53:16,672
 然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
 And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
 
-825
-00:53:37,280 --> 00:53:45,820
+839
+00:53:16,976 --> 00:53:18,864
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
+And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+
+840
+00:53:19,136 --> 00:53:21,520
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
+And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+
+841
+00:53:21,760 --> 00:53:23,920
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
+And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+
+842
+00:53:24,096 --> 00:53:25,872
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
+And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+
+843
+00:53:26,624 --> 00:53:30,208
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
+And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+
+844
+00:53:30,992 --> 00:53:33,770
+然后要做的就是，这些操作数，哪些要马上求值，哪些要先用延时封装起来
+And the other thing I have to do is process these declarations, deciding which of these operands-- that's the operands now, as opposed to the arguments-- which of these operands to evaluate, and which of them are to be encapsulated in delays of some sort.
+
+845
+00:53:37,280 --> 00:53:38,624
 另外，如果遇到的基本过程，操作数还是要马上求值
 The other thing you see here is that we got a primitive, a primitive like plus, had better get at the real operands.
 
-826
-00:53:45,820 --> 00:53:47,690
+846
+00:53:38,848 --> 00:53:40,096
+另外，如果遇到的基本过程，操作数还是要马上求值
+The other thing you see here is that we got a primitive, a primitive like plus, had better get at the real operands.
+
+847
+00:53:40,608 --> 00:53:45,584
+另外，如果遇到的基本过程，操作数还是要马上求值
+The other thing you see here is that we got a primitive, a primitive like plus, had better get at the real operands.
+
+848
+00:53:45,820 --> 00:53:47,392
 也就是这里
 So here is a place where we're going to have to force them.
 
-827
-00:53:47,690 --> 00:53:51,340
+849
+00:53:47,920 --> 00:53:50,384
 evlist中其中做了很多force的工作
 And we're going to look at what evlist is going to have to do a bunch of forces.
 
-828
+850
 00:53:51,340 --> 00:53:52,780
 所以这里有两个evlist
 So we have two different kinds of evlist now.
 
-829
-00:53:52,780 --> 00:53:59,870
+851
+00:53:52,780 --> 00:53:54,096
 evlist和gevlist gevlist对要延时的参数加以封装，对其它的则马上求值
 We have evlist and gevlist. Gevlist is going to wrap delays around some things and force others, evaluate others.
 
-830
-00:53:59,870 --> 00:54:07,900
+852
+00:53:54,528 --> 00:53:58,000
+evlist和gevlist gevlist对要延时的参数加以封装，对其它的则马上求值
+We have evlist and gevlist. Gevlist is going to wrap delays around some things and force others, evaluate others.
+
+853
+00:53:58,784 --> 00:53:59,680
+evlist和gevlist gevlist对要延时的参数加以封装，对其它的则马上求值
+We have evlist and gevlist. Gevlist is going to wrap delays around some things and force others, evaluate others.
+
+854
+00:53:59,870 --> 00:54:02,030
 evlist的话就是单纯的去求值
 And this guy's going to do some forcing of things.
 
-831
-00:54:07,900 --> 00:54:12,250
+855
+00:54:02,320 --> 00:54:05,888
+evlist的话就是单纯的去求值
+And this guy's going to do some forcing of things.
+
+856
+00:54:07,900 --> 00:54:09,168
 来看evlist，这里我们只需做我们自己的事就行，大家已经很熟悉了
 Just looking at this a little bit, this is a game you must play for yourself, you know.
 
-832
-00:54:12,250 --> 00:54:19,730
+857
+00:54:09,696 --> 00:54:11,984
+来看evlist，这里我们只需做我们自己的事就行，大家已经很熟悉了
+Just looking at this a little bit, this is a game you must play for yourself, you know.
+
+858
+00:54:12,250 --> 00:54:15,344
 这里不会有求值器传递过来的多种情况
 It's not something that you're going to see all possible variations on an evaluator talking to me.
 
-833
-00:54:19,730 --> 00:54:21,410
+859
+00:54:15,360 --> 00:54:18,208
+这里不会有求值器传递过来的多种情况
+It's not something that you're going to see all possible variations on an evaluator talking to me.
+
+860
+00:54:19,520 --> 00:54:21,248
 我们只需要一味求值就可以了
 What you have to do is do this for yourself.
 
-834
-00:54:21,410 --> 00:54:29,930
+861
+00:54:21,410 --> 00:54:22,528
 在你感觉过这种方式之后，你将会看到另一种方式，这里你需要处理不同的设计决策，了解它们的具体意思，清楚它们如何相互关联
 And after you feel this, you play this a bit, you get to see all the possible design decisions and what they might mean, and how they interact with each other.
 
-835
-00:54:29,930 --> 00:54:33,160
+862
+00:54:22,928 --> 00:54:23,824
+在你感觉过这种方式之后，你将会看到另一种方式，这里你需要处理不同的设计决策，了解它们的具体意思，清楚它们如何相互关联
+And after you feel this, you play this a bit, you get to see all the possible design decisions and what they might mean, and how they interact with each other.
+
+863
+00:54:24,224 --> 00:54:27,024
+在你感觉过这种方式之后，你将会看到另一种方式，这里你需要处理不同的设计决策，了解它们的具体意思，清楚它们如何相互关联
+And after you feel this, you play this a bit, you get to see all the possible design decisions and what they might mean, and how they interact with each other.
+
+864
+00:54:27,776 --> 00:54:29,168
+在你感觉过这种方式之后，你将会看到另一种方式，这里你需要处理不同的设计决策，了解它们的具体意思，清楚它们如何相互关联
+And after you feel this, you play this a bit, you get to see all the possible design decisions and what they might mean, and how they interact with each other.
+
+865
+00:54:29,930 --> 00:54:32,384
 任何语言都是这样
 So what languages might have in them.
 
-836
-00:54:33,160 --> 00:54:37,200
+866
+00:54:33,160 --> 00:54:34,640
 普遍通用的规则与少量特殊的规则，协同构建一门合理的语言
 And what are some of the consistent sets that make a legitimate language.
 
-837
-00:54:37,200 --> 00:54:41,850
+867
+00:54:34,944 --> 00:54:36,320
+普遍通用的规则与少量特殊的规则，协同构建一门合理的语言
+And what are some of the consistent sets that make a legitimate language.
+
+868
+00:54:37,200 --> 00:54:40,064
 然后如果有太多的kluge，就会对语言造成破坏
 Whereas what things are complicated kluges that are just piles of junk.
 
-838
-00:54:41,850 --> 00:54:50,750
+869
+00:54:41,850 --> 00:54:43,456
 回到evlist上来，针对所有的操作数force求值
 So evlist of course, over here, just as I said, is a list of operands which are going to be undelayed after evaluation.
 
-839
-00:54:50,750 --> 00:54:56,050
+870
+00:54:43,808 --> 00:54:44,720
+回到evlist上来，针对所有的操作数force求值
+So evlist of course, over here, just as I said, is a list of operands which are going to be undelayed after evaluation.
+
+871
+00:54:44,800 --> 00:54:46,080
+回到evlist上来，针对所有的操作数force求值
+So evlist of course, over here, just as I said, is a list of operands which are going to be undelayed after evaluation.
+
+872
+00:54:46,670 --> 00:54:48,570
+回到evlist上来，针对所有的操作数force求值
+So evlist of course, over here, just as I said, is a list of operands which are going to be undelayed after evaluation.
+
+873
+00:54:49,040 --> 00:54:50,288
+回到evlist上来，针对所有的操作数force求值
+So evlist of course, over here, just as I said, is a list of operands which are going to be undelayed after evaluation.
+
+874
+00:54:50,750 --> 00:54:51,904
 无论操作数是否是延时对象
 So these are going to be forced, whatever that's going to mean.
 
-840
-00:54:56,050 --> 00:55:04,040
+875
+00:54:53,280 --> 00:54:54,448
+无论操作数是否是延时对象
+So these are going to be forced, whatever that's going to mean.
+
+876
+00:54:56,050 --> 00:54:58,512
 下一个，gevlist
 And gevlist, which is the next thing-- Thank you.
 
-841
-00:55:04,040 --> 00:55:09,810
+877
+00:55:01,264 --> 00:55:01,856
+下一个，gevlist
+And gevlist, which is the next thing-- Thank you.
+
+878
+00:55:04,040 --> 00:55:06,350
 这里，就会发现有很多种情况
 What we see here, well there's a couple of possibilities.
 
-842
-00:55:09,810 --> 00:55:19,390
+879
+00:55:07,808 --> 00:55:09,616
+这里，就会发现有很多种情况
+What we see here, well there's a couple of possibilities.
+
+880
+00:55:09,810 --> 00:55:11,520
 如果不是用name延时的参数，就像unless中谓词部分，对应这一部分代码
 Either it's a normal, ordinary thing, a symbol sitting there like the predicate in the unless, and that's what we have here.
 
-843
-00:55:19,390 --> 00:55:23,340
+881
+00:55:12,480 --> 00:55:16,208
+如果不是用name延时的参数，就像unless中谓词部分，对应这一部分代码
+Either it's a normal, ordinary thing, a symbol sitting there like the predicate in the unless, and that's what we have here.
+
+882
+00:55:17,648 --> 00:55:18,816
+如果不是用name延时的参数，就像unless中谓词部分，对应这一部分代码
+Either it's a normal, ordinary thing, a symbol sitting there like the predicate in the unless, and that's what we have here.
+
+883
+00:55:19,390 --> 00:55:22,496
 这一部分就使用应用序求值
 In which case, this is intended to be evaluated in applicative order.
 
-844
-00:55:23,340 --> 00:55:25,630
+884
+00:55:23,340 --> 00:55:25,456
 就像以前一样
 And it's, essentially, just what we had before.
 
-845
-00:55:25,630 --> 00:55:37,900
+885
+00:55:25,630 --> 00:55:28,848
 然后递归求值，就是对CAR求值之后，再用gevlist对剩下的求值
 It's mapping eval down the list. In other words, I evaluate the first expression and continue gevlisting the CDR of the expression in the environment.
 
-846
-00:55:37,900 --> 00:55:43,600
+886
+00:55:29,952 --> 00:55:32,144
+然后递归求值，就是对CAR求值之后，再用gevlist对剩下的求值
+It's mapping eval down the list. In other words, I evaluate the first expression and continue gevlisting the CDR of the expression in the environment.
+
+887
+00:55:32,656 --> 00:55:37,360
+然后递归求值，就是对CAR求值之后，再用gevlist对剩下的求值
+It's mapping eval down the list. In other words, I evaluate the first expression and continue gevlisting the CDR of the expression in the environment.
+
+888
+00:55:37,900 --> 00:55:39,072
 然而，有可能我们遇到一个延时参数
 However, it's possible that this is a name parameter.
 
-847
-00:55:43,600 --> 00:56:02,790
+889
+00:55:39,168 --> 00:55:43,200
+然而，有可能我们遇到一个延时参数
+However, it's possible that this is a name parameter.
+
+890
+00:55:44,000 --> 00:55:45,056
 如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
 If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
 
-848
-00:56:02,790 --> 00:56:05,600
+891
+00:55:45,200 --> 00:55:46,592
+如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
+If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
+
+892
+00:55:47,008 --> 00:55:50,976
+如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
+If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
+
+893
+00:55:52,080 --> 00:55:54,512
+如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
+If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
+
+894
+00:55:55,880 --> 00:55:57,740
+如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
+If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
+
+895
+00:55:59,056 --> 00:56:00,592
+如果是一个延时参数，就delay这个参数，还要记得封装当前的环境
+If it's a name parameter, I want to put a delay in which combines that expression, which I'm calling by name, with the environment that's available at this time and passing that as the parameter.
+
+896
+00:56:02,790 --> 00:56:05,040
 然后继续递归
 And this is part of the mapping process that you see here.
 
-849
-00:56:09,070 --> 00:56:14,700
+897
+00:56:09,070 --> 00:56:11,310
 另一个有意思的地方是evcond
 The only other interesting place in this interpreter is cond.
 
-850
-00:56:14,700 --> 00:56:18,550
+898
+00:56:11,376 --> 00:56:13,536
+另一个有意思的地方是evcond
+The only other interesting place in this interpreter is cond.
+
+899
+00:56:14,700 --> 00:56:15,920
 人们可能认为这一部分没什么特别的，就草草写完
 People tend to write this thing, and then they leave this one out.
 
-851
-00:56:18,550 --> 00:56:20,510
+900
+00:56:15,936 --> 00:56:17,248
+人们可能认为这一部分没什么特别的，就草草写完
+People tend to write this thing, and then they leave this one out.
+
+901
+00:56:18,550 --> 00:56:19,984
 这里有一个地方是需要force的，值得注意
 There's a place where you have to force.
 
-852
+902
 00:56:20,510 --> 00:56:25,990
 条件式必须先知道谓词的真假
 Conditionals have to know whether or not the answer is true or false.
 
-853
+903
 00:56:25,990 --> 00:56:28,550
 就像一个基本过程一样
 It's like a primitive.
 
-854
+904
 00:56:28,550 --> 00:56:31,890
 当你定义条件式的时候，你必须需要force
 When you do a conditional, you have to force.
 
-855
+905
 00:56:31,890 --> 00:56:34,350
 剩下的细节就没什么特别的了
 Now, I'm not going to look at any more of this in any detail.
 
-856
+906
 00:56:34,350 --> 00:56:36,750
 就先不深究了
 It isn't very exciting.
 
-857
+907
 00:56:36,750 --> 00:56:38,990
 剩下的就是delay的实现了
 And what's left is how you make delays.
 
-858
+908
 00:56:38,990 --> 00:56:44,840
 delay就是一个数据结构，其中包括了类型'trunk，表达式和环境
 Well, delays are data structures which contain an expression, an environment, and a type on them.
 
-859
+909
 00:56:44,840 --> 00:56:46,680
 'thunk标明这是一个trunk
 And it says they're a thunk.
 
-860
+910
 00:56:46,680 --> 00:56:52,970
 是从ALGOL借用过来的，原义大概是把什么压在栈中
 That comes from ALGOL language, and it's claimed to be the sound of something being pushed on a stack.
 
-861
+911
 00:56:52,970 --> 00:56:53,410
 记不清了
 I don't know.
 
-862
+912
 00:56:53,410 --> 00:56:58,740
 我对ALGOL了解的不深入
 I was not an ALGOLician or an ALGOLite or whatever, so I don't know.
 
-863
+913
 00:56:58,740 --> 00:57:00,270
 但是我们就在这里借用它了
 But that's what was claimed.
 
-864
+914
 00:57:00,270 --> 00:57:07,860
 undelay不断递归的force求值，直到遇到不是'trunk的对象
 And undelay is something which will recursively undelay thunks until the thunk becomes something which isn't a thunk.
 
-865
+915
 00:57:07,860 --> 00:57:12,050
 这就是具体的实现
 This is the way you implement a call by name like thing in ALGOL.
 
-866
+916
 00:57:12,050 --> 00:57:15,210
 全部都在这里了
 And that's about all there is.
 
-867
+917
 00:57:15,210 --> 00:57:16,460
 有什么问题吗？
 Are there any questions?
 
-868
+918
 00:57:26,840 --> 00:57:27,560
 Gerry？
 AUDIENCE: Gerry?
 
-869
+919
 00:57:27,560 --> 00:57:29,626
 你说，Vesko
 PROFESSOR: Yes, Vesko?
 
-870
+920
 00:57:29,626 --> 00:57:39,350
 我注意到，在调用基本过程的时候，你避免用名字传递参数，这样做有什么原因吗？
 AUDIENCE: I noticed you avoided calling by name in the primitive procedures, I was wondering what cause you have on that?
 
-871
+921
 00:57:39,350 --> 00:57:40,070
 需要这样吗？
 You never need that?
 
-872
+922
 00:57:40,070 --> 00:57:47,140
 Vesko想问的是 基本过程的参数如果按名字传递是否合理？
 PROFESSOR: Vesko is asking if it's ever reasonable to call a primitive procedure by name?
 
-873
+923
 00:57:47,140 --> 00:57:49,270
 答案是 是的
 The answer is, yes.
 
-874
+924
 00:57:49,270 --> 00:57:52,930
 有一种情况下是可以的，哦两种
 There's one particular case where it's reasonable, actually two.
 
-875
+925
 00:57:56,050 --> 00:58:03,690
 比如用cons来构建一个数组的数据结构
 Construction of a data structure like cons where making an array if you have arrays with any number of elements.
 
-876
+926
 00:58:03,690 --> 00:58:07,440
 没必要求值参数
 It's unnecessary to evaluate those arguments.
 
-877
+927
 00:58:07,440 --> 00:58:11,160
 你只需要一个约定，一个需要计算参数的时候就可以得到结果的约定
 All you need is promises to evaluate those arguments if you look at them.
 
-878
+928
 00:58:11,160 --> 00:58:21,830
 如果我用cons把两个东西连接起来，连接两个约定和连接两个实际的东西一样简单
 If I cons together two things, then I could cons together the promises just as easily as I can cons together the things.
 
-879
+929
 00:58:21,830 --> 00:58:24,840
 甚至在用CAR CDR取出的时候也不用计算
 And it's not even when I CAR CDR them that I have to look at them.
 
-880
+930
 00:58:24,840 --> 00:58:28,260
 直接把约定传递给其它人
 That just gets out the promises and passes them to somebody.
 
-881
+931
 00:58:28,260 --> 00:58:34,420
 这也是阿隆佐 丘奇用lambda演算定义的cons能够说得通的原因
 That's why the lambda calculus definition, the Alonzo Church definition of CAR, CDR, and cons makes sense.
 
-882
+932
 00:58:34,420 --> 00:58:40,760
 因为在cons car cdr中并没有什么计算，它们不过是存东西取东西而已
 It's because no work is done in CAR, CDR, and cons, it's just shuffling data, it's just routing, if you will.
 
-883
+933
 00:58:40,760 --> 00:58:45,280
 然而像 + 这样的过程必须要了解参数是什么
 However, the things that do have to look at data are things like plus.
 
-884
+934
 00:58:45,280 --> 00:58:52,460
 因为 + 需要和实际组成数字的比特打交道，如果遇到一个lambda就搞笑了
 Because they have a look at the bits that the numbers are made out of, unless they're lambda calculus numbers which are funny.
 
-885
+935
 00:58:52,460 --> 00:58:55,880
 它要从数字的比特层面来实际计算
 They have to look at the bits to be able to crunch them together to do the add.
 
-886
+936
 00:58:59,210 --> 00:59:13,300
 可能在一种最懒惰的解释器实现中，数据构造器，数据选择器，包括像有副作用的一些对象都是不需要force求值的
 So, in fact, data constructors, data selectors, and, in fact, things that side-effect data objects don't need to do any forcing in the laziest possible interpreters.
 
-887
+937
 00:59:16,460 --> 00:59:18,700
 话说回来判断数据结构的谓词还是需要force的
 On the other hand predicates on data structures have to.
 
-888
+938
 00:59:21,710 --> 00:59:23,560
 这是一个序对吗？
 Is this a pair?
 
-889
+939
 00:59:23,560 --> 00:59:24,640
 或者是一个符号？
 Or is it a symbol?
 
-890
+940
 00:59:24,640 --> 00:59:25,690
 最好搞清楚是什么
 Well, you better find out.
 
-891
+941
 00:59:25,690 --> 00:59:26,940
 这点还是挺重要的
 You got to look at it then.
 
-892
+942
 00:59:30,300 --> 00:59:31,550
 还有问题吗？
 Any other questions?
 
-893
+943
 00:59:40,050 --> 00:59:41,610
 没了，下面是休息时间
 Oh, well, I suppose it's time for a break.
 
-894
+944
 00:59:41,610 --> 00:59:42,106
 下课
 Thank you.
 
-895
+945
 00:59:42,106 --> 01:00:02,950
 [MUSIC PLAYING]
 [MUSIC PLAYING]
