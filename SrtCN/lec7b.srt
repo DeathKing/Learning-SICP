@@ -3496,398 +3496,398 @@ otherwise, take the alternative.
 
 702
 00:44:51,290 --> 00:44:52,768
-在这种情况下，假设我继续做下面的
-Now, what I'd like this to mean, is supposing I do something like this.
+我定义这个过程是为了
+Now, what I'd like this to mean,
 
 703
 00:44:53,328 --> 00:44:55,408
-在这种情况下，假设我继续做下面的
-Now, what I'd like this to mean, is supposing I do something like this.
+请考虑下面这种情况
+ is supposing I do something like this.
 
 704
 00:44:56,920 --> 00:45:04,128
-(unless (= 1 0) 2 (/ 1 0))
-I'd like this unless say if equals one, 0, then the answer is two, otherwise, the quotient of one and 0.
+(UNLESS (= 1 0)
+I'd like this unless say if equals one, 0,
 
 705
 00:45:05,088 --> 00:45:06,640
-(unless (= 1 0) 2 (/ 1 0))
-I'd like this unless say if equals one, 0, then the answer is two, otherwise, the quotient of one and 0.
+那么结果就是2
+then the answer is two,
 
 706
 00:45:07,904 --> 00:45:11,350
-(unless (= 1 0) 2 (/ 1 0))
-I'd like this unless say if equals one, 0, then the answer is two, otherwise, the quotient of one and 0.
+否则 结果就是(/ 1 0)
+otherwise, the quotient of one and 0.
 
 707
-00:45:15,920 --> 00:45:17,248
-接下来要做的是进行代换，下面的1 2 3参数分别对应上面的p c a
-What I'd like that to mean is the result of substituting equal one, 0, and two, and the quotient of one, 0 for p, c, and a.
+00:45:15,920 --> 00:45:18,912
+这段代码相当于进行这样的代换：
+What I'd like that to mean is the result of substituting
 
 708
-00:45:17,264 --> 00:45:21,280
-接下来要做的是进行代换，下面的1 2 3参数分别对应上面的p c a
-What I'd like that to mean is the result of substituting equal one, 0, and two, and the quotient of one, 0 for p, c, and a.
+00:45:20,000 --> 00:45:23,264
+用(= 1 0)、2和(/ 1 0)
+equal one, 0, and the quotient of one, 0
 
 709
-00:45:21,456 --> 00:45:24,768
-接下来要做的是进行代换，下面的1 2 3参数分别对应上面的p c a
-What I'd like that to mean is the result of substituting equal one, 0, and two, and the quotient of one, 0 for p, c, and a.
+00:45:23,664 --> 00:45:24,760
+分别代换上面的P、C以及A
+for p, c, and a.
 
 710
 00:45:25,580 --> 00:45:27,584
-代换过后就像是，(cond ((not (= 1 0)) 2) (else (/ 1 0)))
-I'd like that to mean, and this is funny, I'd like it to transform into or mean cond not equal one, 0, then the result is two, otherwise I want it to be the quotient one and 0.
+这样很有趣
+I'd like that to mean, and this is funny,
 
 711
 00:45:28,112 --> 00:45:30,336
-代换过后就像是，(cond ((not (= 1 0)) 2) (else (/ 1 0)))
-I'd like that to mean, and this is funny, I'd like it to transform into or mean cond not equal one, 0, then the result is two, otherwise I want it to be the quotient one and 0.
+代换后就变成了
+I'd like it to transform into or mean
 
 712
 00:45:30,752 --> 00:45:38,448
-代换过后就像是，(cond ((not (= 1 0)) 2) (else (/ 1 0)))
-I'd like that to mean, and this is funny, I'd like it to transform into or mean cond not equal one, 0, then the result is two, otherwise I want it to be the quotient one and 0.
+(COND ((NOT (= 1 0))
+cond not equal one, 0,
 
 713
 00:45:40,624 --> 00:45:42,544
-代换过后就像是，(cond ((not (= 1 0)) 2) (else (/ 1 0)))
-I'd like that to mean, and this is funny, I'd like it to transform into or mean cond not equal one, 0, then the result is two, otherwise I want it to be the quotient one and 0.
+结果就是2
+then the result is two,
 
 714
-00:45:44,288 --> 00:45:51,168
-代换过后就像是，(cond ((not (= 1 0)) 2) (else (/ 1 0)))
-I'd like that to mean, and this is funny, I'd like it to transform into or mean cond not equal one, 0, then the result is two, otherwise I want it to be the quotient one and 0.
+00:45:44,280 --> 00:45:45,104
+否则就是
+otherwise
 
 715
-00:45:54,480 --> 00:45:56,480
-如果你直接把cond这一部分输入Lisp，会得到结果2
-Now, you know that if I were to type this into Lisp, I'd get a two.
+00:45:48,224 --> 00:45:51,160
+(/ 1 0)
+I want it to be the quotient one and 0.
 
 716
-00:45:57,744 --> 00:45:58,592
-如果你直接把cond这一部分输入Lisp，会得到结果2
-Now, you know that if I were to type this into Lisp, I'd get a two.
+00:45:54,480 --> 00:45:56,480
+你们也知道 如果向Lisp中输入这段代码
+Now, you know that if I were to type this into Lisp,
 
 717
-00:45:59,970 --> 00:46:01,328
-没问题
-There's no problem with that.
+00:45:57,744 --> 00:45:58,592
+结果会是2
+I'd get a two.
 
 718
-00:46:02,910 --> 00:46:04,640
-然而，如果我把unless这一部分输入Lisp，参数会在过程执行之前先求值，这样(/ 1 0)这里就会报错
-However, if I were to type this into Lisp, because all the arguments are evaluated before I start, then I'm going to get an error out of this.
+00:45:59,970 --> 00:46:01,328
+这没问题
+There's no problem with that.
 
 719
-00:46:05,280 --> 00:46:07,792
-然而，如果我把unless这一部分输入Lisp，参数会在过程执行之前先求值，这样(/ 1 0)这里就会报错
-However, if I were to type this into Lisp, because all the arguments are evaluated before I start, then I'm going to get an error out of this.
+00:46:02,910 --> 00:46:04,640
+但如果我输入的是这段代码
+However, if I were to type this into Lisp,
 
 720
-00:46:09,120 --> 00:46:10,736
-然而，如果我把unless这一部分输入Lisp，参数会在过程执行之前先求值，这样(/ 1 0)这里就会报错
-However, if I were to type this into Lisp, because all the arguments are evaluated before I start, then I'm going to get an error out of this.
+00:46:05,280 --> 00:46:07,792
+由于参数会在过程调用前求值
+because all the arguments are evaluated before I start,
 
 721
-00:46:13,380 --> 00:46:15,616
-如果代换为cond，我可以得到正确的结果
-So that if the substitutions work at all, of course, I would get the right answer.
+00:46:09,120 --> 00:46:10,736
+那么这段代码就会报错
+then I'm going to get an error out of this.
 
 722
-00:46:16,032 --> 00:46:16,880
-如果代换为cond，我可以得到正确的结果
-So that if the substitutions work at all, of course, I would get the right answer.
+00:46:13,380 --> 00:46:15,616
+当然 如果成功进行代换的话
+So that if the substitutions work at all, of course,
 
 723
-00:46:16,880 --> 00:46:20,160
-但是这里这种情况，代换并不能进行
-But here's a case where the substitutions don't work.
+00:46:16,032 --> 00:46:16,880
+我可以得到正确的结果
+I would get the right answer.
 
 724
-00:46:22,176 --> 00:46:23,860
-我得到了错误的结果
-I don't get the wrong answer.
+00:46:16,880 --> 00:46:20,160
+但是这里这种情况 代换并不能进行
+But here's a case where the substitutions don't work.
 
 725
-00:46:23,860 --> 00:46:24,670
-没结果
-I get no answer.
+00:46:22,176 --> 00:46:23,860
+我连错误的结果都无法得到
+I don't get the wrong answer.
 
 726
-00:46:24,880 --> 00:46:25,488
-还是一个错误
-I get an error.
+00:46:23,860 --> 00:46:24,670
+没有结果
+I get no answer.
 
 727
-00:46:28,420 --> 00:46:31,216
-现在，我要想办法使这样的定义可以成功运行
-Now, however, I'd like to be able to make my definition so that this kind of thing works.
+00:46:24,880 --> 00:46:25,488
+只能得到错误
+I get an error.
 
 728
-00:46:31,616 --> 00:46:32,992
-现在，我要想办法使这样的定义可以成功运行
-Now, however, I'd like to be able to make my definition so that this kind of thing works.
+00:46:28,420 --> 00:46:31,216
+现在 我要想办法
+Now, however, I'd like to be able to make my definition
 
 729
-00:46:34,480 --> 00:46:38,768
-这里我要对 c 和 a 动点手脚
-What I want to do is say something special about c and a.
+00:46:31,616 --> 00:46:32,992
+使这样的定义可以成功运行
+so that this kind of thing works.
 
 730
-00:46:39,930 --> 00:46:43,152
-我想使它们自动延时求值
-I want them to be delayed automatically.
+00:46:34,480 --> 00:46:36,512
+但我想标注出
+What I want to do is say something special
 
 731
-00:46:44,272 --> 00:46:48,080
-不想使它们在执行过程之前就求值
-I don't want them to be evaluated at the time I call.
+00:46:36,704 --> 00:46:38,760
+C和A是特殊的东西
+about c and a.
 
 732
-00:46:48,528 --> 00:46:49,744
-不想使它们在执行过程之前就求值
-I don't want them to be evaluated at the time I call.
+00:46:39,930 --> 00:46:43,152
+我想使它们自动地延时求值
+I want them to be delayed automatically.
 
 733
-00:46:51,520 --> 00:46:52,720
-所以按照惯例，我先构造一种语法描述，之后我们再来具体的实现它
-So I'm going to make a declaration, and then I'm going to see how to implement such a declaration.
+00:46:44,272 --> 00:46:48,080
+我不想它们在我调用过程的时候
+I don't want them to be, I don't want them to be evaluated
 
 734
-00:46:52,752 --> 00:46:55,328
-所以按照惯例，我先构造一种语法描述，之后我们再来具体的实现它
-So I'm going to make a declaration, and then I'm going to see how to implement such a declaration.
+00:46:48,528 --> 00:46:49,744
+就被求值
+at the time I call.
 
 735
-00:46:55,600 --> 00:46:57,632
-你们应该深信，我正在添加一个有趣的kluge[不知怎么译的准确]
-But again, I want you to say to yourself, oh, this is an interesting kluge he's adding in here.
+00:46:51,520 --> 00:46:52,720
+所以我得先制定一种声明
+So I'm going to make a declaration,
 
 736
-00:46:57,792 --> 00:47:00,256
-你们应该深信，我正在添加一个有趣的kluge[不知怎么译的准确]
-But again, I want you to say to yourself, oh, this is an interesting kluge he's adding in here.
+00:46:52,752 --> 00:46:55,328
+然后再考虑如何实现此种声明
+and then I'm going to see how to implement such a declaration.
 
 737
-00:47:00,768 --> 00:47:04,720
-太多的kluge会使得系统混乱复杂
-The piles of kluges make a big complicated mess.
+00:46:55,600 --> 00:46:57,632
+再次强调 希望你们能够提醒自己 #TBD
+But again, I want you to say to yourself,
 
 738
-00:47:05,750 --> 00:47:08,432
-还会搞砸以后要添加的功能
-And is this going to foul up something else that might occur.
+00:46:57,792 --> 00:47:00,256
+我们这里用的是某种奇技淫巧
+oh, this is an interesting kluge he's adding in here.
 
 739
-00:47:08,512 --> 00:47:09,776
-还会搞砸以后要添加的功能
-And is this going to foul up something else that might occur.
+00:47:00,760 --> 00:47:02,160
+必须要知道
+A kluge, you know.
 
 740
-00:47:10,120 --> 00:47:12,704
-新的语法描述，先来看，是否有语法上混淆的问题
-First of all, is it syntactically unambiguous?
+00:47:02,256 --> 00:47:04,720
+滥用奇技淫巧会造成大混乱
+ The piles of kluges make a big complicated mess.
 
 741
-00:47:13,860 --> 00:47:15,584
-当然，这里我要写的是一个清晰的无二义的新语法
-Well, it will be syntactically unambiguous with what we've seen so far.
+00:47:05,750 --> 00:47:09,792
+还会破坏一些已有的东西#TBD
+And is this going to foul up something else that might occur.
 
 742
-00:47:15,664 --> 00:47:16,896
-当然，这里我要写的是一个清晰的无二义的新语法
-Well, it will be syntactically unambiguous with what we've seen so far.
+00:47:10,120 --> 00:47:12,704
+首先 它会造成语法歧义性么？
+First of all, is it syntactically unambiguous?
 
 743
-00:47:17,840 --> 00:47:20,768
-但是接下来要做的却会导致另外的问题
-But what I'm going to do may, in fact, cause trouble.
+00:47:13,860 --> 00:47:15,504
+就我们目前已有的语法来说
+Well, it will be syntactically unambiguous
 
 744
-00:47:21,670 --> 00:47:24,672
-可能以后我们会为了优化系统或者编译器而引入类型声明的机制，我一会儿要定义的新语法可能会与之冲突
-It may be that the thing I had will conflict with type declarations I might want to add in the future for giving some system, some compiler or something, the ability to optimize given the types are known.
+00:47:15,712 --> 00:47:16,910
+它不会造成什么歧义
+with what we've seen so far.
 
 745
-00:47:25,152 --> 00:47:27,104
-可能以后我们会为了优化系统或者编译器而引入类型声明的机制，我一会儿要定义的新语法可能会与之冲突
-It may be that the thing I had will conflict with type declarations I might want to add in the future for giving some system, some compiler or something, the ability to optimize given the types are known.
+00:47:17,840 --> 00:47:20,768
+但接下来要做的却可能招来麻烦
+But what I'm going to do may, in fact, cause trouble.
 
 746
-00:47:28,192 --> 00:47:31,088
-可能以后我们会为了优化系统或者编译器而引入类型声明的机制，我一会儿要定义的新语法可能会与之冲突
-It may be that the thing I had will conflict with type declarations I might want to add in the future for giving some system, some compiler or something, the ability to optimize given the types are known.
+00:47:21,670 --> 00:47:24,672
+我要添加的东西可能会跟
+It may be that the thing I had will conflict with
 
 747
-00:47:31,216 --> 00:47:33,664
-可能以后我们会为了优化系统或者编译器而引入类型声明的机制，我一会儿要定义的新语法可能会与之冲突
-It may be that the thing I had will conflict with type declarations I might want to add in the future for giving some system, some compiler or something, the ability to optimize given the types are known.
+00:47:25,152 --> 00:47:27,104
+我以后添加的类型声明冲突
+type declarations I might want to add in the future
 
 748
-00:47:34,752 --> 00:47:36,912
-或者会与那些声明参数类型这样的机制相冲突
-Or it might conflict with other types of declarations I might want to make about the formal parameters.
+00:47:28,192 --> 00:47:31,088
+类型系统通过提供已知的类型信息
+ for giving some system, some compiler or something,
 
 749
-00:47:36,928 --> 00:47:39,712
-或者会与那些声明参数类型这样的机制相冲突
-Or it might conflict with other types of declarations I might want to make about the formal parameters.
+00:47:31,216 --> 00:47:33,664
+使得语言系统或者编译器可以做出优化
+the ability to optimize given the types are known.
 
 750
-00:47:40,570 --> 00:47:42,560
-所以我这里要添加的机制并不是一个完整的机制
-So I'm not making a general mechanism here where I can add declarations.
+00:47:34,750 --> 00:47:36,976
+当然也会与我想添加的形式参数的
+Or it might conflict with other types of declarations
 
 751
-00:47:43,770 --> 00:47:45,248
-所以我这里要添加的机制并不是一个完整的机制
-So I'm not making a general mechanism here where I can add declarations.
+00:47:37,008 --> 00:47:39,710
+其它类型的声明相冲突
+that I might want to make about the formal parameters.
 
 752
-00:47:45,280 --> 00:47:46,544
-只是能解决目前的问题而已
-And I would like to be able to do that.
+00:47:40,570 --> 00:47:42,560
+所以这里我并不打算做一个一般性的机制
+So I'm not making a general mechanism here
 
 753
-00:47:46,896 --> 00:47:48,816
-具体怎么样完整就不在这里说了
-But I don't want to talk about that right now.
+00:47:43,770 --> 00:47:45,248
+使得我可以添加声明
+where I can add declarations.
 
 754
-00:47:51,010 --> 00:47:53,888
-接下来
-So here I'm going to do, I'm going to build a kluge.
+00:47:45,280 --> 00:47:46,544
+虽然我很想那么做
+And I would like to be able to do that.
 
 755
-00:47:57,568 --> 00:48:08,384
-我再来定义unless，一个谓词，真真假语句都按名称来传递，即(name c) (name a)
-So we're going to define unless of a predicate-- and I'm going to call these by name-- the consequent, and name the alternative.
+00:47:46,896 --> 00:47:48,816
+但现在并不打算这么做
+But I don't want to talk about that right now.
 
 756
-00:48:08,816 --> 00:48:10,112
-我再来定义unless，一个谓词，真真假语句都按名称来传递，即(name c) (name a)
-So we're going to define unless of a predicate-- and I'm going to call these by name-- the consequent, and name the alternative.
+00:47:51,010 --> 00:47:53,888
+接下来 我要使用某种奇技淫巧
+So here I'm going to do, I'm going to build a kluge.
 
 757
-00:48:12,784 --> 00:48:15,280
-我再来定义unless，一个谓词，真真假语句都按名称来传递，即(name c) (name a)
-So we're going to define unless of a predicate-- and I'm going to call these by name-- the consequent, and name the alternative.
+00:47:57,568 --> 00:48:08,384
+(DEFINE (UNLESS P
+So we're going to define unless of a predicate--
 
 758
-00:48:19,850 --> 00:48:25,280
-哦没估计好，卡在黑板边了
-Huh, huh-- I got caught in the corner.
+00:48:08,810 --> 00:48:10,272
+后面的参数都是按名调用
+and I'm going to call these by name--
 
 759
-00:48:31,760 --> 00:48:33,552
-(cond ((not p) c) (else a))
-If not p then the result is c, else-- that's what I'd like.
+00:48:12,784 --> 00:48:15,280
+分别记作(NAME C)和(NAME A)
+the consequent, and name the alternative.
 
 760
-00:48:33,960 --> 00:48:35,600
-(cond ((not p) c) (else a))
-If not p then the result is c, else-- that's what I'd like.
+00:48:19,850 --> 00:48:25,280
+哈 哈 卡在黑板边了
+Huh, huh-- I got caught in the corner.
 
 761
-00:48:36,800 --> 00:48:41,168
-(cond ((not p) c) (else a))
-If not p then the result is c, else-- that's what I'd like.
+00:48:31,760 --> 00:48:35,616
+(COND ((NOT P) C)
+If not p then the result is c,
 
 762
-00:48:44,670 --> 00:48:48,768
-我可以显式的来声明，哪些参数按名称传递延时求值
-Where I can explicitly declare certain of the parameters to be delayed, to be computed later.
+00:48:36,800 --> 00:48:41,168
+(ELSE A)))
+else-- that's what I'd like.
 
 763
-00:48:49,360 --> 00:48:51,650
-我可以显式的来声明，哪些参数按名称传递延时求值
-Where I can explicitly declare certain of the parameters to be delayed, to be computed later.
+00:48:44,670 --> 00:48:46,880
+我可以显式地声明
+Where I can explicitly declare
 
 764
-00:48:55,600 --> 00:48:58,480
-这样的话，要对求值器做出的修改可就比之前的feature要复杂多了
-Now, this is actually a very complicated modification to an interpreter rather than a simple one.
+00:48:47,552 --> 00:48:51,650
+哪些参数按名称传递或延时求值
+certain of the parameters to be delayed, to be computed later.
 
 765
-00:48:58,704 --> 00:48:59,776
-这样的话，要对求值器做出的修改可就比之前的feature要复杂多了
-Now, this is actually a very complicated modification to an interpreter rather than a simple one.
+00:48:55,600 --> 00:48:58,480
+对解释器的这个修改并不简单
+Now, this is actually a very complicated modification to an interpreter
 
 766
-00:49:00,450 --> 00:49:03,104
-之前的动态绑定，或者不定参数，相比比较简单
-The ones you saw before, dynamic binding or adding indefinite argument procedures, is relatively simple.
+00:48:58,704 --> 00:48:59,776
+反而相当复杂
+rather than a simple one.
 
 767
-00:49:03,408 --> 00:49:06,896
-之前的动态绑定，或者不定参数，相比比较简单
-The ones you saw before, dynamic binding or adding indefinite argument procedures, is relatively simple.
+00:49:00,450 --> 00:49:03,104
+我们之前介绍的动态绑定
+The ones you saw before, dynamic binding
 
 768
-00:49:07,504 --> 00:49:08,528
-之前的动态绑定，或者不定参数，相比比较简单
-The ones you saw before, dynamic binding or adding indefinite argument procedures, is relatively simple.
+00:49:03,408 --> 00:49:06,896
+或者让过程支持不定数目的参数
+or adding indefinite argument procedures,
 
 769
-00:49:09,280 --> 00:49:11,280
-但是这里，是一个基本原则的改变
-But this one changes a basic strategy.
+00:49:07,504 --> 00:49:08,528
+都相对简单
+is relatively simple.
 
 770
-00:49:12,320 --> 00:49:15,328
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+00:49:09,280 --> 00:49:11,280
+这次的修改涉及基础策略
+But this one changes a basic strategy.
 
 771
-00:49:16,048 --> 00:49:17,568
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+00:49:12,320 --> 00:49:13,392
+这里的问题是
+The problem here
 
 772
-00:49:17,968 --> 00:49:20,544
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+00:49:13,968 --> 00:49:17,630
+我们的解释器 就如代码所写的那样
+is that our interpreter, as written
 
 773
-00:49:21,040 --> 00:49:23,408
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+00:49:17,960 --> 00:49:23,408
+在求值组合式时
+evaluates a combination by evaluating the procedure,
 
 774
 00:49:24,240 --> 00:49:25,920
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+先通过求值运算符取得过程
+the operator producing the procedure,
 
 775
 00:49:26,208 --> 00:49:30,352
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+然后再求值运算对象得到参数
+and evaluating the operands producing the arguments,
 
 776
 00:49:30,768 --> 00:49:35,264
-我们之前的解释器，解释组合式时，先求值操作符，再求值操作数，最后再用操作符应用于操作数得到结果
-The problem here is that our interpreter, as written, evaluates a combination by evaluating the procedure, the operator producing the procedure, and evaluating the operands producing the arguments, and then doing apply of the procedure to the arguments.
+再把过程应用到参数上
+and then doing apply of the procedure to the arguments.
 
 777
 00:49:36,384 --> 00:49:37,072
-然而这里，在我检测过整个过程的声明之前，我并不想立即求值操作数
-However, here, I don't want to evaluate the operands to produce the arguments until after I examined the procedure to see what the procedure's declarations look like.
+然而这里
+However, here,
 
 778
 00:49:37,360 --> 00:49:41,488
-然而这里，在我检测过整个过程的声明之前，我并不想立即求值操作数
-However, here, I don't want to evaluate the operands to produce the arguments until after I examined the procedure to see what the procedure's declarations look like.
+知道我检查了整个过程
+I don't want to evaluate the operands to produce the arguments
 
 779
 00:49:41,740 --> 00:49:43,660
-然而这里，在我检测过整个过程的声明之前，我并不想立即求值操作数
-However, here, I don't want to evaluate the operands to produce the arguments until after I examined the procedure to see what the procedure's declarations look like.
+确定了程序的声明
+until after I examined the procedure
 
 780
 00:49:44,624 --> 00:49:46,864
-然而这里，在我检测过整个过程的声明之前，我并不想立即求值操作数
-However, here, I don't want to evaluate the operands to produce the arguments until after I examined the procedure to see what the procedure's declarations look like.
+才会去求值程序的参数
+to see what the procedure's declarations look like.
 
 781
 00:49:49,590 --> 00:49:50,592
@@ -3896,98 +3896,98 @@ So let's look at that.
 
 782
 00:49:52,680 --> 00:49:56,544
-对求值器的修改
+这是修改后的求值器
 Here we have a changed evaluator.
 
 783
-00:49:57,480 --> 00:50:02,656
-这是从最开始的那个求值器修改得来的，不是动态绑定的那个  这里的修改和之前的有些相似
-I'm starting with the simple lexical evaluator, not dynamic, but we're going to have to do something sort of similar in some ways.
+00:49:57,480 --> 00:50:01,152
+我是基于那个最简单的词法作用域求值器
+I'm starting with the simple lexical evaluator,
 
 784
-00:50:04,144 --> 00:50:08,208
-这是从最开始的那个求值器修改得来的，不是动态绑定的那个  这里的修改和之前的有些相似
-I'm starting with the simple lexical evaluator, not dynamic, but we're going to have to do something sort of similar in some ways.
+00:50:01,728 --> 00:50:02,650
+不是动态绑定的那个
+not dynamic
 
 785
-00:50:09,750 --> 00:50:11,456
-如果我延时一个过程 -- 哦说错了 -- 延时一个过程的参数，就必须把当前的环境和参数关联在一起
-Because of the fact that, if I delay a procedure-- I'm sorry-- delay an argument to a procedure, I'm going to have to attach and environment to it.
+00:50:04,144 --> 00:50:08,208
+但是却要做一些类似于动态绑定的修改
+ but we're going to have to do something sort of similar in some ways.
 
 786
-00:50:11,904 --> 00:50:13,344
-如果我延时一个过程 -- 哦说错了 -- 延时一个过程的参数，就必须把当前的环境和参数关联在一起
-Because of the fact that, if I delay a procedure-- I'm sorry-- delay an argument to a procedure, I'm going to have to attach and environment to it.
+00:50:09,750 --> 00:50:11,456
+这是因为
+Because of the fact that,
 
 787
-00:50:13,664 --> 00:50:15,152
-如果我延时一个过程 -- 哦说错了 -- 延时一个过程的参数，就必须把当前的环境和参数关联在一起
-Because of the fact that, if I delay a procedure-- I'm sorry-- delay an argument to a procedure, I'm going to have to attach and environment to it.
+00:50:11,904 --> 00:50:13,344
+如果我延时一个过程 --
+if I delay a procedure--
 
 788
-00:50:15,408 --> 00:50:17,520
-如果我延时一个过程 -- 哦说错了 -- 延时一个过程的参数，就必须把当前的环境和参数关联在一起
-Because of the fact that, if I delay a procedure-- I'm sorry-- delay an argument to a procedure, I'm going to have to attach and environment to it.
+00:50:13,664 --> 00:50:15,152
+哦说错了 -- 延时一个过程的参数
+I'm sorry-- delay an argument to a procedure,
 
 789
-00:50:19,360 --> 00:50:21,552
-还记得哈罗德教授是怎么实现delay的吧
-Remember how Hal implemented delay.
+00:50:15,408 --> 00:50:17,520
+就必须把当前的环境和参数关联在一起
+I'm going to have to attach and environment to it.
 
 790
-00:50:23,380 --> 00:50:25,440
-哈罗德教授把delay实现为一个没有参数的过程，其中包含了要延时的操作
-Hal implemented delay as being a procedure of no arguments which does some expression.
+00:50:19,360 --> 00:50:21,552
+还记得Hal教授如何实现DELAY的吧？
+Remember how Hal implemented delay.
 
 791
-00:50:25,504 --> 00:50:27,472
-哈罗德教授把delay实现为一个没有参数的过程，其中包含了要延时的操作
-Hal implemented delay as being a procedure of no arguments which does some expression.
+00:50:23,380 --> 00:50:25,440
+Hal教授把DELAY实现为
+Hal implemented delay as being
 
 792
-00:50:28,560 --> 00:50:30,528
-哈罗德教授把delay实现为一个没有参数的过程，其中包含了要延时的操作
-Hal implemented delay as being a procedure of no arguments which does some expression.
+00:50:25,504 --> 00:50:27,472
+一个无参过程
+a procedure of no arguments
 
 793
-00:50:31,180 --> 00:50:32,832
-就像这样
-That's what delay of the expression is.
+00:50:28,560 --> 00:50:30,528
+用来执行某些表达式
+which does some expression.
 
 794
-00:50:35,840 --> 00:50:36,960
-(delay e)
---of that expression.
+00:50:31,180 --> 00:50:36,944
+就是这样让表达式延迟求值的
+That's what delay of the expression is. --of that expression.
 
 795
 00:50:39,296 --> 00:50:40,992
-返回下面的(lambda () e)
+(DELAY E)实际上是这个
 This turned into something like this.
 
 796
 00:50:44,520 --> 00:50:46,928
-然而，我要执行这个lambda，就必须要在一定的环境下
-Now, however, if I evaluate a lambda expression, I have to capture the environment.
+然而 如果我求值这个LAMBDA表达式
+Now, however, if I evaluate a lambda expression,
 
 797
 00:50:47,424 --> 00:50:49,200
-然而，我要执行这个lambda，就必须要在一定的环境下
-Now, however, if I evaluate a lambda expression, I have to capture the environment.
+我就必须得捕获当前环境
+I have to capture the environment.
 
 798
 00:50:51,410 --> 00:50:53,456
-原因是因为其中有一些自由变量只有在正确的上下文中才能正确解读
-The reason why is because there are variables in there who's meaning I wish to derive from the context where this was written.
+这是因为
+The reason why is because there are
 
 799
 00:50:54,608 --> 00:50:56,320
-原因是因为其中有一些自由变量只有在正确的上下文中才能正确解读
-The reason why is because there are variables in there who's meaning I wish to derive from the context where this was written.
+我想让这其中的变量的值
+there are variables in there
 
 800
 00:50:57,024 --> 00:51:00,832
-原因是因为其中有一些自由变量只有在正确的上下文中才能正确解读
-The reason why is because there are variables in there who's meaning I wish to derive from the context where this was written.
+取决于它们被定义时的上下文
+who's meaning I wish to derive from the context where this was written.
 
 801
 00:51:04,010 --> 00:51:05,760
