@@ -1,2719 +1,2804 @@
 ﻿1
-00:00:00,000 --> 00:00:17,814
-[MUSIC PLAYING BY J.S. BACH]
+00:00:00,000 --> 00:00:02,672
+Learning-SICP学习小组
+倾情制作
 
 2
 00:00:18,272 --> 00:00:21,376
+教授：上节课中我们学习了如何构造语言
 PROFESSOR: The last time we began having a look at how languages are constructed.
 
 3
 00:00:22,416 --> 00:00:25,888
-Remember the main point that an evaluator for, LISP, say, has two main elements.
+重点就是 像Lisp这样的求值器
+Remember the main point that an evaluator for, LISP, say,
 
 4
 00:00:26,080 --> 00:00:27,580
-Remember the main point that an evaluator for, LISP, say, has two main elements.
+有两个主要部分
+has two main elements.
 
 5
 00:00:27,580 --> 00:00:28,400
-There is EVAL, and EVAL's job is to take in an expression and an environment and turn that into a procedure and some arguments and pass that off to APPLY.
+一个是EVAL
+There is EVAL,
 
 6
 00:00:31,040 --> 00:00:37,424
-There is EVAL, and EVAL's job is to take in an expression and an environment and turn that into a procedure and some arguments and pass that off to APPLY.
+EVAL接受一个表达式EXP和环境ENV
+and EVAL's job is to take in an expression and an environment
 
 7
 00:00:38,912 --> 00:00:44,448
-There is EVAL, and EVAL's job is to take in an expression and an environment and turn that into a procedure and some arguments and pass that off to APPLY.
+然后返回一个过程和相关的实际参数
+and turn that into a procedure and some arguments
 
 8
 00:00:45,424 --> 00:00:47,056
-There is EVAL, and EVAL's job is to take in an expression and an environment and turn that into a procedure and some arguments and pass that off to APPLY.
+并把它们传递给APPLY
+and pass that off to APPLY.
 
 9
 00:00:49,410 --> 00:00:51,296
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+APPLY接收这些过程和实际参数
+And APPLY takes the procedure in the arguments,
 
 10
-00:00:51,696 --> 00:00:53,040
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:00:51,696 --> 00:00:55,120
+通常来说 APPLY会返回另一个表达式
+turns that back into, in a general case, another expression
 
 11
-00:00:53,312 --> 00:00:55,120
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:00:55,392 --> 00:00:57,712
+返回另在另一个环境中求值的表达式
+to be evaluated in another environment
 
 12
-00:00:55,392 --> 00:00:57,712
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:00:57,744 --> 00:01:00,000
+表达式就像这样在EVAL-APPLY之间传递
+and passes that off to EVAL, which passes it to APPLY,
 
 13
-00:00:57,744 --> 00:01:00,000
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:01:00,272 --> 00:01:01,440
+这就是整个元循环
+and there's this whole big circle
 
 14
-00:01:00,272 --> 00:01:01,440
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:01:01,470 --> 00:01:02,944
+表达式在这里面循环往复
+where things go around and around and around
 
 15
-00:01:01,472 --> 00:01:03,888
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:01:03,024 --> 00:01:06,560
+直到最后求值为基本数据或基本过程
+until you get either to some very primitive data or to a primitive procedure.
 
 16
-00:01:04,048 --> 00:01:06,640
-And APPLY takes the procedure in the arguments, turns that back into, in a general case, another expression to be evaluated in another environment and passes that off to EVAL, which passes it to APPLY, and there's this whole big circle where things go around and around and around until you get either to some very primitive data or to a primitive procedure.
+00:01:07,740 --> 00:01:09,248
+这个循环要做的就是
+See, what this cycle has to do with
 
 17
-00:01:07,740 --> 00:01:09,248
-See, what this cycle has to do with is unwinding the means of combination and the means of abstraction in the language.
+00:01:09,440 --> 00:01:12,576
+把语言中的组合手段
+is unwinding the means of combination
 
 18
-00:01:09,440 --> 00:01:12,576
-See, what this cycle has to do with is unwinding the means of combination and the means of abstraction in the language.
+00:01:12,590 --> 00:01:14,368
+和抽象手段展开
+and the means of abstraction in the language.
 
 19
-00:01:12,590 --> 00:01:14,368
-See, what this cycle has to do with is unwinding the means of combination and the means of abstraction in the language.
+00:01:15,020 --> 00:01:17,728
+比如说在Lisp中 你有一个过程
+So for instance, you have a procedure in LISP--
 
 20
-00:01:15,020 --> 00:01:16,576
-So for instance, you have a procedure in LISP-- a procedure is a general way of saying, I want to be able to evaluate this expression for any value of the arguments, and that's sort of what's going on here.
+00:01:17,744 --> 00:01:20,528
+定义过程是为了
+a procedure is a general way of saying,
 
 21
-00:01:17,184 --> 00:01:19,360
-So for instance, you have a procedure in LISP-- a procedure is a general way of saying, I want to be able to evaluate this expression for any value of the arguments, and that's sort of what's going on here.
+00:01:20,540 --> 00:01:22,576
+让表达式的计算过程
+I want to be able to evaluate this expression
 
 22
-00:01:20,128 --> 00:01:22,608
-So for instance, you have a procedure in LISP-- a procedure is a general way of saying, I want to be able to evaluate this expression for any value of the arguments, and that's sort of what's going on here.
+00:01:22,672 --> 00:01:24,410
+适用于任意的参数
+for any value of the arguments,
 
 23
-00:01:22,656 --> 00:01:24,416
-So for instance, you have a procedure in LISP-- a procedure is a general way of saying, I want to be able to evaluate this expression for any value of the arguments, and that's sort of what's going on here.
+00:01:25,760 --> 00:01:27,184
+这就是这里面发生的事情
+and that's sort of what's going on here.
 
 24
-00:01:25,760 --> 00:01:27,184
-So for instance, you have a procedure in LISP-- a procedure is a general way of saying, I want to be able to evaluate this expression for any value of the arguments, and that's sort of what's going on here.
-
-25
 00:01:27,670 --> 00:01:28,510
+这就是APPLY做的事
 That's what APPLY does.
 
-26
+25
 00:01:28,510 --> 00:01:30,688
-It says the general thing coming in with the arguments reduces to the expression that's the body, and then if that's a compound expression or another procedure application, the thing will go around and around the circle.
+当一个带参数的一般性表达式进入以后
+It says the general thing coming in with the arguments
+
+26
+00:01:30,720 --> 00:01:32,704
+它将其归约为过程体的表达式
+reduces to the expression that's the body,
 
 27
-00:01:30,720 --> 00:01:32,704
-It says the general thing coming in with the arguments reduces to the expression that's the body, and then if that's a compound expression or another procedure application, the thing will go around and around the circle.
+00:01:33,056 --> 00:01:34,720
+如果归约得到的是复合表达式
+and then if that's a compound expression
 
 28
-00:01:33,056 --> 00:01:34,720
-It says the general thing coming in with the arguments reduces to the expression that's the body, and then if that's a compound expression or another procedure application, the thing will go around and around the circle.
+00:01:34,832 --> 00:01:36,464
+或者是另外的过程应用
+or another procedure application,
 
 29
-00:01:34,832 --> 00:01:36,464
-It says the general thing coming in with the arguments reduces to the expression that's the body, and then if that's a compound expression or another procedure application, the thing will go around and around the circle.
+00:01:36,784 --> 00:01:38,448
+那么这个循环就会不断地进行
+the thing will go around and around the circle.
 
 30
-00:01:36,784 --> 00:01:38,448
-It says the general thing coming in with the arguments reduces to the expression that's the body, and then if that's a compound expression or another procedure application, the thing will go around and around the circle.
+00:01:40,336 --> 00:01:44,080
+这基本上就是 -- 大部分解释器的基本结构了
+Anyway, that's sort of the basic structure of gee, pretty much any interpreter.
 
 31
-00:01:40,440 --> 00:01:42,320
-Anyway, that's sort of the basic structure of gee, pretty much any interpreter.
+00:01:45,200 --> 00:01:46,256
+另外一点就是
+The other thing that you saw
 
 32
-00:01:42,480 --> 00:01:44,080
-Anyway, that's sort of the basic structure of gee, pretty much any interpreter.
+00:01:46,288 --> 00:01:47,660
+一旦你有了一个解释器
+once you have the interpreter in your hands,
 
 33
-00:01:45,200 --> 00:01:47,664
-The other thing that you saw is once you have the interpreter in your hands, you have all this power to start playing with the language.
+00:01:47,696 --> 00:01:49,870
+你就有了操作这门语言的所有能力
+you have all this power to start playing with the language.
 
 34
-00:01:47,696 --> 00:01:49,870
-The other thing that you saw is once you have the interpreter in your hands, you have all this power to start playing with the language.
+00:01:49,870 --> 00:01:51,520
+因此你可以让它成为动态作用域
+So you can make it dynamically scoped,
 
 35
-00:01:49,870 --> 00:01:51,520
-So you can make it dynamically scoped, or you can put in normal order evaluation, or you can add new forms to the language, whatever you like.
+00:01:51,840 --> 00:01:54,560
+你也可以引入正则序求值
+or you can put in normal order evaluation,
 
 36
-00:01:51,840 --> 00:01:56,512
-So you can make it dynamically scoped, or you can put in normal order evaluation, or you can add new forms to the language, whatever you like.
+00:01:54,590 --> 00:01:56,480
+你也可以为语言添加新的形式
+or you can add new forms to the language,
 
 37
-00:01:56,800 --> 00:01:57,504
-So you can make it dynamically scoped, or you can put in normal order evaluation, or you can add new forms to the language, whatever you like.
+00:01:56,860 --> 00:01:57,504
+想怎么样都行
+whatever you like.
 
 38
 00:01:57,584 --> 00:01:58,624
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+或者更一般地说
+Or more generally,
 
 39
 00:01:58,768 --> 00:02:01,328
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+这种元语言抽象的概念
+there's this notion of metalinguistic abstraction,
 
 40
-00:02:02,592 --> 00:02:03,184
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+00:02:02,640 --> 00:02:06,016
+它告诉我们 作为一名软件工程师
+which says that part of your perspective
 
 41
-00:02:03,424 --> 00:02:06,032
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+00:02:07,616 --> 00:02:10,528
+从广义的“工程师”的角度来看
+as an engineer, as a software engineer, but as an engineer in general
 
 42
-00:02:07,616 --> 00:02:10,528
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+00:02:11,392 --> 00:02:13,888
+有时你可以通过发明新的语言
+is that you can gain control of complexity
 
 43
-00:02:11,392 --> 00:02:13,888
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+00:02:14,960 --> 00:02:17,168
+来获得控制复杂度的能力
+by inventing new languages sometimes.
 
 44
-00:02:14,960 --> 00:02:17,168
-Or more generally, there's this notion of metalinguistic abstraction, which says that part of your perspective as an engineer, as a software engineer, but as an engineer in general is that you can gain control of complexity by inventing new languages sometimes.
+00:02:18,010 --> 00:02:20,816
+一种思考计算机程序设计的方法就是
+See, one way to think about computer programming
 
 45
-00:02:18,010 --> 00:02:20,816
-See, one way to think about computer programming is that it only incidentally has to do with getting a computer to do something.
+00:02:21,552 --> 00:02:26,270
+它只是偶然地让计算机执行某事儿
+is that it only incidentally has to do with getting a computer to do something.
 
 46
-00:02:21,552 --> 00:02:23,984
-See, one way to think about computer programming is that it only incidentally has to do with getting a computer to do something.
+00:02:26,440 --> 00:02:28,976
+计算机程序的主要工作却是
+Primarily what a computer program has to do with,
 
 47
-00:02:24,144 --> 00:02:26,272
-See, one way to think about computer programming is that it only incidentally has to do with getting a computer to do something.
+00:02:29,008 --> 00:02:32,520
+用来表达和交流思想
+it's a way of expressing ideas with communicating ideas.
 
 48
-00:02:26,440 --> 00:02:29,088
-Primarily what a computer program has to do with, it's a way of expressing ideas with communicating ideas.
+00:02:33,168 --> 00:02:34,048
+有时
+And sometimes
 
 49
-00:02:29,120 --> 00:02:32,528
-Primarily what a computer program has to do with, it's a way of expressing ideas with communicating ideas.
+00:02:34,896 --> 00:02:36,624
+当我们想要表达新的思想时
+when you want to communicate new kinds of ideas,
 
 50
-00:02:33,168 --> 00:02:34,048
-And sometimes when you want to communicate new kinds of ideas, you'd like to invent new modes of expressing that.
+00:02:36,656 --> 00:02:38,736
+我们就想要发明新的模式来表达它们
+you'd like to invent new modes of expressing that.
 
 51
-00:02:34,896 --> 00:02:36,624
-And sometimes when you want to communicate new kinds of ideas, you'd like to invent new modes of expressing that.
-
-52
-00:02:36,656 --> 00:02:38,736
-And sometimes when you want to communicate new kinds of ideas, you'd like to invent new modes of expressing that.
-
-53
 00:02:39,824 --> 00:02:44,992
+那么 今天我们就将按照这个框架来创建新语言
 Well, today we're going to apply this framework to build a new language.
 
+52
+00:02:45,730 --> 00:02:48,000
+一旦我们了解了解释器的基本结构
+See, once we have the basic idea of the interpreter,
+
+53
+00:02:48,032 --> 00:02:50,272
+我们就可以按意愿来构造任意的语言
+you can pretty much go build any language that you like.
+
 54
-00:02:45,730 --> 00:02:48,128
-See, once we have the basic idea of the interpreter, you can pretty much go build any language that you like.
-
-55
-00:02:48,160 --> 00:02:50,224
-See, once we have the basic idea of the interpreter, you can pretty much go build any language that you like.
-
-56
 00:02:50,830 --> 00:02:53,216
+比如说 我们可以构造Pascal（的解释器）
 So for example, we can go off and build Pascal.
 
-57
+55
 00:02:54,370 --> 00:02:55,152
-And gee, we would worry about syntax and parsing and various kinds of compiler optimizations, and there are people who make honest livings doing that, but at the level of abstraction that we're talking, a Pascal interpreter would not look very different at all from what you saw Gerry do last time.
+以及
+And...
+
+56
+00:02:56,170 --> 00:02:58,192
+我们需要操心语法的表示与解析
+gee, we would worry about syntax and parsing
+
+57
+00:02:58,192 --> 00:03:00,510
+还有一大堆的编译器优化
+and various kinds of compiler optimizations,
 
 58
-00:02:56,176 --> 00:03:00,512
-And gee, we would worry about syntax and parsing and various kinds of compiler optimizations, and there are people who make honest livings doing that, but at the level of abstraction that we're talking, a Pascal interpreter would not look very different at all from what you saw Gerry do last time.
+00:03:01,120 --> 00:03:03,296
+还有一些人会这样做
+and there are people who make honest livings doing that,
 
 59
-00:03:01,120 --> 00:03:03,296
-And gee, we would worry about syntax and parsing and various kinds of compiler optimizations, and there are people who make honest livings doing that, but at the level of abstraction that we're talking, a Pascal interpreter would not look very different at all from what you saw Gerry do last time.
+00:03:03,856 --> 00:03:07,600
+但是就在我们所讨论的抽象层次来说
+but at the level of abstraction that we're talking,
 
 60
-00:03:03,856 --> 00:03:07,600
-And gee, we would worry about syntax and parsing and various kinds of compiler optimizations, and there are people who make honest livings doing that, but at the level of abstraction that we're talking, a Pascal interpreter would not look very different at all from what you saw Gerry do last time.
+00:03:08,048 --> 00:03:10,992
+一个Pascal语言的解释器看起来
+a Pascal interpreter would not look very different at all
 
 61
-00:03:08,048 --> 00:03:10,992
-And gee, we would worry about syntax and parsing and various kinds of compiler optimizations, and there are people who make honest livings doing that, but at the level of abstraction that we're talking, a Pascal interpreter would not look very different at all from what you saw Gerry do last time.
+00:03:12,032 --> 00:03:13,760
+跟Gerry教授上节课所讲的大同小异
+from what you saw Gerry do last time.
 
 62
-00:03:12,032 --> 00:03:13,760
-And gee, we would worry about syntax and parsing and various kinds of compiler optimizations, and there are people who make honest livings doing that, but at the level of abstraction that we're talking, a Pascal interpreter would not look very different at all from what you saw Gerry do last time.
+00:03:15,024 --> 00:03:18,960
+但是今天 我们要构建一门与众不同的语言
+Instead of that, we'll spend today building a really different language,
 
 63
-00:03:15,024 --> 00:03:18,960
-Instead of that, we'll spend today building a really different language, a language that encourages you to think about programming not in terms of procedures, but in a really different way.
+00:03:20,510 --> 00:03:22,816
+这门语言
+a language that encourages you
 
 64
-00:03:20,512 --> 00:03:24,320
-Instead of that, we'll spend today building a really different language, a language that encourages you to think about programming not in terms of procedures, but in a really different way.
+00:03:23,056 --> 00:03:26,040
+不推荐你用过程式的思维来思考程序设计
+to think about programming not in terms of procedures,
 
 65
-00:03:24,688 --> 00:03:26,048
-Instead of that, we'll spend today building a really different language, a language that encourages you to think about programming not in terms of procedures, but in a really different way.
+00:03:26,240 --> 00:03:27,648
+而是用一种非常不同的方式
+but in a really different way.
 
 66
-00:03:26,240 --> 00:03:27,648
-Instead of that, we'll spend today building a really different language, a language that encourages you to think about programming not in terms of procedures, but in a really different way.
+00:03:29,090 --> 00:03:31,024
+今天的课程呢
+And the lecture today is
 
 67
-00:03:29,090 --> 00:03:30,800
-And the lecture today is going to be at two levels simultaneously.
+00:03:31,744 --> 00:03:34,640
+将会在两个层次中同时进行
+going to be at two levels simultaneously.
 
 68
-00:03:31,744 --> 00:03:34,640
-And the lecture today is going to be at two levels simultaneously.
+00:03:34,810 --> 00:03:35,520
+一方面
+On the one hand,
 
 69
-00:03:34,810 --> 00:03:37,712
-On the one hand, I'm going to show you what this language looks like, and on the other hand, I'll show you how it's implemented.
+00:03:35,904 --> 00:03:37,710
+我会向大家介绍这门语言是如何使用的
+I'm going to show you what this language looks like,
 
 70
-00:03:38,960 --> 00:03:41,088
-On the one hand, I'm going to show you what this language looks like, and on the other hand, I'll show you how it's implemented.
+00:03:38,960 --> 00:03:41,080
+另一方面呢 我会带领大家实现这门语言
+and on the other hand, I'll show you how it's implemented.
 
 71
-00:03:41,328 --> 00:03:43,904
-And we'll build an implementation in LISP and see how that works.
+00:03:41,320 --> 00:03:42,960
+我们将会用Lisp来实现
+And we'll build an implementation in LISP
 
 72
-00:03:44,048 --> 00:03:48,256
-And you should be drawing lessons on two levels.
+00:03:42,992 --> 00:03:43,900
+并观察它的运行原理
+and see how that works.
 
 73
-00:03:48,730 --> 00:03:49,440
-The first is to realize just how different a language can be.
+00:03:44,048 --> 00:03:48,256
+你应该在两个层次上学到知识
+And you should be drawing lessons on two levels.
 
 74
-00:03:50,832 --> 00:03:53,008
+00:03:48,688 --> 00:03:53,000
+首先要认识到 语言之间可以有多么地“不同”
 The first is to realize just how different a language can be.
 
 75
 00:03:53,790 --> 00:03:58,144
-So if you think that the jump from Fortran to LISP is a big deal, you haven't seen anything yet.
+如果你认为Fortran和Lisp算是天差地别的话
+So if you think that the jump from Fortran to LISP is a big deal,
 
 76
 00:03:58,240 --> 00:03:59,360
-So if you think that the jump from Fortran to LISP is a big deal, you haven't seen anything yet.
+那就小巫见大巫了
+you haven't seen anything yet.
 
 77
 00:04:01,560 --> 00:04:03,680
-And secondly, you'll see that even with such a very different language, which will turn out to not have procedures at all and not talk about functions at all, there will still be this basic cycle of eval and apply that's unwinds the means of combination and the means an abstraction.
+其次
+And secondly,
 
 78
 00:04:03,776 --> 00:04:06,544
-And secondly, you'll see that even with such a very different language, which will turn out to not have procedures at all and not talk about functions at all, there will still be this basic cycle of eval and apply that's unwinds the means of combination and the means an abstraction.
+甚至于在这门与众不同的语言中
+you'll see that even with such a very different language,
 
 79
 00:04:07,360 --> 00:04:09,520
-And secondly, you'll see that even with such a very different language, which will turn out to not have procedures at all and not talk about functions at all, there will still be this basic cycle of eval and apply that's unwinds the means of combination and the means an abstraction.
+这门既不讨论函数
+which will turn out to not have procedures at all
 
 80
 00:04:09,920 --> 00:04:11,648
-And secondly, you'll see that even with such a very different language, which will turn out to not have procedures at all and not talk about functions at all, there will still be this basic cycle of eval and apply that's unwinds the means of combination and the means an abstraction.
+也没有过程的语言中
+and not talk about functions at all,
 
 81
 00:04:12,200 --> 00:04:15,720
-And secondly, you'll see that even with such a very different language, which will turn out to not have procedures at all and not talk about functions at all, there will still be this basic cycle of eval and apply that's unwinds the means of combination and the means an abstraction.
+其中也有基本的EVAL-APPLY循环
+there will still be this basic cycle of eval and apply
 
 82
 00:04:16,192 --> 00:04:19,984
-And secondly, you'll see that even with such a very different language, which will turn out to not have procedures at all and not talk about functions at all, there will still be this basic cycle of eval and apply that's unwinds the means of combination and the means an abstraction.
+也就是对组合手段和抽象手段的展开
+that's unwinds the means of combination and the means an abstraction.
 
 83
 00:04:20,950 --> 00:04:24,688
-And then thirdly, as kind of a minor but elegant technical point, you'll see a nice use of streams to avoid backtracking.
+第三点 是一个不太重要但非常优雅的技术技巧
+And then thirdly, as kind of a minor but elegant technical point,
 
 84
-00:04:24,896 --> 00:04:26,512
-And then thirdly, as kind of a minor but elegant technical point, you'll see a nice use of streams to avoid backtracking.
+00:04:24,890 --> 00:04:28,528
+就是如何使用流来规避回溯
+you'll see a nice use of streams to avoid backtracking.
 
 85
-00:04:27,136 --> 00:04:28,480
-And then thirdly, as kind of a minor but elegant technical point, you'll see a nice use of streams to avoid backtracking.
-
-86
 00:04:32,330 --> 00:04:34,400
+好吧 我说过这门语言与众不同
 OK, well, I said that this language is very different.
 
-87
+86
 00:04:35,860 --> 00:04:36,640
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
+为了解释这点
+To explain that,
+
+87
+00:04:37,050 --> 00:04:42,816
+让我们回到这门课最初的理念上
+let's go back to the very first idea that we talked about in this course,
 
 88
-00:04:37,056 --> 00:04:40,304
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
+00:04:43,260 --> 00:04:46,544
+就是要区别
+and that was the idea of the distinction between
 
 89
-00:04:41,280 --> 00:04:42,768
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
+00:04:46,720 --> 00:04:49,520
+数学中“陈述性”的知识
+the declarative knowledge of mathematics--
 
 90
-00:04:43,264 --> 00:04:45,376
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
+00:04:50,192 --> 00:04:54,144
+比如平方根的定义就是一条数学事实
+the definition of a square root as a mathematical truth--
 
 91
-00:04:46,040 --> 00:04:49,840
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
+00:04:55,488 --> 00:04:59,568
+而计算机科学讨论的是“如何做”的只是
+and the idea that computer science talks about the how to knowledge--
 
 92
-00:04:50,192 --> 00:04:54,144
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
+00:04:59,760 --> 00:05:04,592
+“什么是平方根”和“如何计算平方根”是不同的
+contrast that definition of square root with a program to compute a square root.
 
 93
-00:04:55,488 --> 00:04:59,568
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
-
-94
-00:04:59,760 --> 00:05:04,592
-To explain that, let's go back to the very first idea that we talked about in this course, and that was the idea of the distinction between the declarative knowledge of mathematics-- the definition of a square root as a mathematical truth-- and the idea that computer science talks about the how to knowledge-- contrast that definition of square root with a program to compute a square root.
-
-95
 00:05:05,970 --> 00:05:07,072
+我们是从这里开始的
 That's where we started off.
 
-96
+94
 00:05:08,512 --> 00:05:09,520
-Well, wouldn't it be great if you could somehow bridge this gap and make a programming language which sort of did things, but you talked about it in terms of truth, in declarative terms?
+如果我们能够通过某种方式
+Well, wouldn't it be great
+
+95
+00:05:09,888 --> 00:05:12,160
+弥合这种差距 岂不是更好么？
+if you could somehow bridge this gap
+
+96
+00:05:12,810 --> 00:05:16,432
+我们创建一门这样的语言
+and make a programming language which sort of did things,
 
 97
-00:05:09,888 --> 00:05:12,160
-Well, wouldn't it be great if you could somehow bridge this gap and make a programming language which sort of did things, but you talked about it in terms of truth, in declarative terms?
+00:05:16,672 --> 00:05:21,610
+以声明式的方式、用数学事实来完成计算
+but you talked about it in terms of truth, in declarative terms?
 
 98
-00:05:12,816 --> 00:05:14,640
-Well, wouldn't it be great if you could somehow bridge this gap and make a programming language which sort of did things, but you talked about it in terms of truth, in declarative terms?
+00:05:22,380 --> 00:05:25,504
+你用这种该语言来指定事实
+So that would be a programming language in which you specify facts.
 
 99
-00:05:15,040 --> 00:05:18,160
-Well, wouldn't it be great if you could somehow bridge this gap and make a programming language which sort of did things, but you talked about it in terms of truth, in declarative terms?
-
-100
-00:05:18,768 --> 00:05:21,616
-Well, wouldn't it be great if you could somehow bridge this gap and make a programming language which sort of did things, but you talked about it in terms of truth, in declarative terms?
-
-101
-00:05:22,380 --> 00:05:23,744
-So that would be a programming language in which you specify facts.
-
-102
-00:05:23,968 --> 00:05:25,488
-So that would be a programming language in which you specify facts.
-
-103
 00:05:27,690 --> 00:05:28,880
+你告诉它
 You tell it what is.
 
-104
+100
 00:05:28,880 --> 00:05:29,968
+什么是事实
 You say what is true.
 
-105
+101
 00:05:30,950 --> 00:05:33,072
-And then when you want an answer, somehow the language has built into it automatically general kinds of how to knowledge so it can just take your facts and it can evolve these methods on its on using the facts you gave it and maybe some general rules of logic.
+而当你需要一个答案时
+And then when you want an answer,
 
-106
+102
 00:05:33,216 --> 00:05:36,384
 And then when you want an answer, somehow the language has built into it automatically general kinds of how to knowledge so it can just take your facts and it can evolve these methods on its on using the facts you gave it and maybe some general rules of logic.
 
-107
+103
 00:05:37,600 --> 00:05:40,640
 And then when you want an answer, somehow the language has built into it automatically general kinds of how to knowledge so it can just take your facts and it can evolve these methods on its on using the facts you gave it and maybe some general rules of logic.
 
-108
+104
 00:05:40,896 --> 00:05:42,832
 And then when you want an answer, somehow the language has built into it automatically general kinds of how to knowledge so it can just take your facts and it can evolve these methods on its on using the facts you gave it and maybe some general rules of logic.
 
-109
+105
 00:05:43,312 --> 00:05:46,128
 And then when you want an answer, somehow the language has built into it automatically general kinds of how to knowledge so it can just take your facts and it can evolve these methods on its on using the facts you gave it and maybe some general rules of logic.
 
-110
+106
 00:05:49,330 --> 00:05:50,544
 So for instance, I might go up to this program and start telling it some things.
 
-111
+107
 00:05:52,064 --> 00:05:53,376
 So for instance, I might go up to this program and start telling it some things.
 
-112
+108
 00:05:53,392 --> 00:05:55,120
 So for instance, I might go up to this program and start telling it some things.
 
-113
+109
 00:05:55,984 --> 00:05:57,136
 So I might tell it that the son of Adam is Abel.
 
-114
+110
 00:05:58,608 --> 00:06:07,088
 So I might tell it that the son of Adam is Abel.
 
-115
+111
 00:06:08,920 --> 00:06:16,512
 And I might tell it that the son of Adam is Cain.
 
-116
+112
 00:06:17,660 --> 00:06:25,088
 And I might tell it that the son of Cain is Enoch.
 
-117
+113
 00:06:27,792 --> 00:06:34,896
 And I might tell it that the son of Enoch is Irad, and all through the rest of our chapter whatever of Genesis, which ends up ending in Adah, by the way, and this shows the genealogy of Adah from Cain.
 
-118
+114
 00:06:37,024 --> 00:06:40,720
 And I might tell it that the son of Enoch is Irad, and all through the rest of our chapter whatever of Genesis, which ends up ending in Adah, by the way, and this shows the genealogy of Adah from Cain.
 
-119
+115
 00:06:41,152 --> 00:06:43,184
 And I might tell it that the son of Enoch is Irad, and all through the rest of our chapter whatever of Genesis, which ends up ending in Adah, by the way, and this shows the genealogy of Adah from Cain.
 
-120
+116
 00:06:43,328 --> 00:06:46,784
 And I might tell it that the son of Enoch is Irad, and all through the rest of our chapter whatever of Genesis, which ends up ending in Adah, by the way, and this shows the genealogy of Adah from Cain.
 
-121
+117
 00:06:48,440 --> 00:06:50,672
 Anyway, once you tell it these facts, you might ask it things.
 
-122
+118
 00:06:52,352 --> 00:06:53,408
 Anyway, once you tell it these facts, you might ask it things.
 
-123
+119
 00:06:53,510 --> 00:06:55,056
 You might go up to your language and say, who's the son of Adam?
 
-124
+120
 00:06:56,064 --> 00:06:59,296
 You might go up to your language and say, who's the son of Adam?
 
-125
+121
 00:07:00,420 --> 00:07:04,912
 And you can very easily imagine having a little general purpose search program which would be able to go through and in response to that say, oh yeah, there are two answers: the son of Adam is Abel and the son of Adam is Cain.
 
-126
+122
 00:07:05,520 --> 00:07:09,264
 And you can very easily imagine having a little general purpose search program which would be able to go through and in response to that say, oh yeah, there are two answers: the son of Adam is Abel and the son of Adam is Cain.
 
-127
+123
 00:07:09,296 --> 00:07:10,448
 And you can very easily imagine having a little general purpose search program which would be able to go through and in response to that say, oh yeah, there are two answers: the son of Adam is Abel and the son of Adam is Cain.
 
-128
+124
 00:07:10,688 --> 00:07:12,176
 And you can very easily imagine having a little general purpose search program which would be able to go through and in response to that say, oh yeah, there are two answers: the son of Adam is Abel and the son of Adam is Cain.
 
-129
+125
 00:07:14,140 --> 00:07:14,976
 Or you might say, based on the very same facts, who is Cain the son of?
 
-130
+126
 00:07:15,070 --> 00:07:16,890
 Or you might say, based on the very same facts, who is Cain the son of?
 
-131
+127
 00:07:18,048 --> 00:07:19,952
 Or you might say, based on the very same facts, who is Cain the son of?
 
-132
+128
 00:07:21,950 --> 00:07:27,024
 And then you can imagine generating another slightly different search program which would be able to go through and checked for who is Cain, and son of, and come up with Adam.
 
-133
+129
 00:07:27,920 --> 00:07:30,400
 And then you can imagine generating another slightly different search program which would be able to go through and checked for who is Cain, and son of, and come up with Adam.
 
-134
+130
 00:07:31,296 --> 00:07:34,448
 And then you can imagine generating another slightly different search program which would be able to go through and checked for who is Cain, and son of, and come up with Adam.
 
-135
+131
 00:07:35,890 --> 00:07:36,992
 Or you might say, what's the relationship between Cain and Enoch?
 
-136
+132
 00:07:38,016 --> 00:07:41,408
 Or you might say, what's the relationship between Cain and Enoch?
 
-137
+133
 00:07:42,070 --> 00:07:45,088
 And again, a minor variant on that search program.
 
-138
+134
 00:07:46,340 --> 00:07:48,160
 You could figure out that it said son of.
 
-139
+135
 00:07:52,880 --> 00:07:54,928
 But even here in this very simple example, what you see is that a single fact, see, a single fact like the son of Adam is Cain can be used to answer different kinds of questions.
 
-140
+136
 00:07:56,144 --> 00:07:58,448
 But even here in this very simple example, what you see is that a single fact, see, a single fact like the son of Adam is Cain can be used to answer different kinds of questions.
 
-141
+137
 00:07:58,816 --> 00:08:01,520
 But even here in this very simple example, what you see is that a single fact, see, a single fact like the son of Adam is Cain can be used to answer different kinds of questions.
 
-142
+138
 00:08:02,848 --> 00:08:05,520
 But even here in this very simple example, what you see is that a single fact, see, a single fact like the son of Adam is Cain can be used to answer different kinds of questions.
 
-143
+139
 00:08:06,520 --> 00:08:09,136
 You can say, who's the son of, or you can say who's the son of Adam, or you can say what's the relation between Adam and Cain?
 
-144
+140
 00:08:09,984 --> 00:08:11,712
 You can say, who's the son of, or you can say who's the son of Adam, or you can say what's the relation between Adam and Cain?
 
-145
+141
 00:08:11,728 --> 00:08:12,752
 You can say, who's the son of, or you can say who's the son of Adam, or you can say what's the relation between Adam and Cain?
 
-146
+142
 00:08:12,800 --> 00:08:14,480
 Those are different questions being run by different traditional procedures all based on the same fact.
 
-147
+143
 00:08:15,536 --> 00:08:18,544
 Those are different questions being run by different traditional procedures all based on the same fact.
 
-148
+144
 00:08:18,688 --> 00:08:20,720
 Those are different questions being run by different traditional procedures all based on the same fact.
 
-149
+145
 00:08:22,752 --> 00:08:25,920
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-150
+146
 00:08:26,912 --> 00:08:29,504
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-151
+147
 00:08:30,048 --> 00:08:31,856
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-152
+148
 00:08:32,064 --> 00:08:34,032
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-153
+149
 00:08:34,816 --> 00:08:37,088
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-154
+150
 00:08:37,152 --> 00:08:39,552
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-155
+151
 00:08:39,616 --> 00:08:40,656
 And that's going to be the essence of the power of this programming style, that one piece of declarative knowledge can be used as the basis for a lot of different kinds of how-to knowledge, as opposed to the kinds of procedures we're writing where you sort of tell it what input you're giving it and what answer you want.
 
-156
+152
 00:08:41,490 --> 00:08:44,704
 So for instance, our square root program can perfectly well answer the question, what's the square root of 144?
 
-157
+153
 00:08:44,768 --> 00:08:47,168
 So for instance, our square root program can perfectly well answer the question, what's the square root of 144?
 
-158
+154
 00:08:48,900 --> 00:08:49,776
 But in principle, the mathematical definition of square root tells you other things.
 
-159
+155
 00:08:49,824 --> 00:08:52,830
 But in principle, the mathematical definition of square root tells you other things.
 
-160
+156
 00:08:52,830 --> 00:08:53,920
 Like it could say, what is 17 the square root of?
 
-161
+157
 00:08:54,400 --> 00:08:56,432
 Like it could say, what is 17 the square root of?
 
-162
+158
 00:08:57,590 --> 00:08:59,712
 And that would be have to be answered by a different program.
 
-163
+159
 00:09:01,920 --> 00:09:03,504
 So the mathematical definition, or in general, the facts that you give it are somehow unbiased as to what the question is.
 
-164
+160
 00:09:03,984 --> 00:09:07,632
 So the mathematical definition, or in general, the facts that you give it are somehow unbiased as to what the question is.
 
-165
+161
 00:09:08,032 --> 00:09:10,304
 So the mathematical definition, or in general, the facts that you give it are somehow unbiased as to what the question is.
 
-166
+162
 00:09:10,900 --> 00:09:12,816
 Whereas the programs we tend to write specifically because they are how-to knowledge tend to be looking for a specific answer.
 
-167
+163
 00:09:12,830 --> 00:09:14,208
 Whereas the programs we tend to write specifically because they are how-to knowledge tend to be looking for a specific answer.
 
-168
+164
 00:09:14,240 --> 00:09:16,368
 Whereas the programs we tend to write specifically because they are how-to knowledge tend to be looking for a specific answer.
 
-169
+165
 00:09:17,700 --> 00:09:20,128
 So that's going to be one characteristic of what we're talking about.
 
-170
+166
 00:09:21,810 --> 00:09:22,608
 We can go on.
 
-171
+167
 00:09:23,480 --> 00:09:27,520
 We can imagine that we've given our language some sort of facts.
 
-172
+168
 00:09:27,710 --> 00:09:29,616
 Now let's give it some rules of inference.
 
-173
+169
 00:09:30,020 --> 00:09:31,360
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-174
+170
 00:09:31,952 --> 00:09:36,192
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-175
+171
 00:09:36,448 --> 00:09:41,536
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-176
+172
 00:09:41,680 --> 00:09:45,210
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-177
+173
 00:09:45,600 --> 00:09:47,552
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-178
+174
 00:09:50,200 --> 00:09:56,060
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-179
+175
 00:09:58,960 --> 00:10:08,464
 We can say, for instance, if the-- make up some syntax here-- if the son of x is y-- I'll put question marks to indicate variables here-- if the son of x is y and the son of y is z, then the grandson of x is z.
 
-180
+176
 00:10:09,320 --> 00:10:13,408
 So I can imagine telling my machine that rule and then being able to say, for instance, who's the grandson of Adam?
 
-181
+177
 00:10:15,008 --> 00:10:17,280
 So I can imagine telling my machine that rule and then being able to say, for instance, who's the grandson of Adam?
 
-182
+178
 00:10:17,440 --> 00:10:18,688
 So I can imagine telling my machine that rule and then being able to say, for instance, who's the grandson of Adam?
 
-183
+179
 00:10:20,610 --> 00:10:23,648
 Or who is Irad the grandson of?
 
-184
+180
 00:10:24,790 --> 00:10:29,330
 Or deduce all grandson relationships you possibly can from this information.
 
-185
+181
 00:10:31,220 --> 00:10:33,264
 We can imagine somehow the language knowing how to do that automatically.
 
-186
+182
 00:10:33,504 --> 00:10:35,600
 We can imagine somehow the language knowing how to do that automatically.
 
-187
+183
 00:10:40,224 --> 00:10:45,200
 Ok, Let me give you maybe a little bit more concrete example.
 
-188
+184
 00:10:45,808 --> 00:10:46,336
 Here's a procedure that merges two sorted lists.
 
-189
+185
 00:10:49,664 --> 00:10:51,936
 Here's a procedure that merges two sorted lists.
 
-190
+186
 00:10:53,920 --> 00:11:00,272
 So x and y are two, say, lists of numbers, lists of distinct numbers, if you like, that are in increasing order.
 
-191
+187
 00:11:00,304 --> 00:11:04,208
 So x and y are two, say, lists of numbers, lists of distinct numbers, if you like, that are in increasing order.
 
-192
+188
 00:11:04,780 --> 00:11:05,760
 And what merge does is take two such lists and combine them into a list where everything's in increasing order, and this is a pretty easy programs that you ought to be able to write.
 
-193
+189
 00:11:06,112 --> 00:11:07,536
 And what merge does is take two such lists and combine them into a list where everything's in increasing order, and this is a pretty easy programs that you ought to be able to write.
 
-194
+190
 00:11:07,712 --> 00:11:10,384
 And what merge does is take two such lists and combine them into a list where everything's in increasing order, and this is a pretty easy programs that you ought to be able to write.
 
-195
+191
 00:11:11,210 --> 00:11:15,000
 And what merge does is take two such lists and combine them into a list where everything's in increasing order, and this is a pretty easy programs that you ought to be able to write.
 
-196
+192
 00:11:15,024 --> 00:11:16,144
 And what merge does is take two such lists and combine them into a list where everything's in increasing order, and this is a pretty easy programs that you ought to be able to write.
 
-197
+193
 00:11:16,390 --> 00:11:18,640
 It says, if x is empty, the answer is y.
 
-198
+194
 00:11:18,860 --> 00:11:20,464
 If y is empty, the answer is x.
 
-199
+195
 00:11:21,180 --> 00:11:22,990
 Otherwise, you compare the first two elements.
 
-200
+196
 00:11:22,990 --> 00:11:24,464
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-201
+197
 00:11:24,848 --> 00:11:26,016
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-202
+198
 00:11:26,816 --> 00:11:28,448
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-203
+199
 00:11:29,264 --> 00:11:31,664
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-204
+200
 00:11:32,832 --> 00:11:36,608
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-205
+201
 00:11:37,872 --> 00:11:39,920
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-206
+202
 00:11:40,112 --> 00:11:41,616
 So you pick out the first thing in x and the first thing in y, and then depending on which of those first elements is less, you stick the lower one on to the result a recursively merging, either chopping the first one off x or chopping the first one off y.
 
-207
+203
 00:11:42,400 --> 00:11:43,960
 That's a standard kind of program.
 
-208
+204
 00:11:46,470 --> 00:11:48,416
 Let's look at the logic.
 
-209
+205
 00:11:48,620 --> 00:11:49,792
 Let's forget about the program and look at the logic on which that procedure is based.
 
-210
+206
 00:11:50,288 --> 00:11:52,768
 Let's forget about the program and look at the logic on which that procedure is based.
 
-211
+207
 00:11:53,820 --> 00:11:55,488
 See, there's some logic which says, gee, if the first one is less, then we get the answer by sticking something onto the result of recursively merging the rest. So let's try and be explicit about what that logic is that's making the program work.
 
-212
+208
 00:11:55,968 --> 00:11:57,216
 See, there's some logic which says, gee, if the first one is less, then we get the answer by sticking something onto the result of recursively merging the rest. So let's try and be explicit about what that logic is that's making the program work.
 
-213
+209
 00:11:57,536 --> 00:12:00,000
 See, there's some logic which says, gee, if the first one is less, then we get the answer by sticking something onto the result of recursively merging the rest. So let's try and be explicit about what that logic is that's making the program work.
 
-214
+210
 00:12:00,160 --> 00:12:02,128
 See, there's some logic which says, gee, if the first one is less, then we get the answer by sticking something onto the result of recursively merging the rest. So let's try and be explicit about what that logic is that's making the program work.
 
-215
+211
 00:12:02,848 --> 00:12:04,096
 See, there's some logic which says, gee, if the first one is less, then we get the answer by sticking something onto the result of recursively merging the rest. So let's try and be explicit about what that logic is that's making the program work.
 
-216
+212
 00:12:04,240 --> 00:12:06,416
 See, there's some logic which says, gee, if the first one is less, then we get the answer by sticking something onto the result of recursively merging the rest. So let's try and be explicit about what that logic is that's making the program work.
 
-217
+213
 00:12:08,304 --> 00:12:09,440
 So here's one piece.
 
-218
+214
 00:12:10,130 --> 00:12:11,536
 Here's the piece of the program which recursively chops down x if the first thing in x is smaller.
 
-219
+215
 00:12:12,640 --> 00:12:15,264
 Here's the piece of the program which recursively chops down x if the first thing in x is smaller.
 
-220
+216
 00:12:15,664 --> 00:12:17,824
 Here's the piece of the program which recursively chops down x if the first thing in x is smaller.
 
-221
+217
 00:12:19,980 --> 00:12:22,544
 And if you want to be very explicit about what the logic is there, what's really going on is a deduction, which says, if you know that some list, that we'll call cdr of x, and y merged to form z, and you know that a is less than the first thing in y, then you know that if you put a onto the cdr of x, then that result and y merge to form a onto z.
 
-222
+218
 00:12:23,450 --> 00:12:26,496
 And if you want to be very explicit about what the logic is there, what's really going on is a deduction, which says, if you know that some list, that we'll call cdr of x, and y merged to form z, and you know that a is less than the first thing in y, then you know that if you put a onto the cdr of x, then that result and y merge to form a onto z.
 
-223
+219
 00:12:26,688 --> 00:12:27,824
 And if you want to be very explicit about what the logic is there, what's really going on is a deduction, which says, if you know that some list, that we'll call cdr of x, and y merged to form z, and you know that a is less than the first thing in y, then you know that if you put a onto the cdr of x, then that result and y merge to form a onto z.
 
-224
+220
 00:12:28,120 --> 00:12:32,368
 And if you want to be very explicit about what the logic is there, what's really going on is a deduction, which says, if you know that some list, that we'll call cdr of x, and y merged to form z, and you know that a is less than the first thing in y, then you know that if you put a onto the cdr of x, then that result and y merge to form a onto z.
 
-225
+221
 00:12:33,296 --> 00:12:35,440
 And if you want to be very explicit about what the logic is there, what's really going on is a deduction, which says, if you know that some list, that we'll call cdr of x, and y merged to form z, and you know that a is less than the first thing in y, then you know that if you put a onto the cdr of x, then that result and y merge to form a onto z.
 
-226
+222
 00:12:55,820 --> 00:12:58,096
 And what that is, that's the underlying piece of logic-- I haven't written it as a program, I wrote it a sort of deduction that's underneath this particular clause that says we can use the recursion there.
 
-227
+223
 00:12:58,720 --> 00:12:59,952
 And what that is, that's the underlying piece of logic-- I haven't written it as a program, I wrote it a sort of deduction that's underneath this particular clause that says we can use the recursion there.
 
-228
+224
 00:12:59,968 --> 00:13:02,000
 And what that is, that's the underlying piece of logic-- I haven't written it as a program, I wrote it a sort of deduction that's underneath this particular clause that says we can use the recursion there.
 
-229
+225
 00:13:02,032 --> 00:13:04,896
 And what that is, that's the underlying piece of logic-- I haven't written it as a program, I wrote it a sort of deduction that's underneath this particular clause that says we can use the recursion there.
 
-230
+226
 00:13:05,216 --> 00:13:07,264
 And what that is, that's the underlying piece of logic-- I haven't written it as a program, I wrote it a sort of deduction that's underneath this particular clause that says we can use the recursion there.
 
-231
+227
 00:13:09,410 --> 00:13:12,784
 And then similar, here's the other clause just to complete it.
 
-232
+228
 00:13:14,000 --> 00:13:15,872
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-233
+229
 00:13:15,920 --> 00:13:18,352
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-234
+230
 00:13:19,008 --> 00:13:20,352
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-235
+231
 00:13:20,416 --> 00:13:22,016
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-236
+232
 00:13:22,032 --> 00:13:24,048
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-237
+233
 00:13:24,510 --> 00:13:27,200
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-238
+234
 00:13:28,048 --> 00:13:30,864
 The other clause is based on this piece of logic, which is almost the same and I won't go through it, and then there's the n cases where we tested for null, and that's based on the idea that for any x, x and the empty list merge to form an x, or for any y, the empty list and y merge to form y.
 
-239
+235
 00:13:33,360 --> 00:13:38,128
 OK, so there's a piece of procedure and the logic on which it's based.
 
-240
+236
 00:13:38,432 --> 00:13:40,112
 OK, so there's a piece of procedure and the logic on which it's based.
 
-241
+237
 00:13:41,740 --> 00:13:42,976
 And notice a big difference.
 
-242
+238
 00:13:45,104 --> 00:13:50,528
 The procedure looked like this: it said there was a box-- and all the things we've been doing have the characteristic we have boxes and things going in and things going out-- there was this box called merge, and in came an x and y, and out came an answer.
 
-243
+239
 00:13:50,656 --> 00:13:52,288
 The procedure looked like this: it said there was a box-- and all the things we've been doing have the characteristic we have boxes and things going in and things going out-- there was this box called merge, and in came an x and y, and out came an answer.
 
-244
+240
 00:13:52,864 --> 00:13:57,696
 The procedure looked like this: it said there was a box-- and all the things we've been doing have the characteristic we have boxes and things going in and things going out-- there was this box called merge, and in came an x and y, and out came an answer.
 
-245
+241
 00:13:58,080 --> 00:13:59,610
 The procedure looked like this: it said there was a box-- and all the things we've been doing have the characteristic we have boxes and things going in and things going out-- there was this box called merge, and in came an x and y, and out came an answer.
 
-246
+242
 00:14:01,296 --> 00:14:03,856
 The procedure looked like this: it said there was a box-- and all the things we've been doing have the characteristic we have boxes and things going in and things going out-- there was this box called merge, and in came an x and y, and out came an answer.
 
-247
+243
 00:14:04,448 --> 00:14:05,376
 The procedure looked like this: it said there was a box-- and all the things we've been doing have the characteristic we have boxes and things going in and things going out-- there was this box called merge, and in came an x and y, and out came an answer.
 
-248
+244
 00:14:07,632 --> 00:14:09,488
 That's the character of the procedure that we wrote.
 
-249
+245
 00:14:13,024 --> 00:14:14,660
 These rules don't look like that.
 
-250
+246
 00:14:14,660 --> 00:14:16,768
 These rules talk about a relation.
 
-251
+247
 00:14:17,952 --> 00:14:19,248
 There's some sort of relation that in those slides I called mrege-to-form.
 
-252
+248
 00:14:19,808 --> 00:14:24,160
 There's some sort of relation that in those slides I called mrege-to-form.
 
-253
+249
 00:14:25,370 --> 00:14:28,768
 So I said x and y merge to form z, and somehow this is a function.
 
-254
+250
 00:14:29,008 --> 00:14:32,336
 So I said x and y merge to form z, and somehow this is a function.
 
-255
+251
 00:14:32,610 --> 00:14:32,850
 Right?
 
-256
+252
 00:14:32,850 --> 00:14:34,416
 The answer is a function of x and y, and here what I have is a relation between three things.
 
-257
+253
 00:14:34,592 --> 00:14:38,192
 The answer is a function of x and y, and here what I have is a relation between three things.
 
-258
+254
 00:14:39,720 --> 00:14:41,328
 And I'm not going to specify which is the input and which is the output.
 
-259
+255
 00:14:42,096 --> 00:14:43,770
 And I'm not going to specify which is the input and which is the output.
 
-260
+256
 00:14:44,200 --> 00:14:47,408
 And the reason I want to say that is because in principle, we could use exactly those same logic rules to answer a lot of different questions.
 
-261
+257
 00:14:48,640 --> 00:14:52,448
 And the reason I want to say that is because in principle, we could use exactly those same logic rules to answer a lot of different questions.
 
-262
+258
 00:14:54,570 --> 00:14:56,304
 So we can say, for instance-- imagine giving our machine those rules of logic.
 
-263
+259
 00:14:56,720 --> 00:14:59,050
 So we can say, for instance-- imagine giving our machine those rules of logic.
 
-264
+260
 00:14:59,050 --> 00:15:01,200
 Not the program, the underlying rules of logic.
 
-265
+261
 00:15:01,400 --> 00:15:03,120
 Then it ought to be able to say-- we could ask it-- 1, 3, 7 and 2, 4, 8 merge to form what?
 
-266
+262
 00:15:04,752 --> 00:15:05,520
 Then it ought to be able to say-- we could ask it-- 1, 3, 7 and 2, 4, 8 merge to form what?
 
-267
+263
 00:15:06,736 --> 00:15:19,184
 Then it ought to be able to say-- we could ask it-- 1, 3, 7 and 2, 4, 8 merge to form what?
 
-268
+264
 00:15:20,910 --> 00:15:23,424
 And that's a question it ought to be able to answer.
 
-269
+265
 00:15:23,880 --> 00:15:27,360
 That's exactly the same question that our list procedure answered.
 
-270
+266
 00:15:28,180 --> 00:15:30,144
 But the exact same rules should also be able to answer a question like this: 1, 3, 7 and what merged to form 1, 2, 3, 4, 7, 8?
 
-271
+267
 00:15:30,896 --> 00:15:34,800
 But the exact same rules should also be able to answer a question like this: 1, 3, 7 and what merged to form 1, 2, 3, 4, 7, 8?
 
-272
+268
 00:15:36,192 --> 00:15:43,248
 But the exact same rules should also be able to answer a question like this: 1, 3, 7 and what merged to form 1, 2, 3, 4, 7, 8?
 
-273
+269
 00:15:45,560 --> 00:15:47,808
 The same rules of logic can answer this, although the procedure we wrote can't answer that question.
 
-274
+270
 00:15:47,840 --> 00:15:49,904
 The same rules of logic can answer this, although the procedure we wrote can't answer that question.
 
-275
+271
 00:15:50,800 --> 00:15:52,336
 Or we might be able to say what and what else merge to form-- what and what else merge to form 1, 2, 3, 4, 7, 8?
 
-276
+272
 00:15:53,710 --> 00:16:01,120
 Or we might be able to say what and what else merge to form-- what and what else merge to form 1, 2, 3, 4, 7, 8?
 
-277
+273
 00:16:04,288 --> 00:16:12,688
 Or we might be able to say what and what else merge to form-- what and what else merge to form 1, 2, 3, 4, 7, 8?
 
-278
+274
 00:16:13,780 --> 00:16:15,344
 And the thing should be able to go through, if it really can apply that logic, and deduce all, whatever is, 2 to the sixth answers to that question.
 
-279
+275
 00:16:15,840 --> 00:16:17,312
 And the thing should be able to go through, if it really can apply that logic, and deduce all, whatever is, 2 to the sixth answers to that question.
 
-280
+276
 00:16:17,792 --> 00:16:22,540
 And the thing should be able to go through, if it really can apply that logic, and deduce all, whatever is, 2 to the sixth answers to that question.
 
-281
+277
 00:16:25,600 --> 00:16:28,790
 It could be 1 and the rest, or it could be 1, 2 and the rest.
 
-282
+278
 00:16:28,790 --> 00:16:31,536
 Or it could be 1 and 3 and 7 and the rest. There's a whole bunch of answers.
 
-283
+279
 00:16:32,016 --> 00:16:33,264
 Or it could be 1 and 3 and 7 and the rest. There's a whole bunch of answers.
 
-284
+280
 00:16:33,410 --> 00:16:37,760
 And in principle, the logic should be enough to deduce that.
 
-285
+281
 00:16:38,550 --> 00:16:42,032
 So there are going to be two big differences in the kind of program we're going to look at and not only list, but essentially all the programming you've probably done so far in pretty much any language you can think of.
 
-286
+282
 00:16:44,048 --> 00:16:46,000
 So there are going to be two big differences in the kind of program we're going to look at and not only list, but essentially all the programming you've probably done so far in pretty much any language you can think of.
 
-287
+283
 00:16:46,544 --> 00:16:50,560
 So there are going to be two big differences in the kind of program we're going to look at and not only list, but essentially all the programming you've probably done so far in pretty much any language you can think of.
 
-288
+284
 00:16:52,032 --> 00:16:53,600
 So there are going to be two big differences in the kind of program we're going to look at and not only list, but essentially all the programming you've probably done so far in pretty much any language you can think of.
 
-289
+285
 00:16:54,150 --> 00:16:57,792
 The first is, we're not going to be computing functions.
 
-290
+286
 00:17:00,620 --> 00:17:02,016
 We're not going to be talking about things that take input and output.
 
-291
+287
 00:17:02,624 --> 00:17:04,410
 We're not going to be talking about things that take input and output.
 
-292
+288
 00:17:04,410 --> 00:17:05,824
 We're going to be talking about relations.
 
-293
+289
 00:17:06,890 --> 00:17:10,000
 And that means in principle, these relations don't have directionality.
 
-294
+290
 00:17:11,080 --> 00:17:15,056
 So the knowledge that you specify to answer this question, that same knowledge should also allow you to answer these other questions and conversely.
 
-295
+291
 00:17:16,460 --> 00:17:18,416
 So the knowledge that you specify to answer this question, that same knowledge should also allow you to answer these other questions and conversely.
 
-296
+292
 00:17:18,432 --> 00:17:21,800
 So the knowledge that you specify to answer this question, that same knowledge should also allow you to answer these other questions and conversely.
 
-297
+293
 00:17:26,608 --> 00:17:29,408
 And the second issue is that since we're talking about relations, these relations don't necessarily have one answer.
 
-298
+294
 00:17:29,616 --> 00:17:31,232
 And the second issue is that since we're talking about relations, these relations don't necessarily have one answer.
 
-299
+295
 00:17:32,320 --> 00:17:34,448
 And the second issue is that since we're talking about relations, these relations don't necessarily have one answer.
 
-300
+296
 00:17:35,610 --> 00:17:37,008
 So that third question down there doesn't have a particular answer, it has a whole bunch of answers.
 
-301
+297
 00:17:37,020 --> 00:17:38,360
 So that third question down there doesn't have a particular answer, it has a whole bunch of answers.
 
-302
+298
 00:17:38,400 --> 00:17:39,584
 So that third question down there doesn't have a particular answer, it has a whole bunch of answers.
 
-303
+299
 00:17:42,270 --> 00:17:44,640
 Well, that's where we're going.
 
-304
+300
 00:17:44,640 --> 00:17:45,904
 This style of programming, by the way, is called logic programming, for kind of obvious reasons.
 
-305
+301
 00:17:46,720 --> 00:17:49,216
 This style of programming, by the way, is called logic programming, for kind of obvious reasons.
 
-306
+302
 00:17:50,224 --> 00:17:51,584
 This style of programming, by the way, is called logic programming, for kind of obvious reasons.
 
-307
+303
 00:17:56,160 --> 00:17:59,248
 And people who do logic programming say that-- they have this little phrase-- they say the point of logic programming is that you use logic to express what is true, you use logic to check whether something is true, and you use logic to find out what is true.
 
-308
+304
 00:18:00,000 --> 00:18:03,152
 And people who do logic programming say that-- they have this little phrase-- they say the point of logic programming is that you use logic to express what is true, you use logic to check whether something is true, and you use logic to find out what is true.
 
-309
+305
 00:18:03,168 --> 00:18:04,672
 And people who do logic programming say that-- they have this little phrase-- they say the point of logic programming is that you use logic to express what is true, you use logic to check whether something is true, and you use logic to find out what is true.
 
-310
+306
 00:18:04,768 --> 00:18:09,008
 And people who do logic programming say that-- they have this little phrase-- they say the point of logic programming is that you use logic to express what is true, you use logic to check whether something is true, and you use logic to find out what is true.
 
-311
+307
 00:18:10,096 --> 00:18:13,888
 And people who do logic programming say that-- they have this little phrase-- they say the point of logic programming is that you use logic to express what is true, you use logic to check whether something is true, and you use logic to find out what is true.
 
-312
+308
 00:18:14,672 --> 00:18:17,248
 And people who do logic programming say that-- they have this little phrase-- they say the point of logic programming is that you use logic to express what is true, you use logic to check whether something is true, and you use logic to find out what is true.
 
-313
+309
 00:18:19,200 --> 00:18:22,096
 The best known logic programming language, as you probably know, is called Prolog.
 
-314
+310
 00:18:22,976 --> 00:18:24,784
 The best known logic programming language, as you probably know, is called Prolog.
 
-315
+311
 00:18:25,780 --> 00:18:28,880
 The language that we're going to implement this morning is something we call the query language, and it essentially has the essence of prologue.
 
-316
+312
 00:18:29,824 --> 00:18:32,320
 The language that we're going to implement this morning is something we call the query language, and it essentially has the essence of prologue.
 
-317
+313
 00:18:32,480 --> 00:18:34,416
 The language that we're going to implement this morning is something we call the query language, and it essentially has the essence of prologue.
 
-318
+314
 00:18:35,320 --> 00:18:36,736
 It can do about the same stuff, although it's a lot slower because we're going to implement it in LISP rather than building a particular compiler.
 
-319
+315
 00:18:37,296 --> 00:18:40,016
 It can do about the same stuff, although it's a lot slower because we're going to implement it in LISP rather than building a particular compiler.
 
-320
+316
 00:18:41,904 --> 00:18:44,368
 It can do about the same stuff, although it's a lot slower because we're going to implement it in LISP rather than building a particular compiler.
 
-321
+317
 00:18:44,464 --> 00:18:46,624
 We're going to interpret it on top of the LISP interpreter.
 
-322
+318
 00:18:47,510 --> 00:18:49,840
 But other than that, it can do about the same stuff as prolog.
 
-323
+319
 00:18:49,888 --> 00:18:52,784
 It has about the same power and about the same limitations.
 
-324
+320
 00:18:55,088 --> 00:18:56,176
 All right, let's break for question.
 
-325
+321
 00:19:00,432 --> 00:19:06,096
 STUDENT: Yes, could you please repeat what the three things you use logic programming to find?
 
-326
+322
 00:19:06,720 --> 00:19:09,840
 In other words, to find what is true, learn what is true-- what is the?
 
-327
+323
 00:19:09,840 --> 00:19:10,520
 PROFESSOR: Right.
 
-328
+324
 00:19:10,520 --> 00:19:10,560
 Sort of a logic programmer's little catechism.
 PROFESSOR: Right.
 
-329
+325
 00:19:10,560 --> 00:19:15,744
 Sort of a logic programmer's little catechism.
 
-330
+326
 00:19:15,850 --> 00:19:19,160
 You use logic to express what is true, like these rules.
 
-331
+327
 00:19:20,800 --> 00:19:21,792
 You use logic to express what is true, like these rules.
 
-332
+328
 00:19:22,610 --> 00:19:25,740
 You use logic to check whether something is true, and that's the kind of question I didn't answer here.
 
-333
+329
 00:19:25,920 --> 00:19:27,776
 You use logic to check whether something is true, and that's the kind of question I didn't answer here.
 
-334
+330
 00:19:28,550 --> 00:19:29,296
 I might say-- another question I could put down here is to say, is it true that 1, 3, 7 and 2, 4, 8 merge to form 1, 2, 6, 10 And that same logic should be enough to say no.
 
-335
+331
 00:19:29,680 --> 00:19:32,144
 I might say-- another question I could put down here is to say, is it true that 1, 3, 7 and 2, 4, 8 merge to form 1, 2, 6, 10 And that same logic should be enough to say no.
 
-336
+332
 00:19:33,264 --> 00:19:36,560
 I might say-- another question I could put down here is to say, is it true that 1, 3, 7 and 2, 4, 8 merge to form 1, 2, 6, 10 And that same logic should be enough to say no.
 
-337
+333
 00:19:36,910 --> 00:19:40,380
 I might say-- another question I could put down here is to say, is it true that 1, 3, 7 and 2, 4, 8 merge to form 1, 2, 6, 10 And that same logic should be enough to say no.
 
-338
+334
 00:19:41,120 --> 00:19:44,688
 I might say-- another question I could put down here is to say, is it true that 1, 3, 7 and 2, 4, 8 merge to form 1, 2, 6, 10 And that same logic should be enough to say no.
 
-339
+335
 00:19:45,690 --> 00:19:47,936
 So I use logic to check what is true, and then you also use logic to find out what's true.
 
-340
+336
 00:19:48,288 --> 00:19:50,480
 So I use logic to check what is true, and then you also use logic to find out what's true.
 
-341
+337
 00:20:04,464 --> 00:20:05,168
 Let's break.
 
-342
+338
 00:20:06,130 --> 00:20:17,024
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-343
+339
 00:20:17,050 --> 00:20:20,688
 《计算机程序的构造和解释》
 
-344
+340
 00:20:47,590 --> 00:20:51,024
 讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
 
-345
+341
 00:20:51,070 --> 00:20:55,600
 《计算机程序的构造和解释》
 
-346
+342
 00:20:55,630 --> 00:21:00,688
 逻辑式程序设计
 
-347
+343
 00:21:03,248 --> 00:21:04,976
 PROFESSOR: OK, let's go ahead and take a look at this query language and operation.
 
-348
+344
 00:21:05,840 --> 00:21:08,448
 PROFESSOR: OK, let's go ahead and take a look at this query language and operation.
 
-349
+345
 00:21:10,520 --> 00:21:11,840
 The first thing you might notice, when I put up that little biblical database, is that it's nice to be able to ask this language questions in relation to some collection of facts.
 
-350
+346
 00:21:12,240 --> 00:21:17,248
 The first thing you might notice, when I put up that little biblical database, is that it's nice to be able to ask this language questions in relation to some collection of facts.
 
-351
+347
 00:21:17,488 --> 00:21:19,920
 The first thing you might notice, when I put up that little biblical database, is that it's nice to be able to ask this language questions in relation to some collection of facts.
 
-352
+348
 00:21:21,330 --> 00:21:25,152
 So let's start off and make a little collection of facts.
 
-353
+349
 00:21:26,060 --> 00:21:29,712
 This is a tiny fragment of personnel records for a Boston high tech company, and here's a piece of the personnel records of Ben Bitdiddle.
 
-354
+350
 00:21:30,080 --> 00:21:32,624
 This is a tiny fragment of personnel records for a Boston high tech company, and here's a piece of the personnel records of Ben Bitdiddle.
 
-355
+351
 00:21:33,056 --> 00:21:36,800
 This is a tiny fragment of personnel records for a Boston high tech company, and here's a piece of the personnel records of Ben Bitdiddle.
 
-356
+352
 00:21:37,500 --> 00:21:41,952
 And Ben Bitdiddle is the computer wizard in this company, he's the underpaid computer wizard in this company.
 
-357
+353
 00:21:42,848 --> 00:21:45,808
 And Ben Bitdiddle is the computer wizard in this company, he's the underpaid computer wizard in this company.
 
-358
+354
 00:21:46,420 --> 00:21:48,784
 His supervisor is all Oliver Warbucks, and here's his address.
 
-359
+355
 00:21:49,280 --> 00:21:50,704
 His supervisor is all Oliver Warbucks, and here's his address.
 
-360
+356
 00:21:52,150 --> 00:21:56,544
 So the format is we're giving this information: job, salary, supervisor, address.
 
-361
+357
 00:21:57,568 --> 00:21:59,250
 And there are some other conventions.
 
-362
+358
 00:21:59,250 --> 00:22:02,224
 Computer here means that Ben works in the computer division, and his position in the computer division is wizard.
 
-363
+359
 00:22:02,768 --> 00:22:04,944
 Computer here means that Ben works in the computer division, and his position in the computer division is wizard.
 
-364
+360
 00:22:05,664 --> 00:22:07,744
 Here's somebody else.
 
-365
+361
 00:22:08,096 --> 00:22:12,288
 Alyssa, Alyssa P. Hacker is a computer programmer, and she works for Ben, and she lives in Cambridge.
 
-366
+362
 00:22:13,360 --> 00:22:14,608
 Alyssa, Alyssa P. Hacker is a computer programmer, and she works for Ben, and she lives in Cambridge.
 
-367
+363
 00:22:15,216 --> 00:22:16,544
 Alyssa, Alyssa P. Hacker is a computer programmer, and she works for Ben, and she lives in Cambridge.
 
-368
+364
 00:22:17,550 --> 00:22:19,424
 And there's another programmer who works for Ben who's Lem E. Tweakit.
 
-369
+365
 00:22:20,032 --> 00:22:21,440
 And there's another programmer who works for Ben who's Lem E. Tweakit.
 
-370
+366
 00:22:22,820 --> 00:22:25,344
 And there's a programmer trainee, who is Louis Reasoner, and he works for Alyssa.
 
-371
+367
 00:22:25,792 --> 00:22:26,848
 And there's a programmer trainee, who is Louis Reasoner, and he works for Alyssa.
 
-372
+368
 00:22:27,424 --> 00:22:28,624
 And there's a programmer trainee, who is Louis Reasoner, and he works for Alyssa.
 
-373
+369
 00:22:30,100 --> 00:22:35,456
 And the big wheel of the company doesn't work for anybody.
 
-374
+370
 00:22:36,816 --> 00:22:38,110
 Right, That's Oliver Warbucks.
 
-375
+371
 00:22:38,110 --> 00:22:39,312
 Anyway, what we're going to do is ask questions about that little world.
 
-376
+372
 00:22:40,944 --> 00:22:43,664
 Anyway, what we're going to do is ask questions about that little world.
 
-377
+373
 00:22:44,970 --> 00:22:48,400
 And that'll be a sample world that we're going to do logic in.
 
-378
+374
 00:22:51,420 --> 00:22:54,960
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-379
+375
 00:22:55,600 --> 00:22:58,208
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-380
+376
 00:22:58,800 --> 00:23:01,664
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-381
+377
 00:23:02,256 --> 00:23:04,432
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-382
+378
 00:23:06,120 --> 00:23:07,790
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-383
+379
 00:23:14,704 --> 00:23:16,400
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-384
+380
 00:23:16,672 --> 00:23:19,376
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-385
+381
 00:23:19,968 --> 00:23:21,936
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-386
+382
 00:23:24,688 --> 00:23:27,584
 Let me just write up here, for probably the last time, what I said is the very most important thing you should get out of this course, and that is, when somebody tells you about a language, you say, fine-- what are the primitives, what are the means of combination, how do you put the primitives together, and then how do you abstract them, how do you abstract the compound pieces so you can use them as pieces to make something more complicated?
 
-387
+383
 00:23:29,024 --> 00:23:30,816
 And we've said this a whole bunch of times already, but it's worth saying again.
 
-388
+384
 00:23:31,168 --> 00:23:32,480
 And we've said this a whole bunch of times already, but it's worth saying again.
 
-389
+385
 00:23:35,008 --> 00:23:36,670
 OKay? Let's start.
 
-390
+386
 00:23:36,670 --> 00:23:37,344
 The primitives.
 
-391
+387
 00:23:37,776 --> 00:23:39,440
 Well, there's really only one primitive, and the primitive in this language is called a query.
 
-392
+388
 00:23:40,960 --> 00:23:43,200
 Well, there's really only one primitive, and the primitive in this language is called a query.
 
-393
+389
 00:23:44,144 --> 00:23:45,744
 A primitive query.
 
-394
+390
 00:23:46,810 --> 00:23:48,256
 Let's look at some primitive queries.
 
-395
+391
 00:23:51,824 --> 00:23:53,024
 Alright. Job x.
 
-396
+392
 00:23:53,100 --> 00:23:54,816
 Who is a computer programmer?
 
-397
+393
 00:23:55,550 --> 00:23:59,888
 Or find every fact in the database that matches job of the x is computer programmer.
 
-398
+394
 00:24:01,552 --> 00:24:06,144
 Or find every fact in the database that matches job of the x is computer programmer.
 
-399
+395
 00:24:06,640 --> 00:24:08,016
 And you see a little syntax here.
 
-400
+396
 00:24:08,470 --> 00:24:10,592
 Things without question marks are meant to be literal, question mark x means that's a variable, and this thing will match, for example, the fact that Alyssa P. Hacker is a computer programmer, or x is Alyssa P. Hacker.
 
-401
+397
 00:24:11,280 --> 00:24:13,152
 Things without question marks are meant to be literal, question mark x means that's a variable, and this thing will match, for example, the fact that Alyssa P. Hacker is a computer programmer, or x is Alyssa P. Hacker.
 
-402
+398
 00:24:13,312 --> 00:24:15,568
 Things without question marks are meant to be literal, question mark x means that's a variable, and this thing will match, for example, the fact that Alyssa P. Hacker is a computer programmer, or x is Alyssa P. Hacker.
 
-403
+399
 00:24:16,032 --> 00:24:19,008
 Things without question marks are meant to be literal, question mark x means that's a variable, and this thing will match, for example, the fact that Alyssa P. Hacker is a computer programmer, or x is Alyssa P. Hacker.
 
-404
+400
 00:24:19,280 --> 00:24:21,930
 Things without question marks are meant to be literal, question mark x means that's a variable, and this thing will match, for example, the fact that Alyssa P. Hacker is a computer programmer, or x is Alyssa P. Hacker.
 
-405
+401
 00:24:26,820 --> 00:24:29,984
 Or more generally, I could have something with two variables in it.
 
-406
+402
 00:24:30,750 --> 00:24:31,456
 I could say, the job of x is computer something, and that'll match computer wizard.
 
-407
+403
 00:24:31,600 --> 00:24:35,888
 I could say, the job of x is computer something, and that'll match computer wizard.
 
-408
+404
 00:24:39,344 --> 00:24:41,392
 I could say, the job of x is computer something, and that'll match computer wizard.
 
-409
+405
 00:24:42,140 --> 00:24:44,288
 So there's something here: type will match wizard, or type will match programmer, or x might match various certain things.
 
-410
+406
 00:24:44,928 --> 00:24:46,464
 So there's something here: type will match wizard, or type will match programmer, or x might match various certain things.
 
-411
+407
 00:24:47,488 --> 00:24:50,370
 So there's something here: type will match wizard, or type will match programmer, or x might match various certain things.
 
-412
+408
 00:24:50,370 --> 00:24:52,240
 So there are, in our little example, only three facts in that database that match that query.
 
-413
+409
 00:24:52,256 --> 00:24:55,150
 So there are, in our little example, only three facts in that database that match that query.
 
-414
+410
 00:24:59,210 --> 00:25:00,736
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-415
+411
 00:25:00,960 --> 00:25:02,080
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-416
+412
 00:25:05,296 --> 00:25:08,096
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-417
+413
 00:25:09,856 --> 00:25:11,792
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-418
+414
 00:25:11,840 --> 00:25:13,648
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-419
+415
 00:25:14,224 --> 00:25:17,744
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-420
+416
 00:25:19,968 --> 00:25:21,968
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-421
+417
 00:25:22,320 --> 00:25:23,808
 Let's see, just to show you some syntax, the same query, this query doesn't match the job of x, doesn't match Lewis Reasoner, the reason for that is when I write something here, what I mean is that this is going to be a list of two symbols, of which the first is the word computer, and the second can be anything.
 
-422
+418
 00:25:25,080 --> 00:25:27,320
 And Lewis's job description here has three symbols, so it doesn't match.
 
-423
+419
 00:25:27,808 --> 00:25:28,832
 And Lewis's job description here has three symbols, so it doesn't match.
 
-424
+420
 00:25:30,340 --> 00:25:32,192
 And just to show you a little bit of syntax, the more general thing I might want to type is a thing with a dot here, and this is just standard this notation for saying, this is a list, of which the first element is the word computers, and THE REST, is something that I'll call type.
 
-425
+421
 00:25:35,040 --> 00:25:36,576
 And just to show you a little bit of syntax, the more general thing I might want to type is a thing with a dot here, and this is just standard this notation for saying, this is a list, of which the first element is the word computers, and THE REST, is something that I'll call type.
 
-426
+422
 00:25:36,960 --> 00:25:38,224
 And just to show you a little bit of syntax, the more general thing I might want to type is a thing with a dot here, and this is just standard this notation for saying, this is a list, of which the first element is the word computers, and THE REST, is something that I'll call type.
 
-427
+423
 00:25:40,176 --> 00:25:42,928
 And just to show you a little bit of syntax, the more general thing I might want to type is a thing with a dot here, and this is just standard this notation for saying, this is a list, of which the first element is the word computers, and THE REST, is something that I'll call type.
 
-428
+424
 00:25:43,040 --> 00:25:47,328
 And just to show you a little bit of syntax, the more general thing I might want to type is a thing with a dot here, and this is just standard this notation for saying, this is a list, of which the first element is the word computers, and THE REST, is something that I'll call type.
 
-429
+425
 00:25:47,584 --> 00:25:50,224
 And just to show you a little bit of syntax, the more general thing I might want to type is a thing with a dot here, and this is just standard this notation for saying, this is a list, of which the first element is the word computers, and THE REST, is something that I'll call type.
 
-430
+426
 00:25:53,730 --> 00:25:55,504
 So this one would match.
 
-431
+427
 00:25:56,930 --> 00:25:59,312
 Lewis's job is computer programmer trainee, and type here would be the cdr of this list. It would be the list programmer trainee.
 
-432
+428
 00:25:59,440 --> 00:26:03,296
 Lewis's job is computer programmer trainee, and type here would be the cdr of this list. It would be the list programmer trainee.
 
-433
+429
 00:26:03,328 --> 00:26:05,648
 Lewis's job is computer programmer trainee, and type here would be the cdr of this list. It would be the list programmer trainee.
 
-434
+430
 00:26:06,960 --> 00:26:10,460
 And that kind of dot processing is done automatically by the LISP reader.
 
-435
+431
 00:26:15,900 --> 00:26:17,760
 Well, let's actually try this.
 
-436
+432
 00:26:17,760 --> 00:26:20,512
 The idea is I'm going to type in queries in this language, and answers will come out.
 
-437
+433
 00:26:20,768 --> 00:26:21,824
 The idea is I'm going to type in queries in this language, and answers will come out.
 
-438
+434
 00:26:22,544 --> 00:26:24,480
 Let's look at this.
 
-439
+435
 00:26:25,180 --> 00:26:26,512
 I can go up and say, who works in the computer division?
 
-440
+436
 00:26:27,344 --> 00:26:28,880
 I can go up and say, who works in the computer division?
 
-441
+437
 00:26:30,000 --> 00:26:38,224
 Job of x is computer dot y.
 
-442
+438
 00:26:39,730 --> 00:26:41,488
 Doesn't matter what I call the dummy variables.
 
-443
+439
 00:26:42,768 --> 00:26:44,144
 It says the answers to that, and it's found four answers.
 
-444
+440
 00:26:44,416 --> 00:26:45,680
 It says the answers to that, and it's found four answers.
 
-445
+441
 00:26:48,650 --> 00:26:50,096
 Or I can go off and say, tell me about everybody's supervisor.
 
-446
+442
 00:26:50,560 --> 00:26:52,384
 Or I can go off and say, tell me about everybody's supervisor.
 
-447
+443
 00:26:52,816 --> 00:26:54,880
 So I'll put in the query, the primitive query, the supervisor of x is y.
 
-448
+444
 00:26:56,528 --> 00:26:59,390
 So I'll put in the query, the primitive query, the supervisor of x is y.
 
-449
+445
 00:27:02,560 --> 00:27:05,424
 There are all the supervisor relationships I know.
 
-450
+446
 00:27:05,540 --> 00:27:08,830
 Or I could go type in, who lives in Cambridge?
 
-451
+447
 00:27:08,830 --> 00:27:09,472
 So I can say, the address of x is Cambridge dot anything.
 
-452
+448
 00:27:10,240 --> 00:27:20,928
 So I can say, the address of x is Cambridge dot anything.
 
-453
+449
 00:27:25,090 --> 00:27:26,896
 And only one person lives in Cambridge.
 
-454
+450
 00:27:30,820 --> 00:27:32,170
 OK, so those are primitive queries.
 
-455
+451
 00:27:32,170 --> 00:27:34,960
 And you see what happens to basic interaction with the system is you type in a query, and it types out all possible answers.
 
-456
+452
 00:27:35,296 --> 00:27:39,248
 And you see what happens to basic interaction with the system is you type in a query, and it types out all possible answers.
 
-457
+453
 00:27:39,620 --> 00:27:40,656
 Or another way to say that: it finds out all the possible values of those variables x and y or t or whatever I've called them, and it types out all ways of taking that query and instantiating it-- remember that from the rule system lecture-- instantiates the query with all possible values for those variables and then types out all of them.
 
-458
+454
 00:27:40,672 --> 00:27:45,984
 Or another way to say that: it finds out all the possible values of those variables x and y or t or whatever I've called them, and it types out all ways of taking that query and instantiating it-- remember that from the rule system lecture-- instantiates the query with all possible values for those variables and then types out all of them.
 
-459
+455
 00:27:46,096 --> 00:27:52,080
 Or another way to say that: it finds out all the possible values of those variables x and y or t or whatever I've called them, and it types out all ways of taking that query and instantiating it-- remember that from the rule system lecture-- instantiates the query with all possible values for those variables and then types out all of them.
 
-460
+456
 00:27:52,928 --> 00:27:55,056
 Or another way to say that: it finds out all the possible values of those variables x and y or t or whatever I've called them, and it types out all ways of taking that query and instantiating it-- remember that from the rule system lecture-- instantiates the query with all possible values for those variables and then types out all of them.
 
-461
+457
 00:27:55,080 --> 00:27:58,830
 Or another way to say that: it finds out all the possible values of those variables x and y or t or whatever I've called them, and it types out all ways of taking that query and instantiating it-- remember that from the rule system lecture-- instantiates the query with all possible values for those variables and then types out all of them.
 
-462
+458
 00:27:59,008 --> 00:28:00,352
 Or another way to say that: it finds out all the possible values of those variables x and y or t or whatever I've called them, and it types out all ways of taking that query and instantiating it-- remember that from the rule system lecture-- instantiates the query with all possible values for those variables and then types out all of them.
 
-463
+459
 00:28:01,000 --> 00:28:03,350
 And there are a lot of ways you can arrange a logic language.
 
-464
+460
 00:28:03,350 --> 00:28:06,010
 Prolog, for instance, does something slightly different.
 
-465
+461
 00:28:06,010 --> 00:28:07,440
 Rather than typing back your query, prolog would type out, x equals this and y equals that, or x sequels this and y equals that.
 
-466
+462
 00:28:07,760 --> 00:28:10,784
 Rather than typing back your query, prolog would type out, x equals this and y equals that, or x sequels this and y equals that.
 
-467
+463
 00:28:10,976 --> 00:28:12,944
 Rather than typing back your query, prolog would type out, x equals this and y equals that, or x sequels this and y equals that.
 
-468
+464
 00:28:13,660 --> 00:28:15,488
 And that's a very surface level thing, you can decide what you like.
 
-469
+465
 00:28:15,712 --> 00:28:17,050
 And that's a very surface level thing, you can decide what you like.
 
-470
+466
 00:28:18,976 --> 00:28:19,584
 OK.
 
-471
+467
 00:28:21,008 --> 00:28:22,688
 Alright. So the primitives in this language?
 
-472
+468
 00:28:23,390 --> 00:28:24,570
 Only one, right?
 
-473
+469
 00:28:24,570 --> 00:28:27,230
 Primitive query.
 
-474
+470
 00:28:31,312 --> 00:28:32,560
 Means of combination.
 
-475
+471
 00:28:34,330 --> 00:28:37,680
 Let's look at some compound queries in this language.
 
-476
+472
 00:28:39,770 --> 00:28:40,464
 Here's one.
 
-477
+473
 00:28:41,790 --> 00:28:42,512
 This one says, tell me all the people who work in the computer division.
 
-478
+474
 00:28:45,056 --> 00:28:48,224
 This one says, tell me all the people who work in the computer division.
 
-479
+475
 00:28:49,810 --> 00:28:53,968
 Tell me all the people who work in the computer division together with their supervisors.
 
-480
+476
 00:28:56,800 --> 00:28:58,832
 The way I write that is the query is and.
 
-481
+477
 00:29:00,220 --> 00:29:04,064
 And the job of the x is computer something or other.
 
-482
+478
 00:29:04,920 --> 00:29:06,832
 And job of x is computer dot y.
 
-483
+479
 00:29:07,560 --> 00:29:10,032
 And the supervisor of x is z.
 
-484
+480
 00:29:11,440 --> 00:29:14,160
 Tell me all the people in the computer division-- that's this-- together with their supervisors.
 
-485
+481
 00:29:14,304 --> 00:29:15,888
 Tell me all the people in the computer division-- that's this-- together with their supervisors.
 
-486
+482
 00:29:16,460 --> 00:29:17,824
 And notice in this query I have three variables-- x, y, and z.
 
-487
+483
 00:29:18,672 --> 00:29:22,416
 And notice in this query I have three variables-- x, y, and z.
 
-488
+484
 00:29:23,660 --> 00:29:25,200
 And this x is supposed to be the same as that x.
 
-489
+485
 00:29:26,992 --> 00:29:28,656
 And this x is supposed to be the same as that x.
 
-490
+486
 00:29:29,450 --> 00:29:31,168
 So x works in the computer division, and the supervisor of x is z.
 
-491
+487
 00:29:31,312 --> 00:29:33,008
 So x works in the computer division, and the supervisor of x is z.
 
-492
+488
 00:29:34,810 --> 00:29:35,808
 Let's try another one.
 
-493
+489
 00:29:37,250 --> 00:29:39,280
 So one means of combination is and.
 
-494
+490
 00:29:41,440 --> 00:29:43,968
 Who are all the people who make more than $30,000?
 
-495
+491
 00:29:45,712 --> 00:29:51,712
 And the salary of some person p is some amount a.
 
-496
+492
 00:29:54,590 --> 00:29:57,456
 And when I go and look at a, a is greater than $30,000.
 
-497
+493
 00:29:57,488 --> 00:30:00,128
 And when I go and look at a, a is greater than $30,000.
 
-498
+494
 00:30:00,600 --> 00:30:03,232
 And LISP value here is a little piece of interface that interfaces the query language to the underlying LISP.
 
-499
+495
 00:30:04,304 --> 00:30:10,048
 And LISP value here is a little piece of interface that interfaces the query language to the underlying LISP.
 
-500
+496
 00:30:10,600 --> 00:30:12,720
 And what the LISP value allows you to do is call any LISP predicate inside a query.
 
-501
+497
 00:30:12,752 --> 00:30:16,912
 And what the LISP value allows you to do is call any LISP predicate inside a query.
 
-502
+498
 00:30:17,180 --> 00:30:20,112
 So here I'm using the LISP predicate greater than, so I say LISP value.
 
-503
+499
 00:30:21,020 --> 00:30:21,750
 This I say and.
 
-504
+500
 00:30:21,750 --> 00:30:24,480
 So all the people whose salary is greater than $30,000.
 
-505
+501
 00:30:28,190 --> 00:30:30,032
 Or here's a more complicated one.
 
-506
+502
 00:30:31,270 --> 00:30:35,024
 Tell me all the people who work in the computer division who do not have a supervisor who works in the computer division.
 
-507
+503
 00:30:36,256 --> 00:30:39,360
 Tell me all the people who work in the computer division who do not have a supervisor who works in the computer division.
 
-508
+504
 00:30:42,790 --> 00:30:45,510
 and x works in the computer division.
 
-509
+505
 00:30:45,510 --> 00:30:47,328
 The job of x is computer dot y.
 
-510
+506
 00:30:47,780 --> 00:30:49,248
 And it's not the case that both x has a supervisor z and the job of z is computer something or other.
 
-511
+507
 00:30:50,496 --> 00:30:54,256
 And it's not the case that both x has a supervisor z and the job of z is computer something or other.
 
-512
+508
 00:30:55,376 --> 00:30:57,872
 And it's not the case that both x has a supervisor z and the job of z is computer something or other.
 
-513
+509
 00:30:59,620 --> 00:31:00,352
 All right, so again, this x has got to be that x, and this z is going to be that z.
 
-514
+510
 00:31:00,512 --> 00:31:02,384
 All right, so again, this x has got to be that x, and this z is going to be that z.
 
-515
+511
 00:31:03,200 --> 00:31:05,760
 All right, so again, this x has got to be that x, and this z is going to be that z.
 
-516
+512
 00:31:09,390 --> 00:31:11,380
 And then you see another means a combination, not.
 
-517
+513
 00:31:17,712 --> 00:31:18,672
 All right, well, let's look at that.
 
-518
+514
 00:31:20,880 --> 00:31:22,080
 It works the same way.
 
-519
+515
 00:31:22,400 --> 00:31:24,128
 I can go up to the machine and say and the job of the x is computer dot y.
 
-520
+516
 00:31:26,896 --> 00:31:35,400
 I can go up to the machine and say and the job of the x is computer dot y.
 
-521
+517
 00:31:38,848 --> 00:31:45,952
 And the supervisor of x is z.
 
-522
+518
 00:31:46,832 --> 00:31:49,536
 And I typed that in like a query.
 
-523
+519
 00:31:51,072 --> 00:31:52,976
 And what it types back, what you see are the queries I typed in instantiated by all possible answers.
 
-524
+520
 00:31:54,000 --> 00:31:57,072
 And what it types back, what you see are the queries I typed in instantiated by all possible answers.
 
-525
+521
 00:31:57,344 --> 00:31:58,704
 And what it types back, what you see are the queries I typed in instantiated by all possible answers.
 
-526
+522
 00:31:58,930 --> 00:32:00,080
 And then you see there are a lot of answers.
 
-527
+523
 00:32:01,696 --> 00:32:02,144
 All right.
 
-528
+524
 00:32:02,190 --> 00:32:04,048
 So the means of combination in this language-- and this is why it's called a logic language-- are logical operations.
 
-529
+525
 00:32:05,216 --> 00:32:06,608
 So the means of combination in this language-- and this is why it's called a logic language-- are logical operations.
 
-530
+526
 00:32:06,640 --> 00:32:09,472
 So the means of combination in this language-- and this is why it's called a logic language-- are logical operations.
 
-531
+527
 00:32:09,800 --> 00:32:11,536
 Means of combinations are things like AND and NOT and there's one I didn't show you, which is OR.
 
-532
+528
 00:32:12,848 --> 00:32:17,920
 Means of combinations are things like AND and NOT and there's one I didn't show you, which is OR.
 
-533
+529
 00:32:18,490 --> 00:32:20,368
 And then I showed you LISP value, which is not logic, of course, but is a little special hack to interface that to LISP so you can get more power.
 
-534
+530
 00:32:20,720 --> 00:32:26,880
 And then I showed you LISP value, which is not logic, of course, but is a little special hack to interface that to LISP so you can get more power.
 
-535
+531
 00:32:27,344 --> 00:32:28,752
 And then I showed you LISP value, which is not logic, of course, but is a little special hack to interface that to LISP so you can get more power.
 
-536
+532
 00:32:29,250 --> 00:32:30,672
 Those are the means of combination.
 
-537
+533
 00:32:32,592 --> 00:32:33,984
 OK, the means of abstraction.
 
-538
+534
 00:32:34,160 --> 00:32:35,216
 What we'd like to do--  let's go back for second and look at that last slide.
 
-539
+535
 00:32:38,272 --> 00:32:41,248
 What we'd like to do--  let's go back for second and look at that last slide.
 
-540
+536
 00:32:42,260 --> 00:32:44,256
 We might like to take very complicated thing, the idea that someone works in a division but does not have a supervisor in the division.
 
-541
+537
 00:32:44,464 --> 00:32:45,360
 We might like to take very complicated thing, the idea that someone works in a division but does not have a supervisor in the division.
 
-542
+538
 00:32:45,840 --> 00:32:50,096
 We might like to take very complicated thing, the idea that someone works in a division but does not have a supervisor in the division.
 
-543
+539
 00:32:52,400 --> 00:32:55,104
 And as before, name that.
 
-544
+540
 00:32:56,090 --> 00:33:00,256
 Well, if someone works in a division and does not have a supervisor who works in that division, that means that person is a big shot.
 
-545
+541
 00:33:00,480 --> 00:33:01,936
 Well, if someone works in a division and does not have a supervisor who works in that division, that means that person is a big shot.
 
-546
+542
 00:33:02,750 --> 00:33:05,136
 So let's make a rule that somebody x is a big shot in some department if x works in the department and it's not the case that x has a supervisor who works in the department.
 
-547
+543
 00:33:06,432 --> 00:33:09,168
 So let's make a rule that somebody x is a big shot in some department if x works in the department and it's not the case that x has a supervisor who works in the department.
 
-548
+544
 00:33:10,912 --> 00:33:14,688
 So let's make a rule that somebody x is a big shot in some department if x works in the department and it's not the case that x has a supervisor who works in the department.
 
-549
+545
 00:33:16,048 --> 00:33:20,080
 So let's make a rule that somebody x is a big shot in some department if x works in the department and it's not the case that x has a supervisor who works in the department.
 
-550
+546
 00:33:21,510 --> 00:33:22,940
 So this is our means of abstraction.
 
-551
+547
 00:33:22,940 --> 00:33:23,904
 This is a rule.
 
-552
+548
 00:33:26,220 --> 00:33:27,580
 And a rule has three parts.
 
-553
+549
 00:33:31,008 --> 00:33:32,480
 The thing that says it's a rule.
 
-554
+550
 00:33:33,408 --> 00:33:35,488
 And then there's the conclusion of the rule.
 
-555
+551
 00:33:37,530 --> 00:33:39,072
 And then there's the body of the rule.
 
-556
+552
 00:33:40,000 --> 00:33:45,152
 And you can read this as a piece of logic which says, if you know that the body of the rule is true, then you can conclude that the conclusion is true.
 
-557
+553
 00:33:46,400 --> 00:33:48,720
 And you can read this as a piece of logic which says, if you know that the body of the rule is true, then you can conclude that the conclusion is true.
 
-558
+554
 00:33:49,470 --> 00:33:51,280
 Or in order to deduce that x is a big shot in some department, it's enough to verify that.
 
-559
+555
 00:33:51,328 --> 00:33:53,280
 Or in order to deduce that x is a big shot in some department, it's enough to verify that.
 
-560
+556
 00:33:53,792 --> 00:33:55,712
 Or in order to deduce that x is a big shot in some department, it's enough to verify that.
 
-561
+557
 00:33:57,480 --> 00:33:58,820
 So that's what rules look like.
 
-562
+558
 00:34:03,280 --> 00:34:06,128
 Let's go back and look at that merge example that I did before the break.
 
-563
+559
 00:34:06,688 --> 00:34:07,952
 Let's go back and look at that merge example that I did before the break.
 
-564
+560
 00:34:08,110 --> 00:34:10,688
 Let's look at how that would look in terms of rules.
 
-565
+561
 00:34:11,440 --> 00:34:12,848
 I'm going to take the logic I put up and just change it into a bunch of rules in this format.
 
-566
+562
 00:34:13,088 --> 00:34:15,500
 I'm going to take the logic I put up and just change it into a bunch of rules in this format.
 
-567
+563
 00:34:18,739 --> 00:34:19,350
 We have a rule.
 
-568
+564
 00:34:19,350 --> 00:34:20,960
 Remember, there was this thing merge-to-form.
 
-569
+565
 00:34:21,710 --> 00:34:22,976
 There is a rule that says, the empty list and y merge to form y.
 
-570
+566
 00:34:26,288 --> 00:34:29,620
 There is a rule that says, the empty list and y merge to form y.
 
-571
+567
 00:34:29,620 --> 00:34:30,870
 This is the rule conclusion.
 
-572
+568
 00:34:33,210 --> 00:34:35,744
 And notice this particular rule has no body.
 
-573
+569
 00:34:36,650 --> 00:34:37,664
 And in this language, a rule with no body is something that is always true.
 
-574
+570
 00:34:38,112 --> 00:34:40,864
 And in this language, a rule with no body is something that is always true.
 
-575
+571
 00:34:41,239 --> 00:34:42,510
 You can always assume that's true.
 
-576
+572
 00:34:45,190 --> 00:34:46,496
 And there was another piece of logic that said anything in the empty list merged to form the anything.
 
-577
+573
 00:34:46,640 --> 00:34:49,460
 And there was another piece of logic that said anything in the empty list merged to form the anything.
 
-578
+574
 00:34:49,460 --> 00:34:50,128
 That's this.
 
-579
+575
 00:34:50,900 --> 00:34:53,552
 A rule y and the empty list merge to form y.
 
-580
+576
 00:34:55,510 --> 00:34:58,400
 Those corresponded to the two end cases in our merge procedure, but now we're talking about logic, not about procedures.
 
-581
+577
 00:34:58,448 --> 00:34:59,776
 Those corresponded to the two end cases in our merge procedure, but now we're talking about logic, not about procedures.
 
-582
+578
 00:35:00,416 --> 00:35:01,456
 Those corresponded to the two end cases in our merge procedure, but now we're talking about logic, not about procedures.
 
-583
+579
 00:35:03,490 --> 00:35:04,480
 Then we had another rule, which said if you know how shorter things merge, you can put them together.
 
-584
+580
 00:35:04,832 --> 00:35:08,736
 Then we had another rule, which said if you know how shorter things merge, you can put them together.
 
-585
+581
 00:35:08,912 --> 00:35:09,830
 Then we had another rule, which said if you know how shorter things merge, you can put them together.
 
-586
+582
 00:35:09,830 --> 00:35:14,160
 So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
 
-587
+583
 00:35:14,928 --> 00:35:17,616
 So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
 
-588
+584
 00:35:17,632 --> 00:35:19,088
 So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
 
-589
+585
 00:35:19,488 --> 00:35:22,368
 So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
 
-590
+586
 00:35:23,168 --> 00:35:27,408
 So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
 
-591
+587
 00:35:48,690 --> 00:35:50,592
 So when I merge them, b will come first in the list. That's a little translation of the logic rule that I wrote in pseudo-English before.
 
-592
+588
 00:35:51,824 --> 00:35:54,912
 So when I merge them, b will come first in the list. That's a little translation of the logic rule that I wrote in pseudo-English before.
 
-593
+589
 00:35:55,248 --> 00:35:57,184
 So when I merge them, b will come first in the list. That's a little translation of the logic rule that I wrote in pseudo-English before.
 
-594
+590
 00:35:57,960 --> 00:36:00,256
 And then just for completeness, here's the other case.
 
-595
+591
 00:36:00,608 --> 00:36:01,660
 And then just for completeness, here's the other case.
 
-596
+592
 00:36:02,880 --> 00:36:05,952
 a dot x and b dot y merge to form a dot z if x and b dot y merged to form z and b is larger than a.
 
-597
+593
 00:36:06,080 --> 00:36:09,168
 a dot x and b dot y merge to form a dot z if x and b dot y merged to form z and b is larger than a.
 
-598
+594
 00:36:09,472 --> 00:36:11,008
 a dot x and b dot y merge to form a dot z if x and b dot y merged to form z and b is larger than a.
 
-599
+595
 00:36:12,190 --> 00:36:14,096
 So that's a little program that I've typed in in this language, and now let's look at it run.
 
-600
+596
 00:36:14,240 --> 00:36:17,072
 So that's a little program that I've typed in in this language, and now let's look at it run.
 
-601
+597
 00:36:21,900 --> 00:36:23,904
 So I typed in the merge rules before, and I could use this like a procedure.
 
-602
+598
 00:36:24,624 --> 00:36:25,776
 So I typed in the merge rules before, and I could use this like a procedure.
 
-603
+599
 00:36:27,040 --> 00:36:28,510
 So I typed in the merge rules before, and I could use this like a procedure.
 
-604
+600
 00:36:28,510 --> 00:36:38,240
 I could say merge to form 1 and 3 and 2 and 7.
 
-605
+601
 00:36:39,424 --> 00:36:41,552
 So here I'm using it like the LISP procedure.
 
-606
+602
 00:36:43,168 --> 00:36:44,976
 Now it's going to think about that for a while and apply these rules.
 
-607
+603
 00:36:46,432 --> 00:36:47,568
 Now it's going to think about that for a while and apply these rules.
 
-608
+604
 00:36:50,780 --> 00:36:51,920
 So it found an answer.
 
-609
+605
 00:36:52,800 --> 00:36:54,544
 Now it's going to see if there are any other answers but it doesn't know a priori there's only one answer.
 
-610
+606
 00:36:55,072 --> 00:36:57,328
 Now it's going to see if there are any other answers but it doesn't know a priori there's only one answer.
 
-611
+607
 00:36:57,810 --> 00:36:59,904
 So it's sitting here checking all possibilities, and it says, no more.
 
-612
+608
 00:37:00,416 --> 00:37:02,544
 So it's sitting here checking all possibilities, and it says, no more. Done.
 
-613
+609
 00:37:03,168 --> 00:37:05,072
 So there I've used those rules like a procedure.
 
-614
+610
 00:37:05,210 --> 00:37:09,056
 Or remember the whole point is that I can ask different kinds of questions.
 
-615
+611
 00:37:10,220 --> 00:37:11,072
 I could say merge to form, let's see, how about 2 and a.
 
-616
+612
 00:37:18,560 --> 00:37:24,590
 I could say merge to form, let's see, how about 2 and a.
 
-617
+613
 00:37:24,590 --> 00:37:25,952
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-618
+614
 00:37:26,336 --> 00:37:27,840
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-619
+615
 00:37:29,376 --> 00:37:31,264
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-620
+616
 00:37:33,056 --> 00:37:35,040
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-621
+617
 00:37:36,480 --> 00:37:39,510
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-622
+618
 00:37:42,760 --> 00:37:44,112
 So now it's going to think about that.
 
-623
+619
 00:37:44,590 --> 00:37:49,408
 It's got to find--  so it found one possibility.
 
-624
+620
 00:37:49,520 --> 00:37:52,464
 It said a could be 3, and x could be the list 1, 4.
 
-625
+621
 00:37:53,830 --> 00:37:55,152
 And now, again, it's got to check because it doesn't a priori know that there aren't any other possibilities going on.
 
-626
+622
 00:37:56,496 --> 00:38:00,304
 And now, again, it's got to check because it doesn't a priori know that there aren't any other possibilities going on.
 
-627
+623
 00:38:03,680 --> 00:38:06,576
 Or like I said, I could say something like merge to form, like, what and what else merge to form 1, 2, 3, 4, 5?
 
-628
+624
 00:38:07,008 --> 00:38:09,840
 Or like I said, I could say something like merge to form, like, what and what else merge to form 1, 2, 3, 4, 5?
 
-629
+625
 00:38:10,544 --> 00:38:17,552
 Or like I said, I could say something like merge to form, like, what and what else merge to form 1, 2, 3, 4, 5?
 
-630
+626
 00:38:23,680 --> 00:38:25,536
 Now it's going to think about that.
 
-631
+627
 00:38:28,490 --> 00:38:30,310
 And there are a lot of answers that it might get.
 
-632
+628
 00:38:35,180 --> 00:38:38,576
 And what you see is here you're really paying the price of slowness.
 
-633
+629
 00:38:42,210 --> 00:38:43,880
 And kind of for three reasons.
 
-634
+630
 00:38:43,880 --> 00:38:46,224
 One is that this language is doubly interpreted.
 
-635
+631
 00:38:47,630 --> 00:38:49,728
 Whereas in a real implementation, you would go compile this down to primitive operations.
 
-636
+632
 00:38:49,760 --> 00:38:52,048
 Whereas in a real implementation, you would go compile this down to primitive operations.
 
-637
+633
 00:38:52,190 --> 00:38:53,872
 The other reason is that this particular algorithm for merges is doubly recursive.
 
-638
+634
 00:38:53,888 --> 00:38:58,112
 The other reason is that this particular algorithm for merges is doubly recursive.
 
-639
+635
 00:38:58,380 --> 00:39:00,064
 So it's going to take a very long time.
 
-640
+636
 00:39:01,020 --> 00:39:07,130
 And eventually, this is going to go through and find-- find what?
 
-641
+637
 00:39:07,130 --> 00:39:08,730
 Two to the fifth possible answers.
 
-642
+638
 00:39:12,140 --> 00:39:14,960
 And you see they come out in some fairly arbitrary order, depending on which order it's going to be trying these rules.
 
-643
+639
 00:39:15,008 --> 00:39:18,144
 And you see they come out in some fairly arbitrary order, depending on which order it's going to be trying these rules.
 
-644
+640
 00:39:20,160 --> 00:39:22,240
 In fact, what we're going to do when they edit the videotape is speed all this up.
 
-645
+641
 00:39:22,448 --> 00:39:23,440
 In fact, what we're going to do when they edit the videotape is speed all this up.
 
-646
+642
 00:39:24,080 --> 00:39:26,600
 Don't you like taking out these weights?
 
-647
+643
 00:39:26,600 --> 00:39:28,272
 And don't you wish you could do that in your demos?
 
-648
+644
 00:39:29,488 --> 00:39:34,240
 Anyway, it's still grinding there.
 
-649
+645
 00:39:39,220 --> 00:39:41,120
 Anyway, there are 32 possibilities-- we won't wait for it to print out all of them.
 
-650
+646
 00:39:41,136 --> 00:39:42,630
 Anyway, there are 32 possibilities-- we won't wait for it to print out all of them.
 
-651
+647
 00:39:47,850 --> 00:39:50,448
 OK, so the needs of abstraction in this language are rules.
 
-652
+648
 00:39:53,536 --> 00:39:58,016
 So we take some bunch of things that are put together with logic and we name them.
 
-653
+649
 00:39:59,120 --> 00:40:00,080
 So we take some bunch of things that are put together with logic and we name them.
 
-654
+650
 00:40:00,350 --> 00:40:03,410
 And you can think of that as naming a particular pattern of logic.
 
-655
+651
 00:40:03,410 --> 00:40:06,752
 Or you can think of that as saying, if you want to deduce some conclusion, you can apply those rules of logic.
 
-656
+652
 00:40:07,904 --> 00:40:09,520
 Or you can think of that as saying, if you want to deduce some conclusion, you can apply those rules of logic.
 
-657
+653
 00:40:10,660 --> 00:40:13,200
 And those are three elements of this language.
 
-658
+654
 00:40:13,420 --> 00:40:16,592
 Let's break now, and then we'll talk about how it's actually implemented.
 
-659
+655
 00:40:23,616 --> 00:40:28,848
 STUDENT: Does using LISP value primitive or whatever interfere with your means to go both directions on a query?
 
-660
+656
 00:40:29,152 --> 00:40:30,640
 STUDENT: Does using LISP value primitive or whatever interfere with your means to go both directions on a query?
 
-661
+657
 00:40:31,770 --> 00:40:34,480
 PROFESSOR: OK, that's a-- the question is, does using LISP value interfere with the ability to go both directions on the query?
 
-662
+658
 00:40:35,088 --> 00:40:36,928
 PROFESSOR: OK, that's a-- the question is, does using LISP value interfere with the ability to go both directions on the query?
 
-663
+659
 00:40:37,536 --> 00:40:40,090
 PROFESSOR: OK, that's a-- the question is, does using LISP value interfere with the ability to go both directions on the query?
 
-664
+660
 00:40:40,090 --> 00:40:42,816
 We haven't really talked about the implementation yet, but the answer is, yes, it can.
 
-665
+661
 00:40:43,680 --> 00:40:45,520
 We haven't really talked about the implementation yet, but the answer is, yes, it can.
 
-666
+662
 00:40:46,890 --> 00:40:52,176
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-667
+663
 00:40:53,216 --> 00:40:59,360
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-668
+664
 00:40:59,550 --> 00:41:02,890
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-669
+665
 00:41:04,096 --> 00:41:06,016
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-670
+666
 00:41:06,336 --> 00:41:08,480
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-671
+667
 00:41:08,700 --> 00:41:10,360
 They won't work quite in all situations.
 
-672
+668
 00:41:10,360 --> 00:41:13,392
 I'll talk about that at the end of the second half today.
 
-673
+669
 00:41:14,300 --> 00:41:15,840
 But the answer to your question is, yes, by dragging in a lot more power from LISP value, you lose some of the principal power of logic programming.
 
-674
+670
 00:41:16,192 --> 00:41:19,216
 But the answer to your question is, yes, by dragging in a lot more power from LISP value, you lose some of the principal power of logic programming.
 
-675
+671
 00:41:19,408 --> 00:41:23,776
 But the answer to your question is, yes, by dragging in a lot more power from LISP value, you lose some of the principal power of logic programming.
 
-676
+672
 00:41:24,170 --> 00:41:25,568
 That's a trade-off that you have to make.
 
-677
+673
 00:41:28,480 --> 00:41:29,392
 OK, let's take a break.
 
-678
+674
 00:41:30,176 --> 00:41:37,392
 MIT OpenCourseWare
 http://ocw.mit.edu
 
-679
+675
 00:41:37,408 --> 00:41:44,304
 本项目主页
 https://github.com/DeathKing/Learning-SICP
