@@ -2796,475 +2796,532 @@ it's enough to verify that.
 So that's what rules look like.
 
 561
-00:34:03,280 --> 00:34:06,128
-Let's go back and look at that merge example that I did before the break.
+00:34:03,280 --> 00:34:06,160
+让我们回过头来看看
+Let's go back and look at that merge example
 
 562
-00:34:06,688 --> 00:34:07,952
-Let's go back and look at that merge example that I did before the break.
+00:34:06,736 --> 00:34:07,920
+课间休息前我举的那个例子
+that I did before the break.
 
 563
 00:34:08,110 --> 00:34:10,688
+我们来看看 如果用规则来描述会是什么样的
 Let's look at how that would look in terms of rules.
 
 564
 00:34:11,440 --> 00:34:12,848
-I'm going to take the logic I put up and just change it into a bunch of rules in this format.
+我会抽取出其中的逻辑
+I'm going to take the logic I put up
 
 565
 00:34:13,088 --> 00:34:15,500
-I'm going to take the logic I put up and just change it into a bunch of rules in this format.
+并将它们变为这种格式的规则
+and just change it into a bunch of rules in this format.
 
 566
 00:34:18,739 --> 00:34:19,350
+就有了下面的规则
 We have a rule.
 
 567
 00:34:19,350 --> 00:34:20,960
+这就是MERGE-TO-FORM的规则
 Remember, there was this thing merge-to-form.
 
 568
 00:34:21,710 --> 00:34:22,976
-There is a rule that says, the empty list and y merge to form y.
+这个规则是说
+There is a rule that says,
 
 569
 00:34:26,288 --> 00:34:29,620
-There is a rule that says, the empty list and y merge to form y.
+'()与?Y可以通过MERGE-TO-FORM形成?Y
+the empty list and y merge to form y.
 
 570
 00:34:29,620 --> 00:34:30,870
+这是规则的结论
 This is the rule conclusion.
 
 571
 00:34:33,210 --> 00:34:35,744
+需要注意的是 这个特定的规则没有体
 And notice this particular rule has no body.
 
 572
 00:34:36,650 --> 00:34:37,664
-And in this language, a rule with no body is something that is always true.
+在这门语言中
+And in this language,
 
 573
 00:34:38,112 --> 00:34:40,864
-And in this language, a rule with no body is something that is always true.
+没有体的规则总是真的
+a rule with no body is something that is always true.
 
 574
 00:34:41,239 --> 00:34:42,510
+你总是可以假设它们为真
 You can always assume that's true.
 
 575
 00:34:45,190 --> 00:34:46,496
-And there was another piece of logic that said anything in the empty list merged to form the anything.
+另一条规则说的是
+And there was another piece of logic
 
 576
 00:34:46,640 --> 00:34:49,460
-And there was another piece of logic that said anything in the empty list merged to form the anything.
+任意对象与空表进行MERGE-TO-FORM 得到的任然是原物
+that said anything in the empty list merged to form the anything.
 
 577
 00:34:49,460 --> 00:34:50,128
+就是这条
 That's this.
 
 578
 00:34:50,900 --> 00:34:53,552
+(MERGE-TO-FORM ?Y '() ?Y)
 A rule y and the empty list merge to form y.
 
 579
 00:34:55,510 --> 00:34:58,400
-Those corresponded to the two end cases in our merge procedure, but now we're talking about logic, not about procedures.
+它们对应了我们MERGE过程中的两个终止条件
+Those corresponded to the two end cases in our merge procedure,
 
 580
 00:34:58,448 --> 00:34:59,776
-Those corresponded to the two end cases in our merge procedure, but now we're talking about logic, not about procedures.
+但我们现在讨论的是逻辑
+but now we're talking about logic,
 
 581
 00:35:00,416 --> 00:35:01,456
-Those corresponded to the two end cases in our merge procedure, but now we're talking about logic, not about procedures.
+而非过程
+not about procedures.
 
 582
 00:35:03,490 --> 00:35:04,480
-Then we had another rule, which said if you know how shorter things merge, you can put them together.
+我们还有另外一条规则
+Then we had another rule,
 
 583
 00:35:04,832 --> 00:35:08,736
-Then we had another rule, which said if you know how shorter things merge, you can put them together.
+描述的是 如果你知道如何MERGE较短的表
+which said if you know how shorter things merge,
 
 584
 00:35:08,912 --> 00:35:09,830
-Then we had another rule, which said if you know how shorter things merge, you can put them together.
+那么你就可以把它们结合在一起
+you can put them together.
 
 585
 00:35:09,830 --> 00:35:14,160
-So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
+这条规则说：如果你有表?X、?Y以及?Z
+So this says, if you have a list x and y and z,
 
 586
 00:35:14,928 --> 00:35:17,616
-So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
+如果你想推断出(?A . ?X)
+and if you want to deduce that a dot x--
 
 587
 00:35:17,632 --> 00:35:19,088
-So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
+这个记法表示(CONS ?A ?X)
+this means cons a onto x,
 
 588
 00:35:19,488 --> 00:35:22,368
-So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
+或者说首元素是'A、剩余元素是'X的表
+or a list whose first thing is a and whose rest is x--
 
 589
-00:35:23,168 --> 00:35:27,408
-So this says, if you have a list x and y and z, and if you want to deduce that a dot x-- this means constant a onto x, or a list whose first thing is a and whose rest is x-- so if you want to deduce that a dot x and b dot y merge to form b dot c--  that would say you merge these two lists a x and b y and you're going to get something that starts with b-- you can deduce that if you know that it's the case both that a dot x and y merge to form z and a is larger than b.
+00:35:23,160 --> 00:35:27,400
+由此 如果你想推断(MERGE-TO-FROM (?A . ?X) (?B . ?Y) (?B . ?Z))
+so if you want to deduce that a dot x and b dot y merge to form b dot z--
 
 590
-00:35:48,690 --> 00:35:50,592
-So when I merge them, b will come first in the list. That's a little translation of the logic rule that I wrote in pseudo-English before.
+00:35:30,360 --> 00:35:33,904
+毋宁说如果你想要把表(?A ?X)和表(?B ?Y)合并得到
+that would say you merge these two lists a x and b y
 
 591
-00:35:51,824 --> 00:35:54,912
-So when I merge them, b will come first in the list. That's a little translation of the logic rule that I wrote in pseudo-English before.
+00:35:33,920 --> 00:35:35,856
+一个以?B为首的表
+and you're going to get something that starts with b--
 
 592
-00:35:55,248 --> 00:35:57,184
-So when I merge them, b will come first in the list. That's a little translation of the logic rule that I wrote in pseudo-English before.
+00:35:36,768 --> 00:35:40,672
+你想要推断出这个结果 就要满足
+you can deduce that if you know that it's the case
 
 593
-00:35:57,960 --> 00:36:00,256
-And then just for completeness, here's the other case.
+00:35:40,910 --> 00:35:44,480
+不但(MERGE-TP-FORM (?A . ?X) ?Y ?Z)
+both that a dot x and y merge to form z
 
 594
-00:36:00,608 --> 00:36:01,660
-And then just for completeness, here's the other case.
+00:35:45,184 --> 00:35:47,248
+并且(LISP-VALUE > ?A ?B)
+and a is larger than b.
 
 595
-00:36:02,880 --> 00:36:05,952
-a dot x and b dot y merge to form a dot z if x and b dot y merged to form z and b is larger than a.
+00:35:48,690 --> 00:35:50,592
+因此当我在合并它们时 ?B会首先出现在表中
+So when I merge them, b will come first in the list.
 
 596
-00:36:06,080 --> 00:36:09,168
-a dot x and b dot y merge to form a dot z if x and b dot y merged to form z and b is larger than a.
+00:35:51,824 --> 00:35:54,912
+这就是简单的把我之前写的伪代码
+That's a little translation of the logic rule
 
 597
-00:36:09,472 --> 00:36:11,008
-a dot x and b dot y merge to form a dot z if x and b dot y merged to form z and b is larger than a.
+00:35:55,248 --> 00:35:57,184
+翻译成逻辑的语言
+that I wrote in pseudo-English before.
 
 598
+00:35:57,960 --> 00:36:01,632
+为了翻译完整 这还里有种情况
+And then just for completeness, here's the other case.
+
+599
+00:36:02,880 --> 00:36:05,952
+(MERGE-TO-FORM (?A . ?X) (?B . ?Y) (?A . ?Z))成立
+a dot x and b dot y merge to form a dot z
+
+600
+00:36:06,080 --> 00:36:09,168
+就需要(MERGE-TO-FORM ?X (?B . ?Y) ?Z)
+if x and b dot y merged to form z and b is larger than a.
+
+601
+00:36:09,472 --> 00:36:11,008
+和(LISP-VALUE > ?B ?A)都成立
+and b is larger than a.
+
+602
 00:36:12,190 --> 00:36:14,096
 So that's a little program that I've typed in in this language, and now let's look at it run.
 
-599
+603
 00:36:14,240 --> 00:36:17,072
 So that's a little program that I've typed in in this language, and now let's look at it run.
 
-600
+604
 00:36:21,900 --> 00:36:23,904
 So I typed in the merge rules before, and I could use this like a procedure.
 
-601
+605
 00:36:24,624 --> 00:36:25,776
 So I typed in the merge rules before, and I could use this like a procedure.
 
-602
+606
 00:36:27,040 --> 00:36:28,510
 So I typed in the merge rules before, and I could use this like a procedure.
 
-603
+607
 00:36:28,510 --> 00:36:38,240
 I could say merge to form 1 and 3 and 2 and 7.
 
-604
+608
 00:36:39,424 --> 00:36:41,552
 So here I'm using it like the LISP procedure.
 
-605
+609
 00:36:43,168 --> 00:36:44,976
 Now it's going to think about that for a while and apply these rules.
 
-606
+610
 00:36:46,432 --> 00:36:47,568
 Now it's going to think about that for a while and apply these rules.
 
-607
+611
 00:36:50,780 --> 00:36:51,920
 So it found an answer.
 
-608
+612
 00:36:52,800 --> 00:36:54,544
 Now it's going to see if there are any other answers but it doesn't know a priori there's only one answer.
 
-609
+613
 00:36:55,072 --> 00:36:57,328
 Now it's going to see if there are any other answers but it doesn't know a priori there's only one answer.
 
-610
+614
 00:36:57,810 --> 00:36:59,904
 So it's sitting here checking all possibilities, and it says, no more.
 
-611
+615
 00:37:00,416 --> 00:37:02,544
 So it's sitting here checking all possibilities, and it says, no more. Done.
 
-612
+616
 00:37:03,168 --> 00:37:05,072
 So there I've used those rules like a procedure.
 
-613
+617
 00:37:05,210 --> 00:37:09,056
 Or remember the whole point is that I can ask different kinds of questions.
 
-614
+618
 00:37:10,220 --> 00:37:11,072
 I could say merge to form, let's see, how about 2 and a.
 
-615
+619
 00:37:18,560 --> 00:37:24,590
 I could say merge to form, let's see, how about 2 and a.
 
-616
+620
 00:37:24,590 --> 00:37:25,952
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-617
+621
 00:37:26,336 --> 00:37:27,840
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-618
+622
 00:37:29,376 --> 00:37:31,264
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-619
+623
 00:37:33,056 --> 00:37:35,040
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-620
+624
 00:37:36,480 --> 00:37:39,510
 Some list of two elements which I know starts with 2, and the other thing I don't know, and x and some other list merge to form a 1, 2, 3 and 4.
 
-621
+625
 00:37:42,760 --> 00:37:44,112
 So now it's going to think about that.
 
-622
+626
 00:37:44,590 --> 00:37:49,408
 It's got to find--  so it found one possibility.
 
-623
+627
 00:37:49,520 --> 00:37:52,464
 It said a could be 3, and x could be the list 1, 4.
 
-624
+628
 00:37:53,830 --> 00:37:55,152
 And now, again, it's got to check because it doesn't a priori know that there aren't any other possibilities going on.
 
-625
+629
 00:37:56,496 --> 00:38:00,304
 And now, again, it's got to check because it doesn't a priori know that there aren't any other possibilities going on.
 
-626
+630
 00:38:03,680 --> 00:38:06,576
 Or like I said, I could say something like merge to form, like, what and what else merge to form 1, 2, 3, 4, 5?
 
-627
+631
 00:38:07,008 --> 00:38:09,840
 Or like I said, I could say something like merge to form, like, what and what else merge to form 1, 2, 3, 4, 5?
 
-628
+632
 00:38:10,544 --> 00:38:17,552
 Or like I said, I could say something like merge to form, like, what and what else merge to form 1, 2, 3, 4, 5?
 
-629
+633
 00:38:23,680 --> 00:38:25,536
 Now it's going to think about that.
 
-630
+634
 00:38:28,490 --> 00:38:30,310
 And there are a lot of answers that it might get.
 
-631
+635
 00:38:35,180 --> 00:38:38,576
 And what you see is here you're really paying the price of slowness.
 
-632
+636
 00:38:42,210 --> 00:38:43,880
 And kind of for three reasons.
 
-633
+637
 00:38:43,880 --> 00:38:46,224
 One is that this language is doubly interpreted.
 
-634
+638
 00:38:47,630 --> 00:38:49,728
 Whereas in a real implementation, you would go compile this down to primitive operations.
 
-635
+639
 00:38:49,760 --> 00:38:52,048
 Whereas in a real implementation, you would go compile this down to primitive operations.
 
-636
+640
 00:38:52,190 --> 00:38:53,872
 The other reason is that this particular algorithm for merges is doubly recursive.
 
-637
+641
 00:38:53,888 --> 00:38:58,112
 The other reason is that this particular algorithm for merges is doubly recursive.
 
-638
+642
 00:38:58,380 --> 00:39:00,064
 So it's going to take a very long time.
 
-639
+643
 00:39:01,020 --> 00:39:07,130
 And eventually, this is going to go through and find-- find what?
 
-640
+644
 00:39:07,130 --> 00:39:08,730
 Two to the fifth possible answers.
 
-641
+645
 00:39:12,140 --> 00:39:14,960
 And you see they come out in some fairly arbitrary order, depending on which order it's going to be trying these rules.
 
-642
+646
 00:39:15,008 --> 00:39:18,144
 And you see they come out in some fairly arbitrary order, depending on which order it's going to be trying these rules.
 
-643
+647
 00:39:20,160 --> 00:39:22,240
 In fact, what we're going to do when they edit the videotape is speed all this up.
 
-644
+648
 00:39:22,448 --> 00:39:23,440
 In fact, what we're going to do when they edit the videotape is speed all this up.
 
-645
+649
 00:39:24,080 --> 00:39:26,600
 Don't you like taking out these weights?
 
-646
+650
 00:39:26,600 --> 00:39:28,272
 And don't you wish you could do that in your demos?
 
-647
+651
 00:39:29,488 --> 00:39:34,240
 Anyway, it's still grinding there.
 
-648
+652
 00:39:39,220 --> 00:39:41,120
 Anyway, there are 32 possibilities-- we won't wait for it to print out all of them.
 
-649
+653
 00:39:41,136 --> 00:39:42,630
 Anyway, there are 32 possibilities-- we won't wait for it to print out all of them.
 
-650
+654
 00:39:47,850 --> 00:39:50,448
 OK, so the needs of abstraction in this language are rules.
 
-651
+655
 00:39:53,536 --> 00:39:58,016
 So we take some bunch of things that are put together with logic and we name them.
 
-652
+656
 00:39:59,120 --> 00:40:00,080
 So we take some bunch of things that are put together with logic and we name them.
 
-653
+657
 00:40:00,350 --> 00:40:03,410
 And you can think of that as naming a particular pattern of logic.
 
-654
+658
 00:40:03,410 --> 00:40:06,752
 Or you can think of that as saying, if you want to deduce some conclusion, you can apply those rules of logic.
 
-655
+659
 00:40:07,904 --> 00:40:09,520
 Or you can think of that as saying, if you want to deduce some conclusion, you can apply those rules of logic.
 
-656
+660
 00:40:10,660 --> 00:40:13,200
 And those are three elements of this language.
 
-657
+661
 00:40:13,420 --> 00:40:16,592
 Let's break now, and then we'll talk about how it's actually implemented.
 
-658
+662
 00:40:23,616 --> 00:40:28,848
 STUDENT: Does using LISP value primitive or whatever interfere with your means to go both directions on a query?
 
-659
+663
 00:40:29,152 --> 00:40:30,640
 STUDENT: Does using LISP value primitive or whatever interfere with your means to go both directions on a query?
 
-660
+664
 00:40:31,770 --> 00:40:34,480
 PROFESSOR: OK, that's a-- the question is, does using LISP value interfere with the ability to go both directions on the query?
 
-661
+665
 00:40:35,088 --> 00:40:36,928
 PROFESSOR: OK, that's a-- the question is, does using LISP value interfere with the ability to go both directions on the query?
 
-662
+666
 00:40:37,536 --> 00:40:40,090
 PROFESSOR: OK, that's a-- the question is, does using LISP value interfere with the ability to go both directions on the query?
 
-663
+667
 00:40:40,090 --> 00:40:42,816
 We haven't really talked about the implementation yet, but the answer is, yes, it can.
 
-664
+668
 00:40:43,680 --> 00:40:45,520
 We haven't really talked about the implementation yet, but the answer is, yes, it can.
 
-665
+669
 00:40:46,890 --> 00:40:52,176
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-666
+670
 00:40:53,216 --> 00:40:59,360
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-667
+671
 00:40:59,550 --> 00:41:02,890
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-668
+672
 00:41:04,096 --> 00:41:06,016
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-669
+673
 00:41:06,336 --> 00:41:08,480
 In general, as we'll see at the end-- although I really won't to go into details-- it's fairly complicated, especially when you use either not or LISP value-- or actually, if you use anything besides only and, it becomes very complicated to say when these things will work.
 
-670
+674
 00:41:08,700 --> 00:41:10,360
 They won't work quite in all situations.
 
-671
+675
 00:41:10,360 --> 00:41:13,392
 I'll talk about that at the end of the second half today.
 
-672
+676
 00:41:14,300 --> 00:41:15,840
 But the answer to your question is, yes, by dragging in a lot more power from LISP value, you lose some of the principal power of logic programming.
 
-673
+677
 00:41:16,192 --> 00:41:19,216
 But the answer to your question is, yes, by dragging in a lot more power from LISP value, you lose some of the principal power of logic programming.
 
-674
+678
 00:41:19,408 --> 00:41:23,776
 But the answer to your question is, yes, by dragging in a lot more power from LISP value, you lose some of the principal power of logic programming.
 
-675
+679
 00:41:24,170 --> 00:41:25,568
 That's a trade-off that you have to make.
 
-676
+680
 00:41:28,480 --> 00:41:29,392
 OK, let's take a break.
 
-677
+681
 00:41:30,176 --> 00:41:37,392
 MIT OpenCourseWare
 http://ocw.mit.edu
 
-678
+682
 00:41:37,408 --> 00:41:44,304
 本项目主页
 https://github.com/DeathKing/Learning-SICP
