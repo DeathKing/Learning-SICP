@@ -41,14 +41,14 @@
 | Lec6a | 《流 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjg4NTkwNzU3Ng==.html) [ [YouTube] ](https://youtu.be/z7jvvATswFE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_11.html) [ [MKV] ](https://pan.baidu.com/s/1hs7rNwg) [ [MP4] ](https://pan.baidu.com/s/1pLlvcLH) | [DreamAndDead](https://github.com/DreamAndDead) |
 | Lec6b | 《流 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAyMjI0MjAzNg==.html) [ [YouTube] ](https://youtu.be/0lQ6fThLhYw) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_12.html) [ [MKV] ](https://pan.baidu.com/s/1micH5OW) [ [MP4] ](https://pan.baidu.com/s/1b3kbWq) | [DreamAndDead](https://github.com/DreamAndDead) |
 | Lec7a | 《元循环求值器 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAzODg2ODczNg==.html) [ [YouTube] ](https://youtu.be/RXUqgWJES0w) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_13.html) [ [MKV] ](https://pan.baidu.com/s/1kUYGlVp) [ [MP4] ](https://pan.baidu.com/s/1kV1M0ab) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
-| Lec7b | 《元循环求值器 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzA2NDQ5MjkxMg==.html)  [YouTube]  [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_14.html) [ [MKV] ](https://pan.baidu.com/s/1eSrNSNS) [ [MP4] ](https://pan.baidu.com/s/1qYBgrIO) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec7b | 《元循环求值器 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzA2NDQ5MjkxMg==.html) [ [YouTube] ](https://youtu.be/HNaAEv8Xjx8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_14.html) [ [MKV] ](https://pan.baidu.com/s/1eSrNSNS) [ [MP4] ](https://pan.baidu.com/s/1qYBgrIO) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec8a | 《逻辑式程序设计 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzIyODg0NTEwNA==.html) [ [YouTube] ](https://youtu.be/VNH95lmCHdE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_15.html) [ [MKV] ](https://pan.baidu.com/s/1i5aQQVj) [ [MP4] ](https://pan.baidu.com/s/1dFlOqrB) | [DeathKing](https://github.com/DeathKing) |
 
 ## 任务队列
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec8a | sillyg00se | 校对中 | 0%  |
-| lec8b | sillyg00se | 已认领 | 0%  |
+| lec8b | sillyg00se | 校对中 | 0%  |
 | lec9a | loucq123  | 翻译中 | 65% |
 | lec10a | Windfarer | 已认领 | 0% |
 
