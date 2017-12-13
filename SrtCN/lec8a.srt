@@ -4,709 +4,707 @@ Learning-SICP学习小组
 倾情制作
 
 2
-00:00:18,272 --> 00:00:21,376
-教授：上节课中我们学习了如何构造语言
-PROFESSOR: The last time we began having a look at how languages are constructed.
+00:00:18,270 --> 00:00:19,680
+教授：上节课中 我们学习了
+PROFESSOR: The last time we began having a look
 
 3
-00:00:22,416 --> 00:00:25,888
-重点就是 像Lisp这样的求值器
-Remember the main point that an evaluator for, LISP, say,
+00:00:19,728 --> 00:00:21,264
+如何构造语言
+at how languages are constructed.
 
 4
+00:00:22,416 --> 00:00:25,888
+核心点就是 像Lisp这样的求值器
+Remember the main point that an evaluator for, LISP, say,
+
+5
 00:00:26,080 --> 00:00:27,580
 有两个主要部分
 has two main elements.
 
-5
+6
 00:00:27,580 --> 00:00:28,400
 一个是EVAL
 There is EVAL,
 
-6
+7
 00:00:31,040 --> 00:00:37,424
 EVAL接受一个表达式EXP和环境ENV
 and EVAL's job is to take in an expression and an environment
 
-7
+8
 00:00:38,912 --> 00:00:44,448
 然后返回一个过程和相关的实际参数
 and turn that into a procedure and some arguments
 
-8
+9
 00:00:45,424 --> 00:00:47,056
 并把它们传递给APPLY
 and pass that off to APPLY.
 
-9
+10
 00:00:49,410 --> 00:00:51,296
 APPLY接收这些过程和实际参数
 And APPLY takes the procedure in the arguments,
 
-10
+11
 00:00:51,696 --> 00:00:55,120
 通常来说 APPLY会返回另一个表达式
 turns that back into, in a general case, another expression
 
-11
+12
 00:00:55,392 --> 00:00:57,712
-返回另在另一个环境中求值的表达式
+返回一个在其它环境中求值的表达式
 to be evaluated in another environment
 
-12
+13
 00:00:57,744 --> 00:01:00,000
 表达式就像这样在EVAL-APPLY之间传递
 and passes that off to EVAL, which passes it to APPLY,
 
-13
+14
 00:01:00,272 --> 00:01:01,440
 这就是整个元循环
 and there's this whole big circle
 
-14
+15
 00:01:01,470 --> 00:01:02,944
 表达式在这里面循环往复
 where things go around and around and around
 
-15
+16
 00:01:03,024 --> 00:01:06,560
 直到最后求值为基本数据或基本过程
 until you get either to some very primitive data or to a primitive procedure.
 
-16
+17
 00:01:07,740 --> 00:01:09,248
 这个循环要做的就是
 See, what this cycle has to do with
 
-17
+18
 00:01:09,440 --> 00:01:12,576
 把语言中的组合手段
 is unwinding the means of combination
 
-18
+19
 00:01:12,590 --> 00:01:14,368
 和抽象手段展开
 and the means of abstraction in the language.
 
-19
+20
 00:01:15,020 --> 00:01:17,728
 比如说在Lisp中 你有一个过程
 So for instance, you have a procedure in LISP--
 
-20
+21
 00:01:17,744 --> 00:01:20,528
 定义过程是为了
 a procedure is a general way of saying,
 
-21
+22
 00:01:20,540 --> 00:01:22,576
 让表达式的计算过程
 I want to be able to evaluate this expression
 
-22
+23
 00:01:22,672 --> 00:01:24,410
 适用于任意的参数
 for any value of the arguments,
 
-23
+24
 00:01:25,760 --> 00:01:27,184
 这就是这里面发生的事情
 and that's sort of what's going on here.
 
-24
+25
 00:01:27,670 --> 00:01:28,510
 这就是APPLY做的事
 That's what APPLY does.
 
-25
+26
 00:01:28,510 --> 00:01:30,688
 当一个带参数的一般性表达式进入以后
 It says the general thing coming in with the arguments
 
-26
+27
 00:01:30,720 --> 00:01:32,704
 它将其归约为过程体的表达式
 reduces to the expression that's the body,
 
-27
+28
 00:01:33,056 --> 00:01:34,720
 如果归约得到的是复合表达式
 and then if that's a compound expression
 
-28
+29
 00:01:34,832 --> 00:01:36,464
 或者是另外的过程应用
 or another procedure application,
 
-29
+30
 00:01:36,784 --> 00:01:38,448
 那么这个循环就会不断地进行
 the thing will go around and around the circle.
 
-30
+31
 00:01:40,336 --> 00:01:44,080
 这基本上就是 -- 大部分解释器的基本结构了
 Anyway, that's sort of the basic structure of gee, pretty much any interpreter.
 
-31
+32
 00:01:45,200 --> 00:01:46,256
 另外一点就是
 The other thing that you saw
 
-32
+33
 00:01:46,288 --> 00:01:47,660
 一旦你有了一个解释器
 once you have the interpreter in your hands,
 
-33
+34
 00:01:47,696 --> 00:01:49,870
 你就有了操作这门语言的所有能力
 you have all this power to start playing with the language.
 
-34
+35
 00:01:49,870 --> 00:01:51,520
 因此你可以让它成为动态作用域
 So you can make it dynamically scoped,
 
-35
+36
 00:01:51,840 --> 00:01:54,560
 你也可以引入正则序求值
 or you can put in normal order evaluation,
 
-36
+37
 00:01:54,590 --> 00:01:56,480
 你也可以为语言添加新的形式
 or you can add new forms to the language,
 
-37
+38
 00:01:56,860 --> 00:01:57,504
 想怎么样都行
 whatever you like.
 
-38
+39
 00:01:57,584 --> 00:01:58,624
 或者更一般地说
 Or more generally,
 
-39
+40
 00:01:58,768 --> 00:02:01,328
 这种元语言抽象的概念
 there's this notion of metalinguistic abstraction,
 
-40
+41
 00:02:02,640 --> 00:02:06,016
 它告诉我们 作为一名软件工程师
 which says that part of your perspective
 
-41
+42
 00:02:07,616 --> 00:02:10,528
 从广义的“工程师”的角度来看
 as an engineer, as a software engineer, but as an engineer in general
 
-42
+43
 00:02:11,392 --> 00:02:13,888
 有时你可以通过发明新的语言
 is that you can gain control of complexity
 
-43
+44
 00:02:14,960 --> 00:02:17,168
 来获得控制复杂度的能力
 by inventing new languages sometimes.
 
-44
+45
 00:02:18,010 --> 00:02:20,816
 一种思考计算机程序设计的方法就是
 See, one way to think about computer programming
 
-45
+46
 00:02:21,552 --> 00:02:26,270
 它只是偶然地让计算机执行某事儿
 is that it only incidentally has to do with getting a computer to do something.
 
-46
+47
 00:02:26,440 --> 00:02:28,976
 计算机程序的主要工作却是
 Primarily what a computer program has to do with,
 
-47
+48
 00:02:29,008 --> 00:02:32,520
-用来表达和交流思想
+用来表达和交换想法
 it's a way of expressing ideas with communicating ideas.
 
-48
+49
 00:02:33,168 --> 00:02:34,048
 有时
 And sometimes
 
-49
+50
 00:02:34,896 --> 00:02:36,624
-当我们想要表达新的思想时
+当我们想要表达新的想法时
 when you want to communicate new kinds of ideas,
 
-50
+51
 00:02:36,656 --> 00:02:38,736
 我们就想要发明新的模式来表达它们
 you'd like to invent new modes of expressing that.
 
-51
+52
 00:02:39,824 --> 00:02:44,992
 那么 今天我们就将按照这个框架来创建新语言
 Well, today we're going to apply this framework to build a new language.
 
-52
+53
 00:02:45,730 --> 00:02:48,000
 一旦我们了解了解释器的基本结构
 See, once we have the basic idea of the interpreter,
 
-53
+54
 00:02:48,032 --> 00:02:50,272
 我们就可以按意愿来构造任意的语言
 you can pretty much go build any language that you like.
 
-54
+55
 00:02:50,830 --> 00:02:53,216
 比如说 我们可以构造Pascal（的解释器）
 So for example, we can go off and build Pascal.
 
-55
+56
 00:02:54,370 --> 00:02:55,152
 以及
 And...
 
-56
+57
 00:02:56,170 --> 00:02:58,192
 我们需要操心语法的表示与解析
 gee, we would worry about syntax and parsing
 
-57
+58
 00:02:58,192 --> 00:03:00,510
 还有一大堆的编译器优化
 and various kinds of compiler optimizations,
 
-58
+59
 00:03:01,120 --> 00:03:03,296
 还有一些人会这样做
 and there are people who make honest livings doing that,
 
-59
+60
 00:03:03,856 --> 00:03:07,600
 但是就在我们所讨论的抽象层次来说
 but at the level of abstraction that we're talking,
 
-60
+61
 00:03:08,048 --> 00:03:10,992
 一个Pascal语言的解释器看起来
 a Pascal interpreter would not look very different at all
 
-61
+62
 00:03:12,032 --> 00:03:13,760
 跟Gerry教授上节课所讲的大同小异
 from what you saw Gerry do last time.
 
-62
+63
 00:03:15,024 --> 00:03:18,960
 但是今天 我们要构建一门与众不同的语言
 Instead of that, we'll spend today building a really different language,
 
-63
+64
 00:03:20,510 --> 00:03:22,816
 这门语言
 a language that encourages you
 
-64
+65
 00:03:23,056 --> 00:03:26,040
 不推荐你用过程式的思维来思考程序设计
 to think about programming not in terms of procedures,
 
-65
+66
 00:03:26,240 --> 00:03:27,648
 而是用一种非常不同的方式
 but in a really different way.
 
-66
+67
 00:03:29,090 --> 00:03:31,024
 今天的课程呢
 And the lecture today is
 
-67
+68
 00:03:31,744 --> 00:03:34,640
 将会在两个层次中同时进行
 going to be at two levels simultaneously.
 
-68
+69
 00:03:34,810 --> 00:03:35,520
 一方面
 On the one hand,
 
-69
+70
 00:03:35,904 --> 00:03:37,710
 我会向大家介绍这门语言是如何使用的
 I'm going to show you what this language looks like,
 
-70
+71
 00:03:38,960 --> 00:03:41,080
 另一方面呢 我会带领大家实现这门语言
 and on the other hand, I'll show you how it's implemented.
 
-71
+72
 00:03:41,320 --> 00:03:42,960
 我们将会用Lisp来实现
 And we'll build an implementation in LISP
 
-72
+73
 00:03:42,992 --> 00:03:43,900
 并观察它的运行原理
 and see how that works.
 
-73
+74
 00:03:44,048 --> 00:03:48,256
 你应该在两个层次上学到知识
 And you should be drawing lessons on two levels.
 
-74
+75
 00:03:48,688 --> 00:03:53,000
 首先要认识到 语言之间可以有多么地“不同”
 The first is to realize just how different a language can be.
 
-75
+76
 00:03:53,790 --> 00:03:58,144
 如果你认为Fortran和Lisp算是天差地别的话
 So if you think that the jump from Fortran to LISP is a big deal,
 
-76
+77
 00:03:58,240 --> 00:03:59,360
 那就小巫见大巫了
 you haven't seen anything yet.
 
-77
+78
 00:04:01,560 --> 00:04:03,680
 其次
 And secondly,
 
-78
+79
 00:04:03,776 --> 00:04:06,544
 甚至于在这门与众不同的语言中
 you'll see that even with such a very different language,
 
-79
+80
 00:04:07,360 --> 00:04:09,520
 这门既不讨论函数
 which will turn out to not have procedures at all
 
-80
+81
 00:04:09,920 --> 00:04:11,648
 也没有过程的语言中
 and not talk about functions at all,
 
-81
+82
 00:04:12,200 --> 00:04:15,720
 其中也有基本的EVAL-APPLY循环
 there will still be this basic cycle of eval and apply
 
-82
+83
 00:04:16,192 --> 00:04:19,984
 也就是对组合手段和抽象手段的展开
 that's unwinds the means of combination and the means an abstraction.
 
-83
+84
 00:04:20,950 --> 00:04:24,688
 第三点 是一个不太重要但非常优雅的技术技巧
 And then thirdly, as kind of a minor but elegant technical point,
 
-84
+85
 00:04:24,890 --> 00:04:28,528
-就是如何使用流来规避回溯
+就是如何巧妙地使用流来避免回溯
 you'll see a nice use of streams to avoid backtracking.
 
-85
+86
 00:04:32,330 --> 00:04:34,400
 好吧 我说过这门语言与众不同
 OK, well, I said that this language is very different.
 
-86
+87
 00:04:35,860 --> 00:04:36,640
 为了解释这点
 To explain that,
 
-87
+88
 00:04:37,050 --> 00:04:42,816
 让我们回到这门课最初的理念上
 let's go back to the very first idea that we talked about in this course,
 
-88
+89
 00:04:43,260 --> 00:04:46,544
 就是要区别
 and that was the idea of the distinction between
 
-89
+90
 00:04:46,720 --> 00:04:49,520
 数学中“陈述性”的知识
 the declarative knowledge of mathematics--
 
-90
+91
 00:04:50,192 --> 00:04:54,144
 比如平方根的定义就是一条数学事实
 the definition of a square root as a mathematical truth--
 
-91
+92
 00:04:55,488 --> 00:04:59,568
-而计算机科学讨论的是“如何做”的只是
+而计算机科学讨论的是“如何做”的知识
 and the idea that computer science talks about the how to knowledge--
 
-92
+93
 00:04:59,760 --> 00:05:04,592
 “什么是平方根”和“如何计算平方根”是不同的
 contrast that definition of square root with a program to compute a square root.
 
-93
+94
 00:05:05,970 --> 00:05:07,072
 我们是从这里开始的
 That's where we started off.
 
-94
+95
 00:05:08,512 --> 00:05:09,520
 如果我们能够通过某种方式
 Well, wouldn't it be great
 
-95
+96
 00:05:09,888 --> 00:05:12,160
 弥合这种差距 岂不是更好么？
 if you could somehow bridge this gap
 
-96
+97
 00:05:12,810 --> 00:05:16,432
 我们创建一门这样的语言
 and make a programming language which sort of did things,
 
-97
+98
 00:05:16,672 --> 00:05:21,610
 以声明式的方式、用数学事实来完成计算
 but you talked about it in terms of truth, in declarative terms?
 
-98
+99
 00:05:22,380 --> 00:05:25,504
 你用这种该语言来指定事实
 So that would be a programming language in which you specify facts.
 
-99
+100
 00:05:27,690 --> 00:05:28,880
 你告诉它
 You tell it what is.
 
-100
+101
 00:05:28,880 --> 00:05:29,968
 什么是事实
 You say what is true.
 
-101
+102
 00:05:30,950 --> 00:05:33,072
 而当你需要一个答案时
 And then when you want an answer,
 
-102
+103
 00:05:33,216 --> 00:05:36,384
 语言已经自动地内建了
 somehow the language has built into it automatically
 
-103
+104
 00:05:37,600 --> 00:05:39,456
 有关于“如何做”的一般性知识
 general kinds of how to knowledge
 
-104
+105
 00:05:39,472 --> 00:05:40,640
 这样它就可以根据你给出的事实
 so it can just take your facts
 
-105
+106
 00:05:40,896 --> 00:05:42,832
 自行地演进这些方法
 and it can evolve these methods on its own
 
-106
+107
 00:05:43,312 --> 00:05:46,128
 通过你给定的事实和某种一般性的逻辑规则
 using the facts you gave it and maybe some general rules of logic.
 
-107
+108
 00:05:49,330 --> 00:05:50,544
 就比如说
 So for instance,
 
-108
+109
 00:05:52,064 --> 00:05:55,120
 我会告诉程序下述事实
 I might go up to this program and start telling it some things.
 
-109
+110
 00:05:56,000 --> 00:06:07,080
 我告诉它 (SON-OF ADAM ABEL)
 So I might tell it that the son of Adam is Abel.
 
-110
+111
 00:06:08,920 --> 00:06:16,512
 同时告诉它 (SON-OF ADAM CAIN)
 And I might tell it that the son of Adam is Cain.
 
-111
+112
 00:06:17,660 --> 00:06:25,088
 以及 (SON-OF CAIN ENOCH)
 And I might tell it that the son of Cain is Enoch.
 
-112
+113
 00:06:27,792 --> 00:06:34,896
 还有 (SON-OF ENOCH IRAD)
 And I might tell it that the son of Enoch is Irad,
 
-113
+114
 00:06:37,024 --> 00:06:40,720
-#TBD
+以及《创世纪》章节中的其它人物
 and all through the rest of our chapter whatever of Genesis,
 
-114
+115
 00:06:41,152 --> 00:06:43,184
 最后终止于ADAH
 which ends up ending in Adah, by the way,
 
-115
+116
 00:06:43,328 --> 00:06:46,784
 这些是从ADAH到CAIN的家谱
 and this shows the genealogy of Adah from Cain.
 
-116
+117
 00:06:48,440 --> 00:06:50,672
 总之 一旦你指明了这些事实
 Anyway, once you tell it these facts,
 
-117
+118
 00:06:52,352 --> 00:06:53,408
 你就可以提出问题
 you might ask it things.
 
-118
+119
 00:06:53,510 --> 00:06:55,056
 你可以对语言系统发问
 You might go up to your language and say,
 
-119
+120
 00:06:56,064 --> 00:06:59,296
 谁是ADAM的孩子？
 who's the son of Adam?
 
-120
+121
 00:07:00,420 --> 00:07:04,912
 可以很容易地想到一个通用搜索程序
 And you can very easily imagine having a little general purpose search program
 
-121
+122
 00:07:05,520 --> 00:07:06,960
 它会遍历所有的事实
 which would be able to go through
 
-122
+123
 00:07:07,008 --> 00:07:09,260
 然后回答：“哦 有两个答案”
 and in response to that say, oh yeah, there are two answers:
 
-123
+124
 00:07:09,296 --> 00:07:10,448
 ABEL是ADAM的孩子
 the son of Adam is Abel
 
-124
+125
 00:07:10,688 --> 00:07:12,176
 CAIN也是ADAM的孩子
 and the son of Adam is Cain.
 
-125
+126
 00:07:14,140 --> 00:07:14,976
 你也可以这样问
 Or you might say,
 
-126
+127
 00:07:15,070 --> 00:07:16,890
 基于同样的事实
 based on the very same facts,
 
-127
+128
 00:07:18,048 --> 00:07:19,952
 CAIN是谁的孩子？
 who is Cain the son of?
 
-128
+129
 00:07:21,950 --> 00:07:27,024
 你们就会想到生成另外一个略微不同的搜索程序
 And then you can imagine generating another slightly different search program
 
-129
+130
 00:07:27,920 --> 00:07:29,216
 它也会遍历所有的事实
 which would be able to go through
 
-130
+131
 00:07:29,450 --> 00:07:33,056
 检查谁的孩子是CAIN
 and checked for who is Cain, and son of,
 
-131
+132
 00:07:33,520 --> 00:07:34,440
 发现结果是ADAM
 and come up with Adam.
 
-132
+133
 00:07:35,890 --> 00:07:36,992
 你也可以问
 Or you might say,
 
-133
+134
 00:07:38,016 --> 00:07:41,408
 CAIN和ENOCH之间是什么关系？
 what's the relationship between Cain and Enoch?
 
-134
+135
 00:07:42,070 --> 00:07:45,088
 又会生成另一个略微不同的搜索程序
 And again, a minor variant on that search program.
 
-135
+136
 00:07:46,340 --> 00:07:48,160
 得到的结果是亲子关系（SON-OF）
 You could figure out that it said son of.
 
-136
+137
 00:07:52,880 --> 00:07:54,928
 在这个非常简单的例子中
 But even here in this very simple example,
 
-137
+138
 00:07:56,144 --> 00:07:58,448
 我们发现 即使是单条事实
 what you see is that a single fact,
 
-138
+139
 00:07:58,816 --> 00:08:01,520
 比如说 (SON-OF ADAM CAIN)
 see, a single fact like the son of Adam is Cain
 
-139
+140
 00:08:02,848 --> 00:08:05,520
 可以被用来回答不同种类的问题
 can be used to answer different kinds of questions.
 
-140
+141
 00:08:06,520 --> 00:08:08,128
 你可以问CAIN是谁的孩子？
 You can say, who's Cain the son of,
 
-141
-00:08:08,144 --> 00:08:10,928
-你也可以问ADAM的孩子是谁？
-or you can say who's the son of Adam,
-
 142
-00:08:10,928 --> 00:08:10,944
-你也可以问ADAM和CAIN之间的关系是什么？
-or you can say what's the relation between Adam and Cain?
+00:08:08,144 --> 00:08:10,928
 你也可以问ADAM的孩子是谁？
 or you can say who's the son of Adam,
 
@@ -2768,7 +2766,7 @@ And then there's the body of the rule.
 555
 00:33:40,000 --> 00:33:41,888
 你可以把它解读为这样的一段逻辑：
-And you can read this as a piece of logic which says, 
+And you can read this as a piece of logic which says,
 
 556
 00:33:41,920 --> 00:33:45,150
@@ -3183,7 +3181,7 @@ One is that this language is doubly interpreted.
 638
 00:38:47,630 --> 00:38:49,728
 然而在真正的实现中
-Whereas in a real implementation, 
+Whereas in a real implementation,
 
 639
 00:38:49,760 --> 00:38:52,048
