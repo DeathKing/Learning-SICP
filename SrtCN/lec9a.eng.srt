@@ -2363,1426 +2363,1654 @@ And of course, one of the things we might want to do, just look at this thing ov
 And of course, one of the things we might want to do, just look at this thing over here, is the organization that we've had so far involves having a part of the machine, which is the controller, which sits right over here, which is perfectly finite and very simple.
 
 592
-00:32:09,170 --> 00:32:13,080
+00:32:09,170 --> 00:32:10,448
 We have some datapaths, which consist of registers and operators.
 
 593
-00:32:13,080 --> 00:32:24,230
-And what I propose to do here is decompose the machine into two parts, such that there is a part which is fundamentally finite, and some part where a certain amount of infinite stuff can be kept.
+00:32:10,464 --> 00:32:12,752
+We have some datapaths, which consist of registers and operators.
 
 594
-00:32:24,230 --> 00:32:29,430
-On the other hand this is very simple and really isn't infinite, but it's just very large.
+00:32:13,080 --> 00:32:15,200
+And what I propose to do here is decompose the machine into two parts, such that there is a part which is fundamentally finite, and some part where a certain amount of infinite stuff can be kept.
 
 595
-00:32:29,430 --> 00:32:48,340
-But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
+00:32:15,488 --> 00:32:16,960
+And what I propose to do here is decompose the machine into two parts, such that there is a part which is fundamentally finite, and some part where a certain amount of infinite stuff can be kept.
 
 596
-00:32:48,340 --> 00:33:01,650
-And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
+00:32:17,360 --> 00:32:19,792
+And what I propose to do here is decompose the machine into two parts, such that there is a part which is fundamentally finite, and some part where a certain amount of infinite stuff can be kept.
 
 597
-00:33:03,840 --> 00:33:11,390
-So it will remember the important things about the life of the outer machine that will be needed for this computation.
+00:32:20,784 --> 00:32:23,536
+And what I propose to do here is decompose the machine into two parts, such that there is a part which is fundamentally finite, and some part where a certain amount of infinite stuff can be kept.
 
 598
-00:33:11,390 --> 00:33:26,580
-Since, of course, these machines are nested in a recursive manner, then in fact the stack will only be accessed in a manner which is the last thing that goes in is the first thing that comes out.
+00:32:24,230 --> 00:32:25,904
+On the other hand this is very simple and really isn't infinite, but it's just very large.
 
 599
-00:33:29,330 --> 00:33:34,930
-So we'll only need to access some little part of this stack memory.
+00:32:26,416 --> 00:32:28,720
+On the other hand this is very simple and really isn't infinite, but it's just very large.
 
 600
-00:33:34,930 --> 00:33:36,810
-OK, well, let's do it.
+00:32:29,430 --> 00:32:30,400
+But it's so simple
 
 601
-00:33:36,810 --> 00:33:40,370
-I'm going to build you a datapath now, and I'm going to write the controller.
+00:32:30,528 --> 00:32:32,928
+But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
 
 602
-00:33:40,370 --> 00:33:43,510
-And then we're going to execute this to see how you do it.
+00:32:34,096 --> 00:32:34,928
+But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
 
 603
-00:33:43,510 --> 00:33:47,900
-So the factorial machine isn't so bad.
+00:32:35,952 --> 00:32:39,072
+But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
 
 604
-00:33:47,900 --> 00:34:04,165
-It's going to have a register called the value, where the answer is going to be stored, and a registered called N, which is where the number I'm taking factorial will be stored, factorial of.
+00:32:39,408 --> 00:32:41,232
+But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
 
 605
-00:34:04,165 --> 00:34:11,760
-And it will be necessary in some instances to connect VAL to N.
+00:32:41,450 --> 00:32:43,632
+But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
 
 606
-00:34:11,760 --> 00:34:19,139
-In fact, one nice case of this is if I just said over here, N, because that would be right for N equal 1N.
+00:32:43,648 --> 00:32:46,960
+But it's so simple that it could be cheaply reproduced in such large amounts, we call it memory, that we can make a structure called a stack out of it which will allow us to, in fact, simulate the existence of an infinite machine which is made out of a recursive nest of many machines.
 
 607
-00:34:19,139 --> 00:34:23,909
-And I could just move the answer over there if that's important.
+00:32:48,340 --> 00:32:49,440
+And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
 
 608
-00:34:23,909 --> 00:34:26,980
-I'm not worried about that right now.
+00:32:49,936 --> 00:32:50,416
+And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
 
 609
-00:34:26,980 --> 00:34:29,060
-And there are things I have to be able to do.
+00:32:50,560 --> 00:32:52,976
+And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
 
 610
-00:34:29,060 --> 00:34:38,290
-Like I have to be able to, as we see here, multiply N by something in VAL, because VAL is the result of computing factorial.
+00:32:54,352 --> 00:32:55,632
+And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
 
 611
-00:34:38,290 --> 00:34:41,429
-And I have to put the result back into VAL.
+00:32:55,888 --> 00:32:57,600
+And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
 
 612
-00:34:41,429 --> 00:34:50,690
-So here we can see that the result of computing a factorial is N times the result of computing a factorial.
+00:32:59,184 --> 00:33:01,072
+And the way it's going to work is that we're going to store in this place called the stack the information required after the inner machine runs to resume the operation of the outer machine.
 
 613
-00:34:50,690 --> 00:34:55,199
-VAL will be the representation of the answer of the inner factorial.
+00:33:03,840 --> 00:33:05,488
+So it will remember the important things about the life of the outer machine that will be needed for this computation.
 
 614
-00:34:55,199 --> 00:35:17,170
-And so I'm going to have to have a multiplier here, which is going to sample the value of N and the value of VAL and put the result back into VAL like that.
+00:33:05,632 --> 00:33:07,952
+So it will remember the important things about the life of the outer machine that will be needed for this computation.
 
 615
-00:35:17,170 --> 00:35:20,618
-I'm also going to have to be able to see if N is 1.
+00:33:08,048 --> 00:33:10,304
+So it will remember the important things about the life of the outer machine that will be needed for this computation.
 
 616
-00:35:20,618 --> 00:35:22,230
-So I need a light bulb.
+00:33:11,390 --> 00:33:12,480
+Since, of course, these machines are nested in a recursive manner, then in fact the stack will only be accessed in a manner which is the last thing that goes in is the first thing that comes out.
 
 617
-00:35:28,200 --> 00:35:46,620
-And I suppose the other thing I'm going to need to have is a way of decrementing N. So I'm going to have a decrementer, which takes N and is going to put back the result into N.
+00:33:12,752 --> 00:33:16,336
+Since, of course, these machines are nested in a recursive manner, then in fact the stack will only be accessed in a manner which is the last thing that goes in is the first thing that comes out.
 
 618
-00:35:46,620 --> 00:35:49,550
-That's pretty much what I need in my machine.
+00:33:18,336 --> 00:33:20,912
+Since, of course, these machines are nested in a recursive manner, then in fact the stack will only be accessed in a manner which is the last thing that goes in is the first thing that comes out.
 
 619
-00:35:49,550 --> 00:35:51,985
-Now, there's a little bit else I need.
+00:33:21,712 --> 00:33:26,448
+Since, of course, these machines are nested in a recursive manner, then in fact the stack will only be accessed in a manner which is the last thing that goes in is the first thing that comes out.
 
 620
-00:35:51,985 --> 00:36:06,250
-It's a little bit more complicated, because I'm also going to need a way to store, to save away, the things that are going to be needed for resuming the computation of a factorial after I've done a sub-factorial.
+00:33:29,330 --> 00:33:30,640
+So we'll only need to access some little part of this stack memory.
 
 621
-00:36:06,250 --> 00:36:07,230
-What's that?
+00:33:30,800 --> 00:33:32,528
+So we'll only need to access some little part of this stack memory.
 
 622
-00:36:07,230 --> 00:36:09,850
-One thing I need is N.
+00:33:34,930 --> 00:33:35,920
+OK, well, let's do it.
 
 623
-00:36:09,850 --> 00:36:11,870
-So I'm going to build here a thing called a stack.
+00:33:36,810 --> 00:33:38,416
+I'm going to build you a datapath now, and I'm going to write the controller.
 
 624
-00:36:14,700 --> 00:36:25,380
-The stack is a bunch of stuff that I'm going to write in sequentially.
+00:33:38,448 --> 00:33:39,680
+I'm going to build you a datapath now, and I'm going to write the controller.
 
 625
-00:36:27,410 --> 00:36:28,916
-I don't how long it is.
+00:33:40,370 --> 00:33:42,864
+And then we're going to execute this to see how you do it.
 
 626
-00:36:28,916 --> 00:36:32,890
-The longer it is, the better my illusion of infinity.
+00:33:43,510 --> 00:33:46,880
+So the factorial machine isn't so bad.
 
 627
-00:36:32,890 --> 00:36:39,515
-And I'm going to have to have a way of getting stuff out of N and into the stack and vice versa.
+00:33:47,900 --> 00:33:50,160
+It's going to have a register called the value, where the answer is going to be stored, and a registered called N, which is where the number I'm taking factorial will be stored, factorial of.
 
 628
-00:36:39,515 --> 00:36:55,820
-So I'm going to need a connection like this, which is two-way, whereby I can save the value of N and then restore it some other time through that connection.
+00:33:52,224 --> 00:33:53,888
+It's going to have a register called the value, where the answer is going to be stored, and a registered called N, which is where the number I'm taking factorial will be stored, factorial of.
 
 629
-00:36:55,820 --> 00:36:58,100
-This is the stack.
+00:33:54,896 --> 00:33:56,672
+It's going to have a register called the value, where the answer is going to be stored, and a registered called N, which is where the number I'm taking factorial will be stored, factorial of.
 
 630
-00:36:58,100 --> 00:37:08,530
-I also need a way of remembering where I was in the computation of factorial in the outer program.
+00:33:59,856 --> 00:34:04,160
+It's going to have a register called the value, where the answer is going to be stored, and a registered called N, which is where the number I'm taking factorial will be stored, factorial of.
 
 631
-00:37:08,530 --> 00:37:14,090
-Now in the case of this machine, it isn't very much a problem.
+00:34:04,512 --> 00:34:06,624
+And it will be necessary in some instances to connect VAL to N.
 
 632
-00:37:14,090 --> 00:37:25,660
-Factorial always returns, has to go back to the place where we multiply by N, except for the last time, when it has to return to whatever needs the factorial or go to done or stop.
+00:34:07,520 --> 00:34:10,544
+And it will be necessary in some instances to connect VAL to N.
 
 633
-00:37:25,660 --> 00:37:31,770
-However, in general, I'm going to have to remember where I have been, because I might have computed factorial from somewhere else.
+00:34:11,760 --> 00:34:13,632
+In fact, one nice case of this is if I just said over here, N, because that would be right for N equal 1N.
 
 634
+00:34:13,760 --> 00:34:15,632
+In fact, one nice case of this is if I just said over here, N, because that would be right for N equal 1N.
+
+635
+00:34:16,380 --> 00:34:19,536
+In fact, one nice case of this is if I just said over here, N, because that would be right for N equal 1N.
+
+636
+00:34:20,090 --> 00:34:23,264
+And I could just move the answer over there if that's important.
+
+637
+00:34:23,900 --> 00:34:25,552
+I'm not worried about that right now.
+
+638
+00:34:26,980 --> 00:34:28,608
+And there are things I have to be able to do.
+
+639
+00:34:29,060 --> 00:34:31,024
+Like I have to be able to, as we see here, multiply N by something in VAL, because VAL is the result of computing factorial.
+
+640
+00:34:31,216 --> 00:34:34,672
+Like I have to be able to, as we see here, multiply N by something in VAL, because VAL is the result of computing factorial.
+
+641
+00:34:34,912 --> 00:34:37,456
+Like I have to be able to, as we see here, multiply N by something in VAL, because VAL is the result of computing factorial.
+
+642
+00:34:38,688 --> 00:34:40,448
+And I have to put the result back into VAL.
+
+643
+00:34:41,488 --> 00:34:42,656
+So here we can see that the result of computing a factorial is N times the result of computing a factorial.
+
+644
+00:34:42,832 --> 00:34:46,432
+So here we can see that the result of computing a factorial is N times the result of computing a factorial.
+
+645
+00:34:46,576 --> 00:34:49,200
+So here we can see that the result of computing a factorial is N times the result of computing a factorial.
+
+646
+00:34:50,690 --> 00:34:53,776
+VAL will be the representation of the answer of the inner factorial.
+
+647
+00:34:55,190 --> 00:35:00,256
+And so I'm going to have to have a multiplier here, which is going to sample the value of N and the value of VAL and put the result back into VAL like that.
+
+648
+00:35:02,368 --> 00:35:04,608
+And so I'm going to have to have a multiplier here, which is going to sample the value of N and the value of VAL and put the result back into VAL like that.
+
+649
+00:35:05,744 --> 00:35:07,152
+And so I'm going to have to have a multiplier here, which is going to sample the value of N and the value of VAL and put the result back into VAL like that.
+
+650
+00:35:08,640 --> 00:35:15,600
+And so I'm going to have to have a multiplier here, which is going to sample the value of N and the value of VAL and put the result back into VAL like that.
+
+651
+00:35:17,170 --> 00:35:19,392
+I'm also going to have to be able to see if N is 1.
+
+652
+00:35:21,328 --> 00:35:22,384
+So I need a light bulb.
+
+653
+00:35:28,200 --> 00:35:30,400
+And I suppose the other thing I'm going to need to have is a way of decrementing N. So I'm going to have a decrementer, which takes N and is going to put back the result into N.
+
+654
+00:35:31,024 --> 00:35:32,848
+And I suppose the other thing I'm going to need to have is a way of decrementing N. So I'm going to have a decrementer, which takes N and is going to put back the result into N.
+
+655
+00:35:34,848 --> 00:35:36,096
+And I suppose the other thing I'm going to need to have is a way of decrementing N. So I'm going to have a decrementer, which takes N and is going to put back the result into N.
+
+656
+00:35:38,368 --> 00:35:39,232
+And I suppose the other thing I'm going to need to have is a way of decrementing N. So I'm going to have a decrementer, which takes N and is going to put back the result into N.
+
+657
+00:35:39,552 --> 00:35:41,392
+And I suppose the other thing I'm going to need to have is a way of decrementing N. So I'm going to have a decrementer, which takes N and is going to put back the result into N.
+
+658
+00:35:46,620 --> 00:35:48,400
+That's pretty much what I need in my machine.
+
+659
+00:35:49,550 --> 00:35:51,648
+Now, there's a little bit else I need.
+
+660
+00:35:52,304 --> 00:35:53,584
+It's a little bit more complicated, because I'm also going to need a way to store, to save away, the things that are going to be needed for resuming the computation of a factorial after I've done a sub-factorial.
+
+661
+00:35:55,168 --> 00:35:56,880
+It's a little bit more complicated, because I'm also going to need a way to store, to save away, the things that are going to be needed for resuming the computation of a factorial after I've done a sub-factorial.
+
+662
+00:35:57,168 --> 00:35:59,696
+It's a little bit more complicated, because I'm also going to need a way to store, to save away, the things that are going to be needed for resuming the computation of a factorial after I've done a sub-factorial.
+
+663
+00:36:01,024 --> 00:36:04,864
+It's a little bit more complicated, because I'm also going to need a way to store, to save away, the things that are going to be needed for resuming the computation of a factorial after I've done a sub-factorial.
+
+664
+00:36:06,250 --> 00:36:06,864
+What's that?
+
+665
+00:36:07,230 --> 00:36:08,736
+One thing I need is N.
+
+666
+00:36:09,850 --> 00:36:12,048
+So I'm going to build here a thing called a stack.
+
+667
+00:36:14,700 --> 00:36:15,680
+The stack is a bunch of stuff that I'm going to write in sequentially.
+
+668
+00:36:17,984 --> 00:36:24,976
+The stack is a bunch of stuff that I'm going to write in sequentially.
+
+669
+00:36:27,152 --> 00:36:28,592
+I don't how long it is.
+
+670
+00:36:29,152 --> 00:36:31,488
+The longer it is, the better my illusion of infinity.
+
+671
+00:36:33,232 --> 00:36:34,448
+And I'm going to have to have a way of getting stuff out of N and into the stack and vice versa.
+
+672
+00:36:34,544 --> 00:36:37,024
+And I'm going to have to have a way of getting stuff out of N and into the stack and vice versa.
+
+673
+00:36:38,128 --> 00:36:39,088
+And I'm going to have to have a way of getting stuff out of N and into the stack and vice versa.
+
+674
+00:36:39,936 --> 00:36:41,744
+So I'm going to need a connection like this, which is two-way, whereby I can save the value of N and then restore it some other time through that connection.
+
+675
+00:36:44,416 --> 00:36:45,488
+So I'm going to need a connection like this, which is two-way, whereby I can save the value of N and then restore it some other time through that connection.
+
+676
+00:36:50,448 --> 00:36:52,224
+So I'm going to need a connection like this, which is two-way, whereby I can save the value of N and then restore it some other time through that connection.
+
+677
+00:36:52,240 --> 00:36:55,504
+So I'm going to need a connection like this, which is two-way, whereby I can save the value of N and then restore it some other time through that connection.
+
+678
+00:36:56,048 --> 00:36:56,848
+This is the stack.
+
+679
+00:36:58,100 --> 00:36:59,280
+I also need a way of remembering where I was in the computation of factorial in the outer program.
+
+680
+00:37:00,352 --> 00:37:03,744
+I also need a way of remembering where I was in the computation of factorial in the outer program.
+
+681
+00:37:04,432 --> 00:37:07,712
+I also need a way of remembering where I was in the computation of factorial in the outer program.
+
+682
+00:37:08,530 --> 00:37:10,064
+Now in the case of this machine, it isn't very much a problem.
+
+683
+00:37:10,768 --> 00:37:13,344
+Now in the case of this machine, it isn't very much a problem.
+
+684
+00:37:14,176 --> 00:37:16,240
+Factorial always returns, has to go back to the place where we multiply by N, except for the last time, when it has to return to whatever needs the factorial or go to done or stop.
+
+685
+00:37:16,864 --> 00:37:19,072
+Factorial always returns, has to go back to the place where we multiply by N, except for the last time, when it has to return to whatever needs the factorial or go to done or stop.
+
+686
+00:37:19,344 --> 00:37:20,720
+Factorial always returns, has to go back to the place where we multiply by N, except for the last time, when it has to return to whatever needs the factorial or go to done or stop.
+
+687
+00:37:21,152 --> 00:37:24,048
+Factorial always returns, has to go back to the place where we multiply by N, except for the last time, when it has to return to whatever needs the factorial or go to done or stop.
+
+688
+00:37:25,660 --> 00:37:26,672
+However, in general, I'm going to have to remember where I have been, because I might have computed factorial from somewhere else.
+
+689
+00:37:27,168 --> 00:37:28,736
+However, in general, I'm going to have to remember where I have been, because I might have computed factorial from somewhere else.
+
+690
+00:37:29,136 --> 00:37:31,248
+However, in general, I'm going to have to remember where I have been, because I might have computed factorial from somewhere else.
+
+691
 00:37:31,770 --> 00:37:36,070
 I have to go back to that place and continue there.
 
-635
+692
 00:37:36,070 --> 00:37:47,400
 So I'm going to have to have some way of taking the place where the marble is in the finite state controller, the state of the controller, and storing that in the stack as well.
 
-636
+693
 00:37:47,400 --> 00:37:51,870
 And I'm going to have to have ways of restoring that back to the state of the-- the marble.
 
-637
+694
 00:37:51,870 --> 00:37:54,310
 So I have to have something that moves the marble to the right place.
 
-638
+695
 00:37:54,310 --> 00:37:57,462
 Well, we're going to have a place which is the marble now.
 
-639
+696
 00:37:57,462 --> 00:38:14,260
 And it's called the continue register, called continue, which is the place to put the marble next time I go to continue.
 
-640
+697
 00:38:14,260 --> 00:38:16,140
 That's what that's for.
 
-641
+698
 00:38:16,140 --> 00:38:19,240
 And so there's got to be some path from that into the controller.
 
-642
+699
 00:38:22,910 --> 00:38:29,074
 I also have to have some way of saving that on the stack.
 
-643
+700
 00:38:29,074 --> 00:38:36,860
 And I have to have some way of setting that up to have various constants, a certain fixed number of constants.
 
-644
+701
 00:38:36,860 --> 00:38:38,840
 And that's very easy to arrange.
 
-645
+702
 00:38:38,840 --> 00:38:40,180
 So let's have some constants here.
 
-646
+703
 00:38:40,180 --> 00:38:41,430
 We'll call this one after-fact.
 
-647
+704
 00:38:47,430 --> 00:38:54,010
 And that's a constant which we'll get into the continue register, and also another one called fact-done.
 
-648
+705
 00:39:05,210 --> 00:39:08,130
 So this is the machine I want to build.
 
-649
+706
 00:39:08,130 --> 00:39:17,300
 That's its datapaths, at least. And it mixes a little with the controller here, because of the fact that I have to remember where I was and restore myself to that place.
 
-650
+707
 00:39:17,300 --> 00:39:20,390
 But let's write the program now which represents the controller.
 
-651
+708
 00:39:20,390 --> 00:39:24,890
 I'm not going to write the define machine thing and the register list, because that's not very interesting.
 
-652
+709
 00:39:24,890 --> 00:39:30,920
 I'm just going to write down the sequence of instructions that constitute the controller.
 
-653
+710
 00:39:30,920 --> 00:39:41,510
 So we have assign, to set up, continue to done.
 
-654
+711
 00:39:44,476 --> 00:40:08,050
 We have a loop which says branch if equal 1 fetch N, if N is 1, then go to the base step of the induction, the simple case.
 
-655
+712
 00:40:08,050 --> 00:40:14,265
 Otherwise, I have to remember the things that are necessary to perform a sub-factorial.
 
-656
+713
 00:40:14,265 --> 00:40:17,570
 I'm going to go over here, and I have to perform a sub-factorial.
 
-657
+714
 00:40:17,570 --> 00:40:24,000
 So I have to remember what's needed after I will be done with that.
 
-658
+715
 00:40:24,000 --> 00:40:25,510
 See, I'm about to do something terrible.
 
-659
+716
 00:40:25,510 --> 00:40:38,000
 I'm about to change the value of N. But this guy has to know the old value of N. But in order to make the sub-factorial work, I have to change the value of N. So I have to remember the old value.
 
-660
+717
 00:40:38,000 --> 00:40:40,850
 And I also have to remember where I've been.
 
-661
+718
 00:40:40,850 --> 00:40:42,100
 So I save up continue.
 
-662
+719
 00:40:47,705 --> 00:40:53,580
 And this is an instruction that says, put something in the stack.
 
-663
+720
 00:40:53,580 --> 00:41:03,550
 Save the contents of the continuation register, which in this case is done, because later I'm going to change that, too, because I need to go back to after-fact, as well.
 
-664
+721
 00:41:03,550 --> 00:41:05,040
 We'll see that.
 
-665
+722
 00:41:05,040 --> 00:41:10,380
 We save N, because I'm going to need that for later.
 
-666
+723
 00:41:10,380 --> 00:41:37,690
 Assign to N the decrement of fetch N. Assign continue, we're going to look at this now, to after, we'll call it.
 
-667
+724
 00:41:37,690 --> 00:41:41,140
 That's a good name for this, a little bit easier and shorter, and fits in here.
 
-668
+725
 00:41:52,772 --> 00:41:55,330
 Now look what I'm doing here.
 
-669
+726
 00:41:55,330 --> 00:42:00,065
 I'm saying, if the answer is 1, I'm done.
 
-670
+727
 00:42:00,065 --> 00:42:02,150
 I'm going to have to just get the answer.
 
-671
+728
 00:42:02,150 --> 00:42:11,780
 Otherwise, I'm going to save the continuation, save N, make N one less than N, remember I'm going to come back to someplace else, and go back and start doing another factorial.
 
-672
+729
 00:42:13,980 --> 00:42:16,050
 However, I've got a different machine [? in me ?] now.
 
-673
+730
 00:42:16,050 --> 00:42:18,380
 N is 1, and continue is something else.
 
-674
+731
 00:42:22,160 --> 00:42:23,590
 N is N minus 1.
 
-675
+732
 00:42:23,590 --> 00:42:28,660
 Now after I'm done with that, I can go there.
 
-676
+733
 00:42:28,660 --> 00:42:38,360
 I will restore the old value of N, which is the opposite of this save over here.
 
-677
+734
 00:42:38,360 --> 00:42:39,610
 I will restore the continuation.
 
-678
+735
 00:42:49,660 --> 00:42:54,320
 I will then go to here.
 
-679
+736
 00:42:54,320 --> 00:43:08,130
 I will assign to the VAL register the product of N and fetch VAL.
 
-680
+737
 00:43:13,520 --> 00:43:19,790
 VAL fetch product assign.
 
-681
+738
 00:43:19,790 --> 00:43:21,440
 And then I will be done.
 
-682
+739
 00:43:21,440 --> 00:43:26,570
 I will have my answer to the sub-factorial in VAL.
 
-683
+740
 00:43:26,570 --> 00:43:33,640
 At that point, I'm going to return by going to the place where the continuation is pointing.
 
-684
+741
 00:43:33,640 --> 00:43:35,300
 That says, go to fetch continue.
 
-685
+742
 00:43:45,870 --> 00:43:50,730
 And then I have finally a base step, which is the immediate answer.
 
-686
+743
 00:43:50,730 --> 00:44:02,570
 Assign to VAL fetch N, and go to fetch continue.
 
-687
+744
 00:44:12,670 --> 00:44:13,920
 And then I'm done.
 
-688
+745
 00:44:18,640 --> 00:44:26,890
 Now let's see how this executes on a very simple case, because then we'll see the use of this stack to do the job we need.
 
-689
+746
 00:44:26,890 --> 00:44:31,340
 This is statically what it's doing, but we have look dynamically at this.
 
-690
+747
 00:44:31,340 --> 00:44:32,300
 So let's see.
 
-691
+748
 00:44:32,300 --> 00:44:36,730
 First thing we do is continue gets done.
 
-692
+749
 00:44:36,730 --> 00:44:38,300
 The way that happened is I pushed this.
 
-693
+750
 00:44:38,300 --> 00:44:40,122
 Let's call that done the way I have it.
 
-694
+751
 00:44:46,390 --> 00:44:47,030
 I push that button.
 
-695
+752
 00:44:47,030 --> 00:44:48,950
 Done goes into there.
 
-696
+753
 00:44:48,950 --> 00:44:53,850
 Now I also have to set this thing up to have an initial value.
 
-697
+754
 00:44:53,850 --> 00:45:00,192
 Let's consider a factorial of three, a simple case.
 
-698
+755
 00:45:00,192 --> 00:45:05,900
 And we're going to start out with our stack growing over here.
 
-699
+756
 00:45:05,900 --> 00:45:12,770
 Stacks have their own little internal state saying where they are, where the next place I'm going to write is.
 
-700
+757
 00:45:12,770 --> 00:45:14,590
 So now we say, is N 1?
 
-701
+758
 00:45:14,590 --> 00:45:16,110
 The answer is no.
 
-702
+759
 00:45:16,110 --> 00:45:19,066
 So now I'm going to save continue, bang.
 
-703
+760
 00:45:19,066 --> 00:45:22,080
 Now that done goes in here.
 
-704
+761
 00:45:22,080 --> 00:45:26,660
 And this moves to here, the next place I'm going to write.
 
-705
+762
 00:45:26,660 --> 00:45:29,950
 Save N 3.
 
-706
+763
 00:45:29,950 --> 00:45:30,750
 OK?
 
-707
+764
 00:45:30,750 --> 00:45:35,940
 Assign to N the decrement of N. That means I've pushed this button.
 
-708
+765
 00:45:35,940 --> 00:45:37,320
 This becomes 2.
 
-709
+766
 00:45:40,400 --> 00:45:42,580
 Assign to continue aft.
 
-710
+767
 00:45:42,580 --> 00:45:43,610
 So I've pushed that button.
 
-711
+768
 00:45:43,610 --> 00:45:44,860
 Aft goes in here.
 
-712
+769
 00:45:49,140 --> 00:45:54,830
 OK, now go to loop, bang, so up to here.
 
-713
+770
 00:45:54,830 --> 00:45:56,570
 Is N 1?
 
-714
+771
 00:45:56,570 --> 00:45:57,780
 No.
 
-715
+772
 00:45:57,780 --> 00:45:59,490
 So I have to save continue.
 
-716
+773
 00:45:59,490 --> 00:46:00,600
 What's continue?
 
-717
+774
 00:46:00,600 --> 00:46:01,530
 Continue is aft.
 
-718
+775
 00:46:01,530 --> 00:46:02,780
 Push this button.
 
-719
+776
 00:46:02,780 --> 00:46:04,030
 So this moves to here.
 
-720
+777
 00:46:08,490 --> 00:46:11,460
 I have to save N. N is over here.
 
-721
+778
 00:46:11,460 --> 00:46:12,280
 I got to 2.
 
-722
+779
 00:46:12,280 --> 00:46:13,655
 Push that button.
 
-723
+780
 00:46:13,655 --> 00:46:16,050
 So a 2 gets written there.
 
-724
+781
 00:46:16,050 --> 00:46:20,060
 And then this thing moves down here.
 
-725
+782
 00:46:20,060 --> 00:46:24,214
 OK, save N. Assign N to the decrement of N.
 
-726
+783
 00:46:24,214 --> 00:46:25,464
 This becomes a 1.
 
-727
+784
 00:46:29,240 --> 00:46:31,370
 Assign continue to aft.
 
-728
+785
 00:46:31,370 --> 00:46:34,960
 A-F-T gets written there again.
 
-729
+786
 00:46:34,960 --> 00:46:36,520
 Go to loop.
 
-730
+787
 00:46:36,520 --> 00:46:37,930
 Is N equal to 1?
 
-731
+788
 00:46:37,930 --> 00:46:41,160
 Oh, yes, the answer is 1.
 
-732
+789
 00:46:41,160 --> 00:46:44,160
 OK, go to base step.
 
-733
+790
 00:46:44,160 --> 00:46:51,100
 Assign to VAL fetch of N. Bang, 1 gets put in there.
 
-734
+791
 00:46:51,100 --> 00:46:52,200
 Go to fetch continue.
 
-735
+792
 00:46:52,200 --> 00:46:53,680
 So we look in continue.
 
-736
+793
 00:46:53,680 --> 00:46:57,130
 Basically, I'm pushing a button over here that goes to the controller.
 
-737
+794
 00:46:57,130 --> 00:47:02,640
 The continue becomes aft, and all of a sudden, the program's running here.
 
-738
+795
 00:47:02,640 --> 00:47:06,650
 I now have to restore the outer version of factorial.
 
-739
+796
 00:47:06,650 --> 00:47:07,550
 So we go here.
 
-740
+797
 00:47:07,550 --> 00:47:13,940
 We say, restore N. So restore N means take the contents that's here.
 
-741
+798
 00:47:13,940 --> 00:47:22,230
 Push this button, and it goes into here, 2, and the pointer moves up.
 
-742
+799
 00:47:22,230 --> 00:47:24,810
 Restore continue, pretty easy.
 
-743
+800
 00:47:24,810 --> 00:47:27,020
 Go push this button.
 
-744
+801
 00:47:27,020 --> 00:47:31,280
 And then aft gets written in here again.
 
-745
+802
 00:47:31,280 --> 00:47:32,640
 That means this thing moves up.
 
-746
+803
 00:47:32,640 --> 00:47:35,190
 I've gotten rid of something else on my stack.
 
-747
+804
 00:47:42,240 --> 00:47:47,850
 Right, then I go to here, which says, assign to VAL the product of N an VAL.
 
-748
+805
 00:47:47,850 --> 00:47:50,970
 So I push this button over here, bang.
 
-749
+806
 00:47:50,970 --> 00:47:55,920
 2 times 1 gives me a 2, get written there.
 
-750
+807
 00:47:55,920 --> 00:47:57,540
 Go to fetch continue.
 
-751
+808
 00:47:57,540 --> 00:47:59,190
 Continue is aft.
 
-752
+809
 00:47:59,190 --> 00:48:01,290
 I go to aft.
 
-753
+810
 00:48:01,290 --> 00:48:17,715
 Aft says restore N. Do your restore N, means I take the value over here, which is 3, push this up to here, and move it into here, N. Now it's pushing that button.
 
-754
+811
 00:48:17,715 --> 00:48:20,200
 The next thing I do is restore continue.
 
-755
+812
 00:48:20,200 --> 00:48:22,830
 Continue is now going to become done.
 
-756
+813
 00:48:22,830 --> 00:48:27,260
 So this moves up here when I push this button.
 
-757
+814
 00:48:27,260 --> 00:48:31,720
 Done may or may be there anymore, I'm not interested, but it certainly is here.
 
-758
+815
 00:48:35,800 --> 00:48:41,440
 Next thing I do is assign to VAL the product of the fetch of N and the fetch of VAL.
 
-759
+816
 00:48:41,440 --> 00:48:44,300
 That's pushing this button over here, bang.
 
-760
+817
 00:48:44,300 --> 00:48:46,520
 2 times 3 is 6.
 
-761
+818
 00:48:46,520 --> 00:48:47,870
 So I get a 6 over here.
 
-762
+819
 00:48:52,020 --> 00:48:55,020
 And go to fetch continue, whoops, I go to done, and I'm done.
 
-763
+820
 00:48:55,020 --> 00:48:58,950
 And my answer is 6, as you can see in the VAL register.
 
-764
+821
 00:48:58,950 --> 00:49:03,630
 And in fact, the stack is in the state it originally was in.
 
-765
+822
 00:49:07,735 --> 00:49:13,620
 Now there's a bit of discipline in using these things like stacks that we have to be careful of.
 
-766
+823
 00:49:13,620 --> 00:49:16,260
 And we'll see that in the next segment.
 
-767
+824
 00:49:16,260 --> 00:49:18,590
 But first I want to ask if there are any questions for this.
 
-768
+825
 00:49:28,560 --> 00:49:30,170
 Are there any questions?
 
-769
+826
 00:49:30,170 --> 00:49:30,630
 Yes, Ron.
 
-770
+827
 00:49:30,630 --> 00:49:35,030
 AUDIENCE: What happens when you roll off the end of the stack with-- PROFESSOR: What do you mean, roll off of?
 
-771
+828
 00:49:35,030 --> 00:49:38,860
 AUDIENCE: Well, the largest number-- a larger starting point of N requires more memory, correct?
 
-772
+829
 00:49:38,860 --> 00:49:39,440
 PROFESSOR: Oh, yes.
 
-773
+830
 00:49:39,440 --> 00:49:41,530
 Well, I need to have a long enough stack.
 
-774
+831
 00:49:41,530 --> 00:49:43,843
 You say, what if I violate my illusion?
 
-775
+832
 00:49:43,843 --> 00:49:44,550
 AUDIENCE: Yes.
 
-776
+833
 00:49:44,550 --> 00:49:48,210
 PROFESSOR: Well, then the magic doesn't work.
 
-777
+834
 00:49:48,210 --> 00:49:51,640
 The truth of the matter is that every machine is finite.
 
-778
+835
 00:49:51,640 --> 00:49:59,950
 And for a procedure like this, there's a limit to the number of sub-factorials I could have.
 
-779
+836
 00:49:59,950 --> 00:50:08,350
 Remember when we were doing the y-operator a while ago, we pointed out that there was a sequence of exponentiation procedures, each of which was a little better than the previous one.
 
-780
+837
 00:50:08,350 --> 00:50:13,090
 Well, we're now seeing how we implement that mathematical idea.
 
-781
+838
 00:50:13,090 --> 00:50:17,990
 The limiting process is only so good as as far as you take the limit.
 
-782
+839
 00:50:17,990 --> 00:50:19,420
 If you think about it, what am I using here?
 
-783
+840
 00:50:19,420 --> 00:50:29,100
 I'm using about two pieces of memory for every recursion of this process.
 
-784
+841
 00:50:29,100 --> 00:50:33,180
 If we try to compute factorial of 10,000, that's not a lot of memory.
 
-785
+842
 00:50:33,180 --> 00:50:36,080
 On the other hand, it's an awful big number.
 
-786
+843
 00:50:36,080 --> 00:50:39,180
 So the question is, is that a valuable thing in this case.
 
-787
+844
 00:50:39,180 --> 00:50:45,085
 But it really turns out not to be a terrible limit, because memory is el cheapo, and people are pretty expensive.
 
-788
+845
 00:50:48,130 --> 00:50:51,050
 OK, thank you, let's take a break.
 
-789
+846
 00:50:51,050 --> 00:50:52,660
 [MUSIC PLAYING - "JESU, JOY OF MAN'S DESIRING" BY JOHANN SEBASTIAN BACH]
 
-790
+847
 00:51:55,176 --> 00:51:58,351
 PROFESSOR: Well, let's see.
 
-791
+848
 00:51:58,351 --> 00:52:05,640
 What I've shown you now is how to do a simple iterative process and a simple recursive process.
 
-792
+849
 00:52:05,640 --> 00:52:26,400
 I just want to summarize the design of simple machines for specific applications by showing you a little bit more complicated design, that of a thing that does doubly recursive Fibonacci, because it will indicate to us, and we'll understand, a bit about the conventions required for making stacks operate correctly.
 
-793
+850
 00:52:26,400 --> 00:52:27,110
 So let's see.
 
-794
+851
 00:52:27,110 --> 00:52:30,080
 I'm just going to write down, first of all, the program I'm going to translate.
 
-795
+852
 00:52:34,150 --> 00:52:59,965
 I need a Fibonacci procedure, it's very simple, which says, if N is less than 2, the result is N, otherwise it's the sum of Fib of N minus 1 and Fib of N minus 2.
 
-796
+853
 00:53:07,240 --> 00:53:09,290
 That's the plan I have here.
 
-797
+854
 00:53:09,290 --> 00:53:13,070
 And we're just going to write down the controller for such a machine.
 
-798
+855
 00:53:13,070 --> 00:53:26,810
 We're going to assume that there are registers, N, which holds the number we're taking Fibonacci of, VAL, which is where the answer is going to get put, and continue, which is the thing that's linked to the controller, like before.
 
-799
+856
 00:53:26,810 --> 00:53:34,360
 But I'm not going to draw another physical datapath, because it's pretty much the same as the last one you've seen.
 
-800
+857
 00:53:34,360 --> 00:53:44,860
 And of course, one of the most amazing things about computation is that after a while, you build up a little more features and a few more features, and all of the sudden, you've got everything you need.
 
-801
+858
 00:53:44,860 --> 00:53:51,810
 So it's remarkable that it just gets there so fast. I don't need much more to make a universal computer.
 
-802
+859
 00:53:51,810 --> 00:53:55,060
 But in any case, let's look at the controller for the Fibonacci thing.
 
-803
+860
 00:53:55,060 --> 00:54:10,230
 First thing I want to do is start the thing up by assign to continue a place called done, called Fib-done here.
 
-804
+861
 00:54:13,709 --> 00:54:24,120
 So that means that somewhere over here, I'm going to have a label, Fib-done, which is the place where I go when I want the machine to stop.
 
-805
+862
 00:54:24,120 --> 00:54:25,395
 That's what that is.
 
-806
+863
 00:54:25,395 --> 00:54:26,795
 And I'm going to make up a loop.
 
-807
+864
 00:54:31,110 --> 00:54:35,470
 It's a place I'm going to go to in order to start up computing a Fib.
 
-808
+865
 00:54:35,470 --> 00:54:42,570
 Whatever is in N at this point, Fibonacci will be computed of, and we will return to the place specified by continue.
 
-809
+866
 00:54:46,070 --> 00:55:02,100
 So what you're going to see here at this place, what I want here is the contract that says, I'm going to write this with a comment syntax, the contract is N contains arg, the argument.
 
-810
+867
 00:55:02,100 --> 00:55:09,325
 Continue is the recipient.
 
-811
+868
 00:55:12,812 --> 00:55:14,290
 And that's where it is.
 
-812
+869
 00:55:17,370 --> 00:55:24,820
 At this point, if I ever go to this place, I'm expecting this to be true, the argument for computing the Fibonacci.
 
-813
+870
 00:55:24,820 --> 00:55:26,450
 Now the next thing I want to do is to branch.
 
-814
+871
 00:55:30,220 --> 00:55:38,730
 And if N is less than 2--  by the way, I'm using what looks like Lisp syntax.
 
-815
+872
 00:55:38,730 --> 00:55:41,310
 This is not Lisp.
 
-816
+873
 00:55:41,310 --> 00:55:42,750
 This does not run.
 
-817
+874
 00:55:42,750 --> 00:55:46,120
 What I'm writing here does not run as a simple Lisp program.
 
-818
+875
 00:55:46,120 --> 00:55:49,710
 This is a representation of another language.
 
-819
+876
 00:55:49,710 --> 00:56:03,380
 The reason I'm using the syntax of parentheses and so on is because I tend to use a Lisp system to write an interpreter for this which allows me to simulate the machine I'm trying to build.
 
-820
+877
 00:56:03,380 --> 00:56:06,940
 I don't want to confuse this to think that this is Lisp code.
 
-821
+878
 00:56:06,940 --> 00:56:09,510
 It's just I'm using a lot of the pieces of Lisp.
 
-822
+879
 00:56:09,510 --> 00:56:16,620
 I'm embedding a language in Lisp, using Lisp as pieces to make my process of making my simulator easy.
 
-823
+880
 00:56:16,620 --> 00:56:18,900
 So I'm inheriting from Lisp all of its properties.
 
-824
+881
 00:56:18,900 --> 00:56:25,985
 Fetch of N 2, I want to go to a place called immediate answer.
 
-825
+882
 00:56:25,985 --> 00:56:27,235
 It's the base step.
 
-826
+883
 00:56:33,150 --> 00:56:37,750
 Now, that's somewhere over here, just above done.
 
-827
+884
 00:56:37,750 --> 00:56:39,330
 And we'll see it later.
 
-828
+885
 00:56:39,330 --> 00:56:44,860
 Now, in the general case, which is the part I'm going to write down now, let's just do it.
 
-829
+886
 00:56:44,860 --> 00:56:49,420
 Well, first of all, I'm going to have to call Fibonacci twice.
 
-830
+887
 00:56:49,420 --> 00:56:56,310
 In each case-- well, in one case at least, I'm going to have to know what to do to come back and do the next one.
 
-831
+888
 00:56:56,310 --> 00:57:04,500
 I have to remember, have I done the first Fib, or have I done the second one?
 
-832
+889
 00:57:04,500 --> 00:57:09,490
 Do I have to come back to the place where I do the second Fib, or do I have to come back to the place where I do the add?
 
-833
+890
 00:57:12,140 --> 00:57:16,980
 In the first case, over the first Fibonacci, I'm going to need the value of N for computing for the second one.
 
-834
+891
 00:57:20,010 --> 00:57:22,996
 So I have to store some of these things up.
 
-835
+892
 00:57:22,996 --> 00:57:25,820
 So first I'm going to save continue.
 
-836
+893
 00:57:25,820 --> 00:57:27,265
 That's who needs the answer.
 
-837
+894
 00:57:31,320 --> 00:57:44,130
 And the reason I'm doing that is because I'm about to assign continue to the place which is the place I want to go to after.
 
-838
+895
 00:57:46,870 --> 00:57:53,760
 Let's call it Fib-N-minus-1, big long name, classic Lisp name.
 
-839
+896
 00:57:57,700 --> 00:58:03,960
 Because I'm going to compute the first Fib of N minus 1, and then after that, I want to come back and do something else.
 
-840
+897
 00:58:03,960 --> 00:58:11,106
 That's the place I want to go to after I've done the first Fibonacci calculation.
 
-841
+898
 00:58:11,106 --> 00:58:19,130
 And I want to do a save of N, because I'm going to need it later, after that.
 
-842
+899
 00:58:19,130 --> 00:58:23,230
 Now I'm going to, at this point, get ready to do the Fibonacci of N minus 1.
 
-843
+900
 00:58:23,230 --> 00:58:33,950
 So assign to N the difference of the fetch of N and 1.
 
-844
+901
 00:58:38,110 --> 00:58:40,270
 Now I'm ready to go back to doing the Fib loop.
 
-845
+902
 00:58:47,630 --> 00:58:50,195
 Have I satisfied my contract?
 
-846
+903
 00:58:50,195 --> 00:58:51,770
 And the answer is yes.
 
-847
+904
 00:58:51,770 --> 00:58:57,210
 N contains N minus 1, which is what I need.
 
-848
+905
 00:58:57,210 --> 00:59:04,100
 Continue contains a place I want to go to when I'm done with calculating N minus 1.
 
-849
+906
 00:59:04,100 --> 00:59:05,440
 So I've satisfied the contract.
 
-850
+907
 00:59:05,440 --> 00:59:12,830
 And therefore, I can write down here a label, after-Fib-N-minus-1.
 
-851
+908
 00:59:20,490 --> 00:59:22,690
 Now what am I going to do here?
 
-852
+909
 00:59:22,690 --> 00:59:26,910
 Here's a place where I now have to get ready to do Fib of N minus 2.
 
-853
+910
 00:59:29,270 --> 00:59:31,780
 But in order to do a Fib of N minus 2, look, I don't know.
 
-854
+911
 00:59:31,780 --> 00:59:33,810
 I've clobbered my N over here.
 
-855
+912
 00:59:33,810 --> 00:59:39,780
 And presumably my N is counted down all the way to 1 or 0 or something at this point.
 
-856
+913
 00:59:39,780 --> 00:59:43,030
 So I don't know what the value of N in the N register is.
 
-857
+914
 00:59:43,030 --> 00:59:49,520
 I want the value of N that was on the stack that I saved over here so that could restore it over here.
 
-858
+915
 00:59:49,520 --> 01:00:01,810
 I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
 
-859
+916
 01:00:01,810 --> 01:00:03,060
 So let's restore that.
 
-860
+917
 01:00:08,830 --> 01:00:11,130
 Restore of N.
 
-861
+918
 01:00:11,130 --> 01:00:18,520
 Now I'm about to do something which is superstitious, and we will remove it shortly.
 
-862
+919
 01:00:18,520 --> 01:00:24,800
 I am about to finish the sequence of doing the subroutine call, if you will.
 
-863
+920
 01:00:24,800 --> 01:00:31,600
 I'm going to say, well, I also saved up the continuation, since I'm going to restore it now.
 
-864
+921
 01:00:31,600 --> 01:00:34,610
 But actually, I don't have to, because I'm not going to need it.
 
-865
+922
 01:00:34,610 --> 01:00:36,260
 We'll fix that in a second.
 
-866
+923
 01:00:36,260 --> 01:00:48,020
 So we'll do a restore of continue, which is what I would in general need to do.
 
-867
+924
 01:00:48,020 --> 01:00:55,420
 And we're just going to see what you would call in the compiler world a peephole optimization, which says, whoops, you didn't have to do that.
 
-868
+925
 01:00:55,420 --> 01:01:02,770
 OK, so the next thing I see here is that I have to get ready now to do Fibonacci of N minus 2.
 
-869
+926
 01:01:02,770 --> 01:01:05,050
 But I don't have to save N anymore.
 
-870
+927
 01:01:05,050 --> 01:01:13,540
 The reason why I don't have to save N anymore is because I don't need N after I've done Fib of N minus 2, because the next thing I do is add.
 
-871
+928
 01:01:13,540 --> 01:01:16,500
 So I'm just going to set up my N that way.
 
-872
+929
 01:01:16,500 --> 01:01:28,990
 Assign N minus difference of fetch N and 2.
 
-873
+930
 01:01:31,850 --> 01:01:36,950
 Now I have to finish the setup for calling Fibonacci of N minus 2.
 
-874
+931
 01:01:36,950 --> 01:02:05,320
 Well, I have to save up continue and assign continue, continue, to the place which is after Fib N 2, that place over here somewhere.
 
-875
+932
 01:02:05,320 --> 01:02:08,650
 However, I've got to be very careful.
 
-876
+933
 01:02:08,650 --> 01:02:15,300
 The old value, the value of Fib of N minus 1, I'm going to need later.
 
-877
+934
 01:02:15,300 --> 01:02:18,480
 The value of Fibonacci of N minus 1, I'm going to need.
 
-878
+935
 01:02:18,480 --> 01:02:24,150
 And I can't clobber it, because I'm going to have to add it to the value of Fib of N minus 2.
 
-879
+936
 01:02:24,150 --> 01:02:27,720
 That's in the value register, so I'm going to save it.
 
-880
+937
 01:02:27,720 --> 01:02:33,780
 So I have to save this right now, save up VAL.
 
-881
+938
 01:02:33,780 --> 01:02:39,547
 And now I can go off to my subroutine, go to Fib loop.
 
-882
+939
 01:02:44,220 --> 01:03:01,580
 Now before I go any further and finish this program, I just want to look at this segment so far and see, oh yes, there's a sequence of instructions here, if you will, that I can do something about.
 
-883
+940
 01:03:01,580 --> 01:03:10,640
 Here I have a restore of continue, a save of continue, and then an assign of continue, with no other references to continue in between.
 
-884
+941
 01:03:13,840 --> 01:03:16,770
 The restore followed by the save leaves the stack unchanged.
 
-885
+942
 01:03:19,090 --> 01:03:24,330
 The only difference is that I set the continue register to a value, which is the value that was on the stack.
 
-886
+943
 01:03:24,330 --> 01:03:31,710
 Since I now clobber that value, as in it was never referenced, these instructions are unnecessary.
 
-887
+944
 01:03:31,710 --> 01:03:35,390
 So we will remove these.
 
-888
+945
 01:03:38,550 --> 01:03:41,460
 But I couldn't have seen that unless I had written them down.
 
-889
+946
 01:03:43,780 --> 01:03:45,590
 Was that really true?
 
-890
+947
 01:03:45,590 --> 01:03:48,610
 Well, I don't know.
 
-891
+948
 01:03:48,610 --> 01:03:53,660
 OK, so we've now gone off to compute Fibonacci of N minus 2.
 
-892
+949
 01:03:53,660 --> 01:04:05,070
 So after that, what are we going to do?
 
-893
+950
 01:04:05,070 --> 01:04:07,960
 Well, I suppose the first thing we have to do-- we've got two things.
 
-894
+951
 01:04:07,960 --> 01:04:10,920
 We've got a thing in the value register which is now valuable.
 
-895
+952
 01:04:10,920 --> 01:04:14,815
 We also have a thing on the stack that can be restored into the value register.
 
-896
+953
 01:04:14,815 --> 01:04:19,470
 And what I have to be careful with now is I want to shuffle this right so I can do the multiply.
 
-897
+954
 01:04:19,470 --> 01:04:26,740
 Now there are various conventions I might use, but I'm going to be very picky and say, I'm only going to restore into a register I've saved from.
 
-898
+955
 01:04:26,740 --> 01:04:30,020
 If that's the case, I have to do a shuffle here.
 
-899
+956
 01:04:30,020 --> 01:04:47,340
 It's the same problem with how many hands I have. So I'm going to assign to N, because I'm not going to need N anymore, N is useless, the current value of VAL, which was the value of Fib of N minus 2.
 
-900
+957
 01:04:52,950 --> 01:04:56,180
 And I'm going to restore the value register now.
 
-901
+958
 01:05:01,850 --> 01:05:13,840
 This restore matches this save. And if you're very careful and examine very carefully what goes on, restores and saves are always matched.
 
-902
+959
 01:05:13,840 --> 01:05:19,000
 Now there's an outstanding save, of course, that we have to get rid of soon.
 
-903
+960
 01:05:19,000 --> 01:05:20,590
 And so I restored the value register.
 
-904
+961
 01:05:20,590 --> 01:05:42,860
 Now I restore the continue one, which matches this one, dot, dot, dot, dot, dot, dot, dot, down to here, restoring that continuation.
 
-905
+962
 01:05:42,860 --> 01:05:49,665
 That continuation is a continuation of Fib of N, which is the problem I was trying to solve, a major problem I'm trying to solve.
 
-906
+963
 01:05:49,665 --> 01:05:57,360
 So that's the guy I have to go back to who wants Fib of N. I saved them all the way up here when I realized N was not less than 2.
 
-907
+964
 01:05:57,360 --> 01:06:00,840
 And so I had to do a complicated operation.
 
-908
+965
 01:06:00,840 --> 01:06:03,240
 Now I've got everything I need to do it.
 
-909
+966
 01:06:03,240 --> 01:06:28,335
 So I'm going to restore that, assign to VAL the sum of fetch VAL and fetch of N, and go to continue.
 
-910
+967
 01:06:38,260 --> 01:06:47,110
 So now I've returned from computing Fibonacci of N, the general case.
 
-911
+968
 01:06:47,110 --> 01:07:36,130
 Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
 
-912
+969
 01:07:43,460 --> 01:07:45,640
 So that's a fairly complicated program.
 
-913
+970
 01:07:45,640 --> 01:07:52,965
 And the reason I wanted you see to that is because I want you to see the particular flavors of stack discipline that I was obeying.
 
-914
+971
 01:07:52,965 --> 01:08:00,395
 It was first of all, I don't want to take anything that I'm not going to need later.
 
-915
+972
 01:08:00,395 --> 01:08:01,850
 I was being very careful.
 
-916
+973
 01:08:01,850 --> 01:08:03,940
 And it's very important.
 
-917
+974
 01:08:03,940 --> 01:08:15,830
 And there are all sorts of other disciplines people make with frames and things like that of some sort, where you save all sorts of junk you're not going to need later and restore it because, in some sense, it's easier to do that.
 
-918
+975
 01:08:15,830 --> 01:08:21,740
 That's going to lead to various disasters, which we'll see a little later.
 
-919
+976
 01:08:21,740 --> 01:08:24,810
 It's crucial to say exactly what you're going to need later.
 
-920
+977
 01:08:26,899 --> 01:08:29,859
 It's an important idea.
 
-921
+978
 01:08:29,859 --> 01:08:36,930
 And the responsibility of that is whoever saves something is the guy who restores it, because he needs it.
 
-922
+979
 01:08:36,930 --> 01:08:46,940
 And in such discipline, you can see what things are unnecessary, operations that are unimportant.
 
-923
+980
 01:08:46,940 --> 01:08:55,350
 Now, one other thing I want to tell you about that's very simple is that, of course, the picture you see is not the whole picture.
 
-924
+981
 01:08:55,350 --> 01:09:10,000
 Supposing I had systems that had things like other operations, CAR, CDR, cons, building a vector and referencing the nth element of it, or things like that.
 
-925
+982
 01:09:10,000 --> 01:09:18,299
 Well, at this level of detail, whatever it is, we can conceptualize those as primitive operations in the datapath.
 
-926
+983
 01:09:18,299 --> 01:09:33,630
 In other words, we could say that some machine that, for example, has the append machine, which has to do cons of the CAR of x with the append of the CDR of x and y, well, gee, that's exactly the same as the factorial structure.
 
-927
+984
 01:09:33,630 --> 01:09:36,133
 Well, it's got about the same structure.
 
-928
+985
 01:09:36,133 --> 01:09:37,270
 And what do we have?
 
-929
+986
 01:09:37,270 --> 01:09:46,939
 We have some sort of things in it which may be registers, x and y, and then x has to somehow move to y sometimes, x has to get the value of y.
 
-930
+987
 01:09:46,939 --> 01:09:51,700
 And then we may have to be able to do something which is a cons.
 
-931
+988
 01:09:51,700 --> 01:10:01,420
 I don't remember if I need to like this is in this system, but cons is sort of like subtract or add or something.
 
-932
+989
 01:10:01,420 --> 01:10:07,600
 It combines two things, producing a thing which is the cons, which we may then think goes into there.
 
-933
+990
 01:10:07,600 --> 01:10:16,920
 And then maybe a thing called the CAR, which will produce-- I can get the CAR or something.
 
-934
+991
 01:10:16,920 --> 01:10:20,150
 And maybe I can get the CDR of something, and so on.
 
-935
+992
 01:10:20,150 --> 01:10:31,770
 But we shouldn't be too afraid of saying things this way, because the worst that could happen is if we open up cons, what we're going to find is some machine.
 
-936
+993
 01:10:31,770 --> 01:10:41,210
 And cons may in fact overlap with CAR and CDR, and it always does, in the same way that plus and minus overlap, and really the same business.
 
-937
+994
 01:10:41,210 --> 01:10:53,300
 Cons, CAR, and CDR are going to overlap, and we're going to find a little controller, a little datapath, which may have some registers in it, some stuff like that.
 
-938
+995
 01:10:53,300 --> 01:11:02,030
 And maybe inside it, there may also be an infinite part, a part that's semi-infinite or something, which is a lot of very uniform stuff, which we'll call memory.
 
-939
+996
 01:11:06,570 --> 01:11:09,330
 And I wouldn't be so horrified if that were the way it works.
 
-940
+997
 01:11:09,330 --> 01:11:13,320
 In fact, it does, and we'll talk about that later.
 
-941
+998
 01:11:13,320 --> 01:11:14,570
 So are there any questions?
 
-942
+999
 01:11:24,340 --> 01:11:25,665
 Gee, what an unquestioning audience.
 
-943
+1000
 01:11:28,670 --> 01:11:30,330
 Suppose I tell you a horrible pile of lies.
 
-944
+1001
 01:11:39,690 --> 01:11:41,990
 OK.
 
-945
+1002
 01:11:41,990 --> 01:11:42,520
 Well, thank you.
 
-946
+1003
 01:11:42,520 --> 01:11:44,230
 Let's take our break.
 
-947
+1004
 01:11:44,230 --> 01:11:48,780
 [MUSIC PLAYING - "JESU, JOY OF MAN'S DESIRING" BY JOHANN SEBASTIAN BACH]
 
