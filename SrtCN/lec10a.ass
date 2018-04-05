@@ -15,10 +15,10 @@ Audio File: ../../../Movies/Lec10a.mp4
 Video File: ../../../Movies/Lec10a.mp4
 Video AR Mode: 1
 Video AR Value: 1.333333
-Video Zoom Percent: 1.250000
-Scroll Position: 180
-Active Line: 186
-Video Position: 22271
+Video Zoom Percent: 0.750000
+Scroll Position: 305
+Active Line: 321
+Video Position: 36565
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
@@ -213,3 +213,138 @@ Dialogue: 0,0:12:12.64,0:12:16.62,Default,,0,0,0,,and then branch off to the pla
 Dialogue: 0,0:12:16.62,0:12:18.62,Default,,0,0,0,,换句话说，求值器做的事情是\NIn other words, what the evaluator's doing
 Dialogue: 0,0:12:18.62,0:12:23.08,Default,,0,0,0,,在分析代码看看需要做什么的同时\Nis simultaneously analyzing the code to see what to do,
 Dialogue: 0,0:12:23.08,0:12:25.08,Default,,0,0,0,,运行这些操作\Nand running these operations.
+Dialogue: 0,0:12:25.08,0:12:28.28,Default,,0,0,0,,当你运行求值器一百万次\NAnd when you-- if you run the evaluator a million times
+Dialogue: 0,0:12:28.28,0:12:30.58,Default,,0,0,0,,这个分析过程就进行一百万次\Nthat analysis phase happens a million times
+Dialogue: 0,0:12:30.58,0:12:32.58,Default,,0,0,0,,而在编译器中它只会进行一次\Nwhereas in the compiler, it's happened once
+Dialogue: 0,0:12:32.58,0:12:35.58,Default,,0,0,0,,之后就只有寄存器操作了\Nand then you just have the register operations themselves.
+Dialogue: 0,0:12:35.58,0:12:38.66,Default,,0,0,0,,
+Dialogue: 0,0:12:38.66,0:12:41.66,Default,,0,0,0,,这就是零阶编译器TBD\NOk, that's a, a zeroth-order compiler
+Dialogue: 0,0:12:41.66,0:12:44.16,Default,,0,0,0,,但它是个很挫的编译器\Nbut it is a wretched, wretched compiler.
+Dialogue: 0,0:12:44.16,0:12:46.16,Default,,0,0,0,,它很蠢\NIt's really dumb.
+Dialogue: 0,0:12:46.56,0:12:51.56,Default,,0,0,0,,让我们回来，TBD\NLet's--let's go back and, and look at this overhead.
+Dialogue: 0,0:12:51.56,0:12:55.46,Default,,0,0,0,,看看这个东西做的一些操作\NSo look at look at some of the operations this thing is doing.\N
+Dialogue: 0,0:12:55.46,0:13:02.96,Default,,0,0,0,,我们想看看 (F  X) 的操作和解释过程\NWe're supposedly looking at the operations and interpreting f of x.
+Dialogue: 0,0:13:02.96,0:13:04.96,Default,,0,0,0,,这里就是它做了什么\NNow, look here what it's doing.
+Dialogue: 0,0:13:04.96,0:13:06.96,Default,,0,0,0,,举个例子，这里\NFor example, here
+Dialogue: 0,0:13:06.96,0:13:12.94,Default,,0,0,0,,它将(operator (fetch exp))赋值给 exp\Nit assigns to exp the operator in fetch of exp.
+Dialogue: 0,0:13:12.94,0:13:16.00,Default,,0,0,0,,看，没理由干这个\NBut see, there's no reason to do that, because this is--
+Dialogue: 0,0:13:16.00,0:13:22.50,Default,,0,0,0,,因为编译器知道(operator (fetch exp))在这里就是F\Nthe compiler knows that the operator, fetch of exp, is f right here.
+Dialogue: 0,0:13:22.50,0:13:25.70,Default,,0,0,0,,因此这个指令没理由存在\NSo there's no reason why this instruction should say that.
+Dialogue: 0,0:13:25.70,0:13:29.18,Default,,0,0,0,,它应该表达，我们要把F赋值给exp\NIt should say, we'll assign to exp, f.
+Dialogue: 0,0:13:29.18,0:13:31.46,Default,,0,0,0,,或者实际上，你完全不需要exp\NOr in fact, you don't need exp at all.
+Dialogue: 0,0:13:31.46,0:13:33.56,Default,,0,0,0,,没有理由显示需要exp\NThere's no reason it should have exp at all.
+Dialogue: 0,0:13:33.56,0:13:37.00,Default,,0,0,0,,exp是用来做什么的？我们看这里\NWhat, what did exp get used for? Well, if we come down here
+Dialogue: 0,0:13:37.00,0:13:40.12,Default,,0,0,0,,
+Dialogue: 0,0:13:40.12,0:13:42.62,Default,,0,0,0,,我们对val赋值\Nwe're going to assign to val
+Dialogue: 0,0:13:42.62,0:13:47.98,Default,,0,0,0,,在环境里的exp里寻找东西\Nlook up the stuff in exp in the environment.
+Dialogue: 0,0:13:47.98,0:13:51.54,Default,,0,0,0,,因此在这里我们实际上要做的是TBD\NSo what we really should do is get rid of the exp register altogether
+Dialogue: 0,0:13:51.54,0:13:54.30,Default,,0,0,0,,只修改指令为，引用val\Nand just change this instruction to say, assign to val,
+Dialogue: 0,0:13:54.30,0:13:59.42,Default,,0,0,0,,在环境中查找符号f的值\Nlook up the variable value of the symbol f in the environment.
+Dialogue: 0,0:13:59.42,0:14:02.06,Default,,0,0,0,,类似地\NSimilarly
+Dialogue: 0,0:14:02.06,0:14:04.56,Default,,0,0,0,,回到这里，我们完全不需要unev\Nback up here, we don't need unev at all,
+Dialogue: 0,0:14:04.56,0:14:06.04,Default,,0,0,0,,因为我们知道\Nbecause we know
+Dialogue: 0,0:14:06.04,0:14:09.16,Default,,0,0,0,,因为我们知道这一块代码要从exp中找的操作数\Nwhat the operands of fetch of exp are for this piece of code.
+Dialogue: 0,0:14:09.16,0:14:11.16,Default,,0,0,0,,就是列表x\NIt's the, it's the list x.
+Dialogue: 0,0:14:12.54,0:14:15.16,Default,,0,0,0,,从某种意义上来说\NSo in some sense,
+Dialogue: 0,0:14:15.16,0:14:19.42,Default,,0,0,0,,你想完全抛掉unev和exp\Nyou don't want unev and exp at all.
+Dialogue: 0,0:14:19.42,0:14:22.04,Default,,0,0,0,,See, what they really are in some sense
+Dialogue: 0,0:14:22.04,0:14:25.30,Default,,0,0,0,,它们不是它们实际运行机器的寄存器\Nthose aren't registers of the actual machine that's supposed to run.
+Dialogue: 0,0:14:25.30,0:14:30.16,Default,,0,0,0,,它们是用来模拟那台机器的寄存器\NThose are registers that have to do with arranging the thing that can simulate that machine.
+Dialogue: 0,0:14:30.16,0:14:34.64,Default,,0,0,0,,So they're always going to hold expressions which,
+Dialogue: 0,0:14:34.64,0:14:38.84,Default,,0,0,0,,from the compiler's point of view, are just constants, so can be put right into the code.
+Dialogue: 0,0:14:38.84,0:14:45.18,Default,,0,0,0,,所以你可以忘掉对于exp和unev的操作，只用那些常量\NSo you can forget about all the operations worrying about exp and unev and just use those constants.
+Dialogue: 0,0:14:45.18,0:14:47.88,Default,,0,0,0,,与之相似，如果我们回顾这里\NSimilarly, again, if we go, go back and look here,
+Dialogue: 0,0:14:47.88,0:14:51.90,Default,,0,0,0,,there are things like assign to continue eval-args.
+Dialogue: 0,0:14:53.16,0:14:56.62,Default,,0,0,0,,现在它没啥事情需要做了\NNow, that has nothing to do with anything.
+Dialogue: 0,0:14:56.62,0:15:00.80,Default,,0,0,0,,它只是求值器维护了下一步需要去哪\NThat was just the evaluator keeping track of where it should go next,
+Dialogue: 0,0:15:00.80,0:15:06.34,Default,,0,0,0,,to evaluate the arguments in some, in some application.
+Dialogue: 0,0:15:06.34,0:15:10.26,Default,,0,0,0,,当然，这与编译器没关系\NBut of course, that's irrelevant to the compiler, because you--
+Dialogue: 0,0:15:10.26,0:15:14.58,Default,,0,0,0,,因为这个分析过程已经被编译器干完了the analysis phase will have already done that.
+Dialogue: 0,0:15:14.58,0:15:17.30,Default,,0,0,0,,这与我们的主题完全无关\NSo this is completely irrelevant.
+Dialogue: 0,0:15:17.30,0:15:25.94,Default,,0,0,0,,So a lot of these, these assignments to continue have not to do where the running machine is supposed to continue in keeping track of its state.
+Dialogue: 0,0:15:25.94,0:15:29.30,Default,,0,0,0,,It has to, to do with where the evaluator analysis should continue,
+Dialogue: 0,0:15:29.30,0:15:31.76,Default,,0,0,0,,TBD它们是完全无关的，所以我的可以去掉它们\Nand those are completely irrelevant. So we can get rid of them.
+Dialogue: 0,0:15:31.76,0:15:42.70,Default,,0,0,0,,
+Dialogue: 0,0:15:42.70,0:15:46.10,Default,,0,0,0,,Ok, well, if we, if we simply do that
+Dialogue: 0,0:15:46.10,0:15:48.80,Default,,0,0,0,,make those kinds of optimizations
+Dialogue: 0,0:15:48.80,0:15:53.44,Default,,0,0,0,,get rid, get rid of worrying about exp and unev,
+Dialogue: 0,0:15:53.44,0:15:56.64,Default,,0,0,0,,and get rid of these irrelevant register assignments to continue,
+Dialogue: 0,0:15:56.64,0:16:00.68,Default,,0,0,0,,then we can take this literal code,
+Dialogue: 0,0:16:00.68,0:16:03.74,Default,,0,0,0,,these sort of 19 instructions that the,
+Dialogue: 0,0:16:03.74,0:16:06.68,Default,,0,0,0,,that the evaluator would have done,
+Dialogue: 0,0:16:06.68,0:16:08.36,Default,,0,0,0,,and then replace them.
+Dialogue: 0,0:16:08.36,0:16:10.36,Default,,0,0,0,,大家看幻灯片\NLet's look at the, at the slide.
+Dialogue: 0,0:16:10.36,0:16:11.82,Default,,0,0,0,,
+Dialogue: 0,0:16:11.82,0:16:16.10,Default,,0,0,0,,我们去掉其中一半\NReplace them by--we get rid of about half of them.\N
+Dialogue: 0,0:16:16.10,0:16:18.10,Default,,0,0,0,,
+Dialogue: 0,0:16:18.10,0:16:20.86,Default,,0,0,0,,同样，这就是求值器做的某种过滤\NAnd again, this is just sort of filtering
+Dialogue: 0,0:16:20.86,0:16:24.80,Default,,0,0,0,,把无关的东西去掉\Nwhat the evaluator would have done by getting rid of the irrelevant stuff.
+Dialogue: 0,0:16:24.80,0:16:26.80,Default,,0,0,0,,你看\NAnd you see, for instance,
+Dialogue: 0,0:16:26.80,0:16:31.74,Default,,0,0,0,,here the--where the evaluator said, assign val, look up variable value,
+Dialogue: 0,0:16:31.74,0:16:34.88,Default,,0,0,0,,fetch of exp, here we have put in the constant f.
+Dialogue: 0,0:16:34.88,0:16:37.94,Default,,0,0,0,,这里我的放了常量x\NHere we've put in the constant x.
+Dialogue: 0,0:16:38.90,0:16:43.04,Default,,0,0,0,,因此这是个稍好一些的编译器\NSo there's a, there's a little better compiler.
+Dialogue: 0,0:16:43.04,0:16:47.34,Default,,0,0,0,,但它还是比较蠢\NIt's still pretty dumb.
+Dialogue: 0,0:16:47.34,0:16:50.08,Default,,0,0,0,,它仍会做很多蠢事\NIt's still doing a lot of dumb things.
+Dialogue: 0,0:16:50.08,0:16:52.56,Default,,0,0,0,,我们再看幻灯片\NAgain, if we go look at the slide again,
+Dialogue: 0,0:16:52.56,0:16:54.56,Default,,0,0,0,,看最开头的地方\Nlook at the very beginning here,
+Dialogue: 0,0:16:55.74,0:16:58.66,Default,,0,0,0,,能发现保存环境\Nwe see a save the environment,
+Dialogue: 0,0:16:58.66,0:17:01.80,Default,,0,0,0,,把某些东西赋值给val寄存器\Nassign something to the val register,
+Dialogue: 0,0:17:01.80,0:17:03.22,Default,,0,0,0,,然后恢复环境and restore the environment.
+Dialogue: 0,0:17:03.22,0:17:04.64,Default,,0,0,0,,它是从哪来的\NWhere'd that come from?
+Dialogue: 0,0:17:04.64,0:17:07.90,Default,,0,0,0,,它来自求值器的这个地方\NThat came from the evaluator back here saying,
+Dialogue: 0,0:17:07.90,0:17:10.68,Default,,0,0,0,,哦，我在求值一个应用的过程中\Noh, I'm in the middle of evaluating an application.
+Dialogue: 0,0:17:10.68,0:17:15.32,Default,,0,0,0,,所以我要递归调用eval dispatch\NSo I'm going to recursively call eval dispatch.\N
+Dialogue: 0,0:17:15.32,0:17:19.36,Default,,0,0,0,,我最好把接下来要用到的东西存下来，存到环境里\NSo I'd better save the thing I'm going to need later, which is the environment.
+Dialogue: 0,0:17:19.36,0:17:23.14,Default,,0,0,0,,这就是递归调用eval dispatch的结果\NThis was the result of recursively calling eval dispatch.\N
+Dialogue: 0,0:17:23.14,0:17:26.08,Default,,0,0,0,,在刚才这个例子中是对符号f进行求值\NIt was evaluating the symbol f in that case.
+Dialogue: 0,0:17:26.08,0:17:30.42,Default,,0,0,0,,从eval dispatch中返回，将环境恢复\NThen it came back from eval dispatch, restored the environment.
+Dialogue: 0,0:17:30.42,0:17:34.62,Default,,0,0,0,,实际上，这个求值过程中的进行的操作\NBut in fact, the actual thing it ended up doing
+Dialogue: 0,0:17:34.62,0:17:38.24,Default,,0,0,0,,完全不会影响环境\Nin the evaluation is not going to hurt the environment at all.
+Dialogue: 0,0:17:38.24,0:17:42.96,Default,,0,0,0,,所以这里没必要保存环境再恢复环境\NSo there's no reason to be saving the environment and restoring the environment here.
+Dialogue: 0,0:17:42.96,0:17:44.96,Default,,0,0,0,,
+Dialogue: 0,0:17:44.96,0:17:48.04,Default,,0,0,0,,与之类似\NSimilarly,
+Dialogue: 0,0:17:48.04,0:17:52.20,Default,,0,0,0,,这里我们保存了参数列表\Nhere I'm saving the argument list.
+Dialogue: 0,0:17:52.20,0:17:56.94,Default,,0,0,0,,那是一个参数求值循环，保存参数列表\NThat's a piece of the argument evaluation loop, saving the argument list,
+Dialogue: 0,0:17:56.94,0:17:58.94,Default,,0,0,0,,在这里恢复参数列表\Nand here you restore it.
+Dialogue: 0,0:17:58.94,0:18:00.72,Default,,0,0,0,,事实上最后\NBut the actual thing that you ended up doing
+Dialogue: 0,0:18:00.72,0:18:02.52,Default,,0,0,0,,并没有变更参数列表\Ndidn't trash the argument list.
+Dialogue: 0,0:18:02.52,0:18:04.52,Default,,0,0,0,,所以不需要保存它\NSo there was no reason to save it.
+Dialogue: 0,0:18:04.52,0:18:07.68,Default,,0,0,0,,
+Dialogue: 0,0:18:07.68,0:18:13.38,Default,,0,0,0,,So another way to say, another way to say that
+Dialogue: 0,0:18:13.38,0:18:19.38,Default,,0,0,0,,求值器不得不最大限度的保持悲观\Nis that the, the evaluator has to be maximally pessimistic,
+Dialogue: 0,0:18:19.38,0:18:23.06,Default,,0,0,0,,因为，从它的视角来看，只知道接下来是要对某些东西进行求值\Nbecause as far from its point of view it's just going off to evaluate something.
+Dialogue: 0,0:18:23.06,0:18:25.56,Default,,0,0,0,,所以最好把后面要用到的都存下来\NSo it better save what it's going to need later.
+Dialogue: 0,0:18:25.56,0:18:29.26,Default,,0,0,0,,一旦你完成了分析，编译器就是从另一种视角看问题了\NBut once you've done the analysis, the compiler is in a position to say,
+Dialogue: 0,0:18:29.26,0:18:31.84,Default,,0,0,0,,哪些是我真正需要存下来的？\Nwell, what actually did I need to save?
+Dialogue: 0,0:18:31.84,0:18:37.30,Default,,0,0,0,,它不需要像求值器一样小心翼翼\NAnd doesn't need to do any-- it doesn't need to be as careful as the evaluator,
+Dialogue: 0,0:18:37.30,0:18:39.30,Default,,0,0,0,,因为它知道哪些才是真正需要的\Nbecause it knows what it actually needs
+Dialogue: 0,0:18:39.30,0:18:41.90,Default,,0,0,0,,在任何情况下，如果我们Well, in any case, if we do that
+Dialogue: 0,0:18:41.90,0:18:46.08,Default,,0,0,0,,去除所有多余的保存和恢复\Nand eliminate all those redundant saves and restores,
+Dialogue: 0,0:18:46.08,0:18:49.42,Default,,0,0,0,,那么我们可以把它记下来TBD\Nthen we can get it down to this.
+Dialogue: 0,0:18:49.42,0:18:53.76,Default,,0,0,0,,可以发现，只有三个指令是必须的\NAnd you see there are actually only three instructions that we actually need,
+Dialogue: 0,0:18:53.76,0:18:55.76,Default,,0,0,0,,down from the initial 11 or so,
+Dialogue: 0,0:18:55.76,0:18:59.26,Default,,0,0,0,,or the initial 20 or so in the original one.
+Dialogue: 0,0:18:59.26,0:19:03.16,Default,,0,0,0,,对于这些寄存器操作\NAnd that's just saying, of those register operations,
+Dialogue: 0,0:19:03.16,0:19:05.76,Default,,0,0,0,,哪些是必需的？\Nwhich ones did we actually need?
+Dialogue: 0,0:19:05.76,0:19:08.72,Default,,0,0,0,,
+Dialogue: 0,0:19:08.72,0:19:14.26,Default,,0,0,0,,我们换个方式概括，来看看稍好一些的图片\NLet me just sort of summarize that in another way, just to show you in a little better picture.
+Dialogue: 0,0:19:14.26,0:19:18.02,Default,,0,0,0,,Here's a picture of starting--
+Dialogue: 0,0:19:18.02,0:19:22.16,Default,,0,0,0,,This is looking at all the saves and restores.
+Dialogue: 0,0:19:22.16,0:19:25.26,Default,,0,0,0,,So here's the expression, f of x,
+Dialogue: 0,0:19:25.26,0:19:28.22,Default,,0,0,0,,and then this traces through, on the bottom here,
+Dialogue: 0,0:19:28.22,0:19:32.52,Default,,0,0,0,,the various places in the evaluator
+Dialogue: 0,0:19:34.54,0:19:38.04,Default,,0,0,0,,that were passed when the evaluation happened.
+Dialogue: 0,0:19:38.04,0:19:40.04,Default,,0,0,0,,在这，你可以看到箭头\NAnd then here, here you see arrows.
+Dialogue: 0,0:19:40.04,0:19:42.26,Default,,0,0,0,,向下的箭头表示register保存了\NArrow down means register saved.
+Dialogue: 0,0:19:42.26,0:19:45.88,Default,,0,0,0,,所以发生的第一件事就是保存环境\NSo the first thing that happened is the environment got saved.
+Dialogue: 0,0:19:45.88,0:19:49.52,Default,,0,0,0,,在这，环境恢复了\NAnd over here, the environment got restored.
+Dialogue: 0,0:19:49.52,0:19:55.12,Default,,0,0,0,,这些，都是成对的栈操作\NAnd these-- so there are all the pairs of stack operations.
+Dialogue: 0,0:19:55.12,0:19:57.86,Default,,0,0,0,,Now, if you go ahead and say,
+Dialogue: 0,0:19:57.86,0:20:00.78,Default,,0,0,0,,well, let's remember that we don't--that unev,
+Dialogue: 0,0:20:00.78,0:20:03.92,Default,,0,0,0,,unev是个完全无用的registerfor instance, is a completely useless register.
+Dialogue: 0,0:20:03.92,0:20:07.24,Default,,0,0,0,,
+Dialogue: 0,0:20:07.24,0:20:09.78,Default,,0,0,0,,如果我们用固定结构的代码\NAnd if we use the constant structure of the code,
+Dialogue: 0,0:20:09.78,0:20:13.08,Default,,0,0,0,,我们就不需要保存unev，我们完全不需要unev\Nwell, we don't need, we don't need to save unev.
+Dialogue: 0,0:20:13.08,0:20:15.54,Default,,0,0,0,,
+Dialogue: 0,0:20:15.54,0:20:20.08,Default,,0,0,0,,And then, depending on how we set up the discipline of the--
