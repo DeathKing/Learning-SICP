@@ -580,7 +580,7 @@ Lisp解释器的代码 the code for a Lisp interpreter if you wanted to implemen
 
 146
 00:09:36,244 --> 00:09:40,125
-你需要关心的是 如果你有某种断言 What you have to worry about is if you have a, a predicate.
+你需要关心的是 如果你有个谓词 What you have to worry about is if you have a, a predicate.
 
 147
 00:09:40,125 --> 00:09:43,453
@@ -592,7 +592,7 @@ Lisp解释器的代码 the code for a Lisp interpreter if you wanted to implemen
 
 149
 00:09:46,525 --> 00:09:51,133
-你并不能知道哪个分支需要执行 you don't know which branch of these--of a conditional like this you're going to do.
+你并不能知道会执行哪个分支 you don't know which branch of these--of a conditional like this you're going to do.
 
 150
 00:09:51,133 --> 00:09:54,909
@@ -620,7 +620,7 @@ Lisp解释器的代码 the code for a Lisp interpreter if you wanted to implemen
 
 156
 00:10:18,175 --> 00:10:21,354
-你的解释器对断言求值 So you walk the interpreter over the predicate
+你的解释器对谓词求值 So you walk the interpreter over the predicate
 
 157
 00:10:21,354 --> 00:10:24,703
@@ -628,27 +628,27 @@ Lisp解释器的代码 the code for a Lisp interpreter if you wanted to implemen
 
 158
 00:10:24,703 --> 00:10:27,220
-And then you compile an instruction that says
+随后你编译一条指令 And then you compile an instruction that says
 
 159
 00:10:27,220 --> 00:10:37,175
-branch if, if val is true
+如果VAL是TRUE branch if, if val is true
 
 160
 00:10:37,175 --> 00:10:44,975
-to a place we'll call label one.
+就转到LABEL1这个地方 to a place we'll call label one.
 
 161
 00:10:44,975 --> 00:10:53,625
-Then we, we will put the code for B to walk the interpreter--walk the interpreter over B.
+然后我们写下B的代码 让解释器对B进行求值 Then we, we will put the code for B  to walk the interpreter--walk the interpreter over B. 
 
 162
 00:10:53,625 --> 00:11:02,200
-And then go to put in an instruction that says, go to the next thing, whatever
+然后写一句指令 GOTO NEXT THING And then go to put in an instruction that says, go to the next thing, whatever
 
 163
 00:11:02,200 --> 00:11:04,950
-whatever was supposed to happen after this thing was done.
+就是它结束之后要去的地方 whatever was supposed to happen after this thing was done.
 
 164
 00:11:04,950 --> 00:11:06,520
@@ -656,15 +656,15 @@ whatever was supposed to happen after this thing was done.
 
 165
 00:11:06,520 --> 00:11:12,125
-这里你放入label one And here you put label one.
+这里你写下LABEL1 And here you put label one.
 
 166
 00:11:12,125 --> 00:11:19,475
-And here you put the code for A.
+这里写A的代码 And here you put the code for A.
 
 167
 00:11:19,475 --> 00:11:29,820
-And you put go to next thing.
+然后写下GOTO NEXT THING And you put go to next thing.
 
 168
 00:11:31,425 --> 00:11:32,980
@@ -672,7 +672,7 @@ And you put go to next thing.
 
 169
 00:11:32,980 --> 00:11:35,750
-你生成这样一小块代码 You generate a little block like that.
+你生成这样一小段代码 You generate a little block like that.
 
 170
 00:11:35,750 --> 00:11:38,950
@@ -684,26 +684,26 @@ And you put go to next thing.
 
 172
 00:11:42,550 --> 00:11:46,550
-它只是把指令存起来而不是执行它们 It's just stashing away the instructions instead of executing them.
+它只是把指令存起来 而不是执行它们 It's just stashing away the instructions instead of executing them.
 
 173
 00:11:46,550 --> 00:11:50,125
-看起来肯简单，但我们已经因此有了一些收获 That seems pretty simple, but we've gained something by that.
+看起来很简单 但我们已经取得了某些收获 That seems pretty simple, but we've gained something by that.
 
 174
 00:11:50,125 --> 00:11:53,525
 它会比求值器更有效率 See, already that's going to be more efficient than the evaluator.
 
 175
-00:11:53,525 --> 00:11:56,160
-因为，如果你观察求值器的运行 Because, if you watch the evaluator run
+00:11:53,525 --> 00:11:56,350
+因为 如果你观察求值器的运行 Because, if you watch the evaluator run
 
 176
-00:11:56,160 --> 00:12:01,100
-它并不只是生成我们写下的注册操作 it's not only generating the register operations we wrote down
+00:11:56,350 --> 00:12:01,278
+它并不只是生成我们写下的寄存器操作 it's not only generating the register operations we wrote down
 
 177
-00:12:01,100 --> 00:12:04,700
+00:12:01,278 --> 00:12:04,700
 它还会决定生成哪个 it's also doing things to decide which ones to generate.
 
 178
@@ -711,27 +711,27 @@ And you put go to next thing.
 它做的第一件事就是 So the very first thing it does, say
 
 179
-00:12:07,925 --> 00:12:12,640
-here for instance, is go do some tests and decide that this is an application
+00:12:07,925 --> 00:12:13,575
+以它为例 就是进行某些测试 判断它是一个应用 here for instance, is go do some tests and decide that this is an application
 
 180
-00:12:12,640 --> 00:12:16,620
-and then branch off to the place that, that handles applications.
+00:12:13,575 --> 00:12:16,620
+然后就切换到处理应用的地方去 and then branch off to the place that, that handles applications.
 
 181
 00:12:16,620 --> 00:12:18,620
-换句话说，求值器做的事情是 In other words, what the evaluator's doing
+换句话说 求值器做的事情是 In other words, what the evaluator's doing
 
 182
-00:12:18,620 --> 00:12:23,080
+00:12:18,620 --> 00:12:23,475
 在分析代码看看需要做什么的同时 is simultaneously analyzing the code to see what to do
 
 183
-00:12:23,080 --> 00:12:25,080
+00:12:23,475 --> 00:12:25,550
 运行这些操作 and running these operations.
 
 184
-00:12:25,080 --> 00:12:28,280
+00:12:25,550 --> 00:12:28,280
 当你运行求值器一百万次 And when you-- if you run the evaluator a million times
 
 185
@@ -740,110 +740,110 @@ and then branch off to the place that, that handles applications.
 
 186
 00:12:30,580 --> 00:12:32,580
-而在编译器中它只会进行一次 whereas in the compiler, it's happened once
+而在编译器中 它只会进行一次 whereas in the compiler, it's happened once
 
 187
-00:12:32,580 --> 00:12:35,580
+00:12:32,580 --> 00:12:36,575
 之后就只有寄存器操作了 and then you just have the register operations themselves.
 
 188
-00:12:38,660 --> 00:12:41,660
-这就是零阶编译器TBD Ok, that's a, a zeroth-order compiler
+00:12:39,200 --> 00:12:41,800
+这就是零阶编译器了 Ok, that's a, a zeroth-order compiler
 
 189
-00:12:41,660 --> 00:12:44,160
-但它是个很挫的编译器 but it is a wretched, wretched compiler.
+00:12:41,800 --> 00:12:44,450
+但它是个很矬的编译器 but it is a wretched, wretched compiler.
 
 190
-00:12:44,160 --> 00:12:46,160
-它很蠢 It's really dumb.
+00:12:44,450 --> 00:12:46,160
+它挺蠢的 It's really dumb.
 
 191
-00:12:46,560 --> 00:12:51,560
-让我们回来，TBD Let's--let's go back and, and look at this overhead.
+00:12:46,900 --> 00:12:52,025
+让我们回来看看性能损耗  Let's--let's go back and, and look at this overhead.
 
 192
-00:12:51,560 --> 00:12:55,460
+00:12:52,025 --> 00:12:55,850
 看看这个东西做的一些操作 So look at look at some of the operations this thing is doing. 
 
 193
-00:12:55,460 --> 00:13:02,960
+00:12:55,850 --> 00:13:03,525
 我们想看看 (F  X) 的操作和解释过程 We're supposedly looking at the operations and interpreting f of x.
 
 194
-00:13:02,960 --> 00:13:04,960
+00:13:03,525 --> 00:13:05,175
 这里就是它做了什么 Now, look here what it's doing.
 
 195
-00:13:04,960 --> 00:13:06,960
+00:13:05,175 --> 00:13:07,150
 举个例子，这里 For example, here
 
 196
-00:13:06,960 --> 00:13:12,940
+00:13:07,150 --> 00:13:13,750
 它将(operator (fetch exp))赋值给 exp it assigns to exp the operator in fetch of exp.
 
 197
-00:13:12,940 --> 00:13:16,000
-看，没理由干这个 But see, there's no reason to do that, because this is--
+00:13:13,750 --> 00:13:16,225
+其实这样做没什么道理 But see, there's no reason to do that, because this is--
 
 198
-00:13:16,000 --> 00:13:22,500
+00:13:16,225 --> 00:13:23,350
 因为编译器知道(operator (fetch exp))在这里就是F the compiler knows that the operator, fetch of exp, is f right here.
 
 199
-00:13:22,500 --> 00:13:25,700
+00:13:23,350 --> 00:13:25,700
 因此这个指令没理由存在 So there's no reason why this instruction should say that.
 
 200
-00:13:25,700 --> 00:13:29,180
-它应该表达，我们要把F赋值给exp It should say, we'll assign to exp, f.
+00:13:25,700 --> 00:13:29,452
+它应该表达 我们要把F赋值给exp It should say, we'll assign to exp, f.
 
 201
-00:13:29,180 --> 00:13:31,460
-或者实际上，你完全不需要exp Or in fact, you don't need exp at all.
+00:13:29,452 --> 00:13:31,875
+或者实际上 你完全不需要exp Or in fact, you don't need exp at all.
 
 202
-00:13:31,460 --> 00:13:33,560
+00:13:31,875 --> 00:13:33,560
 没有理由显示需要exp There's no reason it should have exp at all.
 
 203
-00:13:33,560 --> 00:13:37,000
-exp是用来做什么的？我们看这里 What, what did exp get used for? Well, if we come down here
+00:13:33,560 --> 00:13:38,050
+exp是用来做什么的? 我们看这里 What, what did exp get used for? Well, if we come down here
 
 204
-00:13:40,120 --> 00:13:42,620
+00:13:40,775 --> 00:13:43,050
 我们对val赋值 we're going to assign to val
 
 205
-00:13:42,620 --> 00:13:47,980
+00:13:43,050 --> 00:13:48,682
 在环境里的exp里寻找东西 look up the stuff in exp in the environment.
 
 206
-00:13:47,980 --> 00:13:51,540
-因此在这里我们实际上要做的是TBD So what we really should do is get rid of the exp register altogether
+00:13:48,682 --> 00:13:51,540
+因此在这里我们实际上要做的是去掉exp寄存器 So what we really should do is get rid of the exp register altogether
 
 207
-00:13:51,540 --> 00:13:54,300
-只修改指令为，引用val and just change this instruction to say, assign to val
+00:13:51,540 --> 00:13:54,450
+把这个指令修改为 给val赋值 and just change this instruction to say, assign to val
 
 208
-00:13:54,300 --> 00:13:59,420
+00:13:54,450 --> 00:13:59,925
 在环境中查找符号f的值 look up the variable value of the symbol f in the environment.
 
 209
-00:13:59,420 --> 00:14:02,060
+00:14:01,098 --> 00:14:02,575
 类似地 Similarly
 
 210
-00:14:02,060 --> 00:14:04,560
-回到这里，我们完全不需要unev back up here, we don't need unev at all
+00:14:02,575 --> 00:14:04,725
+回到这里 我们也完全不需要unev back up here, we don't need unev at all
 
 211
-00:14:04,560 --> 00:14:06,040
+00:14:04,725 --> 00:14:06,225
 因为我们知道 because we know
 
 212
-00:14:06,040 --> 00:14:09,160
+00:14:06,225 --> 00:14:09,160
 因为我们知道这一块代码要从exp中找的操作数 what the operands of fetch of exp are for this piece of code.
 
 213
@@ -851,455 +851,455 @@ exp是用来做什么的？我们看这里 What, what did exp get used for? Well
 就是列表x It's the, it's the list x.
 
 214
-00:14:12,540 --> 00:14:15,160
+00:14:13,252 --> 00:14:15,160
 从某种意义上来说 So in some sense
 
 215
-00:14:15,160 --> 00:14:19,420
+00:14:16,175 --> 00:14:19,675
 你想完全抛掉unev和exp you don't want unev and exp at all.
 
 216
-00:14:19,420 --> 00:14:22,040
-See, what they really are in some sense
+00:14:19,675 --> 00:14:22,660
+看看他们实际上是什么See, what they really are in some sense
 
 217
-00:14:22,040 --> 00:14:25,300
+00:14:22,660 --> 00:14:25,300
 它们不是它们实际运行机器的寄存器 those aren't registers of the actual machine that's supposed to run.
 
 218
-00:14:25,300 --> 00:14:30,160
-它们是用来模拟那台机器的寄存器 Those are registers that have to do with arranging the thing that can simulate that machine.
+00:14:25,300 --> 00:14:30,725
+#TBD它们是用来模拟那台机器的寄存器 Those are registers that have to do with arranging the thing that can simulate that machine.
 
 219
-00:14:30,160 --> 00:14:34,640
-So they're always going to hold expressions which
+00:14:30,725 --> 00:14:34,640
+所以它们经常保存一些表达式 So they're always going to hold expressions which
 
 220
-00:14:34,640 --> 00:14:38,840
-from the compiler's point of view, are just constants, so can be put right into the code.
+00:14:34,640 --> 00:14:36,950
+以编译器的视角看来 它们就是常量 from the compiler's point of view, are just constants, 
 
 221
-00:14:38,840 --> 00:14:45,180
-所以你可以忘掉对于exp和unev的操作，只用那些常量 So you can forget about all the operations worrying about exp and unev and just use those constants.
+00:14:36,950 --> 00:14:39,475
+因此它们可以直接放到代码中 so can be put right into the code.
 
 222
-00:14:45,180 --> 00:14:47,880
-与之相似，如果我们回顾这里 Similarly, again, if we go, go back and look here
+00:14:39,475 --> 00:14:42,700
+所以你可以忘掉对于exp和unev的操作 So you can forget about all the operations worrying about exp and unev 
 
 223
-00:14:47,880 --> 00:14:51,900
-there are things like assign to continue eval-args.
+00:14:42,700 --> 00:14:44,025
+只用那些常量 and just use those constants.
 
 224
-00:14:53,160 --> 00:14:56,620
-现在它没啥事情需要做了 Now, that has nothing to do with anything.
+00:14:44,025 --> 00:14:48,000
+与之相似 如果我们回顾这里 Similarly, again, if we go, go back and look here
 
 225
-00:14:56,620 --> 00:15:00,800
-它只是求值器维护了下一步需要去哪 That was just the evaluator keeping track of where it should go next
+00:14:48,000 --> 00:14:52,400
+有像(assign continue eval-args)之类的语句 there are things like assign to continue eval-args.
 
 226
-00:15:00,800 --> 00:15:06,340
-to evaluate the arguments in some, in some application.
+00:14:53,750 --> 00:14:55,625
+现在它没啥事情需要做了 Now, that has nothing to do with anything.
 
 227
-00:15:06,340 --> 00:15:10,260
-当然，这与编译器没关系 But of course, that's irrelevant to the compiler, because you--
+00:14:55,625 --> 00:15:02,700
+它只是求值器维护了下一步需要去哪 That was just the evaluator keeping track of where it should go next
 
 228
-00:15:10,260 --> 00:15:14,580
-因为这个分析过程已经被编译器干完了the analysis phase will have already done that.
+00:15:02,700 --> 00:15:06,825
+在某些应用中对参数进行求值 to evaluate the arguments in some, in some application.
 
 229
-00:15:14,580 --> 00:15:17,300
-这与我们的主题完全无关 So this is completely irrelevant.
+00:15:06,825 --> 00:15:08,650
+当然 这与编译器没关系 But of course, that's irrelevant to the compiler, because you--
 
 230
-00:15:17,300 --> 00:15:25,940
-So a lot of these, these assignments to continue have not to do where the running machine is supposed to continue in keeping track of its state.
+00:15:08,650 --> 00:15:15,050
+因为这个分析过程已经被编译器做完了 the analysis phase will have already done that.
 
 231
-00:15:25,940 --> 00:15:29,300
-It has to, to do with where the evaluator analysis should continue
+00:15:15,050 --> 00:15:17,700
+这与编译器完全无关 So this is completely irrelevant.
 
 232
-00:15:29,300 --> 00:15:31,760
-TBD它们是完全无关的，所以我的可以去掉它们 and those are completely irrelevant. So we can get rid of them.
+00:15:17,700 --> 00:15:21,300
+#TBD So a lot of these, these assignments to continue have not to do 
 
 233
-00:15:42,700 --> 00:15:46,100
-Ok, well, if we, if we simply do that
+00:15:21,300 --> 00:15:26,075
+#TBD where the running machine is supposed to continue in keeping track of its state.
 
 234
-00:15:46,100 --> 00:15:48,800
-make those kinds of optimizations
+00:15:26,075 --> 00:15:28,725
+#TBD It has to, to do with where the evaluator analysis should continue
 
 235
-00:15:48,800 --> 00:15:53,440
-get rid, get rid of worrying about exp and unev
+00:15:28,725 --> 00:15:31,760
+而它们是完全无关的 所以我的可以去掉它们 and those are completely irrelevant. So we can get rid of them.
 
 236
-00:15:53,440 --> 00:15:56,640
-and get rid of these irrelevant register assignments to continue
+00:15:43,900 --> 00:15:47,750
+那么 如果我们简单地进行那些优化 Ok, well, if we, if we simply do that, make those kinds of optimizations 
 
 237
-00:15:56,640 --> 00:16:00,680
-then we can take this literal code
+00:15:47,750 --> 00:15:51,750
+不再担心exp和unev get rid, get rid of worrying about exp and unev
 
 238
-00:16:00,680 --> 00:16:03,740
-these sort of 19 instructions that the
+00:15:51,750 --> 00:15:57,250
+去掉这些无关的寄存器赋值 and get rid of these irrelevant register assignments to continue
 
 239
-00:16:03,740 --> 00:16:06,680
-that the evaluator would have done
+00:15:57,250 --> 00:16:04,175
+我们可以找到求值器本来会做的19条指令 then we can take this literal code these sort of 19 instructions that the 
 
 240
-00:16:06,680 --> 00:16:08,360
-and then replace them.
+00:16:04,175 --> 00:16:08,360
+并把它们替换掉 that the evaluator would have done and then replace them. 
 
 241
-00:16:08,360 --> 00:16:10,360
+00:16:08,360 --> 00:16:10,800
 大家看幻灯片 Let's look at the, at the slide.
 
 242
-00:16:11,820 --> 00:16:16,100
+00:16:12,275 --> 00:16:16,100
 我们去掉其中一半 Replace them by--we get rid of about half of them. 
 
 243
-00:16:18,100 --> 00:16:20,860
-同样，这就是求值器做的某种过滤 And again, this is just sort of filtering
+00:16:18,100 --> 00:16:21,075
+同样 这就是求值器做的某种过滤 And again, this is just sort of filtering
 
 244
-00:16:20,860 --> 00:16:24,800
+00:16:21,075 --> 00:16:25,175
 把无关的东西去掉 what the evaluator would have done by getting rid of the irrelevant stuff.
 
 245
-00:16:24,800 --> 00:16:26,800
+00:16:25,175 --> 00:16:27,475
 你看 And you see, for instance
 
 246
-00:16:26,800 --> 00:16:31,740
-here the--where the evaluator said, assign val, look up variable value
+00:16:27,475 --> 00:16:31,740
+#TBD here the--where the evaluator said, assign val, look up variable value
 
 247
 00:16:31,740 --> 00:16:34,880
-fetch of exp, here we have put in the constant f.
+#TBD fetch of exp, here we have put in the constant f.
 
 248
 00:16:34,880 --> 00:16:37,940
 这里我的放了常量x Here we've put in the constant x.
 
 249
-00:16:38,900 --> 00:16:43,040
+00:16:40,023 --> 00:16:43,799
 因此这是个稍好一些的编译器 So there's a, there's a little better compiler.
 
 250
-00:16:43,040 --> 00:16:47,340
+00:16:43,799 --> 00:16:47,959
 但它还是比较蠢 It's still pretty dumb.
 
 251
-00:16:47,340 --> 00:16:50,080
+00:16:47,959 --> 00:16:50,455
 它仍会做很多蠢事 It's still doing a lot of dumb things.
 
 252
-00:16:50,080 --> 00:16:52,560
+00:16:50,455 --> 00:16:52,887
 我们再看幻灯片 Again, if we go look at the slide again
 
 253
-00:16:52,560 --> 00:16:54,560
+00:16:52,887 --> 00:16:54,999
 看最开头的地方 look at the very beginning here
 
 254
-00:16:55,740 --> 00:16:58,660
-能发现保存环境 we see a save the environment
+00:16:56,343 --> 00:16:59,351
+我们发现保存环境 we see a save the environment
 
 255
-00:16:58,660 --> 00:17:01,800
+00:16:59,351 --> 00:17:01,800
 把某些东西赋值给val寄存器 assign something to the val register
 
 256
-00:17:01,800 --> 00:17:03,220
-然后恢复环境and restore the environment.
+00:17:01,800 --> 00:17:03,350
+然后恢复环境 and restore the environment.
 
 257
-00:17:03,220 --> 00:17:04,640
+00:17:03,350 --> 00:17:04,919
 它是从哪来的 Where'd that come from?
 
 258
-00:17:04,640 --> 00:17:07,900
+00:17:04,919 --> 00:17:07,900
 它来自求值器的这个地方 That came from the evaluator back here saying
 
 259
-00:17:07,900 --> 00:17:10,680
-哦，我在求值一个应用的过程中 oh, I'm in the middle of evaluating an application.
+00:17:07,900 --> 00:17:11,100
+哦 我在求值一个应用的过程中 oh, I'm in the middle of evaluating an application.
 
 260
-00:17:10,680 --> 00:17:15,320
-所以我要递归调用eval dispatch So I'm going to recursively call eval dispatch. 
+00:17:11,100 --> 00:17:15,800
+所以我要递归调用eval-dispatch So I'm going to recursively call eval dispatch. 
 
 261
-00:17:15,320 --> 00:17:19,360
-我最好把接下来要用到的东西存下来，存到环境里 So I'd better save the thing I'm going to need later, which is the environment.
+00:17:15,800 --> 00:17:19,360
+我最好把接下来要用到的东西存下来 存到环境里 So I'd better save the thing I'm going to need later, which is the environment.
 
 262
 00:17:19,360 --> 00:17:23,140
 这就是递归调用eval dispatch的结果 This was the result of recursively calling eval dispatch. 
 
 263
-00:17:23,140 --> 00:17:26,080
+00:17:23,140 --> 00:17:26,500
 在刚才这个例子中是对符号f进行求值 It was evaluating the symbol f in that case.
 
 264
-00:17:26,080 --> 00:17:30,420
+00:17:26,500 --> 00:17:31,250
 从eval dispatch中返回，将环境恢复 Then it came back from eval dispatch, restored the environment.
 
 265
-00:17:30,420 --> 00:17:34,620
-实际上，这个求值过程中的进行的操作 But in fact, the actual thing it ended up doing
+00:17:31,250 --> 00:17:34,925
+实际上 这个求值过程中的进行的操作 But in fact, the actual thing it ended up doing
 
 266
-00:17:34,620 --> 00:17:38,240
+00:17:34,925 --> 00:17:38,675
 完全不会影响环境 in the evaluation is not going to hurt the environment at all.
 
 267
-00:17:38,240 --> 00:17:42,960
+00:17:38,675 --> 00:17:42,960
 所以这里没必要保存环境再恢复环境 So there's no reason to be saving the environment and restoring the environment here.
 
 268
-00:17:44,960 --> 00:17:48,040
+00:17:45,675 --> 00:17:48,550
 与之类似 Similarly
 
 269
-00:17:48,040 --> 00:17:52,200
+00:17:49,600 --> 00:17:52,750
 这里我们保存了参数列表 here I'm saving the argument list.
 
 270
-00:17:52,200 --> 00:17:56,940
-那是一个参数求值循环，保存参数列表 That's a piece of the argument evaluation loop, saving the argument list
+00:17:53,075 --> 00:17:57,200
+那是一个参数求值循环 保存参数列表 That's a piece of the argument evaluation loop, saving the argument list
 
 271
-00:17:56,940 --> 00:17:58,940
+00:17:57,200 --> 00:17:58,650
 在这里恢复参数列表 and here you restore it.
 
 272
-00:17:58,940 --> 00:18:00,720
+00:17:58,650 --> 00:18:00,800
 事实上最后 But the actual thing that you ended up doing
 
 273
-00:18:00,720 --> 00:18:02,520
+00:18:00,800 --> 00:18:02,848
 并没有变更参数列表 didn't trash the argument list.
 
 274
-00:18:02,520 --> 00:18:04,520
+00:18:02,848 --> 00:18:05,475
 所以不需要保存它 So there was no reason to save it.
 
 275
-00:18:07,680 --> 00:18:13,380
-So another way to say, another way to say that
+00:18:08,450 --> 00:18:13,775
+换种方式来说 So another way to say, another way to say that
 
 276
-00:18:13,380 --> 00:18:19,380
+00:18:13,775 --> 00:18:19,875
 求值器不得不最大限度的保持悲观 is that the, the evaluator has to be maximally pessimistic
 
 277
-00:18:19,380 --> 00:18:23,060
-因为，从它的视角来看，只知道接下来是要对某些东西进行求值 because as far from its point of view it's just going off to evaluate something.
+00:18:19,875 --> 00:18:23,060
+因为 从它的视角来看 只知道接下来是要对某些东西进行求值 because as far from its point of view it's just going off to evaluate something.
 
 278
-00:18:23,060 --> 00:18:25,560
+00:18:23,060 --> 00:18:26,125
 所以最好把后面要用到的都存下来 So it better save what it's going to need later.
 
 279
-00:18:25,560 --> 00:18:29,260
+00:18:26,125 --> 00:18:29,260
 一旦你完成了分析，编译器就是从另一种视角看问题了 But once you've done the analysis, the compiler is in a position to say
 
 280
-00:18:29,260 --> 00:18:31,840
-哪些是我真正需要存下来的？ well, what actually did I need to save?
+00:18:29,260 --> 00:18:32,125
+哪些是我真正需要存下来的? well, what actually did I need to save?
 
 281
-00:18:31,840 --> 00:18:37,300
+00:18:32,125 --> 00:18:37,300
 它不需要像求值器一样小心翼翼 And doesn't need to do any-- it doesn't need to be as careful as the evaluator
 
 282
-00:18:37,300 --> 00:18:39,300
+00:18:37,300 --> 00:18:39,693
 因为它知道哪些才是真正需要的 because it knows what it actually needs
 
 283
-00:18:39,300 --> 00:18:41,900
-在任何情况下，如果我们Well, in any case, if we do that
+00:18:39,693 --> 00:18:42,500
+在任何情况下 如果我们 Well, in any case, if we do that
 
 284
-00:18:41,900 --> 00:18:46,080
+00:18:42,500 --> 00:18:46,400
 去除所有多余的保存和恢复 and eliminate all those redundant saves and restores
 
 285
-00:18:46,080 --> 00:18:49,420
-那么我们可以把它记下来TBD then we can get it down to this.
+00:18:46,400 --> 00:18:49,900
+那么我们可以#TBD then we can get it down to this.
 
 286
-00:18:49,420 --> 00:18:53,760
-可以发现，只有三个指令是必须的 And you see there are actually only three instructions that we actually need
+00:18:49,900 --> 00:18:54,075
+可以发现 只有三个指令是必须的 And you see there are actually only three instructions that we actually need
 
 287
-00:18:53,760 --> 00:18:55,760
-down from the initial 11 or so
+00:18:54,075 --> 00:18:55,975
+#TBD down from the initial 11 or so
 
 288
-00:18:55,760 --> 00:18:59,260
-or the initial 20 or so in the original one.
+00:18:55,975 --> 00:18:59,875
+#TBD or the initial 20 or so in the original one.
 
 289
-00:18:59,260 --> 00:19:03,160
+00:18:59,875 --> 00:19:03,275
 对于这些寄存器操作 And that's just saying, of those register operations
 
 290
-00:19:03,160 --> 00:19:05,760
-哪些是必需的？ which ones did we actually need?
+00:19:03,275 --> 00:19:05,760
+哪些是必需的? which ones did we actually need?
 
 291
-00:19:08,720 --> 00:19:14,260
-我们换个方式概括，来看看稍好一些的图片 Let me just sort of summarize that in another way, just to show you in a little better picture.
+00:19:09,425 --> 00:19:14,260
+我们换个方式概括 来看看稍好一些的图片 Let me just sort of summarize that in another way, just to show you in a little better picture.
 
 292
-00:19:14,260 --> 00:19:18,020
-Here's a picture of starting--
+00:19:16,000 --> 00:19:18,020
+这个图片 Here's a picture of starting--
 
 293
-00:19:18,020 --> 00:19:22,160
-This is looking at all the saves and restores.
+00:19:18,775 --> 00:19:22,675
+展示了所有的保存和恢复 This is looking at all the saves and restores.
 
 294
-00:19:22,160 --> 00:19:25,260
-So here's the expression, f of x
+00:19:23,500 --> 00:19:25,325
+这里是表达式(F X) So here's the expression, f of x
 
 295
-00:19:25,260 --> 00:19:28,220
-and then this traces through, on the bottom here
+00:19:25,325 --> 00:19:28,755
+#TBD and then this traces through, on the bottom here
 
 296
-00:19:28,220 --> 00:19:32,520
-the various places in the evaluator
+00:19:28,755 --> 00:19:32,520
+#TBD the various places in the evaluator
 
 297
-00:19:34,540 --> 00:19:38,040
-that were passed when the evaluation happened.
+00:19:34,975 --> 00:19:38,040
+#TBDthat were passed when the evaluation happened.
 
 298
-00:19:38,040 --> 00:19:40,040
-在这，你可以看到箭头 And then here, here you see arrows.
+00:19:38,040 --> 00:19:40,225
+在这里 你可以看到箭头 And then here, here you see arrows.
 
 299
-00:19:40,040 --> 00:19:42,260
-向下的箭头表示register保存了 Arrow down means register saved.
+00:19:40,225 --> 00:19:42,400
+向下的箭头表示寄存器被保存了 Arrow down means register saved.
 
 300
-00:19:42,260 --> 00:19:45,880
+00:19:42,400 --> 00:19:46,825
 所以发生的第一件事就是保存环境 So the first thing that happened is the environment got saved.
 
 301
-00:19:45,880 --> 00:19:49,520
-在这，环境恢复了 And over here, the environment got restored.
+00:19:46,825 --> 00:19:50,475
+在这里 环境恢复了 And over here, the environment got restored.
 
 302
-00:19:49,520 --> 00:19:55,120
-这些，都是成对的栈操作 And these-- so there are all the pairs of stack operations.
+00:19:50,475 --> 00:19:56,125
+这些都是成对的栈操作 And these-- so there are all the pairs of stack operations.
 
 303
-00:19:55,120 --> 00:19:57,860
-Now, if you go ahead and say
+00:19:56,125 --> 00:19:58,125
+#TBD Now, if you go ahead and say
 
 304
-00:19:57,860 --> 00:20:00,780
-well, let's remember that we don't--that unev
+00:19:58,125 --> 00:20:00,780
+#TBD well, let's remember that we don't--that unev
 
 305
 00:20:00,780 --> 00:20:03,920
-unev是个完全无用的registerfor instance, is a completely useless register.
+unev是个完全无用的寄存器 for instance, is a completely useless register.
 
 306
-00:20:07,240 --> 00:20:09,780
+00:20:07,800 --> 00:20:09,780
 如果我们用固定结构的代码 And if we use the constant structure of the code
 
 307
 00:20:09,780 --> 00:20:13,080
-我们就不需要保存unev，我们完全不需要unev well, we don't need, we don't need to save unev.
+我们就不需要保存unev 我们完全不需要unev well, we don't need, we don't need to save unev.
 
 308
-00:20:15,540 --> 00:20:20,080
-And then, depending on how we set up the discipline of the--
+00:20:16,200 --> 00:20:20,408
+#TBD And then, depending on how we set up the discipline of the--
 
 309
-00:20:20,080 --> 00:20:24,620
-of calling other things that apply, we may or may not need to save continue.
+00:20:20,408 --> 00:20:24,620
+#TBD of calling other things that apply, we may or may not need to save continue.
 
 310
-00:20:26,620 --> 00:20:28,740
+00:20:27,400 --> 00:20:28,740
 这就是我们做的第一件事 That's the first step I did.
 
 311
-00:20:28,740 --> 00:20:32,840
-然后我们可以看看，什么是真正需要的 And then we can look and see what's actually, what's actually needed.
+00:20:28,740 --> 00:20:33,075
+然后我们可以看看 什么是真正需要的 And then we can look and see what's actually, what's actually needed.
 
 312
-00:20:32,840 --> 00:20:35,820
+00:20:33,075 --> 00:20:36,040
 我们其实不需要保存env See, we don't-- didn't really need to save env 
 
 313
-00:20:35,820 --> 00:20:37,920
-or cross-evaluating f
+00:20:36,040 --> 00:20:38,088
+#TBD or cross-evaluating f
 
 314
-00:20:37,920 --> 00:20:39,920
-because it wouldn't, it wouldn't trash it.
+00:20:38,088 --> 00:20:39,920
+因为它不会被破坏 because it wouldn't, it wouldn't trash it.
 
 315
 00:20:39,920 --> 00:20:42,240
 因此，如果我们可以借助这一特点 So if we take advantage of that
 
 316
-00:20:43,460 --> 00:20:47,960
-这里对f的求值 and see the evaluation of f here
+00:20:44,125 --> 00:20:48,575
+这里对F的求值 and see the evaluation of f here
 
 317
-00:20:47,960 --> 00:20:52,600
+00:20:48,575 --> 00:20:52,600
 完全不需要担心会破坏env doesn't really need to worry about, about hurting env.
 
 318
-00:20:52,600 --> 00:20:56,220
-类似地，对于x的求值 And similarly, the evaluation of x here
+00:20:52,600 --> 00:20:57,175
+类似地 对于x的求值 And similarly, the evaluation of x here
 
 319
-00:20:56,220 --> 00:20:59,520
-当求值器进行求值时，它会说: 噢 when the evaluator did that it said
+00:20:57,175 --> 00:20:59,520
+当求值器进行求值时 它会说: 噢 when the evaluator did that it said
 
 320
-00:20:59,520 --> 00:21:01,800
+00:20:59,520 --> 00:21:02,072
 我最好保存好与之有关的函数寄存器 I'd better preserve the function register around that
 
 321
-00:21:01,800 --> 00:21:03,220
+00:21:02,072 --> 00:21:03,220
 因为我过会可能会需要它们 because I might need it later.
 
 322
-00:21:03,220 --> 00:21:05,440
+00:21:03,220 --> 00:21:05,950
 我最好保存参数列表 And I better preserve the argument list. 
 
 323
-00:21:05,440 --> 00:21:09,200
+00:21:06,900 --> 00:21:09,200
 然而，在这如果是编译器的话 Whereas the compiler is now in a position to know
 
 324
-00:21:09,200 --> 00:21:12,180
+00:21:09,200 --> 00:21:12,700
 它会知道我们实际上不需要进行那些保存和恢复 well, we didn't really need to save-- to do those saves and restores.
 
 325
-00:21:12,180 --> 00:21:14,800
+00:21:12,700 --> 00:21:15,050
 事实上，求值器做的所有栈操作 So in fact, all of the stack operations
 
 326
-00:21:14,800 --> 00:21:19,620
+00:21:15,050 --> 00:21:19,620
 都是不必要的或过于悲观的 done by the evaluator turned out to be unnecessary or overly pessimistic.
 
 327
@@ -1307,11 +1307,11 @@ because it wouldn't, it wouldn't trash it.
 而编译器在这里是知道的 And the compiler is in a position to know that.
 
 328
-00:21:26,880 --> 00:21:28,880
+00:21:27,350 --> 00:21:29,150
 这是最基础的想法 Well that's the basic idea.
 
 329
-00:21:28,880 --> 00:21:31,840
+00:21:29,800 --> 00:21:31,840
 我们拿来求值器 We take the evaluator
 
 330
@@ -1320,1407 +1320,1369 @@ because it wouldn't, it wouldn't trash it.
 
 331
 00:21:33,240 --> 00:21:35,240
-去除那些对于编译器完全无用的东西， that in some sense have nothing to do with the compiler at all
+去除那些对于编译器完全无用的东西 that in some sense have nothing to do with the compiler at all
 
 332
 00:21:35,240 --> 00:21:36,740
 只剩下求值器 just the evaluator
 
 333
-00:21:36,740 --> 00:21:40,580
+00:21:36,740 --> 00:21:40,825
 然后你可以看到哪些栈操作是不必要的 and then you see which stack operations are unnecessary.
 
 334
-00:21:40,580 --> 00:21:45,040
+00:21:40,825 --> 00:21:45,040
 这就是书中说的编译器的基本结构 That's the basic structure of the compiler that's described in the book.
 
 335
-00:21:45,040 --> 00:21:50,540
-我给你展示一下这个例子有多简单？？ Let me just show you how that examples a little bit too simple.
+00:21:45,040 --> 00:21:51,200
+我给你展示一下这个简单的例子 Let me just show you how that examples a little bit too simple.
 
 336
-00:21:50,540 --> 00:21:54,040
+00:21:51,200 --> 00:21:54,250
 为了展示你是如何保存了多余的东西 To see how you, how you actually save a lot
 
 337
-00:21:54,040 --> 00:21:56,940
+00:21:54,250 --> 00:21:58,150
 我们来看看这个稍复杂的表达式 let's look at a little bit more complicated expression.
 
 338
-00:21:56,940 --> 00:22:03,320
+00:21:58,150 --> 00:22:03,875
 (F (G X) 1)
 
 339
-00:22:03,320 --> 00:22:06,040
+00:22:03,875 --> 00:22:06,400
 我们不会浏览所有的代码 And I'm not going to go through all the code.
 
 340
-00:22:06,040 --> 00:22:09,160
+00:22:06,400 --> 00:22:09,725
 因为代码有点多 There's a, there's a fair pile of it.
 
 341
-00:22:09,160 --> 00:22:16,700
-I think there are, there are something like 16 pairs of register saves and restores as the evaluator walks through that.
+00:22:09,725 --> 00:22:14,179
+我认为在求值器在处理它时I think there are, there are something like 
 
 342
-00:22:16,700 --> 00:22:19,400
-这有一张图表 Here's a diagram of them.
+00:22:14,179 --> 00:22:17,000
+大概会产生16对保存和恢复 16 pairs of register saves and restores as the evaluator walks through that.
 
 343
-00:22:19,400 --> 00:22:22,480
-你可以看到发生了什么 Let's see. You see what's going on.
+00:22:17,000 --> 00:22:20,579
+这有一张图表 Here's a diagram of them.
 
 344
-00:22:22,480 --> 00:22:23,960
-你从这里开始-- You start out by--
+00:22:20,579 --> 00:22:22,575
+你可以看到发生了什么 Let's see. You see what's going on.
 
 345
-00:22:23,960 --> 00:22:26,760
-我即将进行应用 the evaluator says, oh, I'm about to do an application.
+00:22:22,975 --> 00:22:24,250
+你从这里开始-- You start out by--
 
 346
-00:22:26,760 --> 00:22:29,960
-我要保存环境, 从这里恢复环境 I'll preserve the environment. I'll restore it here.
+00:22:24,250 --> 00:22:26,900
+我即将进行应用 the evaluator says, oh, I'm about to do an application.
 
 347
-00:22:29,960 --> 00:22:35,020
-然后我要进行第一个操作 Then I'm about to do the first operand.
+00:22:26,900 --> 00:22:30,650
+我要保存环境 从这里恢复环境 I'll preserve the environment. I'll restore it here.
 
 348
-00:22:35,020 --> 00:22:39,280
-这是一个调用求值器的递归 Here it recursively goes to the evaluator.
+00:22:30,650 --> 00:22:35,950
+然后我要处理第一个运算对象 Then I'm about to do the first operand.
 
 349
-00:22:39,280 --> 00:22:42,100
-求值器说，这是一个应用，我要保存环境 The evaluator says, oh, this is an application, I'll save the environment
+00:22:35,950 --> 00:22:39,280
+这是一个调用求值器的递归 Here it recursively goes to the evaluator.
 
 350
-00:22:42,100 --> 00:22:45,380
-进行组合操作，在这恢复环境 do the operator of that combination, restore it here.
+00:22:39,280 --> 00:22:42,100
+求值器发现 这是一个应用 我要保存环境 The evaluator says, oh, this is an application, I'll save the environment
 
 351
-00:22:45,380 --> 00:22:49,280
-这个保存，这个恢复与这个保存相匹配 This save--this restore matches that save. 
+00:22:42,100 --> 00:22:45,800
+进行组合操作 在这恢复环境 do the operator of that combination, restore it here.
 
 352
-00:22:49,280 --> 00:22:51,280
-以此类推 And so on.
+00:22:45,800 --> 00:22:49,775
+这个保存 这个恢复与这个保存相匹配 This save--this restore matches that save. 
 
 353
-00:22:51,280 --> 00:22:54,740
-这里的unev完全没有必要存在 There's unev here, which turns out to be completely unnecessary
+00:22:49,775 --> 00:22:51,650
+以此类推 And so on.
 
 354
-00:22:54,740 --> 00:22:56,740
-continues getting bumped around here.
+00:22:51,650 --> 00:22:54,970
+这里的unev完全没有必要存在 There's unev here, which turns out to be completely unnecessary
 
 355
-00:22:56,740 --> 00:23:04,800
-The function register is getting, getting saved across the first operands, across the operands. 
+00:22:54,970 --> 00:22:57,425
+continues getting bumped around here.
 
 356
-00:23:04,800 --> 00:23:06,700
-All sorts of things are going on.
+00:22:57,425 --> 00:23:05,100
+The function register is getting, getting saved across the first operands, across the operands. 
 
 357
-00:23:06,700 --> 00:23:09,600
-But if you say, well, what of those really were the business of
+00:23:05,100 --> 00:23:06,782
+All sorts of things are going on.
 
 358
-00:23:09,600 --> 00:23:11,940
-the compiler as opposed to the evaluator
+00:23:06,782 --> 00:23:09,390
+But if you say, well, what of those really were the business of
 
 359
-00:23:11,940 --> 00:23:13,940
-you get rid of a whole bunch.
+00:23:09,390 --> 00:23:12,275
+the compiler as opposed to the evaluator
 
 360
-00:23:13,940 --> 00:23:17,500
-And then on top of that, if you say things like
+00:23:12,275 --> 00:23:14,300
+you get rid of a whole bunch.
 
 361
-00:23:18,975 --> 00:23:23,200
-对F的求值不会破坏环境寄存器 the evaluation of F doesn't hurt the environment register,
+00:23:14,300 --> 00:23:17,500
+And then on top of that, if you say things like
 
 362
-00:23:23,200 --> 00:23:27,194
-或者对符号X的查找 or simply looking up the symbol X,
+00:23:19,400 --> 00:23:23,825
+对F的求值不会破坏环境寄存器 the evaluation of F doesn't hurt the environment register,
 
 363
-00:23:29,280 --> 00:23:32,210
-你不需要为了它们保护函数寄存器 you don't have to protect the function register against that.
+00:23:23,825 --> 00:23:28,525
+或者对符号X的查找 or simply looking up the symbol X,
 
 364
-00:23:34,300 --> 00:23:37,650
-因此你归结为这里的一对？   So you come down to just a couple of, a couple of pairs here. 
+00:23:29,280 --> 00:23:33,700
+你不需要为了它们保护函数寄存器 you don't have to protect the function register against that.
 
 365
-00:23:40,250 --> 00:23:42,275
-然而，你还可以再优化一下 And still, you can do a little better.
+00:23:34,300 --> 00:23:39,250
+因此你归结为这里的一对#TBD   So you come down to just a couple of, a couple of pairs here. 
 
 366
+00:23:40,250 --> 00:23:42,275
+然而 你还可以再优化一下 And still, you can do a little better.
+
+367
 00:23:42,275 --> 00:23:44,330
 看看这里的环境寄存器发生了什么 Look what's going on here with the environment register. 
 
-367
-00:23:45,210 --> 00:23:49,175
-环境寄存器来了，说 The environment register comes along and says, oh,
-
 368
-00:23:49,800 --> 00:23:53,210
-噢，这是一个组合操作 oh, here's a combination.
+00:23:45,210 --> 00:23:49,175
+环境寄存器来了 说 The environment register comes along and says, oh,
 
 369
+00:23:51,000 --> 00:23:53,900
+噢，这是一个组合操作 oh, here's a combination.
+
+370
 00:23:54,420 --> 00:23:55,780
 这个求值器 This evaluator, by the way,
 
-370
+371
 00:23:55,780 --> 00:23:57,270
 不知道关于G的任何事情 doesn't know anything about G.
 
-371
-00:23:58,570 --> 00:24:00,875
-所以在这，它说 So here it says, so it says, 
-
 372
+00:23:58,570 --> 00:24:00,875
+所以在这 它说 So here it says, so it says, 
+
+373
 00:24:00,875 --> 00:24:03,675
 我最好保存环境寄存器 I'd better save the environment register,
 
-373
+374
 00:24:03,675 --> 00:24:07,510
 因为对G的求值可能有某些代码会破坏它 because evaluating G might be some arbitrary piece of code that would trash it
 
-374
+375
 00:24:07,550 --> 00:24:09,875
 而我过一会可能会需要它 and I'm going to need it later,
 
-375
+376
 00:24:09,875 --> 00:24:11,825
 在这个参数之后 after this argument,
 
-376
+377
 00:24:11,825 --> 00:24:13,825
 处理第二个参数的时候 for doing the second argument.
 
-377
-00:24:15,325 --> 00:24:17,320
+378
+00:24:15,325 --> 00:24:18,050
 这就是为什么这个东西没被干掉 So that's why this one didn't go away,
 
-378
-00:24:18,800 --> 00:24:22,540
+379
+00:24:19,075 --> 00:24:22,540
 因为编译器没有对G将要做的事情做任何假设 because the compiler made no assumptions about what G would do.
 
-379
-00:24:22,540 --> 00:24:23,680
+380
+00:24:22,540 --> 00:24:23,800
 另一方面 On the other hand,
 
-380
+381
 00:24:24,610 --> 00:24:26,580
 如果你看看这里的第二个参数 if you look at what the second argument is,
 
-381
+382
 00:24:26,580 --> 00:24:30,075
 它只是一次查找 that's just looking up one.
 
-382
+383
 00:24:30,770 --> 00:24:32,350
 的确不需要这个环境寄存器 That doesn't need this environment register. 
 
-383
-00:24:32,350 --> 00:24:34,075
+384
+00:24:32,350 --> 00:24:34,450
 因此没必要保存它 So there's no reason to save it. 
 
-384
+385
 00:24:34,850 --> 00:24:37,810
 这一堆寄存器操作 And from this whole pile of, of register operations,
 
-385
+386
 00:24:37,810 --> 00:24:40,170
 如果你像之前一样做些简单的推理 if you simply do a little bit of reasoning like that,
 
-386
-00:24:40,170 --> 00:24:43,178
+387
+00:24:40,170 --> 00:24:44,525
 只会剩下两对保存和恢复 you get down to, I think, just two pairs of saves and restores.
 
-387
-00:24:44,900 --> 00:24:49,325
-而这些，如果你知道关于G的某些信息？？ And those, in fact, could go away further if you, if you knew something about G.
-
 388
-00:24:55,625 --> 00:24:57,950
-通常的想法是 So again, the general idea is
+00:24:44,900 --> 00:24:50,850
+而这些 如果你知道关于G的某些信息的话 可以进一步处理 And those, in fact, could go away further if you, if you knew something about G.
 
 389
+00:24:56,275 --> 00:24:57,950
+通常的想法是 So again, the general idea is
+
+390
 00:24:57,950 --> 00:24:59,980
 编译器更好的原因是 that the reason the compiler can be better
 
-390
-00:24:59,980 --> 00:25:02,800
+391
+00:24:59,980 --> 00:25:03,250
 解释器对于即将遇到的东西一无所知 is that the interpreter doesn't know what it's about to encounter.
 
-391
-00:25:02,800 --> 00:25:07,350
+392
+00:25:03,250 --> 00:25:07,900
 它不得不以最悲观的方式保存东西，来保护它自己 It has to be maximally pessimistic in saving things to protect itself. 
 
-392
-00:25:07,350 --> 00:25:12,975
+393
+00:25:07,900 --> 00:25:13,375
 而编译器只需要处理真正需要保存的东西 The compiler only has to deal with what actually had to be saved. 
 
-393
-00:25:12,975 --> 00:25:17,370
-某个东西不需要保存，有两种可能 And there are two reasons that something might not have to be saved.      
-
 394
+00:25:13,375 --> 00:25:17,370
+某个东西不需要保存 有两种可能 And there are two reasons that something might not have to be saved.      
+
+395
 00:25:17,820 --> 00:25:19,900
 一种可能是 One is that what you're protecting it against,
 
-395
-00:25:19,900 --> 00:25:21,510
+396
+00:25:19,900 --> 00:25:21,852
 你保存的东西事实上不会修改寄存器 in fact, didn't trash the register,
 
-396
+397
 00:25:21,852 --> 00:25:23,610
 例如对变量的查找 like it was just a variable look-up.
 
-397
+398
 00:25:24,120 --> 00:25:25,325
 另一种可能是 And the other one is,
 
-398
+399
 00:25:25,325 --> 00:25:30,275
 你存的东西最后并不会被用到 that the thing that you were saving it for might turn out not to actually need it. 
 
-399
-00:25:30,675 --> 00:25:32,019
+400
+00:25:30,675 --> 00:25:32,425
 这就是 So those are the
 
-400
-00:25:32,019 --> 00:25:38,075
+401
+00:25:32,800 --> 00:25:39,825
 编译器能让代码运行更有效率的两个基本知识 two basic pieces of knowledge that the compiler can take advantage of in making the code more efficient.  
 
-401
-00:25:44,050 --> 00:25:46,550
-谁要提问吗？ Let's break for questions. 
-
 402
+00:25:44,275 --> 00:25:46,550
+谁要提问吗? Let's break for questions. 
+
+403
 00:25:50,800 --> 00:25:53,100
 学生：你一直在说非求值寄存器 AUDIENCE: You kept saying that the uneval register,
 
-403
+404
 00:25:53,100 --> 00:25:55,960
 unev寄存器完全不会被用到 unev register didn't need to be used at all.
 
-404
+405
 00:25:55,960 --> 00:25:58,900
 这是否意味着你只需要map一个6个寄存器机器？ Does that mean that you could just map a six-register machine? 
 
-405
-00:25:58,900 --> 00:26:01,180
-或者，只是在这个特殊的例子里，它不会被用到？ Or is that, in this particular example, it didn't need to be used?   
-
 406
-00:26:01,725 --> 00:26:02,810
-教授：对于编译器 PROFESSOR: For the compiler,
+00:25:58,900 --> 00:26:01,180
+或者 只是在这个特殊的例子里 它不会被用到? Or is that, in this particular example, it didn't need to be used?   
 
 407
+00:26:01,725 --> 00:26:02,810
+教授: 对于编译器 PROFESSOR: For the compiler,
+
+408
 00:26:04,310 --> 00:26:06,320
 你可以生成6个寄存器 you could generate code for the six-register,
 
-408
+409
 00:26:06,720 --> 00:26:10,090
   其实是5个寄存器的代码，因为exp也被干掉了 five, right? Because that exp goes away also. 
 
-409
-00:26:11,675 --> 00:26:14,575
-是的，你可以把exp和unev都去掉 Assuming--yeah, you can get rid of both exp and unev
-
 410
+00:26:11,675 --> 00:26:14,575
+是的 你可以把exp和unev都去掉 Assuming--yeah, you can get rid of both exp and unev
+
+411
 00:26:14,575 --> 00:26:16,875
 因为这些是求值器的数据结构 because, see, those are data structures of the evaluator.
 
-411
-00:26:17,360 --> 00:26:20,870
-以编译器的视角来看，这些东西都是常量 Those are all things that would be constants from the point of view of the compiler.
-
 412
-00:26:21,650 --> 00:26:22,800
-The only thing is
+00:26:17,360 --> 00:26:20,870
+以编译器的视角来看 这些东西都是常量 Those are all things that would be constants from the point of view of the compiler.
 
 413
-00:26:23,120 --> 00:26:24,670
-this particular compiler is set up
+00:26:21,650 --> 00:26:23,200
+#TBD The only thing is
 
 414
-00:26:24,790 --> 00:26:27,940
-因此被解释的代码和被编译的代码可以共存 so that interpreted code and compiled code can coexist.
+00:26:23,200 --> 00:26:24,790
+#TBD this particular compiler is set up
 
 415
+00:26:24,790 --> 00:26:28,171
+因此被解释的代码和被编译的代码可以共存 so that interpreted code and compiled code can coexist.
+
+416
 00:26:29,320 --> 00:26:30,720
 可以这样看待它 So the way to think about it is,
 
-416
+417
 00:26:30,970 --> 00:26:32,290
 你构建了一个芯片 is maybe you build a chip
 
-417
-00:26:34,100 --> 00:26:35,500
+418
+00:26:34,300 --> 00:26:35,500
 它就是求值器 which is the evaluator,
 
-418
-00:26:35,880 --> 00:26:39,050
-而编译器可以做的事情是为这个芯片生成代码 and what the compiler might do is generate code for that chip.
-
 419
-00:26:40,400 --> 00:26:41,850
-It just wouldn't use two of the registers. 
+00:26:35,880 --> 00:26:39,050
+而编译器可以做的事情是 为这个芯片生成代码 and what the compiler might do is generate code for that chip.
 
 420
+00:26:40,400 --> 00:26:42,792
+只是它不会用到两个寄存器而已 It just wouldn't use two of the registers. 
+
+421
 00:26:51,520 --> 00:26:52,470
 好，休息一会 All right, let's take a break. 
 
-421
-00:26:53,710 --> 00:27:12,575
+422
+00:26:53,800 --> 00:27:12,575
 [音乐] [JESU, JOY OF MAN'S DESIRING]
 
-422
-00:27:14,610 --> 00:27:29,075
-音乐 [MUSIC PLAYING]
-
 423
+00:27:14,825 --> 00:27:29,075
+[音乐] [JESU, JOY OF MAN'S DESIRING]
+
+424
 00:27:29,075 --> 00:27:32,580
 我们刚才研究了编译器会被用来做什么 We just looked at what the compiler is supposed to do.
 
-424
+425
 00:27:32,780 --> 00:27:36,150
 现在我们来简略看看 Now let's very briefly look at how,
 
-425
+426
 00:27:36,150 --> 00:27:37,800
 这些目标如何达成 how this gets accomplished.
 
-426
+427
 00:27:38,260 --> 00:27:39,970
 而我不会给出细节 And I'm going to give no details. 
 
-427
-00:27:40,350 --> 00:27:43,420
-在书中有一大堆代码，展示了所有细节 There's, there's a giant pile of code in the book that gives all the details. 
-
 428
+00:27:40,350 --> 00:27:43,420
+在书中有一大堆代码 展示了所有细节 There's, there's a giant pile of code in the book that gives all the details. 
+
+429
 00:27:43,420 --> 00:27:45,310
 我要做的 But what I want to do is just show you the,
 
-429
+430
 00:27:45,620 --> 00:27:47,260
 是给你们展示关键的思想 the essential idea here.
 
-430
+431
 00:27:49,490 --> 00:27:51,400
 换个时间再来关心细节 Worry about the details some other time. 
 
-431
+432
 00:27:51,510 --> 00:27:55,300
 设想我们正在编译表达式 Let's imagine that we're compiling an expression
 
-432
-00:27:55,300 --> 00:27:57,010
-这里有一些操作符 that looks like there's some operator
-
 433
+00:27:55,300 --> 00:27:57,010
+这里有一些运算符 that looks like there's some operator
+
+434
 00:27:57,480 --> 00:28:01,550
 和两个参数 and there are two arguments.
 
-434
+435
 00:28:03,560 --> 00:28:04,240
 现在 Now, the--
 
-435
-00:28:06,075 --> 00:28:08,140
-这个编译器会生成什么代码？ what's the code that the compiler should generate?
-
 436
+00:28:06,275 --> 00:28:08,140
+这个编译器会生成什么代码? what's the code that the compiler should generate?
+
+437
 00:28:08,850 --> 00:28:09,780
 首先 Well, first of all, 
 
-437
+438
 00:28:09,830 --> 00:28:11,900
 它会递归运行 it should recursively go off
 
-438
-00:28:11,900 --> 00:28:14,100
-编译这些操作符 and compile the operator.
-
 439
-00:28:14,100 --> 00:28:19,975
-它说，我要编译这些操作符 So it says, I'll compile the operator.   
+00:28:11,900 --> 00:28:14,375
+编译这些运算符 and compile the operator.
 
 440
-00:28:21,160 --> 00:28:27,950
-最后我需要的是让它们在函数寄存器中 And where I'm going to need that is to be in the function register, eventually. 
+00:28:14,375 --> 00:28:19,975
+它说 我要编译这些运算符 So it says, I'll compile the operator.   
 
 441
+00:28:21,160 --> 00:28:27,950
+最后我需要的是 让它们的结果在函数寄存器中 And where I'm going to need that is to be in the function register, eventually. 
+
+442
 00:28:28,425 --> 00:28:30,400
 所以我编译一些指令 So I'll compile some instructions
 
-442
-00:28:30,400 --> 00:28:31,670
-它们会编译操作符 that will compile the operator
-
 443
-00:28:31,690 --> 00:28:38,850
-最后把结果放在函数寄存器中 and end up with the result in the function register.
+00:28:30,400 --> 00:28:31,670
+它们会编译运算符 that will compile the operator
 
 444
+00:28:31,690 --> 00:28:40,275
+最后把结果放在函数寄存器中 and end up with the result in the function register.
+
+445
 00:28:45,510 --> 00:28:46,940
 接下来我要做的是 The next thing it's going to do,
 
-445
+446
 00:28:47,710 --> 00:28:49,680
 另一个片段说 another piece is to say,
 
-446
+447
 00:28:49,680 --> 00:28:55,175
 我要编译第一个参数 I have to compile the first argument.  
 
-447
+448
 00:28:55,175 --> 00:28:57,175
 因此它递归调用自己 So it calls itself recursively. 
 
-448
-00:28:58,040 --> 00:29:03,470
-而结果会被放在val中 And let's say the result will go into val.   
-
 449
+00:28:58,040 --> 00:29:03,470
+而结果会被放在VAL中 And let's say the result will go into val.   
+
+450
 00:29:09,070 --> 00:29:10,750
 接下来需要做的是 And then what it's going to need to do is 
 
-450
+451
 00:29:10,750 --> 00:29:12,260
 建立起参数列表 start setting up the argument list.
 
-451
-00:29:12,950 --> 00:29:14,340
- 
-
 452
-00:29:17,880 --> 00:29:18,710
- 
+00:29:12,950 --> 00:29:33,750
+#TBD(ASSIGN ARGL (CONS (FETCH VAL) '())) So it'll say, assign to argl cons of fetch-- so it generates this literal instruction-- fetch of val onto empty list.
 
 453
-00:29:22,510 --> 00:29:23,150
- 
-
-454
-00:29:24,590 --> 00:29:27,210
- 
-
-455
-00:29:27,590 --> 00:29:28,500
- 
-
-456
-00:29:29,840 --> 00:29:30,710
- 
-
-457
-00:29:31,740 --> 00:29:32,630
- 
-
-458
 00:29:35,000 --> 00:29:36,050
 然而 However,
 
-459
+454
 00:29:37,990 --> 00:29:40,610
 当它到这里时 it might have to work--  when it gets here,  
 
-460
+455
 00:29:41,325 --> 00:29:42,820
 它可能需要环境 it's going to need the environment.
 
-461
+456
 00:29:43,950 --> 00:29:45,700
 它需要环境 It's going to need whatever environment was here 
 
-462
+457
 00:29:45,700 --> 00:29:48,210
 为了对第一个参数的求值 in order to do this evaluation of the first argument.
 
-463
-00:29:49,040 --> 00:29:50,620
- 
+458
+00:29:49,040 --> 00:29:54,475
+它要保证对运算对象的编译 So it has to ensure that the compilation of this operand,   
 
-464
-00:29:50,690 --> 00:29:51,280
- 
+459
+00:29:55,320 --> 00:30:00,980
+或者说它需要保护函数寄存器 来应对编译运算对象时发生的任何事情 or it has to protect the function register against whatever might happen in the compilation of this operand.
 
-465
-00:29:51,970 --> 00:29:53,800
- 
-
-466
-00:29:55,320 --> 00:29:56,440
- 
-
-467
-00:29:56,620 --> 00:29:57,720
- 
-
-468
-00:29:58,040 --> 00:30:00,980
- 
-
-469
+460
 00:30:01,300 --> 00:30:03,080
 因此它在这做了个标记说 So it puts a note here and says, oh,
 
-470
-00:30:03,375 --> 00:30:13,030
+461
+00:30:03,375 --> 00:30:15,300
 这个片段需要保护环境寄存器 this piece should be done preserving the environment register.
 
-471
-00:30:17,390 --> 00:30:19,325
+462
+00:30:17,390 --> 00:30:19,775
 与之类似 Similarly, here,
 
-472
+463
 00:30:20,850 --> 00:30:23,300
 在完成第一个操作数的编译后 after it gets done compiling the first operand,
 
-473
+464
 00:30:23,575 --> 00:30:24,710
 它会说 it's going to say,
 
-474
+465
 00:30:24,710 --> 00:30:27,925
 我最好--我需要知道第二个操作数的环境 I better compile-- I'm going to need to know the environment for the second operand.
 
-475
+466
 00:30:27,925 --> 00:30:29,460
 所以它在这做了个标记说 So it puts a little note here, saying,
 
-476
-00:30:29,710 --> 00:30:36,170
-这个也需要保护env yeah, this is also done preserving env.   
+467
+00:30:29,710 --> 00:30:37,725
+这里也需要保护ENV yeah, this is also done preserving env.   
 
-477
+468
 00:30:39,420 --> 00:30:41,020
 现在它继续运行 Now it goes on and says, well,
 
-478
-00:30:41,120 --> 00:30:49,820
+469
+00:30:41,120 --> 00:30:50,275
 下一段代码是要编译第二个参数 the next chunk of code is the one that's going to compile the second argument.  
 
-479
-00:30:50,760 --> 00:31:02,000
-And let's say it'll compile it with a targeted to val, as they say.    
+470
+00:30:50,825 --> 00:31:02,725
+它将被编译为#TBD And let's say it'll compile it with a targeted to val, as they say.    
 
-480
+471
 00:31:03,860 --> 00:31:07,375
 随后它会生成一个字面指令 And then it'll generate the literal instruction,
 
-481
+472
 00:31:07,840 --> 00:31:09,250
-building up the argument list.
+建立起参数列表 building up the argument list.
 
-482
+473
 00:31:09,550 --> 00:31:33,300
-So it'll say, assign to argl cons of the new value it just got onto the old argument list.       
+#TBD(ASSIGN ARGL (CONS (FETCH VAL) ( FETCH ARGL)) So it'll say, assign to argl cons of the new value it just got onto the old argument list.       
 
-483
+474
 00:31:33,970 --> 00:31:34,710
 然而 However,
 
-484
+475
 00:31:34,810 --> 00:31:36,580
 为了对旧参数列表的需要 in order to have the old argument list, 
 
-485
-00:31:37,150 --> 00:31:41,050
+476
+00:31:37,150 --> 00:31:41,300
 最好让在这发生的任何事情 it better have arranged that the argument list didn't get trashed
 
-486
-00:31:41,050 --> 00:31:42,690
+477
+00:31:41,300 --> 00:31:42,690
 都不影响旧的参数列表 by whatever happened in here.
 
-487
+478
 00:31:43,500 --> 00:31:45,170
 因此它在这做了个标记说 So it puts a little note here and says,
 
-488
+479
 00:31:45,170 --> 00:31:53,650
-噢，这里需要保存argl oh, this has to be done preserving argl.   
+噢，这里需要保存ARGL oh, this has to be done preserving argl.   
 
-489
+480
 00:31:54,160 --> 00:31:56,030
 现在参数列表建立好了 Now it's got the argument list set up. 
 
-490
+481
 00:31:57,375 --> 00:32:06,375
- And it's all ready to go to apply dispatch.    
+ #TBD And it's all ready to go to apply dispatch.    
 
-491
-00:32:07,020 --> 00:32:10,910
+482
+00:32:07,020 --> 00:32:13,500
 它生成了这个字面指令 It generates this literal instruction.
 
-492
+483
 00:32:15,190 --> 00:32:17,370
-因为现在参数在argl中 Because now it's got the arguments in argl
+因为现在参数在ARGL中 Because now it's got the arguments in argl
 
-493
+484
 00:32:18,150 --> 00:32:20,590
-and the operator in fun,
+运算符在FUN中 and the operator in fun,
 
-494
+485
 00:32:20,590 --> 00:32:22,890
-but wait, it's only got the operator in fun
+等等 它只在FUN中用到运算符 but wait, it's only got the operator in fun
 
-495
+486
 00:32:23,270 --> 00:32:29,270
- if it had ensured that this block of code didn't trash what was in the function register.  
+#TBD if it had ensured that this block of code didn't trash what was in the function register.  
 
-496
+487
 00:32:29,820 --> 00:32:31,550
 所以它在这做了个小标记 So it puts a little note here and says,
 
-497
+488
+00:32:31,550 --> 00:32:42,675
+#TBD oh, yes, all this stuff here had better be done preserving the function register.
+
+489
 00:32:43,710 --> 00:32:46,150
-So that's the little--so when it starts ticking--
+#TBD So that's the little--so when it starts ticking--
 
-498
-00:32:46,150 --> 00:32:52,330
-so basically, what the compiler does is append a whole bunch of code sequences.    
+490
+00:32:46,150 --> 00:32:53,225
+#TBD so basically, what the compiler does is append a whole bunch of code sequences.    
 
-499
+491
 00:32:53,500 --> 00:32:58,950
-See, what it's got in it is little primitive pieces of things
+#TBD See, what it's got in it is little primitive pieces of things
 
-500
+492
 00:32:58,950 --> 00:33:00,725
-like how to look up a symbol,
+#TBD like how to look up a symbol,
 
-501
+493
 00:33:01,440 --> 00:33:02,670
-how to do a conditional.
+#TBD how to do a conditional.
 
-502
+494
 00:33:02,680 --> 00:33:05,440
-Those are all little pieces of things.
+#TBD Those are all little pieces of things.
 
-503
+495
 00:33:05,440 --> 00:33:07,990
 然后它将这些连接到一起 And then it appends them together in this sort of discipline.
 
-504
+496
 00:33:08,780 --> 00:33:10,790
 组合的基本意思是 So the basic means of combining things
 
-505
+497
 00:33:10,790 --> 00:33:21,225
   将两个代码序列连接到一起 is to append two code sequences.
 
-506
-00:33:21,550 --> 00:33:22,910
+498
+00:33:21,550 --> 00:33:23,775
 就是这里发生的事情 That's what's going on here. 
 
-507
+499
 00:33:25,580 --> 00:33:27,240
-And it's a little bit tricky.
+#TBD And it's a little bit tricky.
 
-508
+500
 00:33:27,560 --> 00:33:30,370
-思路是，它连接两个代码序列 The idea is that it appends two code sequences,  
+思路是 它连接两个代码序列 The idea is that it appends two code sequences,  
 
-509
+501
 00:33:31,475 --> 00:33:34,325
 小心保护寄存器 taking care to preserve a register.
 
-510
+502
 00:33:35,630 --> 00:33:37,930
 附加操作看起来像这样 So the actual append operation looks like this. 
 
-511
+503
 00:33:39,150 --> 00:33:40,890
-What it wants to do is say, if--
+#TBD What it wants to do is say, if--
 
-512
+504
 00:33:41,200 --> 00:33:44,110
-here's what it means to append two code sequences.  
+#TBD here's what it means to append two code sequences.  
 
-513
+505
 00:33:44,530 --> 00:33:54,725
 如果序列1需要寄存器--我应该改一下这个 So if sequence one needs register--  I should change this.
 
-514
+506
 00:33:54,725 --> 00:33:56,870
 将序列1附加到序列2后 Append sequence one to sequence two,
 
-515
-00:33:57,425 --> 00:34:04,070
+507
+00:33:57,425 --> 00:34:06,100
  保护一些寄存器 preserving some register.   
 
-516
+508
 00:34:08,525 --> 00:34:09,910
 Let me say, and.
 
-517
+509
 00:34:11,360 --> 00:34:13,030
 很清楚，序列1先来的 So it's clear that sequence one comes first. 
 
-518
+510
 00:34:13,650 --> 00:34:19,870
 如果序列2需要寄存器 So if sequence two needs the register  
 
-519
+511
 00:34:21,120 --> 00:34:32,075
 并且序列1修改了寄存器 and sequence one modifies the register, 
 
-520
+512
 00:34:33,680 --> 00:34:42,600
-then the instructions that the compiler spits out are, save the register.    
+#TBD then the instructions that the compiler spits out are, save the register.    
 
-521
+513
 00:34:43,025 --> 00:34:44,190
 这就是代码 Here's the code.
 
-522
+514
 00:34:44,350 --> 00:34:45,350
 你生成了这段代码 You generate this code. 
 
-523
+515
 00:34:45,350 --> 00:34:46,725
 保存寄存器 Save the register,
 
-524
+516
 00:34:46,725 --> 00:34:52,975
-and then you put out the recursively compiled stuff for sequence one.  
+#TBD and then you put out the recursively compiled stuff for sequence one.  
 
-525
+517
 00:34:53,300 --> 00:34:59,950
 然后你恢复寄存器 And then you restore the register.
 
-526
+518
 00:35:00,520 --> 00:35:06,650
-然后你??由序列2递归编译得到的东西 And then you put out the recursively compiled stuff for sequence two.   
+然后你#TBD由序列2递归编译得到的东西 And then you put out the recursively compiled stuff for sequence two.   
 
-527
+519
 00:35:07,075 --> 00:35:09,625
 这就是在这里你需要的东西 That's in the case where you need to do it.  
 
-528
+520
 00:35:09,625 --> 00:35:11,820
 实际上序列2需要寄存器 Sequence two actually needs the register,
 
-529
+521
 00:35:11,820 --> 00:35:14,745
 而序列1改动了它 and sequence one actually clobbers it.
 
-530
-00:35:15,125 --> 00:35:19,275
-  So that's sort of if. Otherwise,
+522
+00:35:15,125 --> 00:35:19,825
+  #TBD So that's sort of if. Otherwise,
 
-531
+523
 00:35:20,500 --> 00:35:28,175
-all you spit out is sequence one followed by sequence two.  
+#TBD all you spit out is sequence one followed by sequence two.  
 
-532
+524
 00:35:28,175 --> 00:35:33,520
-So that's the basic operation for sticking together these bits of code fragments,
+#TBD So that's the basic operation for sticking together these bits of code fragments,
 
-533
+525
 00:35:33,935 --> 00:35:35,935
-these bits of instructions into a sequence.
+#TBD these bits of instructions into a sequence.
 
-534
+526
 00:35:36,890 --> 00:35:38,870
 从这个角度看 And you see, from this point of view,
 
-535
+527
 00:35:40,940 --> 00:35:45,960
 解释器和编译器的区别 the difference between the interpreter and the compiler, in some sense,
 
-536
+528
 00:35:46,825 --> 00:35:49,340
 是编译器有这些保存标记 is that where the compiler has these preserving notes,
 
-537
+529
 00:35:50,140 --> 00:35:54,220
-上面记录着，哪些需要生成保存和恢复的代码，哪些不需要 and says, maybe I'll actually generate the saves and restores and maybe I won't,
+上面记录着 哪些需要生成保存和恢复的代码，哪些不需要 and says, maybe I'll actually generate the saves and restores and maybe I won't,
 
-538
+530
 00:35:55,190 --> 00:35:58,900
-而解释器会以最大限度的消极方式处理，总是会进行保存和恢复 the interpreter being maximally pessimistic always has a save and restore here.
+而解释器会以最悲观的方式处理 总是会进行保存和恢复 the interpreter being maximally pessimistic always has a save and restore here.
 
-539
+531
 00:36:00,675 --> 00:36:01,930
 这就是关键的区别 That's the essential difference. 
 
-540
+532
 00:36:03,925 --> 00:36:06,050
 为了实现这个 Well, in order to do this, of course,
 
-541
-00:36:06,650 --> 00:36:12,218
-the compiler needs some theory of what code sequences need and modifier registers.   
+533
+00:36:06,650 --> 00:36:13,725
+#TBD the compiler needs some theory of what code sequences need and modifier registers.   
 
-542
+534
 00:36:14,260 --> 00:36:17,280
 所以你放入的小片段 So the tiny little fragments that you put in,
 
-543
-00:36:17,480 --> 00:36:21,030
+535
+00:36:17,480 --> 00:36:21,525
 例如这个基础原始代码片段 like the basic primitive code fragments,
 
-544
-00:36:22,740 --> 00:36:26,050
-表达了，当你查找一个变量时要做哪些操作？ say, what are the operations that you do when you look up a variable?
+536
+00:36:22,740 --> 00:36:26,400
+表达了 当你查找一个变量时要做哪些操作？ say, what are the operations that you do when you look up a variable?
 
-545
+537
 00:36:26,890 --> 00:36:32,100
-当编译一个常量或应用一个函数时，你需要做哪些事情？ What are the sequence of things that you do when you compile a constant or apply a function?
+当编译一个常量或应用一个函数时你需要做哪些事情? What are the sequence of things that you do when you compile a constant or apply a function?
 
-546
-00:36:33,050 --> 00:36:36,550
-这里有关于它们需要什么和它们会修改什么的这些小标识 Those have little notations in there about what they need and what they modify.
+538
+00:36:32,975 --> 00:36:36,550
+这里有关于它们需要什么 和它们会修改什么的这些小标识 Those have little notations in there about what they need and what they modify.
 
-547
+539
 00:36:38,780 --> 00:36:41,500
-So the bottom-level data structures--
+#TBD So the bottom-level data structures--
 
-548
+540
 00:36:42,660 --> 00:36:44,330
- Well, I'll say this.
+#TBD Well, I'll say this.
 
-549
+541
 00:36:44,390 --> 00:36:47,910
 编译器的代码序列是这个样子的 A code sequence to the compiler looks like this.
 
-550
-00:36:47,980 --> 00:36:55,375
+542
+00:36:48,075 --> 00:36:55,670
 它里面有实际上指令的序列 It has the actual sequence of instructions.
 
-551
+543
 00:36:55,670 --> 00:37:09,600
 有一组被修改的寄存器和它在一起 And then, along with it, there's the set of registers modified.    
 
-552
+544
 00:37:10,540 --> 00:37:19,200
 然后这些是所需要的寄存器 And then there's the set of registers needed.
 
-553
-00:37:19,680 --> 00:37:27,325
-So that's the information the compiler has that it draws on in order to be able to do this operation.
+545
+00:37:20,000 --> 00:37:27,325
+#TBD So that's the information the compiler has that it draws on in order to be able to do this operation.
 
-554
+546
 00:37:29,300 --> 00:37:31,260
 它们从哪来呢 And where do those come from?
 
-555
+547
 00:37:32,775 --> 00:37:36,840
-Well, those come from, you might expect, for the very primitive ones, we're going to put them in by hand.
+#TBD Well, those come from, you might expect, for the very primitive ones, we're going to put them in by hand.
 
-556
+548
 00:37:37,240 --> 00:37:41,020
-  And then, when we combine two sequences, we'll figure out what these things should be.
+#TBD And then, when we combine two sequences, we'll figure out what these things should be.
 
-557
-00:37:42,050 --> 00:37:44,170
+549
+00:37:42,050 --> 00:37:44,600
 举一个非常原始的例子 So for example, a very primitive one, let's see. 
 
-558
-00:37:45,520 --> 00:37:46,180
- 
-
-559
-00:37:48,430 --> 00:37:51,430
+550
+00:37:48,430 --> 00:37:51,775
 做一个寄存器赋值 How about doing a register assignment.
 
-560
+551
 00:37:51,775 --> 00:37:56,225
-所以原始序列会说，噢，它是个代码片段 So a primitive sequence might say, oh, it's code fragment.
+所以原始序列会说 噢 它是个代码片段 So a primitive sequence might say, oh, it's code fragment.
 
-561
+552
 00:37:56,225 --> 00:38:03,175
-Its code instruction is assigned to R1, fetch of R2.
+#TBD Its code instruction is assigned to R1, fetch of R2.
 
-562
+553
 00:38:03,175 --> 00:38:04,875
 这是个例子 So this is an example.
 
-563
+554
 00:38:05,425 --> 00:38:08,520
 这是指令序列的一个例子 That might be an example of a sequence of instructions.
 
-564
+555
 00:38:08,770 --> 00:38:10,530
-And along with that, it'll say,
+#TBD And along with that, it'll say,
 
-565
+556
 00:38:10,570 --> 00:38:17,925
-oh, what I need to remember is that that modifies R1
+#TBD oh, what I need to remember is that that modifies R1
 
-566
+557
 00:38:18,600 --> 00:38:23,850
-and then it needs R2.
+#TBD and then it needs R2.
 
-567
+558
 00:38:24,690 --> 00:38:27,100
 当你一开始构建编译器时 So when you're first building this compiler,
 
-568
+559
 00:38:27,100 --> 00:38:29,350
 你放入这样的一个片段 you put in little fragments of stuff like that.
 
-569
-00:38:30,950 --> 00:38:33,240
+560
+00:38:30,950 --> 00:38:34,175
 当它组合两个序列时 And now, when it combines two sequences,
 
-570
-00:38:36,550 --> 00:38:38,130
-if I'm going to combine,
+561
+00:38:36,550 --> 00:38:38,925
+#TBD if I'm going to combine,
 
-571
-00:38:38,750 --> 00:38:47,190
-let's say, sequence one, that modifies a bunch of registers M1,
+562
+00:38:38,925 --> 00:38:47,425
+#TBD let's say, sequence one, that modifies a bunch of registers M1,
 
-572
-00:38:48,250 --> 00:38:51,420
-  and needs a bunch of registers N1.
+563
+00:38:48,450 --> 00:38:51,420
+ #TBD and needs a bunch of registers N1.
 
-573
+564
 00:38:54,850 --> 00:39:00,350
-And I'm going to combine that with sequence two.
+#TBD And I'm going to combine that with sequence two.
 
-574
+565
 00:39:00,810 --> 00:39:06,600
-That modifies a bunch of registers M2,
+#TBD That modifies a bunch of registers M2,
 
-575
+566
 00:39:07,110 --> 00:39:10,000
-and needs a bunch of registers N2.
+#TBD and needs a bunch of registers N2.
 
-576
+567
 00:39:12,440 --> 00:39:14,830
-Then, well, we can reason it out.
+#TBD Then, well, we can reason it out.
 
-577
+568
 00:39:15,110 --> 00:39:19,525
-新的代码片段，序列1 The new code fragment, sequence one,
+新的代码片段 序列1 The new code fragment, sequence one,
 
-578
+569
 00:39:19,525 --> 00:39:23,750
 后面是序列2 and-- followed by sequence two,
 
-579
+570
 00:39:24,090 --> 00:39:26,450
-它要修改什么？ well, what's it going to modify?
+它要修改什么? well, what's it going to modify?
 
-580
+571
 00:39:27,800 --> 00:39:32,760
 它要修改的东西是会被序列1和序列2修改 The things that it will modify are the things that are modified either by sequence one or sequence two.
 
-581
-00:39:33,624 --> 00:39:39,640
-所以这两个集合的合集就是要被修改的东西 So the union of these two sets are what the new thing modifies.
+572
+00:39:34,000 --> 00:39:39,640
+所以这两个集合的合集 就是要被修改的东西 So the union of these two sets are what the new thing modifies.
 
-582
+573
 00:39:40,460 --> 00:39:41,790
 然后你问 And then you say, well, what is this--
 
-583
-00:39:44,660 --> 00:39:46,440
+574
+00:39:44,660 --> 00:39:47,000
 哪些寄存器是需要的？ what registers is it going to need?
 
-584
+575
 00:39:47,950 --> 00:39:49,930
 需要这些寄存器的是 It's going to need the things that are,
 
-585
+576
 00:39:49,930 --> 00:39:51,850
-首先，序列1需要 first of all, needed by sequence one.
+首先 序列1需要 first of all, needed by sequence one.
 
-586
+577
 00:39:52,250 --> 00:39:54,900
-So what it needs is sequence one.
+#TBD So what it needs is sequence one.
 
-587
+578
 00:39:55,190 --> 00:39:59,720
-然后，并不是所有都被序列1需要  And then, well, not quite all of the ones that are needed by sequence one.  
+然后 并不是所有都被序列1需要  And then, well, not quite all of the ones that are needed by sequence one.  
 
-588
+579
 00:39:59,750 --> 00:40:03,490
-What it needs are the ones that are needed by sequence two
+#TBD What it needs are the ones that are needed by sequence two
 
-589
-00:40:03,880 --> 00:40:07,020
-that have not been set up by sequence one.
+580
+00:40:03,880 --> 00:40:08,140
+#TBD that have not been set up by sequence one.
 
-590
-00:40:08,140 --> 00:40:18,560
-So it's sort of the union of the things that sequence two needs minus the ones that sequence one modifies.  
+581
+00:40:08,140 --> 00:40:19,310
+#TBD So it's sort of the union of the things that sequence two needs minus the ones that sequence one modifies.  
 
-591
+582
 00:40:19,310 --> 00:40:21,950
 因为它关心的是建立它们 Because it worries about setting them up.
 
-592
+583
 00:40:23,950 --> 00:40:26,260
 这就是编译器的基本结构 So there's the basic structure of the compiler. 
 
-593
-00:40:26,670 --> 00:40:30,160
+584
+00:40:26,700 --> 00:40:30,225
 寄存器优化的方式是 The way you do register optimizations  is
 
-594
-00:40:30,160 --> 00:40:33,675
+585
+00:40:30,225 --> 00:40:33,675
 你有一些策略应对需要保护的东西 you have some strategies for what needs to be preserved.
 
-595
-00:40:33,975 --> 00:40:35,740
+586
+00:40:34,100 --> 00:40:35,850
 这取决于数据结构 That depends on a data structure. 
 
-596
+587
 00:40:35,850 --> 00:40:38,580
 这取决于将东西组合在一起的操作 Well, it depends on the operation of what it means to put things together.
 
-597
+588
 00:40:39,030 --> 00:40:40,640
 想知道要保护哪些东西 Preserving something,
 
-598
-00:40:40,650 --> 00:40:47,340
+589
+00:40:40,650 --> 00:40:47,700
 需要知道那些寄存器是需要的并且被这些代码片段修改 that depends on knowing what registers are needed and modified by these code fragments.
 
-599
+590
 00:40:48,750 --> 00:40:51,260
-那取决于小数据结构 That depends on having little data structures,  
+那取决于数据结构 That depends on having little data structures,  
 
-600
+591
 00:40:51,260 --> 00:40:55,430
-which say, a code sequence is the actual instructions,
+#TBD which say, a code sequence is the actual instructions,
 
-601
+592
 00:40:55,430 --> 00:40:57,330
-what they modify and what they need.
+#TBD what they modify and what they need.
 
-602
+593
 00:40:57,330 --> 00:41:00,630
-That comes from, at the primitive level, building it in.
+#TBD That comes from, at the primitive level, building it in. 
 
-
-603
+594
 00:41:00,630 --> 00:41:04,530
-在底层，哪些是被需要的，哪些是被修改的，是显而易见的事情 At the primitive level, it's going to be completely obvious what something needs and modifies.  
+在底层 哪些是被需要的 哪些是被修改的 是显而易见的事情 At the primitive level, it's going to be completely obvious what something needs and modifies.  
 
-604
+595
 00:41:04,820 --> 00:41:05,350
 另外 Plus, 
 
-605
-00:41:05,350 --> 00:41:08,600
-显而易见，当我构建一个 bigger ones的时候 this particular way that says, when I build up bigger ones,
+596
+00:41:05,350 --> 00:41:09,000
+显而易见 当我构建一个#TBD的时候 this particular way that says, when I build up bigger ones,
 
-606
+597
 00:41:09,280 --> 00:41:11,890
 这是我如何生成被修改的寄存器的集合 here's how I generate the new set of registers modified
 
-607
+598
 00:41:11,930 --> 00:41:13,370
 和被需要的寄存器的集合 and the new set of registers needed.
 
-608
+599
 00:41:14,400 --> 00:41:17,770
-这就是全部的，我不应该说这就是全部内容 And that's the whole-- well, I shouldn't say that's the whole thing.
+这就是全部的 我不应该说这就是全部内容 And that's the whole-- well, I shouldn't say that's the whole thing.
 
-609
+600
 00:41:17,770 --> 00:41:21,870
 这就是除了书中30页关于细节的内容之外的全部内容 That's the whole thing except for about 30 pages of details in the book.  
 
-610
+601
 00:41:22,310 --> 00:41:27,690
 但它是一个完全可用的初级编译器 But it is a perfectly usable rudimentary compiler.     
 
-611
+602
 00:41:28,760 --> 00:41:30,700
 让我给你展示一下它能做什么 Let me kind of show you what it does.
 
-612
-00:41:30,700 --> 00:41:35,480
+603
+00:41:30,700 --> 00:41:35,725
 假设我们从一个递归阶乘开始 Suppose we start out with recursive factorial.   
 
-613
+604
 00:41:35,975 --> 00:41:38,050
 这些幻灯片的字太小了 And these slides are going to be much too small to read.
 
-614
+605
 00:41:38,050 --> 00:41:41,925
-我只想快速翻一下代码，让你们看看它有多少代码 I just want to flash through the code and show you about how much it is.
+我只想快速翻一下代码 让你们看看它有多少代码 I just want to flash through the code and show you about how much it is.
 
-615
+606
 00:41:42,250 --> 00:41:44,200
 代码从这开始-- That starts out with--
 
-616
+607
 00:41:44,200 --> 00:41:45,950
 这是代码的第一部分 here's a first block of it,
 
-617
+608
 00:41:45,950 --> 00:41:49,022
-这里编译了一个过程入口，进行了一些赋值操作 where it compiles a procedure entry and does a bunch of assignments.
+这里编译了一个过程入口 进行了一些赋值操作 where it compiles a procedure entry and does a bunch of assignments.
 
-618
+609
 00:41:49,022 --> 00:41:52,060
-And this thing is basically up through the part where it sets up to do the predicate and test whether the predicate's true.
+#TBD And this thing is basically up through the part where it sets up to do the predicate and test whether the predicate's true.
 
-619
+610
 00:41:52,060 --> 00:41:54,310
- sets up to do the predicate
+#TBD  sets up to do the predicate
 
-620
+611
 00:41:54,310 --> 00:41:56,590
-and test whether the predicate's true.
+#TBD and test whether the predicate's true.
 
-621
+612
 00:41:56,970 --> 00:41:58,460
 第二部分是 The second part is
 
-622
+613
 00:41:58,460 --> 00:42:03,730
 递归调用n-1的阶乘的结果 is what results from-- in the recursive call to fact of n minus one.  
 
-623
-00:42:04,120 --> 00:42:05,950
+614
+00:42:04,120 --> 00:42:06,075
 最后一部分是 And this last part
 
-624
-00:42:05,950 --> 00:42:09,900
-is coming back from that and then taking care of the constant case.  
+615
+00:42:06,075 --> 00:42:09,900
+#TBD is coming back from that and then taking care of the constant case.  
 
-625
-00:42:09,900 --> 00:42:13,640
+616
+00:42:09,900 --> 00:42:13,725
 这就是产生阶乘会生成的代码量 So that's about how much code it would produce for factorial.  
 
-626
-00:42:13,640 --> 00:42:18,100
+617
+00:42:13,725 --> 00:42:18,100
 我们当然可以把这个编译器做得更好 We could make this compiler much, much better, of course. 
 
-627
-00:42:18,570 --> 00:42:21,240
+618
+00:42:18,675 --> 00:42:21,240
 优化它的主要方式是 The main way we could make it better is
 
-628
+619
 00:42:21,240 --> 00:42:26,970
-当你调用一个过程时允许编译器做任何假设 to allow the compiler to make any assumptions at all about what happens when you call a procedure.  
+当你调用一个过程时 允许编译器做任何假设 to allow the compiler to make any assumptions at all about what happens when you call a procedure.  
 
-629
+620
 00:42:26,970 --> 00:42:28,400
-So this compiler, for instance, 
+#TBD So this compiler, for instance, 
 
-630
+621
 00:42:28,400 --> 00:42:36,144
-doesn't even know, say, that multiplication is something that could be coded in line.  
+#TBD doesn't even know, say, that multiplication is something that could be coded in line.  
 
-631
+622
 00:42:36,144 --> 00:42:37,872
 它构建起整个机制 Instead, it sets up this whole mechanism.
 
-632
+623
 00:42:37,872 --> 00:42:40,340
-It goes to apply-dispatch. 
+#TBD It goes to apply-dispatch. 
 
-633
+624
 00:42:41,370 --> 00:42:42,275
-That's a tremendous waste, 
+#TBD That's a tremendous waste, 
 
-634
+625
 00:42:42,275 --> 00:42:45,027
-because what you do every time you go to apply-dispatch 
+#TBD because what you do every time you go to apply-dispatch 
 
-635
+626
 00:42:45,027 --> 00:42:47,400
-is you have to concept this argument list,
+#TBD is you have to concept this argument list,
 
-636
+627
 00:42:47,400 --> 00:42:49,880
-because it's a very general thing you're going to.
+#TBD because it's a very general thing you're going to.
 
-637
+628
 00:42:49,880 --> 00:42:51,000
 在任何真实的编译器中 In any real compiler, of course,
 
-638
+629
 00:42:51,000 --> 00:42:53,775
 你会有寄存器来暂存参数 you're going to have registers for holding arguments.
 
-639
+630
 00:42:53,775 --> 00:42:56,380
-And you're going to start preserving
+#TBD And you're going to start preserving
 
-640
+631
 00:42:56,380 --> 00:42:59,600
-saving the way you use those registers
+#TBD saving the way you use those registers
 
-641
+632
 00:42:59,970 --> 00:43:02,575
- similar to the same strategy here.
+#TBD  similar to the same strategy here.
 
-642
+633
 00:43:02,850 --> 00:43:08,300
 这可能是这个书中特定的编译器可以优化的最主要的方式 So that's probably the very main way that this particular compiler in the book could be fixed.  
 
-643
+634
 00:43:08,690 --> 00:43:10,480
 还有其他的一些方法 There are other things like
 
-644
+635
 00:43:10,480 --> 00:43:14,650
-looking up variable values and making more efficient primitive operations, and all sorts of things.
+#TBD looking up variable values and making more efficient primitive operations, and all sorts of things.
 
-645
+636
 00:43:14,650 --> 00:43:19,300
-本质上来说，一个好的Lisp编译器，可以吸收任何的努力成果 Essentially, a good Lisp compiler can absorb an arbitrary amount of effort.
+本质上来说 一个好的Lisp编译器 可以吸收任何的努力成果 Essentially, a good Lisp compiler can absorb an arbitrary amount of effort.
 
-646
+637
 00:43:19,720 --> 00:43:21,890
 可能这其中的一个原因是 And probably one of the reasons 
 
-647
+638
 00:43:21,890 --> 00:43:25,900
-lisp比其他如FORTRAN之类的语言运行要慢 Lisp is slow with compared to languages like FORTRAN
+Lisp比其他如FORTRAN之类的语言运行要慢 Lisp is slow with compared to languages like FORTRAN
 
-648
+639
 00:43:25,900 --> 00:43:31,075
 如果你研究人们为构建Lisp编译器所付出努力的历史 is that, if you look over history at the amount of effort that's gone into building Lisp compilers,
 
-649
+640
 00:43:31,075 --> 00:43:34,250
 几乎与构建FORTRAN编译器差不多 it's nowhere near the amount of effort that's gone into FORTRAN compilers.
 
-650
+641
 00:43:34,250 --> 00:43:38,000
 可能在接下来的几年情况会改变 And maybe that's something that will change over the next couple of years.
 
-651
-00:43:38,000 --> 00:43:39,025
-OK, let's break.
+642
+00:43:38,000 --> 00:43:39,725
+好,休息一下 OK, let's break. 
 
-
-652
+643
 00:43:43,800 --> 00:43:44,650
 有问题吗 Questions? 
 
-653
+644
 00:43:48,270 --> 00:43:49,950
 学生: 很早的一个课时里-- AUDIENCE: One of the very first classes--
 
-654
+645
 00:43:49,950 --> 00:43:52,060
 我不记得是课上还是课后-- I don't know if it was during class or after class-
 
-655
+646
 00:43:52,060 --> 00:43:59,825
-you showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.     
+#TBD you showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.     
 
-656
+647
 00:43:59,825 --> 00:44:01,650
-Is that because,
+#TBD Is that because,
 
-657
+648
 00:44:01,650 --> 00:44:08,700
-if you're doing inline code you'd want to just do it for two operators, operands?   
+#TBD if you're doing inline code you'd want to just do it for two operators, operands?   
 
-658
-00:44:08,700 --> 00:44:11,460
+649
+00:44:08,700 --> 00:44:12,000
 但如果你有更多操作数，你会做什么特殊的事情吗？ But if you had more operands, you'd want to do something special?
 
-659
+650
 00:44:12,710 --> 00:44:16,294
-教授：你看了真实的scheme实现 PROFESSOR: Yeah, you're looking in the actual scheme implementation. 
+教授: 你看了真实的scheme实现 PROFESSOR: Yeah, you're looking in the actual scheme implementation. 
 
-660
+651
 00:44:16,294 --> 00:44:18,440
 有一个plus，它是某种操作符 There's a plus, and a plus is some operator. 
 
-661
+652
 00:44:18,440 --> 00:44:20,198
 如果你看plus的源代码 And then if you go look inside the code for plus, 
 
-662
+653
 00:44:20,198 --> 00:44:21,570
 你会看到一些叫做-- you see something called-- 
 
-663
+654
 00:44:21,570 --> 00:44:24,550
 我记不清了--可能叫and-percent plus或之类的东西 I forget-- and-percent plus or something like that.
 
-664
+655
 00:44:24,550 --> 00:44:28,475
 这里做的就是那种特殊的优化 And what's going on there is that particular kind of optimization.  
 
-665
+656
 00:44:28,475 --> 00:44:35,020
-因为，通常plus接受任意数量的参数 Because, see, general plus takes an arbitrary number of arguments.   
+因为 通常plus接受任意数量的参数 Because, see, general plus takes an arbitrary number of arguments.   
 
-666
+657
 00:44:35,020 --> 00:44:36,760
-所以，最通常的plus So the most general plus
+所以 最通常的plus So the most general plus
 
-667
+658
 00:44:36,760 --> 00:44:38,880
 会认为如果我有一个参数列表 says, oh, if I have an argument list,
 
-668
+659
 00:44:38,880 --> 00:44:41,630
 我最好将它们用cons连接到列表里 I'd better cons it up in some list 
 
-669
+660
 00:44:41,630 --> 00:44:44,725
-and then figure out how many there were or something like that.
+#TBD and then figure out how many there were or something like that.
 
-670
+661
 00:44:44,725 --> 00:44:46,810
 这样的效率非常差 That's terribly inefficient,
 
-671
+662
 00:44:46,810 --> 00:44:49,250
 因为大部分时间你在把两个数相加 especially since most of the time you're probably adding two numbers.
 
-672
+663
 00:44:49,250 --> 00:44:51,875
 你不想真的把整个参数列表连接到一起 You don't want to really have to cons this argument list.
 
-673
-00:44:51,875 --> 00:44:55,250
+664
+00:44:51,875 --> 00:44:53,350
 所以你想做的是 So what you'd like to do is
 
-674
-00:44:55,250 --> 00:44:58,150
+665
+00:44:53,350 --> 00:44:58,150
 构建把一堆东西相加的代码 build the code for plus with a bunch of entries.
 
-675
+666
 00:44:58,150 --> 00:45:00,490
 所以它做的大部分是请是一样的 So most of what it's doing is the same. 
 
-676
+667
 00:45:00,490 --> 00:45:04,560
-However, there might be a special entry that you'd go to if you knew there were only two arguments.
+#TBD However, there might be a special entry that you'd go to if you knew there were only two arguments.
 
-677
+668
 00:45:04,560 --> 00:45:05,875
 And those you'll put in registers. 
 
-678
+669
 00:45:05,875 --> 00:45:08,675
-They won't be in an argument list and you won't have to [UNINTELLIGIBLE]. 
+#TBD They won't be in an argument list and you won't have to [UNINTELLIGIBLE]. 
 
-679
+670
 00:45:08,675 --> 00:45:10,425
-That's how a lot of these things work. 
+#TBD That's how a lot of these things work. 
 
-680
+671
 00:45:12,300 --> 00:45:13,725
 下课 OK, let's take a break. 
 
-681
+672
 00:45:14,100 --> 00:45:42,075
 [音乐] [JESU, JOY OF MAN'S DESIRING]
 
