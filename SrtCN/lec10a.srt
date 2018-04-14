@@ -4,7 +4,7 @@
 
 2
 00:00:22,260 --> 00:00:25,540
-一个Lisp 显式控制求值器 an explicit control evaluator for Lisp
+一个Lisp显式控制求值器 an explicit control evaluator for Lisp
 
 3
 00:00:25,540 --> 00:00:32,320
@@ -16,523 +16,523 @@
 
 5
 00:00:36,400 --> 00:00:42,460
-事实上 你可以将显式控制求值器 And in fact, you can think of the explicit control evaluator either as, say
+事实上 你可以将显式控制求值器视为 And in fact, you can think of the explicit control evaluator either as, say
 
 6
-00:00:42,460 --> 00:00:55,200
-#TBD  the code for a Lisp interpreter if you wanted to implement it in the assembly language of some conventional register transfer machine, or, if you like, you can think of it as the microcode of some machine that's going to be specially designed to run Lisp.
+00:00:42,460 --> 00:00:46,275
+Lisp解释器的代码 the code for a Lisp interpreter if you wanted to implement it in the
 
 7
-00:00:55,200 --> 00:01:00,920
-在任何一种情况下 我们得到一种能够处理低级语言的机器 In either case, what we're doing is we're taking a machine that speaks some low-level language
+00:00:46,275 --> 00:00:49,500
+你希望在某些约定的寄存器机器上实现的Lisp解释器的汇编代码 assembly language of some conventional register transfer machine,
 
 8
+00:00:49,500 --> 00:00:55,200
+也可以视为某种专门运行Lisp的机器的微码 or, if you like, you can think of it as the microcode  of some machine that's going to be specially designed to run Lisp. 
+
+9
+00:00:55,200 --> 00:01:00,920
+在任意情况下 我们得到一种能够处理低级语言的机器 In either case, what we're doing is we're taking a machine that speaks some low-level language
+
+10
 00:01:00,920 --> 00:01:07,260
 通过写一个解释器来让它能够执行像Lisp之类的高级语言 and we're raising the machine to a high-level language like Lisp by writing an interpreter.
 
-9
+11
 00:01:07,260 --> 00:01:11,000
 来看个例子 So for instance
 
-10
+12
 00:01:11,000 --> 00:01:23,840
 这是一个概念上的 用于计算阶乘的专用机器  here, conceptually, is a special purpose machine for computing factorials.
 
-11
+13
 00:01:23,840 --> 00:01:28,260
 输入5 输出120  It takes in five and puts out 120.
 
-12
+14
 00:01:28,260 --> 00:01:33,160
 这个专用机器实际上是一个Lisp解释器 And what this special purpose machine is actually a Lisp interpreter
 
-13
+15
 00:01:33,160 --> 00:01:37,480
-它将自己设置为运行阶乘 that's configured itself to run factorials
+它将自己设置为计算阶乘 that's configured itself to run factorials
 
-14
+16
 00:01:37,480 --> 00:01:41,660
 因为你喂给它了阶乘机器的描述 because you feed into it a description of the factorial machine.
 
-15
+17
 00:01:41,660 --> 00:01:43,700
 这就是解释器 So that's what an interpreter is.
 
-16
+18
 00:01:43,700 --> 00:01:49,680
 它将自己设置为 模拟你所输入描述的机器 It configures itself to emulate a machine whose description you read in.
 
-17
+19
 00:01:49,680 --> 00:01:52,040
-在Lisp解释器里是什么?  Now, inside the Lisp interpreter, what's that?
+那么 在Lisp解释器里是什么?  Now, inside the Lisp interpreter, what's that?
 
-18
+20
 00:01:52,040 --> 00:01:56,420
 里面可能是通用的寄存器语言解释器 Well, that might be your general register language interpreter
 
-19
+21
 00:01:56,420 --> 00:02:00,180
 它将自己设置为像Lisp解释器一样工作 that configures itself to behave like a Lisp interpreter
 
-20
+22
 00:02:00,180 --> 00:02:03,240
 因为你输入了一系列寄存器语言编写的指令 because you put in a whole bunch of instructions in register language.
 
-21
+23
 00:02:03,240 --> 00:02:06,460
 这就是显式控制求值器 This is the explicit control evaluator.
 
-22
-00:02:06,460 --> 00:02:09,300
-它也有某种TBD And then it also has some sort of library
-
-23
-00:02:09,300 --> 00:02:12,480
- a library of primitive operators and Lisp operations and all sorts of things like that.
-
 24
+00:02:06,460 --> 00:02:09,300
+它里面也有一些库 And then it also has some sort of library
+
+25
+00:02:09,300 --> 00:02:12,480
+是基本运算符和Lisp操作的库 a library of primitive operators and Lisp operations and all sorts of things like that.
+
+26
 00:02:12,480 --> 00:02:17,040
 这是解释执行的通常策略 That's the general strategy of interpretation.
 
-25
+27
 00:02:17,040 --> 00:02:20,880
-事实上，我们所做的是写了一个解释器 And the point is, what we're doing is we're writing an interpreter
+事实上 我们所做的是写了一个解释器 And the point is, what we're doing is we're writing an interpreter
 
-26
+28
 00:02:20,880 --> 00:02:25,240
 将机器提升到能理解我们写的程序的层次 to raise the machine to the level of the programs that we want to write.
 
-27
+29
 00:02:25,240 --> 00:02:27,040
 也有另一种逻辑 Well, there's another strategy
 
-28
+30
 00:02:27,040 --> 00:02:29,040
-一种不同的策略，就是编译 a different one, which is compilation.
+一种不同的策略 就是编译 a different one, which is compilation.
 
-29
+31
 00:02:29,040 --> 00:02:31,040
 编译有一些不同 Compilation's a little bit different.
 
-30
+32
 00:02:31,040 --> 00:02:32,440
 这里 Here--
 
-31
-00:02:32,440 --> 00:02:35,160
-我们可能已经制造了 here we might have produced
-
-32
-00:02:35,160 --> 00:02:42,200
-一个特定用途的机器，用来计算阶乘 a special purpose machine for, for computing factorials
-
 33
-00:02:42,200 --> 00:02:46,260
-从某种讲寄存器语言的机器开始 starting with some sort of machine that speaks register language
+00:02:32,440 --> 00:02:35,160
+我们可能已经实现了 here we might have produced
 
 34
-00:02:46,260 --> 00:02:47,720
-除此之外，我们将让它执行不同的策略TBD except we're going to do a different strategy.
+00:02:35,160 --> 00:02:43,625
+一个特定用途的机器 用来计算阶乘 a special purpose machine for, for computing factorials
 
 35
-00:02:47,720 --> 00:02:50,980
-我们拿来阶乘程序 We take our factorial program.
+00:02:43,625 --> 00:02:46,260
+从某种使用寄存器语言的机器开始 starting with some sort of machine that speaks register language
 
 36
-00:02:50,980 --> 00:02:53,920
-我们把这些源代码输入编译器 We use that as the source code into a compiler.
+00:02:46,260 --> 00:02:47,720
+但是 我们将让它执行不同的策略 except we're going to do a different strategy.
 
 37
-00:02:53,920 --> 00:02:56,180
-编译器将会做的是 What the compiler will do
+00:02:47,720 --> 00:02:51,550
+我们拿来阶乘程序 We take our factorial program.
 
 38
-00:02:56,180 --> 00:02:59,640
-把这个阶乘程序翻译成某种寄存器机器语言 is translate that factorial program into some register machine language.
+00:02:51,550 --> 00:02:53,920
+我们把这些源代码输入编译器 We use that as the source code into a compiler.
 
 39
-00:02:59,640 --> 00:03:03,400
-现在它并不是Lisp的显式控制求值器 And this will now be not the explicit control evaluator for Lisp
+00:02:53,920 --> 00:02:55,150
+编译器将会做的是 What the compiler will do
 
 40
+00:02:55,150 --> 00:03:00,250
+把这个阶乘程序 翻译成某种寄存器机器语言 is translate that factorial program into some register machine language.
+
+41
+00:03:00,250 --> 00:03:03,400
+现在它并不是Lisp的显式控制求值器 And this will now be not the explicit control evaluator for Lisp
+
+42
 00:03:03,400 --> 00:03:06,340
 它现在是某种用来计算阶乘的寄存器语言 this will be some register language for computing factorials.
 
-41
-00:03:06,340 --> 00:03:09,160
+43
+00:03:06,340 --> 00:03:10,375
 这就是翻译的过程 So this is the translation of that.
 
-42
-00:03:09,160 --> 00:03:12,920
+44
+00:03:10,375 --> 00:03:13,350
 它将进入某种加载器 That will go into some sort of loader
 
-43
-00:03:12,920 --> 00:03:19,360
+45
+00:03:13,350 --> 00:03:19,825
 并与从库中选取的乘法之类的代码组合到一起 which will combine this code with code selected from the library to do things like primitive multiplication.
 
-44
-00:03:19,360 --> 00:03:21,960
+46
+00:03:19,825 --> 00:03:22,225
 随后我们将生成一个加载模块 And then we'll produce a load module
 
-45
-00:03:21,960 --> 00:03:25,060
+47
+00:03:22,225 --> 00:03:25,060
 它把寄存器语言机器配置成 which configures the register language machine
 
-46
-00:03:25,060 --> 00:03:27,740
+48
+00:03:25,060 --> 00:03:28,125
 一个专门用来计算阶乘的机器 to be a special purpose factorial machine.
 
-47
-00:03:27,740 --> 00:03:30,220
+49
+00:03:28,125 --> 00:03:30,220
 这就是不同的策略 So that's a, that's a different strategy.
 
-48
-00:03:30,220 --> 00:03:32,400
-在解释中 In interpretation, we're raising
-
-49
-00:03:32,400 --> 00:03:35,320
-我们将机器提升到我们语言的层次，如Lisp the machine to the level of our language, like Lisp.
-
 50
+00:03:30,220 --> 00:03:31,225
+在解释中 In interpretation,
+
+51
+00:03:31,225 --> 00:03:35,320
+我们将机器提升到我们语言的层次 如Lisp  we're raising the machine to the level of our language, like Lisp.
+
+52
 00:03:35,320 --> 00:03:36,340
 在编译中 In compilation
 
-51
-00:03:36,340 --> 00:03:41,240
-我们将我们的程序降到机器语言的层次 we're taking our program and lowering it to the language that's spoken by the machine.
-
-52
-00:03:41,240 --> 00:03:44,100
-那么，这两个策略有什么区别呢？ Well, how do these two strategies compare?
-
 53
-00:03:44,100 --> 00:03:51,020
-编译器可以生成执行起来更有效率的代码 The compiler can produce code that will execute more efficiently.
+00:03:36,340 --> 00:03:41,825
+我们将我们的程序下降到机器语言的层次 we're taking our program and lowering it to the language that's spoken by the machine.
 
 54
-00:03:51,020 --> 00:03:54,060
-The essential reason for that is that
+00:03:41,825 --> 00:03:44,300
+那么 这两个策略有什么区别呢? Well, how do these two strategies compare?
 
 55
-00:03:54,060 --> 00:04:00,600
-if you think about the register operations that are running
+00:03:44,300 --> 00:03:52,050
+编译器可以生成执行起来更有效率的代码 The compiler can produce code that will execute more efficiently.
 
 56
-00:04:00,600 --> 00:04:04,820
-the interpreter has to produce register operations
+00:03:52,050 --> 00:03:54,175
+主要原因是 The essential reason for that
 
 57
-00:04:04,820 --> 00:04:09,580
-which, in principle, are going to be general enough to execute any Lisp procedure.
+00:03:54,175 --> 00:04:01,925
+如果你考虑运行中的寄存器操作 is that if you think about the register operations that are running
 
 58
-00:04:09,580 --> 00:04:15,160
-Whereas the compiler only has to worry about producing a special bunch of register operations for
+00:04:01,925 --> 00:04:04,820
+解释器需要生成寄存器的操作 the interpreter has to produce register operations
 
 59
-00:04:15,160 --> 00:04:19,280
- for doing the particular Lisp procedure that you've compiled.
+00:04:04,820 --> 00:04:10,225
+从原则上来讲 它需要足够通用 以支持任何Lisp过程的执行 which, in principle, are going to be general enough to execute any Lisp procedure.
 
 60
-00:04:19,280 --> 00:04:21,240
-换一种说法 Or another way to say that
+00:04:10,225 --> 00:04:15,160
+而编译器只需要生成一组特定的寄存器操作 Whereas the compiler only has to worry about producing a special bunch of register operations for
 
 61
-00:04:22,660 --> 00:04:25,660
-解释器是一种通用的模拟器 is that the interpreter is a general purpose simulator
+00:04:15,160 --> 00:04:19,280
+用来执行你所编译的那部分特定的Lisp过程 for doing the particular Lisp procedure that you've compiled.
 
 62
-00:04:25,660 --> 00:04:27,580
-当你输入一个Lisp过程时 that when you read in a Lisp procedure
+00:04:20,175 --> 00:04:21,200
+换一种说法 Or another way to say that
 
 63
-00:04:27,580 --> 00:04:31,080
-它们就会模拟被那个过程解释的程序 then those can simulate the program described by that, by that procedure.
+00:04:21,200 --> 00:04:25,925
+解释器是一种通用的模拟器 is that the interpreter is a general purpose simulator
 
 64
-00:04:31,080 --> 00:04:34,120
-所以解释器关注的是做出一个通用模拟器 So the interpreter is worrying about making a general purpose simulator
+00:04:25,925 --> 00:04:27,580
+当你输入一个Lisp过程时 that when you read in a Lisp procedure
 
 65
-00:04:34,120 --> 00:04:39,680
-TBD所以解释器关注的是做出一个通用意图的模拟器，而编译器，in effect将东西配置成解释器将要去模拟的机器 whereas the compiler, in effect, is configuring the thing to be the machine that the interpreter would have been simulating.
+00:04:27,580 --> 00:04:31,325
+它们就会模拟被那个过程解释的程序 then those can simulate the program described by that, by that procedure.
 
 66
-00:04:39,680 --> 00:04:44,340
-所以编译器可以运行得更快 So the compiler can be faster.
+00:04:31,325 --> 00:04:34,625
+所以解释器关注的是做出一个通用模拟器 So the interpreter is worrying about making a general purpose simulator
 
 67
-00:04:51,740 --> 00:04:54,780
-另一方面 OK, On the other hand
+00:04:34,625 --> 00:04:40,025
+而编译器 只需要将东西配置成解释器将要去模拟的机器 whereas the compiler, in effect, is configuring the thing to be the machine that the interpreter would have been simulating.
 
 68
-00:04:54,780 --> 00:04:58,740
-解释器更适合用来排查错误 the interpreter is a nicer environment for debugging.
+00:04:40,025 --> 00:04:44,350
+所以编译器可以运行得更快 So the compiler can be faster.
 
 69
-00:04:58,740 --> 00:05:01,320
-因为 And the reason for that is that we've got the
+00:04:52,550 --> 00:04:54,650
+另一方面 OK, On the other hand
 
 70
-00:05:01,320 --> 00:05:03,020
-我们的源代码实际上就在那里 the source code actually there.
+00:04:55,975 --> 00:04:59,200
+解释器更适合用来排查错误 the interpreter is a nicer environment for debugging.
 
 71
-00:05:03,020 --> 00:05:05,380
-我们正在解释它们 We're interpreting it That's what we're working with.
+00:04:59,200 --> 00:05:01,250
+因为 And the reason for that is that we've got the
 
 72
-00:05:05,380 --> 00:05:07,760
-并且库就在这里 And we also have the library around.
+00:05:01,575 --> 00:05:03,020
+我们的源代码实际上就在那里 the source code actually there.
 
 73
-00:05:07,760 --> 00:05:11,020
-看，这里的库是解释器的一部分 See, the interpreter--the library sitting there is part of the interpreter.
+00:05:03,020 --> 00:05:05,875
+我们正在解释它们 We're interpreting it That's what we're working with.
 
 74
-00:05:11,020 --> 00:05:14,640
-而编译器只会把运行程序所需要的代码从库中拉出来 The compiler only pulls out from the library what it needs to run the program.
+00:05:05,875 --> 00:05:07,760
+并且库就在这里 And we also have the library around.
 
 75
-00:05:14,640 --> 00:05:17,520
-所以，如果你在排查错误的途中 So if you're in the middle of debugging
+00:05:07,760 --> 00:05:11,020
+看 这里的库是解释器的一部分 See, the interpreter--the library sitting there is part of the interpreter.
 
 76
-00:05:17,520 --> 00:05:19,380
-可能你想写一些 and you might like to write
+00:05:11,020 --> 00:05:14,875
+而编译器只会把运行程序所需要的代码从库中拉出来 The compiler only pulls out from the library what it needs to run the program.
 
 77
-00:05:19,380 --> 00:05:22,820
-额外的代码来考察运行过程中的数据类型 a little extra program to examine some run time data structure
+00:05:14,875 --> 00:05:17,520
+所以，如果你在排查错误的途中 So if you're in the middle of debugging
 
 78
-00:05:22,820 --> 00:05:25,860
-或者做一些你在写程序时没有想到的运算 or to produce some computation that you didn't think of when you wrote the program
+00:05:17,520 --> 00:05:19,659
+可能你想写一些 and you might like to write
 
 79
-00:05:25,860 --> 00:05:27,820
-解释器可以完美搞定这些 the interpreter can do that perfectly well
+00:05:19,659 --> 00:05:23,051
+额外的代码来考察运行过程中的数据类型 a little extra program to examine some run time data structure
 
 80
-00:05:27,820 --> 00:05:29,360
-而编译器不行 whereas the compiler can't.
+00:05:23,051 --> 00:05:26,125
+或者做一些你在写程序时没有想到的运算 or to produce some computation that you didn't think of when you wrote the program
 
 81
-00:05:29,360 --> 00:05:31,900
-所以它们各有优点 So there are sort of dual, dual advantages.
+00:05:26,125 --> 00:05:28,050
+解释器可以完美搞定这些 the interpreter can do that perfectly well
 
 82
+00:05:28,050 --> 00:05:29,625
+而编译器不行 whereas the compiler can't.
+
+83
+00:05:29,625 --> 00:05:31,900
+所以它们各有优点 So there are sort of dual, dual advantages.
+
+84
 00:05:31,900 --> 00:05:34,600
 编译器将生成运行更快的代码 The compiler will produce code that executes faster.
 
-83
-00:05:34,600 --> 00:05:37,960
-而解释器是一种更适合debug的环境 The interpreter is a better environment for debugging.
-
-84
-00:05:37,960 --> 00:05:42,360
-大多数Lisp系统最终将二者都实现了 And most Lisp systems end up having both
-
 85
-00:05:42,360 --> 00:05:47,080
-你可以在开发代码是使用解释器 end up being configured so you have an interpreter that you use when you're developing your code.
+00:05:34,600 --> 00:05:38,950
+而解释器是一种更适合排错的环境 The interpreter is a better environment for debugging.
 
 86
-00:05:47,080 --> 00:05:48,820
-随后通过编译代码来使运行更快 Then you can speed it up by compiling.
+00:05:38,950 --> 00:05:42,360
+大多数Lisp系统最终将二者都实现了 And most Lisp systems end up having both
 
 87
-00:05:48,820 --> 00:05:54,120
-通常你能做到让被编译的代码和被解释的代码互相调用 And very often, you can arrange that compiled code and interpreted code can call each other.
+00:05:42,925 --> 00:05:47,080
+你可以在开发代码是使用解释器 end up being configured so you have an interpreter that you use when you're developing your code.
 
 88
-00:05:54,120 --> 00:05:58,580
-我们将学习如何做到这一点，其实不难 We'll see how to do that, That's not hard.
+00:05:47,080 --> 00:05:49,027
+随后通过编译代码来使运行更快 Then you can speed it up by compiling.
 
 89
-00:05:58,580 --> 00:06:00,340
-OK
+00:05:49,027 --> 00:05:54,600
+通常你能做到让被编译的代码和被解释的代码互相调用 And very often, you can arrange that compiled code and interpreted code can call each other.
 
 90
-00:06:00,340 --> 00:06:03,080
-In fact, the way we'll--
+00:05:54,600 --> 00:05:57,275
+我们将学习如何做到这一点，其实不难 We'll see how to do that, That's not hard.
 
 91
-00:06:03,080 --> 00:06:05,720
-in the compiler we're going to make
+00:05:59,275 --> 00:06:00,000
+好 OK
 
 92
-00:06:05,720 --> 00:06:08,620
-the way we'll arrange for compiled coding and interpreted code to call
+00:06:00,825 --> 00:06:05,750
+事实上 在编译器中 In fact, the way we'll-- in the compiler we're going to make 
 
 93
-00:06:08,620 --> 00:06:09,760
-to call each other
+00:06:05,750 --> 00:06:09,900
+我们实现被编译的代码和被解释的代码能够互相调用的方式是 the way we'll arrange for compiled coding and interpreted code to call to call each other 
 
 94
-00:06:09,760 --> 00:06:11,400
-is that we'll have the compiler
+00:06:09,900 --> 00:06:14,800
+我们让编译器使用与解释器完全一致的组织方式 is that we'll have the compiler use exactly the same register conventions as the interpreter. 
 
 95
-00:06:11,400 --> 00:06:16,920
-use exactly the same register conventions as the interpreter.
+00:06:18,425 --> 00:06:25,875
+编译器的思路和解释器或求值器很像 Well, the idea of a compiler is very much like the idea of an interpreter or evaluator.
 
 96
-00:06:16,920 --> 00:06:25,760
-编译器的思路和解释器或执行器很像 Well, the idea of a compiler is very much like the idea of an interpreter or evaluator.
-
-97
-00:06:25,760 --> 00:06:26,860
+00:06:25,875 --> 00:06:27,050
 它们是相同的东西 It's the same thing.
 
-98
-00:06:26,860 --> 00:06:29,600
-求值器读取代码 See, the evaluator walks over the code
+97
+00:06:27,050 --> 00:06:29,825
+求值器遍历代码 See, the evaluator walks over the code
 
-99
-00:06:29,600 --> 00:06:32,920
+98
+00:06:29,825 --> 00:06:33,650
 产生一些寄存器操作 and performs some register operations.
 
-100
-00:06:32,920 --> 00:06:36,100
+99
+00:06:33,650 --> 00:06:36,793
 就是我们昨天做的事情 That's what we did yesterday.
 
-101
-00:06:36,100 --> 00:06:40,340
+100
+00:06:37,100 --> 00:06:40,525
 而编译器会读取代码 Well, the compiler essentially would like to walk over the code
 
-102
-00:06:40,340 --> 00:06:47,700
+101
+00:06:40,525 --> 00:06:47,700
 生成一些求值器在求值时所做事情的寄存器操作 and produce the register operations that the evaluator would have done were it evaluating the thing.
 
+102
+00:06:48,600 --> 00:06:55,300
+这给我们了一个实现零阶(zeroth-order)编译器的模型 And that gives us a model for how to implement a zeroth-order compiler
+
 103
-00:06:47,700 --> 00:06:54,600
-这给我们了实现一个zeroth-order编译器的模型 And that gives us a model for how to implement a zeroth-order compiler
+00:06:55,300 --> 00:06:58,320
+一个很差的编译器 但的确是个编译器 a very bad compiler but essentially a compiler.
 
 104
-00:06:54,600 --> 00:06:58,320
-一个很差的编译器，但TBD大体上是个编译器 a very bad compiler but essentially a compiler.
+00:06:58,320 --> 00:07:02,800
+这种模型就是 你用求值器把代码跑一遍 A model for doing that is you just take the evaluator, you run it over the code
 
 105
-00:06:58,320 --> 00:07:02,300
-这种模型就是，你用求值器把代码跑一遍 A model for doing that is you just take the evaluator, you run it over the code
-
-106
-00:07:02,300 --> 00:07:06,060
+00:07:02,800 --> 00:07:06,060
 但不去执行实际的操作 but instead of executing the actual operations
 
-107
-00:07:06,060 --> 00:07:07,320
+106
+00:07:06,060 --> 00:07:07,550
 只是把它们保存下来 you just save them away.
 
+107
+00:07:07,550 --> 00:07:08,825
+那就是你编译后的代码 And that's your compiled code. 
+
 108
-00:07:07,320 --> 00:07:11,520
-这就是你编译后的代码 举个例子 And that's your compiled code. So let me give you an example of that.
+00:07:08,825 --> 00:07:10,552
+让我举个例子 So let me give you an example of that.
 
 109
-00:07:11,520 --> 00:07:14,620
+00:07:12,700 --> 00:07:15,100
 假设我们要编译 Suppose we're going to compile--
 
 110
-00:07:14,620 --> 00:07:21,480
-假设我们要编译，假设我们想编译这个表达式(F X)
+00:07:15,100 --> 00:07:25,075
+假设我们想编译这个表达式(F X) Suppose we're going to compile--suppose we want to compile the expression f of x. 
 
 111
-00:07:24,360 --> 00:07:29,740
-So let's assume that we've got f of x in the x register and something in the environment register.
+00:07:25,075 --> 00:07:30,100
+我们假设#TBD So let's assume that we've got f of x in the x register and something in the environment register.
 
 112
-00:07:29,740 --> 00:07:32,480
-想象我们启动了执行器 And now imagine starting up the evaluator.
+00:07:30,100 --> 00:07:32,725
+想象我们启动了求值器 And now imagine starting up the evaluator.
 
 113
-00:07:32,480 --> 00:07:37,620
-它读取了表达式，它认为这是个应用 Well, it looks at the expression and it sees that it's an application.
+00:07:32,725 --> 00:07:37,925
+它读取了表达式 它认为这是个应用 Well, it looks at the expression and it sees that it's an application.
 
 114
-00:07:37,620 --> 00:07:46,280
-它分叉到求值器的一个地方，我们之前见过的叫ev-application的地方 And it branches to a place in the evaluator code we saw called ev-application.
+00:07:37,925 --> 00:07:47,125
+它分支到求值器代码中的一个地方 我们之前见过的叫ev-application的地方 And it branches to a place in the evaluator code we saw called ev-application.
 
 115
-00:07:46,280 --> 00:07:50,080
-它将操作数和unev保存 And then it begins. It stores away the operands and unev
+00:07:47,125 --> 00:07:50,080
+它将运算对象和unev保存 And then it begins. It stores away the operands and unev
 
 116
-00:07:50,080 --> 00:07:54,360
-然后之后它将操作符放在exp里，用来递归执行 and it's going to go recursively evaluate it.
+00:07:50,080 --> 00:07:54,475
+然后之后它将运算符放在exp里 用来递归执行 and it's going to go recursively evaluate it.
 
 117
-00:07:54,360 --> 00:07:56,360
+00:07:54,475 --> 00:07:56,675
 这就是我们经历的过程 That's the process that we walk through.
 
 118
-00:07:56,360 --> 00:07:59,880
-你如果看代码，会看到一些寄存器操作 And if you start looking at the code, you start seeing some register operations.
+00:07:56,675 --> 00:08:00,200
+如果你看代码 会看到一些寄存器操作 And if you start looking at the code, you start seeing some register operations.
 
 119
-00:07:59,880 --> 00:08:02,940
-你会看到对unev的操作数TBD You see assign to unev the operands
+00:08:00,200 --> 00:08:02,300
+你会看到对unev的运算对象的赋值 You see assign to unev the operands
 
 120
-00:08:02,940 --> 00:08:07,160
-TBD引用exp的操作符，保存环境，生成它，之类的 assign to exp the operator, save the environment, generate that, and so on.
+00:08:02,300 --> 00:08:07,160
+#TBD对exp运算符的赋值 保存环境 生成它 之类的东西 assign to exp the operator, save the environment, generate that, and so on.
 
 121
-00:08:09,460 --> 00:08:12,880
+00:08:10,225 --> 00:08:12,880
 如果我们研究这里的性能消耗 Well, if we look on the overhead here
 
 122
-00:08:14,840 --> 00:08:20,520
+00:08:15,750 --> 00:08:20,825
 会发现这些操作被生成出来 we can see those operations starting to be produced.
 
 123
-00:08:20,520 --> 00:08:24,880
+00:08:20,825 --> 00:08:25,000
 这是求值器第一个本来要做的实际操作 Here's sort of the first real operation that the evaluator would have done.
 
 124
-00:08:24,880 --> 00:08:27,300
-它将操作数从 exp 寄存器里拿出来 It pulls the operands out of the exp register
+00:08:25,000 --> 00:08:27,475
+它将运算对象从exp寄存器里拿出来 It pulls the operands out of the exp register
 
 125
-00:08:27,300 --> 00:08:29,300
+00:08:27,475 --> 00:08:30,035
 并将它赋值给unev and assigns it to unev.
 
 126
-00:08:29,300 --> 00:08:33,460
-然后它将某些东西绑定到表达式寄存器, 保存continue  And then it assigns something to the expression register, and it saves continue
+00:08:30,035 --> 00:08:33,460
+然后它将某些东西赋值给表达式寄存器 保存continue  And then it assigns something to the expression register, and it saves continue
 
 127
 00:08:33,460 --> 00:08:34,620
 保存env and it saves env.
 
 128
-00:08:34,620 --> 00:08:39,240
-我们在这做的就是写下 And all I'm doing here is writing down the register assignments
+00:08:34,620 --> 00:08:39,575
+我们在这做的就是写下寄存器赋值操作 And all I'm doing here is writing down the register assignments
 
 129
-00:08:39,240 --> 00:08:42,540
+00:08:39,575 --> 00:08:42,775
 在求值时会进行的寄存器赋值操作 that the evaluator would have done in executing that code.
 
 130
-00:08:42,540 --> 00:08:44,060
+00:08:42,775 --> 00:08:44,300
 我们缩小画面看看 And can zoom out a little bit.
 
 131
-00:08:44,060 --> 00:08:48,480
+00:08:44,300 --> 00:08:49,400
 总计有19个操作 Altogether, there are about 19 operations there.
 
 132
-00:08:48,480 --> 00:08:51,800
-And this is the--this will be the piece of code
+00:08:49,400 --> 00:08:52,050
+这些代码 And this is the--this will be the piece of code
 
 133
-00:08:51,800 --> 00:08:57,480
-up until the point where the evaluator branches off to apply-dispatch.
+00:08:52,050 --> 00:08:57,868
+#TBD up until the point where the evaluator branches off to apply-dispatch.
 
 134
-00:08:57,480 --> 00:08:59,420
-事实上，在这个编译器中 And in fact, in this compiler
+00:08:57,868 --> 00:08:59,420
+事实上 在这个编译器中 And in fact, in this compiler
 
 135
 00:08:59,420 --> 00:09:01,300
@@ -543,23 +543,23 @@ up until the point where the evaluator branches off to apply-dispatch.
 我们有所有东西We're going to have everything
 
 137
-00:09:02,280 --> 00:09:05,500
+00:09:02,280 --> 00:09:06,075
 我们拥有解释后代码和编译后代码 we're going to have both interpreted code and compiled code.
 
 138
-00:09:05,500 --> 00:09:10,040
-通常求值过程，通常应用过程是由apply-dispatch处理的 Always evaluate procedures, always apply procedures by going to apply-dispatch.
+00:09:06,075 --> 00:09:10,275
+通常求值过程 通常应用过程是由apply-dispatch处理的 Always evaluate procedures, always apply procedures by going to apply-dispatch.
 
 139
-00:09:10,040 --> 00:09:15,500
+00:09:10,275 --> 00:09:15,500
 这将让被解释后代码与编译后代码很很容易互相调用 That will easily allow interpreted code and compiled code to call each other. 
 
 140
-00:09:17,580 --> 00:09:20,520
-从原则上来说，这就是我们要做的一切 Well, in principle, that's all we need to do.
+00:09:18,275 --> 00:09:21,050
+从原则上来说 这就是我们要做的一切 Well, in principle, that's all we need to do.
 
 141
-00:09:20,520 --> 00:09:22,660
+00:09:21,050 --> 00:09:22,660
 你只是运行求值器 You just run the evaluator.
 
 142
@@ -567,135 +567,135 @@ up until the point where the evaluator branches off to apply-dispatch.
 因而编译器非常像求值器 So the compiler's a lot like the evaluator.
 
 143
-00:09:24,980 --> 00:09:28,860
-你运行它，唯一不同是你把操作存下来，而不是实际执行它们You run it, except it stashes away these operations instead of actually executing them.
+00:09:24,980 --> 00:09:29,350
+你运行它 唯一不同是你把操作存下来 而不是实际执行它们 You run it, except it stashes away these operations instead of actually executing them.
 
 144
-00:09:28,860 --> 00:09:32,060
+00:09:29,350 --> 00:09:32,916
 这其实不完全正确 Well, that's not, that's not quite true.
 
 145
-00:09:32,060 --> 00:09:35,760
+00:09:32,916 --> 00:09:36,244
 这里面我们撒了个小谎 There's only one little lie in that.
 
 146
-00:09:35,760 --> 00:09:39,760
-你需要关心的是如果你有 What you have to worry about is if you have a, a predicate.
+00:09:36,244 --> 00:09:40,125
+你需要关心的是 如果你有某种断言 What you have to worry about is if you have a, a predicate.
 
 147
-00:09:39,760 --> 00:09:43,000
+00:09:40,125 --> 00:09:43,453
 如果你有某种测试需要做 If you have some kind of test you want to do
 
 148
-00:09:43,000 --> 00:09:46,240
-显然，在你编译时 obviously, at the point when you're compiling it
+00:09:43,453 --> 00:09:46,525
+显然 在你编译时 obviously, at the point when you're compiling it
 
 149
-00:09:46,240 --> 00:09:50,680
+00:09:46,525 --> 00:09:51,133
 你并不能知道哪个分支需要执行 you don't know which branch of these--of a conditional like this you're going to do.
 
 150
-00:09:50,680 --> 00:09:54,440
-所以你不能确定求值器将执行哪个 So you can't say which one the evaluator would have done.
+00:09:51,133 --> 00:09:54,909
+所以你不能确定求值器将对哪个求值 So you can't say which one the evaluator would have done.
 
 151
-00:09:54,440 --> 00:09:56,220
+00:09:54,909 --> 00:09:57,125
 在这里要做的很简单 So all you do there is very simple.
 
 152
-00:09:56,220 --> 00:09:59,060
-你编译全部分支 You compile both branches.
+00:09:57,125 --> 00:09:59,600
+你把两个分支全编译了 You compile both branches.
 
 153
-00:09:59,060 --> 00:10:01,620
-因此你编译一个这样的结构 So you compile a structure that looks like this.
+00:09:59,600 --> 00:10:01,620
+因此你编译出一个这样的结构 So you compile a structure that looks like this.
 
 154
-00:10:01,620 --> 00:10:10,020
+00:10:01,620 --> 00:10:10,717
 他们都会被编译成P的代码 That'll compile into something that says, the code, the code for P.
 
 155
-00:10:10,020 --> 00:10:18,860
-And it puts its results in, say, the val register.
+00:10:10,717 --> 00:10:18,175
+把它的结果存入VAL寄存器 And it puts its results in, say, the val register.
 
 156
-00:10:18,860 --> 00:10:20,980
-So you walk the interpreter over the predicate
+00:10:18,175 --> 00:10:21,354
+你的解释器对断言求值 So you walk the interpreter over the predicate
 
 157
-00:10:20,980 --> 00:10:24,400
-and make sure that the result would go into the val register.
+00:10:21,354 --> 00:10:24,703
+并保证结果会放到VAL寄存器中 and make sure that the result would go into the val register.
 
 158
-00:10:24,400 --> 00:10:27,220
+00:10:24,703 --> 00:10:27,220
 And then you compile an instruction that says
 
 159
-00:10:27,220 --> 00:10:36,820
+00:10:27,220 --> 00:10:37,175
 branch if, if val is true
 
 160
-00:10:36,820 --> 00:10:43,720
+00:10:37,175 --> 00:10:44,975
 to a place we'll call label one.
 
 161
-00:10:44,560 --> 00:10:53,160
+00:10:44,975 --> 00:10:53,625
 Then we, we will put the code for B to walk the interpreter--walk the interpreter over B.
 
 162
-00:10:53,160 --> 00:11:01,880
+00:10:53,625 --> 00:11:02,200
 And then go to put in an instruction that says, go to the next thing, whatever
 
 163
-00:11:01,880 --> 00:11:04,680
+00:11:02,200 --> 00:11:04,950
 whatever was supposed to happen after this thing was done.
 
 164
-00:11:04,680 --> 00:11:06,520
+00:11:04,950 --> 00:11:06,520
 你放入那个指令 You put in that instruction.
 
 165
-00:11:06,520 --> 00:11:11,220
+00:11:06,520 --> 00:11:12,125
 这里你放入label one And here you put label one.
 
 166
-00:11:11,220 --> 00:11:16,620
+00:11:12,125 --> 00:11:19,475
 And here you put the code for A.
 
 167
-00:11:18,620 --> 00:11:29,820
+00:11:19,475 --> 00:11:29,820
 And you put go to next thing.
 
 168
-00:11:30,400 --> 00:11:32,980
+00:11:31,425 --> 00:11:32,980
 这就是处理条件分支的办法 So that's how you treat a conditional.
 
 169
-00:11:32,980 --> 00:11:35,320
+00:11:32,980 --> 00:11:35,750
 你生成这样一小块代码 You generate a little block like that.
 
 170
-00:11:35,320 --> 00:11:38,660
+00:11:35,750 --> 00:11:38,950
 除此之外 And other than that
 
 171
-00:11:38,660 --> 00:11:42,040
+00:11:38,950 --> 00:11:42,550
 编译器与求值器一模一样 this zeroth-order compiler is the same as the evaluator.
 
 172
-00:11:42,040 --> 00:11:45,860
+00:11:42,550 --> 00:11:46,550
 它只是把指令存起来而不是执行它们 It's just stashing away the instructions instead of executing them.
 
 173
-00:11:45,860 --> 00:11:49,640
+00:11:46,550 --> 00:11:50,125
 看起来肯简单，但我们已经因此有了一些收获 That seems pretty simple, but we've gained something by that.
 
 174
-00:11:49,640 --> 00:11:53,140
+00:11:50,125 --> 00:11:53,525
 它会比求值器更有效率 See, already that's going to be more efficient than the evaluator.
 
 175
-00:11:53,140 --> 00:11:56,160
+00:11:53,525 --> 00:11:56,160
 因为，如果你观察求值器的运行 Because, if you watch the evaluator run
 
 176
@@ -703,15 +703,15 @@ And you put go to next thing.
 它并不只是生成我们写下的注册操作 it's not only generating the register operations we wrote down
 
 177
-00:12:01,100 --> 00:12:04,300
+00:12:01,100 --> 00:12:04,700
 它还会决定生成哪个 it's also doing things to decide which ones to generate.
 
 178
-00:12:04,300 --> 00:12:07,580
+00:12:04,700 --> 00:12:07,925
 它做的第一件事就是 So the very first thing it does, say
 
 179
-00:12:07,580 --> 00:12:12,640
+00:12:07,925 --> 00:12:12,640
 here for instance, is go do some tests and decide that this is an application
 
 180
@@ -1680,7 +1680,7 @@ It just wouldn't use two of the registers.
 
 421
 00:26:53,710 --> 00:27:12,575
-  音乐 [MUSIC PLAYING]
+[音乐] [JESU, JOY OF MAN'S DESIRING]
 
 422
 00:27:14,610 --> 00:27:29,075
@@ -2722,5 +2722,5 @@ That's how a lot of these things work.
 
 681
 00:45:14,100 --> 00:45:42,075
-音乐 [MUSIC PLAYING]
+[音乐] [JESU, JOY OF MAN'S DESIRING]
 
