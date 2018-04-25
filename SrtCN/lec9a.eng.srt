@@ -5002,398 +5002,497 @@ just above done.
 
 1002
 00:56:37,750 --> 00:56:38,640
+我们稍后就会看到
 And we'll see it later.
 
 1003
 00:56:39,424 --> 00:56:40,704
-Now, in the general case, which is the part I'm going to write down now, let's just do it.
+现在 对于一般情况来说
+Now, in the general case,
 
 1004
 00:56:40,720 --> 00:56:42,448
-Now, in the general case, which is the part I'm going to write down now, let's just do it.
+也就是我现在要写的
+which is the part I'm going to write down now,
 
 1005
 00:56:43,136 --> 00:56:44,192
-Now, in the general case, which is the part I'm going to write down now, let's just do it.
+是这样的
+let's just do it.
 
 1006
-00:56:44,860 --> 00:56:45,728
+00:56:44,912 --> 00:56:48,200
+首先呢 我需要调用斐波那契函数两次
 Well, first of all, I'm going to have to call Fibonacci twice.
 
 1007
-00:56:45,744 --> 00:56:48,208
-Well, first of all, I'm going to have to call Fibonacci twice.
+00:56:49,420 --> 00:56:52,544
+在每一次中 -- 至少在其中一次
+In each case-- well, in one case at least,
 
 1008
-00:56:49,420 --> 00:56:52,544
-In each case-- well, in one case at least, I'm going to have to know what to do to come back and do the next one.
+00:56:52,780 --> 00:56:53,952
+我得需要知道该怎么做
+I'm going to have to know what to do
 
 1009
-00:56:52,784 --> 00:56:55,360
-In each case-- well, in one case at least, I'm going to have to know what to do to come back and do the next one.
+00:56:53,968 --> 00:56:55,360
+才能回过头来进行另外一个计算
+to come back and do the next one.
 
 1010
 00:56:56,310 --> 00:56:58,368
-I have to remember, have I done the first Fib, or have I done the second one?
+我需要记住
+I have to remember,
 
 1011
 00:56:59,200 --> 00:57:01,232
-I have to remember, have I done the first Fib, or have I done the second one?
+我计算完第一个FIB了么？
+have I done the first Fib,
 
 1012
 00:57:01,264 --> 00:57:02,544
-I have to remember, have I done the first Fib, or have I done the second one?
+或者第二个也计算完了？
+or have I done the second one?
 
 1013
 00:57:04,500 --> 00:57:07,040
-Do I have to come back to the place where I do the second Fib, or do I have to come back to the place where I do the add?
+我是该返回到计算第二个FIB的地方
+Do I have to come back to the place where I do the second Fib,
 
 1014
 00:57:07,072 --> 00:57:09,088
-Do I have to come back to the place where I do the second Fib, or do I have to come back to the place where I do the add?
+还是回到执行ADD的地方
+or do I have to come back to the place where I do the add?
 
 1015
 00:57:10,128 --> 00:57:12,112
-In the first case, over the first Fibonacci, I'm going to need the value of N for computing for the second one.
+无论哪种情况 我都需要--
+In both cases I going to need, I don't
 
 1016
 00:57:12,140 --> 00:57:14,464
-In the first case, over the first Fibonacci, I'm going to need the value of N for computing for the second one.
+在第一个计算第一个FIB时
+In the first case, over the first Fibonacci,
 
 1017
 00:57:14,512 --> 00:57:16,980
-In the first case, over the first Fibonacci, I'm going to need the value of N for computing for the second one.
+我需要保存N的值 来计算第二个FIB
+I'm going to need the value of N for computing for the second one.
 
 1018
 00:57:19,840 --> 00:57:21,584
+因此我要把这些东西存储起来
 So I have to store some of these things up.
 
 1019
 00:57:23,360 --> 00:57:24,896
+首先要保存CONTINUE
 So first I'm going to save continue.
 
 1020
 00:57:26,192 --> 00:57:27,328
+也就是答案的接收者
 That's who needs the answer.
 
 1021
 00:57:31,320 --> 00:57:32,464
-And the reason I'm doing that is because I'm about to assign continue to the place which is the place I want to go to after.
+我之所以要这么做
+And the reason I'm doing that
 
 1022
 00:57:32,480 --> 00:57:34,208
-And the reason I'm doing that is because I'm about to assign continue to the place which is the place I want to go to after.
+是因为我现在要把CONTINUE赋值为
+is because I'm about to assign continue
 
 1023
 00:57:40,112 --> 00:57:44,320
-And the reason I'm doing that is because I'm about to assign continue to the place which is the place I want to go to after.
+我待会儿想要返回的地方
+to the place which is the place I want to go to after.
 
 1024
 00:57:46,832 --> 00:57:50,272
-Let's call it Fib-N-minus-1, big long name, classic Lisp name.
+我们把它叫做AFTER-FIB-N-1
+Let's call it Fib-N-minus-1,
 
 1025
 00:57:51,040 --> 00:57:53,760
-Let's call it Fib-N-minus-1, big long name, classic Lisp name.
+这个长名字 非常具有Lisp的命名特点
+big long name, classic Lisp name.
 
 1026
 00:57:57,360 --> 00:58:00,224
-Because I'm going to compute the first Fib of N minus 1, and then after that, I want to come back and do something else.
+这是因为我先要计算第一个(FIB (- N 1))
+Because I'm going to compute the first Fib of N minus 1,
 
 1027
-00:58:00,848 --> 00:58:03,296
-Because I'm going to compute the first Fib of N minus 1, and then after that, I want to come back and do something else.
+00:58:00,840 --> 00:58:01,728
+计算完成之后
+and then after that,
 
 1028
-00:58:03,960 --> 00:58:06,528
-That's the place I want to go to after I've done the first Fibonacci calculation.
+00:58:01,728 --> 00:58:03,290
+我想要回过头来做些其它事
+I want to come back and do something else.
 
 1029
-00:58:07,552 --> 00:58:09,488
-That's the place I want to go to after I've done the first Fibonacci calculation.
+00:58:03,960 --> 00:58:06,528
+而AFTER-FIB-N-1这个地方
+That's the place I want to go to after I've done
 
 1030
-00:58:11,520 --> 00:58:13,136
-And I want to do a save of N, because I'm going to need it later, after that.
+00:58:07,552 --> 00:58:09,488
+就是我计算完第一个FIB后应该返回的地方
+the first Fibonacci calculation.
 
 1031
-00:58:14,416 --> 00:58:17,264
-And I want to do a save of N, because I'm going to need it later, after that.
+00:58:11,520 --> 00:58:13,136
+接下来我要保存N
+And I want to do a save of N,
 
 1032
-00:58:19,130 --> 00:58:20,544
-Now I'm going to, at this point, get ready to do the Fibonacci of N minus 1.
+00:58:14,416 --> 00:58:17,264
+因为我稍后需要用到它
+because I'm going to need it later, after that.
 
 1033
-00:58:20,672 --> 00:58:22,848
-Now I'm going to, at this point, get ready to do the Fibonacci of N minus 1.
+00:58:19,130 --> 00:58:20,544
+在这里 我就已经
+Now I'm going to, at this point,
 
 1034
-00:58:23,024 --> 00:58:33,950
-So assign to N the difference of the fetch of N and 1.
+00:58:20,672 --> 00:58:22,848
+准备好计算(FIB (- N 1))了
+get ready to do the Fibonacci of N minus 1.
 
 1035
-00:58:38,110 --> 00:58:40,270
-Now I'm ready to go back to doing the Fib loop.
+00:58:23,024 --> 00:58:33,950
+(ASSIGN N (- (FETCH N) 1))
+So assign to N the difference of the fetch of N and 1.
 
 1036
-00:58:47,184 --> 00:58:49,872
-Have I satisfied my contract?
+00:58:38,110 --> 00:58:40,270
+现在 该跳转到FIB-LOOP了
+Now I'm ready to go back to doing the Fib loop.
 
 1037
-00:58:50,400 --> 00:58:51,504
-And the answer is yes.
+00:58:47,184 --> 00:58:49,872
+我满足我立下的约定么？
+Do I have... Have I satisfied my contract?
 
 1038
-00:58:51,770 --> 00:58:55,120
-N contains N minus 1, which is what I need.
+00:58:50,400 --> 00:58:51,504
+答案是是的
+And the answer is yes.
 
 1039
-00:58:56,432 --> 00:59:00,096
-Continue contains a place I want to go to when I'm done with calculating N minus 1.
+00:58:51,770 --> 00:58:55,120
+N现在存储的是N-1 这是我需要的
+N contains N minus 1, which is what I need.
 
 1040
-00:59:01,280 --> 00:59:03,072
-Continue contains a place I want to go to when I'm done with calculating N minus 1.
+00:58:56,432 --> 00:59:00,096
+而CONTINUE包含的是计算完成后 返回的目的地
+OK? Continue contains a place I want to go to when I'm done
 
 1041
-00:59:04,100 --> 00:59:05,440
-So I've satisfied the contract.
+00:59:01,280 --> 00:59:03,072
+也就是计算(FIB (- N 1))完成之后
+with calculating FIB N minus 1.
 
 1042
-00:59:05,440 --> 00:59:09,024
-And therefore, I can write down here a label, after-Fib-N-minus-1.
+00:59:04,100 --> 00:59:05,440
+因此我满足了这些约定
+So I've satisfied the contract.
 
 1043
-00:59:11,472 --> 00:59:17,568
-And therefore, I can write down here a label, after-Fib-N-minus-1.
+00:59:05,440 --> 00:59:09,024
+因此 我就可以在这里写下一个标签
+And therefore, I can write down here a tag, after, a label,
 
 1044
-00:59:20,490 --> 00:59:21,632
-Now what am I going to do here?
+00:59:11,472 --> 00:59:17,568
+AFTER-FIB-N-1
+after-Fib-N-minus-1.
 
 1045
-00:59:22,690 --> 00:59:24,352
-Here's a place where I now have to get ready to do Fib of N minus 2.
+00:59:20,490 --> 00:59:21,632
+在这里 我又该做些什么呢？
+Now what am I going to do here?
 
 1046
-00:59:24,448 --> 00:59:26,752
-Here's a place where I now have to get ready to do Fib of N minus 2.
+00:59:22,690 --> 00:59:23,616
+在这里
+Here's a place
 
 1047
-00:59:29,270 --> 00:59:30,800
-But in order to do a Fib of N minus 2, look, I don't know.
+00:59:23,952 --> 00:59:26,750
+我已经准备好去计算(FIB (- N 2))了
+where I now have to get ready to do Fib of N minus 2.
 
 1048
-00:59:30,832 --> 00:59:31,632
-But in order to do a Fib of N minus 2, look, I don't know.
+00:59:29,270 --> 00:59:30,720
+但是为了计算(FIB (- N 2))
+But in order to do a Fib of N minus 2,
 
 1049
-00:59:31,780 --> 00:59:33,408
-I've clobbered my N over here.
+00:59:30,752 --> 00:59:31,630
+首先 我不知道
+look, I don't know.
 
 1050
-00:59:33,810 --> 00:59:37,136
-And presumably my N is counted down all the way to 1 or 0 or something at this point.
+00:59:31,780 --> 00:59:33,408
+这里 我已经改变了N
+I've clobbered my N over here.
 
 1051
-00:59:37,856 --> 00:59:38,800
-And presumably my N is counted down all the way to 1 or 0 or something at this point.
+00:59:33,810 --> 00:59:35,472
+或者在这个时候 我的N总是不断地
+And presumably my N is counted down
 
 1052
-00:59:39,780 --> 00:59:42,512
-So I don't know what the value of N in the N register is.
+00:59:37,856 --> 00:59:38,800
+向1或者0递减
+all the way to 1 or 0 or something at this point.
 
 1053
-00:59:43,030 --> 00:59:44,752
-I want the value of N that was on the stack that I saved over here so that could restore it over here.
+00:59:39,780 --> 00:59:42,512
+所以我不知道N寄存器中存储的到底是什么
+So I don't know what the value of N in the N register is.
 
 1054
-00:59:44,800 --> 00:59:46,000
-I want the value of N that was on the stack that I saved over here so that could restore it over here.
+00:59:43,030 --> 00:59:44,752
+我想要保存在栈中的N的值
+I want the value of N that was on the stack
 
 1055
-00:59:46,176 --> 00:59:47,888
-I want the value of N that was on the stack that I saved over here so that could restore it over here.
+00:59:44,800 --> 00:59:46,000
+也就是我在这里保存的值
+that I saved over here
 
 1056
-00:59:49,520 --> 00:59:51,024
-I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
+00:59:46,176 --> 00:59:47,888
+这样我就可以在这里恢复它
+so that could restore it over here.
 
 1057
-00:59:51,152 --> 00:59:52,528
-I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
+00:59:49,520 --> 00:59:51,024
+我在这里存储的N
+I saved up the value of N,
 
 1058
-00:59:53,648 --> 00:59:54,496
-I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
+00:59:51,150 --> 00:59:54,496
+是这个时间点N的值
+which is this value of N at this point,
 
 1059
 00:59:54,896 --> 00:59:57,376
-I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
+因此计算完(FIB (- N 1))之后我可以恢复它
+so that I could restore it after computing Fib of N minus 1,
 
 1060
-00:59:57,530 --> 00:59:59,640
-I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
+00:59:57,530 --> 00:59:59,360
+这样的话 我就可以计算(- N 2)
+so that I could count that down to N minus 2
 
 1061
-00:59:59,680 --> 01:00:00,864
-I saved up the value of N, which is this value of N at this point, so that I could restore it after computing Fib of N minus 1, so that I could count that down to N minus 2 and then compute Fib of N minus 2.
+00:59:59,392 --> 01:00:00,860
+然后就可以计算(FIB (- N 2))的值
+and then compute Fib of N minus 2.
 
 1062
 01:00:01,810 --> 01:00:02,752
+现在让我们来恢复它
 So let's restore that.
 
 1063
 01:00:08,830 --> 01:00:09,776
+(RESTORE N)
 Restore of N.
 
 1064
 01:00:11,130 --> 01:00:15,984
-Now I'm about to do something which is superstitious, and we will remove it shortly.
+现在我要做一件很教条的事
+Now I'm about to do something which is superstitious,
 
 1065
 01:00:16,000 --> 01:00:17,408
-Now I'm about to do something which is superstitious, and we will remove it shortly.
+我们会尽快将其删除
+and we will remove it shortly.
 
 1066
 01:00:18,520 --> 01:00:20,480
-I am about to finish the sequence of doing the subroutine call, if you will.
+如果你们愿意的话
+I am about to finish the sequence
 
 1067
 01:00:20,592 --> 01:00:23,440
-I am about to finish the sequence of doing the subroutine call, if you will.
+我将要结束子过程调用
+of doing the subroutine call, if you will.
 
 1068
 01:00:24,800 --> 01:00:25,952
-I'm going to say, well, I also saved up the continuation, since I'm going to restore it now.
+接下来我会说
+I'm going to say, well,
 
 1069
 01:00:26,064 --> 01:00:27,904
-I'm going to say, well, I also saved up the continuation, since I'm going to restore it now.
+因为我保存了CONTINUE
+I also saved up the continuation,
 
 1070
 01:00:28,480 --> 01:00:30,432
-I'm going to say, well, I also saved up the continuation, since I'm going to restore it now.
+现在就要去恢复它
+since I'm going to restore it now.
 
 1071
-01:00:31,600 --> 01:00:32,448
-But actually, I don't have to, because I'm not going to need it.
+01:00:31,600 --> 01:00:32,608
+但实际上 我并不需要这么做
+But actually, I don't have to,
 
 1072
-01:00:32,480 --> 01:00:33,552
-But actually, I don't have to, because I'm not going to need it.
+01:00:32,640 --> 01:00:33,550
+因为我并不需要用到它
+because I'm not going to need it.
 
 1073
 01:00:34,610 --> 01:00:35,728
+我们稍后会修正它
 We'll fix that in a second.
 
 1074
 01:00:36,260 --> 01:00:37,952
-So we'll do a restore of continue, which is what I would in general need to do.
+现在我们来恢复CONTINUE
+So we'll do a restore of continue,
 
 1075
 01:00:46,048 --> 01:00:48,020
-So we'll do a restore of continue, which is what I would in general need to do.
+#TBD
+which is what I would in general need to do.
 
 1076
 01:00:48,020 --> 01:00:49,232
-And we're just going to see what you would call in the compiler world a peephole optimization, which says, whoops, you didn't have to do that.
+我们将要看到
+And we're just going to see whats called
 
 1077
 01:00:49,312 --> 01:00:52,144
-And we're just going to see what you would call in the compiler world a peephole optimization, which says, whoops, you didn't have to do that.
+编译器领域中的“窥孔优化”
+what you would call in the compiler world a peephole optimization,
 
 1078
 01:00:52,272 --> 01:00:53,728
-And we're just going to see what you would call in the compiler world a peephole optimization, which says, whoops, you didn't have to do that.
+来帮我们消除这个不必要的步骤
+which says, whoops, you didn't have to do that.
 
 1079
 01:00:55,420 --> 01:00:57,104
-OK, so the next thing I see here is that I have to get ready now to do Fibonacci of N minus 2.
+因此 我即将要做的就是
+OK, so the next thing I see here
 
 1080
 01:00:58,464 --> 01:01:02,288
-OK, so the next thing I see here is that I have to get ready now to do Fibonacci of N minus 2.
+准备好计算(FIB (- N 2))
+is that I have to get ready now to do Fibonacci of N minus 2.
 
 1081
 01:01:02,770 --> 01:01:04,496
+但是我不再需要保存N了
 But I don't have to save N anymore.
 
 1082
 01:01:05,050 --> 01:01:06,720
-The reason why I don't have to save N anymore is because I don't need N after I've done Fib of N minus 2, because the next thing I do is add.
+原因就是
+The reason why I don't have to save N anymore
 
 1083
 01:01:06,800 --> 01:01:09,344
-The reason why I don't have to save N anymore is because I don't need N after I've done Fib of N minus 2, because the next thing I do is add.
+计算完(FIB (- N 2))之后 我就不需要N了
+is because I don't need N after I've done Fib of N minus 2,
 
 1084
 01:01:09,360 --> 01:01:10,720
-The reason why I don't have to save N anymore is because I don't need N after I've done Fib of N minus 2, because the next thing I do is add.
+因为 我接下来要做的就是ADD
+because the next thing I do is add.
 
 1085
 01:01:13,540 --> 01:01:15,856
+因此 我会这么来设置N
 So I'm just going to set up my N that way.
 
 1086
 01:01:16,608 --> 01:01:28,990
+(ASSIGN N (- (FETCH N) 2))
 Assign N minus difference of fetch N and 2.
 
 1087
 01:01:31,850 --> 01:01:34,016
-Now I have to finish the setup for calling Fibonacci of N minus 2.
+现在我需要结束
+Now I have to finish the setup
 
 1088
 01:01:34,272 --> 01:01:36,730
-Now I have to finish the setup for calling Fibonacci of N minus 2.
+调用(FIB (- N 2))的设置过程了
+for calling Fibonacci of N minus 2.
 
 1089
 01:01:36,950 --> 01:01:38,336
-Well, I have to save up continue and assign continue, continue, to the place which is after Fib N 2, that place over here somewhere.
+我需要保存CONTINUE
+Well, I have to save up continue
 
 1090
 01:01:44,224 --> 01:01:49,024
-Well, I have to save up continue and assign continue, continue, to the place which is after Fib N 2, that place over here somewhere.
+然后把CONTINUE赋值为
+and assign continue, continue,
 
 1091
 01:01:52,304 --> 01:01:59,952
-Well, I have to save up continue and assign continue, continue, to the place which is after Fib N 2, that place over here somewhere.
+AFTER-FIB-N-2
+to the place which is after Fib N 2,
 
 1092
 01:02:02,576 --> 01:02:04,032
-Well, I have to save up continue and assign continue, continue, to the place which is after Fib N 2, that place over here somewhere.
+对应了那边代码的某处
+that place over here somewhere.
 
 1093
 01:02:05,320 --> 01:02:07,232
+然而 我需要非常小心
 However, I've got to be very careful.
 
 1094
 01:02:08,650 --> 01:02:11,424
-The old value, the value of Fib of N minus 1, I'm going to need later.
+而(FIB (- N 1))的值
+The old value, the value of Fib of N minus 1,
 
 1095
 01:02:12,064 --> 01:02:13,120
-The old value, the value of Fib of N minus 1, I'm going to need later.
+我稍后会用到
+I'm going to need later.
 
 1096
 01:02:15,300 --> 01:02:17,376
-The value of Fibonacci of N minus 1, I'm going to need.
+(FIB (- N 1))的值
+The value of Fibonacci of N minus 1,
 
 1097
 01:02:17,616 --> 01:02:18,480
-The value of Fibonacci of N minus 1, I'm going to need.
+我需要它的值
+I'm going to need.
 
 1098
 01:02:18,784 --> 01:02:19,808
-And I can't clobber it, because I'm going to have to add it to the value of Fib of N minus 2.
+我不能去改变它
+And I can't clobber it,
 
 1099
 01:02:21,072 --> 01:02:23,600
-And I can't clobber it, because I'm going to have to add it to the value of Fib of N minus 2.
+因为我需要用它来加上(FIB (- N 2))
+because I'm going to have to add it to the value of Fib of N minus 2.
 
 1100
 01:02:24,150 --> 01:02:25,888
+它是存放在寄存器中的 因此我需要保存它
 That's in the value register, so I'm going to save it.
 
 1101
