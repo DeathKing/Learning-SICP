@@ -5497,611 +5497,708 @@ That's in the value register, so I'm going to save it.
 
 1101
 01:02:27,792 --> 01:02:32,608
+所以现在我要用(SAVE VAL)来保存它
 So I have to save this right now, save up VAL.
 
 1102
-01:02:33,780 --> 01:02:39,540
-And now I can go off to my subroutine, go to Fib loop.
+01:02:33,780 --> 01:02:35,440
+现在我就可以调用子过程了
+And now I can go off to my subroutine,
 
 1103
-01:02:44,220 --> 01:02:46,576
-Now before I go any further and finish this program, I just want to look at this segment so far and see, oh yes, there's a sequence of instructions here, if you will, that I can do something about.
+01:02:36,672 --> 01:02:39,540
+(GOTO FIB-LOOP)
+go to Fib loop.
 
 1104
-01:02:46,800 --> 01:02:51,056
-Now before I go any further and finish this program, I just want to look at this segment so far and see, oh yes, there's a sequence of instructions here, if you will, that I can do something about.
+01:02:44,220 --> 01:02:46,576
+现在 在进行更进一步计算之前
+Now before I go any further
 
 1105
-01:02:51,232 --> 01:02:56,000
-Now before I go any further and finish this program, I just want to look at this segment so far and see, oh yes, there's a sequence of instructions here, if you will, that I can do something about.
+01:02:46,800 --> 01:02:49,360
+在结束这个程序之前
+and finish this program,
 
 1106
-01:02:57,840 --> 01:02:59,088
-Now before I go any further and finish this program, I just want to look at this segment so far and see, oh yes, there's a sequence of instructions here, if you will, that I can do something about.
+01:02:49,392 --> 01:02:51,050
+我想审视一下目前的代码片段
+I just want to look at this segment so far
 
 1107
-01:03:01,580 --> 01:03:03,200
-Here I have a restore of continue, a save of continue, and then an assign of continue, with no other references to continue in between.
+01:02:51,232 --> 01:02:56,000
+这里有一系列的指令
+and see, oh yes, there's a sequence of instructions here, if you will
 
 1108
-01:03:04,256 --> 01:03:05,488
-Here I have a restore of continue, a save of continue, and then an assign of continue, with no other references to continue in between.
+01:02:57,840 --> 01:02:59,088
+我可以对它们进行某些操作
+that I can do something about.
 
 1109
-01:03:06,016 --> 01:03:07,408
-Here I have a restore of continue, a save of continue, and then an assign of continue, with no other references to continue in between.
+01:03:01,580 --> 01:03:03,200
+这里 我有一个操作用来恢复CONTINUE
+Here I have a restore of continue,
 
 1110
-01:03:08,704 --> 01:03:10,640
-Here I have a restore of continue, a save of continue, and then an assign of continue, with no other references to continue in between.
+01:03:04,256 --> 01:03:05,488
+一个操作用来保存CONTINUE
+a save of continue,
 
 1111
-01:03:13,840 --> 01:03:15,488
-The restore followed by the save leaves the stack unchanged.
+01:03:06,016 --> 01:03:07,408
+然后给CONTINUE赋值
+and then an assign of continue,
 
 1112
-01:03:15,504 --> 01:03:16,670
-The restore followed by the save leaves the stack unchanged.
+01:03:08,704 --> 01:03:10,640
+但这之中没有CONTINUE的其它引用
+with no other references to continue in between.
 
 1113
-01:03:19,090 --> 01:03:21,728
-The only difference is that I set the continue register to a value, which is the value that was on the stack.
+01:03:13,840 --> 01:03:15,488
+恢复之后又保存
+The restore followed by the save
 
 1114
-01:03:21,968 --> 01:03:23,280
-The only difference is that I set the continue register to a value, which is the value that was on the stack.
+01:03:15,504 --> 01:03:16,670
+使得栈没有被修改
+leaves the stack unchanged.
 
 1115
-01:03:24,330 --> 01:03:25,792
-Since I now clobber that value, as in it was never referenced, these instructions are unnecessary.
+01:03:19,090 --> 01:03:21,728
+唯一的区别就是 我给CONTINUE寄存器赋了值
+The only difference is that I set the continue register to a value,
 
 1116
-01:03:26,448 --> 01:03:27,936
-Since I now clobber that value, as in it was never referenced, these instructions are unnecessary.
+01:03:21,968 --> 01:03:23,280
+一个存放在栈上的值
+which is the value that was on the stack.
 
 1117
-01:03:28,592 --> 01:03:30,096
-Since I now clobber that value, as in it was never referenced, these instructions are unnecessary.
+01:03:24,330 --> 01:03:25,792
+由于我现在改变了这个值 #TBD
+Since I now clobber that value,
 
 1118
-01:03:31,760 --> 01:03:35,390
-So we will remove these.
+01:03:26,448 --> 01:03:27,936
+但这之间并没有引用这个值
+as in it was never referenced,
 
 1119
-01:03:38,880 --> 01:03:40,784
-But I couldn't have seen that unless I had written them down.
+01:03:28,592 --> 01:03:30,096
+这些指令就是不必要的
+these instructions are unnecessary.
 
 1120
-01:03:43,780 --> 01:03:44,720
-Was that really true?
+01:03:31,760 --> 01:03:35,390
+因此我们会移除它们
+So we will remove these.
 
 1121
-01:03:45,776 --> 01:03:46,608
-Well, I don't know.
+01:03:38,880 --> 01:03:40,784
+但我只有先把它们写出来 才回发现这个情况
+But I couldn't have seen that unless I had written them down.
 
 1122
-01:03:48,610 --> 01:03:52,912
-OK, so we've now gone off to compute Fibonacci of N minus 2.
+01:03:43,780 --> 01:03:44,720
+真是这样吗？
+Was that really true?
 
 1123
-01:03:53,660 --> 01:03:54,592
-So after that, what are we going to do?
+01:03:45,776 --> 01:03:46,608
+我并不知道
+Well, I don't know.
 
 1124
-01:04:02,960 --> 01:04:03,856
-So after that, what are we going to do?
+01:03:48,610 --> 01:03:52,912
+现在 我们要开始计算(FIB (- N 2))了
+OK, so we've now gone off to compute Fibonacci of N minus 2.
 
 1125
-01:04:05,070 --> 01:04:06,768
-Well, I suppose the first thing we have to do-- we've got two things.
+01:03:53,660 --> 01:03:54,592
+计算完毕后
+So after that,
 
 1126
-01:04:06,992 --> 01:04:07,888
-Well, I suppose the first thing we have to do-- we've got two things.
+01:04:02,960 --> 01:04:03,856
+我们又要做什么呢？
+what are we going to do?
 
 1127
-01:04:07,960 --> 01:04:10,496
-We've got a thing in the value register which is now valuable.
+01:04:05,070 --> 01:04:06,768
+我想 我们首先要做的就是
+Well, I suppose the first thing we have to do--
 
 1128
-01:04:10,920 --> 01:04:11,984
-We also have a thing on the stack that can be restored into the value register.
+01:04:06,992 --> 01:04:07,888
+我们有两件事要做
+we've got two things.
 
 1129
-01:04:12,048 --> 01:04:13,632
-We also have a thing on the stack that can be restored into the value register.
+01:04:07,960 --> 01:04:10,496
+目前VAL寄存器中的值 是有意义的
+We've got a thing in the value register which is now valuable.
 
 1130
-01:04:14,810 --> 01:04:16,576
-And what I have to be careful with now is I want to shuffle this right so I can do the multiply.
+01:04:10,920 --> 01:04:11,984
+然而 栈上也有一个数据
+We also have a thing on the stack
 
 1131
-01:04:16,880 --> 01:04:18,992
-And what I have to be careful with now is I want to shuffle this right so I can do the multiply.
+01:04:12,048 --> 01:04:13,632
+需要恢复到VAL寄存器中
+can be restored into the value register.
 
 1132
-01:04:19,470 --> 01:04:21,248
-Now there are various conventions I might use, but I'm going to be very picky and say, I'm only going to restore into a register I've saved from.
+01:04:14,810 --> 01:04:16,576
+现在我需要非常小心的是
+And what I have to be careful with now
 
 1133
-01:04:21,472 --> 01:04:23,520
-Now there are various conventions I might use, but I'm going to be very picky and say, I'm only going to restore into a register I've saved from.
+01:04:16,880 --> 01:04:18,992
+正确地给它们排序 以便计算乘法
+is I want to shuffle this right so I can do the multiply.
 
 1134
-01:04:23,552 --> 01:04:25,888
-Now there are various conventions I might use, but I'm going to be very picky and say, I'm only going to restore into a register I've saved from.
+01:04:19,470 --> 01:04:21,248
+现在 我可能会使用不同的约定
+Now there are various conventions I might use,
 
 1135
-01:04:26,740 --> 01:04:28,288
-If that's the case, I have to do a shuffle here.
+01:04:21,472 --> 01:04:23,520
+但我现在会采用非常挑剔的一种
+but I'm going to be very picky and say,
 
 1136
-01:04:29,248 --> 01:04:31,840
-It's the same problem with how many hands I have. So I'm going to assign to N, because I'm not going to need N anymore, N is useless, the current value of VAL, which was the value of Fib of N minus 2.
+01:04:23,552 --> 01:04:25,888
+栈上数据来自于哪个寄存器 就恢复到那个寄存器中
+I'm only going to restore into a register I've saved from.
 
 1137
-01:04:32,688 --> 01:04:37,136
-It's the same problem with how many hands I have. So I'm going to assign to N, because I'm not going to need N anymore, N is useless, the current value of VAL, which was the value of Fib of N minus 2.
+01:04:26,740 --> 01:04:28,288
+如果是这样的话 在这里我就要进行洗牌
+If that's the case, I have to do a shuffle here.
 
 1138
-01:04:37,168 --> 01:04:39,376
-It's the same problem with how many hands I have. So I'm going to assign to N, because I'm not going to need N anymore, N is useless, the current value of VAL, which was the value of Fib of N minus 2.
+01:04:29,248 --> 01:04:31,840
+这跟我有多少只手是同样的问题
+It's the same problem with how many hands I have.
 
 1139
-01:04:39,920 --> 01:04:41,216
-It's the same problem with how many hands I have. So I'm going to assign to N, because I'm not going to need N anymore, N is useless, the current value of VAL, which was the value of Fib of N minus 2.
+01:04:32,688 --> 01:04:37,136
+现在我要给N赋值
+So I'm going to assign to N,
 
 1140
-01:04:45,216 --> 01:04:47,340
-It's the same problem with how many hands I have. So I'm going to assign to N, because I'm not going to need N anymore, N is useless, the current value of VAL, which was the value of Fib of N minus 2.
+01:04:37,168 --> 01:04:39,376
+因为我现在不再需要N了 N是无用的
+because I'm not going to need N anymore, N is useless,
 
 1141
-01:04:52,950 --> 01:04:56,352
-And I'm going to restore the value register now.
+01:04:39,920 --> 01:04:41,216
+获取当前VAL寄存器的值
+the current value of VAL,
 
 1142
-01:05:01,850 --> 01:05:03,920
-This restore matches this save. And if you're very careful and examine very carefully what goes on, restores and saves are always matched.
+01:04:45,216 --> 01:04:47,340
+也就是(FIB (- N 2))的值
+which was the value of Fib of N minus 2.
 
 1143
-01:05:05,584 --> 01:05:08,832
-This restore matches this save. And if you're very careful and examine very carefully what goes on, restores and saves are always matched.
+01:04:52,950 --> 01:04:56,352
+现在 我就要恢复VAL寄存器了
+And I'm going to restore the value register now.
 
 1144
-01:05:09,216 --> 01:05:11,968
-This restore matches this save. And if you're very careful and examine very carefully what goes on, restores and saves are always matched.
+01:05:01,850 --> 01:05:03,920
+这个RESTORE匹配这里的SAVE
+This restore matches this save.
 
 1145
-01:05:13,840 --> 01:05:15,152
-Now there's an outstanding save, of course, that we have to get rid of soon.
-Now there's an outstanding save, of course, that we have to get rid of soon.
+01:05:05,584 --> 01:05:08,832
+如果你非常仔细地研究发生了什么
+And if you're very careful and examine very carefully what goes on,
 
 1146
-01:05:15,152 --> 01:05:15,184
-Now there's an outstanding save, of course, that we have to get rid of soon.
+01:05:09,216 --> 01:05:11,968
+会发现 RESTORE和SAVE总是成对的
+OK? restores and saves are always matched.
 
 1147
-01:05:15,184 --> 01:05:16,384
-Now there's an outstanding save, of course, that we have to get rid of soon.
-Now there's an outstanding save, of course, that we have to get rid of soon.
+01:05:13,840 --> 01:05:15,152
+现在 这里有个额外的SAVE
+Now there's an outstanding save,
 
 1148
-01:05:16,384 --> 01:05:19,000
-Now there's an outstanding save, of course, that we have to get rid of soon.
+01:05:15,184 --> 01:05:16,384
+当然 我们很快就会消灭它
+of course, that we have to get rid of soon.
 
 1149
 01:05:19,000 --> 01:05:20,590
+恢复完VAL寄存器后
 And so I restored the value register.
 
 1150
 01:05:20,944 --> 01:05:22,576
-Now I restore the continue one, which matches this one, dot, dot, dot, dot, dot, dot, dot, down to here, restoring that continuation.
+我就要恢复CONTINUE寄存器了
+Now I restore the continue one,
 
 1151
 01:05:31,152 --> 01:05:32,400
-Now I restore the continue one, which matches this one, dot, dot, dot, dot, dot, dot, dot, down to here, restoring that continuation.
+它匹配了这个
+which matches this one,
 
 1152
 01:05:34,800 --> 01:05:37,856
-Now I restore the continue one, which matches this one, dot, dot, dot, dot, dot, dot, dot, down to here, restoring that continuation.
+从这里到这里
+dot, dot, dot, dot, dot, dot, dot, down to here,
 
 1153
 01:05:40,592 --> 01:05:42,464
-Now I restore the continue one, which matches this one, dot, dot, dot, dot, dot, dot, dot, down to here, restoring that continuation.
+这样就恢复了继续
+Now restoring that continuation.
 
 1154
 01:05:42,860 --> 01:05:45,712
-That continuation is a continuation of Fib of N, which is the problem I was trying to solve, a major problem I'm trying to solve.
+这个表达式继续是由(FIB N)产生的
+That continuation is a continuation of Fib of N,
 
 1155
-01:05:46,464 --> 01:05:49,328
-That continuation is a continuation of Fib of N, which is the problem I was trying to solve, a major problem I'm trying to solve.
+01:05:46,460 --> 01:05:47,840
+也就是我正尝试求解的
+which is the problem I was trying to solve,
 
 1156
-01:05:49,984 --> 01:05:52,352
-So that's the guy I have to go back to who wants Fib of N. I saved them all the way up here when I realized N was not less than 2.
+01:05:47,856 --> 01:05:49,320
+最主要的问题
+a major problem I'm trying to solve.
 
 1157
-01:05:52,544 --> 01:05:54,032
-So that's the guy I have to go back to who wants Fib of N. I saved them all the way up here when I realized N was not less than 2.
+01:05:49,984 --> 01:05:52,352
+我需要把(FIB N)的答案返回给这个继续
+So that's the guy I have to go back to who wants Fib of N.
 
 1158
-01:05:54,160 --> 01:05:56,608
-So that's the guy I have to go back to who wants Fib of N. I saved them all the way up here when I realized N was not less than 2.
+01:05:52,544 --> 01:05:54,032
+#TBD
+I saved them all the way up here
 
 1159
-01:05:57,360 --> 01:05:59,072
-And so I had to do a complicated operation.
+01:05:54,160 --> 01:05:56,608
+#TBD
+when I realized N was not less than 2.
 
 1160
-01:06:00,840 --> 01:06:02,576
-Now I've got everything I need to do it.
+01:05:57,360 --> 01:05:59,072
+因此 我需要进行一个复杂的运算
+And so I had to do a complicated operation.
 
 1161
-01:06:03,240 --> 01:06:04,368
-So I'm going to restore that, assign to VAL the sum of fetch VAL and fetch of N, and go to continue.
+01:06:00,840 --> 01:06:02,576
+现在万事俱备
+Now I've got everything I need to do it.
 
 1162
-01:06:05,440 --> 01:06:10,000
-So I'm going to restore that, assign to VAL the sum of fetch VAL and fetch of N, and go to continue.
+01:06:03,240 --> 01:06:04,368
+#TBD
+So I'm going to restore that,
 
 1163
-01:06:12,288 --> 01:06:18,224
-So I'm going to restore that, assign to VAL the sum of fetch VAL and fetch of N, and go to continue.
+01:06:05,420 --> 01:06:21,088
+(ASSIGN VAL (+ (FETCH VAL) (FETCH N)))
+assign to VAL the sum of fetch VAL and fetch of N
 
 1164
-01:06:19,552 --> 01:06:21,072
-So I'm going to restore that, assign to VAL the sum of fetch VAL and fetch of N, and go to continue.
+01:06:27,440 --> 01:06:28,608
+然后跳转到CONTINUE
+and go to continue.
 
 1165
-01:06:27,440 --> 01:06:28,608
-So I'm going to restore that, assign to VAL the sum of fetch VAL and fetch of N, and go to continue.
+01:06:38,260 --> 01:06:44,784
+然后我就从(FIB N)中返回了出来
+So now I've returned from computing Fibonacci of N,
 
 1166
-01:06:38,260 --> 01:06:44,784
-So now I've returned from computing Fibonacci of N, the general case.
+01:06:45,392 --> 01:06:46,576
+也就是FIB的一般情况
+the general case.
 
 1167
-01:06:45,392 --> 01:06:46,576
-So now I've returned from computing Fibonacci of N, the general case.
+01:06:47,110 --> 01:06:50,608
+现在还有一些细节 需要我们填充
+Now what's left is we have to fix up a few details,
 
 1168
-01:06:47,110 --> 01:06:50,608
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:06:50,992 --> 01:06:55,536
+比如归纳的基本情况：可以立即得到答案
+like there's the base case of this induction, immediate answer,
 
 1169
-01:06:50,992 --> 01:06:55,536
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:07:02,540 --> 01:07:06,592
+这不过就是
+as, which is nothing more than
 
 1170
-01:07:02,576 --> 01:07:05,088
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:07:06,608 --> 01:07:11,850
+(ASSIGN VAL (FETCH N)
+assign to VAL fetch of N,
 
 1171
-01:07:05,776 --> 01:07:07,488
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:07:13,640 --> 01:07:15,472
+因为N小于2
+because N was less than 2,
 
 1172
-01:07:08,544 --> 01:07:11,856
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:07:15,504 --> 01:07:16,890
+因此答案就是N
+and therefore, the answer is N
 
 1173
-01:07:13,648 --> 01:07:16,896
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:07:16,990 --> 01:07:18,192
+跟源程序是一致的
+in our original program,
 
 1174
-01:07:16,990 --> 01:07:18,192
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
+01:07:19,232 --> 01:07:36,130
+#TBD
+and return continue--  bobble, bobble almost-- and finally Fib done.
 
 1175
-01:07:19,232 --> 01:07:36,130
-Now what's left is we have to fix up a few details, like there's the base case of this induction, immediate answer, which is nothing more than assign to VAL fetch of N, because N was less than 2, and therefore, the answer is N in our original program, and return continue--  bobble, bobble almost-- and finally Fib done.
-
-1176
 01:07:43,460 --> 01:07:45,640
+这是个相当复杂的程序
 So that's a fairly complicated program.
 
-1177
+1176
 01:07:45,640 --> 01:07:47,344
-And the reason I wanted you see to that is because I want you to see the particular flavors of stack discipline that I was obeying.
+我之所以给你们演示这个程序
+And the reason I wanted you see to that
+
+1177
+01:07:47,500 --> 01:07:49,216
+是因为我想让你们见识
+is because I want you to see the particular
 
 1178
-01:07:47,504 --> 01:07:51,216
-And the reason I wanted you see to that is because I want you to see the particular flavors of stack discipline that I was obeying.
+01:07:49,456 --> 01:07:52,672
+我所遵守的栈使用准则
+flavors of stack discipline that I was obeying.
 
 1179
-01:07:51,760 --> 01:07:52,656
-And the reason I wanted you see to that is because I want you to see the particular flavors of stack discipline that I was obeying.
+01:07:53,328 --> 01:07:55,216
+第一点就是 我不想保存那些
+It was first of all, I don't want to save anything
 
 1180
-01:07:53,328 --> 01:07:55,216
-It was first of all, I don't want to take anything that I'm not going to need later.
+01:07:56,928 --> 01:07:58,128
+稍后不需要的值
+that I'm not going to need later.
 
 1181
-01:07:56,928 --> 01:07:58,128
-It was first of all, I don't want to take anything that I'm not going to need later.
-
-1182
 01:08:00,576 --> 01:08:01,850
+我非常地小心
 I was being very careful.
 
-1183
+1182
 01:08:01,850 --> 01:08:02,912
+这非常重要
 And it's very important.
 
-1184
+1183
 01:08:03,940 --> 01:08:06,528
-And there are all sorts of other disciplines people make with frames and things like that of some sort, where you save all sorts of junk you're not going to need later and restore it because, in some sense, it's easier to do that.
+当然 人们还制定了其它的准则
+And there are all sorts of other disciplines people make
+
+1184
+01:08:07,376 --> 01:08:09,616
+来操作栈帧之类的东西
+with frames and things like that of some sort,
 
 1185
-01:08:07,376 --> 01:08:09,616
-And there are all sorts of other disciplines people make with frames and things like that of some sort, where you save all sorts of junk you're not going to need later and restore it because, in some sense, it's easier to do that.
+01:08:10,190 --> 01:08:11,392
+这些准则中 那些不再需要的东西
+where you save all sorts of junk
 
 1186
-01:08:10,192 --> 01:08:12,624
-And there are all sorts of other disciplines people make with frames and things like that of some sort, where you save all sorts of junk you're not going to need later and restore it because, in some sense, it's easier to do that.
+01:08:11,408 --> 01:08:12,640
+也需要保存并恢复
+you're not going to need later and restore it
 
 1187
-01:08:12,640 --> 01:08:15,264
-And there are all sorts of other disciplines people make with frames and things like that of some sort, where you save all sorts of junk you're not going to need later and restore it because, in some sense, it's easier to do that.
+01:08:12,672 --> 01:08:15,260
+因为从某种意义上来说 这样做更容易些
+because, in some sense, it's easier to do that.
 
 1188
 01:08:15,830 --> 01:08:17,408
-That's going to lead to various disasters, which we'll see a little later.
+但这会带来各种灾难
+That's going to lead to various disasters,
 
 1189
 01:08:18,592 --> 01:08:20,256
-That's going to lead to various disasters, which we'll see a little later.
+我们稍后就会见识一些
+which we'll see a little later.
 
 1190
 01:08:21,440 --> 01:08:24,240
+只保存那些你稍后需要的值 这很关键
 It's crucial to save exactly what you're going to need later.
 
 1191
 01:08:26,890 --> 01:08:28,016
+这是非常重要的观念
 It's an important idea.
 
 1192
-01:08:29,850 --> 01:08:31,328
-And the responsibility of that is whoever saves something is the guy who restores it, because he needs it.
+01:08:29,872 --> 01:08:33,360
+无论谁保存了一个值 都应该由他来恢复
+And the responsibility of that is whoever saves something
 
 1193
-01:08:31,904 --> 01:08:33,360
-And the responsibility of that is whoever saves something is the guy who restores it, because he needs it.
+01:08:33,760 --> 01:08:35,328
+因为他需要这个值
+is the guy who restores it, because he needs it.
 
 1194
-01:08:33,760 --> 01:08:35,328
-And the responsibility of that is whoever saves something is the guy who restores it, because he needs it.
+01:08:36,930 --> 01:08:38,544
+在这样的准则中
+And in such discipline,
 
 1195
-01:08:36,930 --> 01:08:38,544
-And in such discipline, you can see what things are unnecessary, operations that are unimportant.
+01:08:38,864 --> 01:08:40,768
+你可以发现哪些数据是不必要的
+you can see what things are unnecessary,
 
 1196
-01:08:38,864 --> 01:08:40,768
-And in such discipline, you can see what things are unnecessary, operations that are unimportant.
+01:08:43,456 --> 01:08:44,736
+哪些操作又是不重要的
+operations that are unimportant.
 
 1197
-01:08:43,456 --> 01:08:44,736
-And in such discipline, you can see what things are unnecessary, operations that are unimportant.
+01:08:47,150 --> 01:08:50,400
+我还想告诉你们
+Now, one other thing I want to tell you about is very simple
 
 1198
-01:08:47,150 --> 01:08:50,400
-Now, one other thing I want to tell you about that's very simple is that, of course, the picture you see is not the whole picture.
+01:08:51,664 --> 01:08:54,672
+当然 你们看到的并不是全部的图景
+is that, of course, the picture you see is not the whole picture.
 
 1199
-01:08:51,664 --> 01:08:54,672
-Now, one other thing I want to tell you about that's very simple is that, of course, the picture you see is not the whole picture.
+01:08:55,350 --> 01:08:56,688
+假设我的系统中
+Supposing I had systems
 
 1200
-01:08:55,350 --> 01:08:56,688
-Supposing I had systems that had things like other operations, CAR, CDR, cons, building a vector and referencing the nth element of it, or things like that.
+01:08:56,800 --> 01:09:01,520
+具有像CAR、CDR、CONS这样的运算
+had things like other operations, CAR, CDR, CONS,
 
 1201
-01:08:56,800 --> 01:09:01,520
-Supposing I had systems that had things like other operations, CAR, CDR, cons, building a vector and referencing the nth element of it, or things like that.
+01:09:03,536 --> 01:09:05,600
+或者创建一个向量
+building a vector
 
 1202
-01:09:03,536 --> 01:09:05,600
-Supposing I had systems that had things like other operations, CAR, CDR, cons, building a vector and referencing the nth element of it, or things like that.
+01:09:05,888 --> 01:09:07,328
+并引用它的第N个元素
+and referencing the nth element of it,
 
 1203
-01:09:05,888 --> 01:09:07,328
-Supposing I had systems that had things like other operations, CAR, CDR, cons, building a vector and referencing the nth element of it, or things like that.
+01:09:08,304 --> 01:09:09,216
+等等运算
+or things like that.
 
 1204
-01:09:08,304 --> 01:09:09,216
-Supposing I had systems that had things like other operations, CAR, CDR, cons, building a vector and referencing the nth element of it, or things like that.
-
-1205
 01:09:10,400 --> 01:09:13,600
 Well, at this level of detail, whatever it is, we can conceptualize those as primitive operations in the datapath.
 
-1206
+1205
 01:09:13,872 --> 01:09:17,856
 Well, at this level of detail, whatever it is, we can conceptualize those as primitive operations in the datapath.
 
-1207
+1206
 01:09:18,752 --> 01:09:21,952
 In other words, we could say that some machine that, for example, has the append machine, which has to do cons of the CAR of x with the append of the CDR of x and y, well, gee, that's exactly the same as the factorial structure.
 
-1208
+1207
 01:09:22,320 --> 01:09:24,112
 In other words, we could say that some machine that, for example, has the append machine, which has to do cons of the CAR of x with the append of the CDR of x and y, well, gee, that's exactly the same as the factorial structure.
 
-1209
+1208
 01:09:24,208 --> 01:09:26,464
 In other words, we could say that some machine that, for example, has the append machine, which has to do cons of the CAR of x with the append of the CDR of x and y, well, gee, that's exactly the same as the factorial structure.
 
-1210
+1209
 01:09:26,640 --> 01:09:29,808
 In other words, we could say that some machine that, for example, has the append machine, which has to do cons of the CAR of x with the append of the CDR of x and y, well, gee, that's exactly the same as the factorial structure.
 
-1211
+1210
 01:09:29,888 --> 01:09:33,184
 In other words, we could say that some machine that, for example, has the append machine, which has to do cons of the CAR of x with the append of the CDR of x and y, well, gee, that's exactly the same as the factorial structure.
 
-1212
+1211
 01:09:33,630 --> 01:09:35,296
 Well, it's got about the same structure.
 
-1213
+1212
 01:09:36,544 --> 01:09:37,270
 And what do we have?
 
-1214
+1213
 01:09:37,270 --> 01:09:39,392
 We have some sort of things in it which may be registers, x and y, and then x has to somehow move to y sometimes, x has to get the value of y.
 
-1215
+1214
 01:09:39,760 --> 01:09:42,480
 We have some sort of things in it which may be registers, x and y, and then x has to somehow move to y sometimes, x has to get the value of y.
 
-1216
+1215
 01:09:42,512 --> 01:09:46,752
 We have some sort of things in it which may be registers, x and y, and then x has to somehow move to y sometimes, x has to get the value of y.
 
-1217
+1216
 01:09:46,930 --> 01:09:48,416
 And then we may have to be able to do something which is a cons.
 
-1218
+1217
 01:09:48,544 --> 01:09:50,128
 And then we may have to be able to do something which is a cons.
 
-1219
+1218
 01:09:51,700 --> 01:09:57,936
 I don't remember if I need to like this is in this system, but cons is sort of like subtract or add or something.
 
-1220
+1219
 01:09:57,952 --> 01:10:01,104
 I don't remember if I need to like this is in this system, but cons is sort of like subtract or add or something.
 
-1221
+1220
 01:10:01,420 --> 01:10:02,704
 It combines two things, producing a thing which is the cons, which we may then think goes into there.
 
-1222
+1221
 01:10:02,736 --> 01:10:04,272
 It combines two things, producing a thing which is the cons, which we may then think goes into there.
 
-1223
+1222
 01:10:04,512 --> 01:10:06,496
 It combines two things, producing a thing which is the cons, which we may then think goes into there.
 
-1224
+1223
 01:10:07,600 --> 01:10:09,728
 And then maybe a thing called the CAR, which will produce-- I can get the CAR or something.
 
-1225
+1224
 01:10:12,880 --> 01:10:16,224
 And then maybe a thing called the CAR, which will produce-- I can get the CAR or something.
 
-1226
+1225
 01:10:16,920 --> 01:10:19,552
 And maybe I can get the CDR of something, and so on.
 
-1227
+1226
 01:10:20,150 --> 01:10:22,304
 But we shouldn't be too afraid of saying things this way, because the worst that could happen is if we open up cons, what we're going to find is some machine.
 
-1228
+1227
 01:10:22,928 --> 01:10:24,240
 But we shouldn't be too afraid of saying things this way, because the worst that could happen is if we open up cons, what we're going to find is some machine.
 
-1229
+1228
 01:10:24,944 --> 01:10:26,416
 But we shouldn't be too afraid of saying things this way, because the worst that could happen is if we open up cons, what we're going to find is some machine.
 
-1230
+1229
 01:10:27,312 --> 01:10:29,824
 But we shouldn't be too afraid of saying things this way, because the worst that could happen is if we open up cons, what we're going to find is some machine.
 
-1231
+1230
 01:10:31,888 --> 01:10:34,448
 And cons may in fact overlap with CAR and CDR, and it always does, in the same way that plus and minus overlap, and really the same business.
 
-1232
+1231
 01:10:35,504 --> 01:10:38,128
 And cons may in fact overlap with CAR and CDR, and it always does, in the same way that plus and minus overlap, and really the same business.
 
-1233
+1232
 01:10:38,576 --> 01:10:39,856
 And cons may in fact overlap with CAR and CDR, and it always does, in the same way that plus and minus overlap, and really the same business.
 
-1234
+1233
 01:10:41,210 --> 01:10:42,608
 Cons, CAR, and CDR are going to overlap, and we're going to find a little controller, a little datapath, which may have some registers in it, some stuff like that.
 
-1235
+1234
 01:10:42,624 --> 01:10:44,528
 Cons, CAR, and CDR are going to overlap, and we're going to find a little controller, a little datapath, which may have some registers in it, some stuff like that.
 
-1236
+1235
 01:10:45,504 --> 01:10:46,544
 Cons, CAR, and CDR are going to overlap, and we're going to find a little controller, a little datapath, which may have some registers in it, some stuff like that.
 
-1237
+1236
 01:10:48,032 --> 01:10:49,648
 Cons, CAR, and CDR are going to overlap, and we're going to find a little controller, a little datapath, which may have some registers in it, some stuff like that.
 
-1238
+1237
 01:10:50,000 --> 01:10:52,864
 Cons, CAR, and CDR are going to overlap, and we're going to find a little controller, a little datapath, which may have some registers in it, some stuff like that.
 
-1239
+1238
 01:10:53,300 --> 01:10:54,416
 And maybe inside it, there may also be an infinite part, a part that's semi-infinite or something, which is a lot of very uniform stuff, which we'll call memory.
 
-1240
+1239
 01:10:54,432 --> 01:10:56,160
 And maybe inside it, there may also be an infinite part, a part that's semi-infinite or something, which is a lot of very uniform stuff, which we'll call memory.
 
-1241
+1240
 01:10:56,464 --> 01:10:58,704
 And maybe inside it, there may also be an infinite part, a part that's semi-infinite or something, which is a lot of very uniform stuff, which we'll call memory.
 
-1242
+1241
 01:10:58,816 --> 01:11:00,656
 And maybe inside it, there may also be an infinite part, a part that's semi-infinite or something, which is a lot of very uniform stuff, which we'll call memory.
 
-1243
+1242
 01:11:00,960 --> 01:11:02,030
 And maybe inside it, there may also be an infinite part, a part that's semi-infinite or something, which is a lot of very uniform stuff, which we'll call memory.
 
-1244
+1243
 01:11:06,570 --> 01:11:08,832
 And I wouldn't be so horrified if that were the way it works.
 
-1245
+1244
 01:11:09,330 --> 01:11:11,072
 In fact, it does, and we'll talk about that later.
 
-1246
+1245
 01:11:13,320 --> 01:11:14,570
 So are there any questions?
 
-1247
+1246
 01:11:24,340 --> 01:11:25,808
 Gee, what an unquestioning audience.
 
-1248
+1247
 01:11:28,670 --> 01:11:30,330
 Suppose I tell you a horrible pile of lies.
 
-1249
+1248
 01:11:39,690 --> 01:11:40,384
 OK.
 
-1250
+1249
 01:11:41,990 --> 01:11:42,520
 Well, thank you.
 
-1251
+1250
 01:11:42,520 --> 01:11:43,280
 Let's take our break.
 
-1252
+1251
 01:11:44,230 --> 01:11:48,780
 [MUSIC PLAYING - "JESU, JOY OF MAN'S DESIRING" BY JOHANN SEBASTIAN BACH]
 
