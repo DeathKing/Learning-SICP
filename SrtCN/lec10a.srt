@@ -1,1398 +1,1398 @@
-﻿1
+1
 00:00:19,360 --> 00:00:22,650
-教授: 上节课 我们学习了 PROFESSOR: Last time, we took a look at
+教授: 上节课 我们学习了\NPROFESSOR: Last time, we took a look at
 
 2
 00:00:22,650 --> 00:00:25,675
-一个Lisp显式控制求值器 an explicit control evaluator for Lisp
+一个Lisp显式控制求值器\Nan explicit control evaluator for Lisp
 
 3
 00:00:25,675 --> 00:00:32,500
-它在如Lisp或查询语言等高级语言 and that bridged the gap between all these high-level languages
+它在如Lisp或查询语言等高级语言\Nand that bridged the gap between all these high-level languages
 
 4
 00:00:32,500 --> 00:00:36,700
-与传统的寄存器机器之间架起了桥梁 bridged the gap between that and a conventional register machine.
+与传统的寄存器机器之间架起了桥梁\Nbridged the gap between that and a conventional register machine.
 
 5
 00:00:36,700 --> 00:00:42,900
-事实上 你可以将显式控制求值器视为 And in fact, you can think of the explicit control evaluator either as, say
+事实上 你可以将显式控制求值器视为\NAnd in fact, you can think of the explicit control evaluator either as, say
 
 6
 00:00:42,900 --> 00:00:46,525
-你希望在某些约定的寄存器机器上实现的 the code for a Lisp interpreter if you wanted to implement it in the
+你希望在某些约定的寄存器机器上实现的\Nthe code for a Lisp interpreter if you wanted to implement it in the
 
 7
 00:00:46,525 --> 00:00:49,500
-Lisp解释器的汇编代码 assembly language of some conventional register transfer machine,
+Lisp解释器的汇编代码\nassembly language of some conventional register transfer machine,
 
 8
 00:00:49,500 --> 00:00:55,200
-也可以视为某种专门运行Lisp的机器的微码 or, if you like, you can think of it as the microcode  of some machine that's going to be specially designed to run Lisp. 
+也可以视为某种专门运行Lisp的机器的微码\Nor, if you like, you can think of it as the microcode  of some machine that's going to be specially designed to run Lisp. 
 
 9
 00:00:55,200 --> 00:00:55,925
-在任意情况下 In either case, 
+在任意情况下\NIn either case, 
 
 10
 00:00:55,925 --> 00:01:01,425
- 我们做的是用一种能够处理低级语言的机器 what we're doing is we're taking a machine that speaks some low-level language
+ 我们做的是用一种能够处理低级语言的机器\Nwhat we're doing is we're taking a machine that speaks some low-level language
 
 11
 00:01:01,425 --> 00:01:08,225
-通过写一个解释器 把它提升到能执行Lisp之类的高级语言的层次 and we're raising the machine to a high-level language like Lisp by writing an interpreter.
+通过写一个解释器 把它提升到能执行Lisp之类的高级语言的层次\Nand we're raising the machine to a high-level language like Lisp by writing an interpreter.
 
 12
 00:01:08,225 --> 00:01:11,825
-来看个例子 So for instance
+来看个例子\NSo for instance
 
 13
 00:01:11,825 --> 00:01:17,950
-这是一个概念上的  here, conceptually, 
+这是一个概念上的\N here, conceptually, 
 
 14
 00:01:17,950 --> 00:01:24,094
-用于计算阶乘的专用机器 is a special purpose machine for computing factorials.
+用于计算阶乘的专用机器\Nis a special purpose machine for computing factorials.
 
 15
 00:01:24,094 --> 00:01:28,925
-输入5 输出120  It takes in five and puts out 120.
+输入5 输出120 \NIt takes in five and puts out 120.
 
 16
 00:01:28,925 --> 00:01:30,975
-这个专用机器实际上 And what this special purpose machine is 
+这个专用机器实际上\NAnd what this special purpose machine is 
 
 17
 00:01:30,975 --> 00:01:33,500
- 是一个Lisp解释器 actually a Lisp interpreter
+ 是一个Lisp解释器\Nactually a Lisp interpreter
 
 18
 00:01:33,500 --> 00:01:38,350
-它将自己设置为计算阶乘 that's configured itself to run factorials
+它将自己设置为计算阶乘\Nthat's configured itself to run factorials
 
 19
 00:01:38,350 --> 00:01:42,125
-因为你喂给它了阶乘机器的描述 because you feed into it a description of the factorial machine.
+因为你喂给它了阶乘机器的描述\Nbecause you feed into it a description of the factorial machine.
 
 20
 00:01:42,125 --> 00:01:43,700
-这就是解释器 So that's what an interpreter is.
+这就是解释器\NSo that's what an interpreter is.
 
 21
 00:01:43,700 --> 00:01:46,375
-它将自己设置为 It configures itself to 
+它将自己设置为\NIt configures itself to 
 
 22
 00:01:46,375 --> 00:01:50,075
- 模拟你所输入描述的机器 emulate a machine whose description you read in.
+ 模拟你所输入描述的机器\Nemulate a machine whose description you read in.
 
 23
 00:01:50,075 --> 00:01:52,040
-那么 在Lisp解释器里是什么?  Now, inside the Lisp interpreter, what's that?
+那么 在Lisp解释器里是什么? \NNow, inside the Lisp interpreter, what's that?
 
 24
 00:01:52,040 --> 00:01:56,987
-里面可能是通用的寄存器语言解释器 Well, that might be your general register language interpreter
+里面可能是通用的寄存器语言解释器\NWell, that might be your general register language interpreter
 
 25
 00:01:56,987 --> 00:02:00,180
-它将自己设置为像Lisp解释器一样工作 that configures itself to behave like a Lisp interpreter
+它将自己设置为像Lisp解释器一样工作\Nthat configures itself to behave like a Lisp interpreter
 
 26
 00:02:00,180 --> 00:02:03,375
-因为你输入了一系列寄存器语言编写的指令 because you put in a whole bunch of instructions in register language.
+因为你输入了一系列寄存器语言编写的指令\Nbecause you put in a whole bunch of instructions in register language.
 
 27
 00:02:03,375 --> 00:02:07,050
-这就是显式控制求值器 This is the explicit control evaluator.
+这就是显式控制求值器\NThis is the explicit control evaluator.
 
 28
 00:02:07,050 --> 00:02:09,300
-它里面也有一些库 And then it also has some sort of library
+它里面也有一些库\NAnd then it also has some sort of library
 
 29
 00:02:09,300 --> 00:02:12,750
-是基本运算符和Lisp操作的库 a library of primitive operators and Lisp operations and all sorts of things like that.
+是基本运算符和Lisp操作的库\Na library of primitive operators and Lisp operations and all sorts of things like that.
 
 30
 00:02:12,750 --> 00:02:17,325
-这是解释执行的通常策略 That's the general strategy of interpretation.
+这是解释执行的通常策略\NThat's the general strategy of interpretation.
 
 31
 00:02:17,325 --> 00:02:21,625
-事实上 我们所做的是写了一个解释器 And the point is, what we're doing is we're writing an interpreter
+事实上 我们所做的是写了一个解释器\NAnd the point is, what we're doing is we're writing an interpreter
 
 32
 00:02:21,625 --> 00:02:25,240
-将机器提升到能理解我们写的程序的层次 to raise the machine to the level of the programs that we want to write.
+将机器提升到能理解我们写的程序的层次\Nto raise the machine to the level of the programs that we want to write.
 
 33
 00:02:25,240 --> 00:02:27,040
-也有另一种逻辑 Well, there's another strategy
+也有另一种逻辑\NWell, there's another strategy
 
 34
 00:02:27,040 --> 00:02:29,040
-一种不同的策略 就是编译 a different one, which is compilation.
+一种不同的策略 就是编译\Na different one, which is compilation.
 
 35
 00:02:29,040 --> 00:02:31,040
-编译有一些不同 Compilation's a little bit different.
+编译有一些不同\NCompilation's a little bit different.
 
 36
 00:02:31,040 --> 00:02:33,375
-这里 Here--
+这里\NHere--
 
 37
 00:02:33,375 --> 00:02:35,679
-我们可能已经实现了 here we might have produced
+我们可能已经实现了\Nhere we might have produced
 
 38
 00:02:35,679 --> 00:02:38,525
-一个特定用途的机器 a special purpose machine for, 
+一个特定用途的机器\Na special purpose machine for, 
 
 39
 00:02:38,525 --> 00:02:42,425
-用来计算阶乘 for computing factorials
+用来计算阶乘\Nfor computing factorials
 
 40
 00:02:43,625 --> 00:02:46,260
-从某种使用寄存器语言的机器开始 starting with some sort of machine that speaks register language
+从某种使用寄存器语言的机器开始\Nstarting with some sort of machine that speaks register language
 
 41
 00:02:46,260 --> 00:02:47,720
-但是 我们将让它执行不同的策略 except we're going to do a different strategy.
+但是 我们将让它执行不同的策略\Nexcept we're going to do a different strategy.
 
 42
 00:02:47,720 --> 00:02:51,550
-我们拿来阶乘程序 We take our factorial program.
+我们拿来阶乘程序\NWe take our factorial program.
 
 43
 00:02:51,550 --> 00:02:53,920
-我们把这些源代码输入编译器 We use that as the source code into a compiler.
+我们把这些源代码输入编译器\NWe use that as the source code into a compiler.
 
 44
 00:02:53,920 --> 00:02:55,150
-编译器将会做的是 What the compiler will do
+编译器将会做的是\NWhat the compiler will do
 
 45
 00:02:55,150 --> 00:02:57,625
-把这个阶乘程序 is translate that factorial program 
+把这个阶乘程序\Nis translate that factorial program 
 
 46
 00:02:57,625 --> 00:03:00,250
-翻译成某种寄存器机器语言 into some register machine language.
+翻译成某种寄存器机器语言\Ninto some register machine language.
 
 47
 00:03:00,250 --> 00:03:03,400
-现在它并不是Lisp的显式控制求值器 And this will now be not the explicit control evaluator for Lisp
+现在它并不是Lisp的显式控制求值器\NAnd this will now be not the explicit control evaluator for Lisp
 
 48
 00:03:03,400 --> 00:03:06,340
-它现在是某种用来计算阶乘的寄存器语言 this will be some register language for computing factorials.
+它现在是某种用来计算阶乘的寄存器语言\Nthis will be some register language for computing factorials.
 
 49
 00:03:06,340 --> 00:03:10,375
-这就是翻译的过程 So this is the translation of that.
+这就是翻译的过程\NSo this is the translation of that.
 
 50
 00:03:10,375 --> 00:03:13,350
-它将进入某种加载器 That will go into some sort of loader
+它将进入某种加载器\NThat will go into some sort of loader
 
 51
 00:03:13,350 --> 00:03:19,825
-并与从库中选取的乘法之类的代码组合到一起 which will combine this code with code selected from the library to do things like primitive multiplication.
+并与从库中选取的乘法之类的代码组合到一起\Nwhich will combine this code with code selected from the library to do things like primitive multiplication.
 
 52
 00:03:19,825 --> 00:03:22,225
-随后我们将生成一个加载模块 And then we'll produce a load module
+随后我们将生成一个加载模块\NAnd then we'll produce a load module
 
 53
 00:03:22,225 --> 00:03:25,060
-它把寄存器语言机器配置成 which configures the register language machine
+它把寄存器语言机器配置成\Nwhich configures the register language machine
 
 54
 00:03:25,060 --> 00:03:28,125
-一个专门用来计算阶乘的机器 to be a special purpose factorial machine.
+一个专门用来计算阶乘的机器\Nto be a special purpose factorial machine.
 
 55
 00:03:28,125 --> 00:03:30,220
-这就是不同的策略 So that's a, that's a different strategy.
+这就是不同的策略\NSo that's a, that's a different strategy.
 
 56
 00:03:30,220 --> 00:03:31,225
-在解释中 In interpretation,
+在解释中\NIn interpretation,
 
 57
 00:03:31,225 --> 00:03:35,320
-我们将机器提升到我们语言的层次 如Lisp  we're raising the machine to the level of our language, like Lisp.
+我们将机器提升到我们语言的层次 如Lisp\N we're raising the machine to the level of our language, like Lisp.
 
 58
 00:03:35,320 --> 00:03:36,340
-在编译中 In compilation
+在编译中\NIn compilation
 
 59
 00:03:36,340 --> 00:03:41,825
-我们将我们的程序下降到机器语言的层次 we're taking our program and lowering it to the language that's spoken by the machine.
+我们将我们的程序下降到机器语言的层次\Nwe're taking our program and lowering it to the language that's spoken by the machine.
 
 60
 00:03:41,825 --> 00:03:44,300
-那么 这两个策略有什么区别呢? Well, how do these two strategies compare?
+那么 这两个策略有什么区别呢?\NWell, how do these two strategies compare?
 
 61
 00:03:44,300 --> 00:03:52,050
-编译器可以生成执行起来更有效率的代码 The compiler can produce code that will execute more efficiently.
+编译器可以生成执行起来更有效率的代码\NThe compiler can produce code that will execute more efficiently.
 
 62
 00:03:52,050 --> 00:03:54,175
-主要原因是 The essential reason for that
+主要原因是\NThe essential reason for that
 
 63
 00:03:54,175 --> 00:04:01,925
-如果你考虑运行中的寄存器操作 is that if you think about the register operations that are running
+如果你考虑运行中的寄存器操作\Nis that if you think about the register operations that are running
 
 64
 00:04:01,925 --> 00:04:04,975
-解释器需要生成寄存器的操作 the interpreter has to produce register operations
+解释器需要生成寄存器的操作\Nthe interpreter has to produce register operations
 
 65
 00:04:04,975 --> 00:04:10,225
-从原则上来讲 它需要足够通用 以支持任何Lisp过程的执行 which, in principle, are going to be general enough to execute any Lisp procedure.
+从原则上来讲 它需要足够通用 以支持任何Lisp过程的执行\Nwhich, in principle, are going to be general enough to execute any Lisp procedure.
 
 66
 00:04:10,225 --> 00:04:15,525
-而编译器只需要生成一组特定的寄存器操作 Whereas the compiler only has to worry about producing a special bunch of register operations for
+而编译器只需要生成一组特定的寄存器操作\NWhereas the compiler only has to worry about producing a special bunch of register operations for
 
 67
 00:04:15,525 --> 00:04:19,280
-用来执行你所编译的那部分特定的Lisp过程 for doing the particular Lisp procedure that you've compiled.
+用来执行你所编译的那部分特定的Lisp过程\Nfor doing the particular Lisp procedure that you've compiled.
 
 68
 00:04:20,175 --> 00:04:21,200
-换一种说法 Or another way to say that
+换一种说法\NOr another way to say that
 
 69
 00:04:21,200 --> 00:04:25,925
-解释器是一种通用的模拟器 is that the interpreter is a general purpose simulator
+解释器是一种通用的模拟器\Nis that the interpreter is a general purpose simulator
 
 70
 00:04:25,925 --> 00:04:27,580
-当你输入一个Lisp过程时 that when you read in a Lisp procedure
+当你输入一个Lisp过程时\Nthat when you read in a Lisp procedure
 
 71
 00:04:27,580 --> 00:04:31,325
-它们就会模拟被那个过程解释的程序 then those can simulate the program described by that, by that procedure.
+它们就会模拟被那个过程解释的程序\Nthen those can simulate the program described by that, by that procedure.
 
 72
 00:04:31,325 --> 00:04:34,625
-所以解释器关注的是 做出一个通用模拟器 So the interpreter is worrying about making a general purpose simulator
+所以解释器关注的是 做出一个通用模拟器\NSo the interpreter is worrying about making a general purpose simulator
 
 73
 00:04:34,625 --> 00:04:40,025
-而编译器 只需要将东西配置成解释器将要去模拟的机器 whereas the compiler, in effect, is configuring the thing to be the machine that the interpreter would have been simulating.
+而编译器 只需要将东西配置成解释器将要去模拟的机器\Nwhereas the compiler, in effect, is configuring the thing to be the machine that the interpreter would have been simulating.
 
 74
 00:04:40,025 --> 00:04:44,350
-所以编译器可以运行得更快 So the compiler can be faster.
+所以编译器可以运行得更快\NSo the compiler can be faster.
 
 75
 00:04:52,550 --> 00:04:54,650
-另一方面 OK, On the other hand
+另一方面\NOK, On the other hand
 
 76
 00:04:55,975 --> 00:04:59,438
-解释器更适合用来排查错误 the interpreter is a nicer environment for debugging.
+解释器更适合用来排查错误\Nthe interpreter is a nicer environment for debugging.
 
 77
 00:04:59,438 --> 00:05:01,250
-因为 And the reason for that is that we've got the
+因为\NAnd the reason for that is that we've got the
 
 78
 00:05:01,575 --> 00:05:03,020
-我们的源代码实际上就在那里 the source code actually there.
+我们的源代码实际上就在那里\Nthe source code actually there.
 
 79
 00:05:03,020 --> 00:05:05,875
-我们正在解释它们 We're interpreting it That's what we're working with.
+我们正在解释它们\NWe're interpreting it That's what we're working with.
 
 80
 00:05:05,875 --> 00:05:07,900
-并且库就在这里 And we also have the library around.
+并且库就在这里\NAnd we also have the library around.
 
 81
 00:05:07,900 --> 00:05:11,300
-看 这里的库是解释器的一部分 See, the interpreter--the library sitting there is part of the interpreter.
+看 这里的库是解释器的一部分\NSee, the interpreter--the library sitting there is part of the interpreter.
 
 82
 00:05:11,300 --> 00:05:14,875
-而编译器只会把运行程序所需要的代码从库中拉出来 The compiler only pulls out from the library what it needs to run the program.
+而编译器只会把运行程序所需要的代码从库中拉出来\NThe compiler only pulls out from the library what it needs to run the program.
 
 83
 00:05:14,875 --> 00:05:18,000
-所以 如果你在排查错误的途中 So if you're in the middle of debugging
+所以 如果你在排查错误的途中\NSo if you're in the middle of debugging
 
 84
 00:05:18,000 --> 00:05:19,659
-你想写一些 and you might like to write
+你想写一些\Nand you might like to write
 
 85
 00:05:19,659 --> 00:05:23,051
-额外的代码来考察运行过程中的数据类型 a little extra program to examine some run time data structure
+额外的代码来考察运行过程中的数据类型\Na little extra program to examine some run time data structure
 
 86
 00:05:23,051 --> 00:05:26,125
-或者做一些你在写程序时没有想到的运算 or to produce some computation that you didn't think of when you wrote the program
+或者做一些你在写程序时没有想到的运算\Nor to produce some computation that you didn't think of when you wrote the program
 
 87
 00:05:26,125 --> 00:05:28,050
-解释器可以完美搞定这些 the interpreter can do that perfectly well
+解释器可以完美搞定这些\Nthe interpreter can do that perfectly well
 
 88
 00:05:28,050 --> 00:05:29,625
-而编译器不行 whereas the compiler can't.
+而编译器不行\Nwhereas the compiler can't.
 
 89
 00:05:29,625 --> 00:05:31,900
-所以它们各有优点 So there are sort of dual, dual advantages.
+所以它们各有优点\NSo there are sort of dual, dual advantages.
 
 90
 00:05:31,900 --> 00:05:34,850
-编译器将生成运行更快的代码 The compiler will produce code that executes faster.
+编译器将生成运行更快的代码\NThe compiler will produce code that executes faster.
 
 91
 00:05:34,850 --> 00:05:38,950
-而解释器是一种更适合排错的环境 The interpreter is a better environment for debugging.
+而解释器是一种更适合排错的环境\NThe interpreter is a better environment for debugging.
 
 92
 00:05:38,950 --> 00:05:42,360
-大多数Lisp系统最终将二者都实现了 And most Lisp systems end up having both
+大多数Lisp系统最终将二者都实现了\NAnd most Lisp systems end up having both
 
 93
 00:05:42,925 --> 00:05:47,080
-你可以在开发代码时使用解释器 end up being configured so you have an interpreter that you use when you're developing your code.
+你可以在开发代码时使用解释器\Nend up being configured so you have an interpreter that you use when you're developing your code.
 
 94
 00:05:47,080 --> 00:05:49,027
-随后通过编译代码来使运行更快 Then you can speed it up by compiling.
+随后通过编译代码来使运行更快\NThen you can speed it up by compiling.
 
 95
 00:05:49,027 --> 00:05:54,600
-通常你能做到让被编译的代码和被解释的代码互相调用 And very often, you can arrange that compiled code and interpreted code can call each other.
+通常你能做到让被编译的代码和被解释的代码互相调用\NAnd very often, you can arrange that compiled code and interpreted code can call each other.
 
 96
 00:05:54,600 --> 00:05:57,275
-我们将学习如何做到这一点 其实不难 We'll see how to do that, That's not hard.
+我们将学习如何做到这一点 其实不难\NWe'll see how to do that, That's not hard.
 
 97
 00:05:59,275 --> 00:06:00,000
-好 OK
+好\NOK
 
 98
 00:06:00,825 --> 00:06:05,750
-事实上 在编译器中 In fact, the way we'll-- in the compiler we're going to make 
+事实上 在编译器中\NIn fact, the way we'll-- in the compiler we're going to make 
 
 99
 00:06:05,750 --> 00:06:09,900
-我们实现被编译的代码和被解释的代码 能够互相调用的方式是 the way we'll arrange for compiled coding and interpreted code to call to call each other 
+我们实现被编译的代码和被解释的代码 能够互相调用的方式是\Nthe way we'll arrange for compiled coding and interpreted code to call to call each other 
 
 100
 00:06:09,900 --> 00:06:14,800
-我们让编译器使用与解释器完全一致的组织方式 is that we'll have the compiler use exactly the same register conventions as the interpreter. 
+我们让编译器使用与解释器完全一致的组织方式\Nis that we'll have the compiler use exactly the same register conventions as the interpreter. 
 
 101
 00:06:18,425 --> 00:06:25,875
-编译器的思路与解释器或求值器很像 Well, the idea of a compiler is very much like the idea of an interpreter or evaluator.
+编译器的思路与解释器或求值器很像\NWell, the idea of a compiler is very much like the idea of an interpreter or evaluator.
 
 102
 00:06:25,875 --> 00:06:27,050
-它们是相同的东西 It's the same thing.
+它们是相同的东西\NIt's the same thing.
 
 103
 00:06:27,050 --> 00:06:29,825
-求值器遍历代码 See, the evaluator walks over the code
+求值器遍历代码\NSee, the evaluator walks over the code
 
 104
 00:06:29,825 --> 00:06:33,650
-产生一些寄存器操作 and performs some register operations.
+产生一些寄存器操作\Nand performs some register operations.
 
 105
 00:06:33,650 --> 00:06:36,793
-就是我们昨天做的事情 That's what we did yesterday.
+就是我们昨天做的事情\NThat's what we did yesterday.
 
 106
 00:06:37,100 --> 00:06:40,525
-而编译器会读取代码 Well, the compiler essentially would like to walk over the code
+而编译器会读取代码\NWell, the compiler essentially would like to walk over the code
 
 107
 00:06:40,525 --> 00:06:47,700
-生成一些求值器在求值时所做事情的寄存器操作 and produce the register operations that the evaluator would have done were it evaluating the thing.
+生成一些求值器在求值时所做事情的寄存器操作\Nand produce the register operations that the evaluator would have done were it evaluating the thing.
 
 108
 00:06:48,600 --> 00:06:55,300
-这给我们了一个实现零阶(zeroth-order)编译器的模型 And that gives us a model for how to implement a zeroth-order compiler
+这给我们了一个实现零阶(zeroth-order)编译器的模型\NAnd that gives us a model for how to implement a zeroth-order compiler
 
 109
 00:06:55,300 --> 00:06:58,320
-一个很差的编译器 但的确是个编译器 a very bad compiler but essentially a compiler.
+一个很差的编译器 但的确是个编译器\Na very bad compiler but essentially a compiler.
 
 110
 00:06:58,320 --> 00:07:02,800
-这种模型就是 你用求值器把代码跑一遍 A model for doing that is you just take the evaluator, you run it over the code
+这种模型就是 你用求值器把代码跑一遍\NA model for doing that is you just take the evaluator, you run it over the code
 
 111
 00:07:02,800 --> 00:07:06,060
-但不去执行实际的操作 but instead of executing the actual operations
+但不去执行实际的操作\Nbut instead of executing the actual operations
 
 112
 00:07:06,060 --> 00:07:07,550
-只是把它们保存下来 you just save them away.
+只是把它们保存下来\Nyou just save them away.
 
 113
 00:07:07,550 --> 00:07:08,825
-那就是你编译后的代码 And that's your compiled code. 
+那就是你编译后的代码\NAnd that's your compiled code. 
 
 114
 00:07:08,825 --> 00:07:10,552
-让我举个例子 So let me give you an example of that.
+让我举个例子\NSo let me give you an example of that.
 
 115
 00:07:12,700 --> 00:07:15,100
-假设我们要编译 Suppose we're going to compile--
+假设我们要编译\NSuppose we're going to compile--
 
 116
 00:07:15,100 --> 00:07:25,075
-假设我们想编译这个表达式(F X) Suppose we're going to compile--suppose we want to compile the expression f of x. 
+假设我们想编译这个表达式(F X)\NSuppose we're going to compile--suppose we want to compile the expression f of x. 
 
 117
 00:07:25,075 --> 00:07:26,100
-我们假设 So let's assume that 
+我们假设\NSo let's assume that 
 
 118
 00:07:26,100 --> 00:07:30,100
-(F X)在x寄存器中 其他东西在环境寄存器中#TBD we've got f of x in the x register and something in the environment register.
+(F X)在x寄存器中 其他东西在环境寄存器中#TBD\Nwe've got f of x in the x register and something in the environment register.
 
 119
 00:07:30,100 --> 00:07:32,725
-想象我们启动了求值器 And now imagine starting up the evaluator.
+想象我们启动了求值器\NAnd now imagine starting up the evaluator.
 
 120
 00:07:32,725 --> 00:07:37,925
-它读取了表达式 它认为这是个应用 Well, it looks at the expression and it sees that it's an application.
+它读取了表达式 它认为这是个应用\NWell, it looks at the expression and it sees that it's an application.
 
 121
 00:07:37,925 --> 00:07:42,525
-它分支到求值器代码中的一个地方 And it branches to a place 
+它分支到求值器代码中的一个地方\NAnd it branches to a place 
 
 122
 00:07:42,525 --> 00:07:47,125
- 我们之前见过的叫EV-APPLICATION的地方 in the evaluator code we saw called ev-application.
+ 我们之前见过的叫EV-APPLICATION的地方\Nin the evaluator code we saw called ev-application.
 
 123
 00:07:47,125 --> 00:07:50,080
-它将运算对象和UNEV保存 And then it begins. It stores away the operands and unev
+它将运算对象和UNEV保存\NAnd then it begins. It stores away the operands and unev
 
 124
 00:07:50,080 --> 00:07:54,475
-然后之后它将运算符放在EXP里 准备递归执行 and then it's going to put the operator in exp, and it's going to go recursively evaluate it.
+然后之后它将运算符放在EXP里 准备递归执行\Nand then it's going to put the operator in exp, and it's going to go recursively evaluate it.
 
 125
 00:07:54,475 --> 00:07:56,675
-这就是我们经历的过程 That's the process that we walk through.
+这就是我们经历的过程\NThat's the process that we walk through.
 
 126
 00:07:56,675 --> 00:08:00,200
-如果你看代码 会看到一些寄存器操作 And if you start looking at the code, you start seeing some register operations.
+如果你看代码 会看到一些寄存器操作\NAnd if you start looking at the code, you start seeing some register operations.
 
 127
 00:08:00,200 --> 00:08:02,300
-你会看到对UNEV的运算对象的赋值 You see assign to unev the operands
+你会看到对UNEV的运算对象的赋值\NYou see assign to unev the operands
 
 128
 00:08:02,300 --> 00:08:07,160
-#TBD对EXP运算符的赋值 保存环境 生成它 之类的东西 assign to exp the operator, save the environment, generate that, and so on.
+#TBD对EXP运算符的赋值 保存环境 生成它 之类的东西\Nassign to exp the operator, save the environment, generate that, and so on.
 
 129
 00:08:10,225 --> 00:08:12,880
-如果我们研究这里的性能开销 Well, if we look on the overhead here
+如果我们研究这里的性能开销\NWell, if we look on the overhead here
 
 130
 00:08:15,750 --> 00:08:20,825
-会发现这些操作被生成出来 we can see those operations starting to be produced.
+会发现这些操作被生成出来\Nwe can see those operations starting to be produced.
 
 131
 00:08:20,825 --> 00:08:25,000
-这是求值器第一个本来要做的实际操作 Here's sort of the first real operation that the evaluator would have done.
+这是求值器第一个本来要做的实际操作\NHere's sort of the first real operation that the evaluator would have done.
 
 132
 00:08:25,000 --> 00:08:27,475
-它将运算对象从EXP寄存器里拿出来 It pulls the operands out of the exp register
+它将运算对象从EXP寄存器里拿出来\NIt pulls the operands out of the exp register
 
 133
 00:08:27,475 --> 00:08:30,035
-并将它赋值给UNEV and assigns it to unev.
+并将它赋值给UNEV\Nand assigns it to unev.
 
 134
 00:08:30,035 --> 00:08:33,460
-然后它将某些东西赋值给表达式寄存器 保存CONTINUE And then it assigns something to the expression register, and it saves continue
+然后它将某些东西赋值给表达式寄存器 保存CONTINUE\NAnd then it assigns something to the expression register, and it saves continue
 
 135
 00:08:33,460 --> 00:08:34,620
-保存ENV and it saves env.
+保存ENV\Nand it saves env.
 
 136
 00:08:34,620 --> 00:08:39,575
-我们在这做的就是写下寄存器赋值操作 And all I'm doing here is writing down the register assignments
+我们在这做的就是写下寄存器赋值操作\NAnd all I'm doing here is writing down the register assignments
 
 137
 00:08:39,575 --> 00:08:42,775
-在求值时会进行的寄存器赋值操作 that the evaluator would have done in executing that code.
+在求值时会进行的寄存器赋值操作\Nthat the evaluator would have done in executing that code.
 
 138
 00:08:42,775 --> 00:08:44,300
-我们缩小画面看看 And can zoom out a little bit.
+我们缩小画面看看\NAnd can zoom out a little bit.
 
 139
 00:08:44,300 --> 00:08:49,400
-总计有19个操作 Altogether, there are about 19 operations there.
+总计有19个操作\NAltogether, there are about 19 operations there.
 
 140
 00:08:49,400 --> 00:08:52,050
-这些代码 And this is the--this will be the piece of code
+这些代码\NAnd this is the--this will be the piece of code
 
 141
 00:08:52,050 --> 00:08:57,868
-是在求值器分支到apply-dispatch处的代码 up until the point where the evaluator branches off to apply-dispatch.
+是在求值器分支到apply-dispatch处的代码\Nup until the point where the evaluator branches off to apply-dispatch.
 
 142
 00:08:57,868 --> 00:08:59,420
-事实上 在这个编译器中 And in fact, in this compiler
+事实上 在这个编译器中\NAnd in fact, in this compiler
 
 143
 00:08:59,420 --> 00:09:01,300
-我们不需要再关心apply-dispatch了 we're not going to worry about apply-dispatch at all.
+我们不需要再关心apply-dispatch了\Nwe're not going to worry about apply-dispatch at all.
 
 144
 00:09:01,300 --> 00:09:02,280
-我们有所有东西 We're going to have everything
+我们有所有东西\NWe're going to have everything
 
 145
 00:09:02,280 --> 00:09:06,075
-我们拥有解释后代码和编译后代码 we're going to have both interpreted code and compiled code.
+我们拥有解释后代码和编译后代码\Nwe're going to have both interpreted code and compiled code.
 
 146
 00:09:06,075 --> 00:09:07,611
-通常求值过程 Always evaluate procedures, 
+通常求值过程\NAlways evaluate procedures, 
 
 147
 00:09:07,611 --> 00:09:10,275
- 通常应用过程是由apply-dispatch处理的 always apply procedures by going to apply-dispatch.
+ 通常应用过程是由apply-dispatch处理的\Nalways apply procedures by going to apply-dispatch.
 
 148
 00:09:10,275 --> 00:09:15,500
-这将让被解释后代码与编译后代码很很容易互相调用 That will easily allow interpreted code and compiled code to call each other. 
+这将让被解释后代码与编译后代码很很容易互相调用\NThat will easily allow interpreted code and compiled code to call each other.\N
 
 149
 00:09:18,275 --> 00:09:21,050
-从原则上来说 这就是我们要做的一切 Well, in principle, that's all we need to do.
+从原则上来说 这就是我们要做的一切\NWell, in principle, that's all we need to do.
 
 150
 00:09:21,050 --> 00:09:22,660
-你只是运行求值器 You just run the evaluator.
+你只是运行求值器\NYou just run the evaluator.
 
 151
 00:09:22,660 --> 00:09:24,500
-因而编译器非常像求值器 So the compiler's a lot like the evaluator.
+因而编译器非常像求值器\NSo the compiler's a lot like the evaluator.
 
 152
 00:09:24,500 --> 00:09:26,475
-你运行它 唯一不同是你把操作存下来 You run it, except it stashes away these operations
+你运行它 唯一不同是你把操作存下来\NYou run it, except it stashes away these operations
 
 153
 00:09:26,475 --> 00:09:29,350
-而不是实际执行它们 instead of actually executing them.
+而不是实际执行它们\Ninstead of actually executing them.
 
 154
 00:09:29,350 --> 00:09:32,916
-这其实不完全正确 Well, that's not, that's not quite true.
+这其实不完全正确\NWell, that's not, that's not quite true.
 
 155
 00:09:32,916 --> 00:09:36,244
-这里面我们撒了个小谎 There's only one little lie in that.
+这里面我们撒了个小谎\NThere's only one little lie in that.
 
 156
 00:09:36,244 --> 00:09:40,125
-你需要关心的是 如果你有个谓词 What you have to worry about is if you have a, a predicate.
+你需要关心的是 如果你有个谓词\NWhat you have to worry about is if you have a, a predicate.
 
 157
 00:09:40,125 --> 00:09:43,453
-如果你有某种测试需要做 If you have some kind of test you want to do
+如果你有某种测试需要做\NIf you have some kind of test you want to do
 
 158
 00:09:43,453 --> 00:09:46,525
-显然 在你编译时 obviously, at the point when you're compiling it
+显然 在你编译时\Nobviously, at the point when you're compiling it
 
 159
 00:09:46,525 --> 00:09:51,133
-你并不能知道会执行哪个分支 you don't know which branch of these--of a conditional like this you're going to do.
+你并不能知道会执行哪个分支\Nyou don't know which branch of these--of a conditional like this you're going to do.
 
 160
 00:09:51,133 --> 00:09:54,909
-所以你不能确定求值器将对哪个求值 So you can't say which one the evaluator would have done.
+所以你不能确定求值器将对哪个求值\NSo you can't say which one the evaluator would have done.
 
 161
 00:09:54,909 --> 00:09:57,125
-在这里要做的很简单 So all you do there is very simple.
+在这里要做的很简单\NSo all you do there is very simple.
 
 162
 00:09:57,125 --> 00:09:59,600
-你把两个分支全编译了 You compile both branches.
+你把两个分支全编译了\NYou compile both branches.
 
 163
 00:09:59,600 --> 00:10:02,004
-因此你编译出一个这样的结构 So you compile a structure that looks like this.
+因此你编译出一个这样的结构\NSo you compile a structure that looks like this.
 
 164
 00:10:02,004 --> 00:10:10,717
-他们都会被编译成P的代码 That'll compile into something that says, the code, the code for P.
+他们都会被编译成P的代码\NThat'll compile into something that says, the code, the code for P.
 
 165
 00:10:10,717 --> 00:10:18,175
-把它的结果存入VAL寄存器 And it puts its results in, say, the val register.
+把它的结果存入VAL寄存器\NAnd it puts its results in, say, the val register.
 
 166
 00:10:18,175 --> 00:10:21,354
-你的解释器对谓词求值 So you walk the interpreter over the predicate
+你的解释器对谓词求值\NSo you walk the interpreter over the predicate
 
 167
 00:10:21,354 --> 00:10:24,703
-并保证结果会放到VAL寄存器中 and make sure that the result would go into the val register.
+并保证结果会放到VAL寄存器中\Nand make sure that the result would go into the val register.
 
 168
 00:10:24,703 --> 00:10:27,220
-随后你编译一条指令 And then you compile an instruction that says
+随后你编译一条指令\NAnd then you compile an instruction that says
 
 169
 00:10:27,220 --> 00:10:37,175
-如果VAL是TRUE branch if, if val is true
+如果VAL是TRUE\Nbranch if, if val is true
 
 170
 00:10:37,175 --> 00:10:44,975
-就转到LABEL1这个地方 to a place we'll call label one.
+就转到LABEL1这个地方\Nto a place we'll call label one.
 
 171
 00:10:44,975 --> 00:10:49,425
-然后我们写下B的代码 Then we, we will put the code for B 
+然后我们写下B的代码\NThen we, we will put the code for B 
 
 172
 00:10:49,425 --> 00:10:53,625
-让解释器对B进行求值 to walk the interpreter--walk the interpreter over B. 
+让解释器对B进行求值\Nto walk the interpreter--walk the interpreter over B. 
 
 173
 00:10:53,625 --> 00:11:02,200
-然后写一句指令 GOTO NEXT THING And then go to put in an instruction that says, go to the next thing, whatever
+然后写一句指令 GOTO NEXT THING\NAnd then go to put in an instruction that says, go to the next thing, whatever
 
 174
 00:11:02,200 --> 00:11:04,950
-就是它结束之后要去的地方 whatever was supposed to happen after this thing was done.
+就是它结束之后要去的地方\Nwhatever was supposed to happen after this thing was done.
 
 175
 00:11:04,950 --> 00:11:06,520
-你放入那个指令 You put in that instruction.
+你放入那个指令\NYou put in that instruction.
 
 176
 00:11:06,520 --> 00:11:12,125
-这里你写下LABEL1 And here you put label one.
+这里你写下LABEL1\NAnd here you put label one.
 
 177
 00:11:12,125 --> 00:11:19,475
-这里写A的代码 And here you put the code for A.
+这里写A的代码\NAnd here you put the code for A.
 
 178
 00:11:19,475 --> 00:11:29,820
-然后写下GOTO NEXT THING And you put go to next thing.
+然后写下GOTO NEXT THING\NAnd you put go to next thing.
 
 179
 00:11:31,425 --> 00:11:32,980
-这就是处理条件分支的办法 So that's how you treat a conditional.
+这就是处理条件分支的办法\NSo that's how you treat a conditional.
 
 180
 00:11:32,980 --> 00:11:35,750
-你生成这样一小段代码 You generate a little block like that.
+你生成这样一小段代码\NYou generate a little block like that.
 
 181
 00:11:35,750 --> 00:11:38,950
-除此之外 And other than that
+除此之外\NAnd other than that
 
 182
 00:11:38,950 --> 00:11:42,550
-编译器与求值器一模一样 this zeroth-order compiler is the same as the evaluator.
+编译器与求值器一模一样\Nthis zeroth-order compiler is the same as the evaluator.
 
 183
 00:11:42,550 --> 00:11:46,550
-它只是把指令存起来 而不是执行它们 It's just stashing away the instructions instead of executing them.
+它只是把指令存起来 而不是执行它们\NIt's just stashing away the instructions instead of executing them.
 
 184
 00:11:46,550 --> 00:11:50,125
-看起来很简单 但我们已经取得了某些收获 That seems pretty simple, but we've gained something by that.
+看起来很简单 但我们已经取得了某些收获\NThat seems pretty simple, but we've gained something by that.
 
 185
 00:11:50,125 --> 00:11:53,525
-它会比求值器更有效率 See, already that's going to be more efficient than the evaluator.
+它会比求值器更有效率\NSee, already that's going to be more efficient than the evaluator.
 
 186
 00:11:53,525 --> 00:11:56,350
-因为 如果你观察求值器的运行 Because, if you watch the evaluator run
+因为 如果你观察求值器的运行\NBecause, if you watch the evaluator run
 
 187
 00:11:56,350 --> 00:12:01,278
-它并不只是生成我们写下的寄存器操作 it's not only generating the register operations we wrote down
+它并不只是生成我们写下的寄存器操作\Nit's not only generating the register operations we wrote down
 
 188
 00:12:01,278 --> 00:12:04,700
-它还会决定生成哪个 it's also doing things to decide which ones to generate.
+它还会决定生成哪个\Nit's also doing things to decide which ones to generate.
 
 189
 00:12:04,700 --> 00:12:07,925
-它做的第一件事就是 So the very first thing it does, say
+它做的第一件事就是\NSo the very first thing it does, say
 
 190
 00:12:07,925 --> 00:12:09,775
-以它为例 就是进行某些测试 here for instance, is go do some tests 
+以它为例 就是进行某些测试\Nhere for instance, is go do some tests 
 
 191
 00:12:09,775 --> 00:12:13,575
- 确定它是一个应用 and decide that this is an application
+ 确定它是一个应用\Nand decide that this is an application
 
 192
 00:12:13,575 --> 00:12:16,620
-然后就切换到处理应用的地方去 and then branch off to the place that, that handles applications.
+然后就切换到处理应用的地方去\Nand then branch off to the place that, that handles applications.
 
 193
 00:12:16,620 --> 00:12:18,620
-换句话说 求值器做的事情是 In other words, what the evaluator's doing
+换句话说 求值器做的事情是\NIn other words, what the evaluator's doing
 
 194
 00:12:18,620 --> 00:12:23,475
-在分析代码看看需要做什么的同时 is simultaneously analyzing the code to see what to do
+在分析代码看看需要做什么的同时\Nis simultaneously analyzing the code to see what to do
 
 195
 00:12:23,475 --> 00:12:25,550
-运行这些操作 and running these operations.
+运行这些操作\Nand running these operations.
 
 196
 00:12:25,550 --> 00:12:28,280
-当你运行求值器一百万次 And when you-- if you run the evaluator a million times
+当你运行求值器一百万次\NAnd when you-- if you run the evaluator a million times
 
 197
 00:12:28,280 --> 00:12:30,580
-这个分析过程就进行一百万次 that analysis phase happens a million times
+这个分析过程就进行一百万次\Nthat analysis phase happens a million times
 
 198
 00:12:30,850 --> 00:12:32,580
-而在编译器中 它只会进行一次 whereas in the compiler, it's happened once
+而在编译器中 它只会进行一次\Nwhereas in the compiler, it's happened once
 
 199
 00:12:32,580 --> 00:12:36,575
-之后就只有寄存器操作了 and then you just have the register operations themselves.
+之后就只有寄存器操作了\Nand then you just have the register operations themselves.
 
 200
 00:12:39,200 --> 00:12:41,800
-这就是零阶编译器了 Ok, that's a, a zeroth-order compiler
+这就是零阶编译器了\NOk, that's a, a zeroth-order compiler
 
 201
 00:12:41,800 --> 00:12:44,450
-但它是个很矬的编译器 but it is a wretched, wretched compiler.
+但它是个很矬的编译器\Nbut it is a wretched, wretched compiler.
 
 202
 00:12:44,450 --> 00:12:46,160
-它挺蠢的 It's really dumb.
+它挺蠢的\NIt's really dumb.
 
 203
 00:12:46,900 --> 00:12:52,025
-让我们回来看看性能开销  Let's--let's go back and, and look at this overhead.
+让我们回来看看性能开销 \NLet's--let's go back and, and look at this overhead.
 
 204
 00:12:52,025 --> 00:12:55,850
-看看这个东西做的一些操作 So look at look at some of the operations this thing is doing. 
+看看这个东西做的一些操作\NSo look at look at some of the operations this thing is doing.\N
 
 205
 00:12:55,850 --> 00:13:03,525
-我们想看看在解释(F  X)时的操作 We're supposedly looking at the operations in interpreting f of x.
+我们想看看在解释(F  X)时的操作\NWe're supposedly looking at the operations in interpreting f of x.
 
 206
 00:13:03,525 --> 00:13:05,175
-这里就是它做了什么 Now, look here what it's doing.
+这里就是它做了什么\NNow, look here what it's doing.
 
 207
 00:13:05,175 --> 00:13:07,150
-举个例子 这里 For example, here
+举个例子 这里\NFor example, here
 
 208
 00:13:07,150 --> 00:13:13,750
-它将(OPERATOR (FETCH EXP))赋值给EXP it assigns to exp the operator in fetch of exp.
+它将(OPERATOR (FETCH EXP))赋值给EXP\Nit assigns to exp the operator in fetch of exp.
 
 209
 00:13:13,750 --> 00:13:16,225
-其实没必要这样做 But see, there's no reason to do that, because this is--
+其实没必要这样做\NBut see, there's no reason to do that, because this is--
 
 210
 00:13:16,225 --> 00:13:23,350
-因为编译器知道(OPERATOR (FETCH EXP))在这里就是F the compiler knows that the operator, fetch of exp, is f right here.
+因为编译器知道(OPERATOR (FETCH EXP))在这里就是F\Nthe compiler knows that the operator, fetch of exp, is f right here.
 
 211
 00:13:23,350 --> 00:13:25,700
-因此这个指令没理由存在 So there's no reason why this instruction should say that.
+因此这个指令没理由存在\NSo there's no reason why this instruction should say that.
 
 212
 00:13:25,700 --> 00:13:29,452
-它应该表达 我们要把F赋值给EXP It should say, we'll assign to exp, f.
+它应该表达 我们要把F赋值给EXP\NIt should say, we'll assign to exp, f.
 
 213
 00:13:29,452 --> 00:13:31,875
-或者实际上 你完全不需要EXP Or in fact, you don't need exp at all.
+或者实际上 你完全不需要EXP\NOr in fact, you don't need exp at all.
 
 214
 00:13:31,875 --> 00:13:33,560
-没有理由显示需要EXP There's no reason it should have exp at all.
+没有理由显示需要EXP\NThere's no reason it should have exp at all.
 
 215
 00:13:33,560 --> 00:13:38,050
-EXP是用来做什么的? 我们看这里 What, what did exp get used for? Well, if we come down here
+EXP是用来做什么的? 我们看这里\NWhat, what did exp get used for? Well, if we come down here
 
 216
 00:13:40,775 --> 00:13:43,050
-我们对VAL赋值 we're going to assign to val
+我们对VAL赋值\Nwe're going to assign to val
 
 217
 00:13:43,050 --> 00:13:48,682
-在环境里的EXP里寻找东西 look up the stuff in exp in the environment.
+在环境里的EXP里寻找东西\Nlook up the stuff in exp in the environment.
 
 218
 00:13:48,682 --> 00:13:51,540
-因此在这里我们实际上要做的是去掉EXP寄存器 So what we really should do is get rid of the exp register altogether
+因此在这里我们实际上要做的是去掉EXP寄存器\NSo what we really should do is get rid of the exp register altogether
 
 219
 00:13:51,540 --> 00:13:54,450
-把这个指令修改为 给VAL赋值 and just change this instruction to say, assign to val
+把这个指令修改为 给VAL赋值\Nand just change this instruction to say, assign to val
 
 220
 00:13:54,450 --> 00:13:59,925
-在环境中查找符号F的值 look up the variable value of the symbol f in the environment.
+在环境中查找符号F的值\Nlook up the variable value of the symbol f in the environment.
 
 221
 00:14:01,098 --> 00:14:02,575
-类似地 Similarly
+类似地\NSimilarly
 
 222
 00:14:02,575 --> 00:14:04,725
-回到这里 我们也完全不需要UNEV back up here, we don't need unev at all
+回到这里 我们也完全不需要UNEV\Nback up here, we don't need unev at all
 
 223
 00:14:04,725 --> 00:14:06,225
-因为我们知道 because we know
+因为我们知道\Nbecause we know
 
 224
 00:14:06,225 --> 00:14:09,160
-因为我们知道这一块代码要从EXP中找的操作数 what the operands of fetch of exp are for this piece of code.
+因为我们知道这一块代码要从EXP中找的操作数\Nwhat the operands of fetch of exp are for this piece of code.
 
 225
 00:14:09,160 --> 00:14:11,160
-就是列表X It's the, it's the list x.
+就是列表X\NIt's the, it's the list x.
 
 226
 00:14:13,252 --> 00:14:15,160
-从某种意义上来说 So in some sense
+从某种意义上来说\NSo in some sense
 
 227
 00:14:16,175 --> 00:14:19,675
-你想完全抛掉UNEV和EXP you don't want unev and exp at all.
+你想完全抛掉UNEV和EXP\Nyou don't want unev and exp at all.
 
 228
 00:14:19,675 --> 00:14:22,660
-看看他们实际上是什么 See, what they really are in some sense
+看看他们实际上是什么\NSee, what they really are in some sense
 
 229
 00:14:22,660 --> 00:14:25,300
-它们不是它们实际运行机器的寄存器 those aren't registers of the actual machine that's supposed to run.
+它们不是它们实际运行机器的寄存器\Nthose aren't registers of the actual machine that's supposed to run.
 
 230
 00:14:25,300 --> 00:14:30,725
-它们是所模拟机器的寄存器 Those are registers that have to do with arranging the thing that can simulate that machine.
+它们是所模拟机器的寄存器\NThose are registers that have to do with arranging the thing that can simulate that machine.
 
 231
 00:14:30,725 --> 00:14:34,640
-所以它们保存一些表达式 So they're always going to hold expressions which
+所以它们保存一些表达式\NSo they're always going to hold expressions which
 
 232
 00:14:34,640 --> 00:14:36,950
-以编译器的视角看来 它们就是常量 from the compiler's point of view, are just constants, 
+以编译器的视角看来 它们就是常量\Nfrom the compiler's point of view, are just constants, 
 
 233
 00:14:36,950 --> 00:14:39,475
-因此你可以把它们直接放到代码中 so can be put right into the code.
+因此你可以把它们直接放到代码中\Nso can be put right into the code.
 
 234
 00:14:39,475 --> 00:14:42,700
-你可以忘掉对于EXP和UNEV的操作 So you can forget about all the operations worrying about exp and unev 
+你可以忘掉对于EXP和UNEV的操作\NSo you can forget about all the operations worrying about exp and unev 
 
 235
 00:14:42,700 --> 00:14:44,025
-只用那些常量 and just use those constants.
+只用那些常量\Nand just use those constants.
 
 236
 00:14:44,025 --> 00:14:48,000
-与之相似 如果我们回顾这里 Similarly, again, if we go, go back and look here
+与之相似 如果我们回顾这里\NSimilarly, again, if we go, go back and look here
 
 237
 00:14:48,000 --> 00:14:52,400
-有像(ASSIGN CONTINUE EVAL-ARGS)之类的语句 there are things like assign to continue eval-args.
+有像(ASSIGN CONTINUE EVAL-ARGS)之类的语句\Nthere are things like assign to continue eval-args.
 
 238
 00:14:53,750 --> 00:14:55,625
-现在 它和任何东西都没有关系 Now, that has nothing to do with anything.
+现在 它和任何东西都没有关系\NNow, that has nothing to do with anything.
 
 239
 00:14:55,625 --> 00:15:02,700
-它只是求值器维护了下一步需要去哪 That was just the evaluator keeping track of where it should go next
+它只是求值器维护了下一步需要去哪\NThat was just the evaluator keeping track of where it should go next
 
 240
 00:15:02,700 --> 00:15:06,825
-在某些应用中对参数进行求值 to evaluate the arguments in some, in some application.
+在某些应用中对参数进行求值\Nto evaluate the arguments in some, in some application.
 
 241
 00:15:06,825 --> 00:15:08,650
-当然 这与编译器没关系 But of course, that's irrelevant to the compiler, because you--
+当然 这与编译器没关系\NBut of course, that's irrelevant to the compiler, because you--
 
 242
 00:15:08,650 --> 00:15:15,050
-因为这个分析过程已经被编译器做完了 the analysis phase will have already done that.
+因为这个分析过程已经被编译器做完了\Nthe analysis phase will have already done that.
 
 243
 00:15:15,050 --> 00:15:17,700
-这与编译器完全无关 So this is completely irrelevant.
+这与编译器完全无关\NSo this is completely irrelevant.
 
 244
 00:15:17,700 --> 00:15:21,300
-因此大量这些赋值操作都是无用的 So a lot of these, these assignments to continue have not to do 
+因此大量这些赋值操作都是无用的\NSo a lot of these, these assignments to continue have not to do 
 
 245
 00:15:21,300 --> 00:15:26,075
-运行着的机器留着它们是为了跟踪它的状态 where the running machine is supposed to continue in keeping track of its state.
+运行着的机器留着它们是为了跟踪它的状态\Nwhere the running machine is supposed to continue in keeping track of its state.
 
 246
 00:15:26,075 --> 00:15:28,725
-#TBD It has to, to do with where the evaluator analysis should continue
+#TBD\NIt has to, to do with where the evaluator analysis should continue
 
 247
 00:15:28,725 --> 00:15:31,760
-而它们是完全无关的 所以我的可以去掉它们 and those are completely irrelevant. So we can get rid of them.
+而它们是完全无关的 所以我的可以去掉它们\Nand those are completely irrelevant. So we can get rid of them.
 
 248
 00:15:43,900 --> 00:15:47,750
-那么 如果我们简单地进行那些优化 Ok, well, if we, if we simply do that, make those kinds of optimizations 
+那么 如果我们简单地进行那些优化\NOk, well, if we, if we simply do that, make those kinds of optimizations 
 
 249
 00:15:47,750 --> 00:15:51,750
-不再担心EXP和UNEV get rid, get rid of worrying about exp and unev
+不再担心EXP和UNEV\Nget rid, get rid of worrying about exp and unev
 
 250
 00:15:51,750 --> 00:15:57,250
-去掉这些无关的寄存器赋值 and get rid of these irrelevant register assignments to continue
+去掉这些无关的寄存器赋值\Nand get rid of these irrelevant register assignments to continue
 
 251
 00:15:57,250 --> 00:16:04,175
-我们可以找到求值器本来会做的19条指令 then we can take this literal code these sort of 19 instructions that the 
+我们可以找到求值器本来会做的19条指令\Nthen we can take this literal code these sort of 19 instructions that the 
 
 252
 00:16:04,175 --> 00:16:08,360
-并把它们替换掉 that the evaluator would have done and then replace them. 
+并把它们替换掉\Nthat the evaluator would have done and then replace them. 
 
 253
 00:16:08,360 --> 00:16:10,800
-大家看幻灯片 Let's look at the, at the slide.
+大家看幻灯片\NLet's look at the, at the slide.
 
 254
 00:16:12,275 --> 00:16:16,100
-我们去掉其中一半 Replace them by--we get rid of about half of them. 
+我们去掉其中一半\NReplace them by--we get rid of about half of them.\N
 
 255
 00:16:18,100 --> 00:16:21,075
-同样 这就是某种过滤 And again, this is just sort of filtering
+同样 这就是某种过滤\NAnd again, this is just sort of filtering
 
 256
 00:16:21,075 --> 00:16:25,175
-把无关的东西去掉 what the evaluator would have done by getting rid of the irrelevant stuff.
+把无关的东西去掉\Nwhat the evaluator would have done by getting rid of the irrelevant stuff.
 
 257
 00:16:25,175 --> 00:16:27,475
-你看 And you see, for instance
+你看\NAnd you see, for instance
 
 258
 00:16:27,475 --> 00:16:31,740
-这里 求值器说对VAL赋值 here the--where the evaluator said, assign val, look up variable value
+这里 求值器说对VAL赋值\Nhere the--where the evaluator said, assign val, look up variable value
 
 259
 00:16:31,740 --> 00:16:34,880
-把(FETCH EXP)的值赋给它 这里我们把它放在常量F里 fetch of exp, here we have put in the constant f.
+把(FETCH EXP)的值赋给它 这里我们把它放在常量F里\Nfetch of exp, here we have put in the constant f.
 
 260
 00:16:34,880 --> 00:16:37,940
-这里我的放了常量X Here we've put in the constant x.
+这里我的放了常量X\NHere we've put in the constant x.
 
 261
 00:16:40,023 --> 00:16:43,799
-因此这是个稍好一些的编译器 So there's a, there's a little better compiler.
+因此这是个稍好一些的编译器\NSo there's a, there's a little better compiler.
 
 262
 00:16:43,799 --> 00:16:47,959
-但它还是比较蠢 It's still pretty dumb.
+但它还是比较蠢\NIt's still pretty dumb.
 
 263
 00:16:47,959 --> 00:16:50,455
-它仍会做很多蠢事 It's still doing a lot of dumb things.
+它仍会做很多蠢事\NIt's still doing a lot of dumb things.
 
 264
 00:16:50,455 --> 00:16:52,887
-我们再看幻灯片 Again, if we go look at the slide again
+我们再看幻灯片\NAgain, if we go look at the slide again
 
 265
 00:16:52,887 --> 00:16:54,999
-看最开头的地方 look at the very beginning here
+看最开头的地方\Nlook at the very beginning here
 
 266
 00:16:56,343 --> 00:16:59,351
-我们发现保存环境 we see a save the environment
+我们发现保存环境\Nwe see a save the environment
 
 267
 00:16:59,351 --> 00:17:01,800
-把某些东西赋值给VAL寄存器 assign something to the val register
+把某些东西赋值给VAL寄存器\Nassign something to the val register
 
 268
 00:17:01,800 --> 00:17:03,350
-然后恢复环境 and restore the environment.
+然后恢复环境\Nand restore the environment.
 
 269
 00:17:03,350 --> 00:17:04,919
-它是从哪来的 Where'd that come from?
+它是从哪来的\NWhere'd that come from?
 
 270
 00:17:04,919 --> 00:17:07,900
-它来自求值器的这个地方 That came from the evaluator back here saying
+它来自求值器的这个地方\NThat came from the evaluator back here saying
 
 271
 00:17:07,900 --> 00:17:11,100
-哦 我在求值一个应用的过程中 oh, I'm in the middle of evaluating an application.
+哦 我在求值一个应用的过程中\Noh, I'm in the middle of evaluating an application.
 
 272
 00:17:11,100 --> 00:17:15,800
-所以我要递归调用eval-dispatch So I'm going to recursively call eval dispatch. 
+所以我要递归调用eval-dispatch\NSo I'm going to recursively call eval dispatch.\N
 
 273
 00:17:15,800 --> 00:17:19,775
-我最好把接下来要用到的东西存下来 存到环境里 So I'd better save the thing I'm going to need later, which is the environment.
+我最好把接下来要用到的东西存下来 存到环境里\NSo I'd better save the thing I'm going to need later, which is the environment.
 
 274
 00:17:19,775 --> 00:17:23,140
-这就是递归调用eval dispatch的结果 This was the result of recursively calling eval dispatch. 
+这就是递归调用eval dispatch的结果\NThis was the result of recursively calling eval dispatch.\N
 
 275
 00:17:23,140 --> 00:17:26,500
-在刚才这个例子中是对符号F进行求值 It was evaluating the symbol f in that case.
+在刚才这个例子中是对符号F进行求值\NIt was evaluating the symbol f in that case.
 
 276
 00:17:26,500 --> 00:17:31,250
-从eval dispatch中返回 将环境恢复 Then it came back from eval dispatch, restored the environment.
+从eval dispatch中返回 将环境恢复\NThen it came back from eval dispatch, restored the environment.
 
 277
 00:17:31,250 --> 00:17:34,925
-实际上 这个求值过程中的进行的操作 But in fact, the actual thing it ended up doing
+实际上 这个求值过程中的进行的操作\NBut in fact, the actual thing it ended up doing
 
 278
 00:17:34,925 --> 00:17:38,675
-完全不会影响环境 in the evaluation is not going to hurt the environment at all.
+完全不会影响环境\Nin the evaluation is not going to hurt the environment at all.
 
 279
 00:17:38,675 --> 00:17:42,960
-所以这里没必要先保存环境 再恢复环境 So there's no reason to be saving the environment and restoring the environment here.
+所以这里没必要先保存环境 再恢复环境\NSo there's no reason to be saving the environment and restoring the environment here.
 
 280
 00:17:45,675 --> 00:17:48,550
-与之类似 Similarly
+与之类似\NSimilarly
 
 281
 00:17:49,600 --> 00:17:52,750
-这里我们保存了参数列表 here I'm saving the argument list.
+这里我们保存了参数列表\Nhere I'm saving the argument list.
 
 282
 00:17:53,075 --> 00:17:57,200
-那是一个参数求值循环 保存参数列表 That's a piece of the argument evaluation loop, saving the argument list
+那是一个参数求值循环 保存参数列表\NThat's a piece of the argument evaluation loop, saving the argument list
 
 283
 00:17:57,200 --> 00:17:58,650
-在这里恢复参数列表 and here you restore it.
+在这里恢复参数列表\Nand here you restore it.
 
 284
 00:17:58,650 --> 00:18:00,800
-事实上最后 But the actual thing that you ended up doing
+事实上最后\NBut the actual thing that you ended up doing
 
 285
 00:18:00,800 --> 00:18:02,848
-并没有变更参数列表 didn't trash the argument list.
+并没有变更参数列表\Ndidn't trash the argument list.
 
 286
 00:18:02,848 --> 00:18:05,475
-所以不需要保存它 So there was no reason to save it.
+所以不需要保存它\NSo there was no reason to save it.
 
 287
 00:18:08,650 --> 00:18:13,775
-换种方式来说 So another way to say, another way to say that
+换种方式来说\NSo another way to say, another way to say that
 
 288
 00:18:13,775 --> 00:18:19,875
-求值器不得不最大限度的保持悲观 is that the, the evaluator has to be maximally pessimistic
+求值器不得不最大限度的保持悲观\Nis that the, the evaluator has to be maximally pessimistic
 
 289
 00:18:19,875 --> 00:18:23,060
-因为 从它的视角来看 只知道接下来是要对某些东西进行求值 because as far from its point of view it's just going off to evaluate something.
+因为 从它的视角来看 只知道接下来是要对某些东西进行求值\Nbecause as far from its point of view it's just going off to evaluate something.
 
 290
 00:18:23,060 --> 00:18:26,125
-所以最好把后面要用到的都存下来 So it better save what it's going to need later.
+所以最好把后面要用到的都存下来\NSo it better save what it's going to need later.
 
 291
 00:18:26,125 --> 00:18:29,260
-一旦你完成了分析 编译器就是从另一种视角看问题了 But once you've done the analysis, the compiler is in a position to say
+一旦你完成了分析 编译器就是从另一种视角看问题了\NBut once you've done the analysis, the compiler is in a position to say
 
 292
 00:18:29,260 --> 00:18:32,125
-哪些是我真正需要存下来的? well, what actually did I need to save?
+哪些是我真正需要存下来的?\Nwell, what actually did I need to save?
 
 293
 00:18:32,125 --> 00:18:37,300
-它不需要像求值器一样小心翼翼 And doesn't need to do any-- it doesn't need to be as careful as the evaluator
+它不需要像求值器一样小心翼翼\NAnd doesn't need to do any-- it doesn't need to be as careful as the evaluator
 
 294
 00:18:37,300 --> 00:18:39,693
-因为它知道哪些才是真正需要的 because it knows what it actually needs
+因为它知道哪些才是真正需要的\Nbecause it knows what it actually needs
 
 295
 00:18:39,693 --> 00:18:42,500
-在任何情况下 如果我们 Well, in any case, if we do that
+在任何情况下 如果我们\NWell, in any case, if we do that
 
 296
 00:18:42,500 --> 00:18:46,400
-去除所有多余的保存和恢复 and eliminate all those redundant saves and restores
+去除所有多余的保存和恢复\Nand eliminate all those redundant saves and restores
 
 297
 00:18:46,400 --> 00:18:49,900
-那么我们可以得到这样的结果 then we can get it down to this.
+那么我们可以得到这样的结果\Nthen we can get it down to this.
 
 298
 00:18:49,900 --> 00:18:54,075
-可以发现 只有三个指令是必须的 And you see there are actually only three instructions that we actually need
+可以发现 只有三个指令是必须的\NAnd you see there are actually only three instructions that we actually need
 
 299
 00:18:54,075 --> 00:18:55,975
-从刚才的11条指令优化成这样 down from the initial 11 or so
+从刚才的11条指令优化成这样\Ndown from the initial 11 or so
 
 300
 00:18:55,975 --> 00:18:59,875
-或是从原始的20条指令优化而来 or the initial 20 or so in the original one.
+或是从原始的20条指令优化而来\Nor the initial 20 or so in the original one.
 
 301
 00:18:59,875 --> 00:19:03,275
-对于这些寄存器操作 And that's just saying, of those register operations
+对于这些寄存器操作\NAnd that's just saying, of those register operations
 
 302
 00:19:03,275 --> 00:19:05,760
-哪些是必需的? which ones did we actually need?
+哪些是必需的?\Nwhich ones did we actually need?
 
 303
 00:19:09,425 --> 00:19:14,260
-我们换个方式概括 来看看稍好一些的图片 Let me just sort of summarize that in another way, just to show you in a little better picture.
+我们换个方式概括 来看看稍好一些的图片\NLet me just sort of summarize that in another way, just to show you in a little better picture.
 
 304
 00:19:16,000 --> 00:19:18,020
-这个图片 Here's a picture of starting--
+这个图片\NHere's a picture of starting--
 
 305
 00:19:18,775 --> 00:19:22,675
-展示了所有的保存和恢复 This is looking at all the saves and restores.
+展示了所有的保存和恢复\NThis is looking at all the saves and restores.
 
 306
 00:19:23,500 --> 00:19:25,325
-这里是表达式(F X) So here's the expression, f of x
+这里是表达式(F X)\NSo here's the expression, f of x
 
 307
 00:19:25,325 --> 00:19:28,755
-在下面这里 and then this traces through, on the bottom here
+在下面这里\Nand then this traces through, on the bottom here
 
 308
 00:19:28,755 --> 00:19:32,520
-是对求值器中各种地方的跟踪 the various places in the evaluator
+是对求值器中各种地方的跟踪\Nthe various places in the evaluator
 
 309
 00:19:34,975 --> 00:19:38,040
-在求值发生时会使用这些地方 that were passed when the evaluation happened.
+在求值发生时会使用这些地方\Nthat were passed when the evaluation happened.
 
 310
 00:19:38,040 --> 00:19:40,225
-在这里 你可以看到箭头 And then here, here you see arrows.
+在这里 你可以看到箭头\NAnd then here, here you see arrows.
 
 311
 00:19:40,225 --> 00:19:42,400
-向下的箭头表示寄存器被保存了 Arrow down means register saved.
+向下的箭头表示寄存器被保存了\NArrow down means register saved.
 
 312
 00:19:42,400 --> 00:19:46,825
-所以发生的第一件事就是保存环境 So the first thing that happened is the environment got saved.
+所以发生的第一件事就是保存环境\NSo the first thing that happened is the environment got saved.
 
 313
 00:19:46,825 --> 00:19:50,475
-在这里 环境恢复了 And over here, the environment got restored.
+在这里 环境恢复了\NAnd over here, the environment got restored.
 
 314
 00:19:50,475 --> 00:19:56,125
-这些都是成对的栈操作 And these-- so there are all the pairs of stack operations.
+这些都是成对的栈操作\NAnd these-- so there are all the pairs of stack operations.
 
 315
 00:19:56,125 --> 00:19:58,125
-如果你更进一步 Now, if you go ahead and say
+如果你更进一步\NNow, if you go ahead and say
 
 316
 00:19:58,125 --> 00:20:00,780
-我们记得 well, let's remember that we don't--that unev
+我们记得\Nwell, let's remember that we don't--that unev
 
 317
 00:20:00,780 --> 00:20:03,920
-UNEV是个完全无用的寄存器 for instance, is a completely useless register.
+UNEV是个完全无用的寄存器\Nfor instance, is a completely useless register.
 
 318
 00:20:07,800 --> 00:20:09,780
-如果我们用固定结构的代码 And if we use the constant structure of the code
+如果我们用固定结构的代码\NAnd if we use the constant structure of the code
 
 319
 00:20:09,780 --> 00:20:13,080
-就不需要保存UNEV 我们完全不需要UNEV well, we don't need, we don't need to save unev.
+就不需要保存UNEV 我们完全不需要UNEV\Nwell, we don't need, we don't need to save unev.
 
 320
 00:20:16,200 --> 00:20:20,408
-取决于我们如何设置调用其他东西规则 And then, depending on how we set up the discipline of the--
+取决于我们如何设置调用其他东西规则\NAnd then, depending on how we set up the discipline of the--
 
 321
 00:20:20,408 --> 00:20:24,620
-我们可能会也可能不会去保存CONTINUE of calling other things that apply, we may or may not need to save continue.
+我们可能会也可能不会去保存CONTINUE\Nof calling other things that apply, we may or may not need to save continue.
 
 322
 00:20:27,400 --> 00:20:28,740
-这就是我们做的第一件事 That's the first step I did.
+这就是我们做的第一件事\NThat's the first step I did.
 
 323
 00:20:28,740 --> 00:20:33,075
-然后我们可以看看 什么是真正需要的 And then we can look and see what's actually, what's actually needed.
+然后我们可以看看 什么是真正需要的\NAnd then we can look and see what's actually, what's actually needed.
 
 324
 00:20:33,075 --> 00:20:36,040
-我们其实不需要保存ENV See, we don't-- didn't really need to save env 
+我们其实不需要保存ENV\NSee, we don't-- didn't really need to save env 
 
 325
 00:20:36,040 --> 00:20:38,088
-或者交叉求值F or cross-evaluating f
+或者交叉求值F\Nor cross-evaluating f
 
 326
 00:20:38,088 --> 00:20:39,920
-因为它不会被破坏 because it wouldn't, it wouldn't trash it.
+因为它不会被破坏\Nbecause it wouldn't, it wouldn't trash it.
 
 327
 00:20:39,920 --> 00:20:42,240
-因此 如果我们可以借助这一特点 So if we take advantage of that
+因此 如果我们可以借助这一特点\NSo if we take advantage of that
 
 328
 00:20:44,125 --> 00:20:48,575
-这里对F的求值 and see the evaluation of f here
+这里对F的求值\Nand see the evaluation of f here
 
 329
 00:20:48,575 --> 00:20:52,600
-完全不需要担心会破坏ENV doesn't really need to worry about, about hurting env.
+完全不需要担心会破坏ENV\Ndoesn't really need to worry about, about hurting env.
 
 330
 00:20:52,600 --> 00:20:57,175
-类似地 对于X的求值 And similarly, the evaluation of x here
+类似地 对于X的求值\NAnd similarly, the evaluation of x here
 
 331
 00:20:57,175 --> 00:20:59,520
-当求值器进行求值时 它会说 噢 when the evaluator did that it said
+当求值器进行求值时 它会说 噢\Nwhen the evaluator did that it said
 
 332
 00:20:59,520 --> 00:21:02,072
-我最好保存好与之有关的函数寄存器 I'd better preserve the function register around that
+我最好保存好与之有关的函数寄存器\NI'd better preserve the function register around that
 
 333
 00:21:02,072 --> 00:21:03,220
-因为我过会可能会需要它们 because I might need it later.
+因为我过会可能会需要它们\Nbecause I might need it later.
 
 334
 00:21:03,220 --> 00:21:05,950
-我最好保存参数列表 And I better preserve the argument list. 
+我最好保存参数列表\NAnd I better preserve the argument list.\N
 
 335
 00:21:06,900 --> 00:21:09,200
-然而 在这如果是编译器的话 Whereas the compiler is now in a position to know
+然而 在这如果是编译器的话\NWhereas the compiler is now in a position to know
 
 336
 00:21:09,200 --> 00:21:12,700
-它会知道我们实际上不需要进行那些保存和恢复 well, we didn't really need to save-- to do those saves and restores.
+它会知道我们实际上不需要进行那些保存和恢复\Nwell, we didn't really need to save-- to do those saves and restores.
 
 337
 00:21:12,700 --> 00:21:15,050
-事实上 求值器做的所有栈操作 So in fact, all of the stack operations
+事实上 求值器做的所有栈操作\NSo in fact, all of the stack operations
 
 338
 00:21:15,050 --> 00:21:19,620
-都是不必要的或过于悲观的 done by the evaluator turned out to be unnecessary or overly pessimistic.
+都是不必要的或过于悲观的\Ndone by the evaluator turned out to be unnecessary or overly pessimistic.
 
 339
 00:21:19,620 --> 00:21:22,020
-而编译器在这里是知道这一点的 And the compiler is in a position to know that.
+而编译器在这里是知道这一点的\NAnd the compiler is in a position to know that.
 
 340
 00:21:27,350 --> 00:21:29,150
-这是最基础的想法 Well that's the basic idea.
+这是最基础的想法\NWell that's the basic idea.
 
 341
 00:21:29,800 --> 00:21:31,000
-我们拿来求值器 We take the evaluator
+我们拿来求值器\NWe take the evaluator
 
 342
 00:21:31,000 --> 00:21:33,240
-去除你不需要的东西 we eliminate the things that you don't need
+去除你不需要的东西\Nwe eliminate the things that you don't need
 
 343
 00:21:33,240 --> 00:21:35,240
-去除那些对于编译器完全无用的东西 that in some sense have nothing to do with the compiler at all
+去除那些对于编译器完全无用的东西\Nthat in some sense have nothing to do with the compiler at all
 
 344
 00:21:35,240 --> 00:21:36,740
-只剩下求值器 just the evaluator
+只剩下求值器\Njust the evaluator
 
 345
 00:21:36,740 --> 00:21:40,825
-然后你可以看到哪些栈操作是不必要的 and then you see which stack operations are unnecessary.
+然后你可以看到哪些栈操作是不必要的\Nand then you see which stack operations are unnecessary.
 
 346
 00:21:40,825 --> 00:21:45,040
-这就是书中说的编译器的基本结构 That's the basic structure of the compiler that's described in the book.
+这就是书中说的编译器的基本结构\NThat's the basic structure of the compiler that's described in the book.
 
 347
 00:21:45,040 --> 00:21:51,200
-我给你展示一下这个简单的例子 Let me just show you how that examples a little bit too simple.
+我给你展示一下这个简单的例子\NLet me just show you how that examples a little bit too simple.
 
 348
 00:21:51,200 --> 00:21:53,600
-为了展示你是如何保存了多余的东西 To see how you, how you actually save a lot
+为了展示你是如何保存了多余的东西\NTo see how you, how you actually save a lot
 
 349
 00:21:53,600 --> 00:21:58,150
-我们来看看这个稍复杂的表达式 let's look at a little bit more complicated expression.
+我们来看看这个稍复杂的表达式\Nlet's look at a little bit more complicated expression.
 
 350
 00:21:58,150 --> 00:22:03,875
@@ -1400,1365 +1400,1365 @@ UNEV是个完全无用的寄存器 for instance, is a completely useless registe
 
 351
 00:22:03,875 --> 00:22:06,400
-我们不会浏览所有的代码 And I'm not going to go through all the code.
+我们不会浏览所有的代码\NAnd I'm not going to go through all the code.
 
 352
 00:22:06,400 --> 00:22:09,725
-因为代码有点多 There's a, there's a fair pile of it.
+因为代码有点多\NThere's a, there's a fair pile of it.
 
 353
 00:22:09,725 --> 00:22:12,350
-我认为在求值器在处理它时 I think there are, there are something like 
+我认为在求值器在处理它时\NI think there are, there are something like 
 
 354
 00:22:12,350 --> 00:22:17,000
-大概会产生16对保存和恢复 16 pairs of register saves and restores as the evaluator walks through that.
+大概会产生16对保存和恢复\N16 pairs of register saves and restores as the evaluator walks through that.
 
 355
 00:22:17,000 --> 00:22:20,579
-这有一张图表 Here's a diagram of them.
+这有一张图表\NHere's a diagram of them.
 
 356
 00:22:20,579 --> 00:22:22,575
-你可以看到发生了什么 Let's see. You see what's going on.
+你可以看到发生了什么\NLet's see. You see what's going on.
 
 357
 00:22:22,975 --> 00:22:24,250
-你从这里开始-- You start out by--
+你从这里开始--\NYou start out by--
 
 358
 00:22:24,250 --> 00:22:26,900
-求值器说 我即将进行应用 the evaluator says, oh, I'm about to do an application.
+求值器说 我即将进行应用\Nthe evaluator says, oh, I'm about to do an application.
 
 359
 00:22:26,900 --> 00:22:30,650
-我要保存环境 从这里恢复环境 I'll preserve the environment. I'll restore it here.
+我要保存环境 从这里恢复环境\NI'll preserve the environment. I'll restore it here.
 
 360
 00:22:30,650 --> 00:22:35,950
-然后我要处理第一个运算对象 Then I'm about to do the first operand.
+然后我要处理第一个运算对象\NThen I'm about to do the first operand.
 
 361
 00:22:35,950 --> 00:22:39,280
-这是一个调用求值器的递归 Here it recursively goes to the evaluator.
+这是一个调用求值器的递归\NHere it recursively goes to the evaluator.
 
 362
 00:22:39,280 --> 00:22:42,100
-求值器发现 这是一个应用 我要保存环境 The evaluator says, oh, this is an application, I'll save the environment
+求值器发现 这是一个应用 我要保存环境\NThe evaluator says, oh, this is an application, I'll save the environment
 
 363
 00:22:42,100 --> 00:22:45,800
-进行组合操作 在这恢复环境 do the operator of that combination, restore it here.
+进行组合操作 在这恢复环境\Ndo the operator of that combination, restore it here.
 
 364
 00:22:45,800 --> 00:22:49,775
-这个保存 这个恢复与这个保存相匹配 This save--this restore matches that save. 
+这个保存 这个恢复与这个保存相匹配\NThis save--this restore matches that save. 
 
 365
 00:22:49,775 --> 00:22:51,650
-以此类推 And so on.
+以此类推\NAnd so on.
 
 366
 00:22:51,650 --> 00:22:54,970
-这里的UNEV完全没有必要存在 There's unev here, which turns out to be completely unnecessary
+这里的UNEV完全没有必要存在\NThere's unev here, which turns out to be completely unnecessary
 
 367
 00:22:54,970 --> 00:22:57,425
-CONTINUE在这里自己鬼畜 continues getting bumped around here.
+CONTINUE在这里自己鬼畜\Ncontinues getting bumped around here.
 
 368
 00:22:57,425 --> 00:23:05,100
-FUN寄存器在处理运算对象期间被保存 The function register is getting, getting saved across the first operands, across the operands. 
+FUN寄存器在处理运算对象期间被保存\NThe function register is getting, getting saved across the first operands, across the operands.\N
 
 369
 00:23:05,100 --> 00:23:06,782
-这类的事情一直在发生 All sorts of things are going on.
+这类的事情一直在发生\NAll sorts of things are going on.
 
 370
 00:23:06,782 --> 00:23:09,390
-但如果你问 哪些是 But if you say, well, what of those really were the business of
+但如果你问 哪些是\NBut if you say, well, what of those really were the business of
 
 371
 00:23:09,390 --> 00:23:12,275
-编译器与求值器正好相反之处? the compiler as opposed to the evaluator
+编译器与求值器正好相反之处?\Nthe compiler as opposed to the evaluator
 
 372
 00:23:12,275 --> 00:23:14,300
-你把整个都去掉了 you get rid of a whole bunch.
+你把整个都去掉了\Nyou get rid of a whole bunch.
 
 373
 00:23:14,300 --> 00:23:17,500
-#TBD And then on top of that, if you say things like
+#TBD\NAnd then on top of that, if you say things like
 
 374
 00:23:19,400 --> 00:23:23,825
-对F的求值不会破坏环境寄存器 the evaluation of F doesn't hurt the environment register,
+对F的求值不会破坏环境寄存器\Nthe evaluation of F doesn't hurt the environment register,
 
 375
 00:23:23,825 --> 00:23:28,525
-或者对符号X的查找 or simply looking up the symbol X,
+或者对符号X的查找\Nor simply looking up the symbol X,
 
 376
 00:23:29,280 --> 00:23:33,700
-你不需要为了它们保护函数寄存器 you don't have to protect the function register against that.
+你不需要为了它们保护函数寄存器\Nyou don't have to protect the function register against that.
 
 377
 00:23:34,300 --> 00:23:39,250
-因此你归结为这里的一对#TBD   So you come down to just a couple of, a couple of pairs here. 
+因此你归结为这里的一对#TBD  \NSo you come down to just a couple of, a couple of pairs here. 
 
 378
 00:23:40,250 --> 00:23:42,275
-然而 你还可以再优化一下 And still, you can do a little better.
+然而 你还可以再优化一下\NAnd still, you can do a little better.
 
 379
 00:23:42,275 --> 00:23:44,330
-看看这里的环境寄存器发生了什么 Look what's going on here with the environment register. 
+看看这里的环境寄存器发生了什么\NLook what's going on here with the environment register. 
 
 380
 00:23:45,210 --> 00:23:49,175
-环境寄存器来了 说 The environment register comes along and says, oh,
+环境寄存器来了 说\NThe environment register comes along and says, oh,
 
 381
 00:23:51,000 --> 00:23:53,900
-噢 这是一个组合操作 oh, here's a combination.
+噢 这是一个组合操作\Noh, here's a combination.
 
 382
 00:23:54,420 --> 00:23:55,780
-这个求值器 This evaluator, by the way,
+这个求值器\NThis evaluator, by the way,
 
 383
 00:23:55,780 --> 00:23:57,270
-不知道关于G的任何事情 doesn't know anything about G.
+不知道关于G的任何事情\Ndoesn't know anything about G.
 
 384
 00:23:58,570 --> 00:24:00,875
-所以在这 它说 So here it says, so it says, 
+所以在这 它说\NSo here it says, so it says, 
 
 385
 00:24:00,875 --> 00:24:03,675
-我最好保存环境寄存器 I'd better save the environment register,
+我最好保存环境寄存器\NI'd better save the environment register,
 
 386
 00:24:03,675 --> 00:24:07,510
-因为对G的求值可能有某些代码会破坏它 because evaluating G might be some arbitrary piece of code that would trash it
+因为对G的求值可能有某些代码会破坏它\Nbecause evaluating G might be some arbitrary piece of code that would trash it
 
 387
 00:24:07,550 --> 00:24:09,875
-而我过一会可能会需要它 and I'm going to need it later,
+而我过一会可能会需要它\Nand I'm going to need it later,
 
 388
 00:24:09,875 --> 00:24:11,825
-在这个参数之后 after this argument,
+在这个参数之后\Nafter this argument,
 
 389
 00:24:11,825 --> 00:24:13,825
-处理第二个参数的时候 for doing the second argument.
+处理第二个参数的时候\Nfor doing the second argument.
 
 390
 00:24:15,600 --> 00:24:18,050
-这就是为什么这个东西没被干掉 So that's why this one didn't go away,
+这就是为什么这个东西没被干掉\NSo that's why this one didn't go away,
 
 391
 00:24:19,075 --> 00:24:22,540
-因为编译器没有对G将要做的事情做任何假设 because the compiler made no assumptions about what G would do.
+因为编译器没有对G将要做的事情做任何假设\Nbecause the compiler made no assumptions about what G would do.
 
 392
 00:24:22,540 --> 00:24:23,800
-另一方面 On the other hand,
+另一方面\NOn the other hand,
 
 393
 00:24:24,610 --> 00:24:26,580
-如果你看看这里的第二个参数 if you look at what the second argument is,
+如果你看看这里的第二个参数\Nif you look at what the second argument is,
 
 394
 00:24:26,580 --> 00:24:27,700
-它只是一次查找 that's just looking up one.
+它只是一次查找\Nthat's just looking up one.
 
 395
 00:24:27,700 --> 00:24:29,900
-的确不需要这个环境寄存器 That doesn't need this environment register. 
+的确不需要这个环境寄存器\NThat doesn't need this environment register. 
 
 396
 00:24:30,775 --> 00:24:32,200
-因此没必要保存它 So there's no reason to save it. 
+因此没必要保存它\NSo there's no reason to save it. 
 
 397
 00:24:32,200 --> 00:24:34,200
-事实上 你也可以把这个也去掉 So in fact, you can get rid of that one, too. 
+事实上 你也可以把这个也去掉\NSo in fact, you can get rid of that one, too. 
 
 398
 00:24:34,850 --> 00:24:37,810
-这一堆寄存器操作 And from this whole pile of, of register operations,
+这一堆寄存器操作\NAnd from this whole pile of, of register operations,
 
 399
 00:24:37,810 --> 00:24:40,550
-如果你像之前一样做些简单的推理 if you simply do a little bit of reasoning like that,
+如果你像之前一样做些简单的推理\Nif you simply do a little bit of reasoning like that,
 
 400
 00:24:40,550 --> 00:24:44,525
-只会剩下两对保存和恢复 you get down to, I think, just two pairs of saves and restores.
+只会剩下两对保存和恢复\Nyou get down to, I think, just two pairs of saves and restores.
 
 401
 00:24:44,900 --> 00:24:50,850
-而这些 如果你知道关于G的某些信息的话 可以进一步处理 And those, in fact, could go away further if you, if you knew something about G.
+而这些 如果你知道关于G的某些信息的话 可以进一步处理\NAnd those, in fact, could go away further if you, if you knew something about G.
 
 402
 00:24:56,275 --> 00:24:57,950
-通常的想法是 So again, the general idea is
+通常的想法是\NSo again, the general idea is
 
 403
 00:24:57,950 --> 00:24:59,980
-编译器更好的原因是 that the reason the compiler can be better
+编译器更好的原因是\Nthat the reason the compiler can be better
 
 404
 00:24:59,980 --> 00:25:03,250
-解释器对于即将遇到的东西一无所知 is that the interpreter doesn't know what it's about to encounter.
+解释器对于即将遇到的东西一无所知\Nis that the interpreter doesn't know what it's about to encounter.
 
 405
 00:25:03,250 --> 00:25:07,900
-它不得不以最悲观的方式保存东西 来保护它自己 It has to be maximally pessimistic in saving things to protect itself. 
+它不得不以最悲观的方式保存东西 来保护它自己\NIt has to be maximally pessimistic in saving things to protect itself. 
 
 406
 00:25:07,900 --> 00:25:13,375
-而编译器只需要处理真正需要保存的东西 The compiler only has to deal with what actually had to be saved. 
+而编译器只需要处理真正需要保存的东西\NThe compiler only has to deal with what actually had to be saved. 
 
 407
 00:25:13,375 --> 00:25:17,370
-某个东西不需要保存 有两种可能 And there are two reasons that something might not have to be saved.      
+某个东西不需要保存 有两种可能\NAnd there are two reasons that something might not have to be saved.      
 
 408
 00:25:17,820 --> 00:25:18,700
-一种可能是 One is that
+一种可能是\NOne is that
 
 409
 00:25:18,700 --> 00:25:21,852
-你保护的东西事实上不会修改寄存器 what you're protecting it against, in fact, didn't trash the register,
+你保护的东西事实上不会修改寄存器\Nwhat you're protecting it against, in fact, didn't trash the register,
 
 410
 00:25:21,852 --> 00:25:23,610
-例如对变量的查找 like it was just a variable look-up.
+例如对变量的查找\Nlike it was just a variable look-up.
 
 411
 00:25:24,120 --> 00:25:25,325
-另一种可能是 And the other one is,
+另一种可能是\NAnd the other one is,
 
 412
 00:25:25,325 --> 00:25:30,275
-你存的东西最后并不会被用到 that the thing that you were saving it for might turn out not to actually need it. 
+你存的东西最后并不会被用到\Nthat the thing that you were saving it for might turn out not to actually need it. 
 
 413
 00:25:30,675 --> 00:25:32,425
-这就是 So those are the
+这就是\NSo those are the
 
 414
 00:25:32,800 --> 00:25:39,825
-编译器能让代码运行更有效率的两个基本知识 two basic pieces of knowledge that the compiler can take advantage of in making the code more efficient.  
+编译器能让代码运行更有效率的两个基本知识\Ntwo basic pieces of knowledge that the compiler can take advantage of in making the code more efficient.  
 
 415
 00:25:44,275 --> 00:25:46,550
-现在是提问时间 Let's break for questions. 
+现在是提问时间\NLet's break for questions. 
 
 416
 00:25:51,200 --> 00:25:53,100
-学生: 你一直在说非求值寄存器UNEV AUDIENCE: You kept saying that the uneval register,
+学生: 你一直在说非求值寄存器UNEV\NAUDIENCE: You kept saying that the uneval register,
 
 417
 00:25:53,100 --> 00:25:55,960
-UNEV寄存器完全不会被用到 unev register didn't need to be used at all.
+UNEV寄存器完全不会被用到\Nunev register didn't need to be used at all.
 
 418
 00:25:55,960 --> 00:25:58,900
-这是否意味着你只需要map一个6个寄存器机器？ Does that mean that you could just map a six-register machine? 
+这是否意味着你只需要map一个6个寄存器机器？\NDoes that mean that you could just map a six-register machine? 
 
 419
 00:25:58,900 --> 00:26:01,180
-或者 只是在这个特殊的例子里 它不会被用到? Or is that, in this particular example, it didn't need to be used?   
+或者 只是在这个特殊的例子里 它不会被用到?\NOr is that, in this particular example, it didn't need to be used?   
 
 420
 00:26:01,725 --> 00:26:02,810
-教授: 对于编译器 PROFESSOR: For the compiler,
+教授: 对于编译器\NPROFESSOR: For the compiler,
 
 421
 00:26:04,310 --> 00:26:06,320
-你可以生成6个寄存器 you could generate code for the six-register,
+你可以生成6个寄存器\Nyou could generate code for the six-register,
 
 422
 00:26:06,720 --> 00:26:10,090
-  其实是5个寄存器的代码，因为EXP也被干掉了 five, right? Because that exp goes away also. 
+  其实是5个寄存器的代码，因为EXP也被干掉了\Nfive, right? Because that exp goes away also. 
 
 423
 00:26:11,675 --> 00:26:14,575
-是的 你可以把EXP和UNEV都去掉 Assuming--yeah, you can get rid of both exp and unev
+是的 你可以把EXP和UNEV都去掉\NAssuming--yeah, you can get rid of both exp and unev
 
 424
 00:26:14,575 --> 00:26:16,875
-因为这些是求值器的数据结构 because, see, those are data structures of the evaluator.
+因为这些是求值器的数据结构\Nbecause, see, those are data structures of the evaluator.
 
 425
 00:26:17,360 --> 00:26:20,870
-以编译器的视角来看 这些东西都是常量 Those are all things that would be constants from the point of view of the compiler.
+以编译器的视角来看 这些东西都是常量\NThose are all things that would be constants from the point of view of the compiler.
 
 426
 00:26:21,650 --> 00:26:23,200
-关键在于 The only thing is
+关键在于\NThe only thing is
 
 427
 00:26:23,200 --> 00:26:24,790
-这个特殊的编译器是被构造出来的 this particular compiler is set up
+这个特殊的编译器是被构造出来的\Nthis particular compiler is set up
 
 428
 00:26:24,790 --> 00:26:28,171
-因此被解释的代码和被编译的代码可以共存 so that interpreted code and compiled code can coexist.
+因此被解释的代码和被编译的代码可以共存\Nso that interpreted code and compiled code can coexist.
 
 429
 00:26:29,320 --> 00:26:30,720
-可以这样看待它 So the way to think about it is,
+可以这样看待它\NSo the way to think about it is,
 
 430
 00:26:30,970 --> 00:26:32,290
-你构建了一个芯片 is maybe you build a chip
+你构建了一个芯片\Nis maybe you build a chip
 
 431
 00:26:34,300 --> 00:26:35,500
-它就是求值器 which is the evaluator,
+它就是求值器\Nwhich is the evaluator,
 
 432
 00:26:35,880 --> 00:26:39,050
-而编译器可以做的事情是 为这个芯片生成代码 and what the compiler might do is generate code for that chip.
+而编译器可以做的事情是 为这个芯片生成代码\Nand what the compiler might do is generate code for that chip.
 
 433
 00:26:40,400 --> 00:26:42,792
-只是它不会用到两个寄存器而已 It just wouldn't use two of the registers. 
+只是它不会用到两个寄存器而已\NIt just wouldn't use two of the registers. 
 
 434
 00:26:51,520 --> 00:26:52,470
-好 休息一会 All right, let's take a break. 
+好 休息一会\NAll right, let's take a break. 
 
 435
 00:26:53,550 --> 00:27:12,575
-[音乐] [JESU, JOY OF MAN'S DESIRING]
+[音乐]\N[JESU, JOY OF MAN'S DESIRING]
 
 436
 00:27:14,825 --> 00:27:29,075
-[音乐] [JESU, JOY OF MAN'S DESIRING]
+[音乐]\N[JESU, JOY OF MAN'S DESIRING]
 
 437
 00:27:29,075 --> 00:27:32,580
-我们刚才研究了编译器会被用来做什么 We just looked at what the compiler is supposed to do.
+我们刚才研究了编译器会被用来做什么\NWe just looked at what the compiler is supposed to do.
 
 438
 00:27:32,780 --> 00:27:36,150
-现在我们来简略看看 Now let's very briefly look at how,
+现在我们来简略看看\NNow let's very briefly look at how,
 
 439
 00:27:36,150 --> 00:27:37,800
-这些目标如何达成 how this gets accomplished.
+这些目标如何达成\Nhow this gets accomplished.
 
 440
 00:27:38,260 --> 00:27:39,970
-而我不会给出细节 And I'm going to give no details. 
+而我不会给出细节\NAnd I'm going to give no details. 
 
 441
 00:27:40,350 --> 00:27:43,420
-在书中有一大堆代码 展示了所有细节 There's, there's a giant pile of code in the book that gives all the details. 
+在书中有一大堆代码 展示了所有细节\NThere's, there's a giant pile of code in the book that gives all the details. 
 
 442
 00:27:43,420 --> 00:27:45,310
-我要做的 But what I want to do is just show you the,
+我要做的\NBut what I want to do is just show you the,
 
 443
 00:27:45,620 --> 00:27:47,260
-是给你们展示关键的思想 the essential idea here.
+是给你们展示关键的思想\Nthe essential idea here.
 
 444
 00:27:49,490 --> 00:27:51,400
-换个时间再来关心细节 Worry about the details some other time. 
+换个时间再来关心细节\NWorry about the details some other time. 
 
 445
 00:27:51,510 --> 00:27:55,300
-设想我们正在编译表达式 Let's imagine that we're compiling an expression
+设想我们正在编译表达式\NLet's imagine that we're compiling an expression
 
 446
 00:27:55,300 --> 00:27:57,010
-这里有一些运算符 that looks like there's some operator
+这里有一些运算符\Nthat looks like there's some operator
 
 447
 00:27:57,480 --> 00:28:01,550
-和两个参数 and there are two arguments.
+和两个参数\Nand there are two arguments.
 
 448
 00:28:03,560 --> 00:28:04,240
-现在 Now, the--
+现在\NNow, the--
 
 449
 00:28:06,275 --> 00:28:08,140
-这个编译器会生成什么代码? what's the code that the compiler should generate?
+这个编译器会生成什么代码?\Nwhat's the code that the compiler should generate?
 
 450
 00:28:08,850 --> 00:28:09,780
-首先 Well, first of all, 
+首先\NWell, first of all, 
 
 451
 00:28:09,830 --> 00:28:11,900
-它会递归运行 it should recursively go off
+它会递归运行\Nit should recursively go off
 
 452
 00:28:11,900 --> 00:28:14,375
-编译这些运算符 and compile the operator.
+编译这些运算符\Nand compile the operator.
 
 453
 00:28:14,375 --> 00:28:19,975
-它说 我要编译这些运算符 So it says, I'll compile the operator.   
+它说 我要编译这些运算符\NSo it says, I'll compile the operator.   
 
 454
 00:28:21,160 --> 00:28:24,750
-最后我需要的是 And where I'm going to need that 
+最后我需要的是\NAnd where I'm going to need that 
 
 455
 00:28:24,750 --> 00:28:27,950
- 让它们的结果在FUN寄存器中 is to be in the function register, eventually. 
+ 让它们的结果在FUN寄存器中\Nis to be in the function register, eventually. 
 
 456
 00:28:28,425 --> 00:28:30,400
-所以我编译一些指令 So I'll compile some instructions
+所以我编译一些指令\NSo I'll compile some instructions
 
 457
 00:28:30,400 --> 00:28:31,670
-它们会编译运算符 that will compile the operator
+它们会编译运算符\Nthat will compile the operator
 
 458
 00:28:31,690 --> 00:28:40,275
-最后把结果放在FUN寄存器中 and end up with the result in the function register.
+最后把结果放在FUN寄存器中\Nand end up with the result in the function register.
 
 459
 00:28:45,510 --> 00:28:46,940
-接下来我要做的是 The next thing it's going to do,
+接下来我要做的是\NThe next thing it's going to do,
 
 460
 00:28:47,710 --> 00:28:49,680
-另一个片段说 another piece is to say,
+另一个片段说\Nanother piece is to say,
 
 461
 00:28:49,680 --> 00:28:55,175
-我要编译第一个参数 I have to compile the first argument.  
+我要编译第一个参数\NI have to compile the first argument.  
 
 462
 00:28:55,175 --> 00:28:57,175
-因此它递归调用自己 So it calls itself recursively. 
+因此它递归调用自己\NSo it calls itself recursively. 
 
 463
 00:28:58,040 --> 00:29:03,470
-而结果会被放在VAL中 And let's say the result will go into val.   
+而结果会被放在VAL中\NAnd let's say the result will go into val.   
 
 464
 00:29:09,070 --> 00:29:10,750
-接下来需要做的是 And then what it's going to need to do is 
+接下来需要做的是\NAnd then what it's going to need to do is 
 
 465
 00:29:10,750 --> 00:29:12,260
-建立起参数列表 start setting up the argument list.
+建立起参数列表\Nstart setting up the argument list.
 
 466
 00:29:12,950 --> 00:29:33,750
-#TBD(ASSIGN ARGL (CONS (FETCH VAL) '())) So it'll say, assign to argl cons of fetch-- so it generates this literal instruction-- fetch of val onto empty list.
+#TBD(ASSIGN ARGL (CONS (FETCH VAL) '()))\NSo it'll say, assign to argl cons of fetch-- so it generates this literal instruction-- fetch of val onto empty list.
 
 467
 00:29:35,000 --> 00:29:36,050
-然而 However,
+然而\NHowever,
 
 468
 00:29:37,990 --> 00:29:40,610
-当它到这里时 it might have to work--  when it gets here,  
+当它到这里时\Nit might have to work--  when it gets here,  
 
 469
 00:29:41,325 --> 00:29:42,820
-它可能需要环境 it's going to need the environment.
+它可能需要环境\Nit's going to need the environment.
 
 470
 00:29:43,950 --> 00:29:45,700
-它需要环境 It's going to need whatever environment was here 
+它需要环境\NIt's going to need whatever environment was here 
 
 471
 00:29:45,700 --> 00:29:48,210
-用来对第一个参数的求值 in order to do this evaluation of the first argument.
+用来对第一个参数的求值\Nin order to do this evaluation of the first argument.
 
 472
 00:29:49,040 --> 00:29:54,475
-它要保证对运算对象的编译 So it has to ensure that the compilation of this operand,   
+它要保证对运算对象的编译\NSo it has to ensure that the compilation of this operand,   
 
 473
 00:29:55,320 --> 00:29:57,850
-或者说它需要保护FUN寄存器 or it has to protect the function register 
+或者说它需要保护FUN寄存器\Nor it has to protect the function register 
 
 474
 00:29:57,850 --> 00:30:00,980
- 来应对编译运算对象时发生的任何事情 against whatever might happen in the compilation of this operand.
+ 来应对编译运算对象时发生的任何事情\Nagainst whatever might happen in the compilation of this operand.
 
 475
 00:30:01,300 --> 00:30:03,080
-因此它在这做了个标记说 So it puts a note here and says, oh,
+因此它在这做了个标记说\NSo it puts a note here and says, oh,
 
 476
 00:30:03,375 --> 00:30:15,300
-这个片段需要保护ENV寄存器 this piece should be done preserving the environment register.
+这个片段需要保护ENV寄存器\Nthis piece should be done preserving the environment register.
 
 477
 00:30:17,390 --> 00:30:19,775
-与之类似 Similarly, here,
+与之类似\NSimilarly, here,
 
 478
 00:30:20,850 --> 00:30:23,300
-在完成第一个操作数的编译后 after it gets done compiling the first operand,
+在完成第一个操作数的编译后\Nafter it gets done compiling the first operand,
 
 479
 00:30:23,575 --> 00:30:24,710
-它会说 it's going to say,
+它会说\Nit's going to say,
 
 480
 00:30:24,710 --> 00:30:27,925
-我最好--我需要知道第二个操作数的环境 I better compile-- I'm going to need to know the environment for the second operand.
+我最好--我需要知道第二个操作数的环境\NI better compile-- I'm going to need to know the environment for the second operand.
 
 481
 00:30:27,925 --> 00:30:29,460
-所以它在这做了个标记说 So it puts a little note here, saying,
+所以它在这做了个标记说\NSo it puts a little note here, saying,
 
 482
 00:30:29,710 --> 00:30:37,725
-这里也需要保护ENV yeah, this is also done preserving env.   
+这里也需要保护ENV\Nyeah, this is also done preserving env.   
 
 483
 00:30:39,420 --> 00:30:41,020
-现在它继续运行 Now it goes on and says, well,
+现在它继续运行\NNow it goes on and says, well,
 
 484
 00:30:41,120 --> 00:30:50,275
-下一段代码是要编译第二个参数 the next chunk of code is the one that's going to compile the second argument.  
+下一段代码是要编译第二个参数\Nthe next chunk of code is the one that's going to compile the second argument.  
 
 485
 00:30:50,825 --> 00:31:02,725
-它将被编译为把结果放在VAL中 And let's say it'll compile it with a targeted to val, as they say.    
+它将被编译为把结果放在VAL中\NAnd let's say it'll compile it with a targeted to val, as they say.    
 
 486
 00:31:03,860 --> 00:31:07,375
-随后它会生成一个字面指令 And then it'll generate the literal instruction,
+随后它会生成一个字面指令\NAnd then it'll generate the literal instruction,
 
 487
 00:31:07,840 --> 00:31:09,250
-建立起参数列表 building up the argument list.
+建立起参数列表\Nbuilding up the argument list.
 
 488
 00:31:09,550 --> 00:31:33,300
-#TBD(ASSIGN ARGL (CONS (FETCH VAL) ( FETCH ARGL)) So it'll say, assign to argl cons of the new value it just got onto the old argument list.       
+#TBD(ASSIGN ARGL (CONS (FETCH VAL) ( FETCH ARGL))\NSo it'll say, assign to argl cons of the new value it just got onto the old argument list.       
 
 489
 00:31:33,970 --> 00:31:34,710
-然而 However,
+然而\NHowever,
 
 490
 00:31:34,810 --> 00:31:36,580
-为了对旧参数列表的需要 in order to have the old argument list, 
+为了对旧参数列表的需要\Nin order to have the old argument list, 
 
 491
 00:31:37,150 --> 00:31:41,300
-最好让在这发生的任何事情 it better have arranged that the argument list didn't get trashed
+最好让在这发生的任何事情\Nit better have arranged that the argument list didn't get trashed
 
 492
 00:31:41,300 --> 00:31:42,690
-都不影响旧的参数列表 by whatever happened in here.
+都不影响旧的参数列表\Nby whatever happened in here.
 
 493
 00:31:43,500 --> 00:31:45,170
-因此它在这做了个标记说 So it puts a little note here and says,
+因此它在这做了个标记说\NSo it puts a little note here and says,
 
 494
 00:31:45,170 --> 00:31:53,650
-哦 这里需要保存ARGL oh, this has to be done preserving argl.   
+哦 这里需要保存ARGL\Noh, this has to be done preserving argl.   
 
 495
 00:31:54,160 --> 00:31:56,030
-现在参数列表建立好了 Now it's got the argument list set up. 
+现在参数列表建立好了\NNow it's got the argument list set up. 
 
 496
 00:31:57,375 --> 00:32:06,375
-现在可以准备去apply dispatch了 And it's all ready to go to apply dispatch.    
+现在可以准备去apply dispatch了\NAnd it's all ready to go to apply dispatch.    
 
 497
 00:32:07,020 --> 00:32:13,500
-它生成了这个字面指令 It generates this literal instruction.
+它生成了这个字面指令\NIt generates this literal instruction.
 
 498
 00:32:15,190 --> 00:32:17,370
-因为现在参数在ARGL中 Because now it's got the arguments in argl
+因为现在参数在ARGL中\NBecause now it's got the arguments in argl
 
 499
 00:32:18,150 --> 00:32:20,590
-运算符在FUN中 and the operator in fun,
+运算符在FUN中\Nand the operator in fun,
 
 500
 00:32:20,590 --> 00:32:22,890
-等等 它只在FUN中用到运算符 but wait, it's only got the operator in fun
+等等 它只在FUN中用到运算符\Nbut wait, it's only got the operator in fun
 
 501
 00:32:23,270 --> 00:32:27,096
-如果它已经保证这块代码 if it had ensured that this block of code
+如果它已经保证这块代码\Nif it had ensured that this block of code
 
 502
 00:32:27,096 --> 00:32:29,270
- 不会破坏FUN寄存器里的东西 didn't trash what was in the function register.  
+ 不会破坏FUN寄存器里的东西\Ndidn't trash what was in the function register.  
 
 503
 00:32:29,675 --> 00:32:31,550
-所以它在这做了个小标记 So it puts a little note here and says,
+所以它在这做了个小标记\NSo it puts a little note here and says,
 
 504
 00:32:31,550 --> 00:32:42,675
-这里的所有东西最好被保存下来以保护FUN寄存器 oh, yes, all this stuff here had better be done preserving the function register.
+这里的所有东西最好被保存下来以保护FUN寄存器\Noh, yes, all this stuff here had better be done preserving the function register.
 
 505
 00:32:43,710 --> 00:32:46,150
-#TBD So that's the little--so when it starts ticking--
+#TBD\NSo that's the little--so when it starts ticking--
 
 506
 00:32:46,150 --> 00:32:48,200
-基本上 so basically,  
+基本上\Nso basically,  
 
 507
 00:32:48,200 --> 00:32:53,225
-编译器所做的是 把一堆代码序列追加 what the compiler does is append a whole bunch of code sequences.    
+编译器所做的是 把一堆代码序列追加\Nwhat the compiler does is append a whole bunch of code sequences.    
 
 508
 00:32:53,500 --> 00:32:58,950
-#TBD See, what it's got in it is little primitive pieces of things
+#TBD\NSee, what it's got in it is little primitive pieces of things
 
 509
 00:32:58,950 --> 00:33:00,725
-例如如何查找一个符号 like how to look up a symbol,
+例如如何查找一个符号\Nlike how to look up a symbol,
 
 510
 00:33:01,440 --> 00:33:02,670
-如何处理条件分支 how to do a conditional.
+如何处理条件分支\Nhow to do a conditional.
 
 511
 00:33:02,680 --> 00:33:05,440
-都是一些琐碎的事情 Those are all little pieces of things.
+都是一些琐碎的事情\NThose are all little pieces of things.
 
 512
 00:33:05,440 --> 00:33:07,990
-然后它将这些连接到一起 And then it appends them together in this sort of discipline.
+然后它将这些连接到一起\NAnd then it appends them together in this sort of discipline.
 
 513
 00:33:08,780 --> 00:33:10,790
-组合的基本意思是 So the basic means of combining things
+组合的基本意思是\NSo the basic means of combining things
 
 514
 00:33:10,790 --> 00:33:21,225
-  将两个代码序列连接到一起 is to append two code sequences.
+  将两个代码序列连接到一起\Nis to append two code sequences.
 
 515
 00:33:21,550 --> 00:33:23,775
-就是这里发生的事情 That's what's going on here. 
+就是这里发生的事情\NThat's what's going on here. 
 
 516
 00:33:25,580 --> 00:33:27,240
-#TBD And it's a little bit tricky.
+#TBD\NAnd it's a little bit tricky.
 
 517
 00:33:27,560 --> 00:33:30,370
-思路是 它连接两个代码序列 The idea is that it appends two code sequences,  
+思路是 它连接两个代码序列\NThe idea is that it appends two code sequences,  
 
 518
 00:33:31,475 --> 00:33:34,325
-小心保护寄存器 taking care to preserve a register.
+小心保护寄存器\Ntaking care to preserve a register.
 
 519
 00:33:35,630 --> 00:33:37,930
-附加操作看起来像这样 So the actual append operation looks like this. 
+附加操作看起来像这样\NSo the actual append operation looks like this. 
 
 520
 00:33:39,150 --> 00:33:40,890
-它要做的是 What it wants to do is say, if--
+它要做的是\NWhat it wants to do is say, if--
 
 521
 00:33:41,200 --> 00:33:44,110
-在这里它的意图是链接两个代码序列 here's what it means to append two code sequences.  
+在这里它的意图是链接两个代码序列\Nhere's what it means to append two code sequences.  
 
 522
 00:33:44,530 --> 00:33:54,725
-如果SEQ1需要寄存器--我应该改一下这个 So if sequence one needs register--  I should change this.
+如果SEQ1需要寄存器--我应该改一下这个\NSo if sequence one needs register--  I should change this.
 
 523
 00:33:54,725 --> 00:33:56,870
-将SEQ1附加SEQ2后 Append sequence one to sequence two,
+将SEQ1附加SEQ2后\NAppend sequence one to sequence two,
 
 524
 00:33:57,425 --> 00:34:06,925
- 保护一些寄存器 preserving some register.   
+ 保护一些寄存器\Npreserving some register.   
 
 525
 00:34:08,525 --> 00:34:09,910
-这里改成AND Let me say, and.
+这里改成AND\NLet me say, and.
 
 526
 00:34:11,360 --> 00:34:13,030
-很清楚 SEQ1先来的 So it's clear that sequence one comes first. 
+很清楚 SEQ1先来的\NSo it's clear that sequence one comes first. 
 
 527
 00:34:13,650 --> 00:34:19,870
-如果SEQ2需要寄存器 So if sequence two needs the register  
+如果SEQ2需要寄存器\NSo if sequence two needs the register  
 
 528
 00:34:21,120 --> 00:34:32,075
-并且SEQ1修改了寄存器 and sequence one modifies the register, 
+并且SEQ1修改了寄存器\Nand sequence one modifies the register, 
 
 529
 00:34:33,680 --> 00:34:42,600
-然后编译器生成的指令是 保存寄存器 then the instructions that the compiler spits out are, save the register.    
+然后编译器生成的指令是 保存寄存器\Nthen the instructions that the compiler spits out are, save the register.    
 
 530
 00:34:43,025 --> 00:34:44,190
-这就是代码 Here's the code.
+这就是代码\NHere's the code.
 
 531
 00:34:44,350 --> 00:34:45,350
-你生成了这段代码 You generate this code. 
+你生成了这段代码\NYou generate this code. 
 
 532
 00:34:45,350 --> 00:34:46,725
-保存寄存器 Save the register,
+保存寄存器\NSave the register,
 
 533
 00:34:46,725 --> 00:34:52,975
-然后你写下对SEQ1递归编译后的产物 and then you put out the recursively compiled stuff for sequence one.  
+然后你写下对SEQ1递归编译后的产物\Nand then you put out the recursively compiled stuff for sequence one.  
 
 534
 00:34:53,300 --> 00:34:59,950
-然后你恢复寄存器 And then you restore the register.
+然后你恢复寄存器\NAnd then you restore the register.
 
 535
 00:35:00,520 --> 00:35:06,650
-然后你写下由SEQ2递归编译得到的东西 And then you put out the recursively compiled stuff for sequence two.   
+然后你写下由SEQ2递归编译得到的东西\NAnd then you put out the recursively compiled stuff for sequence two.   
 
 536
 00:35:07,075 --> 00:35:09,625
-这就是在这里你需要的东西 That's in the case where you need to do it.  
+这就是在这里你需要的东西\NThat's in the case where you need to do it.  
 
 537
 00:35:09,625 --> 00:35:11,820
-实际上SEQ2需要寄存器 Sequence two actually needs the register,
+实际上SEQ2需要寄存器\NSequence two actually needs the register,
 
 538
 00:35:11,820 --> 00:35:14,745
-而SEQ1改动了它 and sequence one actually clobbers it.
+而SEQ1改动了它\Nand sequence one actually clobbers it.
 
 539
 00:35:15,125 --> 00:35:19,825
-这些就是"如果"的部分 否则  So that's sort of if. Otherwise,
+这些就是"如果"的部分 否则 \NSo that's sort of if. Otherwise,
 
 540
 00:35:20,500 --> 00:35:28,175
-你最终得到的就是SEQ1后面跟着SEQ2 all you spit out is sequence one followed by sequence two.  
+你最终得到的就是SEQ1后面跟着SEQ2\Nall you spit out is sequence one followed by sequence two.  
 
 541
 00:35:28,175 --> 00:35:33,520
-这就是把两个代码片段连接到一起的基本操作 So that's the basic operation for sticking together these bits of code fragments,
+这就是把两个代码片段连接到一起的基本操作\NSo that's the basic operation for sticking together these bits of code fragments,
 
 542
 00:35:33,935 --> 00:35:35,935
-#TBD these bits of instructions into a sequence.
+#TBD\Nthese bits of instructions into a sequence.
 
 543
 00:35:36,890 --> 00:35:38,870
-从这个角度看 And you see, from this point of view,
+从这个角度看\NAnd you see, from this point of view,
 
 544
 00:35:40,940 --> 00:35:45,960
-解释器和编译器的区别 the difference between the interpreter and the compiler, in some sense,
+解释器和编译器的区别\Nthe difference between the interpreter and the compiler, in some sense,
 
 545
 00:35:46,825 --> 00:35:49,340
-是编译器有这些关于保护的标记 is that where the compiler has these preserving notes,
+是编译器有这些关于保护的标记\Nis that where the compiler has these preserving notes,
 
 546
 00:35:50,140 --> 00:35:54,220
-上面记录着 哪些需要生成保存和恢复的代码 哪些不需要 and says, maybe I'll actually generate the saves and restores and maybe I won't,
+上面记录着 哪些需要生成保存和恢复的代码 哪些不需要\Nand says, maybe I'll actually generate the saves and restores and maybe I won't,
 
 547
 00:35:55,190 --> 00:35:58,900
-而解释器会以最悲观的方式处理 总是会进行保存和恢复 the interpreter being maximally pessimistic always has a save and restore here.
+而解释器会以最悲观的方式处理 总是会进行保存和恢复\Nthe interpreter being maximally pessimistic always has a save and restore here.
 
 548
 00:36:00,675 --> 00:36:01,930
-这就是关键的区别 That's the essential difference. 
+这就是关键的区别\NThat's the essential difference. 
 
 549
 00:36:03,925 --> 00:36:06,050
-为了实现这个 Well, in order to do this, of course,
+为了实现这个\NWell, in order to do this, of course,
 
 550
 00:36:06,650 --> 00:36:13,725
-编译器需要一些关于需要哪些代码序列以及修改寄存器的理论 the compiler needs some theory of what code sequences need and modifier registers.   
+编译器需要一些关于需要哪些代码序列以及修改寄存器的理论\Nthe compiler needs some theory of what code sequences need and modifier registers.   
 
 551
 00:36:14,260 --> 00:36:17,280
-所以你放入的小片段 So the tiny little fragments that you put in,
+所以你放入的小片段\NSo the tiny little fragments that you put in,
 
 552
 00:36:17,480 --> 00:36:21,525
-例如这个基础原始代码片段 like the basic primitive code fragments,
+例如这个基础原始代码片段\Nlike the basic primitive code fragments,
 
 553
 00:36:22,740 --> 00:36:26,400
-表达了 当你查找一个变量时要做哪些操作？ say, what are the operations that you do when you look up a variable?
+表达了 当你查找一个变量时要做哪些操作？\Nsay, what are the operations that you do when you look up a variable?
 
 554
 00:36:26,890 --> 00:36:32,100
-当编译一个常量或应用一个函数时你需要做哪些事情? What are the sequence of things that you do when you compile a constant or apply a function?
+当编译一个常量或应用一个函数时你需要做哪些事情?\NWhat are the sequence of things that you do when you compile a constant or apply a function?
 
 555
 00:36:32,975 --> 00:36:36,550
-这里有关于它们需要什么 和它们会修改什么的这些小标识 Those have little notations in there about what they need and what they modify.
+这里有关于它们需要什么 和它们会修改什么的这些小标识\NThose have little notations in there about what they need and what they modify.
 
 556
 00:36:38,780 --> 00:36:41,500
-所以底层的数据结构 So the bottom-level data structures--
+所以底层的数据结构\NSo the bottom-level data structures--
 
 557
 00:36:42,660 --> 00:36:44,330
-我会这样讲 Well, I'll say this.
+我会这样讲\NWell, I'll say this.
 
 558
 00:36:44,390 --> 00:36:47,910
-编译器的代码序列是这个样子的 A code sequence to the compiler looks like this.
+编译器的代码序列是这个样子的\NA code sequence to the compiler looks like this.
 
 559
 00:36:48,075 --> 00:36:55,670
-它里面有实际指令的序列 It has the actual sequence of instructions.
+它里面有实际指令的序列\NIt has the actual sequence of instructions.
 
 560
 00:36:55,670 --> 00:37:09,600
-有一组被修改的寄存器和它在一起 And then, along with it, there's the set of registers modified.    
+有一组被修改的寄存器和它在一起\NAnd then, along with it, there's the set of registers modified.    
 
 561
 00:37:10,540 --> 00:37:19,200
-然后这些是所需要的寄存器 And then there's the set of registers needed.
+然后这些是所需要的寄存器\NAnd then there's the set of registers needed.
 
 562
 00:37:20,000 --> 00:37:23,000
-这就是编译器持有的信息 So that's the information the compiler has 
+这就是编译器持有的信息\NSo that's the information the compiler has 
 
 563
 00:37:23,000 --> 00:37:27,325
-#TBD that it draws on in order to be able to do this operation.
+#TBD\Nthat it draws on in order to be able to do this operation.
 
 564
 00:37:29,300 --> 00:37:31,260
-它们从哪来呢 And where do those come from?
+它们从哪来呢\NAnd where do those come from?
 
 565
 00:37:32,775 --> 00:37:36,840
-你可能会猜到 对于最基础的那些操作 我们会手工把它们加进来 Well, those come from, you might expect, for the very primitive ones, we're going to put them in by hand.
+你可能会猜到 对于最基础的那些操作 我们会手工把它们加进来\NWell, those come from, you might expect, for the very primitive ones, we're going to put them in by hand.
 
 566
 00:37:37,240 --> 00:37:41,020
-然后 当我们组合两个序列时 我们会指出#TBD And then, when we combine two sequences, we'll figure out what these things should be.
+然后 当我们组合两个序列时 我们会指出#TBD\NAnd then, when we combine two sequences, we'll figure out what these things should be.
 
 567
 00:37:42,050 --> 00:37:44,600
-举一个非常基本的例子 So for example, a very primitive one, let's see. 
+举一个非常基本的例子\NSo for example, a very primitive one, let's see. 
 
 568
 00:37:48,430 --> 00:37:51,775
-例如做一个寄存器赋值 How about doing a register assignment.
+例如做一个寄存器赋值\NHow about doing a register assignment.
 
 569
 00:37:51,775 --> 00:37:56,225
-那么原始序列会说 噢 它是个代码片段 So a primitive sequence might say, oh, it's code fragment.
+那么原始序列会说 噢 它是个代码片段\NSo a primitive sequence might say, oh, it's code fragment.
 
 570
 00:37:56,225 --> 00:38:03,175
-代码指令是把(FETCH R2)赋值给R1 Its code instruction is assigned to R1, fetch of R2.
+代码指令是把(FETCH R2)赋值给R1\NIts code instruction is assigned to R1, fetch of R2.
 
 571
 00:38:03,175 --> 00:38:04,875
-这是个例子 So this is an example.
+这是个例子\NSo this is an example.
 
 572
 00:38:05,425 --> 00:38:08,520
-这是指令序列的一个例子 That might be an example of a sequence of instructions.
+这是指令序列的一个例子\NThat might be an example of a sequence of instructions.
 
 573
 00:38:08,770 --> 00:38:10,530
-和它在一起的是 And along with that, it'll say,
+和它在一起的是\NAnd along with that, it'll say,
 
 574
 00:38:10,570 --> 00:38:17,925
-它会发现 它需要记得的是它修改了R1 oh, what I need to remember is that that modifies R1
+它会发现 它需要记得的是它修改了R1\Noh, what I need to remember is that that modifies R1
 
 575
 00:38:18,600 --> 00:38:23,850
-然后它需要R2 and then it needs R2.
+然后它需要R2\Nand then it needs R2.
 
 576
 00:38:24,690 --> 00:38:27,100
-当你一开始构建编译器时 So when you're first building this compiler,
+当你一开始构建编译器时\NSo when you're first building this compiler,
 
 577
 00:38:27,100 --> 00:38:29,350
-你放入这样的一个片段 you put in little fragments of stuff like that.
+你放入这样的一个片段\Nyou put in little fragments of stuff like that.
 
 578
 00:38:30,950 --> 00:38:34,175
-当它组合两个序列时 And now, when it combines two sequences,
+当它组合两个序列时\NAnd now, when it combines two sequences,
 
 579
 00:38:36,550 --> 00:38:38,925
-我要组合 if I'm going to combine,
+我要组合\Nif I'm going to combine,
 
 580
 00:38:38,925 --> 00:38:47,425
-序列1修改了一组寄存器M1 let's say, sequence one, that modifies a bunch of registers M1,
+序列1修改了一组寄存器M1\Nlet's say, sequence one, that modifies a bunch of registers M1,
 
 581
 00:38:48,450 --> 00:38:51,420
-并且需要一组寄存器N1 and needs a bunch of registers N1.
+并且需要一组寄存器N1\Nand needs a bunch of registers N1.
 
 582
 00:38:54,850 --> 00:39:00,350
-并且我要把它和序列2组合到一起 And I'm going to combine that with sequence two.
+并且我要把它和序列2组合到一起\NAnd I'm going to combine that with sequence two.
 
 583
 00:39:00,810 --> 00:39:06,600
-它修改了一组寄存器M2 That modifies a bunch of registers M2,
+它修改了一组寄存器M2\NThat modifies a bunch of registers M2,
 
 584
 00:39:07,110 --> 00:39:10,000
-并且它需要一组寄存器N2 and needs a bunch of registers N2.
+并且它需要一组寄存器N2\Nand needs a bunch of registers N2.
 
 585
 00:39:12,440 --> 00:39:14,830
-这样我们就能得出结果 Then, well, we can reason it out.
+这样我们就能得出结果\NThen, well, we can reason it out.
 
 586
 00:39:15,110 --> 00:39:19,525
-新的代码片段 序列1 The new code fragment, sequence one,
+新的代码片段 序列1\NThe new code fragment, sequence one,
 
 587
 00:39:19,525 --> 00:39:23,750
-后面跟着序列2 and-- followed by sequence two,
+后面跟着序列2\Nand-- followed by sequence two,
 
 588
 00:39:24,090 --> 00:39:26,450
-它要修改什么? well, what's it going to modify?
+它要修改什么?\Nwell, what's it going to modify?
 
 589
 00:39:27,800 --> 00:39:32,760
-它要修改的东西是会被序列1和序列2修改 The things that it will modify are the things that are modified either by sequence one or sequence two.
+它要修改的东西是会被序列1和序列2修改\NThe things that it will modify are the things that are modified either by sequence one or sequence two.
 
 590
 00:39:34,000 --> 00:39:39,640
-所以这两个集合的合集 就是要被修改的东西 So the union of these two sets are what the new thing modifies.
+所以这两个集合的合集 就是要被修改的东西\NSo the union of these two sets are what the new thing modifies.
 
 591
 00:39:40,460 --> 00:39:41,790
-然后你问 And then you say, well, what is this--
+然后你问\NAnd then you say, well, what is this--
 
 592
 00:39:44,660 --> 00:39:47,000
-哪些寄存器是需要的？ what registers is it going to need?
+哪些寄存器是需要的？\Nwhat registers is it going to need?
 
 593
 00:39:47,950 --> 00:39:49,930
-需要这些寄存器的是 It's going to need the things that are,
+需要这些寄存器的是\NIt's going to need the things that are,
 
 594
 00:39:49,930 --> 00:39:51,850
-首先 序列1需要 first of all, needed by sequence one.
+首先 序列1需要\Nfirst of all, needed by sequence one.
 
 595
 00:39:52,250 --> 00:39:54,900
-需要序列1 So what it needs is sequence one.
+需要序列1\NSo what it needs is sequence one.
 
 596
 00:39:55,190 --> 00:39:59,720
-然后 并不是所有都被序列2需要  And then, well, not quite all of the ones that are needed by sequence two.  
+然后 并不是所有都被序列2需要 \NAnd then, well, not quite all of the ones that are needed by sequence two.  
 
 597
 00:39:59,750 --> 00:40:03,490
-所需要的是被序列2需要的 What it needs are the ones that are needed by sequence two
+所需要的是被序列2需要的\NWhat it needs are the ones that are needed by sequence two
 
 598
 00:40:03,880 --> 00:40:08,140
-并且没有被序列1修改 that have not been set up by sequence one.
+并且没有被序列1修改\Nthat have not been set up by sequence one.
 
 599
 00:40:08,140 --> 00:40:19,310
-结果就是序列1与 序列2需要的减去序列1所修改的 的合集 So it's sort of the union of the things that sequence two needs minus the ones that sequence one modifies.  
+结果就是序列1与 序列2需要的减去序列1所修改的 的合集\NSo it's sort of the union of the things that sequence two needs minus the ones that sequence one modifies.  
 
 600
 00:40:19,310 --> 00:40:21,950
-因为它关心的是#TBD Because it worries about setting them up.
+因为它关心的是#TBD\NBecause it worries about setting them up.
 
 601
 00:40:23,950 --> 00:40:26,260
-这就是编译器的基本结构 So there's the basic structure of the compiler. 
+这就是编译器的基本结构\NSo there's the basic structure of the compiler. 
 
 602
 00:40:26,700 --> 00:40:30,225
-寄存器优化的方式是 The way you do register optimizations is
+寄存器优化的方式是\NThe way you do register optimizations is
 
 603
 00:40:30,225 --> 00:40:33,675
-你有一些策略应对需要保护的东西 you have some strategies for what needs to be preserved.
+你有一些策略应对需要保护的东西\Nyou have some strategies for what needs to be preserved.
 
 604
 00:40:34,100 --> 00:40:35,850
-这取决于数据结构 That depends on a data structure. 
+这取决于数据结构\NThat depends on a data structure. 
 
 605
 00:40:35,850 --> 00:40:38,580
-这取决于将东西组合在一起的操作 Well, it depends on the operation of what it means to put things together.
+这取决于将东西组合在一起的操作\NWell, it depends on the operation of what it means to put things together.
 
 606
 00:40:39,030 --> 00:40:40,640
-想知道要保护哪些东西 Preserving something,
+想知道要保护哪些东西\NPreserving something,
 
 607
 00:40:40,650 --> 00:40:47,700
-需要知道那些寄存器是需要的并且被这些代码片段修改 that depends on knowing what registers are needed and modified by these code fragments.
+需要知道那些寄存器是需要的并且被这些代码片段修改\Nthat depends on knowing what registers are needed and modified by these code fragments.
 
 608
 00:40:48,750 --> 00:40:51,260
-那取决于数据结构 That depends on having little data structures,  
+那取决于数据结构\NThat depends on having little data structures,  
 
 609
 00:40:51,260 --> 00:40:55,430
-代码序列是指令 which say, a code sequence is the actual instructions,
+代码序列是指令\Nwhich say, a code sequence is the actual instructions,
 
 610
 00:40:55,430 --> 00:40:57,330
-它们修改了什么 它们需要什么 what they modify and what they need.
+它们修改了什么 它们需要什么\Nwhat they modify and what they need.
 
 611
 00:40:57,330 --> 00:41:00,630
-它们来自于底层 是内置的 That comes from, at the primitive level, building it in. 
+它们来自于底层 是内置的\NThat comes from, at the primitive level, building it in. 
 
 612
 00:41:00,630 --> 00:41:04,530
-在底层 哪些是被需要的 哪些是被修改的 是显而易见的事情 At the primitive level, it's going to be completely obvious what something needs and modifies.  
+在底层 哪些是被需要的 哪些是被修改的 是显而易见的事情\NAt the primitive level, it's going to be completely obvious what something needs and modifies.  
 
 613
 00:41:04,820 --> 00:41:05,350
-另外 Plus, 
+另外\NPlus, 
 
 614
 00:41:05,350 --> 00:41:09,000
-显而易见 当我构建一个比较复杂的序列的时候 this particular way that says, when I build up bigger ones,
+显而易见 当我构建一个比较复杂的序列的时候\Nthis particular way that says, when I build up bigger ones,
 
 615
 00:41:09,280 --> 00:41:11,890
-这是我如何生成被修改的寄存器的集合 here's how I generate the new set of registers modified
+这是我如何生成被修改的寄存器的集合\Nhere's how I generate the new set of registers modified
 
 616
 00:41:11,930 --> 00:41:13,370
-和被需要的寄存器的集合 and the new set of registers needed.
+和被需要的寄存器的集合\Nand the new set of registers needed.
 
 617
 00:41:15,275 --> 00:41:17,770
-这就是全部的 我不应该说这就是全部内容 And that's the whole-- well, I shouldn't say that's the whole thing.
+这就是全部的 我不应该说这就是全部内容\NAnd that's the whole-- well, I shouldn't say that's the whole thing.
 
 618
 00:41:17,770 --> 00:41:21,870
-这就是除了书中30页的细节之外的全部内容 That's the whole thing except for about 30 pages of details in the book.  
+这就是除了书中30页的细节之外的全部内容\NThat's the whole thing except for about 30 pages of details in the book.  
 
 619
 00:41:22,310 --> 00:41:27,690
-但它是一个完全可用的初级编译器 But it is a perfectly usable rudimentary compiler.     
+但它是一个完全可用的初级编译器\NBut it is a perfectly usable rudimentary compiler.     
 
 620
 00:41:28,760 --> 00:41:30,700
-让我给你展示一下它能做什么 Let me kind of show you what it does.
+让我给你展示一下它能做什么\NLet me kind of show you what it does.
 
 621
 00:41:30,700 --> 00:41:35,725
-假设我们从一个递归阶乘开始 Suppose we start out with recursive factorial.   
+假设我们从一个递归阶乘开始\NSuppose we start out with recursive factorial.   
 
 622
 00:41:35,975 --> 00:41:38,050
-这些幻灯片的字太小了 And these slides are going to be much too small to read.
+这些幻灯片的字太小了\NAnd these slides are going to be much too small to read.
 
 623
 00:41:38,050 --> 00:41:41,925
-我只想快速翻一下代码 让你们看看它有多少代码 I just want to flash through the code and show you about how much it is.
+我只想快速翻一下代码 让你们看看它有多少代码\NI just want to flash through the code and show you about how much it is.
 
 624
 00:41:42,250 --> 00:41:44,200
-代码从这开始-- That starts out with--
+代码从这开始--\NThat starts out with--
 
 625
 00:41:44,200 --> 00:41:45,950
-这是代码的第一部分 here's a first block of it,
+这是代码的第一部分\Nhere's a first block of it,
 
 626
 00:41:45,950 --> 00:41:49,022
-这里编译了一个过程入口 进行了一些赋值操作 where it compiles a procedure entry and does a bunch of assignments.
+这里编译了一个过程入口 进行了一些赋值操作\Nwhere it compiles a procedure entry and does a bunch of assignments.
 
 627
 00:41:49,022 --> 00:41:52,060
-#TBD And this thing is basically up through the part
+#TBD\NAnd this thing is basically up through the part
 
 628
 00:41:52,060 --> 00:41:54,310
-建立谓词  sets up to do the predicate
+建立谓词\N sets up to do the predicate
 
 629
 00:41:54,310 --> 00:41:56,590
-并且测试谓词是不是为TRUE and test whether the predicate's true.
+并且测试谓词是不是为TRUE\Nand test whether the predicate's true.
 
 630
 00:41:56,970 --> 00:41:58,460
-第二部分是 The second part is
+第二部分是\NThe second part is
 
 631
 00:41:58,460 --> 00:42:03,730
-递归调用n-1的阶乘的结果 is what results from-- in the recursive call to fact of n minus one.  
+递归调用n-1的阶乘的结果\Nis what results from-- in the recursive call to fact of n minus one.  
 
 632
 00:42:04,120 --> 00:42:06,075
-最后一部分是 And this last part
+最后一部分是\NAnd this last part
 
 633
 00:42:06,075 --> 00:42:09,900
-从那里返回 并处理常数的情况 is coming back from that and then taking care of the constant case.  
+从那里返回 并处理常数的情况\Nis coming back from that and then taking care of the constant case.  
 
 634
 00:42:09,900 --> 00:42:13,725
-这就是产生阶乘会生成的代码量 So that's about how much code it would produce for factorial.  
+这就是产生阶乘会生成的代码量\NSo that's about how much code it would produce for factorial.  
 
 635
 00:42:13,725 --> 00:42:18,100
-我们当然可以把这个编译器做得更好 We could make this compiler much, much better, of course. 
+我们当然可以把这个编译器做得更好\NWe could make this compiler much, much better, of course. 
 
 636
 00:42:18,675 --> 00:42:21,240
-优化它的主要方式是 The main way we could make it better is
+优化它的主要方式是\NThe main way we could make it better is
 
 637
 00:42:21,240 --> 00:42:26,970
-当你调用一个过程时 允许编译器做任何假设 to allow the compiler to make any assumptions at all about what happens when you call a procedure.  
+当你调用一个过程时 允许编译器做任何假设\Nto allow the compiler to make any assumptions at all about what happens when you call a procedure.  
 
 638
 00:42:26,970 --> 00:42:28,400
-举例来说 So this compiler, for instance, 
+举例来说\NSo this compiler, for instance, 
 
 639
 00:42:28,400 --> 00:42:36,144
- 这个编译器甚至不知道 乘法计算可以一句搞定 doesn't even know, say, that multiplication is something that could be coded in line.  
+ 这个编译器甚至不知道 乘法计算可以一句搞定\Ndoesn't even know, say, that multiplication is something that could be coded in line.  
 
 640
 00:42:36,144 --> 00:42:37,872
-它构建起整个机制 Instead, it sets up this whole mechanism.
+它构建起整个机制\NInstead, it sets up this whole mechanism.
 
 641
 00:42:37,872 --> 00:42:40,340
-#TBD It goes to apply-dispatch. 
+#TBD\NIt goes to apply-dispatch. 
 
 642
 00:42:41,370 --> 00:42:42,275
-这是极大的浪费 That's a tremendous waste, 
+这是极大的浪费\NThat's a tremendous waste, 
 
 643
 00:42:42,275 --> 00:42:45,027
-因为 每当你进行apply-dispatch时 because what you do every time you go to apply-dispatch 
+因为 每当你进行apply-dispatch时\Nbecause what you do every time you go to apply-dispatch 
 
 644
 00:42:45,027 --> 00:42:47,400
-你都要关心这个参数列表 is you have to concern about this argument list,
+你都要关心这个参数列表\Nis you have to concern about this argument list,
 
 645
 00:42:47,400 --> 00:42:49,880
-因为它是个很普遍的操作 because it's a very general thing you're going to.
+因为它是个很普遍的操作\Nbecause it's a very general thing you're going to.
 
 646
 00:42:49,880 --> 00:42:50,775
-在任何真实的编译器中 In any real compiler, of course,
+在任何真实的编译器中\NIn any real compiler, of course,
 
 647
 00:42:50,775 --> 00:42:53,775
-你会有寄存器来暂存参数 you're going to have registers for holding arguments.
+你会有寄存器来暂存参数\Nyou're going to have registers for holding arguments.
 
 648
 00:42:53,775 --> 00:42:56,380
-你要开始保护 And you're going to start preserving
+你要开始保护\NAnd you're going to start preserving
 
 649
 00:42:56,380 --> 00:42:58,050
-保存这些寄存器 saving the way you use those registers
+保存这些寄存器\Nsaving the way you use those registers
 
 650
 00:42:58,050 --> 00:43:02,575
-和这里的策略相近  similar to the same strategy here.
+和这里的策略相近\N similar to the same strategy here.
 
 651
 00:43:02,850 --> 00:43:08,300
-这可能是对这个书中特定的编译器可以优化的最主要的方式 So that's probably the very main way that this particular compiler in the book could be fixed.  
+这可能是对这个书中特定的编译器可以优化的最主要的方式\NSo that's probably the very main way that this particular compiler in the book could be fixed.  
 
 652
 00:43:08,690 --> 00:43:09,700
-还有其他的一些方法 There are other things like
+还有其他的一些方法\NThere are other things like
 
 653
 00:43:09,700 --> 00:43:11,831
-查找变量的值 looking up variable values and 
+查找变量的值\Nlooking up variable values and 
 
 654
 00:43:11,831 --> 00:43:14,650
-设置更高效的基础操作等等 making more efficient primitive operations, and all sorts of things.
+设置更高效的基础操作等等\Nmaking more efficient primitive operations, and all sorts of things.
 
 655
 00:43:14,650 --> 00:43:19,300
-本质上来说 一个好的Lisp编译器 可以吸收任何的努力成果 Essentially, a good Lisp compiler can absorb an arbitrary amount of effort.
+本质上来说 一个好的Lisp编译器 可以吸收任何的努力成果\NEssentially, a good Lisp compiler can absorb an arbitrary amount of effort.
 
 656
 00:43:19,720 --> 00:43:21,890
-可能这其中的一个原因是 And probably one of the reasons 
+可能这其中的一个原因是\NAnd probably one of the reasons 
 
 657
 00:43:21,890 --> 00:43:25,900
-Lisp比其他如FORTRAN之类的语言运行要慢 Lisp is slow with compared to languages like FORTRAN
+Lisp比其他如FORTRAN之类的语言运行要慢\NLisp is slow with compared to languages like FORTRAN
 
 658
 00:43:25,900 --> 00:43:31,075
-如果你研究人们为构建Lisp编译器所付出努力的历史 is that, if you look over history at the amount of effort that's gone into building Lisp compilers,
+如果你研究人们为构建Lisp编译器所付出努力的历史\Nis that, if you look over history at the amount of effort that's gone into building Lisp compilers,
 
 659
 00:43:31,075 --> 00:43:34,250
-几乎与构建FORTRAN编译器差不多 it's nowhere near the amount of effort that's gone into FORTRAN compilers.
+几乎与构建FORTRAN编译器差不多\Nit's nowhere near the amount of effort that's gone into FORTRAN compilers.
 
 660
 00:43:34,250 --> 00:43:38,000
-可能在接下来的几年情况会改变 And maybe that's something that will change over the next couple of years.
+可能在接下来的几年情况会改变\NAnd maybe that's something that will change over the next couple of years.
 
 661
 00:43:38,000 --> 00:43:39,725
-好,休息一下 OK, let's break. 
+好,休息一下\NOK, let's break. 
 
 662
 00:43:43,800 --> 00:43:44,650
-有问题吗 Questions? 
+有问题吗\NQuestions? 
 
 663
 00:43:48,270 --> 00:43:49,950
-学生: 很早的一个课时里-- AUDIENCE: One of the very first classes--
+学生: 很早的一个课时里--\NAUDIENCE: One of the very first classes--
 
 664
 00:43:49,950 --> 00:43:52,060
-我不记得是课上还是课后-- I don't know if it was during class or after class-
+我不记得是课上还是课后--\NI don't know if it was during class or after class-
 
 665
 00:43:52,060 --> 00:43:59,825
-你向我们展示了 加法操作 有一些我们看不到的如add-percent之类的底层操作 you showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.     
+你向我们展示了 加法操作 有一些我们看不到的如add-percent之类的底层操作\Nyou showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.     
 
 666
 00:43:59,825 --> 00:44:01,650
-这是因为 Is that because,
+这是因为\NIs that because,
 
 667
 00:44:01,650 --> 00:44:08,700
-#TBD if you're doing inline code you'd want to just do it for two operators, operands?   
+#TBD\Nif you're doing inline code you'd want to just do it for two operators, operands?   
 
 668
 00:44:08,700 --> 00:44:12,000
-但如果你有更多操作数 你会做什么特殊的事情吗？ But if you had more operands, you'd want to do something special?
+但如果你有更多操作数 你会做什么特殊的事情吗？\NBut if you had more operands, you'd want to do something special?
 
 669
 00:44:12,710 --> 00:44:16,294
-教授: 你看了真实的scheme实现 PROFESSOR: Yeah, you're looking in the actual scheme implementation. 
+教授: 你看了真实的scheme实现\NPROFESSOR: Yeah, you're looking in the actual scheme implementation. 
 
 670
 00:44:16,294 --> 00:44:18,440
-有一个plus，它是某种操作符 There's a plus, and a plus is some operator. 
+有一个plus，它是某种操作符\NThere's a plus, and a plus is some operator. 
 
 671
 00:44:18,440 --> 00:44:20,198
-如果你看plus的源代码 And then if you go look inside the code for plus, 
+如果你看plus的源代码\NAnd then if you go look inside the code for plus, 
 
 672
 00:44:20,198 --> 00:44:21,570
-你会看到一些叫做-- you see something called-- 
+你会看到一些叫做--\Nyou see something called-- 
 
 673
 00:44:21,570 --> 00:44:24,550
-我记不清了--可能叫and-percent plus或之类的东西 I forget-- and-percent plus or something like that.
+我记不清了--可能叫and-percent plus或之类的东西\NI forget-- and-percent plus or something like that.
 
 674
 00:44:24,550 --> 00:44:28,475
-这里做的就是那种特殊的优化 And what's going on there is that particular kind of optimization.  
+这里做的就是那种特殊的优化\NAnd what's going on there is that particular kind of optimization.  
 
 675
 00:44:28,475 --> 00:44:35,020
-因为 通常plus接受任意数量的参数 Because, see, general plus takes an arbitrary number of arguments.   
+因为 通常plus接受任意数量的参数\NBecause, see, general plus takes an arbitrary number of arguments.   
 
 676
 00:44:35,020 --> 00:44:36,760
-所以 最通常的plus So the most general plus
+所以 最通常的plus\NSo the most general plus
 
 677
 00:44:36,760 --> 00:44:38,880
-会认为如果我有一个参数列表 says, oh, if I have an argument list,
+会认为如果我有一个参数列表\Nsays, oh, if I have an argument list,
 
 678
 00:44:38,880 --> 00:44:41,630
-我最好将它们用CONS连接到列表里 I'd better cons it up in some list 
+我最好将它们用CONS连接到列表里\NI'd better cons it up in some list 
 
 679
 00:44:41,630 --> 00:44:44,725
-并指出有多少个参数 and then figure out how many there were or something like that.
+并指出有多少个参数\Nand then figure out how many there were or something like that.
 
 680
 00:44:44,725 --> 00:44:46,810
-这样的效率非常差 That's terribly inefficient,
+这样的效率非常差\NThat's terribly inefficient,
 
 681
 00:44:46,810 --> 00:44:49,250
-因为大部分时间你在把两个数相加 especially since most of the time you're probably adding two numbers.
+因为大部分时间你在把两个数相加\Nespecially since most of the time you're probably adding two numbers.
 
 682
 00:44:49,250 --> 00:44:51,875
-你不想真的把整个参数列表连接到一起 You don't want to really have to cons this argument list.
+你不想真的把整个参数列表连接到一起\NYou don't want to really have to cons this argument list.
 
 683
 00:44:51,875 --> 00:44:53,350
-所以你想做的是 So what you'd like to do is
+所以你想做的是\NSo what you'd like to do is
 
 684
 00:44:53,350 --> 00:44:58,150
-构建把一堆东西相加的代码 build the code for plus with a bunch of entries.
+构建把一堆东西相加的代码\Nbuild the code for plus with a bunch of entries.
 
 685
 00:44:58,150 --> 00:45:00,490
-所以它做的大部分事情是一样的 So most of what it's doing is the same. 
+所以它做的大部分事情是一样的\NSo most of what it's doing is the same. 
 
 686
 00:45:00,490 --> 00:45:04,560
-但这里可能有个特殊的入口 如果你知道有只有两个参数 However, there might be a special entry that you'd go to if you knew there were only two arguments.
+但这里可能有个特殊的入口 如果你知道有只有两个参数\NHowever, there might be a special entry that you'd go to if you knew there were only two arguments.
 
 687
 00:45:04,560 --> 00:45:05,875
-你会把它们放到寄存器中 And those you'll put in registers. 
+你会把它们放到寄存器中\NAnd those you'll put in registers. 
 
 688
 00:45:05,875 --> 00:45:08,675
-它们不在参数列表里 你也不会去CONS连接它们  they won't be in an argument list and you won't have to CONS. 
+它们不在参数列表里 你也不会去CONS连接它们 \Nthey won't be in an argument list and you won't have to CONS. 
 
 689
 00:45:08,675 --> 00:45:10,425
-这就是这些东西工作的原理 That's how a lot of these things work. 
+这就是这些东西工作的原理\NThat's how a lot of these things work. 
 
 690
 00:45:12,300 --> 00:45:13,725
-休息一会 OK, let's take a break. 
+休息一会\NOK, let's take a break. 
 
 691
 00:45:14,100 --> 00:45:42,075
-[音乐] [JESU, JOY OF MAN'S DESIRING]
+[音乐]\N[JESU, JOY OF MAN'S DESIRING]
 
