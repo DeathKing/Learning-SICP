@@ -4,7 +4,7 @@
   <img src="http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/wizard.jpg" alt="SICP"/>
 </p>
 
-《计算机程序的构造和解释》系列公开课，视频是两位作者（Harold Abelson、Gerald Jay Sussman）在1986年7月给**Hewlett-Packard**公司员工培训时的录像。你可以在[这里](http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-001Spring-2005/CourseHome/index.htm)获得这门课程的视频。
+《计算机程序的构造和解释》系列公开课，视频是两位作者（Harold Abelson、Gerald Jay Sussman）在1986年7月给**Hewlett-Packard**公司员工培训时的录像。你可以在[这里](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/)获得这门课程的视频。
 
 这门课程只提供了英文字幕，本项目旨在将这些英文字幕翻译为中文，方便广大的`Scheme/Lisp`学习者。
 
@@ -44,13 +44,14 @@
 | Lec7b | 《元循环求值器 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzA2NDQ5MjkxMg==.html) [ [YouTube] ](https://youtu.be/HNaAEv8Xjx8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_14.html) [ [MKV] ](https://pan.baidu.com/s/1eSrNSNS) [ [MP4] ](https://pan.baidu.com/s/1qYBgrIO) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
 | Lec8a | 《逻辑式程序设计 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzIyODg0NTEwNA==.html) [ [YouTube] ](https://youtu.be/VNH95lmCHdE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_15.html) [ [MKV] ](https://pan.baidu.com/s/1i5aQQVj) [ [MP4] ](https://pan.baidu.com/s/1dFlOqrB) | [DeathKing](https://github.com/DeathKing) |
 | Lec8b | 《逻辑式程序设计 II》 | [ [优酷] ](http://v.youku.com/v_show/id_XMzQ4MDA1OTE3Mg==.html) [ [YouTube] ](https://youtu.be/mcik1gEEyqA) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_16.html) [ [MKV] ](https://pan.baidu.com/s/1P6b00XxTfaaQX5GxSbROjg) [ [MP4] ](https://pan.baidu.com/s/1MN5ZDrnnKeE0XeMqAY6x0Q) | [DeathKing](https://github.com/DeathKing) |
+| Lec9a | 《寄存机器》 | [ [优酷] ](http://v.youku.com/v_show/id_XMzU3MzA5Mzg0OA==.html) [ [YouTube] ](https://youtu.be/oR2PwG0xh_g) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_17.html)  [MKV]  [ [MP4] ](https://pan.baidu.com/s/1AFM6__x4oGq3XtI_fa3ZGQ) | [DeathKing](https://github.com/DeathKing) |
 
 ## 任务队列
 
 |  编号  | 责任人     | 状态 | 进度 |
 |:-----:|:---------:|:----:|:-------:|
-| lec9a | loucq123  | 翻译中 | 65% |
-| lec10a | Windfarer | 已认领 | 0% |
+| lec9b | DeathKing  | 已认领 | 0% |
+| lec10b | Windfarer | 已认领 | 0% |
 
 ## 捐助本项目
 
@@ -65,12 +66,6 @@
 ## 加入我们
 
 SICP学习交流群：97747648。加群请注明理由，否则一概拒绝。
-
-+ 给@DeathKing(`dk#hit.edu.cn`)发送一封邮件认领翻译课程
-+ `fork`
-+ [项目Wiki](https://github.com/DeathKing/Learning-SICP/wiki)
-+ [项目状态](https://github.com/DeathKing/Learning-SICP/wiki/%E9%A1%B9%E7%9B%AE%E7%8A%B6%E6%80%81)
-
 
 ## 声明与致谢
 
