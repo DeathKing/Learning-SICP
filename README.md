@@ -26,9 +26,12 @@
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
 + [百度网盘SICP文件夹（请注意安装目录中的字体文件）](https://pan.baidu.com/s/1o78bsYA)
 
+> **注意**  
+> 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
+
 | 编号 | 标题 | 下载地址 | 译者 |
 | ---- | ---- |:-----------------------:| ---- |
-| Lec1a | 《Lisp概览》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) [ [YouTube] ](https://www.youtube.com/watch?v=iG6eVomFrhE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_1.html) [ [MKV] ](https://pan.baidu.com/s/1kTmeMgR)  [MP4]  | [DeathKing](https://github.com/DeathKing) |
+| Lec1a | 《Lisp概览》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) [ [YouTube] ](https://www.youtube.com/watch?v=iG6eVomFrhE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_1.html) [ [MKV] ](https://pan.baidu.com/s/1kTmeMgR) [ [MP4] ](https://pan.baidu.com/s/1ayi_bap6M-wM5aAnVnvpsQ) | [DeathKing](https://github.com/DeathKing) |
 | Lec1b | 《计算过程》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTMxODY1NTg4.html) [ [YouTube] ](https://www.youtube.com/watch?v=sVErWRt8dG4) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_2.html) [ [MKV] ](https://pan.baidu.com/s/1o6G0Qgi)  [MP4]  | [ChingfanTsou](https://github.com/ChingfanTsou) |
 | Lec2a | 《高阶过程》 | [ [优酷] ](https://v.youku.com/v_show/id_XNzAzNjI1NjU2.html) [ [YouTube] ](https://www.youtube.com/watch?v=A-uHMbrAvmQ) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_3.html) [ [MKV] ](https://pan.baidu.com/s/1jG3HI8A)  [MP4]  | [endyul](https://github.com/endyul) |
 | Lec2b | 《复合数据》 | [ [优酷] ](https://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html) [ [YouTube] ](https://www.youtube.com/watch?v=ggXt3Tmd1oY) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_4.html) [ [MKV] ](https://pan.baidu.com/s/1o6HgNgu)  [MP4]  | [DeathKing](https://github.com/DeathKing) |
