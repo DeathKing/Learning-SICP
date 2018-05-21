@@ -4011,140 +4011,171 @@ AUDIENCE: One of the very first classes--
 I don't know if it was during class or after class- 
 
 803
-00:43:51,472 --> 00:43:59,820
-你向我们展示了 加法操作 有一些我们看不到的如add-percent之类的底层操作
-you showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.
-你向我们展示了 加法操作 有一些我们看不到的如add-percent之类的底层操作
-you showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.
-你向我们展示了 加法操作 有一些我们看不到的如add-percent之类的底层操作
-you showed me the, say, addition has a primitive that we don't see, and-percent add or something like that.
+00:43:51,470 --> 00:43:53,888
+你向我们展示了
+you showed me the, the
 
 804
+00:43:54,000 --> 00:43:57,520
+ADD操作有一些我们看不到的基本运算
+say, addition has a primitive that we don't see,
+
+805
+00:43:57,696 --> 00:43:59,216
+类似于ADD%之类的
+and-percent add or something like that.
+
+806
 00:43:59,825 --> 00:44:01,650
 这是因为
 Is that because,
 
-805
-00:44:01,650 --> 00:44:08,700
-#TBD
-if you're doing inline code you'd want to just do it for two operators, operands?
-
-806
-00:44:08,700 --> 00:44:12,000
-但如果你有更多操作数 你会做什么特殊的事情吗？
-But if you had more operands, you'd want to do something special?
-
 807
-00:44:12,710 --> 00:44:16,294
-教授: 你看了真实的scheme实现
-PROFESSOR: Yeah, you're looking in the actual scheme implementation.
+00:44:01,650 --> 00:44:02,608
+你想把代码内联为
+if you're doing inline code
 
 808
-00:44:16,294 --> 00:44:18,440
-有一个plus，它是某种操作符
-There's a plus, and a plus is some operator.
+00:44:02,608 --> 00:44:08,192
+专门针对二元运算对象的运算么？
+you'd want to just do it for two operators, operands?
 
 809
-00:44:18,440 --> 00:44:20,198
-如果你看plus的源代码
-And then if you go look inside the code for plus,
+00:44:08,700 --> 00:44:10,256
+但如果你有更多操作运算对象
+But if you had more operands,
 
 810
-00:44:20,198 --> 00:44:21,570
+00:44:10,288 --> 00:44:11,472
+你会做什么特殊的事情吗？
+you'd want to do something special?
+
+811
+00:44:12,710 --> 00:44:16,048
+教授: 你看的是Scheme的实际实现
+PROFESSOR: Yeah, you're looking in the actual scheme implementation.
+
+812
+00:44:16,064 --> 00:44:17,840
+其中有一个‘+’ 这是一个运算符
+There's a plus, and a plus is some operator.
+
+813
+00:44:17,904 --> 00:44:20,190
+如果你看‘+’的源代码
+And then if you go look inside the code for plus,
+
+814
+00:44:20,336 --> 00:44:21,376
 你会看到一些叫做--
 you see something called--
 
-811
-00:44:21,570 --> 00:44:24,550
-我记不清了--可能叫and-percent plus或之类的东西
+815
+00:44:21,570 --> 00:44:24,144
+我记不清了--可能叫ADD%、PLUS之类的东西
 I forget-- and-percent plus or something like that.
 
-812
-00:44:24,550 --> 00:44:28,475
-这里做的就是那种特殊的优化
-And what's going on there is that particular kind of optimization.
-
-813
-00:44:28,475 --> 00:44:35,020
-因为 通常plus接受任意数量的参数
-Because, see, general plus takes an arbitrary number of arguments.
-
-814
-00:44:35,020 --> 00:44:36,760
-所以 最通常的plus
-So the most general plus
-
-815
-00:44:36,760 --> 00:44:38,880
-会认为如果我有一个参数列表
-says, oh, if I have an argument list,
-
 816
-00:44:38,880 --> 00:44:41,630
-我最好将它们用CONS连接到列表里
-I'd better cons it up in some list
+00:44:24,550 --> 00:44:25,792
+这里所进行的
+And what's going on there is
 
 817
-00:44:41,630 --> 00:44:44,725
+00:44:25,792 --> 00:44:27,920
+就是你说得那种优化
+is that particular kind of optimization.
+
+818
+00:44:28,470 --> 00:44:31,872
+因为 通常‘+’接受任意数量的参数
+Because, see, general plus takes an arbitrary number of arguments.
+
+819
+00:44:35,020 --> 00:44:36,384
+所以 最一般性的加法
+So the most general plus
+
+820
+00:44:36,760 --> 00:44:38,256
+会说：如果我有一个参数表
+says, oh, if I have an argument list,
+
+821
+00:44:38,288 --> 00:44:40,624
+我最好将它们用CONS连接到表里
+I'd better cons it up in some list
+
+822
+00:44:41,630 --> 00:44:44,144
 并指出有多少个参数
 and then figure out how many there were or something like that.
 
-818
-00:44:44,725 --> 00:44:46,810
+823
+00:44:44,720 --> 00:44:46,160
 这样的效率非常差
 That's terribly inefficient,
 
-819
+824
 00:44:46,810 --> 00:44:49,250
 因为大部分时间你在把两个数相加
 especially since most of the time you're probably adding two numbers.
 
-820
-00:44:49,250 --> 00:44:51,875
-你不想真的把整个参数列表连接到一起
+825
+00:44:49,250 --> 00:44:51,248
+你不必把整个参数表连接到一起
 You don't want to really have to cons this argument list.
 
-821
-00:44:51,875 --> 00:44:53,350
+826
+00:44:52,048 --> 00:44:53,936
 所以你想做的是
-So what you'd like to do is
+So what you'd like to do is build
 
-822
-00:44:53,350 --> 00:44:58,150
+827
+00:44:55,664 --> 00:44:57,712
 构建把一堆东西相加的代码
-build the code for plus with a bunch of entries.
+the code for plus with a bunch of entries.
 
-823
-00:44:58,150 --> 00:45:00,490
+828
+00:44:58,150 --> 00:45:00,176
 所以它做的大部分事情是一样的
 So most of what it's doing is the same.
 
-824
-00:45:00,490 --> 00:45:04,560
-但这里可能有个特殊的入口 如果你知道有只有两个参数
-However, there might be a special entry that you'd go to if you knew there were only two arguments.
+829
+00:45:00,490 --> 00:45:01,952
+但这里可能有个特殊的入口
+However, there might be a special entry
 
-825
+830
+00:45:01,984 --> 00:45:03,920
+如果你知道只有两个参数
+that you'd go to if you knew there were only two arguments.
+
+831
 00:45:04,560 --> 00:45:05,875
 你会把它们放到寄存器中
 And those you'll put in registers.
 
-826
-00:45:05,875 --> 00:45:08,675
-它们不在参数列表里 你也不会去CONS连接它们
-they won't be in an argument list and you won't have to CONS.
+832
+00:45:05,870 --> 00:45:06,976
+它们不在参数表里
+they won't be in an argument list
 
-827
+833
+00:45:06,992 --> 00:45:07,984
+你也不必用CONS连接它们
+and you won't have to CONS.
+
+834
 00:45:08,675 --> 00:45:10,425
 这就是这些东西工作的原理
 That's how a lot of these things work.
 
-828
+835
 00:45:12,300 --> 00:45:13,725
-休息一会
+好吧 下课吧
 OK, let's take a break.
 
-829
+836
 00:45:14,100 --> 00:45:42,075
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
