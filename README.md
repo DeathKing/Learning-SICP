@@ -12,12 +12,12 @@
 
 这里收集了一些有用的学习资料，包括SICP原书、Scheme新手教程、相关拓展习题等。
 
-| 教学辅导 | 深入阅读 |
-| ------- | ------- |
-| [SICP原书全文·英文](https://mitpress.mit.edu/sicp/full-text/book/book.html) | [Oleg's FTP](http://okmij.org/ftp/) |
-| [SICP原书PDF版·英文](https://github.com/sarabander/sicp-pdf) | [Readscheme.org - Functional Programming Resources](http://readscheme.org/) |
-| [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn) | [Resources for Programming Language Research](http://www.cs.cmu.edu/afs/cs.cmu.edu/user/mleone/web/language-research.html) |
-| [MIT 2015春 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
+| 教学辅导 | 环境配置 | 深入阅读 |
+| ------- | ------ | ------- |
+| [SICP原书全文·英文](https://mitpress.mit.edu/sicp/full-text/book/book.html) |[MIT Scheme基本使用](http://www.math.pku.edu.cn/teachers/qiuzy/progtech/scheme/mit_scheme.htm)|[Oleg's FTP](http://okmij.org/ftp/) |
+| [SICP原书PDF版·英文](https://github.com/sarabander/sicp-pdf) | [PLT Scheme的基本使用](http://www.math.pku.edu.cn/teachers/qiuzy/progtech/scheme/plt_scheme.htm) | [Readscheme.org - Functional Programming Resources](http://readscheme.org/) |
+| [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn) | [DrRacket 的安装与配置](https://zhuanlan.zhihu.com/p/37056659) | [Resources for Programming Language Research](http://www.cs.cmu.edu/afs/cs.cmu.edu/user/mleone/web/language-research.html) |
+| [MIT 2015春 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Racket 常见问题](https://syntacticlosure.github.io/) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
 
 ## 视频地址
 
