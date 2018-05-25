@@ -10,14 +10,14 @@
 
 ## 教辅资料
 
-这里收集了一些有用的学习资料，包括SICP原书、Scheme新手教程、相关拓展习题等。
+这里收集了一些有用的学习资料，包括SICP原书、Scheme新手教程、教学环境搭建、相关拓展习题等资料。
 
 | 教学辅导 | 环境配置 | 深入阅读 |
 | ------- | ------ | ------- |
 | [SICP原书全文·英文](https://mitpress.mit.edu/sicp/full-text/book/book.html) |[MIT Scheme基本使用](http://www.math.pku.edu.cn/teachers/qiuzy/progtech/scheme/mit_scheme.htm)|[Oleg's FTP](http://okmij.org/ftp/) |
 | [SICP原书PDF版·英文](https://github.com/sarabander/sicp-pdf) | [PLT Scheme的基本使用](http://www.math.pku.edu.cn/teachers/qiuzy/progtech/scheme/plt_scheme.htm) | [Readscheme.org - Functional Programming Resources](http://readscheme.org/) |
 | [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn) | [DrRacket 的安装与配置](https://zhuanlan.zhihu.com/p/37056659) | [Resources for Programming Language Research](http://www.cs.cmu.edu/afs/cs.cmu.edu/user/mleone/web/language-research.html) |
-| [MIT 2015春 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Racket 常见问题](https://syntacticlosure.github.io/) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
+| [MIT 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Racket 常见问题](https://syntacticlosure.github.io/) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
 
 ## 视频地址
 
@@ -48,6 +48,7 @@
 | Lec8a | 《逻辑式程序设计 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzIyODg0NTEwNA==.html) [ [YouTube] ](https://youtu.be/VNH95lmCHdE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_15.html) [ [MKV] ](https://pan.baidu.com/s/1i5aQQVj) [ [MP4] ](https://pan.baidu.com/s/1dFlOqrB) | [DeathKing](https://github.com/DeathKing) |
 | Lec8b | 《逻辑式程序设计 II》 | [ [优酷] ](http://v.youku.com/v_show/id_XMzQ4MDA1OTE3Mg==.html) [ [YouTube] ](https://youtu.be/mcik1gEEyqA) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_16.html) [ [MKV] ](https://pan.baidu.com/s/1P6b00XxTfaaQX5GxSbROjg) [ [MP4] ](https://pan.baidu.com/s/1MN5ZDrnnKeE0XeMqAY6x0Q) | [DeathKing](https://github.com/DeathKing) |
 | Lec9a | 《寄存机器》 | [ [优酷] ](http://v.youku.com/v_show/id_XMzU3MzA5Mzg0OA==.html) [ [YouTube] ](https://youtu.be/oR2PwG0xh_g) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_17.html)  [MKV]  [ [MP4] ](https://pan.baidu.com/s/1AFM6__x4oGq3XtI_fa3ZGQ) | [DeathKing](https://github.com/DeathKing) |
+| Lec10a | 《编译》 | [ [优酷] ](http://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_18.html)  [MKV]  [ [MP4] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
 
 ## 任务队列
 
