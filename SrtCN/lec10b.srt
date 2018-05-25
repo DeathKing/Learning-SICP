@@ -1809,55 +1809,67 @@ And we'll worry about that in a second.
 
 368
 00:22:51,740 --> 00:22:53,625
-
+这有一些有限控制器
 There's some finite controller, 
 
 369
 00:22:54,389 --> 00:22:56,730
+有限状态机控制器
 finite state machine controller.
 
 370
 00:22:56,730 --> 00:22:59,513
+这些控制信号通过这里
 And there's some control signals that go this way and 
 
 371
 00:22:59,800 --> 00:23:03,350
+谓词结果通过这里 这没什么意思
 predicate results that come this way, not the interesting part.
 
 372
 00:23:03,350 --> 00:23:06,806
+这里有某种结构化的内存
 There's some sort of structured memory, 
 
 373
 00:23:06,806 --> 00:23:10,460
+我刚才给你讲过如何构建它 它可能包括一个栈
 which I just told you how to make, which may contain a stack.
 
 374
 00:23:10,460 --> 00:23:13,450
+我没有告诉你如何把东西构建成任意形状 只有pair
 I didn't tell you how to make things of arbitrary shape, only pairs.
 
 375
 00:23:13,450 --> 00:23:17,177
+但事实上 你可以用一个大列表来模拟栈
 But in fact with what I've told you can simulate a stack by a big list. 
 
 376
 00:23:17,775 --> 00:23:20,360
+我没准备干这个 这不是个好办法
 I don't plan to do that, it's not a nice way to do it.
 
 377
 00:23:20,360 --> 00:23:22,745
+但是#TBD
 But we could have something like that.
 
 378
 00:23:22,990 --> 00:23:25,647
+这有各种数据结构
 We have all sorts of little data structures in here
 
 379
 00:23:25,647 --> 00:23:27,750
+它们通过有趣的方式互相连接
 that are hooked together in funny ways.
 
 380
 00:23:30,115 --> 00:23:32,025
+它们和其他东西连接到一起
 They connect to other things.
 
 381
@@ -1870,6 +1882,7 @@ And ultimately things up there are pointers to these.
 
 383
 00:23:37,190 --> 00:23:38,873
+东西在寄存器里
 The things that are in the registers 
 
 384
@@ -1886,42 +1899,52 @@ that the entire consciousness of this machine is in these registers.
 
 387
 00:23:55,550 --> 00:23:58,750
+如果这个机器
 There is no possible way that the machine,
 
 388
 00:23:58,750 --> 00:24:01,374
+构建得正确的话
 if done correctly, if built correctly, 
 
 389
 00:24:01,374 --> 00:24:03,418
+它无法访问Lisp结构内存中任何东西
 can access anything in this Lisp structure memory 
 
 390
 00:24:04,575 --> 00:24:06,475
+除了在Lisp结构内存中
 unless the thing in that Lisp structure memory
 
 391
 00:24:08,095 --> 00:24:13,066
+与序列数据结构连接的寄存器
 is connected by a sequence of data structures to the registers.
 
 392
 00:24:15,070 --> 00:24:18,314
+#TBD
 If it's accessible by legitimate data structure selectors 
 
 393
 00:24:19,088 --> 00:24:21,322
+#TBD
 from the pointers that are stored in these registers.
 
 394
 00:24:22,280 --> 00:24:24,650
+类似数组引用
 Things like array references, perhaps.
 
 395
 00:24:24,940 --> 00:24:28,170
+或者#TBD
 Or cons cell references, cars and cdrs.
 
 396
 00:24:28,790 --> 00:24:31,950
+但我不能只讨论内存中的任意位置 因为我找不到它
 But I can't just talk about a random place in this memory, because I can't get to it.
 
 397
@@ -1961,555 +1984,693 @@ marking all the places I can get to by selectors,
 then eventually I mark everything they can be gotten to.
 
 406
-00:25:00,750 --> 00:25:03,750
+00:25:00,750 --> 00:25:03,
+任何未标记的都是垃圾 可以被回收
 Anything which is not so marked is garbage and can be recycled.
 
 407
 00:25:05,560 --> 00:25:06,400
+贼简单
 Very simple.
 
 408
 00:25:07,200 --> 00:25:09,100
+不能影响将来的计算
 Cannot affect the future of the computation.
 
 409
 00:25:11,180 --> 00:25:15,750
+看下这个特殊的例子
 So let me show you that in a particular example.
 
 410
 00:25:17,124 --> 00:25:22,200
+#TBD
 Now that means I'm going to have to append to my description of the list structure a mark.
 
 411
 00:25:23,640 --> 00:25:27,825
+在这里是一个Lisp结构化的内存
 And so here, for example, is a Lisp structured memory.
 
 412
 00:25:29,080 --> 00:25:31,333
+在这块内存里是一个Lisp数据结构
 And in this Lisp structured memory is a Lisp structure 
 
 413
 00:25:31,333 --> 00:25:34,150
+我们把这个起始位置
 beginning in a place I'm going to call-- 
 
 414
 00:25:35,875 --> 00:25:36,775
+称为根
 this is the root.
 
 415
 00:25:38,590 --> 00:25:40,120
+它不必真是的根
 Now it doesn't really have to have a root.
 
 416
 00:25:40,120 --> 00:25:41,950
+因为有很多这种东西 与寄存器类似
 It could be a bunch of them, like all the registers.
 
 417
 00:25:42,670 --> 00:25:44,138
+但我可以#TBD
 But I could cleverly arrange it 
 
 418
 00:25:44,138 --> 00:25:46,300
+因此所有的寄存器 所有在旧寄存器里的东西
 so all the registers, all the things that are in old registers 
 
 419
 00:25:46,300 --> 00:25:50,460
+也应该房子这个根结构里
 are also at the right moment put into this root structure, 
 
 420
 00:25:50,460 --> 00:25:51,850
+然后我们有一个指针指向它
 and then we've got one pointer to it.
 
 421
 00:25:51,850 --> 00:25:52,675
+我不是很在意
 I don't really care.
 
 422
 00:25:54,570 --> 00:25:58,050
+思路是 我们要一直把东西用cons连接起来 直到我们的free list为空
 So the idea is we're going to cons up stuff until our free list is empty.
 
 423
 00:25:58,720 --> 00:25:59,675
+我们用尽所有的空间
 We've run out of things.
 
 424
 00:26:00,950 --> 00:26:04,475
+现在我们要证明这个理论
 Now we're going to do this process of proving the theorem 
 
 425
 00:26:04,475 --> 00:26:06,900
+#TBD
 that a certain percentage of the memory has got crap in it.
 
 426
 00:26:07,850 --> 00:26:09,250
+然后我们要回收它
 And then we're going to recycle that 
 
 427
 00:26:09,787 --> 00:26:14,570
+构建一个新的树 对于回收垃圾的基本用法
 to grow new trees, a standard use of such garbage.
 
 428
 00:26:17,090 --> 00:26:18,840
+那么我们要做什么呢?
 So in any case, what do we have here?
 
 429
 00:26:18,840 --> 00:26:24,275
-Well we have some data structure which starts out over  here in p5. 
+从p5这个位置开始 存了一些数据结构
+Well we have some data structure which starts out over here in p5. 
 
 430
 00:26:25,150 --> 00:26:26,750
+从1开始
 and it will start at one
 
 431
 00:26:27,275 --> 00:26:33,980
+事实上 p5是一个car 它的cdr在2这个位置
 And in fact it has a car in p5, and its cdr is in two.
 
 432
 00:26:33,980 --> 00:26:35,800
+所有标记都是从0开始的
 And all the marks start out at zero.
 
 433
 00:26:36,700 --> 00:26:39,000
+我们要开始标记了
 Well let's start marking, just to play this game.
 
 434
 00:26:39,920 --> 00:26:40,525
+好
 OK.
 
 435
 00:26:42,540 --> 00:26:44,475
+例如
 So for example, 
 
 436
 00:26:44,475 --> 00:26:47,975
+因为我可以从根访问到它 我就标记一下
 since I can access one from the root I will mark that.
 
 437
 00:26:48,390 --> 00:26:49,175
+让我标记一下
 Let me mark it.
 
 438
 00:26:50,960 --> 00:26:51,450
+#TBD
 Bang.
 
 439
 00:26:52,430 --> 00:26:53,150
+这个被标记了
 That's marked.
 
 440
 00:26:54,560 --> 00:26:58,675
+因为我有个5 所以我跑到了5
 Now since I have a five here I can go to five
 
 441
 00:26:59,025 --> 00:27:00,725
- and see, well I'll mark that.
+看 我要标记这个
+and see, well I'll mark that.
 
 442
 00:27:01,450 --> 00:27:01,760
+#TBD
 Bang.
 
 443
 00:27:01,760 --> 00:27:02,600
+这是个有用的东西
 That's useful stuff.
 
 444
 00:27:02,900 --> 00:27:05,275
+#TBD
 But five references as a number in its car, 
 
 445
 00:27:05,275 --> 00:27:08,175
+我对标记数字不感兴趣 但它的cdr是7
 I'm not interested in marking numbers but its cdr is seven.
 
 446
 00:27:08,700 --> 00:27:09,750
+所以我可以标记它
 So I can mark that.
 
 447
 00:27:10,450 --> 00:27:11,075
+#TBD
 Bang.
 
 448
 00:27:12,260 --> 00:27:13,400
+7是一个空列表
 Seven is the empty list, 
 
 449
 00:27:13,675 --> 00:27:15,100
+#TBD
 the only thing that references, 
 
 450
 00:27:15,595 --> 00:27:17,120
+它的car是个数字
 and it's got a number in its car.
 
 451
 00:27:17,120 --> 00:27:17,850
+对它不感兴趣
 Not interesting.
 
 452
 00:27:19,490 --> 00:27:20,500
+让我们回到这里
 Well now let's go back here.
 
 453
 00:27:20,500 --> 00:27:21,650
+我忘记了一些事情
 I forgot about something.
 
 454
 00:27:21,650 --> 00:27:22,175
+2
 Two.
 
 455
 00:27:22,840 --> 00:27:24,850
+换句话说 如果我看cell 1
 See in other words, if I'm looking at cell one, 
 
 456
 00:27:25,425 --> 00:27:29,450
+cell 1包括了#TBD
 cell one contains a two right over here.
 
 457
 00:27:30,370 --> 00:27:31,300
+一个到2的引用
 A reference to two.
 
 458
 00:27:31,730 --> 00:27:34,975
+这意味着我应该标记2
 That means I should go mark two.
 
 459
 00:27:35,700 --> 00:27:36,275
+#TBD
 Bang.
 
 460
 00:27:37,140 --> 00:27:38,960
+2包括了一个到4的引用
 Two contains a reference to four.
 
 461
 00:27:38,960 --> 00:27:41,200
+它的car是个数字 我对它不感兴趣
 It's got a number in its car, I'm not interested in that, 
 
 462
 00:27:41,489 --> 00:27:42,725
+所以我要标记它
 so I'm going to go mark that.
 
 463
 00:27:43,780 --> 00:27:46,100
+4通过car引用了7
 Four refers to seven through its car, 
 
 464
 00:27:46,750 --> 00:27:48,475
+它的cdr是空的
 and is empty in its cdr, 
 
 465
 00:27:48,475 --> 00:27:50,750
+但由于我已经标记过了 就不再次标记它了
 but I've already marked that one so I don't have to mark it again.
 
 466
 00:27:51,400 --> 00:27:53,875
+这就是这个地方所有能够访问的结构
 This is all the accessible structure from that place.
 
 467
 00:27:55,000 --> 00:27:56,575
+很简单的递归标记算法
 Simple recursive mark algorithm.
 
 468
 00:27:58,710 --> 00:28:01,900
+这个算法有一些不足的地方
 Now there are some unhappinesses about that algorithm, 
 
 469
 00:28:01,900 --> 00:28:04,025
+我们稍后会说
 and we can worry about that a second.
 
 470
 00:28:04,920 --> 00:28:07,850
+但基本上你能看到 所有没被标记的
 But basically you'll see that all the things that have not been marked 
 
 471
 00:28:09,625 --> 00:28:12,525
+#TBD 都是可以回收的
 are places that are free, and I could recycle.
 
 472
 00:28:14,220 --> 00:28:17,050
+所以下一步就是扫描整个内存
 So the next stage after that is going to be to scan through all of my memory, 
 
 473
 00:28:17,945 --> 00:28:20,350
+寻找未被标记的东西
 looking for things that are not marked.
 
 474
 00:28:21,180 --> 00:28:23,225
+每当遇到一个已标记的东西 就把标记去掉
 Every time I come across a marked thing I unmark it, 
 
 475
 00:28:23,225 --> 00:28:25,575
+每当遇到未标记的东西时
 and every time I come across an unmarked thing 
 
 476
 00:28:26,297 --> 00:28:27,825
+我就把它连接到我的free list里面
 I'm going to link it together in my free list.
 
 477
 00:28:28,770 --> 00:28:30,300
+传统而且非常简单的算法
 Classic, very simple algorithm.
 
 478
 00:28:32,120 --> 00:28:33,100
+我们看
 So let's see.
 
 479
 00:28:33,840 --> 00:28:34,770
+它很简单吗?
 Is that very simple?
 
 480
 00:28:34,770 --> 00:28:35,570
+是的
 Yes it is.
 
 481
 00:28:35,570 --> 00:28:38,009
+我不会深入代码细节
 I'm not going to go through the code in any detail, 
 
 482
 00:28:38,009 --> 00:28:39,650
+只是想给你看看它有多长
 but I just want to show you about how long it is.
 
 483
 00:28:40,090 --> 00:28:41,100
+看这个标记阶段
 Let's look at the mark phase.
 
 484
 00:28:41,575 --> 00:28:44,145
+这是标记阶段的第一部分
 Here's the first part of the mark phase.
 
 485
 00:28:45,060 --> 00:28:46,000
+我们找到根
 We pick up the root.
 
 486
 00:28:46,500 --> 00:28:47,525
+我们要
 We're going to do some
 
 487
 00:28:47,675 --> 00:28:51,050
+我们要对它进行递归过程调用
 We're going to use that as a recursive procedure call.
 
 488
 00:28:52,380 --> 00:28:54,475
+当我们完成标记之后
 We're going to sweep from there, 
 
 489
 00:28:54,775 --> 00:28:56,950
+就从这里开始清除
 after when we're done with marking.
 
 490
 00:28:57,380 --> 00:29:03,075
+#TBD
 And then we're going to do a little couple of instructions that do this checking out on the marks and changing the marks and things like that, 
 
 491
 00:29:03,075 --> 00:29:04,900
+按照我刚才讲的那个算法进行
 according to the algorithm I've just shown you.
 
 492
 00:29:05,500 --> 00:29:06,470
+#TBD
 It comes out here.
 
 493
 00:29:06,470 --> 00:29:07,650
+你需要标记它们的car
 You have to mark the cars of things 
 
 494
 00:29:07,875 --> 00:29:10,212
+也需要标记它们的cdr
 and you also have to be able to mark the cdrs of things.
 
 495
 00:29:10,660 --> 00:29:12,100
+这是所有的标记阶段
 That's the entire mark phase.
 
 496
 00:29:14,370 --> 00:29:16,164
+我给你讲个关于它的小故事
 I'll just tell you a little story about this.
 
 497
 00:29:16,590 --> 00:29:19,375
+古董货DEC PDP-6计算机
 The old DEC PDP-6 computer, 
 
 498
 00:29:20,937 --> 00:29:24,850
+标记清除垃圾回收#TBD
 this was the way that the mark-sweep garbage collection, as it was, was written.
 
 499
 00:29:26,740 --> 00:29:28,500
+程序很短
 The program was so small 
 
 500
 00:29:29,257 --> 00:29:31,600
+包括它需要的数据
 that with the data that it needed, 
 
 501
 00:29:32,201 --> 00:29:34,875
+还包括它用来操作内存的寄存器
 with the registers that it needed to manipulate the memory, 
 
 502
 00:29:36,169 --> 00:29:38,975
+能放到机器的快速寄存器里 #TBD 16
 it fit into the fast registers of the machine, which were 16.
 
 503
 00:29:39,280 --> 00:29:39,800
+整个程序
 The whole program.
 
 504
 00:29:39,800 --> 00:29:42,212
+你可以在快速寄存器里执行指令
 And you could execute instructions in the fast registers.
 
 505
 00:29:43,170 --> 00:29:45,000
+所以这是个非常短的程序
 So it's an extremely small program, 
 
 506
 00:29:45,850 --> 00:29:47,075
+它跑得飞快
 and it could run very fast.
 
 507
 00:29:48,870 --> 00:29:51,300
+很不幸
 Now unfortunately, of course, 
 
 508
 00:29:51,610 --> 00:29:54,025
+因为这个程序是递归的
 this program, because the fact that it's recursive 
 
 509
 00:29:54,800 --> 00:29:59,216
+#TBD
 in the way that you do something first and then you do something after that, 
 
 510
 00:29:59,216 --> 00:30:01,150
+你不得不先处理car 再处理cdr
 you have to work on the cars and then the cdrs, 
 
 511
 00:30:01,150 --> 00:30:02,750
+这需要海量的内存
 it requires auxiliary memory.
 
 512
 00:30:03,410 --> 00:30:07,425
+所以Lisp系统需要一个栈来进行标记
 So Lisp systems-- those requires a stack for marking.
 
 513
 00:30:08,260 --> 00:30:11,050
+Lisp系统通过这样的方式
 Lisp systems that are built this way 
 
 514
 00:30:11,575 --> 00:30:14,425
+限制了你在数据结构上
 have a limit to the depth of recursion you can have 
 
 515
 00:30:14,425 --> 00:30:17,375
+进行car或者cdr递归的深度
 in data structures in either the car or the cdr, 
 
 516
 00:30:17,817 --> 00:30:19,350
+这并不太靠谱
 and that doesn't work very nicely.
 
 517
 00:30:19,930 --> 00:30:22,175
+另一方面 当它足够大的时候你不会发现
 On the other hand, you never notice it if it's big enough.
 
 518
 00:30:23,180 --> 00:30:28,697
+例如对于Maclisp#TBD
 And that's certainly been the case for most Maclisp, for example, 
 
 519
 00:30:28,697 --> 00:30:32,725
+#TBD
 which ran Macsyma where you could deal with expressions of thousands of elements long.
 
 520
 00:30:33,560 --> 00:30:36,025
+#TBD
 These are algebraic expressions with thousand of terms. 
 
 521
 00:30:36,825 --> 00:30:38,100
+这没啥问题
 And there's no problem with that.
 
 522
 00:30:39,490 --> 00:30:40,825
+垃圾回收器能正常工作
 Such, the garbage collector does work.
 
 523
 00:30:42,190 --> 00:30:42,925
+另一方面
 On the other hand, 
 
 524
 00:30:42,925 --> 00:30:46,475
+这个算法有个很精妙的魔改版 但我不会去讲
 there's a very clever modification to this algorithm, which I will not describe, 
 
 525
 00:30:46,800 --> 00:30:50,768
+它是由两个人提出的
 by Peter Deutsch and Schorr and Waite-- 
 
 526
 00:30:50,768 --> 00:30:54,750
+IBM的Herb Schorr和Waite 后面这个我不认识
 Herb Schorr from IBM and Waite, who I don't know.
 
 527
 00:30:55,380 --> 00:30:56,675
+这个算法让你
 That algorithm allows you to build- -
 
 528
 00:30:56,675 --> 00:30:59,550
- you do can do this without auxiliary memory, 
+能够不消耗大量内存就完成工作
+you do can do this without auxiliary memory, 
 
 529
 00:31:00,500 --> 00:31:02,975
+通过反转你下降的时候的指针
 by remembering as you walk the data structures 
 
 530
 00:31:02,975 --> 00:31:05,525
+#TBD
 where you came from by reversing the pointers as you go down 
 
 531
 00:31:05,525 --> 00:31:07,520
+通过反转的指针再回去
 and crawling up the reverse pointers as you go up. 
 
 532
 00:31:07,520 --> 00:31:09,130
+这是个很取巧的算法
 It's a rather tricky algorithm.
 
 533
 00:31:09,130 --> 00:31:12,725
+你第一次写它 事实上 前三次你写的时候都会写出惊天大bug
 The first time you write it-- or in fact, the first three times you write it it has a terrible bug in it.
 
 534
 00:31:14,350 --> 00:31:17,675
+它也可能跑得奇慢无比 因为这个算法太复杂了
 And it's also rather slow, because it's complicated.
 
 535
 00:31:18,110 --> 00:31:20,450
+他用了七倍的内存引用
 It takes about six times as many memory references 
 
 536
 00:31:20,850 --> 00:31:23,225
+来完成我们刚才讨论的任务
 to do the sorts of things that we're talking about.
 
 537
 00:31:24,580 --> 00:31:27,075
+一旦我完成了标记阶段
 Well now once I've done this marking phase, 
 
 538
 00:31:27,500 --> 00:31:31,510
+#TBD
 and I get into a position where things look like this, let's look-- yes.
 
 539
 00:31:31,510 --> 00:31:35,050
+这里完成了标记工作 和我刚才做的一样
 Here we have the mark done, just as I did it.
 
 540
 00:31:35,590 --> 00:31:37,330
+现在我们要进行清除阶段
 Now we have to perform the sweep phase.
 
 541
 00:31:37,330 --> 00:31:39,325
+我刚才已经讲过如何清除了
 And I described to you what this sweep is like.
 
 542
 00:31:39,820 --> 00:31:42,348
+我要从#TBD
 I'm going to walk down from one end of memory or the other, 
 
 543
 00:31:42,348 --> 00:31:43,628
+我不关心从哪开始
 I don't care where, 
 
 544
@@ -3401,6 +3562,7 @@ and for every argument you could give it
 
 753
 00:44:23,925 --> 00:44:25,425
+它只能是true或者false
 that is either true or false 
 
 754
@@ -3469,19 +3631,21 @@ let's define a procedure called diag1.
 
 767
 00:45:23,810 --> 00:45:24,945
-
 Given that we have safe,
 
 768
 00:45:25,200 --> 00:45:26,993
+我们可以定义diag1
 we can define diag1
 
 769
 00:45:34,300 --> 00:45:39,056
- to be the procedure 
+作为有一个参数p
+to be the procedure 
 
 770
 00:45:39,675 --> 00:45:41,700
+的过程
 of one argument, p, 
 
 771
@@ -3490,14 +3654,17 @@ which has the following properties.
 
 772
 00:45:44,780 --> 00:45:50,675
+如果它对自己应用p
 If it's safe to apply p to itself, 
 
 773
 00:45:53,325 --> 00:45:55,325
+那么就形成了死循环
 then I wish to have an infinite loop.
 
 774
 00:45:59,225 --> 00:46:00,925
+否则我会返回3
 Otherwise I'm going to return 3.
 
 775
@@ -3522,10 +3689,12 @@ Infinite loop,
 
 779
 00:46:13,825 --> 00:46:16,025
+没有参数的过程
 to be a procedure of no arguments, 
 
 780
 00:46:16,025 --> 00:46:18,075
+这是一个极好的lambda运算循环
 which is that nice lambda calculus loop.
 
 781
@@ -3542,26 +3711,32 @@ applied to lambda of x, x of x.
 
 784
 00:46:24,680 --> 00:46:26,550
+没啥可以继续瞎合计的了
 So there's nothing left to the imagination here.
 
 785
 00:46:29,830 --> 00:46:31,175
+总结一下
 Well let's see what the story is.
 
 786
 00:46:32,500 --> 00:46:33,908
+我假设
 I'm supposing it's the case 
 
 787
 00:46:35,450 --> 00:46:38,772
+我们担心有个过程
 that we worry about the procedure 
 
 788
 00:46:39,000 --> 00:46:43,450
+把diag1应用到diag1上
 called diag1 applied to diag1.
 
 789
 00:46:46,275 --> 00:46:47,775
+那会怎样呢?
 Well what could it possibly be?
 
 790
@@ -3571,10 +3746,12 @@ Well I don't know.
 
 791
 00:46:51,390 --> 00:46:53,213
+将diag1代换为
 We're going to substitute diag1
 
 792
 00:46:53,550 --> 00:46:55,500
+p的过程体
 for p in the body here.
 
 793
@@ -3672,22 +3849,27 @@ These are instances of a famous argument which was originally used by
 
 812
 00:47:49,450 --> 00:47:52,650
+Cantor在19世纪末
 Cantor in the late part of the last century
 
 813
 00:47:52,775 --> 00:47:56,106
+证明了实数是无限的
 to prove that the real numbers were not countable, 
 
 814
 00:47:56,675 --> 00:47:59,450
+用整数无法数完实数
 that there are too many real numbers to be counted by integers.
 
 815
 00:48:00,190 --> 00:48:02,500
+举例来说 在数轴上
 That there are more points on a line, for example, 
 
 816
 00:48:02,500 --> 00:48:02,506
+点的数量比计数的数字多
 than there are counting numbers.
 
 817
@@ -3696,46 +3878,57 @@ than there are counting numbers.
 
 818
 00:48:05,260 --> 00:48:06,858
+这或许不是个显而易见的结论
 It may or may not be obvious, 
 
 819
 00:48:06,858 --> 00:48:08,175
+但我不想深入讨论这个
 and I don't want to get into that now.
 
 820
 00:48:10,900 --> 00:48:12,450
+但是diag2
 But diag2 
 
 821
 00:48:13,300 --> 00:48:15,820
+又成为了有一个参数的过程p
 is again a procedure of one argument p.
 
 822
 00:48:15,820 --> 00:48:17,475
+这几乎与之前的情况相同
 It's almost the same as the previous one, 
 
 823
 00:48:17,725 --> 00:48:24,323
+如果计算#TBD是安全的
 which is, if it's safe to compute p on p,
 
 824
 00:48:25,175 --> 00:48:26,675
+那么我就要
 then I'm going to produce-- 
 
 825
 00:48:27,267 --> 00:48:31,025
+要去计算
 then I want to compute 
 
 826
 00:48:31,575 --> 00:48:32,775
+一些#TBD之外的
 some other things
 
 827
 00:48:33,800 --> 00:48:37,825
+其他东西
 other than p of p.
 
 828
 00:48:38,960 --> 00:48:40,210
+否则我就返回false
 Otherwise I'm going to put out false.
 
 829
@@ -3756,10 +3949,12 @@ which I think works.
 
 833
 00:48:53,890 --> 00:48:55,225
+我们看
 Let's see.
 
 834
 00:48:55,640 --> 00:48:56,330
+是的
 Yes.
 
 835
@@ -3776,7 +3971,7 @@ if its eq x to, say, quote a,
 
 838
 00:49:13,325 --> 00:49:15,075
- then the answer is quote b.
+then the answer is quote b.
 
 839
 00:49:15,720 --> 00:49:16,970
@@ -3788,7 +3983,7 @@ That always produces something
 
 841
 00:49:22,075 --> 00:49:23,450
- which is not what its argument is.
+which is not what its argument is.
 
 842
 00:49:25,350 --> 00:49:26,125
@@ -3796,10 +3991,12 @@ That's all it is.
 
 843
 00:49:26,540 --> 00:49:27,375
+这就是我要的
 That's all I wanted.
 
 844
 00:49:28,250 --> 00:49:29,587
+我们考虑一下这个
 Well now let's consider this one, 
 
 845
