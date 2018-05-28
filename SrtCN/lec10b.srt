@@ -2665,164 +2665,202 @@ And I described to you what this sweep is like.
 
 542
 00:31:39,820 --> 00:31:42,348
-我要从#TBD
+我要从内存的一端开始
 I'm going to walk down from one end of memory or the other, 
 
 543
 00:31:42,348 --> 00:31:43,628
-我不关心从哪开始
+哪一端都可以
 I don't care where, 
 
 544
 00:31:43,628 --> 00:31:46,175
+扫描内存中的每个格子
 scanning every cell that's in the memory.
 
 545
 00:31:47,175 --> 00:31:48,675
+在扫描的同时
 And as I scan these cells, 
 
 546
 00:31:49,207 --> 00:31:51,950
+如果是空闲内存 
 I'm going to link them together, if they are free, 
 
 547
 00:31:51,950 --> 00:31:53,150
+就把它们连接到free list里
 into the free list. 
 
 548
 00:31:53,150 --> 00:31:56,075
+如果它们不是空闲内存 我就把它们的标记清除掉
 And if they're not free, I'm going to unmark them so the marks become zero.
 
 549
 00:31:57,500 --> 00:31:58,700
+事实上
 And in fact what I get-- 
 
 550
 00:31:58,700 --> 00:32:00,460
+最终的程序并不很复杂
 well the program is not very complicated.
 
 551
 00:32:00,460 --> 00:32:02,225
+它只是变长了一些
 It looks sort of like this-- it's a little longer.
 
 552
 00:32:02,780 --> 00:32:04,175
+这是第一部分
 Here's the first piece of it.
 
 553
 00:32:04,820 --> 00:32:06,710
+这玩意从内存的顶端下降下来
 This one's coming down from the top of memory.
 
 554
 00:32:06,710 --> 00:32:09,580
+我不期望你现在就搞懂它
 I don't want you to try to understand this at this point.
 
 555
 00:32:09,580 --> 00:32:10,550
+它挺简单的
 It's rather simple.
 
 556
 00:32:11,030 --> 00:32:12,525
+这是个非常简单的算法
 It's a very simple algorithm, 
 
 557
 00:32:13,075 --> 00:32:15,970
+#TBD
 but there's pieces of it that just sort of look like this.
 
 558
 00:32:15,970 --> 00:32:17,375
+非常显而易见
 They're all sort of obvious.
 
 559
 00:32:18,600 --> 00:32:20,307
+在清理结束后
 And after we've done the sweep, 
 
 560
 00:32:20,307 --> 00:32:22,025
+我们就得到了长这个样子的结果
 we get an answer that looks like that.
 
 561
 00:32:25,330 --> 00:32:28,500
+标记清除算法有一些缺点
 Now there are some disadvantages with mark-sweep algorithms of this sort.
 
 562
 00:32:29,590 --> 00:32:30,350
+最严重的一个是
 Serious ones.
 
 563
 00:32:31,450 --> 00:32:34,975
+最重要的缺点是 你的内存越来越大
 One important disadvantage is that your memories get larger and larger.
 
 564
 00:32:36,826 --> 00:32:40,800
+内存空间越来越大 你想用它存更多东西
 As you say, address spaces get larger and larger, you're willing to represent more and more stuff, 
 
 565
 00:32:41,370 --> 00:32:44,750
+这导致扫描整个内存的耗时特别长
 then it gets very costly to scan all of memory.
 
 566
 00:32:46,360 --> 00:32:48,900
+你真正想做的是只扫描有用的东西
 What you'd really like to do is only scan useful stuff.
 
 567
 00:32:50,490 --> 00:32:51,550
+这样就会好一点
 It would even be better 
 
 568
 00:32:52,075 --> 00:32:57,725
+如果你意识到有些东西是有用的
 if you realized that some stuff was known to be good and useful, 
 
 569
 00:32:58,283 --> 00:33:00,370
+你就没必要去多次检查它
 and you don't have to look at it more than once or twice.
 
 570
 00:33:00,370 --> 00:33:01,200
+或者不用经常去检查它
 Or very rarely.
 
 571
 00:33:01,550 --> 00:33:04,325
+对于那些你不太确定的
 Whereas other stuff that you're not so sure about, 
 
 572
 00:33:05,003 --> 00:33:08,750
+你可以在每次需要的时候仔细检查
 you can look at more detail every time you want to do this, 
 
 573
 00:33:09,931 --> 00:33:10,850
+也就是在垃圾回收的时候进行
 want to garbage collect.
 
 574
 00:33:11,910 --> 00:33:15,100
+这些算法就是用了这样的方法
 Well there are algorithms that are organized in this way.
 
 575
 00:33:15,660 --> 00:33:18,282
+我要介绍一个著名的古老算法
 Let me tell you about a famous old algorithm 
 
 576
 00:33:18,282 --> 00:33:21,375
+它让你只检查可用部分的内存
 which allows you only look at the part of memory which is known to be useful.
 
 577
 00:33:22,800 --> 00:33:25,550
+这让它成为了最快的垃圾回收算法
 And which happens to be the fastest known garbage collector algorithm.
 
 578
 00:33:26,310 --> 00:33:29,450
-This is the Minsky-Feinchel-Yochelson garbage collector algorithm.
+它就是Minsky-Fenichel-Yochelson垃圾回收算法
+This is the Minsky-Fenichel-Yochelson garbage collector algorithm.
 
 579
 00:33:30,150 --> 00:33:36,525
+它在1961年或1960年时由Minsky发明
 It was invented by Minsky in 1961 or '60 or something, 
 
 580
 00:33:36,525 --> 00:33:39,825
+当时是给RLE PDP-1 Lisp用的
 for the RLE PDP-1 Lisp, 
 
 581
 00:33:40,125 --> 00:33:46,800
+这个机器只有4096个字的线性内存 还有个#TBD
 which had 4,096 words of list memory, and a drum.
 
 582
@@ -2831,299 +2869,373 @@ And the whole idea was to garbage collect this terrible memory.
 
 583
 00:33:53,050 --> 00:33:55,625
+Minsky发现达到目的的最容易的方法是
 What Minsky realized was the easiest way to do this 
 
 584
 00:33:56,200 --> 00:33:58,475
+扫描内存#TBD
 is to scan the memory in the same sense, 
 
 585
 00:33:58,475 --> 00:34:00,600
+遍历好的结构
 walking the good structure, 
 
 586
 00:34:01,575 --> 00:34:05,475
+把它复制到drum 压缩
 copying it out into the drum, compacted.
 
 587
 00:34:06,350 --> 00:34:09,127
+结束之后 把它们复制出来
 And then when we were done copying it all out, 
 
 588
 00:34:09,127 --> 00:34:10,900
+并把它们交换回内存里
 then you swap that back into your memory.
 
 589
 00:34:12,300 --> 00:34:16,425
+不管你有没有用drum或者其他的内存 这不重要
 Now whether or you not use a drum, or another piece of memory, or something like that isn't important.
 
 590
 00:34:17,030 --> 00:34:19,600
+事实上 我不认为#TBD
 In fact, I don't think people use drums anymore for anything.
 
 591
 00:34:20,350 --> 00:34:25,425
+但这个算法依赖
 But this algorithm basically depends upon having 
 
 592
 00:34:25,425 --> 00:34:28,575
+大约两倍于你实际使用的内存
 about twice as much address space as you're actually using.
 
 593
 00:34:30,270 --> 00:34:33,125
+最开始 你有一些
 And so what you have is some, initially, 
 
 594
 00:34:33,125 --> 00:34:37,110
+可用的数据和垃圾的混合物
 some mixture of useful data and garbage.
 
 595
 00:34:37,110 --> 00:34:38,560
+它被成为fromspace
 So this is called fromspace.
 
 596
 00:34:45,179 --> 00:34:47,050
+这是crud的混合
 And this is a mixture of crud.
 
 597
 00:34:47,800 --> 00:34:49,950
+有些是有用的有些没有
 Some of it's important and some of it isn't.
 
 598
 00:34:52,000 --> 00:34:55,775
+有一个地方需要足够大
 Now there's another place which is hopefully big enough, 
 
 599
 00:34:55,775 --> 00:34:58,240
+这个地方叫topspace 要把东西复制进去
 if we recall, tospace, which is where we're copying to.
 
 600
 00:35:01,590 --> 00:35:02,600
+然后就发生了
 And what happens is-- 
 
 601
 00:35:02,600 --> 00:35:04,970
+我不会深入细节
 and I'm not going to go through this detail.
 
 602
 00:35:04,970 --> 00:35:07,075
+书上写得很清楚了
 It's in our book quite explicitly.
 
 603
 00:35:07,590 --> 00:35:10,400
+有一个你开始的根节点
 There's a root point where you start from.
 
 604
 00:35:11,030 --> 00:35:14,300
+你从这里开始
 And the idea is that you start with the root.
 
 605
 00:35:14,600 --> 00:35:16,425
+复制你看到的第一个东西
 You copy the first thing you see, 
 
 606
 00:35:17,832 --> 00:35:19,752
+#TBD
 the first thing that the root points at, 
 
 607
 00:35:19,752 --> 00:35:21,425
+复制到topspace的开始
 to the beginning of tospace.
 
 608
 00:35:22,810 --> 00:35:25,975
+第一个东西是一个序对或者数据结构
 The first thing is a pair or something like, a data structure.
 
 609
 00:35:27,560 --> 00:35:31,775
+#TBD
 You then also leave behind a broken heart saying, 
 
 610
 00:35:31,775 --> 00:35:35,743
+我把东西从这移动到这
 I moved this object from here to here, 
 
 611
 00:35:35,743 --> 00:35:37,050
+在它要去的地方分配空间
 giving the place where it moved to.
 
 612
 00:35:37,800 --> 00:35:39,650
+这被叫作broken heart是因为
 This is called a broken heart because 
 
 613
 00:35:39,650 --> 00:35:43,825
+在1966年的时候我的一个朋友实现这个
 a friend of mine who implemented one of these in 1966 
 
 614
 00:35:43,825 --> 00:35:46,760
+#TBD把它叫作broken heart
 was a very romantic character and called it a broken heart.
 
 615
 00:35:49,580 --> 00:35:51,150
+不论如何
 But in any case, 
 
 616
 00:35:51,150 --> 00:35:52,942
+接下来要做的是
 the next thing you do 
 
 617
 00:35:52,942 --> 00:35:55,175
+这有个新的free pointer
 is now you have a new free pointer which is here, 
 
 618
 00:35:55,175 --> 00:35:57,840
+你开始扫描
 and you start scanning.
 
 619
 00:35:57,840 --> 00:35:59,775
+你扫描这个你刚复制过的数据结构
 You scan this data structure you just copied.
 
 620
 00:36:00,551 --> 00:36:02,195
+每当你encounter一个指针到里面
 And every time you encounter a pointer in it, 
 
 621
 00:36:02,195 --> 00:36:04,000
+你把它当作root pointer
 you treat it as if it was the root pointer here.
 
 622
 00:36:04,000 --> 00:36:05,170
+对不起
 Oh, I'm sorry.
 
 623
 00:36:05,170 --> 00:36:07,150
+你做的另一件事是 你将根指针移动到这里
 The other thing you do is you now move the root pointer to there.
 
 624
 00:36:09,220 --> 00:36:10,175
+所以你可以扫描这里
 So now you scan this, 
 
 625
 00:36:10,175 --> 00:36:12,375
+把每个遇到的东西都作为根指针对待
 and everything you see you treat as it were the root pointer.
 
 626
 00:36:14,110 --> 00:36:15,450
+如果你看到了什么
 So if you see something, 
 
 627
 00:36:15,450 --> 00:36:17,400
+它指向了这里的某个地方
 well it points up into there somewhere.
 
 628
 00:36:18,510 --> 00:36:21,125
+它指向了你没复制的东西吗?
 Is it pointing at a thing which you've not copied yet?
 
 629
 00:36:21,780 --> 00:36:22,875
+这里有broken heart吗
 Is there a broken heart there?
 
 630
 00:36:23,880 --> 00:36:26,202
+如果#TBD
 If there's a broken heart there and it's something you have copied, 
 
 631
 00:36:26,202 --> 00:36:28,750
+#TBD
 you've just replaced this pointer with the thing a broken heart points at.
 
 632
 00:36:29,825 --> 00:36:32,125
+如果它还没被复制
 If this thing has not been copied, 
 
 633
 00:36:32,125 --> 00:36:34,430
+你把它移到这里
 you copy it to the next place over here.
 
 634
 00:36:34,430 --> 00:36:35,950
+把你的free指针移到这里
 Move your free pointer over here, 
 
 635
 00:36:37,053 --> 00:36:41,800
+#TBD
 and then leave a broken heart behind and scan.
 
 636
 00:36:43,670 --> 00:36:46,400
+最终已扫描的指针追上了free指针
 And eventually when the scant pointer hits the free pointer, 
 
 637
 00:36:46,825 --> 00:36:48,525
+内存里的所有东西都被复制了
 everything in memory has been copied.
 
 638
 00:36:50,140 --> 00:36:52,075
+那么就有一大堆空闲空间了
 And then there's a whole bunch of empty space up here, 
 
 639
 00:36:52,075 --> 00:36:54,470
+你就可以把它们放进free list里
 which you could either make into a free list, if that's what you want to do.
 
 640
 00:36:54,470 --> 00:36:56,270
+但通常在这种系统中你不会这样做
 But generally you don't in this kind of system.
 
 641
 00:36:56,270 --> 00:36:59,150
+在这个系统中你顺序分配你的内存
 In this system you sequentially allocate your memory.
 
 642
 00:37:00,910 --> 00:37:02,975
+这是个非常 非常好的算法
 That is a very, very nice algorithm, 
 
 643
 00:37:02,975 --> 00:37:05,975
+在你们用的scheme里就有这么个东西
 and sort of the one we use in the scheme that you've been using.
 
 644
 00:37:06,790 --> 00:37:09,475
+#TBD
 And it's expected-- 
 
 645
 00:37:09,475 --> 00:37:12,125
+我相信没人能发现比它跑得更快的算法
 I believe no one has found a faster algorithm than that.
 
 646
 00:37:12,400 --> 00:37:14,850
+有一些对这个算法的简单修改
 There are very simple modifications to this algorithm 
 
 647
 00:37:14,850 --> 00:37:16,775
+由Henry Baker发明
 invented by Henry Baker 
 
 648
 00:37:17,175 --> 00:37:20,311
+它让你能实时运行这个算法
 which allow one to run this algorithm in real time, 
 
 649
 00:37:20,311 --> 00:37:22,010
+这意味着你在垃圾回收的时候不需要停下来
 meaning you don't have to stop to garbage collect.
 
 650
 00:37:22,010 --> 00:37:26,327
+#TBD
 But you could interleave the consing that the machine does when its running 
 
 651
 00:37:26,327 --> 00:37:28,400
+#TBD
 with steps of the garbage collection process, 
 
 652
 00:37:28,887 --> 00:37:31,200
+
 so that the garbage collector's distributed, 
 
 653
 00:37:31,200 --> 00:37:32,416
+机器不需要停下来
 and the machine doesn't have to stop, 
 
 654
 00:37:32,416 --> 00:37:33,475
+垃圾回收才能开始
 and garbage collecting can start.
 
 655
 00:37:34,640 --> 00:37:38,000
+在使用虚拟内存的机器中
 Of course in the case of machines with virtual memory
 
 656
 00:37:38,900 --> 00:37:41,509
- where a lot of it is in inaccessible places, 
+#
+where a lot of it is in inaccessible places, 
 
 657
 00:37:41,509 --> 00:37:43,600
@@ -3135,110 +3247,137 @@ And there have been numerous attempts to make this much better.
 
 659
 00:37:49,190 --> 00:37:52,645
+对于感兴趣的同学 这有一篇论文
 There is a nice paper, for those of you who are interested, 
 
 660
 00:37:52,645 --> 00:37:54,650
+由Moon等人写的
 by Moon and other people 
 
 661
 00:37:54,650 --> 00:37:59,514
-which describes a modification to the incremental Minsky-Feinchel-Yochelson algorithm, 
+这篇论文描述了对于insky-Fenichel-Yochelson算法的一个修改#TBD
+which describes a modification to the incremental Minsky-Fenichel-Yochelson algorithm, 
 
 662
 00:37:59,514 --> 00:38:01,425
+和Baker算法的一个修改
 and modification the Baker algorithm 
 
 663
 00:38:01,425 --> 00:38:06,600
+让使用虚拟内存的系统更加高效
 which is more efficient for virtual memory systems.
 
 664
 00:38:08,340 --> 00:38:12,840
+现在最后一个秘密也解开了
 Well I think now the mystery to this is sort of gone.
 
 665
 00:38:12,840 --> 00:38:14,090
+谁有问题呢
 And I'd like to see if there are any questions.
 
 666
 00:38:19,780 --> 00:38:20,810
+请讲
 Yes.
 
 667
 00:38:20,810 --> 00:38:25,125
+学生: 我在楼上的一些系统里看到你运行的垃圾回收器
 AUDIENCE: I saw one of you run the garbage collector on the systems upstairs, 
 
 668
 00:38:25,937 --> 00:38:28,497
+它看起来跑得飞快
 and it seemed to me to run extremely fast. 
 
 669
 00:38:28,497 --> 00:38:31,880
+它真的清理了整个内存吗?
 Did the whole thing take-- does it sweep through all of memory?
 
 670
 00:38:31,880 --> 00:38:32,510
+教授: 没有
 PROFESSOR: No.
 
 671
 00:38:32,510 --> 00:38:35,912
+它只清理了那些需要复制有用数据结构的内存
 It swept through exactly what was needed to copy the useful structure.
 
 672
 00:38:37,320 --> 00:38:38,950
+它是个复制收集器
 It's a copying collector.
 
 673
 00:38:39,300 --> 00:38:44,600
+它确实很快#TBD
 And it is very fast. On the whole, I suppose to copy-- 
 
 674
 00:38:45,050 --> 00:38:48,442
+#TBD
 in a Bobcat-- to copy, 
 
 675
 00:38:48,442 --> 00:38:53,200
+一个3MB的东西将在1秒内完成
 I think, a three megabyte thing or something is less than a second, real time.
 
 676
 00:38:54,925 --> 00:38:58,625
+它们是非常小的程序
 Really, these are very small programs. 
 
 677
 00:38:58,625 --> 00:39:02,200
+你需要注意到的一件事是
 One thing you should realise is that 
 
 678
 00:39:02,913 --> 00:39:04,400
+垃圾回收器必须要小
 garbage collectors have to be small.
 
 679
 00:39:05,400 --> 00:39:07,100
+不是因为它们需要跑得很快
 Not because they have to be fast, 
 
 680
 00:39:07,905 --> 00:39:10,650
+而是因为没人能对一个复杂的垃圾回收器debug
 but because no one can debug a complicated garbage collector.
 
 681
 00:39:11,340 --> 00:39:13,075
+如果一个垃圾回收器不能正常工作
 A garbage collector, if it doesn't work, 
 
 682
 00:39:14,049 --> 00:39:17,550
+它把你的内存搞得一团糟 你却束手无策
 will trash your memory in such a way that you cannot figure out what the hell happened.
 
 683
 00:39:18,350 --> 00:39:19,675
+#TBD
 You need an audit trail.
 
 684
 00:39:20,660 --> 00:39:23,336
+因为它把所有东西都换了位置 你又如何知道发生了什么
 Because it rearranges everything, and how do you know what happened there?
 
 685
 00:39:23,740 --> 00:39:26,587
+#TBD
 So this is the only kind of program that 
 
 686
@@ -3251,22 +3390,27 @@ And sort of prove it to yourself.
 
 688
 00:39:35,100 --> 00:39:36,940
+无法对它进行查错
 So there's no way to debug it.
 
 689
 00:39:36,940 --> 00:39:39,975
+这意味着它需要足够小 让你能脑补出它的工作情况
 And that takes it being small enough so you can hold it in your head.
 
 690
 00:39:41,690 --> 00:39:43,925
+垃圾回收器的就是如此特殊
 Garbage collectors are special in this way.
 
 691
 00:39:45,020 --> 00:39:46,775
+所以每个#TBD的垃圾回收器一定体积很小
 So every reasonable garbage collector has gotten small, 
 
 692
 00:39:46,775 --> 00:39:48,450
+而通常小程序跑得快
 and generally small programs are fast. 
 
 693
@@ -3281,8 +3425,8 @@ AUDIENCE: Can you repeat the name of this technique once again?
 
 695
 00:39:54,510 --> 00:39:56,925
-教授: 是Minsky-Feinchel-Yochelson垃圾回收器
-PROFESSOR: That's the Minsky-Feinchel-Yochelson garbage collector.
+教授: 是Minsky-Fenichel-Yochelson垃圾回收器
+PROFESSOR: That's the Minsky-Fenichel-Yochelson garbage collector.
 
 696
 00:39:58,420 --> 00:39:59,340
@@ -3296,13 +3440,13 @@ PROFESSOR: Minsky invented it in '61 for the RLE PDP-1.
 
 698
 00:40:02,210 --> 00:40:06,450
-它的一个版本被Feinchel和Yochelson继续开发优化后
+它的一个版本被Fenichel和Yochelson继续开发优化后
 A version of it was developed and elaborated 
 
 699
 00:40:06,450 --> 00:40:10,275
 被用在了Multics Maclisp里面
-to be used in Multics Maclisp by Feinchel and Yochelson 
+to be used in Multics Maclisp by Fenichel and Yochelson 
 
 700
 00:40:11,378 --> 00:40:14,750
@@ -3351,7 +3495,7 @@ This is a particular implementation of Lisp,
 
 709
 00:41:33,900 --> 00:41:39,180
-就是用我昨天说过的那些scheme芯片之一做的 就在那ß
+就是用我昨天说过的那些scheme芯片之一做的 就在那
 built on one of those scheme chips that was talked about yesterday, sitting over here.
 
 710
@@ -4216,26 +4360,32 @@ but the number of functions is very large.
 
 893
 00:51:44,400 --> 00:51:49,626
+如果有一定量的可能输入和输出ß
 If there's a certain number of answers possible and a certain number of inputs possible, 
 
 894
 00:51:49,875 --> 00:51:53,200
+#TBDß
 then it's the number of answers raised to the number inputs is the number of possible functions.
 
 895
 00:51:54,720 --> 00:51:55,970
+对于同一个参数来说
 On one variable.
 
 896
 00:51:58,150 --> 00:52:04,325
+#TBD
 Now that's always bigger than the thing you're raising to, the exponent.
 
 897
 00:52:05,480 --> 00:52:09,800
+函数的数量
 The number of functions is larger 
 
 898
 00:52:09,950 --> 00:52:12,725
+比程序的数量更多
 than the number of programs 
 
 899
@@ -4268,6 +4418,7 @@ You mean, you're saying, how you go about constructing devices given that have s
 
 906
 00:52:45,205 --> 00:52:45,500
+是的
 Sure.
 
 907
@@ -4354,7 +4505,7 @@ If I happen to connect this to some resistance,
 
 927
 00:53:50,050 --> 00:53:52,600
- r, and if I make this impedance x, xl, 
+r, and if I make this impedance x, xl, 
 
 928
 00:53:52,725 --> 00:54:00,865
@@ -4385,7 +4536,7 @@ OK, and I take another one
 
 934
 00:54:13,625 --> 00:54:18,290
- and I'll hook them together like that.
+and I'll hook them together like that.
 
 935
 00:54:18,290 --> 00:54:19,950
