@@ -2008,4426 +2008,4498 @@ how some expressions are evaluated,
 Alright? So, let's start with a very simple expression.
 
 403
-00:20:09,620 --> 00:20:14,150
-Let's evaluate the expression 1.
+00:20:07,456 --> 00:20:13,520
 我们要求值的表达式只有一个1
+Let's evaluate the expression 1.
 
 404
-00:20:18,770 --> 00:20:21,270
-And we need an environment, so let's imagine that
-我们需要一个环境，所以想象
+00:20:18,770 --> 00:20:20,400
+我们需要一个环境
+And we need an environment,
 
 405
-00:20:21,270 --> 00:20:24,020
-somewhere there's an environment, we'll call it E,0.
-有一个环境，我们叫它E0
+00:20:20,432 --> 00:20:22,352
+因此我们假设某处有一个环境
+so let's imagine that somewhere there's an environment
 
 406
-00:20:30,260 --> 00:20:35,620
-And just, since we'll use these later,
-而且虽然我们之后要用到
+00:20:22,384 --> 00:20:23,392
+我们把它记作E0
+we'll call it E0.
 
 407
-00:20:35,620 --> 00:20:38,360
-we obviously don't really need anything to evaluate 1.
-我们显然并不需要其它的东西来求值1
+00:20:30,064 --> 00:20:34,560
+由于我们之后也要用到它
+And just, since we'll use these later,
 
 408
-00:20:38,360 --> 00:20:41,200
-But, just for reference later, let's assume that E,0 has in it
-但是为了之后指代方便，我们假设环境E0中
+00:20:35,620 --> 00:20:37,040
+而且显然不需要任何东西
+we obviously don't really need anything
 
 409
-00:20:41,200 --> 00:20:49,140
-an X that's bound to 3 and a Y that's bound to 4, OK?
-有一个变量X与3绑定，Y与4绑定，好吗
+00:20:37,072 --> 00:20:37,930
+就可以求值1
+to evaluate 1.
 
 410
-00:20:49,140 --> 00:20:53,700
-And now what we're going to do is we're going to evaluate 1
-现在我们要做的是我们在这个环境中
+00:20:38,360 --> 00:20:39,456
+但是为了方便以后引用
+But, just for reference later,
 
 411
-00:20:53,700 --> 00:20:59,650
-in this environment, and so the ENV register has a pointer
-求值1这个表达式，所以ENV寄存器里有一个指针
+00:20:39,456 --> 00:20:40,944
+我们假设环境E0中有
+let's assume that E0 has in it
 
 412
-00:20:59,650 --> 00:21:03,560
-to this environment, E,0, all right?
-指向这个环境，E0，对吗
+00:20:41,440 --> 00:20:43,152
+X=3
+an X that's bound to 3
 
 413
-00:21:03,560 --> 00:21:05,650
-So let's watch that thing go.
-那么我们来看它怎么进行
+00:20:43,720 --> 00:20:45,370
+Y=4
+and a Y that's bound to 4,
 
 414
-00:21:05,650 --> 00:21:08,260
-What I'm going to do is step through the code.
-我要做的是步步跟进代码
+00:20:48,272 --> 00:20:48,784
+好吗？
+OK?
 
 415
-00:21:08,260 --> 00:21:09,780
-And, let's see, I'll be the controller.
-大家看，我会作为控制器
+00:20:49,140 --> 00:20:50,128
+现在 我们要做的就是
+And now what we're going to do
 
 416
-00:21:09,780 --> 00:21:12,980
-And now what I need, since this gets rather complicated,
-现在我需要的，虽说这个通常很复杂
+00:20:50,510 --> 00:20:54,592
+在这个环境中求值表达式1
+is we're going to evaluate 1 in this environment
 
 417
-00:21:12,980 --> 00:21:16,830
-is a very little execution unit.
-是一个小小的执行单元
+00:20:55,744 --> 00:20:58,544
+这样 ENV寄存器就存放了一个指针
+and so the ENV register has a pointer
 
 418
-00:21:16,830 --> 00:21:21,310
-So here's the execution unit, OK?
-那么请上我们的执行单元，好吗
+00:20:59,650 --> 00:21:01,040
+指向这个环境E0
+to this environment, E0, all right?
 
 419
-00:21:22,620 --> 00:21:23,870
-OK.
-好的
+00:21:03,312 --> 00:21:05,650
+那么我们来看它是怎么进行的
+Right? So let's watch that thing go.
 
 420
-00:21:27,080 --> 00:21:28,590
-OK.
+00:21:05,650 --> 00:21:07,264
+我要步步跟进代码
+What I'm going to do is step through the code.
 
 421
-00:21:28,590 --> 00:21:30,530
-All right, now we're going to start.
-好，现在我们要开始了
+00:21:08,260 --> 00:21:10,000
+这样的话 我会充当控制器
+And, let's see, I'll be the controller.
 
 422
-00:21:30,530 --> 00:21:33,700
-We're going to start the machine at eval-dispatch, right?
-我们要从eval-dispatch启动机器，对吗
+00:21:10,040 --> 00:21:10,800
+现在我需要的是--
+And now what I need,
 
 423
-00:21:33,700 --> 00:21:35,870
-That's the beginning of this.
-那是这个过程的开始
+00:21:11,024 --> 00:21:12,490
+由于这台机器已经变得相当复杂
+since this gets rather complicated,
 
 424
-00:21:35,870 --> 00:21:39,320
-Eval-dispatch is going to look at the expression in dispatch,
-eval-dispatch会查看被分发的表达式
+00:21:12,980 --> 00:21:16,830
+我需要一个小小的执行单元
+is a very little execution unit.
 
 425
-00:21:39,320 --> 00:21:40,870
-just like eval
-就像eval
+00:21:16,830 --> 00:21:18,160
+那么请上我们的执行单元
+So here's the execution unit, OK?
 
 426
-00:21:40,870 --> 00:21:41,760
-where we look at the very first thing.
-最开始在eval里寻找东西
+00:21:22,620 --> 00:21:23,120
+好的
+OK.
 
 427
-00:21:41,760 --> 00:21:47,950
-We branch on whether or not this expression is self-evaluating.
-我们判断这个表达式是不是自求值的
+00:21:28,590 --> 00:21:29,968
+好 现在我们要开始了
+All right, now we're going to start.
 
 428
-00:21:47,950 --> 00:21:52,170
-Self-evaluating is some abstraction we put into the machine--
-self-evaluating（自求值）是我们放进机器的一个抽象
+00:21:30,530 --> 00:21:32,480
+我们要从EVAL-DISPATCH启动机器
+We're going to start the machine at eval-dispatch, right?
 
 429
-00:21:52,170 --> 00:21:53,510
-it's going to be true for numbers--
-它对于数字来说为真
+00:21:33,264 --> 00:21:34,624
+这是整个过程的开始
+Right? That's the beginning of this.
 
 430
-00:21:53,510 --> 00:21:56,770
-to a place called ev-self-eval, right?
-放在一个叫ev-self-eval的地方，对吗
+00:21:35,870 --> 00:21:38,752
+EVAL-DISPATCH会查看表达式并进行分派
+Eval-dispatch is going to look at the expression and dispatch,
 
 431
-00:21:56,770 --> 00:22:00,010
-So me, being the controller, looks at ev-self-eval,
-那么我，作为控制器，查看ev-self-eval
+00:21:39,320 --> 00:21:40,064
+就像EVAL
+just like eval
 
 432
-00:22:00,010 --> 00:22:02,600
-so we'll go over to there.
-所以我们要跳到那里
+00:21:40,870 --> 00:21:42,000
+先从第一句看起
+where we look at the very first thing.
 
 433
-00:22:02,600 --> 00:22:08,120
-Ev-self-eval says fine, assign to val
-Ev-self-eval说好，给VAL寄存器赋值
+00:21:42,048 --> 00:21:47,950
+先判断表达式是不是自求值的
+We branch on whether or not this expression is self-evaluating.
 
 434
-00:22:08,120 --> 00:22:15,220
-whatever is in the expression unit, OK?
-把表达式单元（EXP）中的东西赋给它，好吗
+00:21:47,950 --> 00:21:49,968
+SELF-EVALUATING?是我们放入机器的
+Self-evaluating is some abstraction
 
 435
-00:22:15,220 --> 00:22:17,600
-And I have a bug
-然后我有一个bug
+00:21:49,968 --> 00:21:51,100
+一个抽象过程
+we put into the machine--
 
 436
-00:22:17,600 --> 00:22:17,650
-because what I didn't do when I initialized this machine
+00:21:52,224 --> 00:21:53,510
+它对于数字1来说为真
+it's going to be true for numbers--
 
 437
-00:22:17,650 --> 00:22:21,620
-because what I didn't do when I initialized this machine
-因为我初始化机器的时候没有做一件事情
+00:21:53,648 --> 00:21:55,520
+因此跳转的目的是EV-SELF-EVAL
+to a place called ev-self-eval,
 
 438
-00:22:21,620 --> 00:22:24,650
-is also say what's supposed to happen when it's done,
-就是说好完成的时候应该做什么
+00:21:56,770 --> 00:21:58,208
+那么我作为控制器
+So me, being the controller,
 
 439
-00:22:24,650 --> 00:22:27,640
-so I should have started out the machine with
-所以我应该在启动机器的时候
+00:21:58,224 --> 00:21:59,552
+会去查看EV-SELF-EVAL
+looks at ev-self-eval,
 
 440
-00:22:27,640 --> 00:22:32,050
-done being in the continue register, OK?
-让continue寄存器的内容为done，对吗
+00:22:00,064 --> 00:22:01,072
+所以我们要跳到那里
+so we'll go over to there.
 
 441
-00:22:32,050 --> 00:22:33,070
-So we assign to VAL.
-所以我们给VAL赋值
+00:22:02,600 --> 00:22:04,768
+EV-SELF-EAVL的代码是--
+Ev-self-eval says fine,
 
 442
-00:22:33,070 --> 00:22:38,000
-And now go to fetch of continue, and now change--
-现在取出continue里的东西，并且修改
+00:22:06,544 --> 00:22:09,904
+把EXP寄存器的值赋值给VAL寄存器
+assign to val whatever is in the expression unit.
 
 443
-00:22:38,000 --> 00:22:40,000
-OK.
-好
+00:22:15,248 --> 00:22:16,512
+我遇到一个BUG
+And I have a bug
 
 444
-00:22:40,000 --> 00:22:42,160
-OK, let's try something harder.
-好，我们看一点更难的
+00:22:17,936 --> 00:22:20,592
+因为我初始化机器的时候没有做一件事情
+because what I didn't do when I initialized this machine
 
 445
-00:22:42,160 --> 00:22:44,780
-Let's reset the machine here,
-我们在这里重置机器
+00:22:21,620 --> 00:22:22,896
+也就是指定当它执行完毕后
+is also say what's supposed
 
 446
-00:22:44,780 --> 00:22:51,560
-and we'll put in the expression register, X, OK?
-然后我们要把表达式X放进EXP里
+00:22:22,912 --> 00:22:24,192
+应该做什么
+to happen when it's done,
 
 447
-00:22:56,710 --> 00:22:59,610
-Start again at eval-dispatch.
-重新从eval-dispatch开始
+00:22:24,650 --> 00:22:26,832
+所以在启动机器的时候
+so I should have started out the machine 
 
 448
-00:22:59,610 --> 00:23:01,690
-Check, is it self-evaluating?
-看，它是自求值的吗
+00:22:27,376 --> 00:22:29,856
+应该将CONTINUE寄存器设置为DONE
+with done being in the continue register,
 
 449
-00:23:01,690 --> 00:23:02,650
-No.
-不是
+00:22:31,184 --> 00:22:33,264
+所以我们给VAL赋值
+OK? So we assign to VAL.
 
 450
-00:23:02,650 --> 00:23:04,630
-Is it a variable?
-它是变量吗
+00:22:33,370 --> 00:22:35,568
+然后我们来到(GOTO (FETCH CONTINUE))
+And now go to fetch of continue,
 
 451
-00:23:04,630 --> 00:23:05,560
-Yes.
-是的
+00:22:35,632 --> 00:22:36,560
+并且修改--
+and now change--
 
 452
-00:23:05,560 --> 00:23:08,380
-We go off to ev-variable.
-我们执行ev-variable
+00:22:38,096 --> 00:22:38,608
+好
+OK.
 
 453
-00:23:08,380 --> 00:23:12,130
-It says assign to VAL,
-它说给VAL赋值
+00:22:40,000 --> 00:22:41,168
+好 我们来看一个更复杂的
+OK, let's try something harder.
 
 454
-00:23:12,130 --> 00:23:16,150
-look up the variable value in the expression register, OK?
-查询EXP寄存器里变量的值，对吧
+00:22:42,160 --> 00:22:43,456
+我们先重置机器
+Let's reset the machine here,
 
 455
-00:23:21,070 --> 00:23:23,620
-Go to fetch of continue.
-取出continue的内容
+00:22:44,864 --> 00:22:50,880
+然后把X放入EXP寄存器中
+and we'll put in the expression register, X, OK?
 
 456
-00:23:23,620 --> 00:23:24,870
-PROFESSOR: Done.
-好了
+00:22:56,710 --> 00:22:58,208
+重新从EVAL-DISPATCH开始
+Start again at eval-dispatch.
 
 457
-00:23:27,250 --> 00:23:28,950
-PROFESSOR: OK.
-好
+00:22:59,610 --> 00:23:01,690
+先检查它是自求值的么？
+Check, is it self-evaluating?
 
 458
-00:23:28,950 --> 00:23:29,430
-All right.
-好
+00:23:01,690 --> 00:23:02,032
+不是
+No.
 
 459
-00:23:29,430 --> 00:23:31,330
-Well, that's the basic idea.
-那这是基本的想法
+00:23:02,650 --> 00:23:03,616
+它是变量吗
+Is it a variable?
 
 460
-00:23:31,330 --> 00:23:32,680
-That's a simple operation of the machine.
-这是这个机器上一个简单的操作
+00:23:04,630 --> 00:23:05,024
+是的
+Yes.
 
 461
-00:23:32,680 --> 00:23:36,070
-Now, let's actually do something a little bit more interesting.
-现在我们实际做一些有趣一点的事情
+00:23:05,560 --> 00:23:07,072
+我们跳转到EV-VARIABLE
+We go off to ev-variable.
 
 462
-00:23:36,070 --> 00:23:49,670
-Let's look at the expression the sum of x and y.
-我们看这个表达式，x和y求和
+00:23:08,380 --> 00:23:10,976
+它说：查找EXP寄存器中变量的值
+It says assign to VAL,
 
 463
-00:23:49,670 --> 00:23:50,130
-OK.
-好
+00:23:12,130 --> 00:23:15,696
+并把它赋值给VAL寄存器
+look up the variable value in the expression register
 
 464
-00:23:50,130 --> 00:23:54,350
-And now we'll see how you start unrolling these expression trees.
-现在我们会看到怎么开始展开表达式树
+00:23:21,232 --> 00:23:22,912
+(GOTO (FETCH CONTINUE))
+Go to fetch of continue.
 
 465
-00:23:56,620 --> 00:23:59,430
-Well, start again at eval-dispatch.
-再次从eval-dispatch开始
+00:23:23,968 --> 00:23:24,480
+Gerald教授：完毕
+PROFESSOR: Done.
 
 466
-00:24:04,610 --> 00:24:05,930
-Self-evaluating?
-是自求值的吗
+00:23:27,616 --> 00:23:28,096
+Abelson教授：好
+PROFESSOR: OK.
 
 467
-00:24:05,930 --> 00:24:06,850
-No.
-不是
+00:23:29,312 --> 00:23:30,768
+这些都是最基本的理念
+Alright, Well, that's the basic idea. Those're
 
 468
-00:24:06,850 --> 00:24:07,850
-Variable? No.
-是变量吗？不是
+00:23:31,330 --> 00:23:32,656
+这是这台机器上的简单运算
+That's a simple operation of the machine.
 
 469
-00:24:07,850 --> 00:24:10,270
-All the other special forms which I didn't write down,
-其他我没写在这里的所有特殊形式
+00:23:32,680 --> 00:23:35,072
+现在 我们来做些有意义的事情
+Now, let's actually do something a little bit more interesting.
 
 470
-00:24:10,270 --> 00:24:12,480
-like quote, and lambda, and set, and whatever,
-引用，lambda，集合，其他什么东西
+00:23:36,070 --> 00:23:38,640
+我们看这个表达式
+Let's look at the expression
 
 471
-00:24:12,480 --> 00:24:13,260
-it's none of those.
-它全都不是
+00:23:43,584 --> 00:23:47,936
+(+ X Y)
+the sum of x and y.
 
 472
-00:24:13,260 --> 00:24:15,880
-It turns out to be an application,
-那么它是一个过程应用
+00:23:49,696 --> 00:23:51,280
+现在我们会看到
+OK. And now we'll see how you start
 
 473
-00:24:15,880 --> 00:24:19,970
-so we go off to ev-application, OK?
-所以我们去到ev-application这里，对吗
+00:23:52,416 --> 00:23:54,016
+如何展开这些表达式树
+unrolling these expression trees.
 
 474
-00:24:19,970 --> 00:24:25,580
-Ev-application, remember what it's going to do overall.
-记住ev-application需要做什么
+00:23:57,136 --> 00:23:58,688
+我们再次从EVAL-DISPATCH开始
+Well, start again at eval-dispatch.
 
 475
-00:24:25,580 --> 00:24:28,310
-It is going to evaluate the operator.
-它需要求值操作符
+00:24:04,610 --> 00:24:05,808
+是自求值的吗？
+Self-evaluating?
 
 476
-00:24:28,310 --> 00:24:32,220
-It's going to evaluate the arguments,
-它需要求值那些参数
+00:24:05,952 --> 00:24:06,528
+不是
+No.
 
 477
-00:24:32,220 --> 00:24:35,060
-and then it's going to go apply them.
-然后它需要应用过程
+00:24:06,704 --> 00:24:07,712
+是变量吗？不是
+Variable? No.
 
 478
-00:24:35,060 --> 00:24:37,880
-So, before we start, since we're being very literal,
-所以在我们开始之前，为了保持字面上的严谨#TBD
+00:24:07,820 --> 00:24:08,992
+它也不是我在这里
+All the other special forms
 
 479
-00:24:37,880 --> 00:24:40,430
-we'd better remember that, somewhere in this environment,
-我们最好记住，这个环境的某一个地方
+00:24:08,992 --> 00:24:10,120
+没有列出的特殊形式
+which I didn't write down,
 
 480
-00:24:40,430 --> 00:24:44,470
-it's linked to another environment in which
-链接到了另一个环境
+00:24:10,270 --> 00:24:12,480
+比如引用、LAMBDA、SET! 等等
+like quote, and lambda, and set, and whatever,
 
 481
-00:24:44,470 --> 00:24:51,470
-plus is bound to the primitive procedure plus
-在那里加号与加法这个基本过程相绑定
+00:24:12,480 --> 00:24:13,088
+它都不是
+it's none of those.
 
 482
-00:24:51,470 --> 00:24:55,340
-before we get an unknown variable in our machine.
-以防止我们在机器中拿到一个未知变量#TBD
+00:24:13,260 --> 00:24:14,736
+它是一个过程应用
+It turns out to be an application,
 
 483
-00:24:55,340 --> 00:24:58,620
-OK, so we're at ev-application.
-好，那么我们看ev-application
+00:24:15,880 --> 00:24:17,424
+所以我们要跳转到EV-APPLICATION
+so we go off to ev-application.
 
 484
-00:24:59,700 --> 00:25:04,400
-OK, assign to UNEV the operands
-给UNEV赋值操作数
+00:24:19,970 --> 00:24:24,944
+回忆一下EV-APPLICATION要做什么
+Ev-application, remember what it's going to do overall.
 
 485
-00:25:04,400 --> 00:25:07,920
-of what's in the expression register, OK?
-EXP寄存器里的东西的操作数，对吗
+00:24:25,580 --> 00:24:28,192
+它先要求值运算符
+It is going to evaluate the operator.
 
 486
-00:25:07,920 --> 00:25:09,230
-Those are the operands.
-这些是操作数
+00:24:28,272 --> 00:24:31,408
+然后求值运算对象
+It's going to evaluate the arguments,
 
 487
-00:25:09,230 --> 00:25:13,220
-UNEV's a temporary register where we're going to save them.
-UNEV是一个用来保存它们的临时寄存器
+00:24:32,368 --> 00:24:34,304
+然后再进行应用
+and then it's going to go apply them.
 
 488
+00:24:35,060 --> 00:24:36,096
+所以在我们开始之前
+So, before we start,
+
+489
+00:24:36,944 --> 00:24:37,880
+由于我们是严格按照代码来执行的
+since we're being very literal,
+
+490
+00:24:37,880 --> 00:24:38,880
+我们最好记住
+we'd better remember that,
+
+491
+00:24:39,070 --> 00:24:40,544
+在这个环境中的某处
+somewhere in this environment,
+
+492
+00:24:40,576 --> 00:24:42,368
+连接到了另一个环境
+it's linked to another environment
+
+493
+00:24:43,980 --> 00:24:44,944
+其中符号'+
+in which plus
+
+494
+00:24:45,728 --> 00:24:49,160
+跟基本的加法过程绑定在了一起
+is bound to the primitive procedure plus
+
+495
+00:24:51,632 --> 00:24:54,032
+这样 求值+时就不会导致“变量未定义”
+before we get an unknown variable in our machine.
+
+496
+00:24:55,340 --> 00:24:56,848
+现在我们来到了EV-APPLICATION
+OK, so we're at ev-application.
+
+497
+00:24:59,856 --> 00:25:04,320
+把EXP寄存器对应的运算对象
+OK, assign to UNEV the operands
+
+498
+00:25:04,928 --> 00:25:06,896
+赋值给UNEV寄存器
+of what's in the expression register.
+
+499
+00:25:07,616 --> 00:25:08,832
+这些是运算对象
+OK. Those are the operands.
+
+500
+00:25:09,230 --> 00:25:11,664
+UNEV这个临时寄存器
+UNEV's a temporary register
+
+501
+00:25:11,680 --> 00:25:12,590
+就是用来暂存它们的
+where we're going to save them.
+
+502
 00:25:13,220 --> 00:25:13,860
 PROFESSOR: I'm assigning.
 我正在赋值
 
-489
+503
 00:25:13,860 --> 00:25:18,070
 PROFESSOR: Assign to EXP the operator.
 给EXP赋值这个操作符
 
-490
+504
 00:25:18,070 --> 00:25:21,840
 Now, notice we've destroyed that expression in x,
 现在，注意到我们已经销毁了这个关于x的表达式#TBD
 
-491
+505
 00:25:21,840 --> 00:25:25,820
 but the piece that we need is now in UNEV. OK.
 但是我们需要的部分在UNEV中，好
 
-492
+506
 00:25:25,820 --> 00:25:28,750
 Now, we're going to get set up to recursively evaluate the operator.
 现在我们要准备好递归求值这个操作符
 
-493
+507
 00:25:28,750 --> 00:25:32,820
 Save the continue register on the stack.
 把continue寄存器保存在栈上
 
-494
+508
 00:25:34,870 --> 00:25:37,600
 Save the environment.
 保存环境
 
-495
+509
 00:25:40,520 --> 00:25:43,590
 Save UNEV.
 保存UNEV
 
-496
+510
 00:25:49,400 --> 00:25:56,230
 OK, assign to continue a label called eval-args.
 给continue赋值一个叫做eval-args的标签
 
-497
+511
 00:26:01,400 --> 00:26:01,950
 Now, what have we done?
 我们做了什么
 
-498
+512
 00:26:01,950 --> 00:26:04,380
 We've set up for a recursive call.
 我们为递归调用做了必要的准备
 
-499
+513
 00:26:04,380 --> 00:26:06,280
 We're about to go to eval-dispatch.
 我们要开始执行eval-dispatch
 
-500
+514
 00:26:06,280 --> 00:26:10,230
 We've set up for a recursive call to eval-dispatch.
 我们为递归调用eval-dispatch做了准备
 
-501
+515
 00:26:10,230 --> 00:26:11,020
 What did we do?
 我们做了哪些事情
 
-502
+516
 00:26:11,020 --> 00:26:14,420
 We took the things we're going to need later,
 我们把之后要用到的东西
 
-503
+517
 00:26:14,420 --> 00:26:16,360
 those operands that were in UNEV;
 UNEV里面的这些操作数
 
-504
+518
 00:26:16,360 --> 00:26:19,070
 the environment in which we're going to eventually have to,
 还有这个环境，我们最后要在里面
 
-505
+519
 00:26:19,070 --> 00:26:22,120
 maybe, evaluate those operands;
 可能要求值操作数
 
-506
+520
 00:26:22,120 --> 00:26:25,260
 the place we eventually want to go to, which, in this case, was done;
 还有这个我们最后要回到的位置，这个例子里是done
 
-507
+521
 00:26:25,260 --> 00:26:27,270
 we've saved them on the stack.
 我们把这些东西存在了栈上
 
-508
+522
 00:26:27,270 --> 00:26:28,720
 The reason we saved them on the stack is because
 我们把它们存在栈上的原因是
 
-509
+523
 00:26:28,720 --> 00:26:33,550
 eval-dispatch makes no promises about what registers it may destroy.
 eval-dispatch不保证它不会毁坏寄存器
 
-510
+524
 00:26:33,550 --> 00:26:35,020
 So all that stuff is saved on the stack.
 那么所有这些东西都存在了栈上
 
-511
+525
 00:26:35,020 --> 00:26:37,380
 Now, we've set up eval-dispatch's contract.
 现在我们准备好了eval-dispatch的约束
 
-512
+526
 00:26:37,380 --> 00:26:40,960
 There's a new expression, which is the operator plus;
 有一个新的表达式，也就是加法操作符
 
-513
+527
 00:26:40,960 --> 00:26:44,250
 a new environment, although, in this case, it's the same one;
 一个新的环境，尽管在这里和刚才一样
 
-514
+528
 00:26:44,250 --> 00:26:47,600
 and a new place to go to when you're done, which is eval-args.
 和一个新的，完成时要返回的位置，也就是eval-args
 
-515
+529
 00:26:47,600 --> 00:26:48,130
 So that's set up.
 那么我们准备好了
 
-516
+530
 00:26:48,130 --> 00:26:50,890
 Now, we're going to go off to eval-dispatch.
 现在我们来执行eval-dispatch
 
-517
+531
 00:26:50,890 --> 00:26:53,090
 Here we are back at eval-dispatch.
 我们回到了eval-dispatch
 
-518
+532
 00:26:53,090 --> 00:26:54,490
 It's not self-evaluating.
 它不是自求值的
 
-519
+533
 00:26:54,490 --> 00:27:00,140
 Oh, it's a variable, so we'd better go off to ev-variable, right?
 哦，它是一个变量，所以我们最好调用ev-variable，对吧
 
-520
+534
 00:27:00,140 --> 00:27:02,880
 Ev-variable is assigned to VAL.
 给VAL赋值ev-variable
 
-521
+535
 00:27:02,880 --> 00:27:08,770
 Look up the variable value of the expression, OK?
 查询表达式里变量的值
 
-522
+536
 00:27:08,770 --> 00:27:13,000
 So VAL is the primitive procedure plus, OK?
 那么VAL寄存器中应该是加法基本操作
 
-523
+537
 00:27:13,000 --> 00:27:15,020
 And go to fetch of continue.
 然后去读取continue
 
-524
+538
 00:27:15,020 --> 00:27:16,050
 PROFESSOR: Eval-args.
 是eval-args
 
-525
+539
 00:27:16,050 --> 00:27:19,340
 PROFESSOR: Right, which is now eval-args not done.
 对，是现在还没有完成的eval-args
 
-526
+540
 00:27:19,340 --> 00:27:23,070
 So we come back here at eval-args, and what do we do?
 所以我们回到eval-args，我们应该做什么
 
-527
+541
 00:27:23,070 --> 00:27:29,050
 We're going to restore the stuff that we saved, so we restore UNEV.
 我们应该取回我们保存起来的东西，所以我们恢复UNEV
 
-528
+542
 00:27:29,050 --> 00:27:32,900
 And notice, there, it wasn't necessary, although, in general, it would be.
 注意这里，尽管它不是必须的，但是通常来说是，
 
-529
+543
 00:27:32,900 --> 00:27:35,430
 It might be some arbitrary evaluation that happened.
 它可能是发生的任何求值过程
 
-530
+544
 00:27:35,430 --> 00:27:54,900
 We restore ENV. OK, we assign to FUN fetch of VAL.
 我们恢复ENV，好，我们给FUN赋值VAL的值
 
-531
+545
 00:27:58,620 --> 00:28:04,340
 OK, now, we're going to go off and start evaluating some arguments.
 现在我们要开始求值参数
 
-532
+546
 00:28:04,340 --> 00:28:08,330
 Well, first thing we'd better do is save FUN because some
 我们最好先把FUN寄存器保存起来
 
-533
+547
 00:28:08,330 --> 00:28:13,670
 arbitrary stuff might happen in that evaluation.
 因为求值过程中可能发生任何事情
 
-534
+548
 00:28:15,330 --> 00:28:20,750
 We initialize the argument list. Assign to argl an empty argument list,
 我们初始化参数列表，给ARGL赋值一个空的参数列表
 
-535
+549
 00:28:20,750 --> 00:28:25,460
 and go to eval-arg-loop, OK?
 然后调用eval-arg-loop，对吗
 
-536
+550
 00:28:25,460 --> 00:28:29,580
 At eval-arg-loop, the idea of this is we're going to
 在eval-arg-loop这里，它的想法是我们要
 
-537
+551
 00:28:29,580 --> 00:28:33,540
 evaluate the pieces of the expressions that are in UNEV, one by one,
 一个一个地求值UNEV中的表达式的部分
 
-538
+552
 00:28:33,540 --> 00:28:35,680
 and move them from unevaluated in UNEV
 然后把它们从保存未求值表达式的UNEV
 
-539
+553
 00:28:35,680 --> 00:28:38,090
 to evaluated in the arg list, OK?
 移到求值完成的参数列表中，对吗
 
-540
+554
 00:28:38,090 --> 00:28:42,400
 So we save argl.
 那么保存ARGL
 
-541
+555
 00:28:43,950 --> 00:28:49,140
 We assign to EXP the first operand of the stuff in UNEV.
 我们给EXP赋值UNEV里面东西的第一个操作数
 
-542
+556
 00:28:53,770 --> 00:28:55,890
 Now, we check and see if that was the last operand.
 现在我们检查那是不是最后一个
 
-543
+557
 00:28:55,890 --> 00:28:59,190
 In this case, it is not, all right?
 现在它不是，对吧
 
-544
+558
 00:28:59,190 --> 00:29:02,970
 So we save the environment.
 那么我们保存环境
 
-545
+559
 00:29:07,850 --> 00:29:13,500
 We save UNEV because those are all things we might need later.
 我们把UNEV存起来因为里面有我们之后需要的所有东西
 
-546
+560
 00:29:13,500 --> 00:29:15,800
 We're going to need the environment to do some more evaluations.
 我们需要这个环境来执行更多的求值
 
-547
+561
 00:29:15,800 --> 00:29:20,340
 We're going to need UNEV to look at what the rest of those arguments were.
 我们需要UNEV来查询剩下的参数是什么
 
-548
+562
 00:29:20,340 --> 00:29:26,050
 We're going to assign continue a place called accumulate-args, or accumulate-arg.
 我们要给continue赋值一个叫做accumulate-args的东西，或者accumulate-arg
 
-549
+563
 00:29:30,890 --> 00:29:36,810
 OK, now, we've set up for another call to eval-dispatch, OK?
 好，现在我们已经准备好再次调用eval-dispatch了，对吗
 
-550
+564
 00:29:36,810 --> 00:29:39,120
 All right, now, let me short-circuit this
 现在让我们把这个短路掉
 
-551
+565
 00:29:39,120 --> 00:29:41,090
 so we don't go through the details of eval-dispatch.
 这里我们不跟进eval-dispatch的细节
 
-552
+566
 00:29:41,090 --> 00:29:45,100
 Eval-dispatch's contract says I'm going to end up,
 eval-dispatch的约束说我要在结束时
 
-553
+567
 00:29:45,100 --> 00:29:48,240
 the world will end up, with the value of evaluating this expression
 这个世界最终变成，求值这个表达式得到的值
 
-554
+568
 00:29:48,240 --> 00:29:50,270
 in this environment in the VAL register,
 在这个环境中保存在VAL寄存器里
 
-555
+569
 00:29:50,270 --> 00:29:51,320
 and I'll end up there.
 我在这里结束
 
-556
+570
 00:29:51,320 --> 00:29:58,010
 So we short-circuit all of this, and a 3 ends up in VAL.
 那么我们把这些全都短路掉，最后VAL的内容是3
 
-557
+571
 00:29:58,010 --> 00:29:59,760
 And, when we return from eval-dispatch,
 并且当我们从eval-dispatch返回的时候
 
-558
+572
 00:29:59,760 --> 00:30:02,110
 we're going to return to accumulate-arg.
 我们会返回到accumulate-arg这里
 
-559
+573
 00:30:02,110 --> 00:30:03,550
 PROFESSOR: Accumulate-arg.
 accumulate-arg
 
-560
+574
 00:30:06,180 --> 00:30:08,720
 PROFESSOR: With 3 in the VAL register, OK?
 VAL寄存器里是3，对吧
 
-561
+575
 00:30:08,720 --> 00:30:10,650
 So that short-circuited that evaluation.
 求值被短路了
 
-562
+576
 00:30:10,650 --> 00:30:11,320
 Now, what do we do?
 现在我们做什么
 
-563
+577
 00:30:11,320 --> 00:30:13,680
 We're going to go back and look at the rest of the arguments,
 我们返回继续看剩下的参数
 
-564
+578
 00:30:13,680 --> 00:30:15,600
 so we restore UNEV.
 所以我们恢复UNEV
 
-565
+579
 00:30:17,510 --> 00:30:28,650
 We restore ENV. We restore argl.
 恢复ENV，恢复ARGL
 
-566
+580
 00:30:28,650 --> 00:30:29,170
 One thing.
 这件事
 
-567
+581
 00:30:29,170 --> 00:30:30,530
 PROFESSOR: Oops!
 哦
 
-568
+582
 00:30:30,530 --> 00:30:31,290
 Parity error.
 奇偶错误
 
-569
+583
 00:30:31,290 --> 00:30:33,460
 [LAUGHTER]
 （笑声）
 
-570
+584
 00:30:33,460 --> 00:30:34,900
 PROFESSOR: Restore argl.
 恢复ARGL
 
-571
+585
 00:30:41,650 --> 00:30:42,900
 PROFESSOR: OK.
 好的
 
-572
+586
 00:30:45,570 --> 00:30:50,400
 OK, we assign to argl consing on
 好，我们给ARGL cons上一个
 
-573
+587
 00:30:50,400 --> 00:30:53,130
 fetch of the value register to what's in argl.
 把从VAL寄存器中读到的值cons到ARGL上
 
-574
+588
 00:30:58,980 --> 00:31:05,020
 OK, we assign to UNEV the rest of the operands in fetch of UNEV,
 我们给UNEV赋值，从UNEV中读取剩下的操作数
 
-575
+589
 00:31:08,700 --> 00:31:11,510
 and we go back to eval-arg-loop.
 然后我们返回eval-arg-loop
 
-576
+590
 00:31:11,510 --> 00:31:12,280
 PROFESSOR: Eval-arg-loop.
 eval-arg-loop
 
-577
+591
 00:31:12,280 --> 00:31:13,530
 PROFESSOR: OK.
 
-578
+592
 00:31:15,880 --> 00:31:17,370
 Now, we're about to do the next argument,
 现在我们处理下一个参数
 
-579
+593
 00:31:17,370 --> 00:31:19,800
 so the first thing we do is save argl.
 所以首先我们要保存ARGL
 
-580
+594
 00:31:25,400 --> 00:31:31,800
 OK, we assign to EXP the first operand of fetch of UNEV.
 好，我们给EXP赋值从UNEV里读到的第一个操作数
 
-581
+595
 00:31:34,650 --> 00:31:38,920
 OK,we test and see if that's the last operand.In this case, it is
 我们检查那是不是最后一个操作数，在这里它是的
 
-582
+596
 00:31:38,920 --> 00:31:43,170
 so we're going to go to a special place that says evaluate the last argument
 所以我们跳到一个特殊的地方，它来求值最后一个参数
 
-583
+597
 00:31:43,170 --> 00:31:44,960
 because, notice,after evaluating the argument,
 因为请注意，在求值这个参数之后
 
-584
+598
 00:31:44,960 --> 00:31:47,440
 we don't need the environment any more.
 我们就不再需要这个环境了
 
-585
+599
 00:31:47,440 --> 00:31:50,250
 That's going to be the difference.
 那就是区别
 
-586
+600
 00:31:50,250 --> 00:31:52,050
 So here, at eval-last-arg,
 在这里，在eval-last-arg这里
 
-587
+601
 00:31:52,050 --> 00:31:55,380
 which is assigned to continue accumulate-last-arg,
 continue被赋值了了accumulate-last-arg
 
-588
+602
 00:32:04,270 --> 00:32:06,900
 now, we're set up again for eval-dispatch.
 现在我们再次为eval-dispatch做准备
 
-589
+603
 00:32:06,900 --> 00:32:08,620
 We've got a place to go to when we're done.
 我们有一个完成时要跳到的地方
 
-590
+604
 00:32:08,620 --> 00:32:09,840
 We've got an expression.
 我们有一个表达式
 
-591
+605
 00:32:09,840 --> 00:32:11,330
 We've got an environment.
 我们有一个环境
 
-592
+606
 00:32:11,330 --> 00:32:14,370
 OK, so we'll short-circuit the call to eval-dispatch.
 好，那么我们短路对eval-dispatch的调用
 
-593
+607
 00:32:14,370 --> 00:32:16,700
 And what'll happen is there's a y there,
 现在情况是这里有一个Y
 
-594
+608
 00:32:16,700 --> 00:32:21,060
 it's 4 in that environment, so VAL will end up with 4 in it.
 它在这个环境里是4，所以VAL寄存器最后将会存着4
 
-595
+609
 00:32:21,060 --> 00:32:25,450
 And, then, we're going to end up at accumulate-last-arg, OK?
 那么然后我们要在accumulate-last-arg这里结束了，对吧
 
-596
+610
 00:32:25,450 --> 00:32:30,520
 So, at accumulate-last-arg, we restore argl.
 所以在accumulate-last-arg这里我们恢复ARGL寄存器
 
-597
+611
 00:32:41,490 --> 00:32:45,830
 We assign to argl cons of fetch of the new value onto it,
 我们给ARGL赋值它和读到的新值cons后的结果
 
-598
+612
 00:32:45,830 --> 00:32:49,850
 so we cons a 4 onto that.
 所以我们在那上面cons一个4
 
-599
+613
 00:32:49,850 --> 00:32:53,440
 We restore what was saved in the function register.
 我们恢复保存在函数寄存器（FUN）中的东西
 
-600
+614
 00:32:53,440 --> 00:32:56,270
 And notice, in this case, it had not been destroyed,
 注意在这里它没有被销毁
 
-601
+615
 00:32:56,270 --> 00:32:59,130
 but in general, it will be.
 但是通常来讲它会的
 
-602
+616
 00:32:59,130 --> 00:33:02,850
 And now, we're ready to go off to apply-dispatch, all right?
 现在我们准备好调用apply-dispatch了，对吗
 
-603
+617
 00:33:02,850 --> 00:33:04,510
 So we've just gone through the eval.
 所以我们刚刚步步跟进了eval过程
 
-604
+618
 00:33:04,510 --> 00:33:07,980
 We evaluated the argument, the operator, and the arguments,
 我们求值了参数，操作数和参数列表，
 
-605
+619
 00:33:07,980 --> 00:33:09,580
 and now, we're about to apply them.
 现在我们要应用过程
 
-606
+620
 00:33:09,580 --> 00:33:17,480
 So we come off to apply-dispatch here, OK?
 所以我们来到apply-dispatch这里，好吗
 
-607
+621
 00:33:17,480 --> 00:33:20,570
 We come off to apply-dispatch,
 我们来到apply-dispatch
 
-608
+622
 00:33:20,570 --> 00:33:23,450
 and we're going to check whether it's a primitive or a compound procedure.
 我们要检查它是一个基本过程还是复合过程
 
-609
+623
 00:33:23,450 --> 00:33:24,110
 PROFESSOR: Yes.
 对
 
-610
+624
 00:33:24,110 --> 00:33:24,830
 PROFESSOR: All right.
 好的
 
-611
+625
 00:33:24,830 --> 00:33:27,370
 So, in this case, it's a primitive procedure,
 那么在这种情况下它是一个基本过程
 
-612
+626
 00:33:27,370 --> 00:33:29,790
 and we go off to primitive-apply.
 我们去调用primitive-apply（基本应用）
 
-613
+627
 00:33:29,790 --> 00:33:34,130
 So we go off to primitive-apply, and it says
 那么我们看primitive-apply，它说
 
-614
+628
 00:33:34,130 --> 00:33:38,360
 assign to VAL the result of applying primitive procedure
 给VAL赋值对参数列表应用
 
-615
+629
 00:33:38,360 --> 00:33:40,940
 of the function to the argument list.
 应用函数中的基本过程后的结果
 
-616
+630
 00:33:40,940 --> 00:33:42,540
 PROFESSOR: I don't know how to add.
 我不知道怎么做加法
 
-617
+631
 00:33:42,540 --> 00:33:43,990
 I'm just an execution unit.
 我只是一个执行单元
 
-618
+632
 00:33:43,990 --> 00:33:45,350
 PROFESSOR: Well, I don't know how to add either.
 我也不知道
 
-619
+633
 00:33:45,350 --> 00:33:48,360
 I'm just the evaluator, so we need a primitive operator.
 我只是一个求值器，所以我们需要一个基本操作符
 
-620
+634
 00:33:48,360 --> 00:33:50,920
 Let's see, so the primitive operator, what's the
 我看看，那么这位基本操作符，
 
-621
+635
 00:33:50,920 --> 00:33:52,600
 What's the sum of 3 and 4?
 3+4等于多少？
 
-622
+636
 00:33:52,600 --> 00:33:53,200
 AUDIENCE: 7.
 观众：7
 
-623
+637
 00:33:53,200 --> 00:33:55,050
 PROFESSOR: OK, 7.
 教授：好的，7
 
-624
+638
 00:33:55,050 --> 00:33:55,990
 PROFESSOR: Thank you.
 谢谢
 
-625
+639
 00:33:58,830 --> 00:34:00,850
 PROFESSOR: Now, we restore continue,
 现在我们恢复continue
 
-626
+640
 00:34:11,270 --> 00:34:12,900
 and we go to fetch of continue.
 读取里面的东西
 
-627
+641
 00:34:12,900 --> 00:34:13,880
 PROFESSOR: Done.
 好了
 
-628
+642
 00:34:13,880 --> 00:34:14,920
 PROFESSOR: OK.
 好
 
-629
+643
 00:34:14,920 --> 00:34:18,410
 Well, that was in as much detail as you will ever see.
 这些是你能看到的最细致的过程了
 
-630
+644
 00:34:18,410 --> 00:34:21,590
 We'll never do it in as much detail again.
 我们再也不会讲得这么细了
 
-631
+645
 00:34:21,590 --> 00:34:25,230
 One very important thing to notice is that
 一个很重要的事情是
 
-632
+646
 00:34:25,230 --> 00:34:29,780
 we just executed a recursive procedure, right?
 我们刚刚执行了一个递归过程，是吧
 
-633
+647
 00:34:29,780 --> 00:34:31,170
 This whole thing, we used a stack
 整个东西，我们使用了栈
 
-634
+648
 00:34:31,170 --> 00:34:33,070
 and the evaluator was recursive.
 而且求值器是递归的
 
-635
+649
 00:34:33,070 --> 00:34:36,480
 A lot of people think the reason that you need a stack
 有很多人以为我们在求值器中
 
-636
+650
 00:34:36,480 --> 00:34:39,090
 and recursion in an evaluator is because you might be
 需要栈和递归的理由是你可能
 
-637
+651
 00:34:39,090 --> 00:34:42,150
 evaluating recursive procedures like factorial or Fibonacci.
 会用它求值像阶乘或者斐波那契这样的递归过程
 
-638
+652
 00:34:42,150 --> 00:34:43,670
 It's not true.
 那是错误的
 
-639
+653
 00:34:43,670 --> 00:34:46,110
 So you notice we did recursion here, and all we evaluated was
 你看我们在这里做了递归，而我们求值的只有
 
-640
+654
 00:34:46,110 --> 00:34:48,010
 plus X, Y, all right?
 x加上y，对吧
 
-641
+655
 00:34:48,010 --> 00:34:51,210
 The reason that you need recursion in the evaluator is
 在求值器中需要递归的理由是
 
-642
+656
 00:34:51,210 --> 00:34:54,450
 because the evaluation process, itself, is recursive, all right?
 是因为求值这个过程本身，就是递归的，好吗
 
-643
+657
 00:34:54,450 --> 00:34:57,760
 It's not because the procedure that you might be evaluating in LISP
 而不是因为你要用LISP求值的过程
 
-644
+658
 00:34:57,760 --> 00:34:59,270
 is a recursive procedure.
 可能是一个递归过程
 
-645
+659
 00:34:59,270 --> 00:35:00,410
 So that's an important thing
 所以那是一件很重要的事情
 
-646
+660
 00:35:00,410 --> 00:35:03,010
 that people get confused about a lot.
 人们经常在这里被迷惑
 
-647
+661
 00:35:03,010 --> 00:35:06,280
 The other thing to notice is that, when we're done here,
 另一点要注意的是，我们在这里完成之后，
 
-648
+662
 00:35:06,280 --> 00:35:07,120
 we're really done.
 我们就真的完成了
 
-649
+663
 00:35:07,120 --> 00:35:10,870
 Not only are we at done, but
 不仅完成了，而且
 
-650
+664
 00:35:10,870 --> 00:35:13,810
 there's no accumulated stuff on the stack, right?
 栈上没有堆起来的东西了，对吧
 
-651
+665
 00:35:13,810 --> 00:35:17,170
 The machine is back to its initial state, all right?
 这个机器返回最开始的状态了，是吧
 
-652
+666
 00:35:17,170 --> 00:35:19,710
 So that's part of what it means to be done.
 那就是“完成”的其中一部分意义
 
-653
+667
 00:35:19,710 --> 00:35:26,410
 Another way to say that is the evaluation process has reduced
 从另一个角度来看是，求值过程
 
-654
+668
 00:35:26,410 --> 00:35:33,240
 the expression, plus X, Y, to the value here, 7.
 把+ x y这个表达式归约到了7这个值
 
-655
+669
 00:35:33,240 --> 00:35:36,010
 And by reduced, I mean a very particular thing.
 我说归约（减少），指的是一个特定的事情
 
-656
+670
 00:35:36,010 --> 00:35:38,180
 It means that there's nothing left on the stack.
 那意味着栈上没剩下任何东西了
 
-657
+671
 00:35:38,180 --> 00:35:40,740
 The machine is now in the same state,
 机器现在在与开始相同的状态
 
-658
+672
 00:35:40,740 --> 00:35:42,720
 except there's something in the value register.
 除了VAL寄存器里有一些东西
 
-659
+673
 00:35:42,720 --> 00:35:44,520
 It's not part of a sub-problem of anything.
 它不是任何问题的子问题
 
-660
+674
 00:35:44,520 --> 00:35:46,210
 There's nothing to go back to.
 不需要回到任何步骤
 
-661
+675
 00:35:46,210 --> 00:35:46,440
 OK.
 好
 
-662
+676
 00:35:46,440 --> 00:35:47,690
 Let's break.
 我们休息
 
-663
+677
 00:35:49,710 --> 00:35:50,150
 Question?
 有问题吗
 
-664
+678
 00:35:50,150 --> 00:35:54,020
 AUDIENCE: The question here, in the stack,
 观众：关于栈有一个问题
 
-665
+679
 00:35:54,020 --> 00:35:55,820
 is because the data may be recursive.
 是数据有可能是递归的
 
-666
+680
 00:35:55,820 --> 00:35:59,310
 You may have embedded expressions, for instance.
 例如你可能会遇到嵌套的表达式
 
-667
+681
 00:35:59,310 --> 00:36:02,080
 PROFESSOR: Yes, because you might have embedded expressions.
 教授：是的，因为你可能遇到嵌套的表达式
 
-668
+682
 00:36:02,080 --> 00:36:04,770
 But, again, don't confuse that
 但是再说一遍，不要搞混
 
-669
+683
 00:36:04,770 --> 00:36:07,710
 with what people sometimes mean by the data may be recursive,
 有时候人们说数据是递归的
 
-670
+684
 00:36:07,710 --> 00:36:12,930
 which is to say you have these list-structured, recursive data list operations.
 他们说的是存在这些列表结构的，递归的数据列表操作
 
-671
+685
 00:36:12,930 --> 00:36:13,800
 That has nothing to do with it.
 那和这没有关系
 
-672
+686
 00:36:13,800 --> 00:36:17,360
 It's simply that the expressions contain sub-expressions.
 这只是包含子表达式的表达式而已
 
-673
+687
 00:36:17,360 --> 00:36:19,610
 Yeah?
 嗯
 
-674
+688
 00:36:19,610 --> 00:36:23,450
 AUDIENCE: Why is it that the order of the arguments in the arg list got reversed?
 观众：为什么参数列表中参数的顺序是反过来的
 
-675
+689
 00:36:23,450 --> 00:36:27,260
 PROFESSOR: Ah! Yes, I should've mentioned that.
 教授：啊！是，我应该提到这个的
 
-676
+690
 00:36:27,260 --> 00:36:29,070
 Here, the reason the order is reversed--
 这里顺序反过来的原因是
 
-677
+691
 00:36:32,500 --> 00:36:36,050
 it's a question of what you mean by reversed.
 问题在于你怎么定义“反过来”
 
-678
+692
 00:36:36,050 --> 00:36:40,620
 I believe it was Newton.
 我记得应该是牛顿
 
-679
+693
 00:36:40,620 --> 00:36:43,800
 In the very early part of optics, people realized that,
 在光学发展的很早期，人们意识到
 
-680
+694
 00:36:43,800 --> 00:36:45,500
 when you look through the lens of your eye,
 你用眼睛通过透镜看东西的时候
 
-681
+695
 00:36:45,500 --> 00:36:46,730
 the image was up-side down.
 图像是上下颠倒的
 
-682
+696
 00:36:46,730 --> 00:36:48,040
 And there was a lot of argument about
 当时有很多的争论说
 
-683
+697
 00:36:48,040 --> 00:36:51,280
 why that didn't mean you saw things up-side down.
 为什么不能是你眼睛平时看见的都是上下颠倒的
 
-684
+698
 00:36:51,280 --> 00:36:52,860
 So it's sort of the same issue.
 这实际上是一样的道理
 
-685
+699
 00:36:52,860 --> 00:36:54,810
 Reversed from what?
 和什么相比反过来了
 
-686
+700
 00:36:54,810 --> 00:36:57,940
 So we just need some convention.
 我们只是需要一个约定
 
-687
+701
 00:36:57,940 --> 00:37:01,730
 The reason that they're coming at 4, 3 is because we're
 它们作为4,3出现的原因是
 
-688
+702
 00:37:01,730 --> 00:37:04,520
 taking UNEV and consing the result onto argl.
 我们从UNEV中取出东西并且cons到了ARGL上面
 
-689
+703
 00:37:04,520 --> 00:37:06,770
 So you have to realize you've made that convention.
 那么你要意识到你已经做了这个约定
 
-690
+704
 00:37:06,770 --> 00:37:09,980
 The place that you have to realize that--
 你需要意识到这点的地方有
 
-691
+705
 00:37:09,980 --> 00:37:11,230
 well, there's actually two places.
 实际上有两个地方
 
-692
+706
 00:37:11,230 --> 00:37:12,910
 One is in apply-primitive-operator,
 第一个在apply-primitive-operator（应用基本操作）这里
 
-693
+707
 00:37:12,910 --> 00:37:16,610
 which has to realize that the arguments to primitives go in,
 你要意识到参数进入基本操作的顺序
 
-694
+708
 00:37:16,610 --> 00:37:19,490
 in the opposite order from the way you're writing them down.
 和你把它们写下来的顺序相反
 
-695
+709
 00:37:19,490 --> 00:37:21,000
 And the other one is, we'll see later
 另一个地方，我们之后会看到
 
-696
+710
 00:37:21,000 --> 00:37:24,010
 when you actually go to bind a function's parameters,
 当你要绑定一个函数的参数的时候
 
-697
+711
 00:37:24,010 --> 00:37:25,740
 you should realize the arguments are going to come in
 你要意识到参数进入的顺序
 
-698
+712
 00:37:25,740 --> 00:37:28,870
 from the opposite order of the variables to which you're binding them.
 和你要绑定这些变量时的顺序相反
 
-699
+713
 00:37:28,870 --> 00:37:31,830
 So, if you just keep track of that, there's no problem.
 所以如果你注意这些，就没有问题了
 
-700
+714
 00:37:31,830 --> 00:37:33,900
 Also, this is completely arbitrary
 同样，这是完全随意的
 
-701
+715
 00:37:33,900 --> 00:37:37,420
 because, if we'd done, say, an iteration through a vector assigning them,
 因为如果我们做了一个，比如，给向量的各个维度赋值的迭代
 
-702
+716
 00:37:37,420 --> 00:37:40,730
 they might come out in the other order, OK?
 它们可能会以其他顺序输出，对吗
 
-703
+717
 00:37:40,730 --> 00:37:45,080
 So it's just a convention of the way this particular evaluator works.
 那么这只是这个求值器工作时的一个约定
 
-704
+718
 00:37:45,080 --> 00:37:46,330
 All right, let's take a break.
 好，我们休息一下
 
-705
+719
 00:37:46,330 --> 00:37:48,330
 [MUSIC]
 
-706
+720
 00:38:41,840 --> 00:38:45,310
 教授：我们已经学习了表达式的求值
 Professor: We just saw evaluating an expression
 
-707
+721
 00:38:45,600 --> 00:38:47,080
 虽然这只是一个非常简单的例子
 and, of course, that was very simple one. But
 
-708
+722
 00:38:48,810 --> 00:38:50,240
 但从本质上来说
 in essence, it would be no different
 
-709
+723
 00:38:50,240 --> 00:38:52,030
 它跟那些大型嵌套表达式没什么不同
 if it was some big nested expression,
 
-710
+724
 00:38:52,030 --> 00:38:54,570
 后者只是在栈上递归得更深而已
 so there would just be deeper recursion on the stack.
 
-711
+725
 00:38:55,130 --> 00:38:56,910
 我现在要为你们讲解最后一部分
 But what I want to do now is show you the last piece.
 
-712
+726
 00:38:56,920 --> 00:38:59,820
 #TBD
 I want to walk you around this eval and apply loop,
 
-713
+727
 00:39:01,010 --> 00:39:02,810
 我们还没有仔细研究过它
 That's the thing we haven't seen, really.
 
-714
+728
 00:39:03,000 --> 00:39:04,750
 我们还没有见过一个复合程序
 We haven't seen any compound procedures
 
-715
+729
 00:39:05,200 --> 00:39:07,790
 对它的求值会归约为
 where evalutation of procedure reduces to
 
-716
+730
 00:39:07,920 --> 00:39:10,110
 对一个过程的应用
 where applying of procedure reduces to
 
-717
+731
 00:39:10,120 --> 00:39:11,640
 进而是对过程体的求值
 evaluating the body of the procedure,
 
-718
+732
 00:39:12,440 --> 00:39:15,880
 因此 假设我们有这个
 so let's just suppose we had this.
 
-719
+733
 00:39:15,930 --> 00:39:17,440
 假设我们正在考察
 Suppose we were looking at the procedure
 
-720
+734
 00:39:18,070 --> 00:39:31,600
 (DEFINE (F A B) (+ A B)
 define F of A and B to be the sum of A and B.
 
-721
+735
 00:39:33,990 --> 00:39:37,320
 假设我们预先定义好了这个过程
 So, as we typed in that procedure previously,
 
-722
+736
 00:39:37,690 --> 00:39:41,640
 现在 我们将要求值(F X Y)
 and now we're going to evaluate F of X and Y
 
-723
+737
 00:39:42,270 --> 00:39:44,200
 基于的环境是E0
 again, in this environment, E,0,
 
-724
+738
 00:39:44,350 --> 00:39:47,020
 其中X=3 Y=4
 where X is bound to 3 and Y is bound to 4.
 
-725
+739
 00:39:50,780 --> 00:39:52,110
 当执行DEFINE的时候
 When the defined is executed,
 
-726
+740
 00:39:52,120 --> 00:39:53,690
 还记得么 这里是一个LAMBDA
 remember, there's a lambda here,
 
-727
+741
 00:39:53,820 --> 00:39:55,530
 LAMBDA会创建一个过程
 and lambdas create procedures.
 
-728
+742
 00:39:55,950 --> 00:39:58,490
 基本上 #TBD
 And, basically, what will happen is,
 
-729
+743
 00:40:00,810 --> 00:40:02,650
 在环境E0中 我们会得到F的绑定
 in E0, we'll end up with a binding for F,
 
-730
+744
 00:40:03,560 --> 00:40:05,610
 它指出F是一个过程
 which will say F is a procedure,
 
-731
+745
 00:40:07,150 --> 00:40:11,280
 这个过程的参数是A和B
 and its args are A and B,
 
-732
+746
 00:40:12,570 --> 00:40:16,190
 而过程体是(+ A B)
 and its body is plus a,b.
 
-733
+747
 00:40:18,110 --> 00:40:20,990
 这就是环境大概的样子
 So that's what the environment would have looked like
 
-734
+748
 00:40:21,210 --> 00:40:22,520
 我们之前就定义过了
 had we made that definition.
 
-735
+749
 00:40:24,220 --> 00:40:27,280
 然后 我们去求值(F X Y)
 Then, when we go to evaluate F of X and Y,
 
-736
+750
 00:40:28,800 --> 00:40:31,850
 我会像之前那样 仔细地解释每一步
 we'll go through exactly the same process that we did before.
 
-737
+751
 00:40:31,880 --> 00:40:33,090
 不会跳过重复的表达式
 It's even the same expression.
 
-738
+752
 00:40:33,280 --> 00:40:34,380
 唯一的不同是
 The only difference is that
 
-739
+753
 00:40:34,400 --> 00:40:36,640
 它的内部不再是基本的“+”过程
 F, instead of having primitive "plus" in it
 
-740
+754
 00:40:37,240 --> 00:40:38,990
 它还有这个东西
 will have this thing.
 
-741
+755
 00:40:41,040 --> 00:40:43,600
 因此我们要进行相同的过程
 And so we'll go through exactly the same process,
 
-742
+756
 00:40:43,600 --> 00:40:47,420
 只不过这次 当我们停在APPLY-DISPATCH时
 except this time, when we end up at apply-dispatch,
 
-743
+757
 00:40:47,860 --> 00:40:50,280
 FUN寄存器中不再是基本的“+”过程
 the function register, instead of having primitive plus,
 
-744
+758
 00:40:50,440 --> 00:40:53,580
 而是一个代表过程的东西
 will have a thing that will represent it saying procedure,
 
-745
+759
 00:40:54,300 --> 00:40:59,000
 其中参数为A和B
 where the args are A and B,
 
-746
+760
 00:41:00,640 --> 00:41:06,270
 过程体是(+ A B)
 and the body is plus A, B.
 
-747
+761
 00:41:07,870 --> 00:41:09,920
 再强调一下 我所谓的ENV
 And, again, what I mean, by its ENV,
 
-748
+762
 00:41:09,960 --> 00:41:11,120
 是一个指向环境的指针
 I mean there's a pointer to it,
 
-749
+763
 00:41:11,240 --> 00:41:13,070
 所以不用担心我在这里写了很多东西
 so don't worry that I'm writing a lot of stuff there.
 
-750
+764
 00:41:13,280 --> 00:41:15,630
 这是一个指向代表过程的数据结构的指针
 There's a pointer to this procedure data structure.
 
-751
+765
 00:41:17,170 --> 00:41:19,770
 因此 我们现在面临着相同的情况
 OK, so, we're in exactly the same situation.
 
-752
+766
 00:41:20,270 --> 00:41:22,430
 我们来到了APPLY-DISPATCH
 We get to apply-dispatch,
 
-753
+767
 00:41:23,980 --> 00:41:26,480
 #TBD
 so, here, we come to apply-dispatch.
 
-754
+768
 00:41:26,480 --> 00:41:28,730
 上一次 我们分支跳转到了一个基本过程
 Last time, we branched off to a primitive procedure.
 
-755
+769
 00:41:30,010 --> 00:41:30,700
 然而这一次
 Here, it says oh,
 
-756
+770
 00:41:30,840 --> 00:41:32,800
 我们遇到的是一个复合过程
 we now have a compound procedure,
 
-757
+771
 00:41:34,550 --> 00:41:36,600
 因此我们要跳转到COMPOUND-APPLY
 so we're going to go off to compound-apply.
 
-758
+772
 00:41:38,470 --> 00:41:39,920
 COMPOUND-APPLY又是怎样定义的呢？
 Now, what's compound-apply?
 
-759
+773
 00:41:41,920 --> 00:41:44,540
 还记得元循环求值器是怎么做的么？
 Well, remember what the meta-circular evaluator did?
 
-760
+774
 00:41:45,090 --> 00:41:47,400
 COMPOUND-APPLY的执行步骤则是
 Compound-apply said we're going to evaluate
 
-761
+775
 00:41:49,900 --> 00:41:51,600
 在一个新的环境中
 the body of the procedure
 
-762
+776
 00:41:52,940 --> 00:41:54,120
 求值一个过程的体
 in some new environment.
 
-763
+777
 00:41:54,120 --> 00:41:55,870
 这个新的环境来自于哪里呢？
 Where does that new environment come from?
 
-764
+778
 00:41:56,730 --> 00:42:01,360
 我们把跟过程一同打包的环境
 We take the environment that was packaged with the procedure,
 
-765
+779
 00:42:03,020 --> 00:42:05,790
 我们把过程的形式参数
 we bind the parameters of the procedure
 
-766
+780
 00:42:06,000 --> 00:42:07,630
 同传递进来的实际参数给绑定起来
 to the arguments that we're passing in,
 
-767
+781
 00:42:09,750 --> 00:42:11,950
 把这个作为新的框架
 and use that as a new frame to extend
 
-768
+782
 00:42:12,590 --> 00:42:13,790
 来扩展过程附带的环境
 the procedure environment.
 
-769
+783
 00:42:14,990 --> 00:42:16,080
 我们就是在这个环境中
 And that's the environment
 
-770
+784
 00:42:16,300 --> 00:42:18,880
 求值过程的体
 in which we evaluate the procedure body,
 
-771
+785
 00:42:20,120 --> 00:42:24,470
 对吧？这就是APPLY-EVAL循环做的事
 Right? That's going around the apply/eval loop.
 
-772
+786
 00:42:24,470 --> 00:42:26,250
 这就是APPLY回过头来调用EVAL
 That's apply coming back to call eval,
 
-773
+787
 00:42:32,860 --> 00:42:34,920
 因此 这就是我们要在COMPOUND-APPLY中要做的所有事
 So, now, that's all we have to do in compound-apply.
 
-774
+788
 00:42:36,780 --> 00:42:37,720
 要怎么来实现呢？
 What are we going to do?
 
-775
+789
 00:42:37,720 --> 00:42:40,970
 我们要构造一个新的环境
 We're going to manufacture a new environment.
 
-776
+790
 00:42:43,550 --> 00:42:45,640
 而我们构造的这个新环境呢
 And we're going to manufacture a new environment that,
 
-777
+791
 00:42:46,760 --> 00:42:48,110
 我们把它记作E1
 let's see, that we'll call E1.
 
-778
+792
 00:42:52,900 --> 00:42:55,630
 E1这个环境呢
 E1 is going to be some environment where the
 
-779
+793
 00:42:57,310 --> 00:42:59,150
 存储了过程的参数绑定
 where the parameters of the procedure,
 
-780
+794
 00:42:59,210 --> 00:43:03,260
 其中A=3 B=4
 Nwhere A is bound to 3, and B is bound to 4,
 
-781
+795
 00:43:04,270 --> 00:43:05,760
 并且它跟E0相连
 and it's linked to E0
 
-782
+796
 00:43:05,760 --> 00:43:08,080
 这是因为 F就是在E0中定义的
 because that's where f is defined.
 
-783
+797
 00:43:09,270 --> 00:43:10,270
 因此 在这个环境中
 And, in this environment,
 
-784
+798
 00:43:10,270 --> 00:43:11,960
 我们要来求值过程的体
 we're going to evaluate the body of the procedure.
 
-785
+799
 00:43:12,050 --> 00:43:14,480
 让我们来看一看
 So let's look at that, we're going
 
-786
+800
 00:43:16,520 --> 00:43:18,320
 我们来看COMPOUND-APPLY的代码
 Here we are at compound-apply,
 
-787
+801
 00:43:20,300 --> 00:43:23,470
 首先是给EXP寄存器赋值
 which says assign to the expression register
 
-788
+802
 00:43:24,500 --> 00:43:27,260
 所赋的值是FUN寄存器所指向过程的体
 the body of the procedure that's in the function register.
 
-789
+803
 00:43:28,380 --> 00:43:32,330
 这样 我就将过程的体赋值给了EXP寄存器
 So I assign to the expression register the procedure body,
 
-790
+804
 00:43:40,750 --> 00:43:41,100
 对吧？
 OK?
 
-791
+805
 00:43:42,640 --> 00:43:44,970
 而这将在某个环境中求值
 That's going to be evaluated in an environment
 
-792
+806
 00:43:45,820 --> 00:43:48,320
 这个环境是通过将FUN寄存器
 which is formed by making some bindings
 
-793
+807
 00:43:51,300 --> 00:43:53,670
 所指向的过程中的形式参数
 using information determined by the procedure--
 
-794
+808
 00:43:53,670 --> 00:43:56,250
 与实际参数绑定起来 得到的
 that's what's in FUN-- and the argument list.
 
-795
+809
 00:43:57,800 --> 00:44:00,000
 我们先不要关系它的具体细节
 And let's not worry about exactly what that does,
 
-796
+810
 00:44:00,080 --> 00:44:01,630
 你可以知道它的最后结果
 but you can see the information's there.
 
-797
+811
 00:44:01,930 --> 00:44:03,320
 因此MAKE-BINDINGS会说
 So make bindings will say oh,
 
-798
+812
 00:44:04,040 --> 00:44:07,900
 过程本身就附带有一个环境
 the procedure, itself, had an environment attached to it.
 
-799
+813
 00:44:07,960 --> 00:44:09,320
 在这里 我没有写出来
 I didn't write that quite here.
 
-800
+814
 00:44:09,360 --> 00:44:10,560
 但我应该说过它有一个环境
 I should've said in environment
 
-801
+815
 00:44:11,300 --> 00:44:13,440
 因为每个过程在构造时 都有一个环境
 because every procedure gets built with an environment.
 
-802
+816
 00:44:13,660 --> 00:44:16,350
 因此 通过这个环境 它能够知道
 So, from that environment, it knows
 
-803
+817
 00:44:16,600 --> 00:44:18,650
 定义该过程时的环境是怎样的
 what the procedure's definition environment is.
 
-804
+818
 00:44:19,290 --> 00:44:20,750
 它知道实际参数是什么
 It knows what the arguments are.
 
-805
+819
 00:44:21,830 --> 00:44:22,490
 它查看ARGL
 It looks at argl,
 
-806
+820
 00:44:22,490 --> 00:44:24,280
 然后你会在这里看到逆序的约定
 and then you see a reversal convention here.
 
-807
+821
 00:44:24,280 --> 00:44:26,620
 它需要知道ARGL是逆序的
 It just has to know that argl is reversed,
 
-808
+822
 00:44:27,060 --> 00:44:28,810
 然后它构造了这个框架 E1
 and it builds this frame, E,1.
 
-809
+823
 00:44:29,990 --> 00:44:32,920
 我们假设 MAKE-BINDINGS返回的就是这些东西
 All right, so, let's assume that that's what make bindings returns,
 
-810
+824
 00:44:33,360 --> 00:44:36,220
 然后 它把E1赋值给ENV
 so it assigns to ENV this thing, E,1.
 
-811
+825
 00:44:41,340 --> 00:44:45,840
 下一步就是 恢复CONTINUE
 The next thing it says is restore continue.
 
-812
+826
 00:44:46,890 --> 00:44:48,190
 还记得CONTINUE之前是什么吗？
 Remember what continue was here?
 
-813
+827
 00:44:48,760 --> 00:44:50,430
 在最后一段中
 It got put up in the last segment.
 
-814
+828
 00:44:52,240 --> 00:44:54,020
 CONTINUE被保存了
 Continue got stored.
 
-815
+829
 00:44:54,020 --> 00:44:55,180
 它的值是最初的'DONE
 That was the original done,
 
-816
+830
 00:44:55,320 --> 00:44:56,560
 这代表了
 which said what are you going to do
 
-817
+831
 00:44:56,730 --> 00:44:59,440
 在完成这项特定应用后要做的事
 after you're done with this particular application?
 
-818
+832
 00:45:00,140 --> 00:45:01,720
 这是在求值整个应用时
 It was one of the very first things that happened
 
-819
+833
 00:45:01,760 --> 00:45:03,180
 最先发生的事儿
 when we evaluated the application.
 
-820
+834
 00:45:03,880 --> 00:45:05,870
 现在 我们要恢复CONTINUE了
 And now, finally, we're going to restore continue.
 
-821
+835
 00:45:06,860 --> 00:45:09,550
 还记得APPLY-DISPATCH的约定么？
 Remember apply-dispatch's contract.
 
-822
+836
 00:45:09,580 --> 00:45:11,200
 它假设下一步的跳转目标
 It assumes that where it should go to next
 
-823
+837
 00:45:11,230 --> 00:45:11,980
 已经存放在栈上了
 was on the stack,
 
-824
+838
 00:45:12,030 --> 00:45:13,120
 并且 这里确实存放在栈上了
 and there it was on the stack.
 
-825
+839
 00:45:13,590 --> 00:45:14,760
 CONTINUE被赋值成了DONE
 Continue has done,
 
-826
+840
 00:45:17,820 --> 00:45:19,900
 现在我们要回到EVAL-DISPATCH了
 and now we're going to go back to eval-dispatch.
 
-827
+841
 00:45:19,940 --> 00:45:20,840
 我们要再次进行寄存器设置
 We're set up again.
 
-828
+842
 00:45:20,970 --> 00:45:24,410
 我们有表达式、环境、下一步
 We have an expression, an environment, and a place to go to.
 
-829
+843
 00:45:25,800 --> 00:45:26,890
 我不会再细讲了
 We're not going to go through that
 
-830
+844
 00:45:27,880 --> 00:45:29,550
 因为它基本上就是相同的表达式
 because it's sort of the same expression.
 
-831
+845
 00:45:35,400 --> 00:45:38,800
 但是需要注意的是 在这个时候
 OK, but the thing, again, to notice is, at this point,
 
-832
+846
 00:45:39,340 --> 00:45:43,720
 我们已经归约了原始表达式(F X Y)
 we have reduced the original expression, F,X,Y,
 
-833
+847
 00:45:44,640 --> 00:45:47,920
 通过在E0中求值(F X Y)
 We've reduced evaluating F,X,Y in environment E,0
 
-834
+848
 00:45:48,890 --> 00:45:52,670
 将其归约为在E1中求值(+ A B)
 to evaluate plus A, B in E,1.
 
-835
+849
 00:45:52,780 --> 00:45:55,920
 要注意 栈上并没有什么东西 对吧？
 And notice, nothing's on the stack, right?
 
-836
+850
 00:45:56,110 --> 00:45:56,830
 这是一个归约
 It's a reduction.
 
-837
+851
 00:45:56,840 --> 00:45:59,800
 这个时候 作为其状态的一部分
 At this point, the machine does not contain,
 
-838
+852
 00:45:59,840 --> 00:46:01,200
 #TBD
 as part of its state,
 
-839
+853
 00:46:01,760 --> 00:46:04,880
 #TBD
 the fact that it's in the middle of evaluating some procedure called f,
 
-840
+854
 00:46:05,490 --> 00:46:06,280
 that's gone, right?
 
-841
+855
 00:46:07,660 --> 00:46:09,550
 这里面没有积累的状态
 Right? There's no accumulated state?
 
-842
+856
 00:46:13,070 --> 00:46:14,370
 注意 这个思想非常重要
 Again, that's a very important idea.
 
-843
+857
 00:46:14,370 --> 00:46:16,330
 这意味着
 That's the meaning of,
 
-844
+858
 00:46:16,760 --> 00:46:18,390
 当我们使用代换模型时
 when we used to write in the substitution model,
 
-845
+859
 00:46:18,390 --> 00:46:20,860
 一条表达式会归约到另一条表达式
 this expression reduces to that expression.
 
-846
+860
 00:46:21,350 --> 00:46:22,660
 而你不需要记住任何东西
 And you don't have to remember anything.
 
-847
+861
 00:46:22,660 --> 00:46:24,500
 这里 你就见到了归约的真谛
 And here, you see the meaning of reduction.
 
-848
+862
 00:46:24,560 --> 00:46:26,160
 这个时候 栈上没有任何东西
 At this point, there is nothing on the stack.
 
-849
+863
 00:46:31,590 --> 00:46:33,630
 这样就有一个非常重要的结果
 See, that has very important consequences.
 
-850
+864
 00:46:35,240 --> 00:46:37,900
 让我们回过头来看看迭代式阶乘
 Let's go back and look at iterative factorial,
 
-851
+865
 00:46:40,420 --> 00:46:44,880
 还记得吗？这是通过ITER来实现的循环
 all right? Remember, this was some sort of loop and doing iter.
 
-852
+866
 00:46:45,130 --> 00:46:47,360
 我们不断强调 它是一个迭代过程
 And we kept saying that's an iterative procedure,
 
-853
+867
 00:46:49,260 --> 00:46:53,840
 还记得吗
 And what we wrote, remember,
 
-854
+868
 00:46:58,440 --> 00:47:03,130
 我们使用它的时候
 are things like, we said,
 
-855
+869
 00:47:04,350 --> 00:47:11,070
 是像(FACT-ITER 5)这样调用它的
 fact-iter of 5.
 
-856
+870
 00:47:12,360 --> 00:47:18,670
 然后我们把它归约成(ITER 1 1 5)
 We wrote things like reduces to iter of 1, and 1, and 5,
 
-857
+871
 00:47:19,030 --> 00:47:25,150
 然后它归约成(ITER 1 2 5)
 which reduces to iter of 1, and 2, and 5,
 
-858
+872
 00:47:25,320 --> 00:47:27,070
 等等等等
 and so on, and so on, and so on.
 
-859
+873
 00:47:27,070 --> 00:47:28,170
 然后我们又说 看
 And we kept saying well, look,
 
-860
+874
 00:47:28,170 --> 00:47:30,350
 为了实现这个效果 不需要存储任何东西
 you don't have to build up any storage to do that.
 
-861
+875
 00:47:31,720 --> 00:47:32,730
 我们摆了摆手 说
 And we waved our hands,
 
-862
+876
 00:47:32,750 --> 00:47:34,590
 “原则上 这不需要任何存储”
 and said in principle, there's no storage needed.
 
-863
+877
 00:47:35,040 --> 00:47:36,170
 现在你们发现 确实不需要
 Now, you see no storage needed.
 
-864
+878
 00:47:36,170 --> 00:47:39,090
 这里的每一步都是真正的归约 对吧？
 Each of these is a real reduction, right?
 
-865
+879
 00:47:39,090 --> 00:47:42,600
 随着你求值这些表达式
 As you walk through these expressions,
 
-866
+880
 00:47:47,300 --> 00:47:51,370
 在求值这些表达式的过程中 你会发现
 As you walk through these expressions, what you'll see
 
-867
+881
 00:47:51,370 --> 00:47:52,810
 栈上的这些表达式
 are these expressions on the stack
 
-868
+882
 00:47:53,750 --> 00:47:55,640
 都在一个特定的环境中
 in some particular environment,
 
-869
+883
 00:47:56,420 --> 00:48:00,020
 抱歉 是EXP寄存器中的表达式
 and then these expressions, sorry, in the EXP register
 
-870
+884
 00:48:00,020 --> 00:48:01,500
 是在某个特定的环境中
 in some particular environment.
 
-871
+885
 00:48:01,570 --> 00:48:02,190
 并且 在每一步
 And, at each point,
 
-872
+886
 00:48:02,190 --> 00:48:04,000
 栈上不会积累任何东西
 there'll be no accumulated stuff on the stack
 
-873
+887
 00:48:04,360 --> 00:48:05,680
 因为每一步都是真正的归约
 because each one's a real reduction.
 
-874
+888
 00:48:09,280 --> 00:48:10,510
 因此 举例来说
 All right, so, for example,
 
-875
+889
 00:48:10,580 --> 00:48:12,510
 说得更仔细一点
 just to go through it in a little bit more care,
 
-876
+890
 00:48:13,460 --> 00:48:16,880
 如果我从这样的一条表达式开始
 if I start out with an expression that says something like,
 
-877
+891
 00:48:22,440 --> 00:48:34,250
 比如说 在某个环境中计算(FACT-ITER 5)
 oh, say, fact-iter of 5 in some environment
 
-878
+892
 00:48:42,110 --> 00:48:46,300
 它将在某个时刻创建一个环境
 that will, at some point, create an environment
 
-879
+893
 00:48:46,810 --> 00:48:48,380
 其中N=5
 in which n is down to 5.
 
-880
+894
 00:48:51,470 --> 00:48:52,010
 我们把它写下来
 Let's call that--
 
-881
+895
 00:48:55,680 --> 00:48:56,590
 然后 在某个时候
 And, at some point,
 
-882
+896
 00:48:56,890 --> 00:49:02,560
 机器会归约这整个东西
 the machine will reduce this whole thing
 
-883
+897
 00:49:02,910 --> 00:49:04,350
 将它归约为
 to a thing that says that's really
 
-884
+898
 00:49:04,760 --> 00:49:09,850
 (ITER 1 1 N)
 iter of 1, and 1, and n,
 
-885
+899
 00:49:10,680 --> 00:49:13,720
 然后在环境E1中求值这条表达式
 evaluated in this environment, E,1
 
-886
+900
 00:49:15,870 --> 00:49:17,160
 而不在栈上存放任何东西
 with nothing on the stack.
 
-887
+901
 00:49:17,160 --> 00:49:19,550
 看到了么 这时机器并不会记住
 See, at this moment, the machine is not remembering
 
-888
+902
 00:49:20,710 --> 00:49:22,500
 求值这条ITER表达式--
 that evaluating this expression, iter--
 
-889
+903
 00:49:25,000 --> 00:49:25,630
 也就是某种循环--
 which is the loop--
 
-890
+904
 00:49:25,790 --> 00:49:28,570
 并不是FACT-ITER的一部分
 is part of this thing called iterative factorial.
 
-891
+905
 00:49:29,680 --> 00:49:30,590
 它不会记住这个事实
 It's not remembering that.
 
-892
+906
 00:49:30,590 --> 00:49:33,170
 它只是归约了该表达式
 It's just reducing the expression to that, right?
 
-893
+907
 00:49:33,170 --> 00:49:36,560
 如果我们再来看迭代式阶乘的体
 If we look again at the body of iterative factorial,
 
-894
+908
 00:49:38,050 --> 00:49:41,080
 这条表达式归约为了这条表达式
 this expression has reduced to that expression.
 
-895
+909
 00:49:42,810 --> 00:49:43,870
 哦 这里漏了一个N
 Oh, I shouldn't have the n there.
 
-896
+910
 00:49:46,590 --> 00:49:49,130
 幻灯片和实际程序中的约定稍有不同
 It's a slightly different convention from the slide to the program.
 
-897
+911
 00:49:53,340 --> 00:49:56,250
 那么 ITER的体又是什么？
 And, then, what's the body of iter?
 
-898
+912
 00:49:56,280 --> 00:49:57,400
 ITER的体首先是一个IF--
 Well, iter's going to be an if,
 
-899
+913
 00:49:58,750 --> 00:50:00,190
 我不会再深入IF语句的细节了
 and I won't go through the details of if.
 
-900
+914
 00:50:00,240 --> 00:50:01,630
 它会对谓词求值
 It'll evaluate the predicate.
 
-901
+915
 00:50:02,400 --> 00:50:03,710
 本例中 会返回FALSE
 In this case, it'll be false.
 
-902
+916
 00:50:03,810 --> 00:50:08,640
 然后这里的ITER会归约为表达式--
 And this iter will now reduce to the expression
 
-903
+917
 00:50:09,850 --> 00:50:20,200
 (ITER (* COUNTER PRODUCT)
 iter of whatever it says, star, counter product, and--
 
-904
+918
 00:50:21,620 --> 00:50:22,240
 按照它代码写的--
 what does it say--
 
-905
+919
 00:50:22,680 --> 00:50:24,560
 (+ COUNTER 1))
 plus counter 1
 
-906
+920
 00:50:28,720 --> 00:50:31,420
 在另外的一个环境E2中求值
 in some other environment, by this time, E,2,
 
-907
+921
 00:50:32,970 --> 00:50:35,980
 其中 E2会记录着
 where E,2 will be set up having bindings
 
-908
+922
 00:50:36,490 --> 00:50:39,390
 PRODUCT和COUNTER的值
 for product and counter.
 
-909
+923
 00:50:42,920 --> 00:50:44,330
 它会被归约为这条语句
 And it'll reduce to that.
 
-910
+924
 00:50:44,940 --> 00:50:46,040
 它不会记得
 Right? It won't be remembering
 
-911
+925
 00:50:46,060 --> 00:50:48,750
 它是一个需要返回到某处的一部分
 that it's part of something that it has to return to.
 
-912
+926
 00:50:49,340 --> 00:50:50,430
 当ITER再次调用ITER时
 And when iter calls iter again,
 
-913
+927
 00:50:50,440 --> 00:50:52,560
 它会归约为另一个像这样的东西
 it'll reduce to another thing that looks like this
 
-914
+928
 00:50:53,050 --> 00:50:54,680
 只是会在新环境E3中
 in some environment, E,3,
 
-915
+929
 00:50:54,830 --> 00:50:56,670
 里面有关于PRODUCT和COUNTER新的绑定
 which has new bindings for product and counter.
 
-916
+930
 00:50:58,800 --> 00:51:05,290
 因此 如果你想知道
 OK? So, if you're wondering,
 
-917
+931
 00:51:06,090 --> 00:51:07,530
 如果你一直感到不安
 if you've always been queasy about
 
-918
+932
 00:51:08,250 --> 00:51:10,670
 不知道为什么我们说这些过程
 about how it is we've been saying those procedures
 
-919
+933
 00:51:10,670 --> 00:51:12,450
 虽然从语法上看起来是递归的
 that look syntactically recursive,
 
-920
+934
 00:51:13,200 --> 00:51:15,690
 但实际上是迭代的
 are, in fact, iterative,
 
-921
+935
 00:51:15,870 --> 00:51:17,240
 可以在常量空间中运行
 run in constant space,
 
-922
+936
 00:51:18,400 --> 00:51:19,750
 我不知道这么说是否打消了你们的疑虑
 well, I don't know if this makes you less queasy,
 
-923
+937
 00:51:19,750 --> 00:51:21,230
 但至少让你们知道发生了什么
 but at least it shows you what's happening.
 
-924
+938
 00:51:21,230 --> 00:51:22,810
 这其中没有任何构造
 There really isn't any buildup there.
 
-925
+939
 00:51:25,910 --> 00:51:27,580
 但你也会说 这里面还是有一些构造
 Now, you might ask well, is there buildup
 
-926
+940
 00:51:27,980 --> 00:51:30,080
 从原则上来说 我们也构造了环境框架
 in principle in these environment frames?
 
-927
+941
 00:51:31,710 --> 00:51:32,370
 答案则是
 And the answer is yeah,
 
-928
+942
 00:51:32,400 --> 00:51:33,840
 你确实需要构建这些环境框架
 you have to make these new environment frames,
 
-929
+943
 00:51:33,840 --> 00:51:36,200
 但是 等你求值完毕后不必保留它们
 but you don't have to hang onto them when you're done.
 
-930
+944
 00:51:36,440 --> 00:51:37,610
 它们可以被废料收集
 They can be garbage collected,
 
-931
+945
 00:51:37,920 --> 00:51:39,470
 这些空间也可以被自动地重用
 or the space can be reused automatically.
 
-932
+946
 00:51:40,720 --> 00:51:42,990
 但你们可以看到求值器控制流
 But you see the control structure of the evaluator
 
-933
+947
 00:51:43,250 --> 00:51:46,120
 的中心思想就是进行归约
 is really using this idea that you actually have a reduction,
 
-934
+948
 00:51:47,020 --> 00:51:49,290
 因此这些过程实际上是迭代过程
 so these procedures really are iterative procedures.
 
-935
+949
 00:51:50,130 --> 00:51:51,380
 好吧 有什么问题么？
 All right, let's stop for questions.
 
-936
+950
 00:52:02,680 --> 00:52:03,230
 好吧 课件休息吧
 All right, let's break.
 
-937
+951
 00:52:46,770 --> 00:52:48,770
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-938
+952
 00:52:48,770 --> 00:52:51,550
 跟迭代过程形成对比的
 Let me contrast the iterative procedure
 
-939
+953
 00:52:52,770 --> 00:52:56,140
 是确实会占用空间的递归过程
 just so you'll see where space does build up with a recursive procedure,
 
-940
+954
 00:52:56,170 --> 00:52:57,290
 你们可以看到其中的区别
 so you can see the difference.
 
-941
+955
 00:52:58,030 --> 00:53:01,200
 让我们来看看递归式阶乘的求值
 Let's look at the evaluation of recursive factorial.
 
-942
+956
 00:53:02,650 --> 00:53:07,220
 这里的FACT-REC就是阶乘的标准定义
 So, here's fact-recursive, or standard factorial definition.
 
-943
+957
 00:53:07,220 --> 00:53:10,010
 这个当然是一个递归过程
 We said this one is still a recursive procedure,
 
-944
+958
 00:53:10,010 --> 00:53:12,570
 它的计算过程也是递归的
 but this is actually a recursive process.
 
-945
+959
 00:53:13,750 --> 00:53:16,560
 然后 只要把它和我们开始的方式联系起来
 And then, just to link it back to the way we started,
 
-946
+960
 00:53:16,830 --> 00:53:20,530
 我们会通过代换模型发现
 we said oh, you can see that it's going to be recursive process
 
-947
+961
 00:53:20,530 --> 00:53:21,820
 这是一个递归过程
 by the substitution model
 
-948
+962
 00:53:22,360 --> 00:53:28,000
 因为 如果我调用(REC-FACT 5)
 because, if I say recursive factorial of 5,
 
-949
+963
 00:53:30,450 --> 00:53:34,940
 会变成(* 5
 that turns into 5 times--
 
-950
+964
 00:53:36,280 --> 00:53:37,820
 哦 这里是FACT-REC
 what is it, fact-rec, or record fact--
 
-951
+965
 00:53:42,620 --> 00:53:47,930
 (* 5 (FACT-REC 4))
 5 times recursive factorial of 4,
 
-952
+966
 00:53:49,660 --> 00:53:58,220
 又会变成(* 5 (* 4 (FACT-REC 3)))
 which turns into 5 times 4 times fact-rec of 3,
 
-953
+967
 00:54:00,220 --> 00:54:08,600
 又会变成(* 5 (* 4 (* 3 (* ...
 which returns into 5 times 4 times 3 times
 
-954
+968
 00:54:13,450 --> 00:54:15,310
 以此类推
 and so on, right?
 
-955
+969
 00:54:15,390 --> 00:54:17,390
 关键点就是 有一条链条被不断构造出来
 The idea is there was this chain of stuff building up,
 
-956
+970
 00:54:18,100 --> 00:54:20,060
 这就在代换模型中证明了
 which justified, in the substitution model,
 
-957
+971
 00:54:20,080 --> 00:54:21,280
 FACT-REC是递归的
 the fact that it's recursive.
 
-958
+972
 00:54:21,520 --> 00:54:24,180
 现在 让我们来看看这条构造起来的链条
 And now, let's actually see that chain of stuff build up
 
-959
+973
 00:54:24,180 --> 00:54:25,290
 它又是在机器中的什么地方？
 and where it is in the machine, OK?
 
-960
+974
 00:54:27,680 --> 00:54:29,950
 好吧 让我们想象一下要从哪里开始
 All right, well, let's imagine we're going to start out again.
 
-961
+975
 00:54:30,440 --> 00:54:40,010
 我们告诉机器 求值(FACT-REC 5)
 We'll tell it to evaluate recursive factorial of 5
 
-962
+976
 00:54:41,450 --> 00:54:43,390
 基于的环境是E0
 in some environment, again, E0, where
 
-963
+977
 00:54:45,080 --> 00:54:48,970
 也就是定义FACT-REC时的环境
 where recursive factorial is defined, OK?
 
-964
+978
 00:54:49,550 --> 00:54:51,230
 现在 我们知道最终要发生什么
 Well, now we know what's eventually going to happen.
 
-965
+979
 00:54:52,250 --> 00:54:53,640
 首先
 This is going to come along,
 
-966
+980
 00:54:53,920 --> 00:54:55,640
 它会对这些东西求值
 it'll evaluate those things,
 
-967
+981
 00:54:55,680 --> 00:54:56,990
 发现它是一个过程
 figure out it's a procedure,
 
-968
+982
 00:54:57,180 --> 00:55:00,160
 在这里创建一个新环境E1
 build somewhere over here an environment, E1,
 
-969
+983
 00:55:00,880 --> 00:55:03,690
 其中N=5
 which has n bound to 5,
 
-970
+984
 00:55:04,330 --> 00:55:06,540
 并且与E0相连
 which hangs off of E0,
 
-971
+985
 00:55:07,800 --> 00:55:08,970
 这个E0也就是
 which would be, presumably,
 
-972
+986
 00:55:08,990 --> 00:55:12,300
 定义FACT-REC的那个环境
 the definition environment of recursive factorial.
 
-973
+987
 00:55:14,110 --> 00:55:15,740
 然后 在E1这个环境中
 OK? And, in this environment,
 
-974
+988
 00:55:15,760 --> 00:55:17,480
 求值过程的体
 it's going to go off and evaluate the body.
 
-975
+989
 00:55:19,670 --> 00:55:25,920
 因此 在这里求值会归约为
 So, again, the evaluation here will reduce to
 
-976
+990
 00:55:27,000 --> 00:55:28,920
 在E1中求值过程的体
 evaluating the body in E1.
 
-977
+991
 00:55:30,160 --> 00:55:31,340
 这就需要求值IF语句
 That's going to look at an if,
 
-978
+992
 00:55:32,170 --> 00:55:33,530
 而我不会讲解IF语句的细节
 and I won't go through the details of if.
 
-979
+993
 00:55:33,530 --> 00:55:34,880
 IF语句会求值谓词
 It'll look at the predicate.
 
-980
+994
 00:55:34,880 --> 00:55:37,530
 最后发现需要求值ELSE子句
 It'll decide it eventually has to evaluate the alternative.
 
-981
+995
 00:55:37,840 --> 00:55:40,410
 因此 这里的整个部分 会归约为
 So this whole thing, again, will reduce to
 
-982
+996
 00:55:41,300 --> 00:55:45,530
 FACT-REC的ELSE子句
 the alternative of recursive factorial,
 
-983
+997
 00:55:45,820 --> 00:55:46,970
 也就是谓词为假的部分
 the alternative clause,
 
-984
+998
 00:55:47,230 --> 00:55:51,160
 整个表达式就归约为了(* N
 which says that this whole thing reduces to times n
 
-985
+999
 00:55:53,070 --> 00:55:59,960
 (FACT-REC (- N 1))
 of recursive factorial of n minus 1
 
-986
+1000
 00:56:03,480 --> 00:56:05,550
 求值的环境是E1
 in the environment E1
 
-987
+1001
 00:56:08,380 --> 00:56:10,910
 因此 最初的表达式现在就会归约为
 OK? So the original expression, now, is going to reduce
 
-988
+1002
 00:56:11,040 --> 00:56:12,520
 求值这样的一个表达式
 to evaluating that expression, all right?
 
-989
+1003
 00:56:13,750 --> 00:56:16,280
 而现在 我们面对的是一个应用
 OK? Now we have an application.
 
-990
+1004
 00:56:16,280 --> 00:56:17,630
 我们之前求值过应用
 We did an application before.
 
-991
+1005
 00:56:18,220 --> 00:56:20,250
 还记得要怎么求值应用么？
 Remember what happens in an application?
 
-992
+1006
 00:56:20,360 --> 00:56:21,690
 正式求值一个应用之前
 The first thing you do is you go off and you
 
-993
+1007
 00:56:21,740 --> 00:56:24,810
 你需要把CONTINUE寄存器的值保存在栈上
 you save the value of the continue register on the stack.
 
-994
+1008
 00:56:25,350 --> 00:56:27,180
 此时 栈上会有一个值'DONE
 So the stack here is going to have done in it.
 
-995
+1009
 00:56:29,980 --> 00:56:32,880
 接下来 你要为求值子部分做准备
 And then you're going to set up to evaluate the sub-parts.
 
-996
+1010
 00:56:35,000 --> 00:56:37,200
 因此 我们在这里开始求值子部分
 OK? So here we go off to evaluate the sub-parts.
 
-997
+1011
 00:56:39,470 --> 00:56:41,450
 首先要做的是求值运算符
 First thing we're going to do is evaluate the operator.
 
-998
+1012
 00:56:44,600 --> 00:56:46,320
 运算符是怎样求值的呢？
 What happens when we evaluate an operator?
 
-999
+1013
 00:56:47,250 --> 00:56:48,990
 我们通过一些手段
 Well, we arrange things so that
 
-1000
+1014
 00:56:49,000 --> 00:56:51,040
 将EXP寄存器指向运算符对应的过程
 the operator ends up in the expression register.
 
-1001
+1015
 00:56:51,480 --> 00:56:53,150
 并且让ENV寄存器指向求值的环境
 The environments in the ENV register
 
-1002
+1016
 00:56:53,660 --> 00:56:56,220
 #TBD
 continue someplace where we're going to go evaluate the arguments.
 
-1003
+1017
 00:56:56,590 --> 00:56:57,370
 并且 我们把
 And, on the stack,
 
-1004
+1018
 00:56:57,400 --> 00:56:59,290
 CONTINUE的原始值保存在栈上
 we've saved the original continue,
 
-1005
+1019
 00:56:59,520 --> 00:57:01,020
 我们完成所有工作后 就会跳转到这个地方
 which is where we wanted to be when we're all done.
 
-1006
+1020
 00:57:01,720 --> 00:57:02,860
 在我们求值完运算符后
 And then the things we needed
 
-1007
+1021
 00:57:03,580 --> 00:57:05,800
 需要做的则是
 when we're going to get done evaluating the operator,
 
-1008
+1022
 00:57:05,900 --> 00:57:07,660
 求值对实际参数进行求值
 the things we'll need to evaluate the arguments,
 
-1009
+1023
 00:57:07,690 --> 00:57:12,010
 也就是这个环境和这些参数
 namely the environment and those arguments,
 
-1010
+1024
 00:57:12,140 --> 00:57:13,440
 这些尚未求值的实际参数
 those unevaluated arguments,
 
-1011
+1025
 00:57:14,200 --> 00:57:15,620
 它们现在都还在栈上
 so there they are sitting on the stack.
 
-1012
+1026
 00:57:15,620 --> 00:57:18,590
 我们现在就要先来求值运算符
 And we're about to go off to evaluate the operator.
 
-1013
+1027
 00:57:23,260 --> 00:57:26,730
 当我们从这个调用返回时
 Well, when we return from this particular call--
 
-1014
+1028
 00:57:26,920 --> 00:57:28,640
 在这里 我们将要去调用EVAL-DISPATCH
 so we're about to call eval-dispatch here--
 
-1015
+1029
 00:57:29,380 --> 00:57:30,830
 当我们从这个调用返回时
 when we return from this call,
 
-1016
+1030
 00:57:31,450 --> 00:57:32,700
 这个运算符所对应的值
 the value of that operator,
 
-1017
+1031
 00:57:32,730 --> 00:57:35,440
 在本例中 也就是基本的乘法过程
 which, in this case, is going to be the primitive multiplier procedure,
 
-1018
+1032
 00:57:36,440 --> 00:57:37,930
 会存放在FUN寄存器中
 will end up in the FUN register.
 
-1019
+1033
 00:57:43,020 --> 00:57:44,530
 我们要去求值实际参数
 We're going to evaluate some arguments.
 
-1020
+1034
 00:57:44,530 --> 00:57:45,850
 现在这里求值N
 They will evaluate n here.
 
-1021
+1035
 00:57:47,730 --> 00:57:49,870
 本例中 会返回5
 That'll give us 5, in this case.
 
-1022
+1036
 00:57:50,250 --> 00:57:52,040
 然后我们会把它放入ARGL寄存器
 We're going to put that in the argl register,
 
-1023
+1037
 00:57:53,000 --> 00:57:55,880
 然后我们会去求值第二个运算对象
 and then we'll go off to evaluate the second operand.
 
-1024
+1038
 00:57:57,460 --> 00:58:00,480
 就在我们准备求值第二个运算对象之时
 So, at the point where we go off to evaluate the second operand--
 
-1025
+1039
 00:58:00,520 --> 00:58:03,580
 我会省略计算(- N 1)之类的细节
 and I'll skip details like computing, and minus 1, and all of that--
 
-1026
+1040
 00:58:03,710 --> 00:58:05,880
 但是 当我们去求值第二个运算对象时
 but, when we go off to evaluate the second operand,
 
-1027
+1041
 00:58:06,620 --> 00:58:10,440
 会最终归约为对FACT-REC的另一个调用
 that will eventually reduce to another call to fact-recursive.
 
-1028
+1042
 00:58:12,000 --> 00:58:14,200
 现在 我们在栈上有
 And, what we've got on the stack here is
 
-1029
+1043
 00:58:16,520 --> 00:58:19,940
 来自于这个组合式的运算符
 the operator from that combination that we're going to use it in
 
-1030
+1044
 00:58:20,120 --> 00:58:21,070
 以及其它的参数
 and the other argument.
 
-1031
+1045
 00:58:23,400 --> 00:58:27,610
 现在 我们已经准备好
 OK? So, now, we're set up for another call
 
-1032
+1046
 00:58:28,490 --> 00:58:29,690
 去调用另外的FACT-REC了
 to recursive factorial.
 
-1033
+1047
 00:58:30,200 --> 00:58:31,430
 而让我们完成了这个调用以后
 And, when we're done with this one,
 
-1034
+1048
 00:58:31,560 --> 00:58:33,640
 我们就要跳转到ACCUMULATE-LAST-ARG
 we're going to go to accumulate the last arg.
 
-1035
+1049
 00:58:34,120 --> 00:58:35,200
 还记得这是做什么的么？
 and remember what that'll do?
 
-1036
+1050
 00:58:35,200 --> 00:58:35,930
 它会说
 That'll say oh,
 
-1037
+1051
 00:58:36,450 --> 00:58:39,280
 我们会把这个调用的结果
 whatever the result of this has to get combined with that,
 
-1038
+1052
 00:58:39,280 --> 00:58:40,400
 和这个5相乘
 and we're going to multiply them.
 
-1039
+1053
 00:58:41,690 --> 00:58:42,380
 但是请注意
 But, notice now,
 
-1040
+1054
 00:58:42,730 --> 00:58:44,810
 我们现在处于另一个递归阶乘中
 we're at another recursive factorial.
 
-1041
+1055
 00:58:45,720 --> 00:58:48,920
 我们又要再次调用EVAL-DISPATCH
 We're about to call eval-dispatch again,
 
-1042
+1056
 00:58:49,320 --> 00:58:50,600
 然而我们并没有真正地“归约”它
 except we haven't really reduced it
 
-1043
+1057
 00:58:50,640 --> 00:58:52,080
 因为现在栈上还有东西
 because there's stuff on the stack now.
 
-1044
+1058
 00:58:53,700 --> 00:58:55,390
 栈上的这些东西说：“当你返回时”
 The stuff on the stack says oh, when you get back,
 
-1045
+1059
 00:58:55,400 --> 00:58:57,520
 你最好把结果和放在这里的5相乘
 you'd better multiply it by the 5 you had hanging there.
 
-1046
+1060
 00:58:58,430 --> 00:59:05,770
 所以当我们进行另外的调用
 So, when we go off to make another call,
 
-1047
+1061
 00:59:07,120 --> 00:59:08,840
 求值(- N 1)
 we evaluate the n minus 1.
 
-1048
+1062
 00:59:09,300 --> 00:59:11,050
 这会返回给我们另一个环境
 That gives us another environment which
 
-1049
+1063
 00:59:11,250 --> 00:59:13,840
 其中N的新值为4
 in which the new n's going to be down to 4.
 
-1050
+1064
 00:59:14,600 --> 00:59:16,220
 然后又将调用EVAL-DISPATCH
 And we're about to call eval-dispatch again.
 
-1051
+1065
 00:59:19,200 --> 00:59:20,220
 我们又创建了另一个调用
 We get another call.
 
-1052
+1066
 00:59:21,350 --> 00:59:24,440
 这个4又会遇到相同的情况
 That 4 is going to end up in the same situation.
 
-1053
+1067
 00:59:26,040 --> 00:59:28,620
 我们最后会遇到对(FACT-REC N)的又一次调用
 We'll end up with another call to fact-recursive n.
 
-1054
+1068
 00:59:30,020 --> 00:59:32,680
 而这时候 栈上会有从最初的调用
 And sitting on the stack will be the stuff from the original one
 
-1055
+1069
 00:59:32,880 --> 00:59:34,510
 #TBD
 and, now, the subsidiary one we're doing.
 
-1056
+1070
 00:59:35,360 --> 00:59:36,910
 它们都在等待同一个东西
 And both of them are waiting for the same thing.
 
-1057
+1071
 00:59:36,910 --> 00:59:39,160
 它们都要跳转到ACCUMULATE-LAST-ARG
 They're going to go to accumulate a last argument.
 
-1058
+1072
 00:59:40,510 --> 00:59:42,940
 当然 当我们进行第四次调用时
 And then, of course, when we go to the fourth call,
 
-1059
+1073
 00:59:43,250 --> 00:59:44,380
 会发生同样的事
 the same thing happens.
 
-1060
+1074
 00:59:45,640 --> 00:59:47,070
 如此往复
 And this goes on, and on, and on.
 
-1061
+1075
 00:59:47,300 --> 00:59:48,600
 在这里 你在栈上看到的
 And what you see here on the stack,
 
-1062
+1076
 00:59:50,300 --> 00:59:52,220
 #TBD
 exactly what's sitting here on the stack,
 
-1063
+1077
 00:59:52,220 --> 00:59:54,590
 #TBD
 the thing that says times and 5.
 
-1064
+1078
 00:59:54,960 --> 00:59:56,400
 而你要把它用来
 And what you're going to do with that
 
-1065
+1079
 00:59:56,590 --> 00:59:58,540
 乘以最后一个实参
 accumulate that into a last argument.
 
-1066
+1080
 01:00:00,470 --> 01:00:01,480
 #TBD
 That's exactly this, right?
 
-1067
+1081
 01:00:02,010 --> 01:00:04,750
 这正是这些东西#TBD
 This is exactly where that stuff is hanging.
 
-1068
+1082
 01:00:05,650 --> 01:00:10,650
 实际上 你将要应用的运算符
 Effectively, the operator you're going to apply,
 
-1069
+1083
 01:00:11,720 --> 01:00:15,080
 以及其它的参数
 the other argument that it's got to be multiplied by when you get back
 
-1070
+1084
 01:00:15,080 --> 01:00:16,910
 #TBD
 when you get back and the parentheses,
 
-1071
+1085
 01:00:16,940 --> 01:00:18,960
 #TBD
 which says yeah, what you wanted to do was accumulate them.
 
-1072
+1086
 01:00:19,620 --> 01:00:21,880
 #TBD
 So, you see, the substitution model is not such a lie.
 
-1073
+1087
 01:00:22,560 --> 01:00:23,630
 从某种意义上来说 它实际上是
 That really is, in some sense,
 
-1074
+1088
 01:00:23,640 --> 01:00:25,310
 存在于栈上的那些东西
 what's sitting right on the stack.
 
-1075
+1089
 01:00:29,370 --> 01:00:30,400
 好吧 从某种意义上来说
 All right, so that,
 
-1076
+1090
 01:00:30,810 --> 01:00:32,480
 应该给你们解释了
 in some sense, should explain for you,
 
-1077
+1091
 01:00:33,260 --> 01:00:34,520
 或者 至少让你们相信
 or at least convince you,
 
-1078
+1092
 01:00:35,930 --> 01:00:38,720
 求值器会通过某些方式
 that somehow, this evaluator is managing
 
-1079
+1093
 01:00:40,060 --> 01:00:42,860
 迭代地去求值某些过程
 to take these procedures and execute some of them iteratively
 
-1080
+1094
 01:00:42,950 --> 01:00:44,250
 而递归地去求值另外的过程
 and some of them recursively,
 
-1081
+1095
 01:00:45,260 --> 01:00:47,450
 尽管从语法上看
 even though, as syntactically,
 
-1082
+1096
 01:00:47,450 --> 01:00:49,050
 它们都是递归过程
 they look like recursive procedures.
 
-1083
+1097
 01:00:49,400 --> 01:00:50,640
 它又是如何做到的呢？
 How's it managing to do that?
 
-1084
+1098
 01:00:50,660 --> 01:00:53,720
 其中的基本原因就是
 Well, the basic reason it's managing to do that
 
-1085
+1099
 01:00:53,800 --> 01:00:55,680
 求值器被设置为
 is the evaluator is set up
 
-1086
+1100
 01:00:56,040 --> 01:00:59,260
 只保存那些稍后会用到的东西
 to save only what it needs later.
 
-1087
+1101
 01:01:01,090 --> 01:01:04,250
 比如说 当你在把
 So, for example, at the point where you've reduced
 
-1088
+1102
 01:01:04,670 --> 01:01:07,390
 在一个环境中求值表达式归约为
 evaluating an expression and an environment
 
-1089
+1103
 01:01:07,870 --> 01:01:09,870
 将某个过程应用在参数上时
 to applying a procedure to some arguments,
 
-1090
+1104
 01:01:10,520 --> 01:01:12,490
 它就不再需要最初的环境了
 it doesn't need that original environment anymore
 
-1091
+1105
 01:01:13,370 --> 01:01:16,650
 因为所需要的环境信息都被打包到
 because any environment stuff will be packaged inside the procedures
 
-1092
+1106
 01:01:17,880 --> 01:01:19,360
 需要应用的那个过程中了
 where the application's going to happen.
 
-1093
+1107
 01:01:20,750 --> 01:01:21,610
 同样 类似地
 All right, similarly,
 
-1094
+1108
 01:01:21,630 --> 01:01:23,650
 当你求值一个参数表时
 when you're going along evaluating an argument list,
 
-1095
+1109
 01:01:23,650 --> 01:01:25,200
 当你完成对表的求值时
 when you've finished evaluating the list,
 
-1096
+1110
 01:01:25,910 --> 01:01:28,030
 当你求值完最后一个参数时
 when you're finished evaluating the last argument,
 
-1097
+1111
 01:01:28,200 --> 01:01:31,610
 你就不再需要这个参数表了 对吧？
 you don't need that argument list any more, right?
 
-1098
+1112
 01:01:31,630 --> 01:01:32,940
 你也就不再需要
 And you don't need the environment where
 
-1099
+1113
 01:01:33,040 --> 01:01:34,640
 求值这些参数所需的环境了
 those arguments would be evaluated.
 
-1100
+1114
 01:01:36,690 --> 01:01:40,890
 所以这个解释器如此“智能”的根本原因
 So the basic reason that this interpreter is being so smart
 
-1101
+1115
 01:01:40,890 --> 01:01:42,880
 根本不是因为它“智能” 只是因为它老实
 is that it's not being smart at all, it's being stupid.
 
-1102
+1116
 01:01:43,050 --> 01:01:45,740
 它的原则就是：“只保存那些需要的”
 It's just saying I'm only going to save what I really need.
 
-1103
+1117
 01:01:48,700 --> 01:01:51,000
 这里 让我来给你们展示
 Well, let me show you here.
 
-1104
+1118
 01:01:53,070 --> 01:01:57,200
 这是致使尾递归的根本原因
 Here's the actual thing that's making a tail recursive.
 
-1105
+1119
 01:01:58,310 --> 01:02:00,200
 要记住 (RESOTRE CONTINUE)这条代码
 Remember, it's the restore of continue.
 
-1106
+1120
 01:02:00,220 --> 01:02:06,940
 它指的是 当我去求值过程体的时候
 It's saying when I go off to evaluate the procedure body,
 
-1107
+1121
 01:02:08,960 --> 01:02:11,000
 我应该告诉EVAL返回到
 I should tell eval to come back to
 
-1108
+1122
 01:02:11,250 --> 01:02:12,540
 最初的求值
 the place where that original
 
-1109
+1123
 01:02:12,540 --> 01:02:14,250
 应该返回的地方
 evaluation was supposed to come back to.
 
-1110
+1124
 01:02:15,170 --> 01:02:15,950
 因此 从某种角度来说
 So, in some sense,
 
-1111
+1125
 01:02:16,170 --> 01:02:18,840
 你想知道是哪一行代码致使了尾递归
 you want to say what's the actual line that makes tail recursive
 
-1112
+1126
 01:02:18,890 --> 01:02:19,440
 那么就是这一行
 It's that one.
 
-1113
+1127
 01:02:19,920 --> 01:02:21,530
 出于某些奇怪的原因
 If I wanted to build a non-
 
-1114
+1128
 01:02:21,770 --> 01:02:24,800
 如果我想构建一个没有尾递归的求值器
 tail recursive evaluator, for some strange reason,
 
-1115
+1129
 01:02:25,690 --> 01:02:26,860
 我需要做的就是
 all I would need to do
 
-1116
+1130
 01:02:27,120 --> 01:02:29,290
 在这里先不要去恢复CONTINUE
 is, instead of restoring continue at this point,
 
-1117
+1131
 01:02:30,060 --> 01:02:31,660
 而是在这里建立一个标签
 I'd set up a label down here
 
-1118
+1132
 01:02:32,750 --> 01:02:36,250
 用来标识完成过程应用后的返回位置
 called, "Where to come back after you've finished applying the procedure."
 
-1119
+1133
 01:02:37,640 --> 01:02:39,710
 而我会把CONTINUE设置为这个标签
 Instead, I'd set continue to that.
 
-1120
+1134
 01:02:39,920 --> 01:02:41,210
 然后跳转到EVAL-DISPATCH
 I'd go to eval-dispatch,
 
-1121
+1135
 01:02:41,400 --> 01:02:43,210
 然后EVAL-DISPATCH会回到这里
 and then eval-dispatch would come back here.
 
-1122
+1136
 01:02:43,790 --> 01:02:44,300
 而这时
 At that point,
 
-1123
+1137
 01:02:44,320 --> 01:02:45,280
 我会恢复CONTINUE
 I would restore continue
 
-1124
+1138
 01:02:45,290 --> 01:02:46,520
 并回到最初的返回位置
 and go to the original one.
 
-1125
+1139
 01:02:47,920 --> 01:02:51,000
 因此 这里唯一的后果就是
 So here, the only consequence of that
 
-1126
+1140
 01:02:51,150 --> 01:02:52,680
 解释器不再是尾递归的了
 would be to make it non-tail recursive.
 
-1127
+1141
 01:02:52,840 --> 01:02:54,620
 它会给你完全相同的答案
 It would give you exactly the same answers,
 
-1128
+1142
 01:02:54,720 --> 01:02:57,020
 只是当你执行迭代式阶乘
 except if you did that iterative factorial
 
-1129
+1143
 01:02:57,050 --> 01:02:58,360
 或者其它迭代过程时
 and all those iterative procedures,
 
-1130
+1144
 01:02:58,600 --> 01:02:59,800
 它都会递归地去执行
 it would execute recursively.
 
-1131
+1145
 01:03:03,040 --> 01:03:05,400
 然而 我对你们撒了一个小谎
 Well, I lied to you a little bit, but just a little bit,
 
-1132
+1146
 01:03:05,760 --> 01:03:06,990
 因为我演示的
 because I showed you a slightly
 
-1133
+1147
 01:03:07,020 --> 01:03:08,330
 一个有些过于简化的解释器
 over-simplified evaluator
 
-1134
+1148
 01:03:08,720 --> 01:03:10,380
 这个解释器假设每个过程
 where it assumes that each procedure --
 
-1135
+1149
 01:03:11,360 --> 01:03:13,660
 只含有一条表达式
 each procedure body has only one expression.
 
-1136
+1150
 01:03:13,890 --> 01:03:14,540
 还记得吗 通常来说
 Remember, in general,
 
-1137
+1151
 01:03:14,560 --> 01:03:16,570
 过程的体是多条表达式组成的序列
 a procedure has a sequence of expressions in it.
 
-1138
+1152
 01:03:17,870 --> 01:03:20,490
 所以没有什么新概念
 So there's nothing really conceptually new.
 
-1139
+1153
 01:03:20,490 --> 01:03:22,280
 让我来展示一下实际的求值器
 Let me just show you the actual evaluator
 
-1140
+1154
 01:03:22,890 --> 01:03:24,730
 是怎么来处理表达式序列的
 that handles sequences of expressions.
 
-1141
+1155
 01:03:28,470 --> 01:03:29,740
 这是现在的COMPOUND-APPLY
 This is compound-apply now,
 
-1142
+1156
 01:03:29,740 --> 01:03:31,310
 和之前的唯一不同是
 and the only difference from the old one
 
-1143
+1157
 01:03:32,070 --> 01:03:34,330
 它不再直接地跳转到EVAL
 is that, instead of going off to eval directly,
 
-1144
+1158
 01:03:35,980 --> 01:03:38,030
 它先获取整个过程的体
 it takes the whole body of the procedure,
 
-1145
+1159
 01:03:38,030 --> 01:03:40,150
 在本例中 也就是表达式序列
 which, in this case, is a sequence of expressions,
 
-1146
+1160
 01:03:40,280 --> 01:03:41,710
 然后跳转到EVAL-SEQUENCE
 and goes off to eval-sequence.
 
-1147
+1161
 01:03:42,600 --> 01:03:45,320
 EVAL-SEQUENCE是一个小型的循环
 And eval-sequence is a little loop
 
-1148
+1162
 01:03:46,830 --> 01:03:49,980
 然后每次求值一条表达式
 that, basically, does these evaluations one at a time.
 
-1149
+1163
 01:03:52,630 --> 01:03:53,850
 就是这样来求值的--
 So it does an evaluation.
 
-1150
+1164
 01:03:53,900 --> 01:03:54,940
 当它求值完一条表达式后
 Says oh, when I come back,
 
-1151
+1165
 01:03:54,970 --> 01:03:56,860
 会跳转到这里 去求值下一条
 I'd better come back here to do the next one.
 
-1152
+1166
 01:03:58,440 --> 01:03:59,290
 当我完成了所有的求值后
 And, when I'm all done,
 
-1153
+1167
 01:03:59,290 --> 01:04:01,020
 我想要跳转到LAST-EXP
 when I want to get the last expression,
 
-1154
+1168
 01:04:01,310 --> 01:04:03,280
 我就只需要恢复CONTINUE寄存器
 I just restore my continue
 
-1155
+1169
 01:04:03,920 --> 01:04:05,280
 然后跳转到EVAL-DISPATCH
 and go off to eval-dispatch.
 
-1156
+1170
 01:04:06,410 --> 01:04:08,200
 同样的 如果你想要在这种求值器中
 And, again, if you wanted for some reason
 
-1157
+1171
 01:04:08,200 --> 01:04:10,350
 破坏尾递归机制
 to break tail recursion in this evaluator,
 
-1158
+1172
 01:04:10,640 --> 01:04:13,710
 你只需要在LAST-EXP中不做特殊处理即可
 all you need to do is not handle the last expression, especially.
 
-1159
+1173
 01:04:14,900 --> 01:04:17,340
 也就是说 当你处理完最后一条表达式
 Just say, after you've done the last expression,
 
-1160
+1174
 01:04:17,360 --> 01:04:18,650
 你跳转到另外一个地方
 come back to some other place
 
-1161
+1175
 01:04:19,150 --> 01:04:20,680
 在那个地方去恢复CONTINUE
 after which you restore continue.
 
-1162
+1176
 01:04:21,900 --> 01:04:23,260
 出于某些原因
 And, for some reason,
 
-1163
+1177
 01:04:23,260 --> 01:04:25,740
 很多Lisp求值器倾向于这么做
 a lot of LISP evaluators tended to work that way.
 
-1164
+1178
 01:04:26,550 --> 01:04:28,440
 这样做的后果就是
 And the only consequence of that is that
 
-1165
+1179
 01:04:28,860 --> 01:04:30,720
 迭代式过程也会使栈增长
 iterative procedures built up stack.
 
-1166
+1180
 01:04:31,880 --> 01:04:33,610
 还不清楚为什么会这样
 And it's not clear why that happened.
 
-1167
+1181
 01:04:35,920 --> 01:04:37,980
 好吧 我稍微来总结一下
 All right. Well, let me just sort of summarize,
 
-1168
+1182
 01:04:38,090 --> 01:04:39,600
 毕竟这是一个大程序
 since this is a lot of details
 
-1169
+1183
 01:04:39,980 --> 01:04:41,040
 又有很多细节
 in a big program.
 
-1170
+1184
 01:04:41,120 --> 01:04:42,250
 但关键点就是
 But the main point is that
 
-1171
+1185
 01:04:43,040 --> 01:04:46,080
 #TBD
 it's no different, conceptually, from translating any other program.
 
-1172
+1186
 01:04:47,060 --> 01:04:48,060
 核心思想就是
 And the main idea is that
 
-1173
+1187
 01:04:48,060 --> 01:04:50,280
 我们已经有了通用求值器程序
 we have this universal evaluator program,
 
-1174
+1188
 01:04:50,330 --> 01:04:51,710
 一个元循环求值器
 the meta-circular evaluator.
 
-1175
+1189
 01:04:51,870 --> 01:04:53,070
 如果我们把它翻译为了Lisp
 If we translate that into LISP,
 
-1176
+1190
 01:04:53,100 --> 01:04:53,950
 那么我们就有了Lisp的所有东西
 then we have all of LISP.
 
-1177
+1191
 01:04:54,330 --> 01:04:55,150
 我们就是这么来做的
 And that's all we did.
 
-1178
+1192
 01:04:57,980 --> 01:04:59,680
 第二点则是 魔法消失了
 The second point is that the magic's gone away.
 
-1179
+1193
 01:04:59,680 --> 01:05:01,970
 这整个系统不再神秘了 对吧？
 There should be no more magic in this whole system, right?
 
-1180
+1194
 01:05:01,970 --> 01:05:07,790
 原则上来说 这应该相当清楚了
 In principle, it should all be very clear
 
-1181
+1195
 01:05:07,820 --> 01:05:10,080
 只是还不太了解表结构的内存管理
 except, maybe, for how list structured memory works,
 
-1182
+1196
 01:05:10,800 --> 01:05:11,800
 我们后面会讲
 and we'll see that later.
 
-1183
+1197
 01:05:12,640 --> 01:05:14,200
 这也并不困难
 But that's not very hard.
 
-1184
+1198
 01:05:15,450 --> 01:05:16,350
 第三点就是
 The third point is that
 
-1185
+1199
 01:05:16,350 --> 01:05:17,520
 所有的这些尾递归
 all this tail recursion
 
-1186
+1200
 01:05:18,240 --> 01:05:21,960
 来自于严格的求值纪律
 came from the discipline of eval being very careful
 
-1187
+1201
 01:05:22,550 --> 01:05:24,510
 也就是只保存那些后面会用到的东西
 to save only what it needs next time.
 
-1188
+1202
 01:05:25,870 --> 01:05:27,720
 而不是一些比较随意的原则
 It's not some arbitrary thing
 
-1189
+1203
 01:05:27,760 --> 01:05:29,860
 比如 无论什么时候我们调用一个子过程
 where we're saying well, whenever we call a sub-routine,
 
-1190
+1204
 01:05:29,860 --> 01:05:32,160
 我们会保存所有的寄存器并且返回
 we'll save all the registers in the world and come back?
 
-1191
+1205
 01:05:33,940 --> 01:05:36,490
 有些时候为了提效 这样做很值得
 See, sometimes it pays to really worry about efficiency.
 
-1192
+1206
 01:05:37,150 --> 01:05:39,960
 当你研究求值机器的内部原理时
 And, when you're down in the guts of your evaluator machine,
 
-1193
+1207
 01:05:40,450 --> 01:05:42,560
 这类东西就很值得去研究
 it really pays to think about things like that
 
-1194
+1208
 01:05:42,560 --> 01:05:43,960
 因为它会带来显著的不同
 because it makes big consequences.
 
-1195
+1209
 01:05:45,230 --> 01:05:47,690
 我想现在基本上已经
 Well, I hope what this has done
 
-1196
+1210
 01:05:47,900 --> 01:05:52,300
 把这个求值器讲得很清楚了
 is really made the evaluator seem concrete.
 
-1197
+1211
 01:05:52,560 --> 01:05:53,900
 我希望你们能相信
 I hope you really believe
 
-1198
+1212
 01:05:54,320 --> 01:05:56,270
 真的有人能够
 that somebody could hold a LISP
 
-1199
+1213
 01:05:56,840 --> 01:05:58,560
 将一个Lisp求值器放在掌心之中
 LISP evaluator in the palm of their hand.
 
-1200
+1214
 01:05:59,070 --> 01:06:00,490
 为了让你们死心塌地
 Maybe to help you believe that, here's a
 
-1201
+1215
 01:06:00,800 --> 01:06:01,960
 我给你们看一个Lisp求值器
 here's a LISP evaluator
 
-1202
+1216
 01:06:02,540 --> 01:06:04,060
 它就在我的手掌中
 that I'm holding the palm of my hand.
 
-1203
+1217
 01:06:06,160 --> 01:06:10,560
 这块求值器芯片实际上
 And this is a chip which is actually
 
-1204
+1218
 01:06:10,890 --> 01:06:13,700
 比我给你们展示的求值器还要复杂
 quite a bit more complicated than the evaluator I showed you.
 
-1205
+1219
 01:06:17,810 --> 01:06:19,200
 这张图片效果更好
 Uh.. maybe, here's a better picture of it.
 
-1206
+1220
 01:06:22,070 --> 01:06:22,570
 在这上面
 What there is,
 
-1207
+1221
 01:06:22,600 --> 01:06:24,380
 你可以看到相同的宏观结构
 is you can see the same overall structure.
 
-1208
+1222
 01:06:24,730 --> 01:06:25,930
 这是寄存器阵列
 This is a register array.
 
-1209
+1223
 01:06:26,800 --> 01:06:27,710
 这些是数据通路
 These are the data paths.
 
-1210
+1224
 01:06:27,720 --> 01:06:29,070
 这里有是有穷状态控制器
 Here's a finite state controller.
 
-1211
+1225
 01:06:29,800 --> 01:06:31,040
 再强调一下 是有穷状态
 And again, finite state,
 
-1212
+1226
 01:06:31,960 --> 01:06:32,800
 全都在这里了
 that's all there is.
 
-1213
+1227
 01:06:32,810 --> 01:06:34,160
 在另外的地方还有外部存储
 And somewhere there's external memory
 
-1214
+1228
 01:06:34,160 --> 01:06:35,230
 用来存储数据
 that'll worry about things.
 
-1215
+1229
 01:06:35,750 --> 01:06:37,630
 而这块芯片非常复杂
 And this particular one is very complicated
 
-1216
+1230
 01:06:37,640 --> 01:06:39,160
 是因为它尝试更快地运行Lisp
 because it's trying to run LISP fast.
 
-1217
+1231
 01:06:39,660 --> 01:06:42,970
 它具有非常非常之快的并行运算
 And it has some very, very fast parallel operations in there
 
-1218
+1232
 01:06:43,070 --> 01:06:46,320
 比如说 如果你想要索引一个数组
 like, if you want to index into an array,
 
-1219
+1233
 01:06:46,700 --> 01:06:50,400
 同时又要检查该索引是否为一个整数
 simultaneously check that the index is an integer,
 
-1220
+1234
 01:06:50,430 --> 01:06:52,860
 以及该索引没有越界
 check that it doesn't exceed the array bands,
 
-1221
+1235
 01:06:53,040 --> 01:06:55,020
 同时还要进行内存存取
 and go off and do the memory access,
 
-1222
+1236
 01:06:55,050 --> 01:06:56,700
 它会同时进行这些事
 and do all those things simultaneously.
 
-1223
+1237
 01:06:57,120 --> 01:06:58,400
 如果这些操作都没有问题的话
 And then, later, if they're all OK,
 
-1224
+1238
 01:06:58,440 --> 01:06:59,960
 最终就会在这里得到结果
 actually get the value there.
 
-1225
+1239
 01:07:00,420 --> 01:07:02,460
 因此 数据通路中大量的
 So there are a lot of complicated operations
 
-1226
+1240
 01:07:02,480 --> 01:07:04,650
 复杂运算使得Lisp能够并行运行
 in these data paths for making LISP run in parallel.
 
-1227
+1241
 01:07:05,260 --> 01:07:10,360
 这完全是一种求值Lisp的无冒险的哲学#TBD
 It's a completely non-risk philosophy of evaluating LISP.
 
-1228
+1242
 01:07:10,640 --> 01:07:13,200
 并且 这个的微指令也相当复杂
 And then, this microcode is pretty complicated.
 
-1229
+1243
 01:07:13,450 --> 01:07:17,560
 让我先看一看
 Let's see, there's what?
 
-1230
+1244
 01:07:17,600 --> 01:07:21,100
 这其中有大概389条
 There's about 389 instructions of
 
-1231
+1245
 01:07:21,680 --> 01:07:23,850
 220比特的微指令
 of 220-bit microcode sitting here
 
-1232
+1246
 01:07:24,070 --> 01:07:27,940
 只因为这些数据通路非常复杂
 because these are very complicated data paths.
 
-1233
+1247
 01:07:27,940 --> 01:07:32,250
 整个芯片大概有89,000支晶体管
 And the whole thing has about 89,000 transistors, OK?
 
-1234
+1248
 01:07:33,560 --> 01:07:36,860
 好吧 我希望通过这节课解答了大部分疑惑
 OK. Well, I hope that that takes away a lot of the mystery.
 
-1235
+1249
 01:07:37,970 --> 01:07:39,240
 也许你们想看一看这块芯片
 Maybe somebody wants to look at this.
 
-1236
+1250
 01:07:46,140 --> 01:07:46,890
 好吧 先讲到这里
 OK. Let's stop.
 
-1237
+1251
 01:07:56,460 --> 01:07:56,750
 有问题吗？
 Questions?
 
-1238
+1252
 01:07:59,000 --> 01:08:00,420
 学生：您所讲的 听起来像是
 AUDIENCE: OK, now, it sounds like what you're saying is that,
 
-1239
+1253
 01:08:00,420 --> 01:08:03,480
 如果把(RESTORE CONTINUE)放在合适的地方
 with the restore continue put in the proper place,
 
-1240
+1254
 01:08:03,580 --> 01:08:09,420
 这样之前递归求值的过程
 that procedures that would invoke a recursive process
 
-1241
+1255
 01:08:09,420 --> 01:08:11,950
 现在就会变成迭代求值的
 now invoke an iterative process
 
-1242
+1256
 01:08:12,670 --> 01:08:15,360
 #TBD
 just by the way that the eval signature is?
 
-1243
+1257
 01:08:15,600 --> 01:08:17,540
 教授：我想我应该这么来说
 PROFESSOR: I think the way I'd prefer to put it is that,
 
-1244
+1258
 01:08:17,540 --> 01:08:19,820
 如果把(RESTORE CONTINUE)放在了错误的位置
 with restore continue put in the wrong place,
 
-1245
+1259
 01:08:20,550 --> 01:08:25,480
 你就会让那些语法上看起来像递归的过程
 you can cause any syntactically-looking recursive procedure,
 
-1246
+1260
 01:08:25,520 --> 01:08:27,280
 在运行的时候不断地扩张栈
 in fact, to build up stack as it runs.
 
-1247
+1261
 01:08:28,640 --> 01:08:30,520
 但这样是没有原因的
 But there's no reason for that,
 
-1248
+1262
 01:08:33,150 --> 01:08:35,120
 你可以自己去试一试
 so you might want to play around with it.
 
-1249
+1263
 01:08:35,150 --> 01:08:38,090
 你可以在COMPOND-APPLY返回后
 You can just switch around two or three instructions
 
-1250
+1264
 01:08:38,180 --> 01:08:40,780
 交换两、三条语句的顺序
 in the way compound-apply comes back,
 
-1251
+1265
 01:08:41,310 --> 01:08:43,260
 那么你得到的就不再是尾递归了
 and you'll get something which isn't tail recursive.
 
-1252
+1266
 01:08:45,060 --> 01:08:46,140
 我只是想强调
 But the thing I wanted to emphasize
 
-1253
+1267
 01:08:46,160 --> 01:08:47,400
 这其中没有什么魔法
 is there's no magic. there's no
 
-1254
+1268
 01:08:47,670 --> 01:08:48,570
 这并不是
 It's not as if
 
-1255
+1269
 01:08:49,310 --> 01:08:52,170
 有什么智能的预处理程序
 there's some very clever pre-processing program
 
-1256
+1270
 01:08:52,650 --> 01:08:55,450
 它会分析FACT-ITER这个程序
 that's looking at this procedure, factorial iter,
 
-1257
+1271
 01:08:55,470 --> 01:08:56,730
 然后说
 and say oh, gee, um
 
-1258
+1272
 01:08:57,420 --> 01:08:58,860
 我注意到
 I really notice that
 
-1259
+1273
 01:08:58,880 --> 01:09:01,130
 完成这个调用 不需要我进行压栈
 I don't have to push stack in order to do this.
 
-1260
+1274
 01:09:01,130 --> 01:09:02,880
 但是有些人是这么认为的
 Some people think that that's what's going on.
 
-1261
+1275
 01:09:03,760 --> 01:09:05,380
 而是一种比这个还要蠢的机制
 It's something much, much more dumb than that,
 
-1262
+1276
 01:09:05,380 --> 01:09:07,500
 就是在合适的地方插入RESTORE指令
 it's this one place you're putting the restore instruction.
 
-1263
+1277
 01:09:08,560 --> 01:09:09,790
 就可以自动地实现
 It's just automatic.
 
-1264
+1278
 01:09:14,720 --> 01:09:17,550
 学生：但这不会影响到时间复杂度 对吧？
 AUDIENCE: But that's not affecting the time complexity is it?
 
-1265
+1279
 01:09:17,580 --> 01:09:17,870
 教授：不会
 PROFESSOR: No.
 
-1266
+1280
 01:09:18,600 --> 01:09:21,770
 学生：它不会迭代地处理
 AUDIENCE: It's just that it's handling it recursively
 
-1267
+1281
 01:09:21,800 --> 01:09:23,020
 而是会递归地处理
 instead of iteratively.
 
-1268
+1282
 01:09:23,020 --> 01:09:27,340
 但就从完成这两个运算的时间来说
 But, in terms of the order of time it takes to finish the operation,
 
-1269
+1283
 01:09:27,370 --> 01:09:29,220
 它们都是相同的 对吧？
 it's the same one way or the other, right?
 
-1270
+1284
 01:09:29,470 --> 01:09:29,760
 教授 ：是的
 PROFESSOR: Yes.
 
-1271
+1285
 01:09:29,790 --> 01:09:32,680
 尾递归不会改变任何东西的时间复杂度
 Tail recursion is not going to change the time complexity of anything
 
-1272
+1286
 01:09:32,720 --> 01:09:33,290
 因为 从某种意义上来说
 because, in some sense,
 
-1273
+1287
 01:09:33,340 --> 01:09:35,150
 两者都是相同的算法
 it's the same algorithm that's going on.
 
-1274
+1288
 01:09:36,020 --> 01:09:39,370
 它只是让这个过程迭代地运行
 What it's doing is really making this thing run as an iteration.
 
-1275
+1289
 01:09:41,000 --> 01:09:42,640
 这样 当参数很大时
 Right? Not going to run out of memory
 
-1276
+1290
 01:09:42,680 --> 01:09:44,220
 它不会耗尽所有的内存
 you know counting up to a giant number
 
-1277
+1291
 01:09:44,750 --> 01:09:46,400
 因为这其中没有压栈
 simply because the stack would get pushed.
 
-1278
+1292
 01:09:48,350 --> 01:09:50,240
 事实上 你们需要相信
 See, the thing you really have to believe is that,
 
-1279
+1293
 01:09:50,560 --> 01:09:51,130
 当我们编写--
 when we write--
 
-1280
+1294
 01:09:51,640 --> 01:09:53,780
 我们一直把这些代码称作“迭代”
 see, we've been writing all these things called iterations,
 
-1281
+1295
 01:09:53,930 --> 01:09:57,990
 把(DEFINE (LOOP) (LOOP))称作无穷循环
 infinite loops, define loop to be called loop.
 
-1282
+1296
 01:10:00,320 --> 01:10:03,360
 这就是一个迭代
 That's is as much an iteration
 
-1283
+1297
 01:10:03,650 --> 01:10:05,660
 跟我们用DO语句来写无穷循环是一样的
 you know as if we wrote do forever loop.
 
-1284
+1298
 01:10:07,630 --> 01:10:09,280
 它们只是语法上不同而已
 It's just syntactic sugar as the difference.
 
-1285
+1299
 01:10:09,280 --> 01:10:11,320
 它们实际上都是迭代
 These things are real, honest to god, iterations?
 
-1286
+1300
 01:10:14,730 --> 01:10:16,080
 它们并不改变时间复杂度
 They don't change the time complexity,
 
-1287
+1301
 01:10:16,110 --> 01:10:18,530
 但是它会把它们变成真正的迭代
 but they turn them into real iterations.
 
-1288
+1302
 01:10:21,680 --> 01:10:23,800
 好吧 下课
 All right, thank you.
