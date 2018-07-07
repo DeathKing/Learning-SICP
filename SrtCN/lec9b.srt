@@ -6639,312 +6639,329 @@ So there are a lot of complicated operations
 in these data paths for making LISP run in parallel.
 
 1328
-01:07:05,260 --> 01:07:10,360
-这完全是一种求值Lisp的无冒险的哲学#TBD
-It's a completely non-risk philosophy of evaluating LISP.
+01:07:05,260 --> 01:07:08,416
+这完全是求值Lisp的
+It's a completely non-risk
 
 1329
+01:07:08,768 --> 01:07:10,360
+一种无冒险的哲学
+philosophy of evaluating LISP.
+
+1330
 01:07:10,640 --> 01:07:13,200
 并且 这个的微指令也相当复杂
 And then, this microcode is pretty complicated.
 
-1330
+1331
 01:07:13,450 --> 01:07:17,560
 让我先看一看
 Let's see, there's what?
 
-1331
+1332
 01:07:17,600 --> 01:07:21,100
 这其中有大概389条
 There's about 389 instructions of
 
-1332
+1333
 01:07:21,680 --> 01:07:23,850
 220比特的微指令
 of 220-bit microcode sitting here
 
-1333
+1334
 01:07:24,070 --> 01:07:27,940
 只因为这些数据通路非常复杂
 because these are very complicated data paths.
 
-1334
+1335
 01:07:27,940 --> 01:07:32,250
 整个芯片大概有89,000支晶体管
 And the whole thing has about 89,000 transistors, OK?
 
-1335
+1336
 01:07:33,560 --> 01:07:36,860
 好吧 我希望通过这节课解答了大部分疑惑
 OK. Well, I hope that that takes away a lot of the mystery.
 
-1336
+1337
 01:07:37,970 --> 01:07:39,240
 也许你们想看一看这块芯片
 Maybe somebody wants to look at this.
 
-1337
+1338
 01:07:46,140 --> 01:07:46,890
 好吧 先讲到这里
 OK. Let's stop.
 
-1338
+1339
 01:07:56,460 --> 01:07:56,750
 有问题吗？
 Questions?
 
-1339
+1340
 01:07:59,000 --> 01:08:00,420
 学生：您所讲的 听起来像是
 AUDIENCE: OK, now, it sounds like what you're saying is that,
 
-1340
+1341
 01:08:00,420 --> 01:08:03,480
 如果把(RESTORE CONTINUE)放在合适的地方
 with the restore continue put in the proper place,
 
-1341
+1342
 01:08:03,580 --> 01:08:09,420
 这样之前递归求值的过程
 that procedures that would invoke a recursive process
 
-1342
+1343
 01:08:09,420 --> 01:08:11,950
 现在就会变成迭代求值的
 now invoke an iterative process
 
-1343
-01:08:12,670 --> 01:08:15,360
-#TBD
-just by the way that the eval signature is?
-
 1344
+01:08:12,670 --> 01:08:15,360
+（意义不明）
+just by the way that the eval-sequence source?
+
+1345
 01:08:15,600 --> 01:08:17,540
 教授：我想我应该这么来说
 PROFESSOR: I think the way I'd prefer to put it is that,
 
-1345
+1346
 01:08:17,540 --> 01:08:19,820
 如果把(RESTORE CONTINUE)放在了错误的位置
 with restore continue put in the wrong place,
 
-1346
+1347
 01:08:20,550 --> 01:08:25,480
 你就会让那些语法上看起来像递归的过程
 you can cause any syntactically-looking recursive procedure,
 
-1347
+1348
 01:08:25,520 --> 01:08:27,280
 在运行的时候不断地扩张栈
 in fact, to build up stack as it runs.
 
-1348
+1349
 01:08:28,640 --> 01:08:30,520
 但这样是没有原因的
 But there's no reason for that,
 
-1349
+1350
 01:08:33,150 --> 01:08:35,120
 你可以自己去试一试
 so you might want to play around with it.
 
-1350
+1351
 01:08:35,150 --> 01:08:38,090
 你可以在COMPOND-APPLY返回后
 You can just switch around two or three instructions
 
-1351
+1352
 01:08:38,180 --> 01:08:40,780
 交换两、三条语句的顺序
 in the way compound-apply comes back,
 
-1352
+1353
 01:08:41,310 --> 01:08:43,260
 那么你得到的就不再是尾递归了
 and you'll get something which isn't tail recursive.
 
-1353
+1354
 01:08:45,060 --> 01:08:46,140
 我只是想强调
 But the thing I wanted to emphasize
 
-1354
+1355
 01:08:46,160 --> 01:08:47,400
 这其中没有什么魔法
 is there's no magic. there's no
 
-1355
+1356
 01:08:47,670 --> 01:08:48,570
 这并不是
 It's not as if
 
-1356
+1357
 01:08:49,310 --> 01:08:52,170
 有什么智能的预处理程序
 there's some very clever pre-processing program
 
-1357
+1358
 01:08:52,650 --> 01:08:55,450
 它会分析FACT-ITER这个程序
 that's looking at this procedure, factorial iter,
 
-1358
+1359
 01:08:55,470 --> 01:08:56,730
 然后说
 and say oh, gee, um
 
-1359
+1360
 01:08:57,420 --> 01:08:58,860
 我注意到
 I really notice that
 
-1360
+1361
 01:08:58,880 --> 01:09:01,130
 完成这个调用 不需要我进行压栈
 I don't have to push stack in order to do this.
 
-1361
+1362
 01:09:01,130 --> 01:09:02,880
 但是有些人是这么认为的
 Some people think that that's what's going on.
 
-1362
+1363
 01:09:03,760 --> 01:09:05,380
 而是一种比这个还要蠢的机制
 It's something much, much more dumb than that,
 
-1363
+1364
 01:09:05,380 --> 01:09:07,500
 就是在合适的地方插入RESTORE指令
 it's this one place you're putting the restore instruction.
 
-1364
+1365
 01:09:08,560 --> 01:09:09,790
 就可以自动地实现
 It's just automatic.
 
-1365
+1366
 01:09:14,720 --> 01:09:17,550
 学生：但这不会影响到时间复杂度 对吧？
 AUDIENCE: But that's not affecting the time complexity is it?
 
-1366
+1367
 01:09:17,580 --> 01:09:17,870
 教授：不会
 PROFESSOR: No.
 
-1367
+1368
 01:09:18,600 --> 01:09:21,770
 学生：它不会迭代地处理
 AUDIENCE: It's just that it's handling it recursively
 
-1368
+1369
 01:09:21,800 --> 01:09:23,020
 而是会递归地处理
 instead of iteratively.
 
-1369
+1370
 01:09:23,020 --> 01:09:27,340
 但就从完成这两个运算的时间来说
 But, in terms of the order of time it takes to finish the operation,
 
-1370
+1371
 01:09:27,370 --> 01:09:29,220
 它们都是相同的 对吧？
 it's the same one way or the other, right?
 
-1371
+1372
 01:09:29,470 --> 01:09:29,760
 教授 ：是的
 PROFESSOR: Yes.
 
-1372
+1373
 01:09:29,790 --> 01:09:32,680
 尾递归不会改变任何东西的时间复杂度
 Tail recursion is not going to change the time complexity of anything
 
-1373
+1374
 01:09:32,720 --> 01:09:33,290
 因为 从某种意义上来说
 because, in some sense,
 
-1374
+1375
 01:09:33,340 --> 01:09:35,150
 两者都是相同的算法
 it's the same algorithm that's going on.
 
-1375
+1376
 01:09:36,020 --> 01:09:39,370
 它只是让这个过程迭代地运行
 What it's doing is really making this thing run as an iteration.
 
-1376
+1377
 01:09:41,000 --> 01:09:42,640
 这样 当参数很大时
 Right? Not going to run out of memory
 
-1377
+1378
 01:09:42,680 --> 01:09:44,220
 它不会耗尽所有的内存
 you know counting up to a giant number
 
-1378
+1379
 01:09:44,750 --> 01:09:46,400
 因为这其中没有压栈
 simply because the stack would get pushed.
 
-1379
+1380
 01:09:48,350 --> 01:09:50,240
 事实上 你们需要相信
 See, the thing you really have to believe is that,
 
-1380
+1381
 01:09:50,560 --> 01:09:51,130
 当我们编写--
 when we write--
 
-1381
+1382
 01:09:51,640 --> 01:09:53,780
 我们一直把这些代码称作“迭代”
 see, we've been writing all these things called iterations,
 
-1382
+1383
 01:09:53,930 --> 01:09:57,990
 把(DEFINE (LOOP) (LOOP))称作无穷循环
 infinite loops, define loop to be called loop.
 
-1383
+1384
 01:10:00,320 --> 01:10:03,360
 这就是一个迭代
 That's is as much an iteration
 
-1384
+1385
 01:10:03,650 --> 01:10:05,660
 跟我们用DO语句来写无穷循环是一样的
 you know as if we wrote do forever loop.
 
-1385
+1386
 01:10:07,630 --> 01:10:09,280
 它们只是语法上不同而已
 It's just syntactic sugar as the difference.
 
-1386
+1387
 01:10:09,280 --> 01:10:11,320
 它们实际上都是迭代
 These things are real, honest to god, iterations?
 
-1387
+1388
 01:10:14,730 --> 01:10:16,080
 它们并不改变时间复杂度
 They don't change the time complexity,
 
-1388
+1389
 01:10:16,110 --> 01:10:18,530
 但是它会把它们变成真正的迭代
 but they turn them into real iterations.
 
-1389
+1390
 01:10:21,680 --> 01:10:23,800
 好吧 下课
 All right, thank you.
+
+1391
+01:10:23,800 --> 01:10:25,800
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+
+1392
+01:10:25,800 --> 01:10:27,800
+本项目主页
+https://github.com/DeathKing/Learning-SICP
+
 
