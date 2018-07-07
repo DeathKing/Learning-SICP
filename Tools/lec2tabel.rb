@@ -13,8 +13,8 @@ AUTHORS = {
   "DreamAndDead"   => "https://github.com/DreamAndDead",
 }
 
-# [优酷] [YouTube] [bilibili] [MKV-外挂字幕] [MP4-内嵌字幕]
-FORMAT = "| %-s | %-s | %-s %-s %-s %-s %-s | %-s |"
+# [优酷] [YouTube] [bilibili] [MP4-内嵌字幕]
+FORMAT = "| %-s | %-s | %-s %-s %-s %-s | %-s |"
 
 ICON = {
   "youtube" => "https://cloud.githubusercontent.com/assets/895809/7487454/7bcde098-f3ea-11e4-85be-d267459c4974.png",
@@ -49,7 +49,6 @@ def itemize(row)
     render_as_mdlink(" [优酷] ",      row["youku"]),
     render_as_mdlink(" [YouTube] ",  row["youtube"]),
     render_as_mdlink(" [bilibili] ", row["bilibili"]),
-    render_as_mdlink(" [MKV] ",      row["baidu"]),
     render_as_mdlink(" [MP4] ",      row["baidu-mp4"]),
     render_authors(row["translator"])
   ]
