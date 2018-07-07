@@ -6354,591 +6354,596 @@ in a big program.
 But the main point is that
 
 1271
-01:04:43,040 --> 01:04:46,080
-#TBD
-it's no different, conceptually, from translating any other program.
+01:04:43,040 --> 01:04:43,872
+从概念上来说
+it's no different,
 
 1272
+01:04:44,048 --> 01:04:46,080
+这跟翻译其它程序没什么不同
+conceptually, from translating any other program.
+
+1273
 01:04:47,060 --> 01:04:48,060
 核心思想就是
 And the main idea is that
 
-1273
+1274
 01:04:48,060 --> 01:04:50,280
 我们已经有了通用求值器程序
 we have this universal evaluator program,
 
-1274
+1275
 01:04:50,330 --> 01:04:51,710
 一个元循环求值器
 the meta-circular evaluator.
 
-1275
+1276
 01:04:51,870 --> 01:04:53,070
 如果我们把它翻译为了Lisp
 If we translate that into LISP,
 
-1276
+1277
 01:04:53,100 --> 01:04:53,950
 那么我们就有了Lisp的所有东西
 then we have all of LISP.
 
-1277
+1278
 01:04:54,330 --> 01:04:55,150
 我们就是这么来做的
 And that's all we did.
 
-1278
+1279
 01:04:57,980 --> 01:04:59,680
 第二点则是 魔法消失了
 The second point is that the magic's gone away.
 
-1279
+1280
 01:04:59,680 --> 01:05:01,970
 这整个系统不再神秘了 对吧？
 There should be no more magic in this whole system, right?
 
-1280
+1281
 01:05:01,970 --> 01:05:07,790
 原则上来说 这应该相当清楚了
 In principle, it should all be very clear
 
-1281
+1282
 01:05:07,820 --> 01:05:10,080
 只是还不太了解表结构的内存管理
 except, maybe, for how list structured memory works,
 
-1282
+1283
 01:05:10,800 --> 01:05:11,800
 我们后面会讲
 and we'll see that later.
 
-1283
+1284
 01:05:12,640 --> 01:05:14,200
 这也并不困难
 But that's not very hard.
 
-1284
+1285
 01:05:15,450 --> 01:05:16,350
 第三点就是
 The third point is that
 
-1285
+1286
 01:05:16,350 --> 01:05:17,520
 所有的这些尾递归
 all this tail recursion
 
-1286
+1287
 01:05:18,240 --> 01:05:21,960
 来自于严格的求值纪律
 came from the discipline of eval being very careful
 
-1287
+1288
 01:05:22,550 --> 01:05:24,510
 也就是只保存那些后面会用到的东西
 to save only what it needs next time.
 
-1288
+1289
 01:05:25,870 --> 01:05:27,720
 而不是一些比较随意的原则
 It's not some arbitrary thing
 
-1289
+1290
 01:05:27,760 --> 01:05:29,860
 比如 无论什么时候我们调用一个子过程
 where we're saying well, whenever we call a sub-routine,
 
-1290
+1291
 01:05:29,860 --> 01:05:32,160
 我们会保存所有的寄存器并且返回
 we'll save all the registers in the world and come back?
 
-1291
+1292
 01:05:33,940 --> 01:05:36,490
 有些时候为了提效 这样做很值得
 See, sometimes it pays to really worry about efficiency.
 
-1292
+1293
 01:05:37,150 --> 01:05:39,960
 当你研究求值机器的内部原理时
 And, when you're down in the guts of your evaluator machine,
 
-1293
+1294
 01:05:40,450 --> 01:05:42,560
 这类东西就很值得去研究
 it really pays to think about things like that
 
-1294
+1295
 01:05:42,560 --> 01:05:43,960
 因为它会带来显著的不同
 because it makes big consequences.
 
-1295
+1296
 01:05:45,230 --> 01:05:47,690
 我想现在基本上已经
 Well, I hope what this has done
 
-1296
+1297
 01:05:47,900 --> 01:05:52,300
 把这个求值器讲得很清楚了
 is really made the evaluator seem concrete.
 
-1297
+1298
 01:05:52,560 --> 01:05:53,900
 我希望你们能相信
 I hope you really believe
 
-1298
+1299
 01:05:54,320 --> 01:05:56,270
 真的有人能够
 that somebody could hold a LISP
 
-1299
+1300
 01:05:56,840 --> 01:05:58,560
 将一个Lisp求值器放在掌心之中
 LISP evaluator in the palm of their hand.
 
-1300
+1301
 01:05:59,070 --> 01:06:00,490
 为了让你们死心塌地
 Maybe to help you believe that, here's a
 
-1301
+1302
 01:06:00,800 --> 01:06:01,960
 我给你们看一个Lisp求值器
 here's a LISP evaluator
 
-1302
+1303
 01:06:02,540 --> 01:06:04,060
 它就在我的手掌中
 that I'm holding the palm of my hand.
 
-1303
+1304
 01:06:06,160 --> 01:06:10,560
 这块求值器芯片实际上
 And this is a chip which is actually
 
-1304
+1305
 01:06:10,890 --> 01:06:13,700
 比我给你们展示的求值器还要复杂
 quite a bit more complicated than the evaluator I showed you.
 
-1305
-01:06:17,810 --> 01:06:19,200
+1306
+01:06:16,864 --> 01:06:19,200
 这张图片效果更好
 Uh.. maybe, here's a better picture of it.
 
-1306
+1307
 01:06:22,070 --> 01:06:22,570
 在这上面
 What there is,
 
-1307
+1308
 01:06:22,600 --> 01:06:24,380
 你可以看到相同的宏观结构
 is you can see the same overall structure.
 
-1308
+1309
 01:06:24,730 --> 01:06:25,930
 这是寄存器阵列
 This is a register array.
 
-1309
+1310
 01:06:26,800 --> 01:06:27,710
 这些是数据通路
 These are the data paths.
 
-1310
+1311
 01:06:27,720 --> 01:06:29,070
 这里有是有穷状态控制器
 Here's a finite state controller.
 
-1311
+1312
 01:06:29,800 --> 01:06:31,040
 再强调一下 是有穷状态
 And again, finite state,
 
-1312
+1313
 01:06:31,960 --> 01:06:32,800
 全都在这里了
 that's all there is.
 
-1313
+1314
 01:06:32,810 --> 01:06:34,160
 在另外的地方还有外部存储
 And somewhere there's external memory
 
-1314
+1315
 01:06:34,160 --> 01:06:35,230
 用来存储数据
 that'll worry about things.
 
-1315
+1316
 01:06:35,750 --> 01:06:37,630
 而这块芯片非常复杂
 And this particular one is very complicated
 
-1316
+1317
 01:06:37,640 --> 01:06:39,160
 是因为它尝试更快地运行Lisp
 because it's trying to run LISP fast.
 
-1317
+1318
 01:06:39,660 --> 01:06:42,970
 它具有非常非常之快的并行运算
 And it has some very, very fast parallel operations in there
 
-1318
+1319
 01:06:43,070 --> 01:06:46,320
 比如说 如果你想要索引一个数组
 like, if you want to index into an array,
 
-1319
+1320
 01:06:46,700 --> 01:06:50,400
 同时又要检查该索引是否为一个整数
 simultaneously check that the index is an integer,
 
-1320
+1321
 01:06:50,430 --> 01:06:52,860
 以及该索引没有越界
 check that it doesn't exceed the array bands,
 
-1321
+1322
 01:06:53,040 --> 01:06:55,020
 同时还要进行内存存取
 and go off and do the memory access,
 
-1322
+1323
 01:06:55,050 --> 01:06:56,700
 它会同时进行这些事
 and do all those things simultaneously.
 
-1323
+1324
 01:06:57,120 --> 01:06:58,400
 如果这些操作都没有问题的话
 And then, later, if they're all OK,
 
-1324
+1325
 01:06:58,440 --> 01:06:59,960
 最终就会在这里得到结果
 actually get the value there.
 
-1325
+1326
 01:07:00,420 --> 01:07:02,460
 因此 数据通路中大量的
 So there are a lot of complicated operations
 
-1326
+1327
 01:07:02,480 --> 01:07:04,650
 复杂运算使得Lisp能够并行运行
 in these data paths for making LISP run in parallel.
 
-1327
+1328
 01:07:05,260 --> 01:07:10,360
 这完全是一种求值Lisp的无冒险的哲学#TBD
 It's a completely non-risk philosophy of evaluating LISP.
 
-1328
+1329
 01:07:10,640 --> 01:07:13,200
 并且 这个的微指令也相当复杂
 And then, this microcode is pretty complicated.
 
-1329
+1330
 01:07:13,450 --> 01:07:17,560
 让我先看一看
 Let's see, there's what?
 
-1330
+1331
 01:07:17,600 --> 01:07:21,100
 这其中有大概389条
 There's about 389 instructions of
 
-1331
+1332
 01:07:21,680 --> 01:07:23,850
 220比特的微指令
 of 220-bit microcode sitting here
 
-1332
+1333
 01:07:24,070 --> 01:07:27,940
 只因为这些数据通路非常复杂
 because these are very complicated data paths.
 
-1333
+1334
 01:07:27,940 --> 01:07:32,250
 整个芯片大概有89,000支晶体管
 And the whole thing has about 89,000 transistors, OK?
 
-1334
+1335
 01:07:33,560 --> 01:07:36,860
 好吧 我希望通过这节课解答了大部分疑惑
 OK. Well, I hope that that takes away a lot of the mystery.
 
-1335
+1336
 01:07:37,970 --> 01:07:39,240
 也许你们想看一看这块芯片
 Maybe somebody wants to look at this.
 
-1336
+1337
 01:07:46,140 --> 01:07:46,890
 好吧 先讲到这里
 OK. Let's stop.
 
-1337
+1338
 01:07:56,460 --> 01:07:56,750
 有问题吗？
 Questions?
 
-1338
+1339
 01:07:59,000 --> 01:08:00,420
 学生：您所讲的 听起来像是
 AUDIENCE: OK, now, it sounds like what you're saying is that,
 
-1339
+1340
 01:08:00,420 --> 01:08:03,480
 如果把(RESTORE CONTINUE)放在合适的地方
 with the restore continue put in the proper place,
 
-1340
+1341
 01:08:03,580 --> 01:08:09,420
 这样之前递归求值的过程
 that procedures that would invoke a recursive process
 
-1341
+1342
 01:08:09,420 --> 01:08:11,950
 现在就会变成迭代求值的
 now invoke an iterative process
 
-1342
+1343
 01:08:12,670 --> 01:08:15,360
 #TBD
 just by the way that the eval signature is?
 
-1343
+1344
 01:08:15,600 --> 01:08:17,540
 教授：我想我应该这么来说
 PROFESSOR: I think the way I'd prefer to put it is that,
 
-1344
+1345
 01:08:17,540 --> 01:08:19,820
 如果把(RESTORE CONTINUE)放在了错误的位置
 with restore continue put in the wrong place,
 
-1345
+1346
 01:08:20,550 --> 01:08:25,480
 你就会让那些语法上看起来像递归的过程
 you can cause any syntactically-looking recursive procedure,
 
-1346
+1347
 01:08:25,520 --> 01:08:27,280
 在运行的时候不断地扩张栈
 in fact, to build up stack as it runs.
 
-1347
+1348
 01:08:28,640 --> 01:08:30,520
 但这样是没有原因的
 But there's no reason for that,
 
-1348
+1349
 01:08:33,150 --> 01:08:35,120
 你可以自己去试一试
 so you might want to play around with it.
 
-1349
+1350
 01:08:35,150 --> 01:08:38,090
 你可以在COMPOND-APPLY返回后
 You can just switch around two or three instructions
 
-1350
+1351
 01:08:38,180 --> 01:08:40,780
 交换两、三条语句的顺序
 in the way compound-apply comes back,
 
-1351
+1352
 01:08:41,310 --> 01:08:43,260
 那么你得到的就不再是尾递归了
 and you'll get something which isn't tail recursive.
 
-1352
+1353
 01:08:45,060 --> 01:08:46,140
 我只是想强调
 But the thing I wanted to emphasize
 
-1353
+1354
 01:08:46,160 --> 01:08:47,400
 这其中没有什么魔法
 is there's no magic. there's no
 
-1354
+1355
 01:08:47,670 --> 01:08:48,570
 这并不是
 It's not as if
 
-1355
+1356
 01:08:49,310 --> 01:08:52,170
 有什么智能的预处理程序
 there's some very clever pre-processing program
 
-1356
+1357
 01:08:52,650 --> 01:08:55,450
 它会分析FACT-ITER这个程序
 that's looking at this procedure, factorial iter,
 
-1357
+1358
 01:08:55,470 --> 01:08:56,730
 然后说
 and say oh, gee, um
 
-1358
+1359
 01:08:57,420 --> 01:08:58,860
 我注意到
 I really notice that
 
-1359
+1360
 01:08:58,880 --> 01:09:01,130
 完成这个调用 不需要我进行压栈
 I don't have to push stack in order to do this.
 
-1360
+1361
 01:09:01,130 --> 01:09:02,880
 但是有些人是这么认为的
 Some people think that that's what's going on.
 
-1361
+1362
 01:09:03,760 --> 01:09:05,380
 而是一种比这个还要蠢的机制
 It's something much, much more dumb than that,
 
-1362
+1363
 01:09:05,380 --> 01:09:07,500
 就是在合适的地方插入RESTORE指令
 it's this one place you're putting the restore instruction.
 
-1363
+1364
 01:09:08,560 --> 01:09:09,790
 就可以自动地实现
 It's just automatic.
 
-1364
+1365
 01:09:14,720 --> 01:09:17,550
 学生：但这不会影响到时间复杂度 对吧？
 AUDIENCE: But that's not affecting the time complexity is it?
 
-1365
+1366
 01:09:17,580 --> 01:09:17,870
 教授：不会
 PROFESSOR: No.
 
-1366
+1367
 01:09:18,600 --> 01:09:21,770
 学生：它不会迭代地处理
 AUDIENCE: It's just that it's handling it recursively
 
-1367
+1368
 01:09:21,800 --> 01:09:23,020
 而是会递归地处理
 instead of iteratively.
 
-1368
+1369
 01:09:23,020 --> 01:09:27,340
 但就从完成这两个运算的时间来说
 But, in terms of the order of time it takes to finish the operation,
 
-1369
+1370
 01:09:27,370 --> 01:09:29,220
 它们都是相同的 对吧？
 it's the same one way or the other, right?
 
-1370
+1371
 01:09:29,470 --> 01:09:29,760
 教授 ：是的
 PROFESSOR: Yes.
 
-1371
+1372
 01:09:29,790 --> 01:09:32,680
 尾递归不会改变任何东西的时间复杂度
 Tail recursion is not going to change the time complexity of anything
 
-1372
+1373
 01:09:32,720 --> 01:09:33,290
 因为 从某种意义上来说
 because, in some sense,
 
-1373
+1374
 01:09:33,340 --> 01:09:35,150
 两者都是相同的算法
 it's the same algorithm that's going on.
 
-1374
+1375
 01:09:36,020 --> 01:09:39,370
 它只是让这个过程迭代地运行
 What it's doing is really making this thing run as an iteration.
 
-1375
+1376
 01:09:41,000 --> 01:09:42,640
 这样 当参数很大时
 Right? Not going to run out of memory
 
-1376
+1377
 01:09:42,680 --> 01:09:44,220
 它不会耗尽所有的内存
 you know counting up to a giant number
 
-1377
+1378
 01:09:44,750 --> 01:09:46,400
 因为这其中没有压栈
 simply because the stack would get pushed.
 
-1378
+1379
 01:09:48,350 --> 01:09:50,240
 事实上 你们需要相信
 See, the thing you really have to believe is that,
 
-1379
+1380
 01:09:50,560 --> 01:09:51,130
 当我们编写--
 when we write--
 
-1380
+1381
 01:09:51,640 --> 01:09:53,780
 我们一直把这些代码称作“迭代”
 see, we've been writing all these things called iterations,
 
-1381
+1382
 01:09:53,930 --> 01:09:57,990
 把(DEFINE (LOOP) (LOOP))称作无穷循环
 infinite loops, define loop to be called loop.
 
-1382
+1383
 01:10:00,320 --> 01:10:03,360
 这就是一个迭代
 That's is as much an iteration
 
-1383
+1384
 01:10:03,650 --> 01:10:05,660
 跟我们用DO语句来写无穷循环是一样的
 you know as if we wrote do forever loop.
 
-1384
+1385
 01:10:07,630 --> 01:10:09,280
 它们只是语法上不同而已
 It's just syntactic sugar as the difference.
 
-1385
+1386
 01:10:09,280 --> 01:10:11,320
 它们实际上都是迭代
 These things are real, honest to god, iterations?
 
-1386
+1387
 01:10:14,730 --> 01:10:16,080
 它们并不改变时间复杂度
 They don't change the time complexity,
 
-1387
+1388
 01:10:16,110 --> 01:10:18,530
 但是它会把它们变成真正的迭代
 but they turn them into real iterations.
 
-1388
+1389
 01:10:21,680 --> 01:10:23,800
 好吧 下课
 All right, thank you.
