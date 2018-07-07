@@ -5089,1801 +5089,1856 @@ And the answer is yeah,
 you have to make these new environment frames,
 
 1018
-00:51:33,840 --> 00:51:36,200
-但是 等你求值完毕后不必保留它们
-but you don't have to hang onto them when you're done.
+00:51:33,840 --> 00:51:35,264
+但是 等你求值完毕后
+but you don't have to hang onto them
 
 1019
+00:51:35,424 --> 00:51:36,192
+不必保留它们
+when you're done.
+
+1020
 00:51:36,440 --> 00:51:37,610
 它们可以被废料收集
 They can be garbage collected,
 
-1020
+1021
 00:51:37,920 --> 00:51:39,470
 这些空间也可以被自动地重用
 or the space can be reused automatically.
 
-1021
+1022
 00:51:40,720 --> 00:51:42,990
 但你们可以看到求值器控制流
 But you see the control structure of the evaluator
 
-1022
+1023
 00:51:43,250 --> 00:51:46,120
 的中心思想就是进行归约
 is really using this idea that you actually have a reduction,
 
-1023
+1024
 00:51:47,020 --> 00:51:49,290
 因此这些过程实际上是迭代过程
 so these procedures really are iterative procedures.
 
-1024
+1025
 00:51:50,130 --> 00:51:51,380
 好吧 有什么问题么？
 All right, let's stop for questions.
 
-1025
+1026
 00:52:02,680 --> 00:52:03,230
 好吧 课件休息吧
 All right, let's break.
 
-1026
-00:52:46,770 --> 00:52:48,770
+1027
+00:52:04,120 --> 00:52:24,560
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-1027
-00:52:48,770 --> 00:52:51,550
-跟迭代过程形成对比的
-Let me contrast the iterative procedure
-
 1028
-00:52:52,770 --> 00:52:56,140
-是确实会占用空间的递归过程
-just so you'll see where space does build up with a recursive procedure,
+00:52:24,600 --> 00:52:29,696
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
 
 1029
+00:52:35,200 --> 00:52:38,368
+讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+By: Prof. Harold Abelson && Sussman Jay Sussman
+
+1030
+00:52:38,360 --> 00:52:42,144
+《计算机程序的构造和解释》
+The Structure And Interpretation of Computer Programs
+
+1031
+00:52:42,140 --> 00:52:46,448
+显示控制求值器
+Explicit-control Evaluator
+
+1032
+00:52:48,770 --> 00:52:51,550
+教授：跟迭代过程形成对比的是
+PROFESSOR: Let me contrast the iterative procedure
+
+1033
+00:52:52,770 --> 00:52:54,896
+确实会占用空间的
+just so you'll see where space does build up
+
+1034
+00:52:55,120 --> 00:52:56,140
+递归过程
+with a recursive procedure,
+
+1035
 00:52:56,170 --> 00:52:57,290
 你们可以看到其中的区别
 so you can see the difference.
 
-1030
+1036
 00:52:58,030 --> 00:53:01,200
 让我们来看看递归式阶乘的求值
 Let's look at the evaluation of recursive factorial.
 
-1031
-00:53:02,650 --> 00:53:07,220
-这里的FACT-REC就是阶乘的标准定义
-So, here's fact-recursive, or standard factorial definition.
+1037
+00:53:02,650 --> 00:53:05,536
+这里的FACT-REC
+So, here's fact-recursive,
 
-1032
+1038
+00:53:05,552 --> 00:53:07,220
+就是阶乘的标准定义
+or standard factorial definition.
+
+1039
 00:53:07,220 --> 00:53:10,010
 这个当然是一个递归过程
 We said this one is still a recursive procedure,
 
-1033
+1040
 00:53:10,010 --> 00:53:12,570
 它的计算过程也是递归的
 but this is actually a recursive process.
 
-1034
+1041
 00:53:13,750 --> 00:53:16,560
 然后 只要把它和我们开始的方式联系起来
 And then, just to link it back to the way we started,
 
-1035
+1042
 00:53:16,830 --> 00:53:20,530
 我们会通过代换模型发现
 we said oh, you can see that it's going to be recursive process
 
-1036
+1043
 00:53:20,530 --> 00:53:21,820
 这是一个递归过程
 by the substitution model
 
-1037
+1044
 00:53:22,360 --> 00:53:28,000
 因为 如果我调用(REC-FACT 5)
 because, if I say recursive factorial of 5,
 
-1038
+1045
 00:53:30,450 --> 00:53:34,940
 会变成(* 5
 that turns into 5 times--
 
-1039
+1046
 00:53:36,280 --> 00:53:37,820
 哦 这里是FACT-REC
 what is it, fact-rec, or record fact--
 
-1040
+1047
 00:53:42,620 --> 00:53:47,930
 (* 5 (FACT-REC 4))
 5 times recursive factorial of 4,
 
-1041
+1048
 00:53:49,660 --> 00:53:58,220
 又会变成(* 5 (* 4 (FACT-REC 3)))
 which turns into 5 times 4 times fact-rec of 3,
 
-1042
+1049
 00:54:00,220 --> 00:54:08,600
 又会变成(* 5 (* 4 (* 3 (* ...
 which returns into 5 times 4 times 3 times
 
-1043
+1050
 00:54:13,450 --> 00:54:15,310
 以此类推
 and so on, right?
 
-1044
+1051
 00:54:15,390 --> 00:54:17,390
 关键点就是 有一条链条被不断构造出来
 The idea is there was this chain of stuff building up,
 
-1045
+1052
 00:54:18,100 --> 00:54:20,060
 这就在代换模型中证明了
 which justified, in the substitution model,
 
-1046
+1053
 00:54:20,080 --> 00:54:21,280
 FACT-REC是递归的
 the fact that it's recursive.
 
-1047
+1054
 00:54:21,520 --> 00:54:24,180
 现在 让我们来看看这条构造起来的链条
 And now, let's actually see that chain of stuff build up
 
-1048
+1055
 00:54:24,180 --> 00:54:25,290
 它又是在机器中的什么地方？
 and where it is in the machine, OK?
 
-1049
+1056
 00:54:27,680 --> 00:54:29,950
 好吧 让我们想象一下要从哪里开始
 All right, well, let's imagine we're going to start out again.
 
-1050
+1057
 00:54:30,440 --> 00:54:40,010
 我们告诉机器 求值(FACT-REC 5)
 We'll tell it to evaluate recursive factorial of 5
 
-1051
+1058
 00:54:41,450 --> 00:54:43,390
 基于的环境是E0
 in some environment, again, E0, where
 
-1052
+1059
 00:54:45,080 --> 00:54:48,970
 也就是定义FACT-REC时的环境
 where recursive factorial is defined, OK?
 
-1053
+1060
 00:54:49,550 --> 00:54:51,230
 现在 我们知道最终要发生什么
 Well, now we know what's eventually going to happen.
 
-1054
+1061
 00:54:52,250 --> 00:54:53,640
 首先
 This is going to come along,
 
-1055
+1062
 00:54:53,920 --> 00:54:55,640
 它会对这些东西求值
 it'll evaluate those things,
 
-1056
+1063
 00:54:55,680 --> 00:54:56,990
 发现它是一个过程
 figure out it's a procedure,
 
-1057
+1064
 00:54:57,180 --> 00:55:00,160
 在这里创建一个新环境E1
 build somewhere over here an environment, E1,
 
-1058
+1065
 00:55:00,880 --> 00:55:03,690
 其中N=5
 which has n bound to 5,
 
-1059
+1066
 00:55:04,330 --> 00:55:06,540
 并且与E0相连
 which hangs off of E0,
 
-1060
+1067
 00:55:07,800 --> 00:55:08,970
 这个E0也就是
 which would be, presumably,
 
-1061
+1068
 00:55:08,990 --> 00:55:12,300
 定义FACT-REC的那个环境
 the definition environment of recursive factorial.
 
-1062
+1069
 00:55:14,110 --> 00:55:15,740
 然后 在E1这个环境中
 OK? And, in this environment,
 
-1063
+1070
 00:55:15,760 --> 00:55:17,480
 求值过程的体
 it's going to go off and evaluate the body.
 
-1064
+1071
 00:55:19,670 --> 00:55:25,920
 因此 在这里求值会归约为
 So, again, the evaluation here will reduce to
 
-1065
+1072
 00:55:27,000 --> 00:55:28,920
 在E1中求值过程的体
 evaluating the body in E1.
 
-1066
+1073
 00:55:30,160 --> 00:55:31,340
 这就需要求值IF语句
 That's going to look at an if,
 
-1067
+1074
 00:55:32,170 --> 00:55:33,530
 而我不会讲解IF语句的细节
 and I won't go through the details of if.
 
-1068
+1075
 00:55:33,530 --> 00:55:34,880
 IF语句会求值谓词
 It'll look at the predicate.
 
-1069
+1076
 00:55:34,880 --> 00:55:37,530
 最后发现需要求值ELSE子句
 It'll decide it eventually has to evaluate the alternative.
 
-1070
+1077
 00:55:37,840 --> 00:55:40,410
 因此 这里的整个部分 会归约为
 So this whole thing, again, will reduce to
 
-1071
+1078
 00:55:41,300 --> 00:55:45,530
 FACT-REC的ELSE子句
 the alternative of recursive factorial,
 
-1072
+1079
 00:55:45,820 --> 00:55:46,970
 也就是谓词为假的部分
 the alternative clause,
 
-1073
+1080
 00:55:47,230 --> 00:55:51,160
 整个表达式就归约为了(* N
 which says that this whole thing reduces to times n
 
-1074
+1081
 00:55:53,070 --> 00:55:59,960
 (FACT-REC (- N 1))
 of recursive factorial of n minus 1
 
-1075
+1082
 00:56:03,480 --> 00:56:05,550
 求值的环境是E1
 in the environment E1
 
-1076
+1083
 00:56:08,380 --> 00:56:10,910
 因此 最初的表达式现在就会归约为
 OK? So the original expression, now, is going to reduce
 
-1077
+1084
 00:56:11,040 --> 00:56:12,520
 求值这样的一个表达式
 to evaluating that expression, all right?
 
-1078
+1085
 00:56:13,750 --> 00:56:16,280
 而现在 我们面对的是一个应用
 OK? Now we have an application.
 
-1079
+1086
 00:56:16,280 --> 00:56:17,630
 我们之前求值过应用
 We did an application before.
 
-1080
+1087
 00:56:18,220 --> 00:56:20,250
 还记得要怎么求值应用么？
 Remember what happens in an application?
 
-1081
+1088
 00:56:20,360 --> 00:56:21,690
 正式求值一个应用之前
 The first thing you do is you go off and you
 
-1082
+1089
 00:56:21,740 --> 00:56:24,810
 你需要把CONTINUE寄存器的值保存在栈上
 you save the value of the continue register on the stack.
 
-1083
+1090
 00:56:25,350 --> 00:56:27,180
 此时 栈上会有一个值'DONE
 So the stack here is going to have done in it.
 
-1084
+1091
 00:56:29,980 --> 00:56:32,880
 接下来 你要为求值子部分做准备
 And then you're going to set up to evaluate the sub-parts.
 
-1085
+1092
 00:56:35,000 --> 00:56:37,200
 因此 我们在这里开始求值子部分
 OK? So here we go off to evaluate the sub-parts.
 
-1086
+1093
 00:56:39,470 --> 00:56:41,450
 首先要做的是求值运算符
 First thing we're going to do is evaluate the operator.
 
-1087
+1094
 00:56:44,600 --> 00:56:46,320
 运算符是怎样求值的呢？
 What happens when we evaluate an operator?
 
-1088
+1095
 00:56:47,250 --> 00:56:48,990
 我们通过一些手段
 Well, we arrange things so that
 
-1089
+1096
 00:56:49,000 --> 00:56:51,040
 将EXP寄存器指向运算符对应的过程
 the operator ends up in the expression register.
 
-1090
+1097
 00:56:51,480 --> 00:56:53,150
 并且让ENV寄存器指向求值的环境
 The environments in the ENV register
 
-1091
-00:56:53,660 --> 00:56:56,220
-#TBD
-continue someplace where we're going to go evaluate the arguments.
+1098
+00:56:53,660 --> 00:56:54,608
+而把CONTINUE寄存器赋值为
+continue someplace
 
-1092
+1099
+00:56:54,624 --> 00:56:56,220
+用于求值参数的EVAL-ARGS
+where we're going to go evaluate the arguments.
+
+1100
 00:56:56,590 --> 00:56:57,370
 并且 我们把
 And, on the stack,
 
-1093
+1101
 00:56:57,400 --> 00:56:59,290
 CONTINUE的原始值保存在栈上
 we've saved the original continue,
 
-1094
+1102
 00:56:59,520 --> 00:57:01,020
 我们完成所有工作后 就会跳转到这个地方
 which is where we wanted to be when we're all done.
 
-1095
+1103
 00:57:01,720 --> 00:57:02,860
 在我们求值完运算符后
 And then the things we needed
 
-1096
+1104
 00:57:03,580 --> 00:57:05,800
 需要做的则是
 when we're going to get done evaluating the operator,
 
-1097
+1105
 00:57:05,900 --> 00:57:07,660
 求值对实际参数进行求值
 the things we'll need to evaluate the arguments,
 
-1098
+1106
 00:57:07,690 --> 00:57:12,010
 也就是这个环境和这些参数
 namely the environment and those arguments,
 
-1099
+1107
 00:57:12,140 --> 00:57:13,440
 这些尚未求值的实际参数
 those unevaluated arguments,
 
-1100
+1108
 00:57:14,200 --> 00:57:15,620
 它们现在都还在栈上
 so there they are sitting on the stack.
 
-1101
+1109
 00:57:15,620 --> 00:57:18,590
 我们现在就要先来求值运算符
 And we're about to go off to evaluate the operator.
 
-1102
+1110
 00:57:23,260 --> 00:57:26,730
 当我们从这个调用返回时
 Well, when we return from this particular call--
 
-1103
+1111
 00:57:26,920 --> 00:57:28,640
 在这里 我们将要去调用EVAL-DISPATCH
 so we're about to call eval-dispatch here--
 
-1104
+1112
 00:57:29,380 --> 00:57:30,830
 当我们从这个调用返回时
 when we return from this call,
 
-1105
+1113
 00:57:31,450 --> 00:57:32,700
 这个运算符所对应的值
 the value of that operator,
 
-1106
-00:57:32,730 --> 00:57:35,440
-在本例中 也就是基本的乘法过程
-which, in this case, is going to be the primitive multiplier procedure,
+1114
+00:57:32,730 --> 00:57:33,520
+在本例中
+which, in this case,
 
-1107
+1115
+00:57:33,552 --> 00:57:35,440
+也就是基本的乘法过程
+is going to be the primitive multiplier procedure,
+
+1116
 00:57:36,440 --> 00:57:37,930
 会存放在FUN寄存器中
 will end up in the FUN register.
 
-1108
+1117
 00:57:43,020 --> 00:57:44,530
 我们要去求值实际参数
 We're going to evaluate some arguments.
 
-1109
+1118
 00:57:44,530 --> 00:57:45,850
 现在这里求值N
 They will evaluate n here.
 
-1110
+1119
 00:57:47,730 --> 00:57:49,870
 本例中 会返回5
 That'll give us 5, in this case.
 
-1111
+1120
 00:57:50,250 --> 00:57:52,040
 然后我们会把它放入ARGL寄存器
 We're going to put that in the argl register,
 
-1112
+1121
 00:57:53,000 --> 00:57:55,880
 然后我们会去求值第二个运算对象
 and then we'll go off to evaluate the second operand.
 
-1113
+1122
 00:57:57,460 --> 00:58:00,480
 就在我们准备求值第二个运算对象之时
 So, at the point where we go off to evaluate the second operand--
 
-1114
-00:58:00,520 --> 00:58:03,580
-我会省略计算(- N 1)之类的细节
-and I'll skip details like computing, and minus 1, and all of that--
+1123
+00:58:00,520 --> 00:58:02,192
+我会省略计算
+and I'll skip details like computing,
 
-1115
+1124
+00:58:02,208 --> 00:58:03,580
+(- N 1)之类的细节
+N minus 1, and all of that--
+
+1125
 00:58:03,710 --> 00:58:05,880
 但是 当我们去求值第二个运算对象时
 but, when we go off to evaluate the second operand,
 
-1116
+1126
 00:58:06,620 --> 00:58:10,440
 会最终归约为对FACT-REC的另一个调用
 that will eventually reduce to another call to fact-recursive.
 
-1117
+1127
 00:58:12,000 --> 00:58:14,200
 现在 我们在栈上有
 And, what we've got on the stack here is
 
-1118
+1128
 00:58:16,520 --> 00:58:19,940
 来自于这个组合式的运算符
 the operator from that combination that we're going to use it in
 
-1119
+1129
 00:58:20,120 --> 00:58:21,070
 以及其它的参数
 and the other argument.
 
-1120
+1130
 00:58:23,400 --> 00:58:27,610
 现在 我们已经准备好
 OK? So, now, we're set up for another call
 
-1121
+1131
 00:58:28,490 --> 00:58:29,690
 去调用另外的FACT-REC了
 to recursive factorial.
 
-1122
+1132
 00:58:30,200 --> 00:58:31,430
 而让我们完成了这个调用以后
 And, when we're done with this one,
 
-1123
+1133
 00:58:31,560 --> 00:58:33,640
 我们就要跳转到ACCUMULATE-LAST-ARG
 we're going to go to accumulate the last arg.
 
-1124
+1134
 00:58:34,120 --> 00:58:35,200
 还记得这是做什么的么？
 and remember what that'll do?
 
-1125
+1135
 00:58:35,200 --> 00:58:35,930
 它会说
 That'll say oh,
 
-1126
+1136
 00:58:36,450 --> 00:58:39,280
 我们会把这个调用的结果
 whatever the result of this has to get combined with that,
 
-1127
+1137
 00:58:39,280 --> 00:58:40,400
 和这个5相乘
 and we're going to multiply them.
 
-1128
+1138
 00:58:41,690 --> 00:58:42,380
 但是请注意
 But, notice now,
 
-1129
+1139
 00:58:42,730 --> 00:58:44,810
 我们现在处于另一个递归阶乘中
 we're at another recursive factorial.
 
-1130
+1140
 00:58:45,720 --> 00:58:48,920
 我们又要再次调用EVAL-DISPATCH
 We're about to call eval-dispatch again,
 
-1131
+1141
 00:58:49,320 --> 00:58:50,600
 然而我们并没有真正地“归约”它
 except we haven't really reduced it
 
-1132
+1142
 00:58:50,640 --> 00:58:52,080
 因为现在栈上还有东西
 because there's stuff on the stack now.
 
-1133
+1143
 00:58:53,700 --> 00:58:55,390
 栈上的这些东西说：“当你返回时”
 The stuff on the stack says oh, when you get back,
 
-1134
+1144
 00:58:55,400 --> 00:58:57,520
 你最好把结果和放在这里的5相乘
 you'd better multiply it by the 5 you had hanging there.
 
-1135
+1145
 00:58:58,430 --> 00:59:05,770
 所以当我们进行另外的调用
 So, when we go off to make another call,
 
-1136
+1146
 00:59:07,120 --> 00:59:08,840
 求值(- N 1)
 we evaluate the n minus 1.
 
-1137
+1147
 00:59:09,300 --> 00:59:11,050
 这会返回给我们另一个环境
 That gives us another environment which
 
-1138
+1148
 00:59:11,250 --> 00:59:13,840
 其中N的新值为4
 in which the new n's going to be down to 4.
 
-1139
+1149
 00:59:14,600 --> 00:59:16,220
 然后又将调用EVAL-DISPATCH
 And we're about to call eval-dispatch again.
 
-1140
+1150
 00:59:19,200 --> 00:59:20,220
 我们又创建了另一个调用
 We get another call.
 
-1141
+1151
 00:59:21,350 --> 00:59:24,440
 这个4又会遇到相同的情况
 That 4 is going to end up in the same situation.
 
-1142
+1152
 00:59:26,040 --> 00:59:28,620
 我们最后会遇到对(FACT-REC N)的又一次调用
 We'll end up with another call to fact-recursive n.
 
-1143
+1153
 00:59:30,020 --> 00:59:32,680
 而这时候 栈上会有从最初的调用
 And sitting on the stack will be the stuff from the original one
 
-1144
+1154
 00:59:32,880 --> 00:59:34,510
-#TBD
+到最近一次调用的东西
 and, now, the subsidiary one we're doing.
 
-1145
+1155
 00:59:35,360 --> 00:59:36,910
 它们都在等待同一个东西
 And both of them are waiting for the same thing.
 
-1146
+1156
 00:59:36,910 --> 00:59:39,160
 它们都要跳转到ACCUMULATE-LAST-ARG
 They're going to go to accumulate a last argument.
 
-1147
+1157
 00:59:40,510 --> 00:59:42,940
 当然 当我们进行第四次调用时
 And then, of course, when we go to the fourth call,
 
-1148
+1158
 00:59:43,250 --> 00:59:44,380
 会发生同样的事
 the same thing happens.
 
-1149
+1159
 00:59:45,640 --> 00:59:47,070
 如此往复
 And this goes on, and on, and on.
 
-1150
+1160
 00:59:47,300 --> 00:59:48,600
 在这里 你在栈上看到的
 And what you see here on the stack,
 
-1151
+1161
 00:59:50,300 --> 00:59:52,220
-#TBD
+栈上面实际存放的是
 exactly what's sitting here on the stack,
 
-1152
+1162
 00:59:52,220 --> 00:59:54,590
-#TBD
+基本过程*以及5
 the thing that says times and 5.
 
-1153
+1163
 00:59:54,960 --> 00:59:56,400
 而你要把它用来
 And what you're going to do with that
 
-1154
+1164
 00:59:56,590 --> 00:59:58,540
-乘以最后一个实参
+调用ACCUMULATE-LAST-ARG
 accumulate that into a last argument.
 
-1155
-01:00:00,470 --> 01:00:01,480
-#TBD
+1165
+01:00:00,470 --> 01:00:02,016
+就是这样 对吧？
 That's exactly this, right?
 
-1156
+1166
 01:00:02,010 --> 01:00:04,750
-这正是这些东西#TBD
+这跟它们在表达式中的顺序是一致的
 This is exactly where that stuff is hanging.
 
-1157
+1167
 01:00:05,650 --> 01:00:10,650
 实际上 你将要应用的运算符
 Effectively, the operator you're going to apply,
 
-1158
-01:00:11,720 --> 01:00:15,080
-以及其它的参数
-the other argument that it's got to be multiplied by when you get back
+1168
+01:00:11,720 --> 01:00:14,304
+以及当你返回时
+the other argument that it's got
 
-1159
-01:00:15,080 --> 01:00:16,910
-#TBD
-when you get back and the parentheses,
+1169
+01:00:14,320 --> 01:00:15,790
+需要去求积的参数
+to be multiplied by when you get back
 
-1160
+1170
+01:00:15,808 --> 01:00:16,910
+以及这里的括号
+and sort of the parentheses,
+
+1171
 01:00:16,940 --> 01:00:18,960
-#TBD
+都在告诉你 在对它们进行积累
 which says yeah, what you wanted to do was accumulate them.
 
-1161
+1172
 01:00:19,620 --> 01:00:21,880
-#TBD
+因此 你可以看到代换模型并不是这样的谎言
 So, you see, the substitution model is not such a lie.
 
-1162
+1173
 01:00:22,560 --> 01:00:23,630
 从某种意义上来说 它实际上是
 That really is, in some sense,
 
-1163
+1174
 01:00:23,640 --> 01:00:25,310
 存在于栈上的那些东西
 what's sitting right on the stack.
 
-1164
+1175
 01:00:29,370 --> 01:00:30,400
 好吧 从某种意义上来说
 All right, so that,
 
-1165
+1176
 01:00:30,810 --> 01:00:32,480
 应该给你们解释了
 in some sense, should explain for you,
 
-1166
+1177
 01:00:33,260 --> 01:00:34,520
 或者 至少让你们相信
 or at least convince you,
 
-1167
+1178
 01:00:35,930 --> 01:00:38,720
 求值器会通过某些方式
 that somehow, this evaluator is managing
 
-1168
+1179
 01:00:40,060 --> 01:00:42,860
 迭代地去求值某些过程
 to take these procedures and execute some of them iteratively
 
-1169
+1180
 01:00:42,950 --> 01:00:44,250
 而递归地去求值另外的过程
 and some of them recursively,
 
-1170
+1181
 01:00:45,260 --> 01:00:47,450
 尽管从语法上看
 even though, as syntactically,
 
-1171
+1182
 01:00:47,450 --> 01:00:49,050
 它们都是递归过程
 they look like recursive procedures.
 
-1172
+1183
 01:00:49,400 --> 01:00:50,640
 它又是如何做到的呢？
 How's it managing to do that?
 
-1173
+1184
 01:00:50,660 --> 01:00:53,720
 其中的基本原因就是
 Well, the basic reason it's managing to do that
 
-1174
+1185
 01:00:53,800 --> 01:00:55,680
 求值器被设置为
 is the evaluator is set up
 
-1175
+1186
 01:00:56,040 --> 01:00:59,260
 只保存那些稍后会用到的东西
 to save only what it needs later.
 
-1176
+1187
 01:01:01,090 --> 01:01:04,250
 比如说 当你在把
 So, for example, at the point where you've reduced
 
-1177
+1188
 01:01:04,670 --> 01:01:07,390
 在一个环境中求值表达式归约为
 evaluating an expression and an environment
 
-1178
+1189
 01:01:07,870 --> 01:01:09,870
 将某个过程应用在参数上时
 to applying a procedure to some arguments,
 
-1179
+1190
 01:01:10,520 --> 01:01:12,490
 它就不再需要最初的环境了
 it doesn't need that original environment anymore
 
-1180
+1191
 01:01:13,370 --> 01:01:16,650
 因为所需要的环境信息都被打包到
 because any environment stuff will be packaged inside the procedures
 
-1181
+1192
 01:01:17,880 --> 01:01:19,360
 需要应用的那个过程中了
 where the application's going to happen.
 
-1182
+1193
 01:01:20,750 --> 01:01:21,610
 同样 类似地
 All right, similarly,
 
-1183
+1194
 01:01:21,630 --> 01:01:23,650
 当你求值一个参数表时
 when you're going along evaluating an argument list,
 
-1184
+1195
 01:01:23,650 --> 01:01:25,200
 当你完成对表的求值时
 when you've finished evaluating the list,
 
-1185
+1196
 01:01:25,910 --> 01:01:28,030
 当你求值完最后一个参数时
 when you're finished evaluating the last argument,
 
-1186
+1197
 01:01:28,200 --> 01:01:31,610
 你就不再需要这个参数表了 对吧？
 you don't need that argument list any more, right?
 
-1187
+1198
 01:01:31,630 --> 01:01:32,940
 你也就不再需要
 And you don't need the environment where
 
-1188
+1199
 01:01:33,040 --> 01:01:34,640
 求值这些参数所需的环境了
 those arguments would be evaluated.
 
-1189
+1200
 01:01:36,690 --> 01:01:40,890
 所以这个解释器如此“智能”的根本原因
 So the basic reason that this interpreter is being so smart
 
-1190
+1201
 01:01:40,890 --> 01:01:42,880
 根本不是因为它“智能” 只是因为它老实
 is that it's not being smart at all, it's being stupid.
 
-1191
+1202
 01:01:43,050 --> 01:01:45,740
 它的原则就是：“只保存那些需要的”
 It's just saying I'm only going to save what I really need.
 
-1192
+1203
 01:01:48,700 --> 01:01:51,000
 这里 让我来给你们展示
 Well, let me show you here.
 
-1193
+1204
 01:01:53,070 --> 01:01:57,200
 这是致使尾递归的根本原因
 Here's the actual thing that's making a tail recursive.
 
-1194
+1205
 01:01:58,310 --> 01:02:00,200
 要记住 (RESOTRE CONTINUE)这条代码
 Remember, it's the restore of continue.
 
-1195
+1206
 01:02:00,220 --> 01:02:06,940
 它指的是 当我去求值过程体的时候
 It's saying when I go off to evaluate the procedure body,
 
-1196
+1207
 01:02:08,960 --> 01:02:11,000
 我应该告诉EVAL返回到
 I should tell eval to come back to
 
-1197
+1208
 01:02:11,250 --> 01:02:12,540
 最初的求值
 the place where that original
 
-1198
+1209
 01:02:12,540 --> 01:02:14,250
 应该返回的地方
 evaluation was supposed to come back to.
 
-1199
+1210
 01:02:15,170 --> 01:02:15,950
 因此 从某种角度来说
 So, in some sense,
 
-1200
+1211
 01:02:16,170 --> 01:02:18,840
 你想知道是哪一行代码致使了尾递归
 you want to say what's the actual line that makes tail recursive
 
-1201
+1212
 01:02:18,890 --> 01:02:19,440
 那么就是这一行
 It's that one.
 
-1202
+1213
 01:02:19,920 --> 01:02:21,530
 出于某些奇怪的原因
 If I wanted to build a non-
 
-1203
+1214
 01:02:21,770 --> 01:02:24,800
 如果我想构建一个没有尾递归的求值器
 tail recursive evaluator, for some strange reason,
 
-1204
+1215
 01:02:25,690 --> 01:02:26,860
 我需要做的就是
 all I would need to do
 
-1205
+1216
 01:02:27,120 --> 01:02:29,290
 在这里先不要去恢复CONTINUE
 is, instead of restoring continue at this point,
 
-1206
+1217
 01:02:30,060 --> 01:02:31,660
-而是在这里建立一个标签
+而是在这里建立一个标号
 I'd set up a label down here
 
-1207
+1218
 01:02:32,750 --> 01:02:36,250
 用来标识完成过程应用后的返回位置
 called, "Where to come back after you've finished applying the procedure."
 
-1208
+1219
 01:02:37,640 --> 01:02:39,710
-而我会把CONTINUE设置为这个标签
+而我会把CONTINUE设置为这个标号
 Instead, I'd set continue to that.
 
-1209
+1220
 01:02:39,920 --> 01:02:41,210
 然后跳转到EVAL-DISPATCH
 I'd go to eval-dispatch,
 
-1210
+1221
 01:02:41,400 --> 01:02:43,210
 然后EVAL-DISPATCH会回到这里
 and then eval-dispatch would come back here.
 
-1211
+1222
 01:02:43,790 --> 01:02:44,300
 而这时
 At that point,
 
-1212
+1223
 01:02:44,320 --> 01:02:45,280
 我会恢复CONTINUE
 I would restore continue
 
-1213
+1224
 01:02:45,290 --> 01:02:46,520
 并回到最初的返回位置
 and go to the original one.
 
-1214
+1225
 01:02:47,920 --> 01:02:51,000
 因此 这里唯一的后果就是
 So here, the only consequence of that
 
-1215
+1226
 01:02:51,150 --> 01:02:52,680
 解释器不再是尾递归的了
 would be to make it non-tail recursive.
 
-1216
+1227
 01:02:52,840 --> 01:02:54,620
 它会给你完全相同的答案
 It would give you exactly the same answers,
 
-1217
+1228
 01:02:54,720 --> 01:02:57,020
 只是当你执行迭代式阶乘
 except if you did that iterative factorial
 
-1218
+1229
 01:02:57,050 --> 01:02:58,360
 或者其它迭代过程时
 and all those iterative procedures,
 
-1219
+1230
 01:02:58,600 --> 01:02:59,800
 它都会递归地去执行
 it would execute recursively.
 
-1220
+1231
 01:03:03,040 --> 01:03:05,400
 然而 我对你们撒了一个小谎
 Well, I lied to you a little bit, but just a little bit,
 
-1221
+1232
 01:03:05,760 --> 01:03:06,990
 因为我演示的
 because I showed you a slightly
 
-1222
+1233
 01:03:07,020 --> 01:03:08,330
 一个有些过于简化的解释器
 over-simplified evaluator
 
-1223
+1234
 01:03:08,720 --> 01:03:10,380
 这个解释器假设每个过程
 where it assumes that each procedure --
 
-1224
+1235
 01:03:11,360 --> 01:03:13,660
 只含有一条表达式
 each procedure body has only one expression.
 
-1225
+1236
 01:03:13,890 --> 01:03:14,540
 还记得吗 通常来说
 Remember, in general,
 
-1226
+1237
 01:03:14,560 --> 01:03:16,570
 过程的体是多条表达式组成的序列
 a procedure has a sequence of expressions in it.
 
-1227
+1238
 01:03:17,870 --> 01:03:20,490
 所以没有什么新概念
 So there's nothing really conceptually new.
 
-1228
+1239
 01:03:20,490 --> 01:03:22,280
 让我来展示一下实际的求值器
 Let me just show you the actual evaluator
 
-1229
+1240
 01:03:22,890 --> 01:03:24,730
 是怎么来处理表达式序列的
 that handles sequences of expressions.
 
-1230
+1241
 01:03:28,470 --> 01:03:29,740
 这是现在的COMPOUND-APPLY
 This is compound-apply now,
 
-1231
+1242
 01:03:29,740 --> 01:03:31,310
 和之前的唯一不同是
 and the only difference from the old one
 
-1232
+1243
 01:03:32,070 --> 01:03:34,330
 它不再直接地跳转到EVAL
 is that, instead of going off to eval directly,
 
-1233
+1244
 01:03:35,980 --> 01:03:38,030
 它先获取整个过程的体
 it takes the whole body of the procedure,
 
-1234
+1245
 01:03:38,030 --> 01:03:40,150
 在本例中 也就是表达式序列
 which, in this case, is a sequence of expressions,
 
-1235
+1246
 01:03:40,280 --> 01:03:41,710
 然后跳转到EVAL-SEQUENCE
 and goes off to eval-sequence.
 
-1236
+1247
 01:03:42,600 --> 01:03:45,320
 EVAL-SEQUENCE是一个小型的循环
 And eval-sequence is a little loop
 
-1237
+1248
 01:03:46,830 --> 01:03:49,980
 然后每次求值一条表达式
 that, basically, does these evaluations one at a time.
 
-1238
+1249
 01:03:52,630 --> 01:03:53,850
 就是这样来求值的--
 So it does an evaluation.
 
-1239
+1250
 01:03:53,900 --> 01:03:54,940
 当它求值完一条表达式后
 Says oh, when I come back,
 
-1240
+1251
 01:03:54,970 --> 01:03:56,860
 会跳转到这里 去求值下一条
 I'd better come back here to do the next one.
 
-1241
+1252
 01:03:58,440 --> 01:03:59,290
 当我完成了所有的求值后
 And, when I'm all done,
 
-1242
+1253
 01:03:59,290 --> 01:04:01,020
 我想要跳转到LAST-EXP
 when I want to get the last expression,
 
-1243
+1254
 01:04:01,310 --> 01:04:03,280
 我就只需要恢复CONTINUE寄存器
 I just restore my continue
 
-1244
+1255
 01:04:03,920 --> 01:04:05,280
 然后跳转到EVAL-DISPATCH
 and go off to eval-dispatch.
 
-1245
+1256
 01:04:06,410 --> 01:04:08,200
 同样的 如果你想要在这种求值器中
 And, again, if you wanted for some reason
 
-1246
+1257
 01:04:08,200 --> 01:04:10,350
 破坏尾递归机制
 to break tail recursion in this evaluator,
 
-1247
+1258
 01:04:10,640 --> 01:04:13,710
 你只需要在LAST-EXP中不做特殊处理即可
 all you need to do is not handle the last expression, especially.
 
-1248
+1259
 01:04:14,900 --> 01:04:17,340
 也就是说 当你处理完最后一条表达式
 Just say, after you've done the last expression,
 
-1249
+1260
 01:04:17,360 --> 01:04:18,650
 你跳转到另外一个地方
 come back to some other place
 
-1250
+1261
 01:04:19,150 --> 01:04:20,680
 在那个地方去恢复CONTINUE
 after which you restore continue.
 
-1251
+1262
 01:04:21,900 --> 01:04:23,260
 出于某些原因
 And, for some reason,
 
-1252
+1263
 01:04:23,260 --> 01:04:25,740
 很多Lisp求值器倾向于这么做
 a lot of LISP evaluators tended to work that way.
 
-1253
+1264
 01:04:26,550 --> 01:04:28,440
 这样做的后果就是
 And the only consequence of that is that
 
-1254
+1265
 01:04:28,860 --> 01:04:30,720
 迭代式过程也会使栈增长
 iterative procedures built up stack.
 
-1255
+1266
 01:04:31,880 --> 01:04:33,610
 还不清楚为什么会这样
 And it's not clear why that happened.
 
-1256
+1267
 01:04:35,920 --> 01:04:37,980
 好吧 我稍微来总结一下
 All right. Well, let me just sort of summarize,
 
-1257
+1268
 01:04:38,090 --> 01:04:39,600
 毕竟这是一个大程序
 since this is a lot of details
 
-1258
+1269
 01:04:39,980 --> 01:04:41,040
 又有很多细节
 in a big program.
 
-1259
+1270
 01:04:41,120 --> 01:04:42,250
 但关键点就是
 But the main point is that
 
-1260
+1271
 01:04:43,040 --> 01:04:46,080
 #TBD
 it's no different, conceptually, from translating any other program.
 
-1261
+1272
 01:04:47,060 --> 01:04:48,060
 核心思想就是
 And the main idea is that
 
-1262
+1273
 01:04:48,060 --> 01:04:50,280
 我们已经有了通用求值器程序
 we have this universal evaluator program,
 
-1263
+1274
 01:04:50,330 --> 01:04:51,710
 一个元循环求值器
 the meta-circular evaluator.
 
-1264
+1275
 01:04:51,870 --> 01:04:53,070
 如果我们把它翻译为了Lisp
 If we translate that into LISP,
 
-1265
+1276
 01:04:53,100 --> 01:04:53,950
 那么我们就有了Lisp的所有东西
 then we have all of LISP.
 
-1266
+1277
 01:04:54,330 --> 01:04:55,150
 我们就是这么来做的
 And that's all we did.
 
-1267
+1278
 01:04:57,980 --> 01:04:59,680
 第二点则是 魔法消失了
 The second point is that the magic's gone away.
 
-1268
+1279
 01:04:59,680 --> 01:05:01,970
 这整个系统不再神秘了 对吧？
 There should be no more magic in this whole system, right?
 
-1269
+1280
 01:05:01,970 --> 01:05:07,790
 原则上来说 这应该相当清楚了
 In principle, it should all be very clear
 
-1270
+1281
 01:05:07,820 --> 01:05:10,080
 只是还不太了解表结构的内存管理
 except, maybe, for how list structured memory works,
 
-1271
+1282
 01:05:10,800 --> 01:05:11,800
 我们后面会讲
 and we'll see that later.
 
-1272
+1283
 01:05:12,640 --> 01:05:14,200
 这也并不困难
 But that's not very hard.
 
-1273
+1284
 01:05:15,450 --> 01:05:16,350
 第三点就是
 The third point is that
 
-1274
+1285
 01:05:16,350 --> 01:05:17,520
 所有的这些尾递归
 all this tail recursion
 
-1275
+1286
 01:05:18,240 --> 01:05:21,960
 来自于严格的求值纪律
 came from the discipline of eval being very careful
 
-1276
+1287
 01:05:22,550 --> 01:05:24,510
 也就是只保存那些后面会用到的东西
 to save only what it needs next time.
 
-1277
+1288
 01:05:25,870 --> 01:05:27,720
 而不是一些比较随意的原则
 It's not some arbitrary thing
 
-1278
+1289
 01:05:27,760 --> 01:05:29,860
 比如 无论什么时候我们调用一个子过程
 where we're saying well, whenever we call a sub-routine,
 
-1279
+1290
 01:05:29,860 --> 01:05:32,160
 我们会保存所有的寄存器并且返回
 we'll save all the registers in the world and come back?
 
-1280
+1291
 01:05:33,940 --> 01:05:36,490
 有些时候为了提效 这样做很值得
 See, sometimes it pays to really worry about efficiency.
 
-1281
+1292
 01:05:37,150 --> 01:05:39,960
 当你研究求值机器的内部原理时
 And, when you're down in the guts of your evaluator machine,
 
-1282
+1293
 01:05:40,450 --> 01:05:42,560
 这类东西就很值得去研究
 it really pays to think about things like that
 
-1283
+1294
 01:05:42,560 --> 01:05:43,960
 因为它会带来显著的不同
 because it makes big consequences.
 
-1284
+1295
 01:05:45,230 --> 01:05:47,690
 我想现在基本上已经
 Well, I hope what this has done
 
-1285
+1296
 01:05:47,900 --> 01:05:52,300
 把这个求值器讲得很清楚了
 is really made the evaluator seem concrete.
 
-1286
+1297
 01:05:52,560 --> 01:05:53,900
 我希望你们能相信
 I hope you really believe
 
-1287
+1298
 01:05:54,320 --> 01:05:56,270
 真的有人能够
 that somebody could hold a LISP
 
-1288
+1299
 01:05:56,840 --> 01:05:58,560
 将一个Lisp求值器放在掌心之中
 LISP evaluator in the palm of their hand.
 
-1289
+1300
 01:05:59,070 --> 01:06:00,490
 为了让你们死心塌地
 Maybe to help you believe that, here's a
 
-1290
+1301
 01:06:00,800 --> 01:06:01,960
 我给你们看一个Lisp求值器
 here's a LISP evaluator
 
-1291
+1302
 01:06:02,540 --> 01:06:04,060
 它就在我的手掌中
 that I'm holding the palm of my hand.
 
-1292
+1303
 01:06:06,160 --> 01:06:10,560
 这块求值器芯片实际上
 And this is a chip which is actually
 
-1293
+1304
 01:06:10,890 --> 01:06:13,700
 比我给你们展示的求值器还要复杂
 quite a bit more complicated than the evaluator I showed you.
 
-1294
+1305
 01:06:17,810 --> 01:06:19,200
 这张图片效果更好
 Uh.. maybe, here's a better picture of it.
 
-1295
+1306
 01:06:22,070 --> 01:06:22,570
 在这上面
 What there is,
 
-1296
+1307
 01:06:22,600 --> 01:06:24,380
 你可以看到相同的宏观结构
 is you can see the same overall structure.
 
-1297
+1308
 01:06:24,730 --> 01:06:25,930
 这是寄存器阵列
 This is a register array.
 
-1298
+1309
 01:06:26,800 --> 01:06:27,710
 这些是数据通路
 These are the data paths.
 
-1299
+1310
 01:06:27,720 --> 01:06:29,070
 这里有是有穷状态控制器
 Here's a finite state controller.
 
-1300
+1311
 01:06:29,800 --> 01:06:31,040
 再强调一下 是有穷状态
 And again, finite state,
 
-1301
+1312
 01:06:31,960 --> 01:06:32,800
 全都在这里了
 that's all there is.
 
-1302
+1313
 01:06:32,810 --> 01:06:34,160
 在另外的地方还有外部存储
 And somewhere there's external memory
 
-1303
+1314
 01:06:34,160 --> 01:06:35,230
 用来存储数据
 that'll worry about things.
 
-1304
+1315
 01:06:35,750 --> 01:06:37,630
 而这块芯片非常复杂
 And this particular one is very complicated
 
-1305
+1316
 01:06:37,640 --> 01:06:39,160
 是因为它尝试更快地运行Lisp
 because it's trying to run LISP fast.
 
-1306
+1317
 01:06:39,660 --> 01:06:42,970
 它具有非常非常之快的并行运算
 And it has some very, very fast parallel operations in there
 
-1307
+1318
 01:06:43,070 --> 01:06:46,320
 比如说 如果你想要索引一个数组
 like, if you want to index into an array,
 
-1308
+1319
 01:06:46,700 --> 01:06:50,400
 同时又要检查该索引是否为一个整数
 simultaneously check that the index is an integer,
 
-1309
+1320
 01:06:50,430 --> 01:06:52,860
 以及该索引没有越界
 check that it doesn't exceed the array bands,
 
-1310
+1321
 01:06:53,040 --> 01:06:55,020
 同时还要进行内存存取
 and go off and do the memory access,
 
-1311
+1322
 01:06:55,050 --> 01:06:56,700
 它会同时进行这些事
 and do all those things simultaneously.
 
-1312
+1323
 01:06:57,120 --> 01:06:58,400
 如果这些操作都没有问题的话
 And then, later, if they're all OK,
 
-1313
+1324
 01:06:58,440 --> 01:06:59,960
 最终就会在这里得到结果
 actually get the value there.
 
-1314
+1325
 01:07:00,420 --> 01:07:02,460
 因此 数据通路中大量的
 So there are a lot of complicated operations
 
-1315
+1326
 01:07:02,480 --> 01:07:04,650
 复杂运算使得Lisp能够并行运行
 in these data paths for making LISP run in parallel.
 
-1316
+1327
 01:07:05,260 --> 01:07:10,360
 这完全是一种求值Lisp的无冒险的哲学#TBD
 It's a completely non-risk philosophy of evaluating LISP.
 
-1317
+1328
 01:07:10,640 --> 01:07:13,200
 并且 这个的微指令也相当复杂
 And then, this microcode is pretty complicated.
 
-1318
+1329
 01:07:13,450 --> 01:07:17,560
 让我先看一看
 Let's see, there's what?
 
-1319
+1330
 01:07:17,600 --> 01:07:21,100
 这其中有大概389条
 There's about 389 instructions of
 
-1320
+1331
 01:07:21,680 --> 01:07:23,850
 220比特的微指令
 of 220-bit microcode sitting here
 
-1321
+1332
 01:07:24,070 --> 01:07:27,940
 只因为这些数据通路非常复杂
 because these are very complicated data paths.
 
-1322
+1333
 01:07:27,940 --> 01:07:32,250
 整个芯片大概有89,000支晶体管
 And the whole thing has about 89,000 transistors, OK?
 
-1323
+1334
 01:07:33,560 --> 01:07:36,860
 好吧 我希望通过这节课解答了大部分疑惑
 OK. Well, I hope that that takes away a lot of the mystery.
 
-1324
+1335
 01:07:37,970 --> 01:07:39,240
 也许你们想看一看这块芯片
 Maybe somebody wants to look at this.
 
-1325
+1336
 01:07:46,140 --> 01:07:46,890
 好吧 先讲到这里
 OK. Let's stop.
 
-1326
+1337
 01:07:56,460 --> 01:07:56,750
 有问题吗？
 Questions?
 
-1327
+1338
 01:07:59,000 --> 01:08:00,420
 学生：您所讲的 听起来像是
 AUDIENCE: OK, now, it sounds like what you're saying is that,
 
-1328
+1339
 01:08:00,420 --> 01:08:03,480
 如果把(RESTORE CONTINUE)放在合适的地方
 with the restore continue put in the proper place,
 
-1329
+1340
 01:08:03,580 --> 01:08:09,420
 这样之前递归求值的过程
 that procedures that would invoke a recursive process
 
-1330
+1341
 01:08:09,420 --> 01:08:11,950
 现在就会变成迭代求值的
 now invoke an iterative process
 
-1331
+1342
 01:08:12,670 --> 01:08:15,360
 #TBD
 just by the way that the eval signature is?
 
-1332
+1343
 01:08:15,600 --> 01:08:17,540
 教授：我想我应该这么来说
 PROFESSOR: I think the way I'd prefer to put it is that,
 
-1333
+1344
 01:08:17,540 --> 01:08:19,820
 如果把(RESTORE CONTINUE)放在了错误的位置
 with restore continue put in the wrong place,
 
-1334
+1345
 01:08:20,550 --> 01:08:25,480
 你就会让那些语法上看起来像递归的过程
 you can cause any syntactically-looking recursive procedure,
 
-1335
+1346
 01:08:25,520 --> 01:08:27,280
 在运行的时候不断地扩张栈
 in fact, to build up stack as it runs.
 
-1336
+1347
 01:08:28,640 --> 01:08:30,520
 但这样是没有原因的
 But there's no reason for that,
 
-1337
+1348
 01:08:33,150 --> 01:08:35,120
 你可以自己去试一试
 so you might want to play around with it.
 
-1338
+1349
 01:08:35,150 --> 01:08:38,090
 你可以在COMPOND-APPLY返回后
 You can just switch around two or three instructions
 
-1339
+1350
 01:08:38,180 --> 01:08:40,780
 交换两、三条语句的顺序
 in the way compound-apply comes back,
 
-1340
+1351
 01:08:41,310 --> 01:08:43,260
 那么你得到的就不再是尾递归了
 and you'll get something which isn't tail recursive.
 
-1341
+1352
 01:08:45,060 --> 01:08:46,140
 我只是想强调
 But the thing I wanted to emphasize
 
-1342
+1353
 01:08:46,160 --> 01:08:47,400
 这其中没有什么魔法
 is there's no magic. there's no
 
-1343
+1354
 01:08:47,670 --> 01:08:48,570
 这并不是
 It's not as if
 
-1344
+1355
 01:08:49,310 --> 01:08:52,170
 有什么智能的预处理程序
 there's some very clever pre-processing program
 
-1345
+1356
 01:08:52,650 --> 01:08:55,450
 它会分析FACT-ITER这个程序
 that's looking at this procedure, factorial iter,
 
-1346
+1357
 01:08:55,470 --> 01:08:56,730
 然后说
 and say oh, gee, um
 
-1347
+1358
 01:08:57,420 --> 01:08:58,860
 我注意到
 I really notice that
 
-1348
+1359
 01:08:58,880 --> 01:09:01,130
 完成这个调用 不需要我进行压栈
 I don't have to push stack in order to do this.
 
-1349
+1360
 01:09:01,130 --> 01:09:02,880
 但是有些人是这么认为的
 Some people think that that's what's going on.
 
-1350
+1361
 01:09:03,760 --> 01:09:05,380
 而是一种比这个还要蠢的机制
 It's something much, much more dumb than that,
 
-1351
+1362
 01:09:05,380 --> 01:09:07,500
 就是在合适的地方插入RESTORE指令
 it's this one place you're putting the restore instruction.
 
-1352
+1363
 01:09:08,560 --> 01:09:09,790
 就可以自动地实现
 It's just automatic.
 
-1353
+1364
 01:09:14,720 --> 01:09:17,550
 学生：但这不会影响到时间复杂度 对吧？
 AUDIENCE: But that's not affecting the time complexity is it?
 
-1354
+1365
 01:09:17,580 --> 01:09:17,870
 教授：不会
 PROFESSOR: No.
 
-1355
+1366
 01:09:18,600 --> 01:09:21,770
 学生：它不会迭代地处理
 AUDIENCE: It's just that it's handling it recursively
 
-1356
+1367
 01:09:21,800 --> 01:09:23,020
 而是会递归地处理
 instead of iteratively.
 
-1357
+1368
 01:09:23,020 --> 01:09:27,340
 但就从完成这两个运算的时间来说
 But, in terms of the order of time it takes to finish the operation,
 
-1358
+1369
 01:09:27,370 --> 01:09:29,220
 它们都是相同的 对吧？
 it's the same one way or the other, right?
 
-1359
+1370
 01:09:29,470 --> 01:09:29,760
 教授 ：是的
 PROFESSOR: Yes.
 
-1360
+1371
 01:09:29,790 --> 01:09:32,680
 尾递归不会改变任何东西的时间复杂度
 Tail recursion is not going to change the time complexity of anything
 
-1361
+1372
 01:09:32,720 --> 01:09:33,290
 因为 从某种意义上来说
 because, in some sense,
 
-1362
+1373
 01:09:33,340 --> 01:09:35,150
 两者都是相同的算法
 it's the same algorithm that's going on.
 
-1363
+1374
 01:09:36,020 --> 01:09:39,370
 它只是让这个过程迭代地运行
 What it's doing is really making this thing run as an iteration.
 
-1364
+1375
 01:09:41,000 --> 01:09:42,640
 这样 当参数很大时
 Right? Not going to run out of memory
 
-1365
+1376
 01:09:42,680 --> 01:09:44,220
 它不会耗尽所有的内存
 you know counting up to a giant number
 
-1366
+1377
 01:09:44,750 --> 01:09:46,400
 因为这其中没有压栈
 simply because the stack would get pushed.
 
-1367
+1378
 01:09:48,350 --> 01:09:50,240
 事实上 你们需要相信
 See, the thing you really have to believe is that,
 
-1368
+1379
 01:09:50,560 --> 01:09:51,130
 当我们编写--
 when we write--
 
-1369
+1380
 01:09:51,640 --> 01:09:53,780
 我们一直把这些代码称作“迭代”
 see, we've been writing all these things called iterations,
 
-1370
+1381
 01:09:53,930 --> 01:09:57,990
 把(DEFINE (LOOP) (LOOP))称作无穷循环
 infinite loops, define loop to be called loop.
 
-1371
+1382
 01:10:00,320 --> 01:10:03,360
 这就是一个迭代
 That's is as much an iteration
 
-1372
+1383
 01:10:03,650 --> 01:10:05,660
 跟我们用DO语句来写无穷循环是一样的
 you know as if we wrote do forever loop.
 
-1373
+1384
 01:10:07,630 --> 01:10:09,280
 它们只是语法上不同而已
 It's just syntactic sugar as the difference.
 
-1374
+1385
 01:10:09,280 --> 01:10:11,320
 它们实际上都是迭代
 These things are real, honest to god, iterations?
 
-1375
+1386
 01:10:14,730 --> 01:10:16,080
 它们并不改变时间复杂度
 They don't change the time complexity,
 
-1376
+1387
 01:10:16,110 --> 01:10:18,530
 但是它会把它们变成真正的迭代
 but they turn them into real iterations.
 
-1377
+1388
 01:10:21,680 --> 01:10:23,800
 好吧 下课
 All right, thank you.
