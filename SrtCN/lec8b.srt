@@ -1,0 +1,6089 @@
+﻿1
+00:00:00,000 --> 00:00:02,144
+Learning-SICP 学习小组
+倾情制作
+
+2
+00:00:02,400 --> 00:00:05,600
+《计算机程序的构造和解释》
+
+3
+00:00:18,910 --> 00:00:21,792
+我们已经了解了查询语言的使用方式
+PROFESSOR: All right, well, we've seen how the query language works.
+
+4
+00:00:22,640 --> 00:00:25,072
+现在该来讨论如何实现了
+Now, let's talk about how it's implemented.
+
+5
+00:00:26,280 --> 00:00:27,984
+你们也应该能够猜到
+You already pretty much can guess
+
+6
+00:00:28,592 --> 00:00:29,470
+它其中的原理了
+what's going on there.
+
+7
+00:00:29,470 --> 00:00:31,648
+它的最底层是一个模式匹配器
+At the bottom of it, there's a pattern matcher.
+
+8
+00:00:32,810 --> 00:00:34,256
+我们在《基于规则的控制语言》一课中
+And we looked at a pattern matcher
+
+9
+00:00:34,672 --> 00:00:36,944
+已经介绍过模式匹配器了
+when we did the rule-based control language.
+
+10
+00:00:38,110 --> 00:00:40,592
+我举个例子来让你们温习一下
+Just to remind you, here are some sample patterns.
+
+11
+00:00:41,520 --> 00:00:43,680
+这个模式会匹配
+This is a pattern that will match
+
+12
+00:00:43,808 --> 00:00:44,928
+一个含有三个元素的表
+any list of three things
+
+13
+00:00:44,960 --> 00:00:47,104
+其中 首元素为A
+which the first is a
+
+14
+00:00:47,168 --> 00:00:48,336
+其次是C
+the second is c
+
+15
+00:00:48,480 --> 00:00:50,192
+而中间可以为任意元素
+and the middle one can be anything.
+
+16
+00:00:50,650 --> 00:00:52,272
+所以在这个小型的模式匹配语言中
+So in this little pattern-matching syntax,
+
+17
+00:00:52,304 --> 00:00:54,050
+你只能区分一种类型
+there's only one distinction you make.
+
+18
+00:00:54,050 --> 00:00:57,200
+也就是区分字面量或者变量
+There's either literal things or variables,
+
+19
+00:00:57,232 --> 00:00:58,864
+以问号开头的就是变量
+and variables begin with question mark.
+
+20
+00:01:01,370 --> 00:01:03,648
+因此这个模式会匹配任意的三元表
+So this matches any list of three things
+
+21
+00:01:04,448 --> 00:01:06,500
+只要它的首元素为A 而第三个元素为C
+of which the first is a and the second is c.
+
+22
+00:01:06,500 --> 00:01:09,008
+而这个模式匹配的三元表
+This one matches any list of three things
+
+23
+00:01:10,432 --> 00:01:12,530
+它的首元素必须是符号'JOB
+of which the first is the symbol job.
+
+24
+00:01:12,530 --> 00:01:13,904
+第二个元素为任意值
+The second can be anything.
+
+25
+00:01:14,210 --> 00:01:15,904
+第三个元素必须是一个二元表
+And the third is a list of two things
+
+26
+00:01:15,952 --> 00:01:17,728
+二元表的首元素为符号'COMPUTER
+of which the first is the symbol computer
+
+27
+00:01:17,888 --> 00:01:19,424
+第二个元素可以为任意值
+and the second can be anything.
+
+28
+00:01:20,480 --> 00:01:25,552
+而下一条模式所匹配的三元表
+And this one, this next one matches any list of three things,
+
+29
+00:01:25,872 --> 00:01:26,992
+区别就在于
+and the only difference is,
+
+30
+00:01:28,400 --> 00:01:31,320
+在于第三个元素的首元素必须为符号'COMPUTER
+here, the third list, the first is the symbol computer,
+
+31
+00:01:31,760 --> 00:01:33,296
+表剩余部分可以是任意值
+and then there's some rest of the list.
+
+32
+00:01:35,040 --> 00:01:37,536
+也就是说 上面是二元表 而下面没有限定数目
+So this means two elements and this means arbitrary number.
+
+33
+00:01:37,860 --> 00:01:39,744
+然而我们的语言实现
+And our language implementation isn't
+
+34
+00:01:39,856 --> 00:01:42,064
+根本不用操心如何去实现这个点号
+isn't even going to have to worry about implementing this dot
+
+35
+00:01:42,112 --> 00:01:44,176
+因为这个由Lisp读取器自动地完成
+because that's automatically done by Lisp's reader.
+
+36
+00:01:48,340 --> 00:01:50,310
+要注意 匹配器还要保持一致性
+Remember matchers also have some consistency in them.
+
+37
+00:01:50,310 --> 00:01:52,320
+这个模式匹配一个三元表
+This match is a list of three things
+
+38
+00:01:52,592 --> 00:01:53,984
+表的首元素是A
+of which the first is a.
+
+39
+00:01:54,430 --> 00:01:55,792
+而第二个元素和第三个元素可以是任意值
+And the second and third can be anything,
+
+40
+00:01:55,808 --> 00:01:57,088
+但它们必须是相同的
+but they have to be the same thing.
+
+41
+00:01:57,940 --> 00:01:58,848
+它们都是?X
+They're both called x.
+
+42
+00:01:59,600 --> 00:02:01,552
+而这个模式匹配一个四元表
+And this matches a list of four things
+
+43
+00:02:01,968 --> 00:02:03,264
+其中第一个元素与第四个元素相同
+of which the first is the fourth
+
+44
+00:02:03,664 --> 00:02:05,152
+而第二个元素与第三个元素相同
+and the second is the same as the third.
+
+45
+00:02:05,590 --> 00:02:08,608
+最后一个模式匹配以A开头的任意表
+And this last one matches any list that begins with a.
+
+46
+00:02:09,680 --> 00:02:11,056
+以A开头
+The first thing is a,
+
+47
+00:02:11,232 --> 00:02:12,560
+余下的可以是任意值
+and the rest can be anything.
+
+48
+00:02:14,040 --> 00:02:16,608
+这是对我们已经学习过的模式匹配语言
+So that's just a review of pattern matcher syntax
+
+49
+00:02:16,624 --> 00:02:17,872
+的一个回顾
+that you've already seen.
+
+50
+00:02:18,780 --> 00:02:19,648
+还记得吗
+And remember,
+
+51
+00:02:19,792 --> 00:02:22,288
+这是由一个叫做MATCH的过程实现的
+that's implemented by some procedure called match.
+
+52
+00:02:24,870 --> 00:02:36,064
+MATCH有三个参数：PAT、DATA以及DICTIONARY
+And match takes a pattern and some data and a dictionary.
+
+53
+00:02:43,200 --> 00:02:47,120
+MATCH考虑的是
+And match asks the question
+
+54
+00:02:47,790 --> 00:02:52,640
+利用给定DICTIONAY中的绑定
+is there any way to match this pattern against this data object
+
+55
+00:02:53,552 --> 00:02:56,736
+能够找到一种方法把模式与数据对象匹配起来吗？
+subject to the bindings that are already in this dictionary?
+
+56
+00:02:58,160 --> 00:02:59,216
+比如说
+So, for instance,
+
+57
+00:02:59,568 --> 00:03:06,432
+如果我们想要把模式(?X ?Y ?Y ?X)
+if we're going to match the pattern x, y, y, x
+
+58
+00:03:07,712 --> 00:03:13,840
+与数据对象(A B B A)相匹配
+against the data a, b, b, a
+
+59
+00:03:15,120 --> 00:03:20,528
+又给定了一个字典 X=A
+subject to a dictionary, that says x equals a.
+
+60
+00:03:22,010 --> 00:03:25,232
+MATCH就会说：“它们是一致的”
+Then the matcher would say, yes, that's consistent.
+
+61
+00:03:25,260 --> 00:03:27,168
+再给定的字典说 X=A 的情况下
+These match, and it's consistent
+
+62
+00:03:27,808 --> 00:03:30,208
+模式与数据相匹配
+with what's in the dictionary to say that x equals a.
+
+63
+00:03:30,320 --> 00:03:31,600
+而匹配的结果则是
+And the result of the match
+
+64
+00:03:32,256 --> 00:03:34,304
+一个扩展了的词典
+is the extended dictionary
+
+65
+00:03:34,464 --> 00:03:37,600
+其中包含 X=A Y=B
+that says x equals a and y equals b.
+
+66
+00:03:39,490 --> 00:03:42,240
+MATCH接收模式、数据以及字典
+So a matcher takes in pattern data dictionary,
+
+67
+00:03:42,384 --> 00:03:44,544
+如果成功匹配就输出一个扩展后的词典
+puts out an extended dictionary if it matches,
+
+68
+00:03:44,976 --> 00:03:46,840
+否则就报错
+or if it doesn't match, says that it fails.
+
+69
+00:03:46,840 --> 00:03:47,712
+因此 比如说
+So, for example,
+
+70
+00:03:47,888 --> 00:03:50,384
+如果我在这里使用同样的模式
+if I use the same pattern here,
+
+71
+00:03:50,976 --> 00:03:55,120
+如果我用模式(?X ?Y ?Y ?X)
+if I say this x, y, y, x
+
+72
+00:03:55,660 --> 00:03:58,496
+去匹配(A B B A)
+match a, b, b, a
+
+73
+00:03:59,470 --> 00:04:02,840
+并给定词典 Y=A
+with the dictionary y equals a,
+
+74
+00:04:05,152 --> 00:04:06,816
+那么MATCH就会输出FAIL
+then the matcher would put out fail.
+
+75
+00:04:12,528 --> 00:04:14,656
+你们已经见过模式匹配器的代码了
+Well, you've already seen the code for a pattern matcher
+
+76
+00:04:15,008 --> 00:04:16,176
+我就不会再去细讲
+so I'm not going to go over it,
+
+77
+00:04:16,640 --> 00:04:19,776
+这跟我们以前做的类似
+but it's the same thing we've been doing before.
+
+78
+00:04:21,190 --> 00:04:23,220
+我们在《基于规则的系统》中已经见过了
+You saw that in the system on rule-based control.
+
+79
+00:04:23,220 --> 00:04:24,560
+基本上是同样的匹配器
+It's essentially the same matcher.
+
+80
+00:04:24,950 --> 00:04:27,664
+实际上 我认为这里的语法还更简单一点
+In fact, I think the syntax is a little bit simpler
+
+81
+00:04:28,160 --> 00:04:29,312
+因为我们不用去关心
+because we're not worrying about
+
+82
+00:04:29,408 --> 00:04:31,400
+任意变量、任意表达式之类的东西
+arbitrary constants and expressions and things.
+
+83
+00:04:31,400 --> 00:04:32,880
+这里面只区分变量和常量
+There's just variables and constants.
+
+84
+00:04:35,790 --> 00:04:37,328
+那么 有了模式匹配器以后
+OK, well, given that,
+
+85
+00:04:38,464 --> 00:04:39,610
+基本查询又是怎么样的呢？
+what's a primitive query?
+
+86
+00:04:42,970 --> 00:04:45,344
+基本查询将会是一个相当复杂的东西
+Primitive query is going to be a rather complicated thing.
+
+87
+00:04:46,672 --> 00:05:03,580
+就拿查询(JOB ?X (?D . ?Y))来说
+It's going to be-- let's think about the query job of x is d dot y.
+
+88
+00:05:07,040 --> 00:05:08,736
+我们可能会输入这样的查询
+That's a query we might type in.
+
+89
+00:05:09,400 --> 00:05:11,392
+这又将如何在系统内实现呢？
+That's going to be implemented in the system.
+
+90
+00:05:14,144 --> 00:05:15,664
+我们可以把它想做这个小盒子
+We'll think of it as this little box.
+
+91
+00:05:15,700 --> 00:05:16,800
+这是一条基本查询
+Here's the primitive query.
+
+92
+00:05:18,880 --> 00:05:20,304
+这个小盒子将会
+What this little box is going to do
+
+93
+00:05:22,240 --> 00:05:27,280
+以两条流作为输入
+is take in two streams and put out a stream.
+
+94
+00:05:31,968 --> 00:05:33,200
+并输出一条流
+and put out a stream.
+
+95
+00:05:34,030 --> 00:05:36,192
+因此一条基本查询的形状
+So the shape of a primitive query
+
+96
+00:05:36,512 --> 00:05:38,464
+就将是有两条输入流
+is that it's a thing where two streams come in
+
+97
+00:05:38,672 --> 00:05:39,968
+和一条输出流
+and one stream goes out.
+
+98
+00:05:41,120 --> 00:05:46,208
+而这些流 来自于这里的数据库
+What these streams are going to be is down here is the database.
+
+99
+00:05:51,952 --> 00:05:53,936
+因此我们把数据库中的所有数据
+So we imagine all the things in the database
+
+100
+00:05:55,930 --> 00:05:57,200
+想象成一条流
+sort of sitting there in a stream
+
+101
+00:05:57,310 --> 00:05:58,400
+而这个盒子不断地吸取
+and this thing sucks on them.
+
+102
+00:06:00,368 --> 00:06:02,432
+那么 数据库中有什么呢？
+So what are some things that might be in the database?
+
+103
+00:06:08,432 --> 00:06:20,320
+首先是(JOB (ALYSSA ...))
+Oh, job of Alyssa is something
+
+104
+00:06:21,968 --> 00:06:23,712
+以及还有其它的JOB数据
+and some other job is something.
+
+105
+00:06:25,770 --> 00:06:30,416
+想象一下 数据库中的所有事实都在这条流中
+So imagine all of the facts in the database sitting there in the stream.
+
+106
+00:06:32,040 --> 00:06:33,104
+都到了这里
+That's what comes in here.
+
+107
+00:06:33,360 --> 00:06:34,528
+而这条流送来的
+What comes in here
+
+108
+00:06:34,896 --> 00:06:36,520
+是一些字典
+is a stream of dictionaries.
+
+109
+00:06:38,510 --> 00:06:41,408
+其中一个就可能是
+So one particular dictionary might say
+
+110
+00:06:46,704 --> 00:06:49,312
+Y=PROG
+might say y equals programmer.
+
+111
+00:06:55,470 --> 00:06:56,640
+现在 查询工作就是要
+Now, what the query does
+
+112
+00:06:57,072 --> 00:06:59,808
+当它从这条流中取得一个字典后
+when it gets in a dictionary from this stream,
+
+113
+00:07:02,010 --> 00:07:06,672
+它会搜寻数据库中的东西
+it finds all possible ways of matching the query
+
+114
+00:07:07,456 --> 00:07:10,240
+来尽可能产生所有匹配结果
+against whatever is coming in from the database.
+
+115
+00:07:11,390 --> 00:07:12,896
+它把查询视作一种模式
+It looks at the query as a pattern,
+
+116
+00:07:13,152 --> 00:07:16,720
+并将它们与数据库中的事实匹配起来
+matches it against any fact from the database
+
+117
+00:07:16,960 --> 00:07:21,984
+结合着相应的字典中的数据
+or all possible ways of finding and matching the database
+
+118
+00:07:22,944 --> 00:07:25,680
+找到数据库中所有匹配的结果
+with respect to this dictionary that's coming in.
+
+119
+00:07:27,550 --> 00:07:29,696
+所以针对数据库中的每条事实
+So for each fact in the database,
+
+120
+00:07:29,728 --> 00:07:34,350
+它都会调用(MATCH PAT FACT DICTIONAY)来检查
+it calls the matcher using the pattern, fact, and dictionary.
+
+121
+00:07:35,110 --> 00:07:37,680
+如果成功匹配
+And every time it gets a good match,
+
+122
+00:07:38,192 --> 00:07:39,936
+它就输出一个扩展了的字典
+it puts out the extended dictionary.
+
+123
+00:07:40,672 --> 00:07:42,320
+比如说 这里进来了一本字典
+So, for example, if this one comes in
+
+124
+00:07:43,008 --> 00:07:44,096
+并且成功匹配
+and it finds a match,
+
+125
+00:07:44,512 --> 00:07:45,872
+那么就会输出一本字典
+out will come a dictionary
+
+126
+00:07:46,816 --> 00:07:49,792
+本例中就是Y=PROG
+that in this case will have y equals programmer
+
+127
+00:07:51,520 --> 00:07:52,970
+X=...
+nd x equals something.
+
+128
+00:07:56,544 --> 00:07:58,752
+Y=PROG X=...
+y is programmer, x is something,
+
+129
+00:07:58,960 --> 00:08:00,544
+D又是一个新的项
+and d is whatever it found.
+
+130
+00:08:01,728 --> 00:08:02,272
+像这样扩展
+And that's all.
+
+131
+00:08:03,520 --> 00:08:07,824
+当然 它会针对数据库中的所有事实做同样的尝试
+And, of course, it's going to try this for every fact in the dictionary.
+
+132
+00:08:07,980 --> 00:08:09,250
+所以就可能有很多的结果
+So it might find lots of them.
+
+133
+00:08:09,568 --> 00:08:10,592
+可能会产生另一本字典
+It might find another one
+
+134
+00:08:11,280 --> 00:08:17,120
+其中 Y=PROG X=... D=...
+that says y equals programmer and x equals, and d equals.
+
+135
+00:08:19,184 --> 00:08:21,550
+因此 对于每个输入的框架
+So thats, So for one frame coming in,
+
+136
+00:08:21,760 --> 00:08:23,696
+对于每输入一本字典
+it might put out-- for one dictionary coming in,
+
+137
+00:08:23,728 --> 00:08:25,240
+它可能输出很多本字典
+it might put out a lot of dictionaries,
+
+138
+00:08:26,544 --> 00:08:28,672
+或者什么也不输出
+or it might put out none.
+
+139
+00:08:30,470 --> 00:08:38,480
+可能会有一些不匹配的情况 比如X=FOO
+It might have something that wouldn't match like x equals FOO.
+
+140
+00:08:39,024 --> 00:08:40,896
+这个条目不会匹配任何东西
+This one might not match anything
+
+141
+00:08:41,520 --> 00:08:45,120
+就这个框架来说 不会向输出流中输出东西
+in which case nothing will go into this stream corresponding to this frame.
+
+142
+00:08:47,510 --> 00:08:51,280
+或者你也可以输入一个空框架
+Or what you might do is put in an empty frame,
+
+143
+00:08:52,910 --> 00:08:56,240
+空框架是用来
+and an empty frame says try matching all ways--
+
+144
+00:08:59,872 --> 00:09:02,336
+在没有任何约束的情况下
+find all possible ways of matching the query
+
+145
+00:09:02,576 --> 00:09:06,144
+匹配数据库中所有可能的结果
+against something in the database subject to no previous restrictions.
+
+146
+00:09:07,570 --> 00:09:09,168
+这仅仅代表着
+And if you think about what that means, that's just
+
+147
+00:09:10,320 --> 00:09:13,872
+处理你输入的查询 最初所进行的计算
+the computation that's done when you type in a query right off.
+
+148
+00:09:14,208 --> 00:09:15,568
+它试图找出所有的匹配
+It tries to find all matches.
+
+149
+00:09:16,650 --> 00:09:18,832
+基本查询建立了这种机制
+So a primitive query sets up this mechanism.
+
+150
+00:09:19,370 --> 00:09:20,576
+而语言要做的是
+And what the language does,
+
+151
+00:09:22,752 --> 00:09:24,672
+当你在顶层输入这条查询时
+when you type in the query at the top level,
+
+152
+00:09:24,848 --> 00:09:26,144
+它基于这种机制
+it takes this mechanism,
+
+153
+00:09:26,160 --> 00:09:28,352
+它会输入一本空的字典
+feeds in one single empty dictionary,
+
+154
+00:09:30,864 --> 00:09:32,560
+而对于输出的每个东西
+and then for each thing that comes out
+
+155
+00:09:33,088 --> 00:09:35,888
+然后把最初的查询
+takes the original query
+
+156
+00:09:36,560 --> 00:09:40,448
+用不同的字典来实例化
+and instantiates the result with all the different dictionaries,
+
+157
+00:09:40,816 --> 00:09:44,368
+于是实例化后的模式就形成了一条新的流
+producing a new stream of instantiated patterns here.
+
+158
+00:09:44,990 --> 00:09:46,512
+这就是在终端上打印出来的内容
+And that's what gets printed on the terminal.
+
+159
+00:09:48,170 --> 00:09:51,248
+这也就是其中的基本原理
+That's the basic mechanism going on there.
+
+160
+00:09:53,510 --> 00:09:55,488
+那么 这又为什么复杂呢？
+Well, why is that so complicated?
+
+161
+00:09:57,712 --> 00:10:01,008
+除了使用这种基于流的方法
+You probably can think of a lot simpler ways to arrange this match for
+
+162
+00:10:01,376 --> 00:10:04,256
+你们可以想出很多更简单的方法来组织基本查询
+a primitive query rather than having all of these streams floating around.
+
+163
+00:10:05,184 --> 00:10:06,096
+而答案就在于
+And the answer is--
+
+164
+00:10:07,152 --> 00:10:08,512
+你们可能已经在想了
+you probably guess already.
+
+165
+00:10:10,860 --> 00:10:14,096
+答案就是 这种方法能够优雅地
+The answer is this thing extends elegantly
+
+166
+00:10:14,560 --> 00:10:16,768
+实现组合手段
+to implement the means of combination.
+
+167
+00:10:17,790 --> 00:10:18,800
+比如说
+So, for instance,
+
+168
+00:10:20,656 --> 00:10:22,470
+假设我还想实现其它的效果
+suppose I don't only want to do this.
+
+169
+00:10:22,470 --> 00:10:26,960
+我不只是想查询所有人的工作信息
+I don't want to say who to be everybody's job description.
+
+170
+00:10:27,230 --> 00:10:28,352
+假设我还想查询
+Suppose I want to say
+
+171
+00:10:29,472 --> 00:10:35,920
+(AND (JOB ?X (?D . ?Y))
+to say AND the job of x is d dot y
+
+172
+00:10:36,800 --> 00:10:47,040
+(SUPERVIOSR ?X ?Z))
+and the supervisor of x is z.
+
+173
+00:10:48,800 --> 00:10:50,672
+(SUPERVISOR ?X ?Z)这条查询
+Now, supervisor of x is z
+
+174
+00:10:51,392 --> 00:10:52,960
+是另外的一条基本查询
+is going to be another primitive query
+
+175
+00:10:53,712 --> 00:10:58,432
+它也有类似的形状——接收一条数据对象流
+that has the same shape to take in a stream of data objects,
+
+176
+00:10:59,184 --> 00:11:01,648
+一条初始字典流
+a stream of initial dictionaries,
+
+177
+00:11:01,680 --> 00:11:05,520
+字典是你在进行匹配时 需要遵循的约束
+which are the restrictions to try and use when you match,
+
+178
+00:11:05,536 --> 00:11:07,440
+然后它会输出一条字典流
+and it's going to put out a stream of dictionaries.
+
+179
+00:11:08,700 --> 00:11:10,800
+这就是这条基本查询的形状
+So that's what this primitive query looks like.
+
+180
+00:11:11,504 --> 00:11:12,910
+我又该如何实现AND呢？
+And how do I implement the AND?
+
+181
+00:11:12,910 --> 00:11:13,450
+其实很简单
+Well, it's simple.
+
+182
+00:11:13,450 --> 00:11:14,448
+把它们连接起来就好了
+I just hook them together.
+
+183
+00:11:14,880 --> 00:11:16,288
+我把这条查询的输出
+I take the output of this one,
+
+184
+00:11:16,960 --> 00:11:18,816
+连接在这条查询的输入上
+and I put that to the input of that one.
+
+185
+00:11:19,830 --> 00:11:21,840
+然后把这里的字典扇出开来
+And I take the dictionary here and I fan it out.
+
+186
+00:11:26,570 --> 00:11:27,968
+你们就能发现它是如何工作的了
+And then you see how that's going to work,
+
+187
+00:11:29,050 --> 00:11:32,448
+这里会输出一个框架
+because what's going to happen is a frame will now come in here,
+
+188
+00:11:32,512 --> 00:11:36,848
+其中有X、Y和D的绑定
+which has a binding for x, y, and d.
+
+189
+00:11:37,920 --> 00:11:39,280
+当后面的查询接收到结果后
+And then when this one gets it, it'll say,
+
+190
+00:11:39,296 --> 00:11:41,600
+当它了解了这些约束后
+oh, gee, subject to these restrictions,
+
+191
+00:11:42,176 --> 00:11:49,248
+字典中的是Y、X和D的值
+which now already have values in the dictionary for y and x and d,
+
+192
+00:11:51,808 --> 00:11:53,088
+它会搜寻数据库
+it looks in the database and says,
+
+193
+00:11:53,120 --> 00:11:54,928
+试图找到有关SUPERVISOR关系的事实
+gee, can I find any supervisor facts?
+
+194
+00:11:56,048 --> 00:11:58,510
+如果找到了的话 它就会输出一些词典
+And if it finds any, out will come dictionaries
+
+195
+00:11:59,584 --> 00:12:09,340
+其中有Y、X、D以及Z的绑定
+which have bindings for y and x and d and z now.
+
+196
+00:12:12,070 --> 00:12:14,096
+不过要注意
+And then notice that the match---
+
+197
+00:12:14,192 --> 00:12:17,248
+因为这里输入的框架建立了约束
+because the frames coming in here have these restrictions,
+
+198
+00:12:17,610 --> 00:12:20,288
+它保证了当你执行AND运算时
+that's the thing that assures when you do the AND,
+
+199
+00:12:20,496 --> 00:12:24,624
+这两个X是相同的
+this x will mean the same thing as that x.
+
+200
+00:12:26,470 --> 00:12:28,960
+这是因为通过这条流输出时
+Because by the time something comes floating in here,
+
+201
+00:12:29,968 --> 00:12:32,656
+X已经有值了 你要确保匹配的一致性
+x has a value that you have to match against consistently.
+
+202
+00:12:34,460 --> 00:12:36,176
+然后我们想起在MATCH的代码中
+And then you remember from the code from the matcher,
+
+203
+00:12:36,190 --> 00:12:38,176
+有一种操作字典的特殊组织方法
+there was something in the way the matcher did dictionaries
+
+204
+00:12:38,208 --> 00:12:39,820
+确保了匹配的一致性
+that arrange consistent matches.
+
+205
+00:12:40,928 --> 00:12:41,776
+这就是AND的实现
+So there's AND.
+
+206
+00:12:44,080 --> 00:12:46,944
+关键是要注意它的一般性形状
+The important point to notice is the general shape.
+
+207
+00:12:48,496 --> 00:12:51,550
+我们来看看(AND P Q)
+Look at what happened: the AND of two queries, say, P and Q.
+
+208
+00:12:52,880 --> 00:12:55,616
+这里是P和Q
+Here's P and Q.
+
+209
+00:12:57,296 --> 00:12:58,608
+两条查询的AND
+The AND of two queries,
+
+210
+00:13:00,272 --> 00:13:01,190
+看起来像是这样
+well, it looks like this.
+
+211
+00:13:01,190 --> 00:13:04,448
+每一条查询都通过一条流连接数据库
+Each query takes in a stream from the database,
+
+212
+00:13:04,544 --> 00:13:05,712
+一条输入流
+a stream of inputs,
+
+213
+00:13:06,336 --> 00:13:08,176
+并输出一条输出流
+and puts out a stream of outputs.
+
+214
+00:13:10,230 --> 00:13:11,728
+关键是要注意
+And the important point to notice
+
+215
+00:13:12,208 --> 00:13:15,024
+如果我在它们周围画一个盒子
+is that if I draw a box around this thing
+
+216
+00:13:19,264 --> 00:13:23,648
+这就是(AND P Q)
+and say this is AND of P and Q,
+
+217
+00:13:25,664 --> 00:13:30,384
+那么这个盒子也有同样的形状
+then that box has exactly the same overall shape.
+
+218
+00:13:32,048 --> 00:13:34,200
+它也有一条连接数据库的流
+It's something that takes in a stream from the database.
+
+219
+00:13:34,200 --> 00:13:35,744
+但是在内部会扇出开来
+Here it's going to get fanned out inside,
+
+220
+00:13:36,608 --> 00:13:37,936
+但是在外部你看不到
+but from the outside you don't see that.
+
+221
+00:13:38,160 --> 00:13:40,640
+它接收一个流 并输出一个流
+It takes an input stream and puts out an output stream.
+
+222
+00:13:42,064 --> 00:13:43,168
+这就是AND
+So this is AND.
+
+223
+00:13:43,570 --> 00:13:45,728
+类似地 OR可能看起像这样
+And then similarly, OR would look like this.
+
+224
+00:13:46,020 --> 00:13:49,584
+虽然我没给你们演示过OR的用法
+OR would-- although I didn't show you examples of OR.
+
+225
+00:13:49,840 --> 00:13:54,704
+OR会尝试找出P或Q所有匹配的事实
+OR would say can I find all ways of matching P or Q.
+
+226
+00:13:55,808 --> 00:13:58,070
+P、Q两条查询都有各自的形状
+So I have P and Q. Each will have their shape.
+
+227
+00:14:04,460 --> 00:14:06,688
+OR的实现则是
+And the way OR is implemented is
+
+228
+00:14:08,544 --> 00:14:10,912
+我把来自于数据库的流
+I'll take my database stream.
+
+229
+00:14:12,500 --> 00:14:13,490
+扇出开来
+I'll fan it out.
+
+230
+00:14:13,490 --> 00:14:16,048
+把它们分别送给P和Q
+I'll put one into P and one into Q.
+
+231
+00:14:17,440 --> 00:14:21,980
+我把最初的查询流也给扇出开来
+I'll take my initial query stream coming in and fan it out.
+
+232
+00:14:26,750 --> 00:14:29,168
+这样我不但能够得到P的所有结果
+So I'll look at all the answers I might get from P
+
+233
+00:14:29,296 --> 00:14:31,088
+也能得到Q的所有结果
+and all the answers I might get from Q,
+
+234
+00:14:31,616 --> 00:14:34,560
+把这些输出送入某种“附加器”中
+and I'll put them through some sort of thing that appends them
+
+235
+00:14:34,624 --> 00:14:37,488
+或者把它们“合并”到一条流中
+or merges the result into one stream,
+
+236
+00:14:39,648 --> 00:14:40,880
+然后得到输出
+and that's what will come out.
+
+237
+00:14:41,080 --> 00:14:48,240
+而从外部来看 这整个东西就是OR
+And this whole thing from the outside is OR.
+
+238
+00:14:52,350 --> 00:14:54,896
+同样的 当你们从外部观察它时
+And again, you see it has the same overall shape
+
+239
+00:14:55,072 --> 00:14:56,544
+你会发现它具有相同的形状
+And again, you see it has the same overall shape
+
+240
+00:15:01,000 --> 00:15:01,616
+NOT又如何实现呢？
+What's NOT?
+
+241
+00:15:02,020 --> 00:15:03,456
+NOT的原理有些类似
+NOT works kind of the same way.
+
+242
+00:15:04,310 --> 00:15:05,952
+如果我有一条查询P
+If I have some query P,
+
+243
+00:15:06,864 --> 00:15:13,504
+这是一条基本查询P
+If I have P, I take the primitive query for P.
+
+244
+00:15:14,690 --> 00:15:16,320
+现在我要实现(NOT P)
+Here, I'm going to implement NOT P.
+
+245
+00:15:18,688 --> 00:15:20,544
+NOT的作用像是一个过滤器
+And NOT's just going to act as a filter.
+
+246
+00:15:20,720 --> 00:15:21,952
+这里连接数据库
+I'll take in the database
+
+247
+00:15:23,840 --> 00:15:28,288
+这里是输入的字典流
+and my original stream of dictionaries coming in,
+
+248
+00:15:28,780 --> 00:15:31,536
+(NOT P)要做的就是
+and what NOT P will do is
+
+249
+00:15:31,888 --> 00:15:37,400
+对这些东西做过滤
+it will filter these guys.
+
+250
+00:15:39,020 --> 00:15:40,096
+过滤的方法则是
+And the way it will filter it,
+
+251
+00:15:40,192 --> 00:15:42,704
+如果我在这里获得了一本字典
+it will say when I get in a dictionary here,
+
+252
+00:15:43,424 --> 00:15:44,656
+那么我就去找所有的匹配
+I'll find all the matches,
+
+253
+00:15:44,832 --> 00:15:46,480
+然后丢弃找到的结果
+and if I find any, I'll throw it away.
+
+254
+00:15:47,460 --> 00:15:49,936
+如果我没有在这里找到匹配
+And if I don't find any matches to something coming in here,
+
+255
+00:15:50,128 --> 00:15:51,376
+我就把它传递过去
+I'll just pass that through,
+
+256
+00:15:52,400 --> 00:15:53,552
+NOT就是一个纯粹的过滤器
+so NOT is a pure filter.
+
+257
+00:15:55,344 --> 00:15:59,980
+因此AND就类似于一个电阻
+So AND is-- think of these sort of electoral resistors or something.
+
+258
+00:15:59,980 --> 00:16:01,856
+AND是串行的组合
+AND is series combination
+
+259
+00:16:02,496 --> 00:16:04,140
+OR是并行组合
+and OR is parallel combination.
+
+260
+00:16:04,960 --> 00:16:07,460
+然而NOT并不会对字典做任何扩展
+And then NOT is not going to extend any dictionaries at all.
+
+261
+00:16:07,460 --> 00:16:08,400
+它只会做过滤
+It's just going to filter it.
+
+262
+00:16:08,750 --> 00:16:11,792
+它会丢弃那些能够匹配的结果
+It's going to throw away the ones for which it finds a way to match.
+
+263
+00:16:12,640 --> 00:16:14,192
+LISP-VALUE的原理类似
+And lisp-value is sort of the same way.
+
+264
+00:16:14,848 --> 00:16:16,600
+它的过滤器会复杂点
+The filter's a little more complicated.
+
+265
+00:16:16,600 --> 00:16:17,376
+因为要应用到谓词上
+It applies to predicate.
+
+266
+00:16:19,936 --> 00:16:21,648
+这里需要注意的关键点是
+The major point to notice here,
+
+267
+00:16:21,920 --> 00:16:23,552
+我们之前也强调过了
+and it's a major point we've looked at before,
+
+268
+00:16:23,648 --> 00:16:25,296
+就是关于“闭包性质”的思想
+is this idea of closure.
+
+269
+00:16:28,220 --> 00:16:31,808
+我们通过组合手段构建的东西
+The things that we build as a means of combination
+
+270
+00:16:31,952 --> 00:16:34,512
+跟所使用的基本物件
+have the same overall structure
+
+271
+00:16:35,696 --> 00:16:37,584
+有同样的结构
+as the primitive things that we're combining.
+
+272
+00:16:39,750 --> 00:16:41,680
+所以从外面看
+So the AND of two things
+
+273
+00:16:41,712 --> 00:16:43,720
+查询的AND与基本查询结构相同
+looked at from the outside has the same shape.
+
+274
+00:16:44,630 --> 00:16:46,144
+这就意味着
+And what that means is that
+
+275
+00:16:46,940 --> 00:16:50,288
+这里的盒子可以是AND、OR、NOT或者其它的
+this box here could be an AND or an OR or a NOT or something
+
+276
+00:16:50,304 --> 00:16:54,220
+因为它具有相同的形状来连接更大的东西
+because it has the same shape to interface to the larger things.
+
+277
+00:16:54,950 --> 00:16:56,688
+这种思想能够让我们获得
+It's the same thing that allowed us to get
+
+278
+00:16:56,928 --> 00:16:58,960
+Escher绘图语言中的那种复杂度
+complexity in the Escher picture language
+
+279
+00:16:59,550 --> 00:17:01,312
+让你能够仅仅使用序对
+or allows you to immediately build up these
+
+280
+00:17:01,344 --> 00:17:03,260
+构建出这些复杂结构
+complicated structures just out of pairs.
+
+281
+00:17:03,936 --> 00:17:04,784
+这就是“闭包性质”
+It's closure.
+
+282
+00:17:06,280 --> 00:17:08,064
+这种性质
+And that's the thing that
+
+283
+00:17:09,648 --> 00:17:11,728
+能够让我完成你们现在觉得理所当然的事儿
+allowed me to do what by now you took for granted
+
+284
+00:17:11,760 --> 00:17:14,912
+比如我可以查询(AND JOB SALARY)
+I said, gee, there's a query which is AND of job and salary,
+
+285
+00:17:14,912 --> 00:17:18,800
+当然我也可以查询(AND JOB (NOT ...))等等
+and I said, oh, there's another one, which is AND of job, a NOT of something.
+
+286
+00:17:19,260 --> 00:17:20,928
+这种便利是由
+The fact that I can do that is
+
+287
+00:17:20,944 --> 00:17:22,910
+这种“闭包原则”直接带给我们的
+a direct consequence of this closure principle.
+
+288
+00:17:25,184 --> 00:17:27,080
+好吧 提问时间
+OK, let's break and then we'll go on.
+
+289
+00:17:29,328 --> 00:17:30,896
+学生：字典是从哪里来的？
+AUDIENCE: Where does the dictionary come from?
+
+290
+00:17:30,990 --> 00:17:36,032
+教授：字典最初来自于你的输入
+PROFESSOR: The dictionary comes initially from what you type in.
+
+291
+00:17:36,096 --> 00:17:37,328
+因此当你最初进行查询时
+So when you start this up,
+
+292
+00:17:39,168 --> 00:17:41,090
+它首先会建立起这整个结构
+the first thing it does is set up this whole structure.
+
+293
+00:17:41,090 --> 00:17:42,640
+它先输入一个空字典
+It puts in one empty dictionary.
+
+294
+00:17:45,000 --> 00:17:47,248
+如果你只有一条基本查询的话
+And if all you have is one primitive query,
+
+295
+00:17:48,240 --> 00:17:51,104
+那么它就会输出一系列具有内容的字典
+then what will come out is a bunch of dictionaries with things filled in.
+
+296
+00:17:52,310 --> 00:17:54,336
+这里演示的一般性情况是
+The general situation that I have here
+
+297
+00:17:54,512 --> 00:17:59,710
+某个嵌套组合查询的中间过程
+is when this is in the middle of some nest of combined things.
+
+298
+00:18:01,552 --> 00:18:02,304
+所以在那时
+So by the time.
+
+299
+00:18:02,380 --> 00:18:03,790
+让我们来看看这里
+Let's look at the picture over here.
+
+300
+00:18:04,384 --> 00:18:06,730
+这条SUPERVISOR查询得到了某本字典
+This supervisor query gets in some dictionary.
+
+301
+00:18:06,730 --> 00:18:08,032
+这本字典来自于哪里呢？
+Where did this one come from?
+
+302
+00:18:08,730 --> 00:18:11,152
+它来自于
+This dictionary came from the fact that
+
+303
+00:18:12,848 --> 00:18:14,896
+这条基本查询的输出
+I'm looking at the output of this primitive query.
+
+304
+00:18:16,260 --> 00:18:17,888
+说得更具体一点
+So maybe to be very specific,
+
+305
+00:18:18,352 --> 00:18:21,728
+如果我最初在顶层只输入了这条查询
+if I literally typed in just this query at the top level,
+
+306
+00:18:22,272 --> 00:18:22,928
+这整条AND查询
+this AND,
+
+307
+00:18:23,072 --> 00:18:25,280
+它实际上会构建这种结构
+what would actually happen is it would build this structure
+
+308
+00:18:25,500 --> 00:18:30,240
+并使用一本空字典来启动整个过程
+and start up this whole thing with one empty dictionary.
+
+309
+00:18:31,770 --> 00:18:34,336
+处理过程开始后 会产生一系列的字典
+And now this one would process, and a whole bunch of dictionaries
+
+310
+00:18:34,368 --> 00:18:37,360
+其中就有X、Y以及D
+would come out with x, y's and d's in them.
+
+311
+00:18:38,640 --> 00:18:39,584
+向这边传递
+Run it through this one.
+
+312
+00:18:40,190 --> 00:18:42,160
+这就是这条查询的输入
+So now that's the input to this one.
+
+313
+00:18:42,160 --> 00:18:43,728
+这条查询也会生成其它的东西
+This one would now put out some other stuff.
+
+314
+00:18:45,040 --> 00:18:48,224
+如果这整个查询是构建在一个更大的查询中的话
+And if this itself were buried in some larger thing,
+
+315
+00:18:49,312 --> 00:18:51,008
+比如说一条OR查询
+like an OR of something,
+
+316
+00:18:53,424 --> 00:18:55,712
+那么它将输出到下一个查询中
+then that would go feed into the next one.
+
+317
+00:18:58,560 --> 00:19:01,280
+因此最初开始处理时 只有一本空字典
+So you initially get only one empty dictionary when you start it,
+
+318
+00:19:01,680 --> 00:19:04,080
+但是在处理这些复合查询的过程中
+but as you're in the middle of processing these compounds things,
+
+319
+00:19:04,112 --> 00:19:06,656
+会生成各种不同的字典
+that's where these cascades of dictionaries start getting generated.
+
+320
+00:19:07,660 --> 00:19:12,280
+学生：字典都是查询的结果吗？
+AUDIENCE: Dictionaries only come about as a result of using the queries?
+
+321
+00:19:15,120 --> 00:19:17,696
+它们会变成
+Or do they stays, do they become--
+
+322
+00:19:18,848 --> 00:19:22,816
+它们存储在数据库中吗？
+do they stay someplace in space like the database does?
+
+323
+00:19:23,680 --> 00:19:24,980
+它们是临时数据吗？
+Are these temporary items?
+
+324
+00:19:24,980 --> 00:19:27,184
+教授：它们是在MATCH过程中临时创建的
+PROFESSOR: They're created temporarily in the matcher.
+
+325
+00:19:28,030 --> 00:19:29,880
+但它们实际存放在内存中
+Really, they're someplace in storage.
+
+326
+00:19:29,880 --> 00:19:33,024
+最初 某人创建了一本THE-EMPTY-DICT字典
+Initially, someone creates a thing called the empty dictionary
+
+327
+00:19:34,224 --> 00:19:36,800
+送入这个匹配过程
+that gets initially fed to this match procedure,
+
+328
+00:19:36,810 --> 00:19:39,056
+MATCH过程据此构建新字典
+and then the match procedure builds some dictionaries,
+
+329
+00:19:39,070 --> 00:19:40,272
+并把它们传递下去
+and they get passed on and on.
+
+330
+00:19:40,768 --> 00:19:42,480
+学生：因此匹配完成后它们就被丢弃了？
+AUDIENCE: OK, so they'll go way after the match?
+
+331
+00:19:43,640 --> 00:19:46,256
+教授：实际上 当没人需要它们后（就被废料回收了）
+PROFESSOR: They'll go away when no one needs them again, yeah.
+
+332
+00:19:51,900 --> 00:19:53,600
+学生：似乎AND查询对数据库
+AUDIENCE: It appears that the AND performs
+
+333
+00:19:53,632 --> 00:19:55,370
+进行了一些冗余操作
+some redundant searches of the database.
+
+334
+00:19:55,960 --> 00:19:57,488
+如果第一条子句扫描过了
+If the first clause matched,
+
+335
+00:19:57,504 --> 00:19:59,900
+比如说前两个元素没有匹配 而第三个元素匹配了
+let's say, the third element and not on the first two elements,
+
+336
+00:20:00,256 --> 00:20:03,648
+然而第二条子句又会检查这两个元素
+the second clause is going to look at those first two elements again,
+
+337
+00:20:04,320 --> 00:20:06,592
+然后又一次丢弃这些不匹配的元素
+discarding them because they don't match.
+
+338
+00:20:06,640 --> 00:20:08,720
+而字典中已经有匹配的项了
+The match is already in the dictionary.
+
+339
+00:20:10,000 --> 00:20:12,560
+如果我们把数据库中的数据
+Would it makes sense to carry the data element
+
+340
+00:20:12,576 --> 00:20:14,432
+跟字典同时传递 这样可行么？
+from the database along with the dictionary?
+
+341
+00:20:15,690 --> 00:20:17,600
+教授：实际上 通常来说
+PROFESSOR: Yeah, there're... Well, in general,
+
+342
+00:20:17,632 --> 00:20:19,480
+我们能够以其它方式来安排这些搜索
+there are other ways to arrange this search,
+
+343
+00:20:20,128 --> 00:20:21,740
+你也可以做一些分析
+and there's some analysis that you can do.
+
+344
+00:20:21,740 --> 00:20:23,168
+我记得书里面就有这样的习题
+I think there's a problem in the book,
+
+345
+00:20:23,872 --> 00:20:26,656
+是考察通过安排AND子句的顺序
+which talks about a different way that you can cascade AND
+
+346
+00:20:27,008 --> 00:20:29,200
+来消除不同类型的冗余
+to eliminate various kinds of redundancies.
+
+347
+00:20:29,850 --> 00:20:30,720
+而这里只是为了
+This one is meant to be--
+
+348
+00:20:31,328 --> 00:20:34,544
+用非常简单的情况来向你们展示它们是如何配合的
+was mainly meant to be very simple so you can see how they fit together.
+
+349
+00:20:34,704 --> 00:20:35,380
+但是你说得非常对
+But you're quite right.
+
+350
+00:20:35,380 --> 00:20:37,328
+这些冗余是可以避免的
+There are redundancies here that you can get rid of.
+
+351
+00:20:38,370 --> 00:20:40,800
+这也是这门语言缓慢的原因之一
+That's another reason why this language is somewhat slow.
+
+352
+00:20:41,190 --> 00:20:42,704
+你们可以让它变得更聪明
+There are a lot smarter things you can do.
+
+353
+00:20:42,930 --> 00:20:46,224
+我只是为了向你们演示非常简单的、原理性的实现
+We're just trying to show you a very simple, in principle, implementation.
+
+354
+00:20:51,220 --> 00:20:53,232
+学生：您是根据Prolog来建模这门语言的
+AUDIENCE: Did you model this language on Prolog,
+
+355
+00:20:53,248 --> 00:20:55,136
+还是说它只是偶然地像Prolog？
+or did it just come out looking like Prolog?
+
+356
+00:21:04,960 --> 00:21:07,088
+教授：Gerry教授昨天羞辱了一大堆人
+PROFESSOR: Well, Gerry insulted a whole bunch of people yesterday,
+
+357
+00:21:07,248 --> 00:21:09,920
+我想说真实的情况是
+so I might as well say that the MIT attitude towards Prolog is
+
+358
+00:21:10,190 --> 00:21:12,608
+MIT的研究人员在1971年做了类似的事
+is something that people did in about 1971
+
+359
+00:21:12,640 --> 00:21:15,600
+但是发现这个方向并不正确 并停止了研究
+and decided that it wasn't really the right thing and stopped.
+
+360
+00:21:16,120 --> 00:21:22,800
+因此我们是根据查询处理的基本原理建模的
+So we modeled this on the sort of natural way that this thing was done
+
+361
+00:21:22,848 --> 00:21:24,730
+大概在1971年左右
+in about 1971,
+
+362
+00:21:25,136 --> 00:21:27,248
+只是说 那时候我们还没有用流来实现
+except at that point, we didn't do it with streams.
+
+363
+00:21:28,272 --> 00:21:33,040
+然后我们 -- 但我们使用了它差不多六个月后
+And then we... After we were using it for about six months,
+
+364
+00:21:33,080 --> 00:21:34,912
+发现它存在各种各样的问题
+we discovered that it had all these problems,
+
+365
+00:21:34,944 --> 00:21:36,300
+稍后我会解释
+some of which I'll talk about later.
+
+366
+00:21:37,330 --> 00:21:38,192
+然后我们就想
+And we said,
+
+367
+00:21:38,448 --> 00:21:39,920
+Prolog一定解决了这些问题
+gee, Prolog must have fixed those,
+
+368
+00:21:39,930 --> 00:21:41,216
+但却发现它并没有
+and then we found out that it didn't.
+
+369
+00:21:41,250 --> 00:21:43,024
+从这种意义上来说 它确实跟Prolog一样
+So this does about the same thing as Prolog.
+
+370
+00:21:43,600 --> 00:21:44,950
+学生：Prolog基于流么？
+AUDIENCE: Does Prolog use streams?
+
+371
+00:21:44,950 --> 00:21:46,200
+教授：不 Prolog基于的是
+PROFESSOR: No. Prolog --
+
+372
+00:21:46,784 --> 00:21:51,040
+就行为上来说 我们的语言很像Prolog
+In how it behaves, it behaves a lot like Prolog.
+
+373
+00:21:51,040 --> 00:21:52,960
+Prolog使用回溯策略
+Prolog uses a backtracking strategy.
+
+374
+00:21:53,800 --> 00:21:55,712
+但是Prolog有一个优点非常好
+But the other thing that's really good about Prolog
+
+375
+00:21:55,728 --> 00:21:57,984
+也使得它变得实用
+that makes it a usable thing
+
+376
+00:21:58,280 --> 00:22:01,504
+你知道吗
+is that there's a really very, very
+
+377
+00:22:01,680 --> 00:22:04,090
+它们精心设计了Prolog的编译器
+there's a really very, very well-engineered compiler technology
+
+378
+00:22:04,112 --> 00:22:05,328
+使得它能够高速运行
+that makes it run fast.
+
+379
+00:22:06,656 --> 00:22:10,816
+因此 虽然我们这门语言非常缓慢地输出答案
+So although you saw the merge spitting out these answers very, very slowly,
+
+380
+00:22:11,664 --> 00:22:13,616
+真正的Prolog程序却运行得非常快
+a real Prolog will run very, very fast.
+
+381
+00:22:14,704 --> 00:22:16,480
+这是因为 尽管搜索过程十分低效
+Because even though it's sort of doing this,
+
+382
+00:22:16,670 --> 00:22:20,816
+Prolog卓越的编译器也会高效地完成工作
+the real work that went into Prolog is a very, very excellent compiler effort.
+
+383
+00:22:24,304 --> 00:22:25,216
+休息一下吧
+Let's take a break.
+
+384
+00:22:25,420 --> 00:22:36,176
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+385
+00:22:36,352 --> 00:22:39,872
+《计算机程序的构造和解释》
+
+386
+00:23:01,488 --> 00:23:05,120
+讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+
+387
+00:23:05,180 --> 00:23:09,056
+《计算机程序的构造和解释》
+
+388
+00:23:09,120 --> 00:23:13,664
+逻辑式程序设计 II
+
+389
+00:23:16,650 --> 00:23:18,832
+我们已经考察过了基本查询
+We've looked at the primitive queries
+
+390
+00:23:19,216 --> 00:23:23,520
+以及如何使用流来实现组合手段
+and the ways that streams are used to implement the means of combination:
+
+391
+00:23:23,792 --> 00:23:25,728
+AND、OR以及NOT
+AND and OR and NOT.
+
+392
+00:23:26,950 --> 00:23:28,432
+现在 该讨论抽象手段了
+Now, let go on to the means of abstraction.
+
+393
+00:23:29,580 --> 00:23:32,800
+回想一下 我们这门语言的抽象手段是RULE
+Remember, the means of abstraction in this language are rules.
+
+394
+00:23:35,150 --> 00:23:37,792
+(BOSS ?Z ?D)描述的是
+So z is a boss in division d
+
+395
+00:23:39,184 --> 00:23:43,776
+如果某人在D部门工作
+if there's some x who has a job in division d
+
+396
+00:23:45,680 --> 00:23:47,472
+并且Z是X的上司
+and z is the supervisor of x.
+
+397
+00:23:48,900 --> 00:23:50,608
+这就是所谓的“BOSS”
+That's what it means for someone to be a boss.
+
+398
+00:23:52,260 --> 00:23:53,152
+并且 实际上
+So, and in effect,
+
+399
+00:23:53,344 --> 00:23:55,616
+如果我们考察一下编写的规则与这边的关系
+if you think about what we're doing with relation to this,
+
+400
+00:23:56,800 --> 00:23:57,904
+这是我们编写的查询
+there's the query we wrote--
+
+401
+00:23:57,936 --> 00:24:01,900
+这个是(JOB ?X ?D) 而这个是(SUPERVISOR ?X ?Z)
+the job of x is in d and the supervisor of x is z--
+
+402
+00:24:02,192 --> 00:24:04,288
+我们实际想要把这一大堆东西
+what we in effect want to do is take this whole mess
+
+403
+00:24:05,072 --> 00:24:06,576
+用一个盒子封装起来
+and draw a box around it
+
+404
+00:24:19,080 --> 00:24:24,544
+然后把这个盒子里的所有东西
+and say this whole thing inside the box
+
+405
+00:24:25,152 --> 00:24:32,480
+认为是(BOSS ?Z ?D)
+is boss of z in division d.
+
+406
+00:24:33,900 --> 00:24:35,250
+这是我们想要达到的效果
+That's in effect what we want to do.
+
+407
+00:24:38,720 --> 00:24:39,728
+因此 比如说
+So, for instance,
+
+408
+00:24:43,184 --> 00:24:44,080
+我们这样做了过后
+if we've done that,
+
+409
+00:24:45,008 --> 00:24:47,840
+我们想要检查
+and we want to check whether or not it's true
+
+410
+00:24:47,952 --> 00:24:50,512
+Ben Bitdiddle是否为计算机分部的BOSS
+that Ben Bitdiddle is a boss in the computer division,
+
+411
+00:24:51,104 --> 00:25:02,864
+如果我想查询 (BOSS (BITDIDDLE BEN) COMPUTER)
+so if I want to say boss of Ben Bitdiddle in the computer division,
+
+412
+00:25:04,784 --> 00:25:07,088
+想象一下把这条查询输入系统
+imagine typing that in as query to the system,
+
+413
+00:25:07,120 --> 00:25:09,168
+实际上发生的是
+in effect what we want to do
+
+414
+00:25:10,672 --> 00:25:12,928
+在这里先构建一本字典
+is set up a dictionary here,
+
+415
+00:25:15,820 --> 00:25:23,632
+其中 ?Z=BITDIDDLE
+which has z to Ben Bitdiddle
+
+416
+00:25:28,880 --> 00:25:33,310
+?D=COMPUTER
+and d to computer.
+
+417
+00:25:37,088 --> 00:25:38,624
+这个字典又是来自于哪里呢？
+Where did that dictionary come from?
+
+418
+00:25:38,688 --> 00:25:40,710
+我们来看下幻灯片
+Let's look at the slide for one second.
+
+419
+00:25:40,710 --> 00:25:43,712
+这本字典是通过把
+That dictionary came from matching the query
+
+420
+00:25:44,304 --> 00:25:46,336
+查询(BOSS (BITDIDDLE BEN) COMPUTER)
+that said boss of Ben Bitdiddle and computer
+
+421
+00:25:46,512 --> 00:25:49,632
+与规则的结论(BOSS ?Z ?D)相匹配得到
+onto the conclusion of the rule: boss of z and d.
+
+422
+00:25:51,650 --> 00:25:54,112
+所以我们把规则的结论和查询匹配了起来
+So we match the query to the conclusion of the rule.
+
+423
+00:25:54,190 --> 00:25:55,536
+这样我们就获得了一本字典
+That gives us a dictionary,
+
+424
+00:25:58,992 --> 00:26:02,544
+现在我们就要把这本字典输入到这整个结构中
+and that's the thing that we would now like to put into this whole big thing
+
+425
+00:26:02,928 --> 00:26:05,568
+进行处理 并观察是否有输出
+and process and see if anything comes out the other side.
+
+426
+00:26:06,670 --> 00:26:09,888
+如果输出了结果 那么查询就为真
+If anything comes out, it'll be true.
+
+427
+00:26:11,330 --> 00:26:12,370
+这是基本的思想
+That's the basic idea.
+
+428
+00:26:12,370 --> 00:26:13,248
+因此 通常来说
+So in general,
+
+429
+00:26:14,032 --> 00:26:15,408
+我们实现规则的方法就是
+the way we implement a rule
+
+430
+00:26:15,856 --> 00:26:18,896
+用规则的结论去匹配
+is we match the conclusion of the rule
+
+431
+00:26:20,864 --> 00:26:22,960
+假设为真的查询
+against something we might want to check it's true.
+
+432
+00:26:23,580 --> 00:26:25,120
+这个过程会产生一本字典
+That match gives us a dictionary,
+
+433
+00:26:25,296 --> 00:26:28,224
+在有了相关字典后
+and with respect to that dictionary,
+
+434
+00:26:30,352 --> 00:26:34,512
+我们来处理规则的体
+we process the body of the rule.
+
+435
+00:26:36,336 --> 00:26:37,680
+基本上就是这样了
+Well, that's really all there is,
+
+436
+00:26:38,640 --> 00:26:41,440
+但还有两个技术点
+except for two technical points.
+
+437
+00:26:43,040 --> 00:26:44,320
+首先就是
+The first technical point is that
+
+438
+00:26:45,744 --> 00:26:47,264
+我也可能有其它的问法
+I might have said something else.
+
+439
+00:26:47,510 --> 00:26:48,416
+比如说
+I might have said
+
+440
+00:26:50,544 --> 00:26:52,368
+查询计算机分部的BOSS
+who's the boss in the computer division?
+
+441
+00:26:52,544 --> 00:26:56,320
+就可以查询 (BOSS ?WHO COMPUTER)
+So I might say boss of who in computer division.
+
+442
+00:27:00,784 --> 00:27:01,632
+这样做了以后
+And if I did that,
+
+443
+00:27:02,576 --> 00:27:04,624
+我真正想要做的
+what I would really like to do in effect is not
+
+444
+00:27:05,040 --> 00:27:06,496
+就是先建立一本字典
+is start up this dictionary
+
+445
+00:27:08,352 --> 00:27:09,888
+其中有一些约束
+with a match that sort of says,
+
+446
+00:27:09,936 --> 00:27:11,200
+比如 ?D=COMPUTER
+well, d is computer
+
+447
+00:27:14,352 --> 00:27:18,480
+而?Z等同于?WHO
+and z is whatever who is.
+
+448
+00:27:21,700 --> 00:27:23,220
+我们的匹配器不会那么做
+And our matcher won't quite do that.
+
+449
+00:27:23,220 --> 00:27:27,008
+这不是模式和数据的匹配方式
+That's not quite matching a pattern against data.
+
+450
+00:27:28,580 --> 00:27:29,728
+这是在匹配两个模式
+It's matching two patterns
+
+451
+00:27:29,744 --> 00:27:31,584
+并判断它们是否一致
+sort of saying are they consistent or not
+
+452
+00:27:31,904 --> 00:27:33,480
+又是什么使它们不一致
+or what ways make them consistent.
+
+453
+00:27:33,480 --> 00:27:36,432
+换句话说 我们需要的不是一个模式匹配器
+In other words, what we need is not quite a pattern matcher,
+
+454
+00:27:36,960 --> 00:27:38,912
+而是一种更一般性的东西
+but something a little bit more general
+
+455
+00:27:39,136 --> 00:27:40,112
+就是“合一”算法
+called a unifier.
+
+456
+00:27:44,420 --> 00:27:48,064
+“合一”是更为一般化的模式匹配算法
+And a unifier is a slight generalization of a pattern matcher.
+
+457
+00:27:49,530 --> 00:27:52,176
+合一算法接收两条模式
+What a unifier does is take two patterns
+
+458
+00:27:53,232 --> 00:27:57,536
+它考虑的是：可以找到哪些一般性的元素
+and say what's the most general thing you can substitute
+
+459
+00:27:58,208 --> 00:28:00,016
+用来代换模式中的变量
+for the variables in those two patterns
+
+460
+00:28:02,688 --> 00:28:05,088
+使得它俩能够同时满足
+to make them satisfy the pattern simultaneously?
+
+461
+00:28:05,680 --> 00:28:06,608
+让我来举个例子
+Let me give you an example.
+
+462
+00:28:08,864 --> 00:28:14,490
+我有一个含有两个元素的模式：(?X ?X)
+If I have the pattern two-element list, which is x and x,
+
+463
+00:28:15,760 --> 00:28:17,152
+它描述的是一个二元表
+so this is I have a two-element list
+
+464
+00:28:17,320 --> 00:28:18,640
+不管元素具体是什么
+where both elements are the same
+
+465
+00:28:18,672 --> 00:28:20,040
+但两个元素是相同的
+and otherwise I don't care what they are,
+
+466
+00:28:20,400 --> 00:28:22,832
+我把它与另一个模式进行“合一”
+and I unify that against the pattern
+
+467
+00:28:22,920 --> 00:28:24,624
+后者描述的是一个二元表
+that says there's a two-element list,
+
+468
+00:28:24,656 --> 00:28:27,616
+首元素一张由A、?Y、C构成的表
+and the first one is a and something and c
+
+469
+00:28:28,000 --> 00:28:30,144
+而第二个元素是由A、B、?Z构成的表
+and the second one is a and b and z,
+
+470
+00:28:33,070 --> 00:28:34,880
+那么 合一算法能够告诉我
+then what the unifier should tell me is,
+
+471
+00:28:34,896 --> 00:28:36,176
+在生成的字典中
+oh yeah, in that dictionary,
+
+472
+00:28:36,352 --> 00:28:37,968
+?X必须是(A B C)
+x has to be a, b, c,
+
+473
+00:28:39,344 --> 00:28:41,920
+?Y必须为B ?Z必须为C
+and y has to be d and z has to be c.
+
+474
+00:28:43,440 --> 00:28:46,288
+这些是我必须对X、Y以及Z施加的约束
+Those are the restrictions I'd have to put on the values of x, y, and z
+
+475
+00:28:46,336 --> 00:28:47,580
+以便让两个模式合一
+to make these two unify,
+
+476
+00:28:48,120 --> 00:28:50,848
+或者换句话来说 让它匹配这个?X
+or in other words, to make this match x
+
+477
+00:28:51,152 --> 00:28:53,370
+让它匹配这个?X
+and make this match x.
+
+478
+00:28:55,280 --> 00:28:57,760
+合一算法需要能够推断出这些
+The unifier should be able to deduce that.
+
+479
+00:28:58,540 --> 00:29:01,080
+但是合一算法也会遇到复杂的情况
+But the unifier may-- there are more complicated things.
+
+480
+00:29:01,080 --> 00:29:03,072
+我可能会询问一些复杂的查询
+I might have said something a little bit more complicated.
+
+481
+00:29:03,488 --> 00:29:05,744
+比如这是一个二元表
+I might have said there's a list with two elements,
+
+482
+00:29:07,008 --> 00:29:08,288
+其中的元素都是相同的
+and they're both the same,
+
+483
+00:29:08,864 --> 00:29:11,152
+它要与这个模式进行合一
+and they should unify against something of this form.
+
+484
+00:29:12,650 --> 00:29:15,360
+合一算法也要能够从中推断出
+And the unifier should be able to deduce from that.
+
+485
+00:29:16,890 --> 00:29:19,570
+?Y必须为B
+Like that y would have to be b. y would have to be b.
+
+486
+00:29:19,570 --> 00:29:22,128
+因为这两个是一样的
+Because these two are the same,
+
+487
+00:29:22,224 --> 00:29:23,520
+因此?Y就是B
+so y's got to be b.
+
+488
+00:29:24,340 --> 00:29:27,536
+这里 ?V应该为A
+And v here would have to be a.
+
+489
+00:29:28,940 --> 00:29:30,992
+只要?Z和?W取值相同
+And z and w can be anything,
+
+490
+00:29:31,008 --> 00:29:32,432
+它们就可以是任意值
+but they have to be the same thing.
+
+491
+00:29:35,710 --> 00:29:41,760
+?X就应该是(B A ?W) 其中?W为任意值
+And x would have to be b, followed by a, followed by whatever w
+
+492
+00:29:42,832 --> 00:29:44,680
+或者是?Z -- 因为?Z和?W是一致的
+or whatever z is, which is the same.
+
+493
+00:29:44,704 --> 00:29:49,420
+发现了么 合一算法需要从这些模式中推断出信息
+So you see, the unifier somehow has to deduce things to unify these patterns.
+
+494
+00:29:50,880 --> 00:29:53,520
+所以你们可能认为 这其中有某种魔法般的推理
+So you might think there's some kind of magic deduction going on,
+
+495
+00:29:54,272 --> 00:29:55,232
+但其实并不是
+but there's not.
+
+496
+00:29:55,850 --> 00:29:59,888
+合一算法基本上只是对模式匹配的小小修改
+A unifier is basically a very simple modification of a pattern matcher.
+
+497
+00:30:00,150 --> 00:30:01,856
+如果你们翻阅教材 就会发现
+And if you look in the book, you'll see something like
+
+498
+00:30:02,256 --> 00:30:06,160
+在模式匹配算法中加入了三到四行代码
+like three or four lines of code added to the pattern matcher you just saw
+
+499
+00:30:06,496 --> 00:30:08,176
+来处理对称的情况
+to handle the symmetric case.
+
+500
+00:30:08,280 --> 00:30:10,816
+还记得吗 模式匹配中有一处代码判断
+Remember, the pattern matcher has a place where it says
+
+501
+00:30:11,664 --> 00:30:14,288
+这个变量匹配一个常量吗？
+is this variable matching a constant.
+
+502
+00:30:14,980 --> 00:30:16,420
+如果是的话 就在字典中进行检查
+And if so, it checks in the dictionary.
+
+503
+00:30:16,420 --> 00:30:18,256
+在合一算法中只有另一条子句
+There's only one other clause in the unifier,
+
+504
+00:30:18,496 --> 00:30:20,752
+它判断两个变量是否相匹配
+which says is this variable matching a variable,
+
+505
+00:30:22,000 --> 00:30:23,424
+这种情况下你去查询字典
+in which case you go look in the dictionary
+
+506
+00:30:23,456 --> 00:30:25,680
+看它们在字典的约束下是否一致
+and see if that's consistent with what's in the dictionary.
+
+507
+00:30:27,030 --> 00:30:31,136
+因此 这门语言中的所有“推断”
+So all the, quote, deduction that's in this language,
+
+508
+00:30:31,280 --> 00:30:34,590
+你会发现它蕴含在规则应用中
+if you sort of look at it, sort of sits in the rule applications,
+
+509
+00:30:34,992 --> 00:30:37,888
+更进一步地考察 你会发现在合一算法中
+which, if you look at that, sits in the unifier,
+
+510
+00:30:38,368 --> 00:30:40,320
+如果更进一步地用“显微镜”观察
+which, if you look at that under a microscope,
+
+511
+00:30:40,560 --> 00:30:43,968
+基本上就在模式匹配算法中
+sits essentially in the pattern matcher.
+
+512
+00:30:44,944 --> 00:30:47,072
+这其中并没有什么魔法
+There's no magic at all going on in there.
+
+513
+00:30:47,410 --> 00:30:50,256
+而你们所见到的“推断”
+And the, quote, deduction that you see
+
+514
+00:30:50,944 --> 00:30:52,896
+只是因为其中的递归
+is just the fact that there's this recursion,
+
+515
+00:30:52,928 --> 00:30:55,696
+它一点一点地回绕MATCH过程
+which is unwinding the matches bit by bit.
+
+516
+00:30:56,030 --> 00:30:58,032
+它让这个过程看起来很聪明
+So it looks like this thing is being very clever,
+
+517
+00:30:58,448 --> 00:31:00,368
+但它实际上并不是那么聪明
+but in fact, it's not being very clever at all.
+
+518
+00:31:02,140 --> 00:31:04,416
+当然 合一算法需要聪明地识别出一些情况
+There are cases where a unifier might have to be clever.
+
+519
+00:31:04,880 --> 00:31:05,872
+我来举个例子吧
+Let me show you one more.
+
+520
+00:31:11,070 --> 00:31:13,360
+假设我想要用一个二元表进行合一
+Suppose I want to unify a list of two elements,
+
+521
+00:31:13,488 --> 00:31:14,816
+(?X ?X)
+x and x,
+
+522
+00:31:17,240 --> 00:31:22,144
+另一个模式则是 (?Y (a . ?Y))
+with a thing that says it's y followed by a dot y.
+
+523
+00:31:24,370 --> 00:31:26,128
+现在 如果你想一想它所表达的意思
+Now, if you think of what that would have to mean,
+
+524
+00:31:26,864 --> 00:31:29,712
+它表示了?X应该跟?Y一致
+it would have to mean that x had better be the same as y,
+
+525
+00:31:30,928 --> 00:31:31,664
+同时呢
+but also
+
+526
+00:31:31,824 --> 00:31:36,160
+?X又应该跟(A . ?Y)相同
+x had better be the same as a list whose first element is a and whose rest is y.
+
+527
+00:31:37,330 --> 00:31:39,456
+如果你仔细思考它成立的条件
+And if you think about what that would have to mean,
+
+528
+00:31:42,272 --> 00:31:44,710
+你会发现 ?Y必须是一个由A构成的无穷表
+it would have to mean that y is the infinite list of a's.
+
+529
+00:31:47,500 --> 00:31:48,352
+从某种角度来说
+In some sense,
+
+530
+00:31:49,216 --> 00:31:52,400
+为了完成这样的合一
+in order to do that unification,
+
+531
+00:31:52,608 --> 00:31:54,848
+我需要求解一个不动点方程
+I have to solve the fixed-point equation
+
+532
+00:31:55,056 --> 00:32:01,840
+(CONS 'A Y)=Y
+cons of a to y is equal to y.
+
+533
+00:32:04,570 --> 00:32:06,960
+通常来说 --- 我这个例子很简单
+And in general, I wrote a very simple one.
+
+534
+00:32:07,290 --> 00:32:08,672
+但实际进行合一时
+Really doing unification
+
+535
+00:32:08,976 --> 00:32:11,984
+我们可能要求解一个任意的不动点方程
+might have to solve an arbitrary fixed-point equation:
+
+536
+00:32:12,016 --> 00:32:13,424
+(F Y)=Y
+f of y equals y.
+
+537
+00:32:15,530 --> 00:32:17,088
+你基本上不能保证
+And basically, you can't do that
+
+538
+00:32:17,104 --> 00:32:19,472
+在有穷时间内找到解
+and make the thing finite all the time.
+
+539
+00:32:20,570 --> 00:32:23,600
+我们的逻辑语言又该如何处理这类情况呢？
+So how does the logic language handle that?
+
+540
+00:32:24,896 --> 00:32:26,480
+答案就是：“不处理”
+The answer is it doesn't.
+
+541
+00:32:27,168 --> 00:32:28,048
+它会撒手不干
+It just punts.
+
+542
+00:32:28,730 --> 00:32:31,072
+合一算法中有一处小检查
+And there's a little check in the unifier,
+
+543
+00:32:31,312 --> 00:32:33,824
+用来判断是否为困难的情况
+which says, oh, is this one of the hard cases
+
+544
+00:32:34,448 --> 00:32:38,000
+也就是 匹配这些东西需要求解不动点方程
+which when I go to match things would involve solving a fixed-point equation?
+
+545
+00:32:38,650 --> 00:32:40,816
+遇到这类情况 我就撒手不干
+And in this case, I will throw up my hands.
+
+546
+00:32:42,840 --> 00:32:44,656
+如果不进行这样的检查
+And if that check were not in there,
+
+547
+00:32:45,008 --> 00:32:45,888
+会发生什么情况？
+what would happen?
+
+548
+00:32:47,990 --> 00:32:49,104
+大多数情况就是
+In most cases is
+
+549
+00:32:49,136 --> 00:32:51,312
+合一算法会陷入无穷循环
+that the unifier would just go into an infinite loop.
+
+550
+00:32:53,740 --> 00:32:56,544
+其它的逻辑语言有类似的工作原理
+And other logic programming languages work like that.
+
+551
+00:32:56,800 --> 00:32:58,144
+因此这其中没有什么魔法
+So there's really no magic.
+
+552
+00:32:58,220 --> 00:32:59,936
+简单的情况由匹配器完成
+The easy case is done in a matcher.
+
+553
+00:33:00,100 --> 00:33:01,584
+困难的情况根本不去处理
+The hard case is not done at all.
+
+554
+00:33:02,960 --> 00:33:05,472
+这就是这种技术的现状
+And that's about the state of this technology.
+
+555
+00:33:11,888 --> 00:33:14,240
+现在 我来形式化地描述一下
+OK, Let me just say again formally
+
+556
+00:33:14,272 --> 00:33:16,384
+规则系统的运行原理 -- 也就是合一算法
+how rules work now that I talked about unifiers.
+
+557
+00:33:17,390 --> 00:33:18,752
+因此 正式的定义就是
+So the official definition
+
+558
+00:33:19,200 --> 00:33:20,960
+应用一条规则
+is that to apply a rule,
+
+559
+00:33:24,176 --> 00:33:27,136
+我们需要使用一些之前的术语
+we-- well, let's start using some words we've used before.
+
+560
+00:33:28,270 --> 00:33:32,016
+我们把向查询的盒子中
+Let's talk about sticking dictionaries into
+
+561
+00:33:32,880 --> 00:33:34,784
+塞入字典称作是
+these big boxes of query things
+
+562
+00:33:34,816 --> 00:33:38,544
+相对一个环境或者框架
+as evaluating these large queries
+
+563
+00:33:39,952 --> 00:33:43,850
+对这些大型查询求值
+relative to an environment or a frame.
+
+564
+00:33:43,850 --> 00:33:45,040
+因此 当我们谈及“字典”的时候
+So when you think of that dictionary,
+
+565
+00:33:45,072 --> 00:33:46,280
+“字典”究竟是什么？
+what's the dictionary after all?
+
+566
+00:33:46,720 --> 00:33:48,180
+它是符号的一系列语义
+It's a bunch of meanings for symbols.
+
+567
+00:33:48,180 --> 00:33:50,224
+我们把它叫做“框架”或者“环境”
+That's what we've been calling frames or environments.
+
+568
+00:33:51,800 --> 00:33:55,970
+根据环境进行操作 又是什么？
+What does it mean to do some processing relevant to an environment?
+
+569
+00:33:55,970 --> 00:33:57,424
+我们把这个叫做“求值”
+That's what we've been calling evaluation.
+
+570
+00:33:58,336 --> 00:34:01,560
+因此我们就说 应用一条规则的方法是
+So we can say the way that you apply a rule
+
+571
+00:34:01,920 --> 00:34:06,160
+先通过将给定的查询与规则的结论合一 得到环境
+is to evaluate the rule body relative to an environment
+
+572
+00:34:06,672 --> 00:34:11,580
+再在该环境中求值相应规则的体
+that's formed by unifying the rule conclusion with the given query.
+
+573
+00:34:13,230 --> 00:34:14,512
+我想要让你们注意的是
+And the thing I want you to notice
+
+574
+00:34:14,800 --> 00:34:17,088
+这非常像是
+is the complete formal similarity
+
+575
+00:34:18,160 --> 00:34:21,504
+元循环求值器以及代换模型
+to the net of circular evaluator or the substitution model.
+
+576
+00:34:21,630 --> 00:34:22,736
+规则的应用就是
+To apply a procedure,
+
+577
+00:34:22,860 --> 00:34:28,368
+在一个环境中求值规则的体
+we evaluate the procedure body relative to an environment
+
+578
+00:34:28,544 --> 00:34:33,136
+环境是通过将实际参数与形式参数绑定起来得到的
+that's formed by blinding the procedure parameters to the arguments.
+
+579
+00:34:34,560 --> 00:34:36,416
+规则、规则的应用、过程的应用
+There's a complete formal similarity there
+
+580
+00:34:36,440 --> 00:34:40,416
+它们在形式上完全相似
+between the rules, rule application, and procedure application
+
+581
+00:34:40,576 --> 00:34:42,304
+尽管它们又非常不同
+even though these things are very, very different.
+
+582
+00:34:43,650 --> 00:34:45,616
+再一次地出现了EVAL-APPLY循环
+And again, you have the EVAL APPLY loop.
+
+583
+00:34:47,290 --> 00:34:49,520
+EVAL-APPLY
+EVAL and APPLY.
+
+584
+00:34:53,392 --> 00:34:57,390
+因此通常来说 我们可能会处理一些复合表达式
+So in general, I might be processing some combined expression
+
+585
+00:34:57,424 --> 00:34:59,136
+它们会变成规则的应用
+that will turn into a rule application,
+
+586
+00:35:00,704 --> 00:35:03,280
+进一步又会产生字典、框架或者环境
+which will generate some dictionaries or frames or environments--
+
+587
+00:35:03,312 --> 00:35:04,720
+不管你要怎么叫它
+whatever you want to call them-- from match,
+
+588
+00:35:05,024 --> 00:35:08,432
+它们随后又会作为某个大的复合对象的输入
+which will then be the input to some big compound thing like this.
+
+589
+00:35:08,660 --> 00:35:11,776
+这有它的一部分 并可能有其它规则的应用
+This has pieces of it and may have other rule applications.
+
+590
+00:35:13,580 --> 00:35:15,680
+这基本上就是相同的循环
+And you have essentially the same cycle
+
+591
+00:35:15,720 --> 00:35:18,688
+尽管这里没有什么东西看起来像过程
+even though there's nothing here at all that looks like procedures.
+
+592
+00:35:19,680 --> 00:35:21,872
+这是因为我们创建的语言
+It really has to do with the fact you've built a language
+
+593
+00:35:22,080 --> 00:35:25,490
+它们的组合手段和抽象手段以某种方式展开
+whose means of combination and abstraction unwind in certain ways.
+
+594
+00:35:28,770 --> 00:35:29,520
+通常来说
+And then in general,
+
+595
+00:35:29,776 --> 00:35:31,392
+最顶层所发生的是
+what happens at the very top level,
+
+596
+00:35:33,792 --> 00:35:35,968
+数据库中也有一些规则
+you might have rules in your database also,
+
+597
+00:35:36,656 --> 00:35:38,704
+数据库中的数据也可能是规则
+so things in this database might be rules.
+
+598
+00:35:40,460 --> 00:35:42,064
+它们用来检查对象是否为真
+There are ways to check that things are true.
+
+599
+00:35:42,920 --> 00:35:44,896
+所以这里可能会有规则检查
+So it might come in here and have to do a rule check.
+
+600
+00:35:46,750 --> 00:35:48,160
+然后就会有一些控制结构
+And then there's some control structure
+
+601
+00:35:48,192 --> 00:35:50,480
+用来判断你访问的是规则
+which says, well, you look at some rules, and you look at some data elements,
+
+602
+00:35:50,512 --> 00:35:51,808
+还是数据元素
+and you look at some rules and data elements,
+
+603
+00:35:51,840 --> 00:35:53,120
+然后不断地把它们扇出来开
+and these fan out and out and out.
+
+604
+00:35:53,350 --> 00:35:55,488
+所以基本上不可能说清楚
+So it becomes essentially impossible
+
+605
+00:35:55,680 --> 00:35:57,696
+是用什么样的顺序来查询这些东西的
+to say what order it's looking at these things in,
+
+606
+00:35:58,208 --> 00:36:00,272
+是广度优先还是深度优先
+whether it's breadth first or depth first or anything.
+
+607
+00:36:00,280 --> 00:36:01,648
+另外一个原因是
+And it's even more impossible
+
+608
+00:36:01,664 --> 00:36:05,584
+我们通过惰性流隐藏了实际执行顺序
+because the actual order is somehow buried in the delays of the streams.
+
+609
+00:36:07,696 --> 00:36:11,168
+因此很难说清楚它的扫描顺序
+So what's very hard to tell from this is the order in which it's scanned.
+
+610
+00:36:11,270 --> 00:36:12,160
+但真实的是
+But what's true is,
+
+611
+00:36:12,192 --> 00:36:13,648
+由于你是在流视图观察它的
+because you're looking at the stream view,
+
+612
+00:36:13,904 --> 00:36:15,820
+而它们最终都要被扫描到
+is that all of them eventually get looked at.
+
+613
+00:36:24,980 --> 00:36:28,150
+这里还有一个小小的技术问题
+Let me just mention one tiny technical problem.
+
+614
+00:36:30,880 --> 00:36:33,552
+假设我在这里输入
+Um Suppose I tried over here.
+
+615
+00:36:37,530 --> 00:36:41,008
+假设我输入(BOSS ?Y COMPUTER)
+Suppose I tried saying boss of y is computer,
+
+616
+00:36:44,224 --> 00:36:45,780
+然后就会发生一件有意思的事儿
+then a funny thing would happen.
+
+617
+00:36:45,780 --> 00:36:50,256
+这里的字典就有一项?Y
+As I stuck a dictionary with y in here,
+
+618
+00:36:52,736 --> 00:36:57,376
+而这两个?Y是不相同的
+I might get-- this y is not the same as that y,
+
+619
+00:36:57,424 --> 00:37:00,624
+后者是其它人的工作描述
+which was the other piece of somebody's job description.
+
+620
+00:37:01,580 --> 00:37:03,808
+因此 按照输入“照本宣科”地执行的话
+So if I really only did literally what I said,
+
+621
+00:37:04,224 --> 00:37:06,448
+我们就会遇到变量冲突的问题
+we'd get some variable conflict problems.
+
+622
+00:37:09,280 --> 00:37:10,480
+所以我骗了你们一下
+So I lied to you a little bit.
+
+623
+00:37:10,930 --> 00:37:13,840
+注意 我们之前也遇到过同样的问题
+Notice that problem is exactly a problem we've run into before.
+
+624
+00:37:14,270 --> 00:37:15,568
+具体来说就是
+It is precisely
+
+625
+00:37:15,968 --> 00:37:18,360
+一门语言需要局部变量
+the need for local variables in a language.
+
+626
+00:37:19,240 --> 00:37:21,744
+当我计算SQUARE和SUM-SQUARES的时候
+When I square, when I have the sum of squares,
+
+627
+00:37:21,792 --> 00:37:23,390
+这两个X应该是不同的
+that x had better not be that x.
+
+628
+00:37:24,960 --> 00:37:26,320
+同样的道理
+That's exactly the same as
+
+629
+00:37:27,392 --> 00:37:29,776
+这两个?Y应该也不相同
+as this y had better not be that y.
+
+630
+00:37:31,800 --> 00:37:32,752
+我们知道该如何解决
+And we know how to solve that.
+
+631
+00:37:32,784 --> 00:37:34,490
+就是引入环境模型
+We built -- That was this whole environment model,
+
+632
+00:37:34,512 --> 00:37:37,040
+我们构建类似于“框架链”一类的东西
+and we built chains of frames and all sorts of things like that.
+
+633
+00:37:37,710 --> 00:37:39,104
+还有更加“粗暴”的解决方法
+There's a much more brutal way to solve it.
+
+634
+00:37:39,104 --> 00:37:41,730
+在查询语言中 我们根本不这么做
+In the query language, we didn't even do that.
+
+635
+00:37:41,730 --> 00:37:43,184
+我们的解决方法非常粗暴
+We did something completely brutal.
+
+636
+00:37:43,540 --> 00:37:45,936
+我们规定 每次你在应用一条规则的时候
+We said every time you apply a rule,
+
+637
+00:37:47,264 --> 00:37:49,632
+用一个不会引起冲突的唯一名字
+rename consistently all the variables in the rule
+
+638
+00:37:49,776 --> 00:37:53,504
+统一地为规则中的所有变量更名
+to some new unique names that won't conflict with anything.
+
+639
+00:37:54,040 --> 00:37:57,104
+这个从概念上来说更简单
+If you looked at the -- That's conceptually simpler,
+
+640
+00:37:57,120 --> 00:37:59,240
+但既粗暴 又不是很有效
+but really brutal and not particularly efficient.
+
+641
+00:37:59,970 --> 00:38:01,152
+但是请注意
+But notice,
+
+642
+00:38:01,392 --> 00:38:04,688
+如果我们对Lisp中定义的过程也这么处理
+we could have gotten rid of all of our environment structures
+
+643
+00:38:05,500 --> 00:38:08,720
+那么就不需要环境模型了
+if we defined for procedures in Lisp the same thing.
+
+644
+00:38:08,752 --> 00:38:11,560
+如果我们每次在应用一个过程的时候
+If every time we applied a procedure and did the substitution model
+
+645
+00:38:11,872 --> 00:38:13,904
+我们为过程中的所有变量更名
+we renamed all the variables in the procedure,
+
+646
+00:38:14,192 --> 00:38:16,288
+那么我们就不需要担心局部变量了
+then we never would have had to worry about local variables
+
+647
+00:38:16,336 --> 00:38:17,392
+因为它们不会出现
+because they would never arise.
+
+648
+00:38:19,040 --> 00:38:20,416
+但这种做法比较低效
+OK, well, that would be inefficient,
+
+649
+00:38:20,912 --> 00:38:23,040
+在我们的查询语言中同样也比较低效
+and it's inefficient here in the query language, too,
+
+650
+00:38:23,296 --> 00:38:24,592
+但我们还是这样做了 并让它保持简单
+but we did it to keep it simple.
+
+651
+00:38:25,610 --> 00:38:26,672
+有问题吗？
+Let's break for questions.
+
+652
+00:38:30,880 --> 00:38:33,392
+学生：您这一小节开始的时候
+AUDIENCE: When you started this section,
+
+653
+00:38:33,408 --> 00:38:39,600
+就强调APPLY-EVAL模型是多么的强大
+you emphasized how powerful our APPLY EVAL model was
+
+654
+00:38:39,632 --> 00:38:41,170
+以至于任何语言都适用
+that we could use it for any language.
+
+655
+00:38:41,170 --> 00:38:43,392
+但你又说这门语言将会非常不同
+And then you say we're going to have this language which is so different.
+
+656
+00:38:43,950 --> 00:38:45,136
+但最后却发现这门语言
+It turns out that this language,
+
+657
+00:38:45,584 --> 00:38:47,880
+就像你指出的那样--也是同样的
+as you just pointed out, is very much the same.
+
+658
+00:38:47,880 --> 00:38:49,856
+我在想 您是否是在论证
+I'm wondering if you're arguing that all languages end up
+
+659
+00:38:50,480 --> 00:38:54,576
+所有的语言都可以转化成 规则或过程的应用
+coming down to this you can apply a rule or apply a procedure
+
+660
+00:38:55,120 --> 00:38:55,984
+或者类似的
+or some kind of apply?
+
+661
+00:38:57,072 --> 00:38:58,880
+教授：可以说 几乎所有语言
+PROFESSOR: I would say that pretty much any language
+
+662
+00:38:58,928 --> 00:39:00,304
+我们通过组合手段构建对象
+where you really are building up
+
+663
+00:39:00,928 --> 00:39:04,400
+用简单的名字给它们命名
+these means of combination and giving them simpler names
+
+664
+00:39:04,704 --> 00:39:06,864
+你可以把任何类似的 比如
+and you're saying anything of the sort, like
+
+665
+00:39:07,790 --> 00:39:09,900
+有一种一般性的表达式
+here's a general kind of expression,
+
+666
+00:39:09,984 --> 00:39:11,408
+比如说如何计算某数的平方
+like how to square something,
+
+667
+00:39:12,032 --> 00:39:14,208
+几乎所有的东西都可以称为“过程”
+almost anything that you would call a procedure.
+
+668
+00:39:14,880 --> 00:39:15,888
+如果语言中有这么一部分的话
+If that's got to have parts,
+
+669
+00:39:15,904 --> 00:39:17,248
+那么你就需要能够展开它们
+you have to unwind those parts.
+
+670
+00:39:18,020 --> 00:39:20,192
+你需要有某种组织 使得
+You have to have some kind of organization which says
+
+671
+00:39:20,570 --> 00:39:24,032
+当你查看这些抽象变量 或者说标签的时候
+when I look at the abstract variables or tags
+
+672
+00:39:24,064 --> 00:39:27,100
+它们可能代表着某些特定的东西
+or whatever you want to call them that might stand for particular things,
+
+673
+00:39:28,336 --> 00:39:29,344
+你必须一直跟踪它们
+you have to keep track of that,
+
+674
+00:39:29,392 --> 00:39:30,912
+这就会形成类似于环境的结构
+and that's going to be something like an environment.
+
+675
+00:39:31,720 --> 00:39:32,544
+让后当你要
+And then if you say
+
+676
+00:39:32,704 --> 00:39:35,264
+展开复合对象其中的一个部分的时候
+this part can have parts which I have to unwind,
+
+677
+00:39:35,808 --> 00:39:37,440
+你就需要EVAL-APPLY循环了
+you've got to have something like this cycle.
+
+678
+00:39:39,970 --> 00:39:43,200
+有很多很多的语言有这样的特点
+And lots and lots of languages have that character
+
+679
+00:39:43,360 --> 00:39:45,408
+它们也是按这种方式组织的
+as long ... when they sort of get put together in this way.
+
+680
+00:39:45,590 --> 00:39:47,200
+而这门语言特殊之处在于
+This language again really is different
+
+681
+00:39:47,216 --> 00:39:49,504
+从外界看 并没有“过程”
+because there's nothing like procedures on the outside.
+
+682
+00:39:50,690 --> 00:39:52,688
+而当你剖开表层 深入到实现中去
+When you go below the surface and you see the implementation,
+
+683
+00:39:52,704 --> 00:39:54,240
+当然 你会发现本质是一样的
+of course, it starts looking the same.
+
+684
+00:39:54,870 --> 00:39:56,950
+但是从外界来看 这是一种非常不同的世界观
+But from the outside, it's a very different world view.
+
+685
+00:39:56,950 --> 00:39:58,544
+你没有计算输入的函数
+You're not computing functions of inputs.
+
+686
+00:40:03,970 --> 00:40:05,712
+学生：您之前提到过
+AUDIENCE: You mentioned earlier that
+
+687
+00:40:06,608 --> 00:40:09,552
+当用模式匹配来实现这些规则时
+when you build all of these rules in pattern matcher
+
+688
+00:40:10,010 --> 00:40:11,424
+由于使用了流实现延迟求值
+and with the delayed action of streams,
+
+689
+00:40:11,456 --> 00:40:12,720
+所以没有办法知道
+you really have no way to know
+
+690
+00:40:13,376 --> 00:40:15,360
+对象的求值顺序
+in what order things are evaluated.
+
+691
+00:40:15,584 --> 00:40:15,940
+教授：是这样的
+PROFESSOR: Right.
+
+692
+00:40:15,940 --> 00:40:18,288
+学生：但这就表明
+AUDIENCE: And that would indicate then that
+
+693
+00:40:18,940 --> 00:40:22,288
+我们只能表达总是为真的陈述性知识
+you should only express declarative knowledge that's true for all-time,
+
+694
+00:40:22,304 --> 00:40:23,790
+语言并不支持时间序列
+no-time sequence built into it.
+
+695
+00:40:23,950 --> 00:40:25,472
+否则的话 后果就会--
+Otherwise, these things get all--
+
+696
+00:40:27,390 --> 00:40:28,768
+教授：是的 非常正确
+PROFESSOR: Yes. Yes.
+
+697
+00:40:28,820 --> 00:40:29,488
+问题在于
+The question is
+
+698
+00:40:30,064 --> 00:40:32,608
+这个本来就是用来处理陈述性知识的
+this really is set up for doing declarative knowledge,
+
+699
+00:40:33,264 --> 00:40:34,816
+而就我目前所演示的来说 不支持
+and as I presented it-- no
+
+700
+00:40:35,712 --> 00:40:39,568
+休息之后我会向你们揭露这其中的丑陋之处
+and I'll show you some of the ugly warts under this after the break.
+
+701
+00:40:40,830 --> 00:40:42,608
+就如我目前所展示的 它只是进行逻辑运算
+As I presented it, it's just doing logic.
+
+702
+00:40:43,070 --> 00:40:44,528
+原理上来说 如果我们做的是逻辑运算
+And in principle, if it were logic,
+
+703
+00:40:44,544 --> 00:40:46,810
+用什么顺序完成并不会造成影响
+it wouldn't matter what order it's getting done.
+
+704
+00:40:48,840 --> 00:40:51,552
+但是呢
+And it's quite true
+
+705
+00:40:51,600 --> 00:40:53,616
+当你在进行一些具有副作用的操作的时候
+when you start doing things where you have side effects
+
+706
+00:40:53,680 --> 00:40:55,200
+比如向数据库中添加项
+like adding things to the database
+
+707
+00:40:55,230 --> 00:40:58,160
+从中取出项 等等操作
+and taking things out, and we'll see some others,
+
+708
+00:40:58,752 --> 00:41:00,832
+你就丧失了这类控制
+you loose that kind of control.
+
+709
+00:41:01,290 --> 00:41:02,940
+因此 这就与Prolog完全不同
+So, for example, contrasting with Prolog.
+
+710
+00:41:02,940 --> 00:41:05,152
+Prolog有各种功能
+Say Prolog has various features
+
+711
+00:41:05,168 --> 00:41:07,792
+能够让你利用求值的顺序
+where you really exploit the order of evaluation.
+
+712
+00:41:09,640 --> 00:41:11,770
+人们也这么来写Prolog
+And people write Prolog programs that way.
+
+713
+00:41:11,770 --> 00:41:14,048
+结果发现这样变得非常困难
+That turns out to be very complicated in Prolog,
+
+714
+00:41:14,320 --> 00:41:17,552
+但如果你是Prolog程序专家 你就可以这么做
+although if you're an expert Prolog programmer, you can do it.
+
+715
+00:41:18,590 --> 00:41:20,210
+但是我认为你们现在并不可以
+However, here I don't think you can do it at all.
+
+716
+00:41:20,210 --> 00:41:21,248
+它相当复杂
+It's very complicated
+
+717
+00:41:21,728 --> 00:41:23,648
+因为你们放弃了对事先安排的
+because you really are giving up control over
+
+718
+00:41:23,776 --> 00:41:25,728
+求值顺序的控制权
+any prearranged order of trying things.
+
+719
+00:41:27,150 --> 00:41:30,160
+学生：这就表明 当你有一个函数式映射时
+AUDIENCE: Now, that would indicate then that you have a functional mapping.
+
+720
+00:41:30,670 --> 00:41:32,512
+而你最初在讲这门课的时候
+And when you started out this lecture,
+
+721
+00:41:32,992 --> 00:41:34,080
+你说过
+you said that
+
+722
+00:41:34,672 --> 00:41:36,704
+我们在表述作为关系的陈述性知识
+we express the declarative knowledge which is a relation,
+
+723
+00:41:37,152 --> 00:41:38,810
+因为我们讨论的不是输入和输出
+and we don't talk about the inputs and the outputs.
+
+724
+00:41:41,216 --> 00:41:43,370
+教授：这是关于“函数式”的双关语
+PROFESSOR: Well, there's a pun on functional, right?
+
+725
+00:41:43,370 --> 00:41:45,792
+一种是没有副作用
+There's functional in the sense of no side effects
+
+726
+00:41:46,208 --> 00:41:48,160
+因此并不依赖于求值的顺序
+and not depending on what order is going on.
+
+727
+00:41:48,700 --> 00:41:51,040
+还有就是数学意义上的“函数”
+And then there's functional in the sense of mathematical function,
+
+728
+00:41:51,072 --> 00:41:52,220
+有关于输入和输出
+which means input and output.
+
+729
+00:41:52,592 --> 00:41:54,368
+我想这就是你想表达的双关
+And it's just that pun that you're making, I think.
+
+730
+00:41:56,510 --> 00:41:58,512
+学生：我对其中两条语句不太明白
+AUDIENCE: I'm a little unclear on what you're doing with
+
+731
+00:41:58,816 --> 00:42:00,704
+也就是那两条有关BOSS的语句
+two statements, the two boss statements.
+
+732
+00:42:01,270 --> 00:42:05,744
+是不是 第一条查询构建了一个数据库
+Is the first one building up the database
+
+733
+00:42:05,760 --> 00:42:08,080
+然后第二条查询--
+and the second one a query or--
+
+734
+00:42:09,072 --> 00:42:10,128
+教授：抱歉
+PROFESSOR: OK, I'm sorry.
+
+735
+00:42:12,440 --> 00:42:15,168
+这里的意思是 如果我输入这样的查询
+What I meant here, if I type something like this in as a query--
+
+736
+00:42:16,128 --> 00:42:18,448
+我应该最初就给你们举这个例子
+I should have given an example way at the very beginning.
+
+737
+00:42:19,470 --> 00:42:23,520
+如果我输入(JOB (BITDIDDLE BEN) (COMPUTER WIZARD))
+If I type in job, Ben Bitdiddle, computer wizard,
+
+738
+00:42:25,040 --> 00:42:27,770
+系统会找到一处事实
+what the processing will do is if it finds a match,
+
+739
+00:42:28,304 --> 00:42:30,288
+来完全匹配这条查询
+it'll find a match to that exact thing,
+
+740
+00:42:30,864 --> 00:42:33,280
+然后输出(JOB (BITDIDDLE BEN) (COMPUTER WIZARD))
+and it'll type out a job, Ben Bitdiddle, computer wizard.
+
+741
+00:42:34,220 --> 00:42:35,600
+如果没找到这样的匹配
+If it doesn't find a match,
+
+742
+00:42:35,696 --> 00:42:36,752
+它就什么也不输出
+it won't find anything.
+
+743
+00:42:37,400 --> 00:42:39,552
+我应该这么来表述
+So what I should have said is the way
+
+744
+00:42:39,568 --> 00:42:42,272
+这门语言是用来查询某个表述是否为真
+you use the query language to check whether something is true,
+
+745
+00:42:43,408 --> 00:42:45,776
+这是逻辑式编程的目的之一
+that's one of the things you want to do in logic programming,
+
+746
+00:42:46,416 --> 00:42:49,344
+输入一条查询 要么得到结果 要么没有
+is you type in your query and either that comes out or it doesn't.
+
+747
+00:42:50,680 --> 00:42:52,384
+因此 我这里想要演示的是
+So what I was trying to illustrate here,
+
+748
+00:42:52,416 --> 00:42:54,800
+我想要在介绍合一算法前
+I wanted to start with a very simple example
+
+749
+00:42:54,832 --> 00:42:56,624
+举一个简单的例子
+before talking about unifiers.
+
+750
+00:42:57,480 --> 00:42:58,112
+所以 我应该说
+So what I should have said,
+
+751
+00:42:58,144 --> 00:43:00,960
+如果我想要检查 这个是否为真
+if I just wanted to check whether this is true,
+
+752
+00:43:01,184 --> 00:43:03,280
+我就可以将它输入 并看有没有任何输出
+I could type that in and see if anything came out
+
+753
+00:43:05,168 --> 00:43:06,272
+学生：然后第二条查询
+AUDIENCE: And then the second one--
+
+754
+00:43:06,288 --> 00:43:07,840
+教授：第二条就是真正意义上的“查询”
+PROFESSOR: The second one would be a real query.
+
+755
+00:43:07,888 --> 00:43:09,120
+学生：好的 真正的查询
+AUDIENCE: A real query, yeah.
+
+756
+00:43:10,770 --> 00:43:13,104
+教授：在这里它就会输出与?WHO相关的信息
+PROFESSOR: What would come out, see, it would go in here say with WHO,
+
+757
+00:43:13,904 --> 00:43:15,744
+就会有一个框架 存储着
+and in would go frame that says z
+
+758
+00:43:16,624 --> 00:43:18,816
+?Z=?WHO ?D=COMPUTER
+z is bound to who and d is bound to computer.
+
+759
+00:43:19,560 --> 00:43:20,496
+这个会传递下去
+And this will pass through,
+
+760
+00:43:20,512 --> 00:43:21,952
+传递到这里的时候
+and then by the time it got out of here,
+
+761
+00:43:22,016 --> 00:43:23,250
+?WHO就会被绑定起来
+who would pick up a binding.
+
+762
+00:43:26,950 --> 00:43:28,768
+学生：在合一那里
+AUDIENCE: On the unifying thing there,
+
+763
+00:43:29,180 --> 00:43:35,968
+我还是不太清楚?WHO和?Z之间发生了什么
+I still am not sure what happens with who and z.
+
+764
+00:43:36,460 --> 00:43:39,584
+要进行合一的话 这里的规则说
+OK being unifying-- the rule here says--
+
+765
+00:43:42,032 --> 00:43:46,224
+你说过 两个模式变量之间不能互相绑定
+OK, so you say that you can't make question mark equal to question mark who.
+
+766
+00:43:46,260 --> 00:43:48,080
+教授：模式匹配器确实不能这样
+PROFESSOR: Right. That's what the matcher can't do.
+
+767
+00:43:48,360 --> 00:43:50,832
+但对合一算法来说
+But unifier, what this will mean to a unifier
+
+768
+00:43:51,920 --> 00:43:54,016
+就是一个有存储三个变量的环境
+is that there's an environment with three variables.
+
+769
+00:43:56,690 --> 00:43:57,904
+其中?D=COMPUTER
+d here is computer.
+
+770
+00:43:58,520 --> 00:44:00,192
+?Z=?WHO
+z is whatever who is.
+
+771
+00:44:01,830 --> 00:44:05,264
+所以在稍后的匹配过程中
+So if later on in the matcher routine
+
+772
+00:44:07,200 --> 00:44:10,384
+如果?WHO=3
+it said, for example, who has to be 3,
+
+773
+00:44:12,064 --> 00:44:13,664
+那么当我再查找字典的时候
+then when I looked up in the dictionary,
+
+774
+00:44:14,000 --> 00:44:16,400
+它会告诉我 因为?Z=?WHO 所以?Z=3
+it will say, oh, z is 3 because it's the same as who.
+
+775
+00:44:18,360 --> 00:44:20,448
+从某种意义上来说 你就只需要修改这一点
+And that's in some sense the only thing you need to do
+
+776
+00:44:20,464 --> 00:44:21,984
+就可以把合一算法变成模式匹配器
+to extend the unifier to a matcher.
+
+777
+00:44:22,480 --> 00:44:24,800
+学生：但是看起来你好像告诉了它 如何进行合一
+AUDIENCE: OK, because it looked like when you were telling how to unify,
+
+778
+00:44:24,830 --> 00:44:26,960
+就像你已经解好了方程 准备好了值
+it looked like you would put the things together in such a way
+
+779
+00:44:26,992 --> 00:44:29,232
+并把它们安排成这样
+that you'd actually solve and have a value for both of them.
+
+780
+00:44:29,770 --> 00:44:31,248
+现在看起来就像是
+And what it looks like now
+
+781
+00:44:31,280 --> 00:44:32,832
+你传递了一本字典
+is that you're actually pass a dictionary
+
+782
+00:44:32,880 --> 00:44:34,860
+其中的两个变量是关联起来的
+with two variables and the variables are linked.
+
+783
+00:44:34,880 --> 00:44:37,230
+教授：实际上 我们在同时求解它们
+PROFESSOR: Right. It only looks like you're solving for both of them
+
+784
+00:44:37,520 --> 00:44:39,744
+这是因为我们想要一下得到整个答案
+because you're sort of looking at the whole solution at once.
+
+785
+00:44:40,540 --> 00:44:42,816
+如果你观察它们是如何被递归地构建的
+If you sort of watch the thing getting built up recursively,
+
+786
+00:44:42,816 --> 00:44:43,740
+基本上就是这样了
+it's merely this.
+
+787
+00:44:44,980 --> 00:44:48,400
+学生：也就是确实要传递含有两个变量的字典？
+AUDIENCE: OK, so you do pass off that dictionary with two variables?
+
+788
+00:44:48,400 --> 00:44:49,110
+教授：是的
+PROFESSOR: That's right.
+
+789
+00:44:49,110 --> 00:44:49,680
+学生：然后把它们关联起来？
+AUDIENCE: And link?
+
+790
+00:44:50,384 --> 00:44:52,912
+教授：就像通常的字典那样
+PROFESSOR: Right. It just looks like an ordinary dictionary.
+
+791
+00:44:54,352 --> 00:44:56,064
+学生：你在讨论合一算法的时候
+AUDIENCE: When you're talking about the unifier,
+
+792
+00:44:56,096 --> 00:45:00,192
+你说过在某些情况下
+is it that there are some cases or some points
+
+793
+00:45:00,752 --> 00:45:03,984
+合一不能够完成
+that you are not able to unify them?
+
+794
+00:45:04,032 --> 00:45:04,304
+教授：是的
+PROFESSOR: Right.
+
+795
+00:45:04,970 --> 00:45:08,464
+学生：那么 是否可以通过编写规则
+AUDIENCE: Can you just by building the rules or
+
+796
+00:45:09,160 --> 00:45:15,936
+或者 写入那些事先知道可解的形式
+writing the forms know in advance if you are going to be able to solve
+
+797
+00:45:16,480 --> 00:45:18,540
+来使得合一算法能够完成
+to get the unification or not?
+
+798
+00:45:18,768 --> 00:45:22,944
+是否可以在规则中添加一些属性
+Can you add some properties either to the rules itself
+
+799
+00:45:23,184 --> 00:45:25,456
+或者向输入的形式中添加属性
+or to the form that you're writing
+
+800
+00:45:25,824 --> 00:45:29,040
+来避免无法进行合一的窘境
+so that you avoid the problem of not finding unification?
+
+801
+00:45:29,180 --> 00:45:31,152
+PROFESSOR: 我想 你也同意
+Well I mean, you can agree,
+
+802
+00:45:31,472 --> 00:45:35,264
+用非常受限的方式来编写查询
+I think, to write in a fairly restricted way where you won't run into it.
+
+803
+00:45:35,600 --> 00:45:36,672
+看 你遇到的是
+See, because what you're getting--
+
+804
+00:45:36,880 --> 00:45:39,120
+仔细看 你遇到问题是在
+see, the place where you get into problems is when you--
+
+805
+00:45:39,680 --> 00:45:44,256
+用像这样的东西去匹配
+well, again, you're trying to match things like that
+
+806
+00:45:44,592 --> 00:45:47,200
+具有这样结构的模式时
+against things where these have structure,
+
+807
+00:45:47,552 --> 00:45:55,300
+比如((A ?Y B) ?Y)
+where a, y, b, y something.
+
+808
+00:45:58,980 --> 00:46:01,488
+这是你可能遇到问题的一个地方
+So this is the kind of place where you're going to get into trouble.
+
+809
+00:46:03,070 --> 00:46:05,808
+学生：所以你可以在语法层次上处理它么？
+AUDIENCE: So you can do that syntactically?
+
+810
+00:46:06,140 --> 00:46:08,768
+教授：你可以在写查询时
+PROFESSOR: So you can kind of watch your rules
+
+811
+00:46:08,768 --> 00:46:10,490
+注意你的规则
+in the kinds of things that your writing.
+
+812
+00:46:11,904 --> 00:46:14,080
+学生：这个问题应该由
+AUDIENCE: So that's the problem that the builder
+
+813
+00:46:14,112 --> 00:46:16,272
+数据库的构建者考虑么？
+of the database has to be concerned?
+
+814
+00:46:16,576 --> 00:46:17,808
+教授：这个问题
+PROFESSOR: That's a problem.
+
+815
+00:46:19,930 --> 00:46:22,016
+不完全是数据库的构建者
+It's a problem either-- not quite the builder of the database,
+
+816
+00:46:22,048 --> 00:46:23,616
+或者是表述规则的人
+the person who is expressing the rules,
+
+817
+00:46:24,016 --> 00:46:25,312
+所需要考虑的
+or the builder of the database.
+
+818
+00:46:25,800 --> 00:46:29,792
+当你们仔细审查合一算法的代码时
+What the unifier actually does is you can check at the next level down
+
+819
+00:46:29,920 --> 00:46:31,872
+你们会发现
+when you actually get to the unifier
+
+820
+00:46:32,416 --> 00:46:34,768
+它实际上在查询一个字典
+and you'll see in the code where it looks up in the dictionary.
+
+821
+00:46:34,940 --> 00:46:36,832
+它会问 ?Y的取值应该是什么？
+If it sort of says what does y have to be?
+
+822
+00:46:37,260 --> 00:46:41,424
+?Y应该是一个含有自包含的表达式么？
+Oh, does y have to be something that contains a y as its expression?
+
+823
+00:46:41,960 --> 00:46:43,264
+这时候 合一算法就会说
+At that point, the unifier and say,
+
+824
+00:46:43,280 --> 00:46:46,240
+哦 我正在求解一个不动点方程
+oh my God, I'm trying to solve a fixed-point equation.
+
+825
+00:46:46,240 --> 00:46:46,992
+我还是放弃吧
+I'll give it up here.
+
+826
+00:46:48,592 --> 00:46:51,910
+学生：你区分过数据库中的规则
+AUDIENCE: You make the distinction between the rules in the database.
+
+827
+00:46:51,910 --> 00:46:56,480
+这些规则是加入数据库的么？
+Are the rules added to the database?
+
+828
+00:46:56,950 --> 00:46:57,360
+教授：是的
+PROFESSOR: Yes.
+
+829
+00:46:57,870 --> 00:46:58,870
+我应该这么来说
+Yes, I should have said that.
+
+830
+00:46:58,870 --> 00:47:00,336
+你们可以把规则看作
+One way to think about rules
+
+831
+00:47:00,608 --> 00:47:02,656
+数据库中的其它东西
+is that they're just other things in the database.
+
+832
+00:47:03,712 --> 00:47:06,810
+如果你想要检查数据库中需要检查的东西
+So if you want to check the things that have to be checked in the database,
+
+833
+00:47:06,832 --> 00:47:09,440
+它们就是存在于数据库中的虚拟事实
+they're kind of virtual facts that are in the database.
+
+834
+00:47:09,440 --> 00:47:12,320
+学生：但是在这个解释中
+AUDIENCE: But in that explanation, you made the differentiation
+
+835
+00:47:12,432 --> 00:47:17,264
+你就已经区分了数据库和规则本身
+between database and the rules itself.
+
+836
+00:47:18,230 --> 00:47:19,904
+教授：是的 我应该不这么来说
+PROFESSOR: Yeah, I probably should not have done that.
+
+837
+00:47:20,490 --> 00:47:23,312
+这样做的唯一理由就是实现
+The only reason to do that is in terms of the implementation.
+
+838
+00:47:23,540 --> 00:47:24,672
+当你们查看具体实现时
+When you look at the implementation,
+
+839
+00:47:24,680 --> 00:47:27,504
+会发现其中有部分用来检查数据库中的
+there's a part which says check either primitive
+
+840
+00:47:27,552 --> 00:47:29,850
+基本断言或者规则
+assertions in the database or check rules.
+
+841
+00:47:30,470 --> 00:47:32,720
+这其中的真正原因就是
+And then the real reason, the real reason why
+
+842
+00:47:32,780 --> 00:47:34,560
+你不知道查询结果是以什么顺序输出的
+you can't tell what order things are going to come out in
+
+843
+00:47:34,960 --> 00:47:40,460
+而规则数据库和数据数据库
+is that the rules database and the data database
+
+844
+00:47:40,480 --> 00:47:43,680
+是通过某种延迟求值的方式合并的
+sort of get merged in a kind of delayed evaluation way.
+
+845
+00:47:44,600 --> 00:47:46,800
+这就使得顺序变得非常复杂
+And so that's what makes the order very complicated.
+
+846
+00:47:55,440 --> 00:47:56,096
+那好 我们休息一下
+OK, let's break.
+
+847
+00:47:56,300 --> 00:48:09,904
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+848
+00:48:10,040 --> 00:48:14,416
+《计算机程序的构造和解释》
+
+
+849
+00:48:18,680 --> 00:48:22,096
+讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+
+850
+00:48:22,090 --> 00:48:25,968
+《计算机程序的构造和解释》
+
+851
+00:48:26,000 --> 00:48:29,872
+逻辑式程序设计 II
+
+852
+00:48:33,160 --> 00:48:35,376
+我们已经学习了逻辑式语言与
+We've just seen how the logic language works
+
+853
+00:48:35,392 --> 00:48:36,416
+规则系统的运行原理
+and how rules work.
+
+854
+00:48:37,230 --> 00:48:39,376
+现在 让我们来探讨一个更加深刻的问题
+Now, let's turn to a more profound question.
+
+855
+00:48:40,120 --> 00:48:41,280
+来看下它们意味着什么
+What do these things mean?
+
+856
+00:48:43,180 --> 00:48:46,864
+这把我们带入到整个查询语言中
+That brings us to the subtlest, most devious part
+
+857
+00:48:46,992 --> 00:48:48,672
+最微妙的部分
+of this whole query language business,
+
+858
+00:48:49,216 --> 00:48:53,070
+也就是它看起来与想象中不同的地方
+and that is that it's not quite what it seems to be.
+
+859
+00:48:53,570 --> 00:48:56,224
+AND、OR以及NOT
+AND and OR and NOT
+
+860
+00:48:57,024 --> 00:48:58,880
+以及规则的逻辑蕴含
+and the logical implication of rules
+
+861
+00:48:59,696 --> 00:49:06,640
+并不是逻辑学中的与、或、非以及蕴含
+are not really the AND and OR and NOT and logical implication of logic.
+
+862
+00:49:07,690 --> 00:49:09,712
+让我来举一个实例
+Let me give you an example of that.
+
+863
+00:49:09,910 --> 00:49:12,224
+当然 如果我们有两个逻辑命题
+Certainly, if we have two things in logic,
+
+864
+00:49:12,400 --> 00:49:19,440
+那么(AND P Q)就应该
+it ought to be the case that AND of P and Q
+
+865
+00:49:20,000 --> 00:49:22,592
+等同于(AND Q P)
+is the same as AND of Q and P
+
+866
+00:49:23,100 --> 00:49:24,510
+而(OR P Q)就应该
+and that OR of P and Q
+
+867
+00:49:24,780 --> 00:49:26,510
+等同于(OR Q P)
+is the same as OR of Q and P.
+
+868
+00:49:28,672 --> 00:49:30,096
+但我们来看看这里
+But let's look here.
+
+869
+00:49:30,100 --> 00:49:32,016
+这里是一个例子
+Here's an example.
+
+870
+00:49:32,180 --> 00:49:36,160
+来看看 在我们的数据库中
+Let's talk about somebody outranking somebody else
+
+871
+00:49:36,288 --> 00:49:40,140
+如何表示某人的级别高于他人
+in this our little database organization.
+
+872
+00:49:40,140 --> 00:49:42,896
+我们定义(OUTRANKED-BY ?S ?B)为
+We'll say s is outranked by b
+
+873
+00:49:44,640 --> 00:49:48,624
+或者S是B的上司
+if or if either the supervisor of s is b
+
+874
+00:49:49,630 --> 00:49:51,072
+或者这其中有某个中间经理M
+or there's some middle manager here,
+
+875
+00:49:51,104 --> 00:49:55,820
+其中S是M的上司 M的级别又比B高
+that supervisor of s is m, and m is outranked by b.
+
+876
+00:49:59,648 --> 00:50:02,310
+这是定义OUTRANKED-BY的一种方式
+So there's one way to define rule outranked by.
+
+877
+00:50:02,310 --> 00:50:04,160
+或者我们可以原封不动地写过来
+Or we can write exactly the same thing,
+
+878
+00:50:05,088 --> 00:50:06,912
+除了在最底部的这里
+except at the bottom here,
+
+879
+00:50:07,216 --> 00:50:09,888
+我们颠倒一下这两个子句的顺序
+we reversed the order of these two clauses.
+
+880
+00:50:11,630 --> 00:50:12,992
+当然 如果它们都是逻辑表达式的话
+And certainly if this were logic,
+
+881
+00:50:13,008 --> 00:50:14,880
+它们应该表示的是相同的东西
+those ought to mean the same thing.
+
+882
+00:50:16,690 --> 00:50:17,312
+然而
+However,
+
+883
+00:50:17,712 --> 00:50:19,616
+在我们这个特定的实现中
+in our particular implementation,
+
+884
+00:50:19,648 --> 00:50:22,880
+如果你查询(OUTRANDKED-BY ?WHO (BITDIIDLE BEN))
+if you say something like who's outranked by Ben Bitdiddle,
+
+885
+00:50:23,488 --> 00:50:25,360
+你会发现 这条规则
+what you'll find is that this rule
+
+886
+00:50:26,768 --> 00:50:28,720
+会完美地生成答案
+will work perfectly well and generate answers,
+
+887
+00:50:30,048 --> 00:50:31,984
+然而 这条规则会陷入无穷循环
+whereas this rule will go into an infinite loop.
+
+888
+00:50:34,110 --> 00:50:36,272
+其中的原因就是
+And the reason for that is that
+
+889
+00:50:36,336 --> 00:50:40,336
+这条规则会问谁比BEN BITDIDDLE级别高？
+this will come in and say, oh, who's outranked by Ben Bitdiddle?
+
+890
+00:50:41,920 --> 00:50:43,536
+它试图寻找一个S
+Find an s, find an s
+
+891
+00:50:43,888 --> 00:50:46,224
+使得S比B的级别更高 其中B是BEN BITDIDDLE
+which is outranked by b, where b is Ben Bitdiddle,
+
+892
+00:50:47,504 --> 00:50:49,632
+这会在一个子问题中重复出现
+which is going to happen in it a subproblem.
+
+893
+00:50:50,330 --> 00:50:51,984
+找到一个M
+Oh gee, find an m
+
+894
+00:50:52,240 --> 00:50:54,576
+使得M的级别高于BEN BITDIDDLE
+such as m is outranked by Ben Bitdiddle
+
+895
+00:50:55,616 --> 00:50:57,360
+而对M没有限制
+with no restrictions on m.
+
+896
+00:50:58,560 --> 00:51:00,400
+这就相当于为了解决这个问题
+So this will say in order to solve this problem,
+
+897
+00:51:01,424 --> 00:51:03,296
+我就还需要求解同样的问题
+I solve exactly the same problem.
+
+898
+00:51:04,570 --> 00:51:07,232
+在把它解出来后 我才检查SUPERVISOR关系
+And then after I've solved that, I'll check for a supervisory relationship.
+
+899
+00:51:08,000 --> 00:51:09,168
+然而这条规则没有这样的问题
+Whereas this one won't get into that,
+
+900
+00:51:09,184 --> 00:51:12,350
+因为在它尝试找出这条OUTRANKED-BY规则之前
+because before it tries to find this outranked by,
+
+901
+00:51:12,944 --> 00:51:15,260
+在这里已经对M施加过约束了
+it'll already have had a restriction on m here.
+
+902
+00:51:18,384 --> 00:51:20,944
+随意 这两条规则理论上是相同的
+So these two things which ought to mean the same,
+
+903
+00:51:20,992 --> 00:51:22,672
+但实际上 其中一条会陷入无穷循环
+in fact, one goes into an infinite loop.
+
+904
+00:51:22,860 --> 00:51:25,040
+而另一条不会
+One goes, one does not.
+
+905
+00:51:26,720 --> 00:51:29,776
+通过这个非常极端的例子
+That's a very extreme case
+
+906
+00:51:29,790 --> 00:51:32,656
+你会发现在逻辑式程序设计中
+of a general thing that you'll find in logic programming that
+
+907
+00:51:34,288 --> 00:51:38,704
+如果你改变了AND或OR所连接子句的顺序
+if you start changing the order of the things in the ANDs or ORs,
+
+908
+00:51:39,344 --> 00:51:41,584
+你会发现效率上的巨大差异
+you'll find tremendous differences in efficiency.
+
+909
+00:51:42,240 --> 00:51:43,216
+我们刚刚就看到了
+And we just saw
+
+910
+00:51:43,552 --> 00:51:46,544
+在无穷循环方面的巨大差异
+an infinitely big difference in efficiency and an infinite loop.
+
+911
+00:51:49,190 --> 00:51:51,744
+同样的 这也跟输入规则
+And there are similar things having to do order
+
+912
+00:51:52,000 --> 00:51:53,312
+的顺序有关
+in which you enter rules.
+
+913
+00:51:54,070 --> 00:51:56,480
+向数据库查询规则的顺序
+The order in which it happens to look at rules in the database
+
+914
+00:51:56,700 --> 00:51:59,952
+会极大程度上影响效率：比如得到答案
+may vastly change the efficiency with which it gets out answers or,
+
+915
+00:52:00,464 --> 00:52:02,608
+或者在某些顺序下陷入无穷循环
+in fact, send it into an infinite loop for some orderings.
+
+916
+00:52:03,840 --> 00:52:07,296
+这些都跟
+And this whole thing has to do
+
+917
+00:52:07,632 --> 00:52:10,048
+你检查这些规则的顺序有关
+the fact that you're checking these rules in some order.
+
+918
+00:52:10,950 --> 00:52:14,416
+有些规则的蕴含路径会相当的长
+And some rules may lead to really long paths of implication.
+
+919
+00:52:14,448 --> 00:52:16,064
+而另外一些不会
+Others might, others might not.
+
+920
+00:52:16,440 --> 00:52:17,680
+但你事先并不知道
+And you don't know a priori
+
+921
+00:52:17,728 --> 00:52:19,168
+哪一个长 哪一个短
+which ones are good and which ones are bad.
+
+922
+00:52:19,300 --> 00:52:21,488
+有很多研究都与此有关
+And there's a whole bunch of research having to do with that,
+
+923
+00:52:22,160 --> 00:52:23,760
+其中大多数都是想通过
+mostly having to do with thinking about
+
+924
+00:52:23,952 --> 00:52:26,970
+用并行的方法来实现逻辑式程序设计语言
+making parallel implementations of logic programming languages.
+
+925
+00:52:27,320 --> 00:52:29,904
+某种意义上来说 就是并行地检查所有规则
+And in some sense, what you'd like to do is check all rules in parallel
+
+926
+00:52:30,360 --> 00:52:32,800
+一旦有一条搜索得到答案 就返回结果
+and whichever ones get answers, you bubble them up. And
+
+927
+00:52:33,040 --> 00:52:34,992
+如果某条路径陷入了无穷的推导
+if some go down infinite deductive chain,
+
+928
+00:52:35,020 --> 00:52:38,256
+那么 你只需知道 内存和处理器都非常廉价
+well, you just-- you know, memory is cheap and processors are cheap,
+
+929
+00:52:38,288 --> 00:52:40,490
+让它们根据你的需要一直搜寻就好了
+you just let them buzz for as for as long as you want.
+
+930
+00:52:43,472 --> 00:52:44,832
+尽管如此 与真正的逻辑相比
+There's a deeper problem, though,
+
+931
+00:52:45,184 --> 00:52:50,496
+这门逻辑式语言还有一个更深刻的问题
+in comparing this logic language to real logic.
+
+932
+00:52:50,688 --> 00:52:52,528
+我给你们演示的例子
+The example I just showed you, it
+
+933
+00:52:52,976 --> 00:52:54,800
+只是会陷入无穷循环
+went into an infinite loop maybe,
+
+934
+00:52:55,376 --> 00:52:56,992
+但至少不会给你错误的答案
+but at least it didn't give the wrong answer.
+
+935
+00:52:58,370 --> 00:53:03,648
+当我们开始严肃地把这门逻辑式语言
+There's an actual deeper problem when we start comparing,
+
+936
+00:53:03,680 --> 00:53:05,240
+与真正的经典逻辑作比较时
+you know, seriously comparing
+
+937
+00:53:05,712 --> 00:53:08,464
+就会发现其中最深层次的问题
+this logic language with real classical logic.
+
+938
+00:53:09,490 --> 00:53:12,432
+让我们来看看真正的经典逻辑
+So let's sort of review real classical logic.
+
+939
+00:53:13,712 --> 00:53:21,040
+所有的人类都是凡人
+All humans are mortal.
+
+940
+00:53:22,352 --> 00:53:23,456
+相当经典的逻辑命题
+That's pretty classical logic.
+
+941
+00:53:24,390 --> 00:53:28,672
+然后我们就依照最经典的传统
+Then maybe we'll continue in the very best classical tradition.
+
+942
+00:53:29,248 --> 00:53:32,464
+我们按照最传统的方式来做
+We'll say all-- let's make it really classical.
+
+943
+00:53:32,670 --> 00:53:37,168
+所有的希腊人都是人类
+All Greeks are human,
+
+944
+00:53:40,496 --> 00:53:46,064
+苏格拉底是希腊人
+which has the syllogism that Socrates is a Greek.
+
+945
+00:53:48,176 --> 00:53:49,210
+然后我们又该写什么呢？
+And then what do you write here?
+
+946
+00:53:49,210 --> 00:53:51,890
+经典逻辑中有一个三点符号
+I think three dots, classical logic.
+
+947
+00:53:51,890 --> 00:53:54,336
+因此 我们得到了一个三段论
+Therefore, then the syllogism,
+
+948
+00:53:54,640 --> 00:53:59,552
+苏格拉底是凡人
+Socrates is mortal.
+
+949
+00:54:01,360 --> 00:54:04,912
+这些都是真正的经典逻辑
+So there's some real honest classical logic.
+
+950
+00:54:05,880 --> 00:54:11,056
+把它跟我们经典逻辑数据库比较一下
+Let's compare that with our classical logic database.
+
+951
+00:54:12,400 --> 00:54:14,464
+这是一个经典逻辑数据库
+So here's a classical logic database.
+
+952
+00:54:16,270 --> 00:54:17,488
+(GREEK SOCRATES)
+Socrates is a Greek.
+
+953
+00:54:18,030 --> 00:54:18,848
+(GREEK PLATO)
+Plato is a Greek.
+
+954
+00:54:19,600 --> 00:54:20,400
+(GREEK ZEUS)
+Zeus is a Greek,
+
+955
+00:54:20,848 --> 00:54:21,984
+(GOD ZEUS)
+and Zeus is a god.
+
+956
+00:54:24,120 --> 00:54:29,968
+所有的人类都是凡人
+And all humans are mortal.
+
+957
+00:54:30,540 --> 00:54:32,128
+为了证明某人是平凡的
+To show that something is mortal,
+
+958
+00:54:32,160 --> 00:54:33,600
+只需要证明他是人类
+it's enough to show that it's human.
+
+959
+00:54:34,650 --> 00:54:35,900
+所有的人类都是不可靠的
+All humans are fallible.
+
+960
+00:54:38,900 --> 00:54:40,980
+并且说所有的希腊人都是人类 并不正确
+And all Greeks are humans is not quite right.
+
+961
+00:54:40,980 --> 00:54:44,416
+这条规则说 所有不是神的希腊人都是人类
+This says that all Greeks who are not gods are human.
+
+962
+00:54:45,710 --> 00:54:47,040
+因此为了证明某人是人类
+So to show something's human,
+
+963
+00:54:47,072 --> 00:54:48,896
+只需要说明他是一个希腊人 并且不是神
+it's enough to show it's a Greek and not a god.
+
+964
+00:54:49,320 --> 00:54:52,880
+任何一个希腊神的住址是奥林匹斯山
+And the address of any Greek god is Mount Olympus.
+
+965
+00:54:54,320 --> 00:54:57,168
+这就是一个小型经典逻辑数据库
+So there's a little classical logic database.
+
+966
+00:54:57,390 --> 00:54:59,328
+确实 它运行得相当好
+And indeed, that would work fairly well.
+
+967
+00:54:59,490 --> 00:55:02,096
+如果我们向其询问
+If we type that in and say
+
+968
+00:55:03,472 --> 00:55:06,576
+苏格拉底是凡人么 不可靠么？
+is Socrates mortal or Socrates fallible or mortal?
+
+969
+00:55:06,910 --> 00:55:07,690
+它会输出：是
+It'll say yes.
+
+970
+00:55:07,776 --> 00:55:09,710
+柏拉图是凡人并且不可靠么？
+Is Plato mortal and fallible.
+
+971
+00:55:09,710 --> 00:55:10,240
+它会回答：是
+It'll say yes.
+
+972
+00:55:10,680 --> 00:55:12,210
+如果我们问宙斯是凡人么
+If we say is Zeus mortal?
+
+973
+00:55:12,210 --> 00:55:13,232
+它什么都不会找到
+It won't find anything.
+
+974
+00:55:14,900 --> 00:55:15,968
+运行得非常完美
+And it'll work perfectly well.
+
+975
+00:55:16,544 --> 00:55:20,120
+然而 如果我们想要把它扩展一下
+However, suppose we want to extend this.
+
+976
+00:55:20,120 --> 00:55:23,056
+让我们来定义一下什么是“完美生命体”
+Let's define what it means for someone to be a perfect being.
+
+977
+00:55:23,824 --> 00:55:27,216
+我们把规则PERFECT定义为
+Let's say rule: a perfect being.
+
+978
+00:55:34,050 --> 00:55:35,480
+我想这样来定义是正确的
+And I think this is right.
+
+979
+00:55:35,480 --> 00:55:38,144
+如果你熟悉中世纪经院哲学
+If you're up on your medieval scholastic philosophy,
+
+980
+00:55:38,448 --> 00:55:40,176
+我想所谓“完美生命体”一定
+I believe that perfect beings are ones
+
+981
+00:55:40,688 --> 00:55:42,656
+既不是凡人 又不会不可靠
+who were neither mortal nor fallible.
+
+982
+00:55:44,100 --> 00:55:56,848
+(AND (NOT (MORTAL ?X)) (NOT (FALLIBLE ?X)))
+AND NOT mortal x, NOT fallible x.
+
+983
+00:55:59,300 --> 00:56:00,896
+这样 我们就定义了一个规则
+So we'll define this system
+
+984
+00:56:02,672 --> 00:56:04,368
+来告诉系统 什么是“完美生命体”
+to teach it what a perfect being is.
+
+985
+00:56:05,790 --> 00:56:07,696
+现在 我们就要
+And now what we're going to do is
+
+986
+00:56:08,064 --> 00:56:10,176
+询问所有“完美生命体”的地址
+ask for the address of all the perfect beings.
+
+987
+00:56:11,488 --> 00:56:22,304
+(AND (ADDRESS ?X ?Y) (PERFECT ?X))
+AND the address of x is y and x is perfect.
+
+988
+00:56:23,488 --> 00:56:24,976
+在这里 我们生成了
+And so what we're generating here is
+
+989
+00:56:24,992 --> 00:56:27,808
+世界上最独有的邮件列表
+the world's most exclusive mailing list.
+
+990
+00:56:30,160 --> 00:56:32,200
+为了查询所有完美生命体的地址
+For the address of all the perfect beings,
+
+991
+00:56:32,240 --> 00:56:33,472
+我们会输入像这样的查询
+we might have typed this in.
+
+992
+00:56:33,830 --> 00:56:35,440
+或者像这样输入
+Or we might type in this.
+
+993
+00:56:36,240 --> 00:56:50,576
+(AND (PERFECT ?X) (ADDRESS ?X ?Y))
+We'll say AND perfect of x and the address of x is y.
+
+994
+00:56:52,064 --> 00:56:54,960
+假设我们把它输入进去 并尝试查询
+Well, suppose we type all that in and we try this query.
+
+995
+00:56:55,190 --> 00:56:56,768
+这条查询会给我们答案
+This query is going to give us an answer.
+
+996
+00:56:57,650 --> 00:57:00,000
+这条查询会输出：奥林匹斯山
+This query will say, yeah, Mount Olympus.
+
+997
+00:57:04,230 --> 00:57:06,576
+而这条查询 什么也不会输出
+This query, in fact, is going to give us nothing.
+
+998
+00:57:06,740 --> 00:57:09,584
+它找不到完美生命体的地址
+It will say no addresses of perfect beings.
+
+999
+00:57:11,640 --> 00:57:12,510
+为什么会这样？
+Now, why is that?
+
+1000
+00:57:12,510 --> 00:57:13,440
+这又为什么不同？
+Why is there a difference?
+
+1001
+00:57:14,230 --> 00:57:15,690
+这个问题跟无穷循环没什么关系
+This is not an infinite loop question.
+
+1002
+00:57:15,690 --> 00:57:17,088
+这个的问题是答案不相同
+This is a different answer question.
+
+1003
+00:57:19,488 --> 00:57:20,096
+原因就是
+The reason is
+
+1004
+00:57:20,380 --> 00:57:22,320
+如果你们还记得NOT的实现的话
+that if you remember the implementation of NOT,
+
+1005
+00:57:23,504 --> 00:57:24,848
+NOT是作为一个过滤器
+NOT acted as a filter.
+
+1006
+00:57:25,880 --> 00:57:29,008
+NOT会接收一本字典
+NOT said I'm going to take some possible dictionaries,
+
+1007
+00:57:29,050 --> 00:57:31,568
+里面有可行解构成的框架
+some possible frames, some possible answers,
+
+1008
+00:57:31,792 --> 00:57:33,168
+然后过滤出那些
+and filter out the ones
+
+1009
+00:57:33,290 --> 00:57:34,940
+满足某个条件的解
+that happened to satisfy some condition,
+
+1010
+00:57:34,976 --> 00:57:36,112
+这就是我如何实现NOT的
+and that's how I implement NOT.
+
+1011
+00:57:36,928 --> 00:57:38,432
+如果你们仔细想想其中的原理
+If you think about what's going on here,
+
+1012
+00:57:40,112 --> 00:57:42,656
+我创建了一个查询盒子
+I'll build this query box where the address piece
+
+1013
+00:57:43,320 --> 00:57:47,392
+ADDRESS盒子的输出作为了PERFECT的输入
+the output of an address piece gets fed into a perfect piece.
+
+1014
+00:57:50,290 --> 00:57:51,008
+这就使得
+What will happen is
+
+1015
+00:57:51,328 --> 00:57:53,264
+ADDRESS盒子会创建出
+the address piece will set up some things of
+
+1016
+00:57:53,328 --> 00:57:54,832
+我知道地址的人
+everyone whose address I know.
+
+1017
+00:57:55,290 --> 00:57:57,648
+这些都会被PERFECT中的NOT给过滤掉
+Those will get filtered by the NOTs inside perfect here.
+
+1018
+00:57:59,880 --> 00:58:04,192
+所以它会丢弃掉那些满足平凡的或者不可靠的数据
+So it will throw out the ones which happened to be either mortal or fallible.
+
+1019
+00:58:04,910 --> 00:58:06,384
+而对于另外一种顺序来说
+In the other order what happens
+
+1020
+00:58:06,736 --> 00:58:09,120
+我以一个空框架开始的
+is I set this up, started up with an empty frame.
+
+1021
+00:58:09,520 --> 00:58:12,352
+但是这里PERFECT没有可以给NOT过滤的东西
+The perfect in here doesn't find anything for the NOTs to filter,
+
+1022
+00:58:12,384 --> 00:58:13,984
+所以这里不会有什么输出
+so nothing comes out here at all.
+
+1023
+00:58:18,830 --> 00:58:21,504
+这也就导致没有东西输入到ADDRESS中
+And there's sort of nothing there that gets fed into the address thing.
+
+1024
+00:58:21,940 --> 00:58:23,152
+因此 我得不到答案
+So here, I don't get an answer.
+
+1025
+00:58:23,936 --> 00:58:27,040
+在强调一下 这是因为NOT不会生成任何东西
+And again, the reason for that is NOT isn't generating anything.
+
+1026
+00:58:27,440 --> 00:58:28,800
+NOT只会丢弃数据
+NOT's only throwing out things.
+
+1027
+00:58:29,080 --> 00:58:30,512
+如果我不向NOT传递东西的话
+And if I never started up with anything,
+
+1028
+00:58:30,528 --> 00:58:31,744
+它也就不会输出
+there's nothing for it to throw out.
+
+1029
+00:58:32,020 --> 00:58:33,770
+这样我就得到了错误的答案
+So out of this thing, I get the wrong answer.
+
+1030
+00:58:37,200 --> 00:58:37,970
+我们又该如何修复它呢？
+How can you fix that?
+
+1031
+00:58:37,970 --> 00:58:39,070
+当然 有很多办法
+Well, there are ways to fix that.
+
+1032
+00:58:39,360 --> 00:58:40,912
+你可能认为 现在这样有点愚蠢
+So you might say, well, that's sort of stupid.
+
+1033
+00:58:41,410 --> 00:58:44,900
+为什么要一开始就执行NOT呢？
+Why are you just doing all your NOT stuff at the beginning?
+
+1034
+00:58:44,960 --> 00:58:47,488
+想要正确地实现NOT
+The right way to implement NOT is to realize
+
+1035
+00:58:47,840 --> 00:58:50,080
+就是要认识到当你遇到NOT时
+that when you have conditions like NOT,
+
+1036
+00:58:50,336 --> 00:58:52,096
+你应该首先生成好答案
+you should generate all your answers first,
+
+1037
+00:58:52,800 --> 00:58:54,976
+然后通过字典把它们传递过来
+and then with each of these dictionaries pass along
+
+1038
+00:58:55,520 --> 00:58:57,856
+然后再最后再做过滤
+Gee, at the very end I'll do filtering.
+
+1039
+00:58:58,560 --> 00:59:02,016
+有些按照这种方式实现的逻辑式语言
+And there are implementations of logic languages that work like that
+
+1040
+00:59:02,416 --> 00:59:04,050
+能够解决这个问题
+that solve this particular problem.
+
+1041
+00:59:06,800 --> 00:59:08,976
+然而 还有一个更深刻的问题
+However, there's a more profound problem,
+
+1042
+00:59:09,600 --> 00:59:11,536
+也就是 哪个才是正确答案呢？
+which is which one of these is the right answer?
+
+1043
+00:59:12,530 --> 00:59:14,240
+是奥林匹斯山 还是没有呢？
+Is it Mount Olympus or is it nothing?
+
+1044
+00:59:15,376 --> 00:59:18,730
+你可能会认为是奥林匹斯山
+So you might say it's Mount Olympus,
+
+1045
+00:59:18,760 --> 00:59:20,730
+毕竟 宙斯在数据库中
+because after all, Zeus is in that database,
+
+1046
+00:59:22,528 --> 00:59:25,104
+宙斯不是平凡的 也不是不可靠的
+and Zeus was neither mortal nor fallible.
+
+1047
+00:59:29,550 --> 00:59:32,448
+因此你可能会认为宙斯满足
+So you might say Zeus wants to satisfy
+
+1048
+00:59:34,304 --> 00:59:44,032
+(NOT (MORTAL ZEUS))或者(NOT (FALLIBLE ZEUS))
+NOT mortal Zeus or NOT fallible Zeus.
+
+1049
+00:59:44,120 --> 00:59:45,856
+但我们实际来看一看数据库
+But let's actually look at that database.
+
+1050
+00:59:47,920 --> 00:59:48,464
+来看一下
+Let's look at it.
+
+1051
+00:59:49,360 --> 00:59:53,240
+它要如何知道宙斯不是不可靠的？
+There's no way-- how does it know that Zeus is not fallible?
+
+1052
+00:59:54,810 --> 00:59:56,112
+这里面没有关于它的知识
+There's nothing in there about that.
+
+1053
+00:59:57,930 --> 00:59:59,664
+里面只能得到人类是不可靠的
+What's in there is that humans are fallible.
+
+1054
+01:00:02,160 --> 01:00:04,128
+它又如何知道宙斯不是不可靠的呢？
+How does it know that Zeus is not mortal?
+
+1055
+01:00:04,480 --> 01:00:05,936
+这其中没有相关的规则
+There's nothing in there about that.
+
+1056
+01:00:07,980 --> 01:00:11,008
+它只是说 我没有这样的规则
+It just said I don't have any rule, which--
+
+1057
+01:00:11,680 --> 01:00:14,064
+我只能通过某人是人类来推断出他是平凡的
+see the only way I can deduce something's mortal is if it's human
+
+1058
+01:00:14,080 --> 01:00:15,680
+这也是它所知道关于“平凡”的所有东西
+and that's all it really knows about mortal.
+
+1059
+01:00:16,690 --> 01:00:19,856
+然而 如果你还记得古典神话的话
+And in fact, if you remember your classical mythology,
+
+1060
+01:00:19,872 --> 01:00:23,488
+你就知道 古希腊众神是不平凡的 但都不可靠
+you know that the Greek gods were not mortal but fallible.
+
+1061
+01:00:25,056 --> 01:00:28,656
+所以 不能通过这些规则得到答案
+So the answer is not in the rules there.
+
+1062
+01:00:30,850 --> 01:00:32,100
+但它又为什么推导出这些呢？
+See, why does it deduce that?
+
+1063
+01:00:34,496 --> 01:00:38,320
+显然 苏格拉底不会犯这类逻辑错误
+See, Socrates would certainly not have made this error of logic.
+
+1064
+01:00:40,080 --> 01:00:42,672
+在这门语言中 NOT并不是NOT
+What NOT means in this language is not NOT.
+
+1065
+01:00:43,370 --> 01:00:44,320
+不是逻辑非运算
+It's not the NOT of logic.
+
+1066
+01:00:44,930 --> 01:00:46,400
+这门语言中 NOT表示的是
+What NOT needs in this language is
+
+1067
+01:00:47,160 --> 01:00:49,960
+不可以从数据库中推断出结果
+not deducible from things in the database
+
+1068
+01:00:50,752 --> 01:00:53,344
+而不是“非真”
+as opposed to not true.
+
+1069
+01:00:55,024 --> 01:00:56,304
+完全是天壤之别
+That's a very big difference.
+
+1070
+01:00:57,300 --> 01:00:58,640
+很细微 但也很巨大
+Subtle, but big.
+
+1071
+01:00:59,250 --> 01:01:00,272
+因此 实际上
+So, in fact,
+
+1072
+01:01:00,768 --> 01:01:03,920
+如果什么都不知道 最好就说NOT
+this is perfectly happy to say not anything that it doesn't know about.
+
+1073
+01:01:04,680 --> 01:01:06,144
+如果你问它
+So if you ask it is it not true
+
+1074
+01:01:06,160 --> 01:01:07,830
+宙斯是否喜欢巧克力冰激凌
+that Zeus likes chocolate ice cream?
+
+1075
+01:01:07,856 --> 01:01:09,120
+它会说 这个查询当然非真
+It will say sure, it's not true.
+
+1076
+01:01:10,640 --> 01:01:12,512
+这些事情它都不知道
+Or anything else or anything it doesn't know about.
+
+1077
+01:01:12,592 --> 01:01:17,344
+NOT表示：不能从你告知它的事实中推断出来
+NOT means not deducible from the things you've told me.
+
+1078
+01:01:18,280 --> 01:01:22,448
+换句话说 你要把“无法推断出”
+In a world where you're identifying not deducible
+
+1079
+01:01:22,656 --> 01:01:24,000
+与“命题非真”区别开来
+with, in fact, not true,
+
+1080
+01:01:24,416 --> 01:01:26,304
+这被称作是“封闭世界假说”
+this is called the closed world assumption.
+
+1081
+01:01:37,376 --> 01:01:38,176
+封闭世界假说
+closed world assumption.
+
+1082
+01:01:38,200 --> 01:01:42,384
+只要结论不能通过我所知道的知识推断出来
+Anything that I cannot deduce from what I know
+
+1083
+01:01:43,500 --> 01:01:44,368
+那么就不是真的
+is not true,
+
+1084
+01:01:46,240 --> 01:01:48,010
+对吧 如果我对X一无所知
+Right? If I don't know anything about x,
+
+1085
+01:01:48,224 --> 01:01:49,216
+那么X就非真
+the x isn't true.
+
+1086
+01:01:49,290 --> 01:01:50,336
+这相当危险
+That's very dangerous.
+
+1087
+01:01:51,296 --> 01:01:52,448
+首先 从逻辑学的角度来说
+From a logical point of view,
+
+1088
+01:01:52,464 --> 01:01:53,760
+它一点也说不通
+first of all, it doesn't really makes sense.
+
+1089
+01:01:54,480 --> 01:01:56,336
+因为如果我对X一无所知的话
+Because if I don't know anything about x,
+
+1090
+01:01:58,384 --> 01:01:59,696
+就说X非真
+I'm willing to say not x.
+
+1091
+01:02:00,240 --> 01:02:03,328
+但为什么不说“X非真”非真
+But am I willing to say not not x?
+
+1092
+01:02:03,850 --> 01:02:05,664
+当然 我也许对后面那个命题也一无所知
+Well, sure, I don't know anything about that either maybe.
+
+1093
+01:02:06,470 --> 01:02:08,656
+因此(NOT (NOT X))就没有必要与X一致
+So not not x is not necessarily the same as x
+
+1094
+01:02:09,248 --> 01:02:10,944
+等等等等
+and so on and so on and so on, so
+
+1095
+01:02:11,712 --> 01:02:13,936
+因此 这里面一定有某种“偏见”
+there's some sort of funny bias in there.
+
+1096
+01:02:15,970 --> 01:02:17,290
+这相当有趣
+So that's sort of funny.
+
+1097
+01:02:17,290 --> 01:02:18,096
+第二点就是
+The second thing,
+
+1098
+01:02:20,144 --> 01:02:24,128
+如果你基于此 构建一个真正的推理程序
+if you start building up real reasoning programs based on this,
+
+1099
+01:02:24,704 --> 01:02:26,112
+想一想是多么地危险
+think how dangerous that is.
+
+1100
+01:02:27,070 --> 01:02:32,000
+你说我知道我可以推断出
+You're saying I know I'm in a position
+
+1101
+01:02:32,224 --> 01:02:36,220
+与这个问题有关的所有事情
+to deduce everything true that's relevant to this problem.
+
+1102
+01:02:37,440 --> 01:02:40,784
+因为在我推理机制的内部
+I'm reasoning, and built into my reasoning mechanism
+
+1103
+01:02:41,232 --> 01:02:44,200
+会认为所有与问题有关的知识
+is the assumption that anything that I don't know
+
+1104
+01:02:44,240 --> 01:02:46,272
+我都已经知道了
+can't possibly be relevant to this problem.
+
+1105
+01:02:48,448 --> 01:02:53,040
+有相当多的大型组织都像这样运作 对吧？
+Right? There are a lot of big organizations that work like that, right?
+
+1106
+01:02:53,168 --> 01:02:56,830
+大多数公司的市场部门都是这样工作的。
+Most corporate marketing divisions work like that.
+
+1107
+01:02:56,830 --> 01:02:59,120
+你们也知道这样做的后果
+You know the consequences to that.
+
+1108
+01:03:00,330 --> 01:03:03,456
+因此 向这个大型逻辑推理系统
+So it's very dangerous to start really
+
+1109
+01:03:03,840 --> 01:03:06,250
+输入各种查询 根据输出继续工作
+typing in these big logical implication systems
+
+1110
+01:03:07,056 --> 01:03:09,008
+的做法相当危险
+and going on what they say,
+
+1111
+01:03:09,024 --> 01:03:11,280
+因为它们内建的假说非常地有限
+because they have this really limiting assumption built in.
+
+1112
+01:03:12,600 --> 01:03:14,368
+因此你对此需要非常非常地小心
+So you have to be very, very careful about that.
+
+1113
+01:03:15,296 --> 01:03:16,288
+就是这么一个深层次问题
+And that's a deep problem.
+
+1114
+01:03:16,560 --> 01:03:17,824
+这个问题并不是
+That's not a problem about
+
+1115
+01:03:18,224 --> 01:03:20,144
+通过构建更加聪明的实现
+we can make a little bit cleverer implementation
+
+1116
+01:03:20,160 --> 01:03:21,856
+或者通过组织无穷循环
+and do the filters and organize the
+
+1117
+01:03:22,160 --> 01:03:23,840
+以及过滤器就可以消除的
+the infinite loops to make them go away.
+
+1118
+01:03:23,840 --> 01:03:25,088
+这是完全不同的一类问题
+It's a different kind of problem.
+
+1119
+01:03:25,920 --> 01:03:26,896
+完全不同的语义
+It's a different semantics.
+
+1120
+01:03:27,060 --> 01:03:30,512
+我想该总结一下了 平心而论
+So I think to wrap this up, it's fair to say
+
+1121
+01:03:31,344 --> 01:03:34,432
+逻辑式程序设计是一个振奋人心的想法
+that logic programming I think is a terrifically exciting idea,
+
+1122
+01:03:34,600 --> 01:03:37,008
+这个想法使你能够弥合
+the idea that you can bridge this
+
+1123
+01:03:37,040 --> 01:03:38,780
+命令式与声明式语言的鸿沟
+gap from the imperative to the declarative,
+
+1124
+01:03:39,900 --> 01:03:42,944
+使得你可以谈论关系
+that you can start talking about relations
+
+1125
+01:03:43,584 --> 01:03:45,088
+从而获得惊人的力量
+and really get tremendous power
+
+1126
+01:03:46,096 --> 01:03:49,488
+让你超越输入和输出的抽象
+by going above the abstraction of what's my input and what's my output.
+
+1127
+01:03:50,560 --> 01:03:51,536
+而关于逻辑
+And linked to logic,
+
+1128
+01:03:52,464 --> 01:03:56,464
+我认为这个问题还尚未解决
+the problem is it's a goal that I think has yet to be realized.
+
+1129
+01:03:58,032 --> 01:04:01,808
+也许现在语言中最令人感兴趣的
+And probably one of the very most interesting
+
+1130
+01:04:02,272 --> 01:04:04,416
+研究问题之一就是
+research questions going on now in languages
+
+1131
+01:04:04,672 --> 01:04:08,288
+你该如何创建一门真正的逻辑语言？
+is how do you somehow make a real logic language?
+
+1132
+01:04:09,460 --> 01:04:11,056
+其次 你如何从
+And secondly, how do you bridge the gap
+
+1133
+01:04:11,312 --> 01:04:13,152
+这个逻辑和关系的世界
+this world of logic and relations
+
+1134
+01:04:13,520 --> 01:04:16,432
+到更传统语言的世界之间
+to the worlds of more traditional languages
+
+1135
+01:04:16,464 --> 01:04:17,984
+架起桥梁并结合两者的力量
+and somehow combine the power of both.
+
+1136
+01:04:18,880 --> 01:04:19,680
+有什么问题吗？
+OK, let's break.
+
+1137
+01:04:23,290 --> 01:04:25,296
+学生：你能够通过添加额外的规则
+AUDIENCE: Couldn't you solve that last problem
+
+1138
+01:04:25,296 --> 01:04:27,740
+来解决最后一个问题么？
+by having the extra rules that imply it?
+
+1139
+01:04:27,968 --> 01:04:29,856
+这里的困境是：你有某物的定义
+The problem here is you have the definition of something,
+
+1140
+01:04:29,888 --> 01:04:31,824
+但没有它对立面的定义
+but you don't have the definition of its opposite.
+
+1141
+01:04:32,080 --> 01:04:33,920
+如果你在数据库中有
+If you include in the database something that says
+
+1142
+01:04:34,144 --> 01:04:36,890
+某些规则推导出(MORTAL X)
+uh... something implies mortal x,
+
+1143
+01:04:36,992 --> 01:04:38,704
+另外一些规则推导出(NOT (MORTAL X))
+something else implies not mortal x,
+
+1144
+01:04:38,752 --> 01:04:40,370
+这不就基本上解决这个问题么？
+haven't you basically solved the problem?
+
+1145
+01:04:43,370 --> 01:04:44,144
+教授：但问题就是
+PROFESSOR: But the issue is
+
+1146
+01:04:44,752 --> 01:04:46,384
+添加的这些规则是有穷个么？
+do you put a finite number of those in?
+
+1147
+01:04:48,656 --> 01:04:53,130
+学生：如果你同时定义正、反两面 --
+AUDIENCE: If things are specified always in pairs--
+
+1148
+01:04:53,616 --> 01:04:57,072
+教授：但问题就是 你该如何去做推断？
+PROFESSOR: But the question is then what do you do about deduction?
+
+1149
+01:05:00,200 --> 01:05:02,112
+要知道 你不能直接定义命题的非
+See, you can't specify NOTs.
+
+1150
+01:05:03,400 --> 01:05:04,768
+而问题就在于 在大型系统中
+But the problem is, in a big system,
+
+1151
+01:05:04,784 --> 01:05:07,960
+可能含有无穷个数的东西
+it turns out that might not be a finite number of things.
+
+1152
+01:05:12,820 --> 01:05:15,290
+这其中有两个问题
+There are also sort of two issues.
+
+1153
+01:05:15,290 --> 01:05:16,560
+其一是可能有无穷项
+Partly it might not be finite.
+
+1154
+01:05:16,690 --> 01:05:19,392
+另外是因为可能不向你想的那样
+Partly it might be that's not what you want.
+
+1155
+01:05:21,510 --> 01:05:24,528
+一个极好的例子 就是连通性
+So a good example would be suppose I want to do connectivity.
+
+1156
+01:05:25,120 --> 01:05:26,544
+我想对连通性做推理
+I want a reason about connectivity.
+
+1157
+01:05:28,050 --> 01:05:30,384
+我会告诉你这有四个对象
+And I'm going to tell you there's four things:
+
+1158
+01:05:30,400 --> 01:05:33,744
+A、B、C和D
+a and b and c and d.
+
+1159
+01:05:35,480 --> 01:05:38,190
+我会告诉你A和B相连
+And I'll tell you a is connected to b
+
+1160
+01:05:38,640 --> 01:05:41,424
+C和D相连
+and c's connected to d.
+
+1161
+01:05:43,200 --> 01:05:44,800
+然后我再告诉你A和D相连
+And now I'll tell you is a connected to d?
+
+1162
+01:05:45,056 --> 01:05:46,032
+就是这种情况
+That's the question.
+
+1163
+01:05:46,780 --> 01:05:48,528
+在这个例子中
+There's an example where I would like
+
+1164
+01:05:48,704 --> 01:05:50,352
+我就希望有“封闭世界假说”这样的东西
+something like the closed world assumption.
+
+1165
+01:05:54,432 --> 01:05:55,664
+这是个小玩具
+That's a tiny toy,
+
+1166
+01:05:56,240 --> 01:05:58,304
+但是很多时候 我都想说
+but a lot of times, I want to be able to say something like
+
+1167
+01:05:58,480 --> 01:06:01,340
+我没告诉你的事 都假设非真
+anything that I haven't told you, assume is not true.
+
+1168
+01:06:04,260 --> 01:06:06,272
+所以这并不是你显式地
+So it's not as simple as you only want to put in
+
+1169
+01:06:06,272 --> 01:06:08,090
+为所有命题定义否命题就可以解决的
+explicit NOTs all over the place.
+
+1170
+01:06:09,470 --> 01:06:12,704
+而是有些时候 你不清楚自己真正想要什么
+It's that sometimes it really isn't clear what you even want.
+
+1171
+01:06:14,150 --> 01:06:17,920
+同时定义原命题与否命题又太过于精细
+That having to specify both everything and not everything is too precise,
+
+1172
+01:06:17,936 --> 01:06:20,000
+这会使你陷入困境
+and then you get down into problems there.
+
+1173
+01:06:20,960 --> 01:06:22,688
+但还是有很多方法
+But there are a lot of approaches that
+
+1174
+01:06:23,328 --> 01:06:25,936
+显式地定义否命题 并基于此进行推理
+you know, that explicitly put in NOTs and reason based on that.
+
+1175
+01:06:26,510 --> 01:06:27,664
+这个想法非常好
+So it's a very good idea.
+
+1176
+01:06:28,070 --> 01:06:31,456
+只是在一些复杂的大型问题中
+It's just that then it starts becoming a little cumbersome
+
+1177
+01:06:31,488 --> 01:06:33,490
+这么做就变得有些笨重了
+in the very large problems you'd like to use.
+
+1178
+01:06:43,460 --> 01:06:45,968
+学生：有个论点 我不知道它和本节课的直接关系
+AUDIENCE: I'm not sure how directly related to the argument this is,
+
+1179
+01:06:46,000 --> 01:06:47,984
+但你想要表达的是
+but one of your points was that
+
+1180
+01:06:48,496 --> 01:06:50,160
+封闭世界假说的危害之一就是
+one of the dangers of the closed world rule is
+
+1181
+01:06:50,192 --> 01:06:52,064
+你永远不会真正了解那里的所有事物
+you never really know all the things that are there.
+
+1182
+01:06:53,440 --> 01:06:55,328
+你永远不会知道它们的每个部分
+You never really know all the parts to it.
+
+1183
+01:06:55,872 --> 01:06:58,160
+这难道不是任何一门程序设计语言的主要问题吗？
+Isn't that a major problem with any programming?
+
+1184
+01:06:58,160 --> 01:06:59,648
+写程序时 我总是
+I always write programs where I
+
+1185
+01:06:59,904 --> 01:07:01,568
+假设我考虑了所有的情况
+I assume that I've got all the cases,
+
+1186
+01:07:01,584 --> 01:07:03,408
+然后我检查了每一种情况
+and so I check for them all or whatever, and i
+
+1187
+01:07:04,060 --> 01:07:04,992
+然而在某处
+and somewhere down the road, I
+
+1188
+01:07:05,024 --> 01:07:06,520
+我发现了我遗漏了其中的一个
+I find out that I didn't check for one of them.
+
+1189
+01:07:07,390 --> 01:07:08,540
+教授：你说得很对
+PROFESSOR: Well, sure, it's true.
+
+1190
+01:07:08,540 --> 01:07:09,760
+但这里的问题在于
+But the problem here is
+
+1191
+01:07:11,968 --> 01:07:15,472
+对于你所做的事情
+it's that assumption which is the thing that you're making
+
+1192
+01:07:15,488 --> 01:07:17,344
+你是否认为它是逻辑问题
+if you believe you're identifying this with logic.
+
+1193
+01:07:19,600 --> 01:07:20,510
+你说得非常正确
+So you're quite right.
+
+1194
+01:07:20,510 --> 01:07:22,220
+这是你永远不会遇到的情况
+It's a situation you're never in.
+
+1195
+01:07:22,220 --> 01:07:24,140
+问题在于 如果你认为
+The problem is if you're starting to believe that
+
+1196
+01:07:24,176 --> 01:07:25,440
+你在进行逻辑式程序设计
+what this is doing is logic
+
+1197
+01:07:26,170 --> 01:07:27,328
+然后审视你所编写的规则
+and you look at the rules you write down
+
+1198
+01:07:27,344 --> 01:07:28,890
+并思考能从中推断出什么
+and say what can I deduce from them,
+
+1199
+01:07:29,536 --> 01:07:32,800
+你就需要清醒地认识到NOT具有另外的意义
+you have to be very careful to remember that NOT means something else.
+
+1200
+01:07:33,470 --> 01:07:35,216
+它的意义基于某种假设
+And it means something else based on an assumption
+
+1201
+01:07:35,248 --> 01:07:36,704
+并且可能并不正确
+which is probably not true.
+
+1202
+01:07:39,030 --> 01:07:40,192
+学生：我不知道这样理解是否正确
+AUDIENCE: Do I understand you correctly that
+
+1203
+01:07:40,256 --> 01:07:41,840
+也就是我们无法通过改变NOT
+you cannot fix this problem
+
+1204
+01:07:42,256 --> 01:07:46,080
+来消灭推断的所有可能性 从而解决这个问题？
+without killing off all possibilities of inference through altering NOT?
+
+1205
+01:07:46,544 --> 01:07:49,808
+教授：不 并不是这样
+PROFESSOR: No, that's not quite right.
+
+1206
+01:07:52,960 --> 01:07:55,088
+有很多种方法可以实现真正的逻辑非
+There are ways to do logic with real NOTs.
+
+1207
+01:07:56,340 --> 01:07:58,032
+实际上有很多种方法
+There are actually ways to do that.
+
+1208
+01:07:58,540 --> 01:08:00,848
+但目前没有一个广为人知的高效算法
+But they're very inefficient as far as anybody knows.
+
+1209
+01:08:01,610 --> 01:08:02,560
+而且他们还--
+And they're much more--
+
+1210
+01:08:04,096 --> 01:08:06,896
+这里所谓的“推论”
+they don't--  the, quote, inference in here
+
+1211
+01:08:07,390 --> 01:08:08,830
+是建立在这个合一算法
+is built into this unifier
+
+1212
+01:08:08,912 --> 01:08:11,296
+以及模式匹配算法之中的
+and this pattern matching unification algorithm.
+
+1213
+01:08:11,980 --> 01:08:16,192
+有多种方法可以实现真正的逻辑推理
+There are ways to automate real logical reasoning.
+
+1214
+01:08:16,590 --> 01:08:18,192
+但它们并不基于此
+But it's not based on that,
+
+1215
+01:08:18,510 --> 01:08:20,736
+而逻辑式程序设计语言也不倾向于这么做
+and logic programming languages don't tend to do that 
+
+1216
+01:08:20,752 --> 01:08:23,850
+因为大家都知道 那样做非常低效
+because it's very inefficient as far as anybody knows.
+
+1217
+01:08:29,390 --> 01:08:30,032
+好吧 下课
+All right, thank you.
+
+1218
+01:08:30,030 --> 01:08:37,120
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+
+1219
+01:08:37,152 --> 01:08:42,688
+
+本项目主页
+https://github.com/DeathKing/Learning-SICP
+

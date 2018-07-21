@@ -1,0 +1,6341 @@
+﻿1
+00:00:00,032 --> 00:00:02,048
+Learning-SICP学习小组
+倾情制作
+
+2
+00:00:02,040 --> 00:00:06,160
+翻译&&时间轴：邓雄飞
+压制&&特效：邓雄飞（Dysprosium）
+校对：邓雄飞（Dysprosium）
+
+3
+00:00:06,160 --> 00:00:08,160
+特别感谢：裘宗燕教授
+
+4
+00:00:08,160 --> 00:00:12,032
+计算机程序的构造和解释
+
+5
+00:00:12,032 --> 00:00:14,030
+寄存机器
+Register Machines
+
+6
+00:00:17,260 --> 00:00:19,072
+教授：我认为 到目前为止
+PROFESSOR: Well, up 'til now, I suppose,
+
+7
+00:00:19,328 --> 00:00:23,936
+我们已经学习了很多关于
+we've been learning about a lot of techniques for
+
+8
+00:00:24,096 --> 00:00:28,830
+组织程序以及操纵符号的技术
+organizing big programs, symbolic manipulation a bit,
+
+9
+00:00:30,848 --> 00:00:35,600
+以及用来构建语言的技术
+some of the technology that you use for establishing languages,
+
+10
+00:00:35,630 --> 00:00:36,784
+用一门语言去创建另一门语言
+one in terms of another,
+
+11
+00:00:37,104 --> 00:00:39,920
+这在组织大型程序时非常有用
+which is used for organizing very large programs.
+
+12
+00:00:39,968 --> 00:00:42,304
+实际上 我所知的最好的程序
+In fact, the nicest programs I know
+
+13
+00:00:42,448 --> 00:00:44,432
+看起来更像是一堆语言
+look more like a pile of languages
+
+14
+00:00:44,912 --> 00:00:47,968
+而不是将问题分解成若干部分
+than like a decomposition of a problem into parts.
+
+15
+00:00:49,900 --> 00:00:51,456
+我想 此时此刻
+Well, I suppose at this point,
+
+16
+00:00:52,080 --> 00:00:53,584
+关于这类东西的工作方式
+there are still, however, a few mysteries
+
+17
+00:00:53,616 --> 00:00:55,328
+仍然存在一些谜团
+about how this sort of stuff works.
+
+18
+00:00:56,260 --> 00:00:59,680
+因此 我现在需要
+And so what we'd like to do now is
+
+19
+00:01:00,030 --> 00:01:02,608
+偏离原先的计划
+diverge from the plan of
+
+20
+00:01:02,960 --> 00:01:05,420
+不再继续讲解如何组织大型程序
+telling you how to organize big programs,
+
+21
+00:01:05,450 --> 00:01:08,192
+而是告诉你一些关于
+and rather tell you something about the mechanisms
+
+22
+00:01:08,528 --> 00:01:11,710
+使这些事情可以起作用的机制
+by which these things can be made to work.
+
+23
+00:01:12,190 --> 00:01:14,832
+这样做的主要是为了
+The main reason for this is
+
+24
+00:01:15,808 --> 00:01:17,870
+揭秘
+demystification, if you will,
+
+25
+00:01:18,656 --> 00:01:20,540
+剩下的很多谜团
+that we have a lot of mysteries left,
+
+26
+00:01:21,080 --> 00:01:25,488
+比如说 如何控制程序的运行
+like exactly how it is the case that a program is controlled,
+
+27
+00:01:26,080 --> 00:01:30,384
+计算机如何知晓下一步的动作
+how a computer knows what the next thing to do is,
+
+28
+00:01:30,528 --> 00:01:31,744
+等等等等
+or something like that.
+
+29
+00:01:32,430 --> 00:01:35,568
+我现在就要让你们清楚地知道
+And what I'd like to do now is make that clear to you
+
+30
+00:01:35,856 --> 00:01:39,104
+就算你之前没有使用过计算机
+that even if you've never played with a physical computer before,
+
+31
+00:01:39,568 --> 00:01:43,504
+但这种机制非常简单
+the mechanism is really very simple,
+
+32
+00:01:44,336 --> 00:01:46,352
+你可以毫无问题地理解它
+and that you can understand it completely with no trouble.
+
+33
+00:01:47,650 --> 00:01:51,248
+好吧 我们先来想象一个 --
+So I'd like to start by imagining that we--
+
+34
+00:01:51,328 --> 00:01:52,912
+先说明一下 我们采用的方法是
+well, the way we're going to do this, by the way,
+
+35
+00:01:52,960 --> 00:01:55,808
+把一些非常简单的Lisp程序
+is we're going to take some very simple Lisp programs,
+
+36
+00:01:56,544 --> 00:01:58,128
+真的非常简单
+very simple Lisp programs,
+
+37
+00:01:59,040 --> 00:02:00,624
+把它们转换成硬件
+and transform them into hardware.
+
+38
+00:02:02,160 --> 00:02:04,160
+我不会考虑一些中间步骤
+I'm not going to worry about some intermediate step
+
+39
+00:02:04,700 --> 00:02:07,456
+比如转换成某种现有的机器语言
+of going through some existing computer machine language
+
+40
+00:02:07,472 --> 00:02:09,050
+然后来解释计算机是如何工作的
+and then showing you how that computer works,
+
+41
+00:02:09,824 --> 00:02:12,000
+因为那不太明显
+because that's not as illuminating.
+
+42
+00:02:12,750 --> 00:02:14,176
+所以我真正要向你展示的是
+So what I'm really going to show you
+
+43
+00:02:14,512 --> 00:02:17,488
+如何构建一台机器来完成
+is how a piece of machinery can be built
+
+44
+00:02:18,032 --> 00:02:22,040
+一项由你写的程序所描述的工作
+to do a job that you have written down as a program.
+
+45
+00:02:22,040 --> 00:02:24,032
+而程序呢 实际上就是一个机器的描述
+That program is, in fact, a description of a machine.
+
+46
+00:02:25,760 --> 00:02:27,696
+我们从一个非常简单的程序开始
+We're going to start with a very simple program,
+
+47
+00:02:28,096 --> 00:02:30,816
+然后演示一些简单的机制
+proceed to show you some simple mechanisms,
+
+48
+00:02:31,392 --> 00:02:33,680
+进而用更复杂的程序
+proceed to a few more complicated programs,
+
+49
+00:02:34,304 --> 00:02:37,420
+然后又演示一个不那么复杂的程序
+and then later show you a not very complicated program,
+
+50
+00:02:37,440 --> 00:02:41,230
+来演示求值器是如何变成硬件的
+how the evaluator transforms into a piece of hardware.
+
+51
+00:02:41,230 --> 00:02:42,064
+当然 到那个时候
+And of course at that point,
+
+52
+00:02:42,080 --> 00:02:44,080
+你就有了通用的转换算法
+you have made the universal transition
+
+53
+00:02:44,224 --> 00:02:46,880
+并且可以用一个定义明确的硬件
+and can execute any program imaginable
+
+54
+00:02:47,168 --> 00:02:48,800
+来执行任何可以想象的程序
+with a piece of well-defined hardware.
+
+55
+00:02:51,728 --> 00:02:52,912
+那么 现在让我们开始
+Well, let's start up now,
+
+56
+00:02:53,056 --> 00:02:55,312
+给你们关于这些东西的具体感觉
+give you a real concrete feeling for this sort of thing.
+
+57
+00:02:55,440 --> 00:02:57,664
+我们先从一个非常简单的程序开始
+Let's start with a very simple program.
+
+58
+00:02:59,600 --> 00:03:00,850
+这是欧几里得算法
+Here's Euclid's algorithm.
+
+59
+00:03:03,880 --> 00:03:07,008
+它实际上比欧几里德算法更现代一些
+It's actually a little bit more modern than Euclid's algorithm.
+
+60
+00:03:07,020 --> 00:03:10,096
+我想 用来计算两数最大公约数的欧几里得算法
+Euclid's algorithm for computing the greatest common divisor of two numbers
+
+61
+00:03:10,416 --> 00:03:13,600
+是在公元前350年发明的
+was invented 350 BC, I think.
+
+62
+00:03:14,300 --> 00:03:15,696
+它是已知最古老的算法
+It's the oldest known algorithm.
+
+63
+00:03:19,320 --> 00:03:23,344
+我们先定义(GCD A B)
+But here we're going to talk about GCD of A and B,
+
+64
+00:03:23,360 --> 00:03:25,616
+也就是用来计算A、B两数的最大公约数
+the Greatest Common Divisor or two numbers, A and B.
+
+65
+00:03:26,208 --> 00:03:28,912
+这个算法相当简单
+And the algorithm is extremely simple.
+
+66
+00:03:29,500 --> 00:03:31,088
+如果B等于0
+If B is 0,
+
+67
+00:03:34,160 --> 00:03:36,832
+那么结果就是A
+then the result is going to be A.
+
+68
+00:03:37,520 --> 00:03:43,616
+否则结果就是 (GCD B
+Otherwise, the result is the GCD of B
+
+69
+00:03:44,496 --> 00:03:53,392
+(REMAINDER A B))
+and the remainder when A is divided by B.
+
+70
+00:03:58,530 --> 00:04:01,904
+这里 我们定义了一个简单的迭代过程
+So this we have here is a very simple iterative process.
+
+71
+00:04:02,030 --> 00:04:04,080
+这是一个简单的递归过程
+This a simple recursive procedure,
+
+72
+00:04:04,380 --> 00:04:07,536
+也可以说这个过程是递归地定义的
+recursively defined procedure, recursive definition,
+
+73
+00:04:07,712 --> 00:04:09,264
+但它产生的计算过程是迭代的
+which yields an iterative process.
+
+74
+00:04:09,952 --> 00:04:12,460
+它的原理是 在每一步
+And the way it works is that every step,
+
+75
+00:04:12,800 --> 00:04:15,104
+判断B是否为0
+it determines whether B was zero.
+
+76
+00:04:16,240 --> 00:04:18,800
+如果B为0 那么A的值就是我们的答案
+And if B is 0, we got the answer in A.
+
+77
+00:04:19,632 --> 00:04:22,464
+否则就进入下一个步骤
+Otherwise, we make another step
+
+78
+00:04:22,496 --> 00:04:23,872
+其中A就变成旧的B
+where A is the old B,
+
+79
+00:04:23,888 --> 00:04:27,040
+而B的值 是A旧值除B旧值的余数
+and B is the remainder of the old A divided by the old B.
+
+80
+00:04:28,768 --> 00:04:29,552
+非常简单
+Very simple.
+
+81
+00:04:31,110 --> 00:04:32,720
+现在 我已经通过这种方式
+Now this, I've already told you
+
+82
+00:04:32,992 --> 00:04:34,860
+告诉了你一些机制
+some of the mechanism by just saying it that way.
+
+83
+00:04:34,860 --> 00:04:35,904
+我是按时序告诉你们的
+I said it in time.
+
+84
+00:04:36,360 --> 00:04:37,728
+我说 其中有特定的步骤
+I said there are certain steps,
+
+85
+00:04:38,144 --> 00:04:39,328
+并且实际上
+and that, in fact,
+
+86
+00:04:39,520 --> 00:04:40,864
+你可以在这里知道
+one of the things you can see here
+
+87
+00:04:41,184 --> 00:04:43,696
+为什么这个过程是迭代的
+is that one of the reasons why this is iterative
+
+88
+00:04:43,950 --> 00:04:47,680
+是因为最后一步无需额外信息来得到答案
+is nothing is needed of the last step to get the answer.
+
+89
+00:04:49,440 --> 00:04:55,290
+所有运行此算法所需的信息都在A和B中
+All of the information that's needed to run this algorithm is in A and B.
+
+90
+00:04:55,744 --> 00:04:57,808
+它有两个定义明确的状态变量
+It has two well-defined state variables.
+
+91
+00:05:00,470 --> 00:05:02,336
+现在 我就要给你们定义一台机器
+So I'm going to define a machine for you
+
+92
+00:05:03,984 --> 00:05:05,552
+用来计算GCD
+can compute you GCDs.
+
+93
+00:05:06,560 --> 00:05:07,120
+我们来看看
+Now let's see.
+
+94
+00:05:07,120 --> 00:05:11,280
+每台制造的计算机都是单进程计算机
+Every computer that's ever been made that's a single-process computer,
+
+95
+00:05:11,800 --> 00:05:14,080
+而不是某种多处理器
+as opposed to a multiprocessor of some sort,
+
+96
+00:05:15,040 --> 00:05:16,592
+都是按照相同的方案制定的
+is made according to the same plan.
+
+97
+00:05:17,840 --> 00:05:19,536
+这种方案就是：计算机由两部分组成
+The plan is the computer has two parts,
+
+98
+00:05:20,576 --> 00:05:22,352
+一部分叫数据通路
+a part called the datapaths,
+
+99
+00:05:23,104 --> 00:05:24,368
+而另一部分叫控制器
+and a part called the controller.
+
+100
+00:05:25,910 --> 00:05:29,280
+数据通路相当于你可能有的计算器
+The datapaths correspond to a calculator that you might have.
+
+101
+00:05:29,712 --> 00:05:31,872
+它有一些寄存器 能够存储数据
+It contains certain registers that remember things,
+
+102
+00:05:31,904 --> 00:05:33,136
+你们都用过计算器
+and you've all used calculators.
+
+103
+00:05:33,560 --> 00:05:35,344
+它上面有一些按钮和指示灯
+It has some buttons on it and some lights.
+
+104
+00:05:37,030 --> 00:05:38,496
+通过按下不同的按钮
+And so by pushing the various buttons,
+
+105
+00:05:38,528 --> 00:05:41,344
+你可以使操作在寄存器内发生
+you can cause operations to happen inside there among the registers,
+
+106
+00:05:41,872 --> 00:05:43,488
+并显示计算结果
+and some of the results to be displayed.
+
+107
+00:05:45,160 --> 00:05:46,250
+它是完全机械式的
+That's completely mechanical.
+
+108
+00:05:46,250 --> 00:05:49,552
+你可以认为那个盒子没有任何智能
+You could imagine that box has no intelligence in it.
+
+109
+00:05:50,900 --> 00:05:53,280
+它能计算一个数的正弦也许令人吃惊
+Now it might be very impressive that it can produce the sine of a number,
+
+110
+00:05:53,536 --> 00:05:58,970
+但它显然是机械式的
+but that at least is apparently possibly mechanical.
+
+111
+00:05:58,970 --> 00:06:01,712
+至少 我可以像打开GCD机器一样打开它
+At least, I could open that up in the same way I'm about to open GCD.
+
+112
+00:06:02,690 --> 00:06:04,368
+也就是说 它其中可能有一整台计算机
+So this may have a whole computer inside of it,
+
+113
+00:06:04,688 --> 00:06:05,696
+但这并不有趣
+but that's not interesting.
+
+114
+00:06:05,940 --> 00:06:07,104
+加法相当简单
+Addition is certainly simple.
+
+115
+00:06:08,200 --> 00:06:09,840
+不借助额外机制就可以完成
+That can be done without any further mechanism.
+
+116
+00:06:10,890 --> 00:06:15,648
+现在 如果我们来看另外的一部分：控制器
+Now also, if we were to look at the other half, the controller,
+
+117
+00:06:15,936 --> 00:06:17,392
+这一部分也非常简单
+that's a part that's dumb, too.
+
+118
+00:06:18,190 --> 00:06:19,168
+它负责按下按钮
+It pushes the buttons.
+
+119
+00:06:20,350 --> 00:06:21,520
+它根据指令序列来按按钮
+It pushes them according to the sequence,
+
+120
+00:06:21,552 --> 00:06:22,848
+指令是写在纸上的
+which is written down on a piece of paper,
+
+121
+00:06:24,272 --> 00:06:25,648
+控制器还会观察指示灯
+and observes the lights.
+
+122
+00:06:26,290 --> 00:06:29,440
+而且每隔一段 它就会来到指令序列中的一处
+And every so often, it comes to a place in a sequence that says,
+
+123
+00:06:29,472 --> 00:06:32,370
+如果指示灯A亮 则执行某段指令
+if light A is on, do this sequence.
+
+124
+00:06:32,370 --> 00:06:33,856
+否则执行另外的指令
+Otherwise, do that sequence.
+
+125
+00:06:34,620 --> 00:06:37,456
+因此 这其中也没有什么复杂的
+And thereby, there's no complexity there either.
+
+126
+00:06:38,350 --> 00:06:39,328
+那么 让我们来画一下
+Well, let's just draw that
+
+127
+00:06:39,344 --> 00:06:40,570
+然后来感受一下它
+and see what we feel about that.
+
+128
+00:06:42,510 --> 00:06:44,848
+为了计算GCD
+So for computing GCDs,
+
+129
+00:06:45,888 --> 00:06:49,520
+你们要知道：这其中有一些寄存器
+what I want you to think about is that there are these registers.
+
+130
+00:06:50,560 --> 00:06:53,024
+这里 寄存器就是一个存储数值的地方
+A register is a place where I store a number, in this case.
+
+131
+00:06:53,520 --> 00:06:54,656
+这个寄存器存储的是A
+And this one's called a.
+
+132
+00:06:56,810 --> 00:06:58,700
+而另外的这个存储的是B
+And then there's another one for storing b.
+
+133
+00:07:03,170 --> 00:07:05,456
+现在我们来看看 有了这些寄存器后能做什么
+Now we have to see what things we can do with these registers,
+
+134
+00:07:05,980 --> 00:07:08,736
+至于你能利用它做什么 并不是很明显
+and they're not entirely obvious what you can do with them.
+
+135
+00:07:09,840 --> 00:07:11,728
+那么 我们必须看看需要用它们做什么
+Well, we have to see what things we need to do with them.
+
+136
+00:07:11,824 --> 00:07:13,872
+我们来看看尝试求解的问题
+We're looking at the problem we're trying to solve.
+
+137
+00:07:14,030 --> 00:07:16,096
+计算机设计的一个要点就是
+One of the important things for designing a computer,
+
+138
+00:07:17,104 --> 00:07:19,584
+我想大多数设计师都不会照做
+which I think most designers don't do,
+
+139
+00:07:20,208 --> 00:07:21,888
+也就是专注于待解的问题
+is you stay the problem you want to solve
+
+140
+00:07:22,624 --> 00:07:25,180
+然后使用你研究问题所学到的东西
+and then use what you learn from studying the problem you want to solve
+
+141
+00:07:25,440 --> 00:07:27,280
+把那些求解问题所需要的机制
+to put in the mechanisms needed to solve it
+
+142
+00:07:27,530 --> 00:07:28,700
+融入正在构建的计算机中
+in the computer you're building,
+
+143
+00:07:28,816 --> 00:07:30,080
+不多也不少
+no more no less.
+
+144
+00:07:32,140 --> 00:07:33,968
+现在 可能你所要解决的问题
+Now it may be that the problem you're trying to solve
+
+145
+00:07:34,240 --> 00:07:35,408
+是大家共有的问题
+is everybody's problem,
+
+146
+00:07:36,060 --> 00:07:37,584
+这种情况下你需要构建
+in which case you have to build in a universal
+
+147
+00:07:37,600 --> 00:07:39,290
+某种语言的通用解释器
+interpreter of some language.
+
+148
+00:07:40,190 --> 00:07:42,320
+但是你添加的机制不能比
+But you shouldn't put any more in than required
+
+149
+00:07:42,352 --> 00:07:44,256
+想构建的语言解释器的需求多
+to build the universal interpreter of some language.
+
+150
+00:07:44,448 --> 00:07:45,856
+这一点 我们稍后来讨论
+We'll worry about that in a second.
+
+151
+00:07:47,232 --> 00:07:49,930
+好了 让我们回到这里
+OK, going back to here, let's see.
+
+152
+00:07:49,930 --> 00:07:51,248
+我们必须能够做什么？
+What do we have to be able to do?
+
+153
+00:07:51,792 --> 00:07:54,144
+首先 我们能把B的值赋给A
+Well, somehow, we have to be able to get B into A.
+
+154
+00:07:56,080 --> 00:07:59,600
+我们要能够把B的旧值赋给A
+We have to be able to get the old value of B into the value of A.
+
+155
+00:08:00,380 --> 00:08:03,328
+因此 我们需要某种能够让数据流通的“路径”
+So we have to have some path by which stuff can flow
+
+156
+00:08:03,344 --> 00:08:04,760
+而不管数据具体是什么
+whatever this information is,
+
+157
+00:08:05,376 --> 00:08:06,576
+从B到A的通路
+OK? from b to a.
+
+158
+00:08:07,390 --> 00:08:09,264
+我箭头来指示
+I'm going to draw that with by an arrow
+
+159
+00:08:09,520 --> 00:08:12,624
+我们能够把B的值赋给A
+saying that it is possible to move the contents of b into a,
+
+160
+00:08:12,960 --> 00:08:14,576
+从而替换A的旧值
+replacing the value of a.
+
+161
+00:08:15,120 --> 00:08:16,736
+当你按下这里的按钮后
+And there's a little button here which you push
+
+162
+00:08:17,488 --> 00:08:18,560
+就能够实现这个效果
+which allows that to happen.
+
+163
+00:08:19,710 --> 00:08:20,784
+这个按钮就在这里
+That's what the little x is here.
+
+164
+00:08:23,070 --> 00:08:23,936
+同样的
+Now it's also the case
+
+165
+00:08:23,952 --> 00:08:26,288
+我还需要能够计算A除B的余数
+that I have to be able to compute the remainder of a and b.
+
+166
+00:08:27,000 --> 00:08:28,496
+这可能混乱而又复杂
+Now that may be a complicated mess.
+
+167
+00:08:28,860 --> 00:08:30,864
+但另一方面 我会把它放到一个小盒子中
+On the other hand, I'm going to make it a small box.
+
+168
+00:08:31,960 --> 00:08:33,920
+如果有必要的话 我们可以打开那个盒子
+If we have to, we may open up that box
+
+169
+00:08:34,128 --> 00:08:35,632
+看看其中有些什么
+and look inside and see what it is.
+
+170
+00:08:37,770 --> 00:08:39,168
+这就是那个小盒子
+So here, I'm going to have a little box,
+
+171
+00:08:39,200 --> 00:08:40,380
+我这么来画它
+which I'm going to draw this way,
+
+172
+00:08:43,168 --> 00:08:44,384
+我把它叫做REM
+which we'll call the remainder.
+
+173
+00:08:46,440 --> 00:08:48,608
+它接受A
+And it's going to take in a.
+
+174
+00:08:50,910 --> 00:08:52,160
+同时也要接受B
+That's going to take in b.
+
+175
+00:08:54,370 --> 00:08:56,512
+它有一个输出
+And it's going to put out something,
+
+176
+00:08:58,896 --> 00:09:00,464
+也就是A除以B的余数
+the remainder of a divided by b.
+
+177
+00:09:02,290 --> 00:09:03,616
+在这里 我们同样需要能够
+Another thing we have to see here is
+
+178
+00:09:03,648 --> 00:09:06,060
+判断B是否等于0
+that we have to be able to test whether b is equal to 0.
+
+179
+00:09:08,000 --> 00:09:09,664
+也就是说 总得有个东西
+Well, that means somebody's got to be looking at--
+
+180
+00:09:10,000 --> 00:09:12,304
+去查询B的值
+a thing that's looking at the value of b.
+
+181
+00:09:13,390 --> 00:09:14,400
+这是一个指示灯
+I have a light bulb here
+
+182
+00:09:15,856 --> 00:09:17,390
+当B等于0时 它就会点亮
+which lights up if b equals 0.
+
+183
+00:09:21,110 --> 00:09:22,016
+它就是干这个的
+That's its job.
+
+184
+00:09:24,030 --> 00:09:26,784
+最后 因为我们希望
+And finally, I suppose, because of the fact
+
+185
+00:09:26,960 --> 00:09:30,432
+A的新值是B的旧值
+that we want the new value of a to be the old value of b,
+
+186
+00:09:30,464 --> 00:09:34,416
+同时B的新值是有关于A的
+and simultaneously the new value of b to be something I've done with a,
+
+187
+00:09:35,280 --> 00:09:37,600
+如果我打算让机器
+and if I plan to make my machine
+
+188
+00:09:37,808 --> 00:09:39,744
+一次只发生一件事
+such that everything happens one at a time,
+
+189
+00:09:40,208 --> 00:09:41,408
+一次执行一个动作
+one motion at a time,
+
+190
+00:09:41,616 --> 00:09:43,424
+并且我不能在一个寄存器中放两个数字
+and I can't put two numbers in a register,
+
+191
+00:09:44,032 --> 00:09:46,300
+那么进行互换时 必须有另外的地方放置一个数字
+then I have to have another place to put one while I'm interchanging.
+
+192
+00:09:49,296 --> 00:09:49,600
+对吧？
+OK?
+
+193
+00:09:50,000 --> 00:09:51,856
+我不能同时交换两手的东西
+I can't interchange the two things in my hands,
+
+194
+00:09:52,110 --> 00:09:53,728
+除非我一手拿两个
+unless I either put two in one hand
+
+195
+00:09:53,728 --> 00:09:55,130
+然后从中取另外一个
+and then pull it back the other way,
+
+196
+00:09:55,504 --> 00:09:56,912
+或者我先放下一个
+or unless I put one down,
+
+197
+00:09:57,024 --> 00:09:58,688
+取得另一个后再像这样捡起来
+pick it up, and put the other one, like that
+
+198
+00:09:59,648 --> 00:10:00,944
+除非我是耍杂技的
+unless I'm a juggler,
+
+199
+00:10:01,660 --> 00:10:03,500
+当然正如大家所见 我并不是
+which I'm not, as you can see,
+
+200
+00:10:04,656 --> 00:10:07,360
+这种情况下 我就会遇到时序错误
+in which case I have a possibility of timing errors.
+
+201
+00:10:08,850 --> 00:10:11,040
+事实上 人们所做的许多类型的计算机设计
+In fact, much of the type of computer design
+
+202
+00:10:11,072 --> 00:10:12,688
+都遇到了时序错误
+people do involves timing errors,
+
+203
+00:10:13,120 --> 00:10:15,008
+或者潜在的时序错误
+of some potential timing errors,
+
+204
+00:10:15,248 --> 00:10:16,432
+我不太喜欢这种错误
+which I don't much like.
+
+205
+00:10:17,340 --> 00:10:18,640
+因此 出于这个原因
+But. So for that reason,
+
+206
+00:10:18,688 --> 00:10:21,216
+我需要有一个地方来放置
+I have to have a place to put the third thing down
+
+207
+00:10:22,060 --> 00:10:23,296
+其中的一个元素
+the second one of them down.
+
+208
+00:10:23,410 --> 00:10:24,720
+因此 这里有一个寄存器
+So I have a place called t,
+
+209
+00:10:24,752 --> 00:10:26,840
+用来存放临时值T
+which is a register just for temporary, t,
+
+210
+00:10:28,592 --> 00:10:29,632
+上面有一个按钮
+with a button on it.
+
+211
+00:10:30,470 --> 00:10:31,888
+我会使用它的结果
+And then I'll take the result of that,
+
+212
+00:10:31,904 --> 00:10:34,144
+因为我需要把这个结果送入B
+since I have to take that and put into b, over here,
+
+213
+00:10:34,688 --> 00:10:36,736
+我们会把结果像这样给送过来
+we'll take the result of that and go like this,
+
+214
+00:10:38,416 --> 00:10:39,300
+这里同样有一个按钮
+and a button here.
+
+215
+00:10:42,430 --> 00:10:45,840
+这就是GCD机器的数据通路
+So that's the datapaths of a GCD machine.
+
+216
+00:10:47,600 --> 00:10:48,576
+那么 控制器又是怎样的呢？
+Now what's the controller?
+
+217
+00:10:49,740 --> 00:10:51,280
+控制器同样很简单
+Controller's a very simple thing, too.
+
+218
+00:10:52,280 --> 00:10:53,264
+机器具有状态
+The machine has a state.
+
+219
+00:10:54,384 --> 00:10:57,728
+我喜欢形象地把它们比作迷宫
+The way I like to visualize that is that I've got a maze.
+
+220
+00:10:59,010 --> 00:11:03,200
+这个迷宫的各处是通过直接的箭头连接的
+And the maze has a bunch of places connected by directed arrows.
+
+221
+00:11:04,430 --> 00:11:05,600
+而我有一颗弹珠
+And what I have is a marble,
+
+222
+00:11:06,464 --> 00:11:09,072
+它代表了控制器的状态
+which represents the state of the controller.
+
+223
+00:11:10,740 --> 00:11:12,272
+弹珠在迷宫中四处滚动
+The marble rolls around in the maze.
+
+224
+00:11:13,744 --> 00:11:17,150
+当然 这种类比因能量的原因而不成立
+Of course, this analogy breaks down for energy reasons.
+
+225
+00:11:17,150 --> 00:11:19,088
+有时我不得不将弹珠泵到顶部
+I sometimes have to pump the marble up to the top,
+
+226
+00:11:19,120 --> 00:11:21,856
+不然它就会成为一台永动机
+because it's going to otherwise be a perpetual motion machine.
+
+227
+00:11:22,000 --> 00:11:23,328
+但不用担心那么多
+But not worrying about that,
+
+228
+00:11:23,904 --> 00:11:25,904
+这并不是一个物理比喻
+this is not a physical analogy.
+
+229
+00:11:26,080 --> 00:11:27,424
+弹珠到处滚动
+This marble rolls around.
+
+230
+00:11:27,680 --> 00:11:29,568
+就像弹球机一样
+And every time it rolls around certain bumpers,
+
+231
+00:11:29,680 --> 00:11:30,976
+每次当它滚动到一些缓冲器时
+like in a pinball machine,
+
+232
+00:11:31,264 --> 00:11:32,608
+它就会按下这些按钮
+it pushes one of these buttons.
+
+233
+00:11:34,830 --> 00:11:37,504
+它也会经常来到一个分支区域
+And every so often, it comes to a place, which is a division,
+
+234
+00:11:38,624 --> 00:11:39,680
+它要在这里做选择
+where it has to make a choice.
+
+235
+00:11:40,250 --> 00:11:42,360
+然后有一个由这个组件控制的挡板
+And there's a flap, which is controlled by this.
+
+236
+00:11:46,000 --> 00:11:48,820
+所以这是一个非常机械化的思考方式
+So that's a really mechanical way of thinking about it.
+
+237
+00:11:48,820 --> 00:11:51,056
+当然 真实计算机中的控制器
+Of course, controllers not these days, are not built that way
+
+238
+00:11:51,088 --> 00:11:51,840
+并不是这样的
+in real computers.
+
+239
+00:11:51,840 --> 00:11:56,016
+而是由一些ROM和状态寄存器构成
+They're built with a little bit of ROM and a state register.
+
+240
+00:11:56,610 --> 00:11:58,736
+但曾几何时 像DEC、PDP-6这些个机器
+But there was a time, like the DEC PDP-6,
+
+241
+00:11:59,296 --> 00:12:01,024
+它们的控制器就是我们说的那样
+where that's how you built the controller of a machine.
+
+242
+00:12:01,808 --> 00:12:03,616
+延迟线上有一些比特信息
+There was a bit that ran around the delay line,
+
+243
+00:12:05,696 --> 00:12:08,144
+它随着时间的推移而触发事件
+and it triggered things as it went by.
+
+244
+00:12:08,580 --> 00:12:10,704
+然后回到开始并再次轮回
+And it would come back to the beginning and get fed round again.
+
+245
+00:12:11,990 --> 00:12:13,728
+当然 还有各种各样的错误
+And of course, there were all sorts of great bugs you could have
+
+246
+00:12:13,744 --> 00:12:17,670
+比如两个比特的信息 -- 对应两个弹珠
+like two bits going around, two marbles.
+
+247
+00:12:17,670 --> 00:12:19,260
+机器也会丢失弹珠
+And then the machine has lost its marbles.
+
+248
+00:12:19,456 --> 00:12:20,208
+这也会发生
+That happens, too.
+
+249
+00:12:20,980 --> 00:12:21,584
+好吧
+Oh, well.
+
+250
+00:12:22,272 --> 00:12:24,224
+无论如何 对于这台机器
+So anyway, for this machine,
+
+251
+00:12:24,272 --> 00:12:25,488
+我想要这么来做
+what I have to do is the following.
+
+252
+00:12:25,808 --> 00:12:27,744
+迷宫从这里开始
+I'm going to start my maze here.
+
+253
+00:12:30,520 --> 00:12:32,736
+我首先要做的是
+And the first thing I've got to do,
+
+254
+00:12:33,760 --> 00:12:36,752
+用一个你们非常熟悉的流程图记号
+is in a notation which many of you are familiar with,
+
+255
+00:12:37,072 --> 00:12:39,856
+这是一个判断：B是否为0
+is b equal to zero, a test.
+
+256
+00:12:41,504 --> 00:12:43,790
+如果判断为是的话
+And there's a possibility, either yes,
+
+257
+00:12:43,936 --> 00:12:45,584
+那我就做完了
+in which case I'm done.
+
+258
+00:12:49,790 --> 00:12:51,264
+否则的话
+Otherwise, if no,
+
+259
+00:12:52,704 --> 00:12:54,320
+我就不得不滚动一些缓冲器
+then I'm going have to roll over some bumpers.
+
+260
+00:12:55,008 --> 00:12:56,464
+按照下列顺序执行
+I'm going to do it in the following order.
+
+261
+00:12:57,420 --> 00:13:03,408
+我想向这样来做一个互换游戏
+I want to, I want to do this interchange game.
+
+262
+00:13:04,050 --> 00:13:05,808
+首先 因为我需要A和B
+Now first, since I need both a and b,
+
+263
+00:13:06,320 --> 00:13:08,576
+但首先 -- 虽然并不是必要的
+but then the first-- and this is not necessary--
+
+264
+00:13:08,656 --> 00:13:09,728
+我需要先把它们收集起来
+I want to collect this.
+
+265
+00:13:11,070 --> 00:13:12,624
+这里的值要送入到B中
+This is the thing that's going to go into b.
+
+266
+00:13:13,240 --> 00:13:14,032
+因此 我会说
+So I'm going to say,
+
+267
+00:13:14,288 --> 00:13:16,272
+用A和B的值来计算这个
+take this, which depends upon both a and b,
+
+268
+00:13:16,368 --> 00:13:18,672
+并把算得的余数放到这里
+and put the remainder into here.
+
+269
+00:13:19,150 --> 00:13:20,336
+因此 我首先要按下这个按钮
+So I'm going to push this button first.
+
+270
+00:13:21,536 --> 00:13:24,432
+然后我要把B的值送入A
+Then, I'm going to transfer b to a,
+
+271
+00:13:24,448 --> 00:13:25,600
+通过按这个钮来实现
+push that button,
+
+272
+00:13:25,824 --> 00:13:27,632
+然后我再把临时值送入B
+and then I transfer the temporary into b,
+
+273
+00:13:28,768 --> 00:13:29,424
+通过这个按钮实现
+push that button.
+
+274
+00:13:32,030 --> 00:13:34,970
+这是一个相当时序化的机器
+So a very sequential machine,
+
+275
+00:13:35,392 --> 00:13:36,528
+它非常的低效
+it's very inefficient.
+
+276
+00:13:37,750 --> 00:13:39,056
+但目前来说还好
+But that's fine right now.
+
+277
+00:13:39,810 --> 00:13:40,970
+我们来为按钮命名
+We're going to name the buttons,
+
+278
+00:13:41,472 --> 00:13:42,720
+T←R
+t gets remainder.
+
+279
+00:13:46,750 --> 00:13:48,736
+A←B
+a gets b.
+
+280
+00:13:50,030 --> 00:13:54,816
+B←T
+And b gets t.
+
+281
+00:13:55,470 --> 00:13:57,632
+然后我要来到这里
+And then I'm going to go around here
+
+282
+00:13:58,784 --> 00:13:59,888
+也就是回到开始的地方
+and it's to go back to start.
+
+283
+00:14:01,620 --> 00:14:03,870
+在这里 我们看到了什么？
+And if you look, what are we seeing here?
+
+284
+00:14:03,870 --> 00:14:04,912
+我们看到各种各样的 --
+We're seeing the various--
+
+285
+00:14:05,056 --> 00:14:07,168
+我们真正拥有的是某种机械连接
+what I really have is some sort of mechanical connection,
+
+286
+00:14:07,424 --> 00:14:13,632
+其中T←R控制了这个东西
+where t gets r controls this thing.
+
+287
+00:14:16,830 --> 00:14:21,488
+A←B控制了这个东西
+And I have here that a gets b controls this fellow over here,
+
+288
+00:14:26,960 --> 00:14:28,120
+而这里的这个东西
+and this fellow over here.
+
+289
+00:14:28,120 --> 00:14:31,088
+同学们 这简直太恶劣了
+Boy, that's absolutely pessimal,
+
+290
+00:14:31,488 --> 00:14:32,480
+一点也没有优化
+the inverse of optimal.
+
+291
+00:14:32,630 --> 00:14:34,590
+我画的所有线条都相互交叉
+Every line heads across every other line the way I drew it.
+
+292
+00:14:38,540 --> 00:14:41,150
+我想B←T控制的是这个
+I suppose this goes here, b gets t.
+
+293
+00:14:45,690 --> 00:14:47,952
+现在 我就要运行这台机器了
+Now I'd like to run this machine.
+
+294
+00:14:48,040 --> 00:14:49,344
+但是在我运行它之前
+But before I run the machine,
+
+295
+00:14:49,376 --> 00:14:51,408
+我想写下它的控制器的描述
+I want to write down a description of this controller,
+
+296
+00:14:51,630 --> 00:14:52,816
+以便使你们相信
+just so you can see that these things,
+
+297
+00:14:52,848 --> 00:14:55,632
+这些东西可以组织成某种良好的语言
+of course, as usual, can be written down in some nice language,
+
+298
+00:14:56,080 --> 00:14:58,080
+这样我们就不必总是像这样画图
+so that we don't have to always draw these diagrams.
+
+299
+00:14:58,368 --> 00:15:00,688
+图示的缺陷之一 就是占用了太多空间
+One of the problems with diagrams is that they take up a lot of space.
+
+300
+00:15:00,896 --> 00:15:01,980
+对于这样的一个小型机器来说
+And for a machine this small,
+
+301
+00:15:02,000 --> 00:15:03,056
+它占用了两块黑板
+it takes two blackboards.
+
+302
+00:15:03,220 --> 00:15:05,248
+而一台求值器机器
+For a machine that's the evaluator machine,
+
+303
+00:15:05,408 --> 00:15:07,104
+我就很难将它画在这间屋子里了
+I have trouble putting it into this room,
+
+304
+00:15:07,952 --> 00:15:09,168
+尽管它还不是非常大
+even though it isn't very big.
+
+305
+00:15:09,900 --> 00:15:11,280
+因此我要为它构造一门小型语言
+So I'm going to make a little language for this
+
+306
+00:15:11,296 --> 00:15:12,512
+用来描述这个机器
+that's just a description of that,
+
+307
+00:15:13,104 --> 00:15:23,296
+(DEFIME-MACHINE GCD
+saying define a machine we'll call GCD.
+
+308
+00:15:24,420 --> 00:15:25,664
+当然 一旦我们有了像这样的描述
+Of course, once we have something like this,
+
+309
+00:15:25,680 --> 00:15:26,832
+我们就能够模拟该机器
+we have a simulator for it.
+
+310
+00:15:27,220 --> 00:15:29,424
+我之所以想构建这种形式的语言
+And the reason why we want to build a language in this form,
+
+311
+00:15:29,568 --> 00:15:32,944
+是因为我们能够立即操纵这些表达式
+is because all of a sudden we can manipulate these expressions that I'm writing down.
+
+312
+00:15:33,210 --> 00:15:34,912
+因此 我也就能够
+And then of course I can write things I can
+
+313
+00:15:35,290 --> 00:15:38,160
+代数地操作 或者模拟这些东西
+algebraically manipulate these things, simulate them
+
+314
+00:15:38,208 --> 00:15:39,968
+以及各种各样我想进行的操作
+all that sort of things that I might want to do,
+
+315
+00:15:40,128 --> 00:15:42,592
+或者还可以把它们转换成布局图 谁知道呢？
+perhaps transform them as a layout, who knows.
+
+316
+00:15:43,630 --> 00:15:48,384
+一旦我有了寄存器的良好表示
+Once I have a nice representation of registers,
+
+317
+00:15:48,510 --> 00:15:49,616
+它有一些寄存器
+it has certain registers,
+
+318
+00:15:53,008 --> 00:15:55,640
+记作(REGISTERS A B T)
+which we can call A, B, and T.
+
+319
+00:15:56,752 --> 00:15:57,808
+它还有控制器
+And there's a controller.
+
+320
+00:16:02,190 --> 00:16:04,464
+实际上 更好的做法是让它更显式一些
+Actually, a better language, which would be more explicit,
+
+321
+00:16:04,496 --> 00:16:06,976
+也就是说 为每一个按钮命名
+would be one which named every button
+
+322
+00:16:08,144 --> 00:16:10,176
+并指明它们的操作
+also and said what it did.
+
+323
+00:16:10,420 --> 00:16:11,376
+比如说这个按钮
+Like, this button
+
+324
+00:16:11,552 --> 00:16:14,190
+会让T的值送入到B中
+causes the contents of T to go to the contents of B.
+
+325
+00:16:15,100 --> 00:16:16,096
+但我却不想这么做
+Well I don't want to do that,
+
+326
+00:16:16,112 --> 00:16:17,952
+因为这样会让代码难以阅读
+because it's actually harder to read to do that,
+
+327
+00:16:18,208 --> 00:16:19,344
+也会占用更多空间
+and it takes up more space.
+
+328
+00:16:19,510 --> 00:16:22,368
+所以我会把相关的指令写在控制器中
+So I'm going to have that in the instructions written in the controller.
+
+329
+00:16:23,290 --> 00:16:25,248
+这样就隐式地指明了具体的操作
+It's going to be implicit what the operations are.
+
+330
+00:16:26,320 --> 00:16:28,576
+可以通过阅读代码推断出来
+They can be deduced by reading these
+
+331
+00:16:29,168 --> 00:16:31,392
+并收集所有可以完成的不同事情
+and collecting together all the different things that can be done.
+
+332
+00:16:31,696 --> 00:16:33,500
+我们来看一看
+We look and see, see...
+
+333
+00:16:33,500 --> 00:16:34,704
+我们来看下这些东西是什么吧
+Well, let's just look at what these things are.
+
+334
+00:16:35,712 --> 00:16:37,296
+首先是一个循环
+There's a little loop that we go around
+
+335
+00:16:38,240 --> 00:16:40,208
+先是一条分支指令
+which says branch,
+
+336
+00:16:42,640 --> 00:16:46,464
+这个就对应了机器中的小挡板
+this is the representation of the little flap
+
+337
+00:16:46,896 --> 00:16:48,496
+它决定了你在此处的走向
+that decides which way you go here,
+
+338
+00:16:49,104 --> 00:16:58,000
+判断 -- 取B的值 并判断是否为0
+if 0, OK, fetch of B, the contents of B,
+
+339
+00:16:58,650 --> 00:17:00,064
+如果B的值是0
+and if the contents of B is 0,
+
+340
+00:17:00,320 --> 00:17:01,720
+那么就跳转到一个叫DONE的地方
+then go to a place called done.
+
+341
+00:17:03,640 --> 00:17:05,296
+现在 你们在这里看到的是
+Now, one thing you're seeing here,
+
+342
+00:17:05,296 --> 00:17:07,400
+这个看起来非常像传统计算机语言
+this looks very much like a traditional computer language.
+
+343
+00:17:08,170 --> 00:17:09,552
+但你们所见的是
+And what you're seeing here
+
+344
+00:17:10,032 --> 00:17:12,000
+一些个标签
+is things like labels
+
+345
+00:17:12,992 --> 00:17:16,864
+它们代表着存放了一系列指令的地方
+that represent places in a sequence written down as a sequence.
+
+346
+00:17:17,600 --> 00:17:18,944
+之所以需要它们
+The reason why they're needed
+
+347
+00:17:19,488 --> 00:17:21,152
+是因为在这里
+is because over here,
+
+348
+00:17:21,456 --> 00:17:22,816
+我表达了“循环”的概念
+I've written something with loops.
+
+349
+00:17:23,320 --> 00:17:26,112
+但是如果我是在写英文之类的文本
+But if I'm writing English text, or something like that,
+
+350
+00:17:26,448 --> 00:17:28,096
+就很难去引用一个位置
+it's hard to refer to a place.
+
+351
+00:17:28,580 --> 00:17:29,536
+我没有箭头
+I don't have arrows.
+
+352
+00:17:30,800 --> 00:17:33,024
+箭头是通过
+Arrows are represented by giving names
+
+353
+00:17:33,056 --> 00:17:34,440
+给箭头所指的地方命名来表示的
+to the places where the arrows terminate,
+
+354
+00:17:34,576 --> 00:17:36,288
+并通过名字来引用
+and then referring to them by those names.
+
+355
+00:17:37,408 --> 00:17:38,592
+这只是一种编码
+Now this is just an encoding.
+
+356
+00:17:39,860 --> 00:17:41,888
+而不是某种魔法
+There's nothing magical about things like that.
+
+357
+00:17:43,150 --> 00:17:44,960
+接下来我们要做的是
+Next thing we're going to do is we're going to say,
+
+358
+00:17:45,024 --> 00:17:46,840
+我们如何来实现T←R
+how do we do T gets R?
+
+359
+00:17:47,450 --> 00:17:49,760
+非常简单 用ASSIGN
+Oh, that's easy enough, assign.
+
+360
+00:17:52,192 --> 00:17:55,552
+我们把余数赋值给T
+We assign to T the remainder.
+
+361
+00:17:56,320 --> 00:17:59,248
+ASSIGN就是按钮的名字
+Assign is the name of the button.
+
+362
+00:18:01,470 --> 00:18:02,640
+就是按按钮的家伙
+That's the button-pusher.
+
+363
+00:18:03,140 --> 00:18:04,976
+把余数赋给T
+Assign to T the remainder,
+
+364
+00:18:04,992 --> 00:18:06,768
+这个操作是这样表示的
+and here's the representation of the operation,
+
+365
+00:18:11,744 --> 00:18:17,536
+取A、B的值 相除得到余数
+when we divide the fetch of A by the fetch of B.
+
+366
+00:18:23,856 --> 00:18:30,992
+同时 我们也要取B的值 赋给A
+And we're also going to assign to A the fetch of B,
+
+367
+00:18:34,990 --> 00:18:47,888
+再取T的值赋给B
+assign to B the result of getting the contents of T.
+
+368
+00:18:49,616 --> 00:18:51,856
+现在 我需要引用这个开头
+And now I have to refer to the beginning here.
+
+369
+00:18:53,184 --> 00:18:55,920
+呃 我为什么不把这里叫做LOOP呢？
+I see, why don't I call that loop like I have here?
+
+370
+00:19:04,096 --> 00:19:07,040
+这就是如何引用这个箭头
+OK? So that's that reference to that arrow.
+
+371
+00:19:07,610 --> 00:19:08,950
+当执行到DONE时 就完成了所有操作
+And when we're done, we're done.
+
+372
+00:19:09,024 --> 00:19:13,072
+我们来到了这里 所有指令的结尾
+We go to here, which is the end of the thing.
+
+373
+00:19:15,260 --> 00:19:17,040
+这段文字化描述的就是
+So here's just a written representation
+
+374
+00:19:17,696 --> 00:19:20,860
+我们在这里画的一小部分机器
+of this fragment of machinery that we've drawn here.
+
+375
+00:19:21,660 --> 00:19:24,848
+下面 我就要运行它
+Now the next thing I'd like to do is run this.
+
+376
+00:19:25,490 --> 00:19:26,656
+我想让你们感受一下它的运行
+I want us to feel it running.
+
+377
+00:19:27,620 --> 00:19:29,808
+从来没有做过这个 你必须做一次
+Never done this before, you got to do it once.
+
+378
+00:19:31,010 --> 00:19:32,624
+让我们以一个具体的问题来演示
+So let's take a particular problem.
+
+379
+00:19:33,100 --> 00:19:34,704
+假设我们想要计算
+Suppose we want to compute the GCD
+
+380
+00:19:35,040 --> 00:19:40,680
+30和42的最大公约数
+of a equals 30 and b equals 42.
+
+381
+00:19:42,210 --> 00:19:44,928
+我现在不知道结果是多少
+I have no idea what that is right now.
+
+382
+00:19:45,860 --> 00:19:47,600
+但我知道A=30而B=42
+But a 30 and b is 42.
+
+383
+00:19:50,960 --> 00:19:52,096
+我就这么着开始
+So that's how I start this thing up.
+
+384
+00:19:52,608 --> 00:19:53,904
+那么 我首先要做些什么呢？
+Well, what's the first thing I do?
+
+385
+00:19:54,240 --> 00:19:56,864
+我先判断B是否为0：否
+I say is B equal to 0, no.
+
+386
+00:19:57,590 --> 00:20:02,112
+然后计算A除B的余数 并赋给T
+Then assign to T the remainder of the fetch of A and the fetch of B.
+
+387
+00:20:02,800 --> 00:20:07,600
+当然 30除以42的余数就是30自己
+Well the remainder of 30 when divided by 42 is itself 30.
+
+388
+00:20:11,130 --> 00:20:12,032
+按下那个按钮
+Push that button.
+
+389
+00:20:12,920 --> 00:20:15,104
+现在弹珠就滚动到了这里
+Now the marble has rolled to here.
+
+390
+00:20:17,100 --> 00:20:18,064
+A←B
+A gets B.
+
+391
+00:20:19,024 --> 00:20:20,768
+又按下了这个按钮
+That pushes this button.
+
+392
+00:20:21,220 --> 00:20:22,544
+因此42来到了这里
+So 42 moves into here.
+
+393
+00:20:26,592 --> 00:20:27,600
+B←T
+B gets T.
+
+394
+00:20:28,368 --> 00:20:29,344
+按下了这个按钮
+Push that button.
+
+395
+00:20:29,870 --> 00:20:30,960
+30来到了这里
+The 30 goes here.
+
+396
+00:20:32,576 --> 00:20:33,696
+这样我就交换了它们
+Let met just interchange them.
+
+397
+00:20:34,660 --> 00:20:38,272
+我们再来看看 回到开始
+Now let's see, go back to the beginning.
+
+398
+00:20:38,640 --> 00:20:39,728
+B为0么？不
+B 0, no.
+
+399
+00:20:40,192 --> 00:20:41,504
+将余数赋给T
+T gets the remainder.
+
+400
+00:20:43,230 --> 00:20:46,304
+我想 42除以30的余数是12
+I suppose the remainder when dividing 42 by 30 is 12.
+
+401
+00:20:47,240 --> 00:20:48,304
+按下这个钮
+I push that one.
+
+402
+00:20:48,530 --> 00:20:51,408
+下面 我想让30来到这里
+Next thing I do is allow the 30 to go to here,
+
+403
+00:20:53,904 --> 00:20:55,950
+按下这个钮 让12来到这里
+push this one, allow the 12 to go to here.
+
+404
+00:20:58,416 --> 00:21:00,380
+然后继续
+OK? Go around this thing.
+
+405
+00:21:00,380 --> 00:21:01,312
+程序执行完了么？
+Is that done?
+
+406
+00:21:01,530 --> 00:21:02,128
+并没有
+No.
+
+407
+00:21:02,360 --> 00:21:08,224
+现在 我需要求解30除以12的余数
+How about-- so now I have to find out the remainder of 30 divided by 12.
+
+408
+00:21:08,850 --> 00:21:10,672
+我想答案是6
+And I believe that's 6.
+
+409
+00:21:12,420 --> 00:21:15,136
+按下这个钮 6就到了这里
+So 6 goes here on this button push.
+
+410
+00:21:16,208 --> 00:21:18,256
+然后我又按下这个钮
+Then the next thing I push is this one,
+
+411
+00:21:18,304 --> 00:21:19,616
+这就让12来到了这里
+which the 12 goes into here.
+
+412
+00:21:23,730 --> 00:21:25,090
+然后我又按下这个按钮
+Then I push this button.
+
+413
+00:21:25,090 --> 00:21:26,000
+6就来到了这里
+The 6 gets into here.
+
+414
+00:21:29,850 --> 00:21:31,680
+6等于0么？
+Is 6 equal to 0?
+
+415
+00:21:31,888 --> 00:21:32,496
+不等于
+No.
+
+416
+00:21:33,420 --> 00:21:33,984
+好的
+OK.
+
+417
+00:21:34,380 --> 00:21:36,800
+因此这时
+So then at that point,
+
+418
+00:21:36,890 --> 00:21:38,128
+接下来又要计算余数
+the next thing to do is divide it.
+
+419
+00:21:38,144 --> 00:21:39,808
+哦 这个的余数是0
+Ooh, this has got a remainder of 0.
+
+420
+00:21:40,660 --> 00:21:41,744
+看起来我们就快完成了
+Looks like we're almost done.
+
+421
+00:21:42,360 --> 00:21:44,360
+将6从这里挪到这里
+Move the 6 over here next.
+
+422
+00:21:47,008 --> 00:21:48,272
+0移动到这里
+0 over here.
+
+423
+00:21:49,090 --> 00:21:50,200
+0等于0么？
+Is the answer 0?
+
+424
+00:21:50,200 --> 00:21:50,736
+是的
+Yes.
+
+425
+00:21:51,340 --> 00:21:53,360
+B的值等于0 因此答案就是A的值
+B is 0, therefore the answer is in A.
+
+426
+00:21:54,288 --> 00:21:55,760
+因此答案就是6
+The answer is 6.
+
+427
+00:21:56,610 --> 00:21:57,616
+这确实是正确的答案
+And indeed that's right,
+
+428
+00:21:57,632 --> 00:21:59,472
+因为如果我们回过头审视最初的问题
+because if we look at the original problem,
+
+429
+00:22:00,080 --> 00:22:06,640
+我们知道30=2×3×5
+what we have is 30 is 2 times 3 times 5,
+
+430
+00:22:07,008 --> 00:22:11,120
+42=2×3×7
+and 42 is 2 times 3 times 7.
+
+431
+00:22:11,670 --> 00:22:14,112
+因此最大公约数就是2×3
+So the greatest common divisor is 2 times 3,
+
+432
+00:22:14,208 --> 00:22:15,088
+也就是6
+which is 6.
+
+433
+00:22:18,380 --> 00:22:20,560
+我们通常在这里画另外一条线
+Now normally, we write one other little line here,
+
+434
+00:22:20,592 --> 00:22:22,528
+为了使它更清晰一点
+just to make it a little bit clearer,
+
+435
+00:22:22,896 --> 00:22:27,712
+在这两者之间建立了联系
+which is that we leave in a connection saying
+
+436
+00:22:27,856 --> 00:22:31,010
+小挡板需要根据这个指示灯来工作
+that this light is the guy that that flap looks at.
+
+437
+00:22:34,000 --> 00:22:37,328
+当然 跟我给你们展示的东西相比
+Of course, any real machine has a lot more
+
+438
+00:22:37,856 --> 00:22:40,000
+真实计算机的组件更加复杂
+complicated things in it than what I've just shown you.
+
+439
+00:22:41,350 --> 00:22:47,168
+让我们来看看第一张幻灯片
+Let's look for a second at the first still store.
+
+440
+00:22:47,980 --> 00:22:48,816
+哇
+Wow.
+
+441
+00:22:50,190 --> 00:22:52,432
+我们看到 我们想要做的就是
+Well you see, for example, one thing we might want to do
+
+442
+00:22:52,656 --> 00:22:55,856
+IO形式的操作
+is worry about the operations that are of IO form.
+
+443
+00:22:56,840 --> 00:23:01,424
+我们需要从外部搜集一些东西
+And we may have to collect something from the outside.
+
+444
+00:23:01,980 --> 00:23:03,936
+因此 对我们的状态机器来说
+So a state machine that we might have,
+
+445
+00:23:04,300 --> 00:23:07,024
+它们的控制器
+the controller may have to,
+
+446
+00:23:07,264 --> 00:23:10,560
+可能会从某处取得某值
+may have to, for example, get a value from something
+
+447
+00:23:10,784 --> 00:23:12,416
+将它们放入寄存器并从中读取
+and put register a to load it up.
+
+448
+00:23:13,490 --> 00:23:15,920
+我还可以把另外的值加载到寄存器B中
+I have to master load up register b with another value.
+
+449
+00:23:17,070 --> 00:23:18,608
+稍后 当执行完毕后
+And then later, when I'm done,
+
+450
+00:23:18,992 --> 00:23:20,528
+我想要输出结果
+I might want to print the answer out.
+
+451
+00:23:21,200 --> 00:23:25,232
+当然 答案或简单或复杂
+And of course, that might be either simple or complicated.
+
+452
+00:23:26,090 --> 00:23:28,032
+我写代码的时候 总假设PRINT很简单
+I'm writing, assuming print is very simple,
+
+453
+00:23:28,096 --> 00:23:29,296
+READ也很简单
+and read is very simple.
+
+454
+00:23:29,880 --> 00:23:31,088
+但实际上 在真实世界中
+But in fact, in the real world,
+
+455
+00:23:31,120 --> 00:23:32,896
+这些都是非常复杂的操作
+those are very complicated operations,
+
+456
+00:23:33,080 --> 00:23:35,520
+跟你尝试求解的问题相比
+fairly, usually much, much larger and more complicated
+
+457
+00:23:35,552 --> 00:23:38,330
+它们通常更加庞大而复杂
+than the thing you're doing as your problem you're trying to solve.
+
+458
+00:23:41,670 --> 00:23:43,904
+另一方面 我犹记得
+On the other hand, I can remember a time when,
+
+459
+00:23:44,896 --> 00:23:48,784
+使用IBM 7090一类的计算机的时候
+I remember using IBM 7090 computer of sorts,
+
+460
+00:23:49,056 --> 00:23:53,040
+它的READ和WRITE只能操作单个对象
+where things like read and write of a single object,
+
+461
+00:23:53,088 --> 00:23:54,624
+也就是一个数字
+a single number, a number,
+
+462
+00:23:55,840 --> 00:23:58,544
+这就是一个基本的IO操作
+is a primitive operation of the IO controller.
+
+463
+00:23:59,632 --> 00:24:02,048
+我们这里有同样的操作
+OK? And so we have that kind of thing in there.
+
+464
+00:24:02,330 --> 00:24:04,672
+在这样的一台机器中
+And in such a machine,
+
+465
+00:24:05,440 --> 00:24:06,896
+我们实际上在做什么？
+well, what are we really doing?
+
+466
+00:24:07,120 --> 00:24:11,600
+我们看到 这个叫做“READ”的组件是数据源头
+We're just saying that there's a source over here called "read"
+
+467
+00:24:12,208 --> 00:24:14,464
+这个操作总是返回一个值
+which is an operation which always has a value.
+
+468
+00:24:14,660 --> 00:24:17,136
+我们可以把它看做 总是返回一个值
+We have to think about this as always having a value
+
+469
+00:24:17,216 --> 00:24:19,840
+它可以赋给寄存器A或B
+which can be gated into either register a or b.
+
+470
+00:24:21,660 --> 00:24:23,232
+而PRINT这个过程呢
+And print is some sort of thing
+
+471
+00:24:23,376 --> 00:24:25,024
+当你正确连接它的时候
+which when you gate it appropriately,
+
+472
+00:24:25,248 --> 00:24:26,432
+当你按下上面的按钮
+when you push the button on it,
+
+473
+00:24:26,656 --> 00:24:29,616
+就会打印出当前寄存器A中的值
+will cause a print of the value that's currently in register a.
+
+474
+00:24:31,660 --> 00:24:32,736
+这非常普通
+Nothing very exciting.
+
+475
+00:24:33,328 --> 00:24:35,200
+这是我们想要的一种功能
+So that's one sort of thing you might want to have.
+
+476
+00:24:35,888 --> 00:24:38,320
+但这里还有些其它事情需要我们担忧
+But these are also other things that are a little bit worrisome.
+
+477
+00:24:38,320 --> 00:24:40,672
+比如说 这里我使用了一些复杂的机制
+Like I've used here some complicated mechanisms.
+
+478
+00:24:41,050 --> 00:24:42,480
+我们这里有REMAINDER组件
+What you see here is remainder.
+
+479
+00:24:43,850 --> 00:24:44,448
+这是个什么东西呢？
+What is that?
+
+480
+00:24:44,690 --> 00:24:46,416
+求取余数的计算过程并不是那么“显然”
+That may not be so obvious how to compute.
+
+481
+00:24:46,920 --> 00:24:48,928
+如果我们把这个组件给拆开
+It may be something which when you open it up,
+
+482
+00:24:49,488 --> 00:24:50,624
+就会得到一整台机器
+you get a whole machine.
+
+483
+00:24:51,840 --> 00:24:53,664
+事实就是这样的
+OK? In fact, that's true.
+
+484
+00:24:54,540 --> 00:24:59,152
+举例来说 如果要编程实现REMAINDER
+For example, if I write down the program for remainder,
+
+485
+00:24:59,440 --> 00:25:02,440
+最简单的算法就是 不断地做减法
+the simplest program for it is by repeated subtraction.
+
+486
+00:25:04,780 --> 00:25:05,952
+这是因为 除法可以通过
+Because of course, division can be done
+
+487
+00:25:05,968 --> 00:25:08,990
+对整数不断做减法来实现
+by repeated subtraction of numbers, of integers.
+
+488
+00:25:09,800 --> 00:25:23,584
+N除以D的余数不外乎就是
+So the remainder of N divided by D
+
+489
+00:25:24,992 --> 00:25:31,440
+如果N小于D的话
+is nothing more than if N is less than D,
+
+490
+00:25:32,240 --> 00:25:33,664
+答案就是N
+then the result is N.
+
+491
+00:25:34,304 --> 00:25:35,904
+否则的话就是
+Otherwise, it's the remainder
+
+492
+00:25:41,150 --> 00:25:47,600
+N先减去D
+when we subtract D from N with respect to D,
+
+493
+00:25:48,272 --> 00:25:49,328
+再除以D的余数
+when divided by D.
+
+494
+00:25:51,280 --> 00:25:55,056
+天啊 这个看起来就像是GCD程序
+Gee, this looks just like the GCD program.
+
+495
+00:25:56,890 --> 00:25:59,488
+当然 这个不是求余数的最优算法
+Of course, it's not a very nice way to do remainders.
+
+496
+00:25:59,750 --> 00:26:00,912
+在实际中 你应该使用那些
+You'd really want to use something like
+
+497
+00:26:00,920 --> 00:26:05,424
+二进制运算、移位运算等操作
+binary notation and shift and things like that in a practical computer.
+
+498
+00:26:05,550 --> 00:26:06,976
+但关键点就是
+But the point of that is
+
+499
+00:26:07,136 --> 00:26:08,480
+如果我把这些组件打开
+that if I open this thing up,
+
+500
+00:26:08,928 --> 00:26:10,640
+我可能会发现其中有一台计算机
+I might find inside of it a computer.
+
+501
+00:26:11,880 --> 00:26:12,992
+现在我们就知道它的原理了
+Oh, we know how to do that.
+
+502
+00:26:13,510 --> 00:26:14,336
+因为我们就造过一台
+We just made one.
+
+503
+00:26:15,640 --> 00:26:17,104
+这些个机器都大同小异
+And it could be another thing just like this.
+
+504
+00:26:17,400 --> 00:26:18,064
+另外一方面
+On the other hand,
+
+505
+00:26:18,080 --> 00:26:20,000
+我们可能想要构建一台更高效
+we might want to make a more efficient
+
+506
+00:26:20,016 --> 00:26:21,680
+组织更精良的机器
+or better-structured machine,
+
+507
+00:26:21,850 --> 00:26:23,968
+比如说 多次利用其中的寄存器
+or maybe make use of some of the registers more than once,
+
+508
+00:26:24,000 --> 00:26:27,050
+或者是硬件设计者能想到的其它可怕混乱
+or some horrible mess like that that hardware designers like to do,
+
+509
+00:26:27,312 --> 00:26:28,608
+等等原因
+and for very good reasons.
+
+510
+00:26:29,250 --> 00:26:31,568
+比如说 你们所见的这台机器
+So for example, here's a machine that you see,
+
+511
+00:26:32,528 --> 00:26:34,912
+不是让你们去细读它的结构的
+which you're not supposed to be able to read.
+
+512
+00:26:35,050 --> 00:26:37,520
+它有些复杂 对吧？
+It's a little bit complicated. OK?
+
+513
+00:26:37,520 --> 00:26:39,872
+但它实际上是
+But what it is is the integration of
+
+514
+00:26:40,096 --> 00:26:43,824
+整合了REMAINDER的GCD机器
+remainder into the GCD machine.
+
+515
+00:26:44,464 --> 00:26:46,020
+并且实际上 它没有多余的寄存器
+And it takes, in fact, no more registers.
+
+516
+00:26:46,020 --> 00:26:48,624
+数据通路上有三个寄存器
+There are three registers in the datapaths. OK?
+
+517
+00:26:49,050 --> 00:26:50,640
+但现在 这里有个减法器
+But now there's a subtractor.
+
+518
+00:26:51,550 --> 00:26:52,992
+又有两个东西被测试
+There are two things that are tested.
+
+519
+00:26:53,020 --> 00:26:55,072
+B等于0么？
+Is b equal to 0,
+
+520
+00:26:55,232 --> 00:26:56,560
+T小于B么？
+or is t less than b?
+
+521
+00:26:57,250 --> 00:26:59,456
+而至于这一块的控制器
+And then the controller, which you see over here,
+
+522
+00:27:00,224 --> 00:27:01,760
+并不会更加复杂
+is not much more complicated.
+
+523
+00:27:01,850 --> 00:27:03,872
+它有两个循环
+But it has two loops in it,
+
+524
+00:27:04,528 --> 00:27:08,336
+最主要的循环是计算GCD的
+one of which is the main one for doing the GCD,
+
+525
+00:27:08,400 --> 00:27:10,144
+而另一条是减法循环
+and one of which is the subtraction loop
+
+526
+00:27:10,432 --> 00:27:12,800
+是用来计算余数的子操作
+for doing the remainder sub-operation.
+
+527
+00:27:14,030 --> 00:27:15,808
+当然 还有一种思考方式
+And there are ways, of course, of,
+
+528
+00:27:15,968 --> 00:27:18,688
+就是把求余数程序
+if you think about it, taking the remainder program.
+
+529
+00:27:19,920 --> 00:27:21,712
+如果我把那边的REMAINDER机器
+If I take remainder, as you see over there
+
+530
+00:27:21,728 --> 00:27:22,830
+当作LAMBDA表达式
+as a lambda expression,
+
+531
+00:27:23,568 --> 00:27:27,024
+代换到GCD程序的REMAINDER中
+substitute it in for remainder over here in the GCD program,
+
+532
+00:27:28,208 --> 00:27:30,128
+然后再做一些化简
+OK, then do some simplification
+
+533
+00:27:30,320 --> 00:27:33,664
+代换其中的A和B
+by substituting a and b for remainder in there,
+
+534
+00:27:34,464 --> 00:27:35,952
+那么 我就可以展开这个循环
+then I can unwind this loop.
+
+535
+00:27:36,630 --> 00:27:39,424
+那么我就可以通过
+And I can get this piece of machinery
+
+536
+00:27:40,736 --> 00:27:42,944
+LAMBDA表达式的基本代数化简
+by basically, a little bit of simplification
+
+537
+00:27:43,360 --> 00:27:45,216
+来得到这台机器
+algebraic simplification on the lambda expressions.
+
+538
+00:27:48,550 --> 00:27:51,200
+我想 你们已经见识了一个非常简单的机器了
+So I suppose you've seen your first very simple machines now.
+
+539
+00:27:51,952 --> 00:27:53,280
+有什么疑问么？
+Are there any questions?
+
+540
+00:28:02,700 --> 00:28:03,104
+很好
+Good.
+
+541
+00:28:05,360 --> 00:28:06,544
+看起来很容易 难道不是吗？
+This looks easy, doesn't it?
+
+542
+00:28:10,144 --> 00:28:11,328
+好吧 休息一下 谢谢大家
+Thank you. I suppose, take a break.
+
+543
+00:28:12,540 --> 00:28:24,944
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+544
+00:28:25,136 --> 00:28:28,080
+《计算机程序的构造和解释》
+
+545
+00:28:31,370 --> 00:28:34,700
+《计算机程序的构造和解释》
+
+546
+00:28:34,768 --> 00:28:38,000
+讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+
+547
+00:28:38,000 --> 00:28:43,296
+寄存机器
+
+548
+00:28:47,936 --> 00:28:48,704
+教授：好吧
+PROFESSOR: Well, let's see.
+
+549
+00:28:49,376 --> 00:28:52,464
+现在 你们已经知道如何去把迭代过程
+Now you know how to make an iterative procedure,
+
+550
+00:28:52,544 --> 00:28:54,544
+或者是产生迭代计算的过程
+or a procedure that yields an iterative process,
+
+551
+00:28:55,184 --> 00:28:56,528
+变成一台机器
+turn into a machine.
+
+552
+00:28:57,770 --> 00:29:00,048
+我想 接下来我们就应该考虑
+I suppose the next thing we want to do is worry about things
+
+553
+00:29:00,544 --> 00:29:02,304
+如何来处理递归过程了
+that reveal recursive processes.
+
+554
+00:29:02,816 --> 00:29:05,056
+我们先从一个简单的阶乘过程开始
+So let's play with a simple factorial procedure.
+
+555
+00:29:11,200 --> 00:29:16,944
+(DEFINE (FACT N)
+We define factorial of N to be
+
+556
+00:29:19,632 --> 00:29:24,256
+如果N=1 那么结果就是1
+if n is 1, the result is 1,
+
+557
+00:29:24,624 --> 00:29:27,696
+为了减少模拟它的工作量 我就使用1
+using 1 right now to decrease the amount of work I have to do to simulate it,
+
+558
+00:29:28,128 --> 00:29:33,940
+否则结果就是(* N (FACT (- N 1)))
+else it's times N factorial N minus 1.
+
+559
+00:29:42,520 --> 00:29:46,048
+正如你们所知 这个程序的不同之处在于
+And what's different with this program, as you know,
+
+560
+00:29:46,656 --> 00:29:50,368
+这里 我在计算(FACT (- N 1))之后
+is that after I've computed factorial of N minus 1 here,
+
+561
+00:29:50,672 --> 00:29:52,260
+我要对结果做一些运算
+I have to do something to the result.
+
+562
+00:29:52,260 --> 00:29:53,680
+我要将它与N相乘
+I have to multiply it by N.
+
+563
+00:29:56,000 --> 00:30:00,672
+将这台机器可视化的唯一途径就是
+So the only way I can visualize what this machine is doing,
+
+564
+00:30:01,088 --> 00:30:02,016
+首先 由于--
+because of the fact--
+
+565
+00:30:02,352 --> 00:30:03,184
+请你们这么来想
+think of it this way,
+
+566
+00:30:03,360 --> 00:30:04,944
+这里 我有一台机器
+that I have a machine out here
+
+567
+00:30:05,088 --> 00:30:08,112
+而这台机器又需要某个阶乘机器来计算结果
+which somehow needs a factorial machine in order to compute its answer.
+
+568
+00:30:09,320 --> 00:30:11,168
+但外面的这台机器
+But this machine, the outer machine,
+
+569
+00:30:11,200 --> 00:30:13,024
+又需要在调用内部阶乘机器
+has to exist before and after
+
+570
+00:30:13,920 --> 00:30:15,720
+的前后都要存在
+the factorial machine, which is inside.
+
+571
+00:30:16,800 --> 00:30:17,904
+然而在迭代情况中
+Whereas in the iterative case,
+
+572
+00:30:18,752 --> 00:30:20,528
+外面的机器不需要
+the outer machine doesn't need to exist
+
+573
+00:30:20,912 --> 00:30:24,016
+在内部机器运行后保持存在
+after the inner machine is running,
+
+574
+00:30:24,830 --> 00:30:26,160
+这是因为你不需要回到
+because you never need to go back
+
+575
+00:30:26,192 --> 00:30:27,530
+外部机器来进行其它操作
+to the outer machine to do anything.
+
+576
+00:30:28,640 --> 00:30:30,064
+因此 我们这里的问题是
+So here we have a problem
+
+577
+00:30:30,270 --> 00:30:30,976
+我们的机器内部
+where we have a machine
+
+578
+00:30:31,008 --> 00:30:32,730
+有一个同样的机器
+which has the same machine inside of it,
+
+579
+00:30:33,872 --> 00:30:35,520
+一台无穷大的机器
+an infinitely large machine.
+
+580
+00:30:40,390 --> 00:30:43,120
+这里面也有其它的东西 比如乘法器
+And it's got other things inside of it, like a multiplier,
+
+581
+00:30:44,768 --> 00:30:46,032
+它接收输入
+which takes some inputs,
+
+582
+00:30:46,272 --> 00:30:47,776
+这是-1操作
+and there's a minus 1 box,
+
+583
+00:30:48,128 --> 00:30:49,312
+等等
+and things like that.
+
+584
+00:30:50,690 --> 00:30:53,728
+你们可以想象 -- 它就是这个样子的
+You know, You can imagine that's what it looks like.
+
+585
+00:30:54,370 --> 00:30:56,768
+但重要之处就在于
+But the important thing is that here I have
+
+586
+00:30:57,020 --> 00:30:58,704
+内部机器执行之前与执行之后
+something that happens before and after,
+
+587
+00:30:58,784 --> 00:31:01,600
+外部机器中都进行了一些运算
+in the outer machine, the execution of the inner machine.
+
+588
+00:31:02,540 --> 00:31:04,080
+因此这台机器必须有“生命”
+So this machine has to have a life.
+
+589
+00:31:05,472 --> 00:31:11,440
+外部机器需要在内部机器的两个时间点保持存在
+It has to exist on both times sides of this machine.
+
+590
+00:31:13,490 --> 00:31:15,808
+因此 我就需要有一个地方来保存
+So somehow, I have to have a place to store
+
+591
+00:31:16,192 --> 00:31:18,192
+维持外部机器运转的数据
+the things that this thing needs to run.
+
+592
+00:31:20,030 --> 00:31:22,096
+现实世界中不存在无穷的对象
+Infinite objects don't exist in the real world.
+
+593
+00:31:24,140 --> 00:31:25,584
+我们要做的就是营造一种假象
+What we have to do is arrange an illusion
+
+594
+00:31:26,128 --> 00:31:27,488
+一种无穷对象的假象
+that we have an infinite object,
+
+595
+00:31:27,984 --> 00:31:29,776
+我们在某处有无穷的硬件资源
+we have an infinite amount of hardware somewhere.
+
+596
+00:31:31,830 --> 00:31:35,344
+现在 这个假象非常重要
+Now of course, illusion's all that really matters.
+
+597
+00:31:36,280 --> 00:31:37,376
+如果我们能保证
+If we can arrange
+
+598
+00:31:38,000 --> 00:31:39,840
+每次当你查看某个无穷对象时
+that every time you look at some infinite object,
+
+599
+00:31:39,880 --> 00:31:42,960
+你所要观察的那部分存在
+the part of it that you look at is there,
+
+600
+00:31:44,496 --> 00:31:46,040
+那么就不需要实际上的“无穷”
+then it's as infinite as you need it to be.
+
+601
+00:31:47,390 --> 00:31:49,440
+当然 这里面我们想做的就是
+And of course, one of the things we might want to do,
+
+602
+00:31:49,824 --> 00:31:52,496
+来看下这里的东西
+just look at this thing over here,
+
+603
+00:31:53,008 --> 00:31:54,976
+这是我们目前为止的结构
+is the organization that we've had so far
+
+604
+00:31:56,048 --> 00:31:57,648
+这些结构呢
+organization that we've had so far
+
+605
+00:31:57,920 --> 00:32:01,376
+是机器的几大部分
+involves having a part of the machine,
+
+606
+00:32:01,408 --> 00:32:02,336
+比如控制器
+which is the controller,
+
+607
+00:32:03,184 --> 00:32:04,464
+它在这里
+which sits right over here,
+
+608
+00:32:04,784 --> 00:32:07,616
+它相当简单 并且是有穷的
+which is perfectly finite and very simple.
+
+609
+00:32:09,170 --> 00:32:10,448
+我们还有数据通路
+We have some datapaths,
+
+610
+00:32:10,464 --> 00:32:12,752
+它由寄存器和运算器组成
+which consist of registers and operators.
+
+611
+00:32:13,080 --> 00:32:15,200
+现在我提议
+And what I propose to do here is decompose
+
+612
+00:32:15,488 --> 00:32:16,960
+把机器分成两部分
+the machine into two parts,
+
+613
+00:32:17,360 --> 00:32:19,792
+这样 其中一部分全部是有穷的
+such that there is a part which is fundamentally finite,
+
+614
+00:32:20,784 --> 00:32:23,536
+而另一部分 可以保存无穷数据中的一部分
+and some part where a certain amount of infinite stuff can be kept.
+
+615
+00:32:24,230 --> 00:32:25,904
+换句话说 这部分也非常简单
+On the other hand this is very simple
+
+616
+00:32:26,416 --> 00:32:28,720
+但并非无穷 只是非常大而已
+and really isn't infinite, but it's just very large.
+
+617
+00:32:29,430 --> 00:32:30,400
+但它非常简单
+But it's so simple
+
+618
+00:32:30,528 --> 00:32:32,928
+以至于能够廉价地大量生产
+that it could be cheaply reproduced in such large amounts,
+
+619
+00:32:34,096 --> 00:32:34,928
+它就是内存
+we call it memory,
+
+620
+00:32:35,952 --> 00:32:39,072
+我们可以利用它来构造栈结构
+OK? that we can make a structure called a stack out of it
+
+621
+00:32:39,408 --> 00:32:41,232
+事实上 这就使得我们
+which will allow us to, in fact,
+
+622
+00:32:41,450 --> 00:32:43,632
+能够模拟无穷机器的存在
+simulate the existence of an infinite machine
+
+623
+00:32:43,648 --> 00:32:46,960
+也就是那些递归嵌套的机器
+which is made out of a recursive nest of many machines.
+
+624
+00:32:48,340 --> 00:32:50,432
+而它的原理则是
+And the way it's going to work is that
+
+625
+00:32:50,560 --> 00:32:52,976
+我们要在栈上存放必要的信息
+we're going to store in this place called the stack
+
+626
+00:32:54,304 --> 00:32:57,584
+用于内部机器执行完毕后
+the information required after the inner machine runs
+
+627
+00:32:59,184 --> 00:33:01,072
+继续外部机器的操作
+to resume the operation of the outer machine.
+
+628
+00:33:03,840 --> 00:33:05,488
+因此它会记住
+So it will remember
+
+629
+00:33:05,632 --> 00:33:07,952
+关于外部机器生命期的重要数据
+the important things about the life of the outer machine
+
+630
+00:33:08,048 --> 00:33:10,304
+这些是进行计算所必需的
+that will be needed for this computation.
+
+631
+00:33:11,390 --> 00:33:12,480
+当然
+Since, of course,
+
+632
+00:33:12,752 --> 00:33:16,336
+由于这些机器是通过递归的方式嵌套的
+these machines are nested in a recursive manner,
+
+633
+00:33:18,330 --> 00:33:23,392
+因此 栈的存取方式也会是
+then in fact the stack will only be accessed in a manner
+
+634
+00:33:23,456 --> 00:33:26,440
+也会是后进先出的
+which is the last thing that goes in is the first thing that comes out.
+
+635
+00:33:29,330 --> 00:33:30,640
+因此我们只需要存取
+So we'll only need to access
+
+636
+00:33:30,800 --> 00:33:32,528
+这个栈内存的一小部分
+some little part of this stack memory.
+
+637
+00:33:34,930 --> 00:33:35,920
+好吧 让我们来试一试
+OK, well, let's do it.
+
+638
+00:33:36,810 --> 00:33:38,416
+我已经给你们画好了数据通路
+I'm going to build you a datapath now,
+
+639
+00:33:38,448 --> 00:33:39,680
+现在该布置控制器了
+and I'm going to write the controller.
+
+640
+00:33:40,370 --> 00:33:42,864
+然后我们来运行一下 观察实际工作原理
+And then we're going to execute this to see how you do it.
+
+641
+00:33:43,510 --> 00:33:46,880
+还好阶乘机器不是特别的复杂
+So the factorial machine isn't so bad.
+
+642
+00:33:47,900 --> 00:33:50,160
+它有一个VAL寄存器
+It's going to have a register called the value,
+
+643
+00:33:52,224 --> 00:33:53,888
+这是用来存储答案的
+where the answer is going to be stored,
+
+644
+00:33:54,896 --> 00:33:56,672
+还有一个寄存器N
+and a registered called N,
+
+645
+00:33:59,856 --> 00:34:04,160
+它里面存储的是要计算阶乘的数
+which is where the number I'm taking factorial will be stored, factorial of.
+
+646
+00:34:04,510 --> 00:34:06,576
+为了满足某些情况
+And it will be necessary in some instances
+
+647
+00:34:07,488 --> 00:34:10,520
+我们要连接VAL和N
+to connect VAL to N.
+
+648
+00:34:11,744 --> 00:34:15,630
+事实上 如果我在这里返回N
+In fact, one nice case of this is if I just said over here,
+
+649
+00:34:16,380 --> 00:34:19,536
+也是正确的 因为这时N就等于1
+N, because that would be right for N equal 1N.
+
+650
+00:34:20,090 --> 00:34:23,264
+这样的话 我就可以把结果移动过去
+And I could just move the answer over there if that's important.
+
+651
+00:34:23,900 --> 00:34:25,552
+但我现在不考虑这个问题
+I'm not worried about that right now.
+
+652
+00:34:26,980 --> 00:34:28,608
+我还需要做一些事情
+And there are things I have to be able to do.
+
+653
+00:34:29,060 --> 00:34:31,024
+就像我们在这里看到的 我们还需要
+Like I have to be able to, as we see here,
+
+654
+00:34:31,216 --> 00:34:34,672
+用VAL的值乘以N
+multiply N by something in VAL,
+
+655
+00:34:34,912 --> 00:34:37,456
+因为VAL是计算阶乘的结果
+because VAL is the result of computing factorial.
+
+656
+00:34:38,688 --> 00:34:40,448
+我需要把算得的结果送回VAL
+And I have to put the result back into VAL.
+
+657
+00:34:41,488 --> 00:34:42,656
+所以这里我们看到
+So here we can see
+
+658
+00:34:42,832 --> 00:34:46,432
+N的阶乘就是
+that the result of computing a factorial
+
+659
+00:34:46,576 --> 00:34:49,200
+N乘以某个阶乘
+is N times the result of computing a factorial.
+
+660
+00:34:50,690 --> 00:34:53,776
+而VAL就代表了内部阶乘的结果
+VAL will be the representation of the answer of the inner factorial.
+
+661
+00:34:55,190 --> 00:35:00,256
+因此 在这里我需要有一个乘法器
+And so I'm going to have to have a multiplier here,
+
+662
+00:35:02,360 --> 00:35:07,184
+它的参数有：N以及VAL
+which is going to sample the value of N and the value of VAL
+
+663
+00:35:08,640 --> 00:35:15,600
+并且 像这样把计算结果送回VAL
+OK? and put the result back into VAL like that.
+
+664
+00:35:17,170 --> 00:35:19,392
+我也需要知道N是否为1
+I'm also going to have to be able to see if N is 1.
+
+665
+00:35:21,328 --> 00:35:22,384
+因此我需要一个指示灯
+So I need a light bulb.
+
+666
+00:35:28,200 --> 00:35:30,400
+另外 我想我还需要
+And I suppose the other thing I'm going to need to have
+
+667
+00:35:31,024 --> 00:35:32,848
+一个组件来减小N
+is a way of decrementing N.
+
+668
+00:35:34,848 --> 00:35:36,096
+所以这里有一个递减器
+So I'm going to have a decrementer,
+
+669
+00:35:38,192 --> 00:35:41,390
+它接收参数N 将结果送回N
+which takes N and is going to put back the result into N.
+
+670
+00:35:46,620 --> 00:35:48,400
+这基本上就是我的机器所需要的东西了
+That's pretty much what I need in my machine.
+
+671
+00:35:49,550 --> 00:35:51,648
+然而 我还需要一些个东西
+Now, there's a little bit else I need.
+
+672
+00:35:52,304 --> 00:35:53,584
+一个稍微复杂一点的东西
+It's a little bit more complicated,
+
+673
+00:35:55,168 --> 00:35:56,880
+因为我需要有一种方式能够存储
+because I'm also going to need a way to store,
+
+674
+00:35:57,168 --> 00:35:59,696
+必要的一些信息
+to save away, the things that are going to be needed
+
+675
+00:36:01,020 --> 00:36:03,072
+以便计算完子阶乘后
+for resuming the computation of a factorial
+
+676
+00:36:03,104 --> 00:36:04,896
+恢复原始阶乘的计算
+after I've done a sub-factorial.
+
+677
+00:36:06,250 --> 00:36:06,864
+需要哪些信息呢?
+What's that?
+
+678
+00:36:07,230 --> 00:36:08,736
+首先就是N
+One thing I need is N.
+
+679
+00:36:09,850 --> 00:36:12,048
+因此 我要在这里构造一个栈
+So I'm going to build here a thing called a stack.
+
+680
+00:36:14,700 --> 00:36:15,776
+所谓的栈就是
+The stack is
+
+681
+00:36:17,984 --> 00:36:24,976
+一大堆连续的空间
+a bunch of stuff that I'm going to write in sequentially.
+
+682
+00:36:27,152 --> 00:36:28,592
+我不知道它到底有多深
+I don't know how long it is.
+
+683
+00:36:29,152 --> 00:36:31,488
+栈越深 无穷的假象营造得就越好
+The longer it is, the better my illusion of infinity.
+
+684
+00:36:33,230 --> 00:36:35,568
+我还需要有一种方法 能够把
+And I'm going to have to have a way of getting stuff
+
+685
+00:36:35,600 --> 00:36:37,020
+N中的值放入栈中
+out of N and into the stack
+
+686
+00:36:38,128 --> 00:36:39,088
+反过来也是
+and vice versa.
+
+687
+00:36:39,936 --> 00:36:41,744
+因此我需要一条像这样的连接
+So I'm going to need a connection like this,
+
+688
+00:36:44,416 --> 00:36:45,488
+它是双向的
+which is two-way,
+
+689
+00:36:50,448 --> 00:36:52,224
+通过它 我就可以在某个时间
+whereby I can save the value of N
+
+690
+00:36:52,240 --> 00:36:55,504
+把N的值存储起来
+and then restore it some other time through that connection.
+
+691
+00:36:56,048 --> 00:36:56,848
+这就是栈
+This is the stack.
+
+692
+00:36:58,100 --> 00:37:01,712
+我还需要一种方法来记住
+I also need a way of remembering
+
+693
+00:37:01,840 --> 00:37:07,728
+我现在计算到外部程序的哪个地方了
+where I was in the computation of factorial in the outer program.
+
+694
+00:37:08,530 --> 00:37:10,064
+现在 对于这台机器来说
+Now in the case of this machine,
+
+695
+00:37:10,768 --> 00:37:13,344
+这并不是什么问题
+it isn't very much a problem.
+
+696
+00:37:14,176 --> 00:37:16,240
+FACT总是返回在
+Factorial always returns,
+
+697
+00:37:16,864 --> 00:37:19,072
+一个跟N相乘的地方
+has to go back to the place where we multiply by N,
+
+698
+00:37:19,344 --> 00:37:20,720
+除了最后的一次
+except for the last time,
+
+699
+00:37:21,150 --> 00:37:23,024
+它返回到需要FACT最终答案的地方
+when it has to return to whatever needs the factorial
+
+700
+00:37:23,040 --> 00:37:24,040
+或者是'DONE、'STOP之类的
+or go to done or stop.
+
+701
+00:37:25,660 --> 00:37:26,672
+然而 通常来说
+However, in general,
+
+702
+00:37:27,168 --> 00:37:28,736
+我需要记住我去过哪些地方
+I'm going to have to remember where I have been,
+
+703
+00:37:29,136 --> 00:37:31,248
+因为 我可能从其它地方调用FACT
+because I might have computed factorial from somewhere else.
+
+704
+00:37:32,080 --> 00:37:34,896
+我需要返回到那个地方 并从那里继续
+I have to go back to that place and continue there.
+
+705
+00:37:36,070 --> 00:37:38,000
+因此 我需要有一种方法能够
+So I'm going to have to have some way of taking the place
+
+706
+00:37:38,016 --> 00:37:40,864
+记住有穷状态控制器中弹珠的位置
+where the marble is in the finite state controller,
+
+707
+00:37:41,328 --> 00:37:42,640
+也就是控制器的状态
+the state of the controller,
+
+708
+00:37:44,224 --> 00:37:46,352
+并将它存储在栈中
+and storing that in the stack as well.
+
+709
+00:37:47,400 --> 00:37:49,104
+我也需要有一种方法
+And I'm going to have to have ways of restoring that
+
+710
+00:37:49,456 --> 00:37:51,120
+能够恢复弹珠的状态
+back to the state of the-- the marble.
+
+711
+00:37:52,144 --> 00:37:54,288
+因此 我需要有一种将弹珠归位的能力
+So I have to have something that moves the marble to the right place.
+
+712
+00:37:54,704 --> 00:37:56,528
+现在 我们有一个地方用于存储弹珠
+Well, we're going to have a place which is the marble now.
+
+713
+00:37:57,872 --> 00:37:59,344
+它被称作“继续”寄存器
+And it's called the continue register,
+
+714
+00:38:03,616 --> 00:38:04,528
+记作CONTINUE
+called continue,
+
+715
+00:38:09,160 --> 00:38:10,688
+下一次调用(GOTO CONTINUE)时
+which is the place to put the marble
+
+716
+00:38:11,008 --> 00:38:13,050
+弹珠就会去向这个地方
+next time I go to continue.
+
+717
+00:38:14,912 --> 00:38:15,920
+它就是用来干这个的
+That's what that's for.
+
+718
+00:38:16,140 --> 00:38:18,480
+因此 它和控制器之间应该有一条通路
+And so there's got to be some path from that into the controller.
+
+719
+00:38:22,910 --> 00:38:27,120
+我也能够将它存储在栈上
+I also have to have some way of saving that on the stack.
+
+720
+00:38:29,450 --> 00:38:33,104
+我也能够把它设置成各种常量
+And I have to have some way of setting that up to have various constants,
+
+721
+00:38:34,016 --> 00:38:35,696
+某一些常量
+a certain fixed number of constants.
+
+722
+00:38:36,860 --> 00:38:38,208
+这非常容易实现
+And that's very easy to arrange.
+
+723
+00:38:38,840 --> 00:38:40,144
+我们现在这里设一些常量
+So let's have some constants here.
+
+724
+00:38:40,180 --> 00:38:41,504
+我们把这个记作AFTER-FACT
+We'll call this one after-fact.
+
+725
+00:38:47,328 --> 00:38:48,752
+这个常量
+And that's a constant
+
+726
+00:38:48,848 --> 00:38:51,504
+会送入CONTINUE寄存器
+which will get into the continue register,
+
+727
+00:38:52,592 --> 00:38:54,432
+另外一个寄存器是FACT-DONE
+and also another one called fact-done.
+
+728
+00:39:05,210 --> 00:39:07,824
+这就是我想要构建的机器
+So this is the machine I want to build.
+
+729
+00:39:08,130 --> 00:39:09,488
+至少是数据通路部分
+That's its datapaths, at least.
+
+730
+00:39:09,920 --> 00:39:11,696
+这里还混合了一些控制器
+And it mixes a little with the controller here,
+
+731
+00:39:11,856 --> 00:39:14,592
+这是因为我需要记住我当前的位置
+because of the fact that I have to remember where I was
+
+732
+00:39:14,704 --> 00:39:16,352
+并将我恢复到该位置
+and restore myself to that place.
+
+733
+00:39:17,300 --> 00:39:19,936
+现在 让我们来编写控制器对应的程序
+But let's write the program now which represents the controller.
+
+734
+00:39:20,390 --> 00:39:23,472
+我就把DEFINE-MACHINE和寄存器列表给省略了
+I'm not going to write the define machine thing and the register list,
+
+735
+00:39:23,488 --> 00:39:24,890
+因为它们无关紧要
+because that's not very interesting.
+
+736
+00:39:25,130 --> 00:39:27,792
+我就直接写那些跟控制器有关的
+I'm just going to write down the sequence of instructions
+
+737
+00:39:27,824 --> 00:39:29,020
+指令序列
+that constitute the controller.
+
+738
+00:39:31,488 --> 00:39:41,856
+首先是(ASSIGN CONTINUE DONE)
+So we have assign, to set up, continue to done.
+
+739
+00:39:45,150 --> 00:39:45,824
+然后是一个循环
+We have a loop
+
+740
+00:39:47,344 --> 00:39:56,080
+先判断 如果1=N 那么就跳转
+which says branch if equal 1 fetch N,
+
+741
+00:40:00,944 --> 00:40:04,112
+那么就进入归纳的基本步骤
+if N is 1, then go to the base step of the induction,
+
+742
+00:40:06,064 --> 00:40:07,200
+也就是最简单的情况
+the simple case.
+
+743
+00:40:08,050 --> 00:40:08,768
+否则的话
+Otherwise,
+
+744
+00:40:08,880 --> 00:40:10,848
+我就要记住那些
+I have to remember the things that are necessary
+
+745
+00:40:10,880 --> 00:40:13,840
+计算子阶乘所必须的信息
+to perform a sub-factorial.
+
+746
+00:40:14,672 --> 00:40:16,752
+我需要来带这里 以便计算子阶乘
+I'm going to go over here, and I have to perform a sub-factorial.
+
+747
+00:40:17,570 --> 00:40:19,296
+所以我需要记住 完成它需要些什么
+So I have to remember what's needed to do that
+
+748
+00:40:19,712 --> 00:40:22,528
+需要记住我计算完之后需要哪些东西
+remember what's needed after I will be done with that.
+
+749
+00:40:24,000 --> 00:40:25,510
+看到了吗 我要做些糟糕的事儿
+See, I'm about to do something terrible.
+
+750
+00:40:25,728 --> 00:40:27,392
+我要去修改N的值
+I'm about to change the value of N.
+
+751
+00:40:28,576 --> 00:40:30,400
+但是它又需要记住N的旧值
+But this guy has to know the old value of N.
+
+752
+00:40:32,140 --> 00:40:33,648
+但是为了计算子阶乘
+But in order to make the sub-factorial work,
+
+753
+00:40:33,664 --> 00:40:34,920
+我又需要修改N的值
+I have to change the value of N.
+
+754
+00:40:35,600 --> 00:40:37,104
+因此 我就得记住N的旧值
+So I have to remember the old value.
+
+755
+00:40:38,000 --> 00:40:39,600
+我也需要记住我的位置
+And I also have to remember where I've been.
+
+756
+00:40:40,850 --> 00:40:42,320
+因此 我保存CONTINUE的值
+So I save up continue.
+
+757
+00:40:47,700 --> 00:40:51,296
+这条指令 就是用来将数据入栈的
+And this is an instruction that says, put something in the stack.
+
+758
+00:40:53,120 --> 00:40:55,536
+将CONTINUE寄存器的值保存起来
+Save the contents of the continuation register,
+
+759
+00:40:56,512 --> 00:40:58,000
+在本例中也就是DONE
+which in this case is done,
+
+760
+00:40:58,880 --> 00:41:00,256
+因为稍后我也会修改它
+because later I'm going to change that, too,
+
+761
+00:41:00,272 --> 00:41:02,780
+因为我也需要回到AFTER-FACT
+because I need to go back to after-fact, as well.
+
+762
+00:41:03,550 --> 00:41:04,192
+我们来看看
+We'll see that.
+
+763
+00:41:05,040 --> 00:41:09,712
+我们需要存储N 因为稍后会用到
+We save N, because I'm going to need that for later.
+
+764
+00:41:10,380 --> 00:41:20,544
+(ASSIGN N (-1+ (FETCH N)))
+Assign to N the decrement of fetch N.
+
+765
+00:41:23,264 --> 00:41:28,976
+(ASSIGN CONTINUE ...
+Assign continue,
+
+766
+00:41:32,128 --> 00:41:33,424
+我看一下 --
+we're going to look at this now,
+
+767
+00:41:34,064 --> 00:41:35,616
+AFT)
+to after, we'll call it.
+
+768
+00:41:37,690 --> 00:41:38,704
+这个名字很好
+That's a good name for this,
+
+769
+00:41:38,736 --> 00:41:40,656
+因为它短小精炼 很适合用在这里
+a little bit easier and shorter, and fits in here.
+
+770
+00:41:53,360 --> 00:41:54,640
+现在 来看看我怎么做
+Now look what I'm doing here.
+
+771
+00:41:55,330 --> 00:41:57,020
+我说 如果ANSWER是1的话
+I'm saying, if the answer is 1,
+
+772
+00:41:58,720 --> 00:41:59,664
+那程序就结束了
+OK, I'm done.
+
+773
+00:42:00,464 --> 00:42:01,664
+我只需要取得这个答案
+I'm going to have to just get the answer.
+
+774
+00:42:02,150 --> 00:42:04,880
+否则我就要保存当前的继续以及N的值
+Otherwise, I'm going to save the continuation, save N,
+
+775
+00:42:05,776 --> 00:42:07,328
+然后让N减1
+make N one less than N,
+
+776
+00:42:07,600 --> 00:42:09,632
+注意 我先要跳转到某处
+remember I'm going to come back to someplace else,
+
+777
+00:42:09,648 --> 00:42:11,488
+然后来到这里 计算另外的阶乘
+and go back and start doing another factorial.
+
+778
+00:42:13,504 --> 00:42:15,744
+然而 这之中又有了另外的机器
+OK? However, I've got a different machine in me now.
+
+779
+00:42:16,050 --> 00:42:18,380
+其中N=1 CONTINUE是其它值
+N is 1, and continue is something else.
+
+780
+00:42:22,112 --> 00:42:23,216
+N=N-1
+N is N minus 1.
+
+781
+00:42:23,770 --> 00:42:25,280
+再我完成这个之后
+Now after I'm done with that,
+
+782
+00:42:26,944 --> 00:42:27,760
+我会来到这里
+I can go there.
+
+783
+00:42:28,660 --> 00:42:30,464
+我会恢复N的旧值
+I will restore the old value of N,
+
+784
+00:42:32,688 --> 00:42:36,560
+也就是这里SAVE的逆运算
+which is the opposite of this save over here.
+
+785
+00:42:38,360 --> 00:42:39,888
+然后恢复CONTINUE
+I will restore the continuation.
+
+786
+00:42:49,660 --> 00:42:52,576
+然后我又会来到这里
+I will then go to here.
+
+787
+00:42:54,320 --> 00:43:00,864
+(ASSIGN VAL
+I will assign to the VAL register
+
+788
+00:43:01,168 --> 00:43:08,130
+(* (FETCH N) (FETCH VAL)))
+the product of N and fetch VAL.
+
+789
+00:43:13,440 --> 00:43:18,304
+（闭合括号中）
+VAL fetch product assign.
+
+790
+00:43:19,790 --> 00:43:21,440
+这样操作就完成了
+And then I will be done.
+
+791
+00:43:21,440 --> 00:43:25,680
+子阶乘的结果就存储在了VAL中
+I will have my answer to the sub-factorial in VAL.
+
+792
+00:43:26,570 --> 00:43:27,376
+这个时候
+At that point,
+
+793
+00:43:27,660 --> 00:43:28,752
+我就要返回到
+I'm going to return
+
+794
+00:43:29,280 --> 00:43:31,610
+CONTINUE所指向的地方
+by going to the place where the continuation is pointing.
+
+795
+00:43:33,640 --> 00:43:35,776
+也就是(GOTO (FETCH CONTINUE))
+That says, go to fetch continue.
+
+796
+00:43:45,870 --> 00:43:47,408
+最后就是基本情况的那步
+And then I have finally a base step,
+
+797
+00:43:49,312 --> 00:43:50,512
+也就是一个立即值
+which is the immediate answer.
+
+798
+00:43:50,680 --> 00:43:56,880
+(ASSIGN VAL (FETCH N))
+Assign to VAL fetch N,
+
+799
+00:44:01,360 --> 00:44:02,752
+(GOTO (FETCH CONTINUE))
+and go to fetch continue.
+
+800
+00:44:12,670 --> 00:44:13,552
+这样我就完成了
+And then I'm done.
+
+801
+00:44:18,640 --> 00:44:21,216
+现在 我们用一个非常简单的例子来运行一下
+Now let's see how this executes on a very simple case,
+
+802
+00:44:22,512 --> 00:44:23,536
+因为这样我们就将看到
+because then we'll see
+
+803
+00:44:23,664 --> 00:44:26,528
+栈是如何帮助我们完成计算的
+the use of this stack to do the job we need.
+
+804
+00:44:26,890 --> 00:44:28,224
+这是计算的静态描述
+This is statically what it's doing,
+
+805
+00:44:28,224 --> 00:44:29,800
+我们需要动态地观察它
+but we have look dynamically at this.
+
+806
+00:44:31,340 --> 00:44:32,096
+因此 让我们来看看
+So let's see.
+
+807
+00:44:32,300 --> 00:44:34,560
+首先我们要把CONTINUE设置为DONE
+First thing we do is continue gets done.
+
+808
+00:44:36,730 --> 00:44:38,096
+这是我通过按下这个钮来实现的
+The way that happened is I pushed this.
+
+809
+00:44:38,300 --> 00:44:39,600
+我们还是把它记作DONE吧
+Let's call that done the way I have it.
+
+810
+00:44:46,224 --> 00:44:47,030
+我按下这个按钮
+I push that button.
+
+811
+00:44:47,030 --> 00:44:48,112
+DONE就进到了这里
+Done goes into there.
+
+812
+00:44:48,950 --> 00:44:53,712
+现在 我还要为这些东西设置初始值
+Now I also have to set this thing up to have an initial value.
+
+813
+00:44:53,850 --> 00:44:58,080
+让我们考虑3的阶乘
+Let's consider a factorial of three,
+
+814
+00:44:58,384 --> 00:44:59,248
+这个例子非常简单
+a simple case.
+
+815
+00:45:00,544 --> 00:45:04,048
+我们的栈从这里开始增长
+And we're going to start out with our stack growing over here.
+
+816
+00:45:05,900 --> 00:45:07,760
+栈有它们自己的内部状态
+Stacks have their own little internal state
+
+817
+00:45:07,792 --> 00:45:09,056
+用来标识栈顶位置
+saying where they are,
+
+818
+00:45:09,808 --> 00:45:11,648
+也就是下一个可写位置
+where the next place I'm going to write is.
+
+819
+00:45:12,770 --> 00:45:14,590
+现在我们问 N=1么？
+So now we say, is N 1?
+
+820
+00:45:14,768 --> 00:45:15,712
+当然不等于
+The answer is no.
+
+821
+00:45:16,110 --> 00:45:18,560
+因此现在我要保存CONTINUE
+So now I'm going to save continue, bang.
+
+822
+00:45:19,152 --> 00:45:20,656
+现在 DONE就来到了这里
+Now that done goes in here.
+
+823
+00:45:22,080 --> 00:45:23,552
+然后 这个指针移动到了这里
+And this moves to here,
+
+824
+00:45:24,880 --> 00:45:26,144
+下次我要把数据写到这里
+the next place I'm going to write.
+
+825
+00:45:26,660 --> 00:45:28,784
+保存N的值--也就是3
+Save N 3.
+
+826
+00:45:29,950 --> 00:45:30,320
+对吧？
+OK?
+
+827
+00:45:30,672 --> 00:45:33,616
+N←N-1
+Assign to N the decrement of N.
+
+828
+00:45:33,968 --> 00:45:35,376
+也就是说 我得按下这个钮
+That means I've pushed this button.
+
+829
+00:45:35,940 --> 00:45:37,320
+这就变成了2
+This becomes 2.
+
+830
+00:45:38,736 --> 00:45:42,288
+COUNTINUE←AFT
+OK? Assign to continue aft.
+
+831
+00:45:42,580 --> 00:45:43,610
+因此我要按下这个钮
+So I've pushed that button.
+
+832
+00:45:43,610 --> 00:45:44,544
+AFT就进入了这里
+Aft goes in here.
+
+833
+00:45:49,140 --> 00:45:53,936
+然后 跳转到LOOP 我们就来到了这里
+OK, now go to loop, bang, so up to here.
+
+834
+00:45:54,830 --> 00:45:57,088
+N=1么？当然不
+Is N 1? No
+
+835
+00:45:57,780 --> 00:45:59,232
+因此我又要保存CONTINUE
+So I have to save continue.
+
+836
+00:45:59,490 --> 00:46:00,272
+CONTINUE的值是什么呢？
+What's continue?
+
+837
+00:46:00,600 --> 00:46:01,530
+目前是AFT
+Continue is aft.
+
+838
+00:46:01,530 --> 00:46:02,320
+按下这个按钮
+Push this button.
+
+839
+00:46:02,780 --> 00:46:03,952
+这个指针移动到了这里
+So this moves to here.
+
+840
+00:46:08,490 --> 00:46:09,744
+我还要保存N
+I have to save N.
+
+841
+00:46:10,510 --> 00:46:12,128
+N在那里 它的值是2
+N is over here. I got to 2.
+
+842
+00:46:12,280 --> 00:46:13,376
+按下这个按钮
+Push that button.
+
+843
+00:46:13,856 --> 00:46:15,248
+2就进入了这里
+So a 2 gets written there.
+
+844
+00:46:16,050 --> 00:46:17,648
+然后这个指针移动到了这里
+And then this thing moves down here.
+
+845
+00:46:20,060 --> 00:46:22,608
+保存N之后 又赋N←N-1
+OK, save N. Assign N to the decrement of N.
+
+846
+00:46:24,608 --> 00:46:25,460
+它就变成了1
+This becomes a 1.
+
+847
+00:46:29,240 --> 00:46:30,544
+CONTINUE←AFT
+Assign continue to aft.
+
+848
+00:46:31,370 --> 00:46:34,480
+AFT又进入了这里
+A-F-T gets written there again.
+
+849
+00:46:34,960 --> 00:46:35,648
+然后又跳转到LOOP
+Go to loop.
+
+850
+00:46:36,520 --> 00:46:37,744
+N等于1么？
+Is N equal to 1?
+
+851
+00:46:37,930 --> 00:46:39,520
+是的 那么答案就是1
+Oh, yes, the answer is 1.
+
+852
+00:46:41,040 --> 00:46:43,264
+跳转到BASE那一步
+OK, go to base step.
+
+853
+00:46:44,160 --> 00:46:45,776
+(ASSIGN VAL (FETCH N))
+Assign to VAL fetch of N.
+
+854
+00:46:46,560 --> 00:46:50,720
+按下这个 1就进入到了这里
+Bang, 1 gets put in there. OK?
+
+855
+00:46:51,100 --> 00:46:52,200
+(GOTO (FETCH CONTINUE))
+Go to fetch continue.
+
+856
+00:46:52,200 --> 00:46:53,536
+来看下CONTINUE寄存器
+So we look in continue.
+
+857
+00:46:53,680 --> 00:46:56,064
+基本上来说 我按下这里的按钮 进入到控制器
+Basically, I'm pushing a button over here that goes to the controller.
+
+858
+00:46:56,670 --> 00:46:58,288
+CONTINUE寄存器就变成了AFT
+The continue becomes aft,
+
+859
+00:46:58,320 --> 00:47:00,256
+这样一下子 程序就运行到了这里
+and all of a sudden, the program's running here.
+
+860
+00:47:02,640 --> 00:47:05,632
+现在 我就需要恢复外部的阶乘了
+I now have to restore the outer version of factorial.
+
+861
+00:47:06,650 --> 00:47:07,550
+因此我们来到这里
+So we go here.
+
+862
+00:47:07,550 --> 00:47:09,488
+我们先要恢复N
+We say, restore N.
+
+863
+00:47:10,320 --> 00:47:13,040
+这就意味着 我们要使用这里的内容
+So restore N means take the contents that's here.
+
+864
+00:47:13,940 --> 00:47:18,176
+按下这个按钮 2就会来到这里
+Push this button, and it goes into here, 2,
+
+865
+00:47:18,560 --> 00:47:20,048
+然后指针会向上移动
+and the pointer moves up.
+
+866
+00:47:21,984 --> 00:47:24,490
+恢复CONTINUE寄存器也非常简单
+Restore continue, pretty easy.
+
+867
+00:47:24,810 --> 00:47:26,496
+来按下这个按钮
+Go push this button.
+
+868
+00:47:27,020 --> 00:47:28,928
+然后 AFT又一次进入到这里
+And then aft gets written in here again.
+
+869
+00:47:31,280 --> 00:47:32,640
+同时 这个指针也要上移
+That means this thing moves up.
+
+870
+00:47:32,640 --> 00:47:35,190
+这样就避开了栈上的其它东西
+I've gotten rid of something else on my stack.
+
+871
+00:47:42,240 --> 00:47:43,472
+然后我来到这里
+Right, then I go to here,
+
+872
+00:47:43,872 --> 00:47:47,152
+也就是(ASSIGN VAL (* N VAL))
+which says, assign to VAL the product of N and VAL.
+
+873
+00:47:47,850 --> 00:47:50,576
+然后我按下这个按钮
+So I push this button over here, bang.
+
+874
+00:47:50,970 --> 00:47:52,912
+2乘以1等于2
+2 times 1 gives me a 2,
+
+875
+00:47:54,016 --> 00:47:54,752
+我写到这里
+get written there.
+
+876
+00:47:55,760 --> 00:47:57,200
+然后是(GOTO (FETCH CONTINUE))
+OK? Go to fetch continue.
+
+877
+00:47:57,540 --> 00:47:59,856
+CONTINUE现在是AFT 我跳转到AFT
+Continue is aft. I go to aft.
+
+878
+00:48:01,150 --> 00:48:03,888
+AFT首先要恢复N
+OK? Aft says restore N.
+
+879
+00:48:04,368 --> 00:48:05,728
+恢复N指的是
+Do your restore N,
+
+880
+00:48:05,872 --> 00:48:08,448
+我把这里的值 也就是3
+means I take the value over here, which is 3,
+
+881
+00:48:09,248 --> 00:48:10,336
+按下这里的按钮
+push this up to here,
+
+882
+00:48:10,600 --> 00:48:15,504
+然后把它放到这里 N
+and move it into here, N.
+
+883
+00:48:16,256 --> 00:48:17,344
+然后 我们按下这个钮
+Now it's pushing that button.
+
+884
+00:48:18,016 --> 00:48:19,904
+接下来我就要恢复CONTINUE
+The next thing I do is restore continue.
+
+885
+00:48:20,200 --> 00:48:22,208
+CONTINUE寄存器现在成为了DONE
+Continue is now going to become done.
+
+886
+00:48:22,830 --> 00:48:26,784
+当我按下这个钮后 指针就移动到了这里
+So this moves up here when I push this button.
+
+887
+00:48:27,130 --> 00:48:29,728
+DONE可能从此之后不在这里了
+Done may or may be there anymore,
+
+888
+00:48:29,728 --> 00:48:31,550
+对此我并不感兴趣 但它现在一定在这里
+I'm not interested, but it certainly is here.
+
+889
+00:48:35,800 --> 00:48:38,120
+下一步 我将要把VAL赋值为
+Next thing I do is assign to VAL
+
+890
+00:48:38,432 --> 00:48:40,768
+N乘以VAL的值
+the product of the fetch of N and the fetch of VAL.
+
+891
+00:48:41,440 --> 00:48:44,300
+按下这里的按钮就可以实现
+That's pushing this button over here, bang.
+
+892
+00:48:44,300 --> 00:48:45,776
+2乘以3等于6
+2 times 3 is 6.
+
+893
+00:48:46,520 --> 00:48:47,870
+所以这里我就得到了6
+So I get a 6 over here.
+
+894
+00:48:50,976 --> 00:48:53,408
+下一步是(GOTO (FETCH CONTINUE))
+OK? And go to fetch continue,
+
+895
+00:48:53,488 --> 00:48:54,832
+哦 跳转到DONE 这样我就完成了
+whoops, I go to done, and I'm done.
+
+896
+00:48:55,020 --> 00:48:56,096
+最后的答案是6
+And my answer is 6,
+
+897
+00:48:56,608 --> 00:48:57,824
+你们可以在VAL寄存器中看到
+as you can see in the VAL register.
+
+898
+00:48:58,950 --> 00:48:59,824
+事实上
+And in fact,
+
+899
+00:49:00,912 --> 00:49:03,344
+栈又回到了它初始的状态
+the stack is in the state it originally was in.
+
+900
+00:49:08,208 --> 00:49:10,704
+在使用像栈这样的东西中 有一些原则
+Now there's a bit of discipline in using these things like stacks
+
+901
+00:49:11,200 --> 00:49:12,272
+我们需要注意
+that we have to be careful of.
+
+902
+00:49:13,620 --> 00:49:15,520
+我们会在下一小节中介绍
+And we'll see that in the next segment.
+
+903
+00:49:16,260 --> 00:49:18,464
+但首先 对于这一小节所讲的内容
+But first I want to ask if there are any questions for this.
+
+904
+00:49:28,560 --> 00:49:29,648
+有什么问题么？
+Are there any questions?
+
+905
+00:49:30,170 --> 00:49:30,630
+Ron 请讲
+Yes, Ron.
+
+906
+00:49:30,630 --> 00:49:33,376
+学生：当你越过了栈的顶端会怎样--
+AUDIENCE: What happens when you roll off the end of the stack with--
+
+907
+00:49:33,392 --> 00:49:34,624
+教授：你所谓的“越过”是指什么？
+PROFESSOR: What do you mean, roll off of?
+
+908
+00:49:35,030 --> 00:49:37,504
+学生：如果我们的N是一个很大的数
+AUDIENCE: Well, the largest number-- a larger starting point of N
+
+909
+00:49:37,520 --> 00:49:38,720
+就需要更多的内存 对吧？
+requires more memory, correct?
+
+910
+00:49:38,860 --> 00:49:39,440
+教授：是的
+PROFESSOR: Oh, yes.
+
+911
+00:49:39,440 --> 00:49:41,120
+这样 我就需要一个足够大的栈
+Well, I need to have a long enough stack.
+
+912
+00:49:41,530 --> 00:49:43,200
+你想问 如果破坏了无穷存储的假象会发生什么？
+You say, what if I violate my illusion?
+
+913
+00:49:43,840 --> 00:49:44,128
+学生：是的
+AUDIENCE: Yes.
+
+914
+00:49:44,550 --> 00:49:46,736
+教授：那么 这些魔法就不再起效了
+PROFESSOR: Well, then the magic doesn't work. OK?
+
+915
+00:49:47,968 --> 00:49:51,008
+真相就是 任何机器都是有穷的
+The truth of the matter is that every machine is finite.
+
+916
+00:49:51,640 --> 00:49:53,728
+而对于像这样的过程
+And for a procedure like this,
+
+917
+00:49:54,176 --> 00:49:58,864
+我只能进行有限数量的子阶乘计算
+there's a limit to the number of sub-factorials I could have.
+
+918
+00:49:59,950 --> 00:50:02,480
+想一想 我们之前讲解的Y组合子
+Remember when we were doing the y-operator a while ago,
+
+919
+00:50:02,800 --> 00:50:06,224
+我们指出 存在一系列的指数过程
+we pointed out that there was a sequence of exponentiation procedures,
+
+920
+00:50:06,256 --> 00:50:08,096
+其中每一个都要比前一个更精准
+each of which was a little better than the previous one.
+
+921
+00:50:08,720 --> 00:50:11,600
+现在 我们看到了如何实现这个数学理念
+Well, we're now seeing how we implement that mathematical idea.
+
+922
+00:50:13,090 --> 00:50:14,192
+这个取极限的过程
+The limiting process
+
+923
+00:50:14,352 --> 00:50:16,336
+只有当你取到极限时才足够精准
+is only so good as as far as you take the limit.
+
+924
+00:50:17,990 --> 00:50:19,420
+如果你仔细想想 我这里用了什么
+If you think about it, what am I using here?
+
+925
+00:50:19,420 --> 00:50:22,656
+对于这个过程的每一次递归
+I'm using about two chunks, pieces of memory
+
+926
+00:50:23,040 --> 00:50:27,072
+我用了大概两块内存
+for iteration for every recursion of this process.
+
+927
+00:50:29,100 --> 00:50:31,712
+如果我们尝试计算10000的阶乘
+If we try to compute factorial of 10,000,
+
+928
+00:50:31,728 --> 00:50:32,816
+这并不会花掉很多内存
+that's not a lot of memory.
+
+929
+00:50:33,180 --> 00:50:34,688
+虽然这是一个很大的数
+On the other hand, it's an awful big number.
+
+930
+00:50:35,952 --> 00:50:38,416
+因此 实际的问题就是值不值得
+So the question is, is that a valuable thing in this case.
+
+931
+00:50:39,180 --> 00:50:42,192
+但这并不是这种实现的局限
+But it really turns out not to be a terrible limit,
+
+932
+00:50:42,224 --> 00:50:43,536
+因为内存非常低廉
+because memory is el cheapo,
+
+933
+00:50:44,160 --> 00:50:45,344
+但人力资源却相当昂贵
+and people are pretty expensive.
+
+934
+00:50:48,130 --> 00:50:50,224
+好吧 我们先休息一下 谢谢大家
+OK, thank you, let's take a break.
+
+935
+00:50:50,780 --> 00:51:07,600
+[音乐]
+[JESU, JOY OF MAN'S DESIRING]
+
+936
+00:51:07,600 --> 00:51:12,192
+《计算机程序的构造和解释》
+
+937
+00:51:39,930 --> 00:51:43,696
+讲师：哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
+
+938
+00:51:43,710 --> 00:51:47,936
+《计算机程序的构造和解释》
+
+939
+00:51:47,930 --> 00:51:53,088
+寄存机器
+
+940
+00:51:56,112 --> 00:51:57,040
+教授：我们讲解了
+PROFESSOR: Well, let's see.
+
+941
+00:51:58,704 --> 00:52:03,376
+如果进行简单的迭代计算
+What I've shown you now is how to do a simple iterative process
+
+942
+00:52:03,696 --> 00:52:05,312
+以及简单的递归计算
+and a simple recursive process.
+
+943
+00:52:05,640 --> 00:52:08,688
+我只想通过向你们展示一些针对特定应用的
+I just want to summarize the design of simple machines
+
+944
+00:52:09,632 --> 00:52:11,120
+更加复杂的设计
+for specific applications
+
+945
+00:52:11,216 --> 00:52:13,584
+来总结简单机器的设计
+by showing you a little bit more complicated design,
+
+946
+00:52:13,968 --> 00:52:17,136
+也就是同时递归地调用两个斐波那契函数
+that of a thing that does doubly recursive Fibonacci,
+
+947
+00:52:17,232 --> 00:52:19,888
+因为它会向我们表明 并且我们会理解
+because it will indicate to us, and we'll understand,
+
+948
+00:52:20,048 --> 00:52:22,688
+一些关于栈正常工作
+a bit about the conventions required
+
+949
+00:52:22,768 --> 00:52:25,040
+所需要遵守的约定
+for making stacks operate correctly.
+
+950
+00:52:26,400 --> 00:52:27,110
+现在 让我们来看看
+So let's see.
+
+951
+00:52:27,110 --> 00:52:28,272
+先让我在黑板上写下
+I'm just going to write down, first of all,
+
+952
+00:52:28,304 --> 00:52:29,712
+将要翻译的程序
+the program I'm going to translate.
+
+953
+00:52:34,150 --> 00:52:36,528
+这是一个斐波那契过程
+I need a Fibonacci procedure,
+
+954
+00:52:39,232 --> 00:52:41,584
+它非常的简单
+it's very simple, which says, if
+
+955
+00:52:44,608 --> 00:52:48,560
+如果N小于2 那么结果就是N
+N is less than 2, the result is N,
+
+956
+00:52:49,264 --> 00:52:55,344
+否则就是(FIB (- N 1))加上
+otherwise it's the sum of Fib of N minus 1
+
+957
+00:52:58,448 --> 00:52:59,856
+(FIB (- N 2))
+and Fib of N minus 2.
+
+958
+00:53:07,056 --> 00:53:09,290
+这就是我的计划
+That's the plan I have here.
+
+959
+00:53:09,290 --> 00:53:12,560
+现在 我们要来写下这台机器的控制器
+And we're just going to write down the controller for such a machine.
+
+960
+00:53:13,070 --> 00:53:15,536
+首先 我们假设有一个寄存器N
+We're going to assume that there are registers, N,
+
+961
+00:53:15,568 --> 00:53:19,150
+里面存放的是斐波那契函数的自变量
+which holds the number we're taking Fibonacci of,
+
+962
+00:53:19,824 --> 00:53:21,808
+而计算结果会存放在VAL寄存器中
+VAL, which is where the answer is going to get put,
+
+963
+00:53:22,176 --> 00:53:24,976
+CONTINUE寄存器会和控制器相连
+and continue, which is the thing that's linked to the controller,
+
+964
+00:53:26,112 --> 00:53:26,810
+就跟之前一样
+like before.
+
+965
+00:53:26,960 --> 00:53:29,216
+但我不会再去画数据通路了
+But I'm not going to draw another physical datapath,
+
+966
+00:53:31,536 --> 00:53:34,000
+因为它和之前的那个差不多
+because it's pretty much the same as the last one you've seen.
+
+967
+00:53:34,360 --> 00:53:37,840
+当然 关于计算的最神奇的事情之一
+And of course, one of the most amazing things about computation
+
+968
+00:53:38,752 --> 00:53:39,888
+就是一段时间后
+is that after a while,
+
+969
+00:53:40,080 --> 00:53:41,936
+你构建了一个又一个的小功能
+you build up a little more features and a few more features,
+
+970
+00:53:41,952 --> 00:53:43,328
+你就一下子拥有了需要的一切
+and all of the sudden, you've got everything you need.
+
+971
+00:53:44,752 --> 00:53:47,600
+这种效率是非常了不起的
+So it's remarkable that it just gets there so fast.
+
+972
+00:53:48,176 --> 00:53:50,848
+构造制作一台通用计算机不需要太多的东西
+I don't need much more to make a universal computer.
+
+973
+00:53:51,810 --> 00:53:54,688
+总之 我们来看看斐波那契机器的控制器
+But in any case, let's look at the controller for the Fibonacci thing.
+
+974
+00:53:55,060 --> 00:53:57,072
+我首先要做的是
+First thing I want to do is
+
+975
+00:53:57,328 --> 00:54:02,528
+通过为CONTINUE寄存器赋值
+start the thing up by assign to continue
+
+976
+00:54:07,136 --> 00:54:10,288
+赋FIB-DONE来启动计算
+a place called done, called Fib-done here.
+
+977
+00:54:14,144 --> 00:54:15,536
+这就意味着在这里
+So that means that somewhere over here,
+
+978
+00:54:15,552 --> 00:54:18,480
+我需要有一个标签 FIB-DONE
+I'm going to have a label, Fib-done,
+
+979
+00:54:19,712 --> 00:54:21,104
+当我来到这个地方后
+which is the place where I go
+
+980
+00:54:21,232 --> 00:54:22,448
+机器就停止了
+when I want the machine to stop.
+
+981
+00:54:24,000 --> 00:54:24,864
+这就是这个标签的作用
+That's what that is.
+
+982
+00:54:25,920 --> 00:54:26,896
+然后我要创建一个循环
+And I'm going to make up a loop.
+
+983
+00:54:31,110 --> 00:54:34,256
+我要来到这里来启动FIB的计算
+It's a place I'm going to go to in order to start up computing a Fib.
+
+984
+00:54:35,470 --> 00:54:36,864
+无论这时 N等于多少
+Whatever is in N at this point,
+
+985
+00:54:37,392 --> 00:54:38,992
+斐波那契函数都会被计算
+Fibonacci will be computed of,
+
+986
+00:54:39,136 --> 00:54:42,016
+然后会返回到由CONTINUE寄存器指向的地方
+and we will return to the place specified by continue.
+
+987
+00:54:44,800 --> 00:54:48,400
+因此你们将在这里看到
+So what you're going to see here at this place,
+
+988
+00:54:48,448 --> 00:54:50,480
+我想要在做一个约定
+what I want here is the contract
+
+989
+00:54:50,970 --> 00:54:54,256
+我用注释的形式来说明这个约定
+that says, I'm going to write this with a comment syntax,
+
+990
+00:54:54,576 --> 00:55:00,992
+也就是N中存储的是参数
+the contract is N contains arg, the argument.
+
+991
+00:55:02,100 --> 00:55:09,824
+而CONTINUE存储的是接收者
+Continue is the recipient.
+
+992
+00:55:13,360 --> 00:55:14,290
+这个约定就是这样的
+And that's where it is.
+
+993
+00:55:15,710 --> 00:55:18,960
+因此每当我来到这里
+At this point, if I ever go to this place,
+
+994
+00:55:19,248 --> 00:55:21,040
+我希望这个约定是成立的
+I'm expecting this to be true,
+
+995
+00:55:21,520 --> 00:55:23,328
+这些计算斐波那契函数所需要的参数
+the argument for computing the Fibonacci.
+
+996
+00:55:24,820 --> 00:55:26,832
+接下来我想做的是分支
+Now the next thing I want to do is to branch.
+
+997
+00:55:30,220 --> 00:55:32,224
+如果N小于2
+And if N is less than 2--
+
+998
+00:55:35,072 --> 00:55:37,440
+随便说一下 我使用的语法看起来像Lisp
+by the way, I'm using what looks like Lisp syntax.
+
+999
+00:55:38,730 --> 00:55:39,632
+但它并不是Lisp
+This is not Lisp.
+
+1000
+00:55:41,310 --> 00:55:42,384
+它们运行不起来
+This does not run.
+
+1001
+00:55:42,750 --> 00:55:45,472
+我在这里写的并不是一个简单的Lisp程序
+What I'm writing here does not run as a simple Lisp program.
+
+1002
+00:55:46,120 --> 00:55:49,312
+这是另一门语言的表示形式
+This is a representation of another language.
+
+1003
+00:55:49,710 --> 00:55:52,256
+我之所以使用这种满是括号的语法
+The reason I'm using the syntax of parentheses and so on
+
+1004
+00:55:52,400 --> 00:55:54,704
+是因为我刚好使用Lisp系统
+is because I tend to use a Lisp system
+
+1005
+00:55:55,328 --> 00:55:57,344
+来为这门语言编写解释器
+to write an interpreter for this
+
+1006
+00:55:57,824 --> 00:55:59,184
+这就使得我们能够模拟
+which allows me to simulate
+
+1007
+00:55:59,296 --> 00:56:00,912
+我想要构建的机器
+the machine I'm trying to build.
+
+1008
+00:56:03,380 --> 00:56:06,240
+我不想让你们感到困惑 认为这是Lisp代码
+I don't want to confuse this to think that this is Lisp code.
+
+1009
+00:56:06,940 --> 00:56:08,608
+只是我用了很多Lisp组件
+It's just I'm using a lot of the pieces of Lisp.
+
+1010
+00:56:09,510 --> 00:56:10,848
+我在Lisp中嵌入了一门语言
+I'm embedding a language in Lisp,
+
+1011
+00:56:11,024 --> 00:56:12,448
+把Lisp当作组件
+using Lisp as pieces
+
+1012
+00:56:12,720 --> 00:56:15,120
+这样就能让我的模拟工作变得简单
+to make my process of making my simulator easy.
+
+1013
+00:56:16,620 --> 00:56:18,560
+我从Lisp中继承了这些属性
+So I'm inheriting from Lisp all of its properties.
+
+1014
+00:56:19,100 --> 00:56:21,530
+(FETCH N) 2)
+Fetch of N 2,
+
+1015
+00:56:21,776 --> 00:56:23,728
+成立的话 我想要跳转到IMMEDIATE-ANSWER这个地方
+I want to go to a place called immediate answer.
+
+1016
+00:56:26,208 --> 00:56:27,296
+这是基本步骤
+It's the base step.
+
+1017
+00:56:33,150 --> 00:56:34,352
+它对应在这里
+Now, that's somewhere over here,
+
+1018
+00:56:35,920 --> 00:56:36,896
+也就是在FIB-DONE的上方
+just above done.
+
+1019
+00:56:37,750 --> 00:56:38,640
+我们稍后就会看到
+And we'll see it later.
+
+1020
+00:56:39,424 --> 00:56:40,704
+现在 对于一般情况来说
+Now, in the general case,
+
+1021
+00:56:40,720 --> 00:56:42,448
+也就是我现在要写的
+which is the part I'm going to write down now,
+
+1022
+00:56:43,136 --> 00:56:44,192
+是这样的
+let's just do it.
+
+1023
+00:56:44,912 --> 00:56:48,200
+首先呢 我需要调用斐波那契函数两次
+Well, first of all, I'm going to have to call Fibonacci twice.
+
+1024
+00:56:49,420 --> 00:56:52,544
+在每一次中 -- 至少在其中一次
+In each case-- well, in one case at least,
+
+1025
+00:56:52,780 --> 00:56:53,952
+我得需要知道该怎么做
+I'm going to have to know what to do
+
+1026
+00:56:53,968 --> 00:56:55,360
+才能回过头来进行另外一个计算
+to come back and do the next one.
+
+1027
+00:56:56,310 --> 00:56:58,368
+我需要记住
+I have to remember,
+
+1028
+00:56:59,200 --> 00:57:01,232
+我计算完第一个FIB了么？
+have I done the first Fib,
+
+1029
+00:57:01,264 --> 00:57:02,544
+或者第二个也计算完了？
+or have I done the second one?
+
+1030
+00:57:04,500 --> 00:57:07,040
+我是该返回到计算第二个FIB的地方
+Do I have to come back to the place where I do the second Fib,
+
+1031
+00:57:07,072 --> 00:57:09,088
+还是回到执行ADD的地方
+or do I have to come back to the place where I do the add?
+
+1032
+00:57:10,128 --> 00:57:12,112
+无论哪种情况 我都需要--
+In both cases I going to need, I don't
+
+1033
+00:57:12,140 --> 00:57:14,464
+在第一个计算第一个FIB时
+In the first case, over the first Fibonacci,
+
+1034
+00:57:14,512 --> 00:57:16,980
+我需要保存N的值 来计算第二个FIB
+I'm going to need the value of N for computing for the second one.
+
+1035
+00:57:19,840 --> 00:57:21,584
+因此我要把这些东西保存起来
+So I have to store some of these things up.
+
+1036
+00:57:23,360 --> 00:57:24,896
+首先要保存CONTINUE
+So first I'm going to save continue.
+
+1037
+00:57:26,192 --> 00:57:27,328
+也就是答案的接收者
+That's who needs the answer.
+
+1038
+00:57:31,320 --> 00:57:32,464
+我之所以要这么做
+And the reason I'm doing that
+
+1039
+00:57:32,480 --> 00:57:34,208
+是因为我现在要把CONTINUE赋值为
+is because I'm about to assign continue
+
+1040
+00:57:40,112 --> 00:57:44,320
+我待会儿想要返回的地方
+to the place which is the place I want to go to after.
+
+1041
+00:57:46,832 --> 00:57:50,272
+我们把它叫做AFTER-FIB-N-1
+Let's call it Fib-N-minus-1,
+
+1042
+00:57:51,040 --> 00:57:53,760
+这个长名字 非常具有Lisp的命名特点
+big long name, classic Lisp name.
+
+1043
+00:57:57,360 --> 00:58:00,224
+这是因为我先要计算第一个(FIB (- N 1))
+Because I'm going to compute the first Fib of N minus 1,
+
+1044
+00:58:00,840 --> 00:58:01,728
+计算完成之后
+and then after that,
+
+1045
+00:58:01,728 --> 00:58:03,290
+我想要回过头来做些其它事
+I want to come back and do something else.
+
+1046
+00:58:03,960 --> 00:58:06,528
+而AFTER-FIB-N-1这个地方
+That's the place I want to go to after I've done
+
+1047
+00:58:07,552 --> 00:58:09,488
+就是我计算完第一个FIB后应该返回的地方
+the first Fibonacci calculation.
+
+1048
+00:58:11,520 --> 00:58:13,136
+接下来我要保存N
+And I want to do a save of N,
+
+1049
+00:58:14,416 --> 00:58:17,264
+因为我稍后需要用到它
+because I'm going to need it later, after that.
+
+1050
+00:58:19,130 --> 00:58:20,544
+在这里 我就已经
+Now I'm going to, at this point,
+
+1051
+00:58:20,672 --> 00:58:22,848
+准备好计算(FIB (- N 1))了
+get ready to do the Fibonacci of N minus 1.
+
+1052
+00:58:23,024 --> 00:58:33,950
+(ASSIGN N (- (FETCH N) 1))
+So assign to N the difference of the fetch of N and 1.
+
+1053
+00:58:38,110 --> 00:58:40,270
+现在 该跳转到FIB-LOOP了
+Now I'm ready to go back to doing the Fib loop.
+
+1054
+00:58:47,184 --> 00:58:49,872
+我满足我立下的约定么？
+Do I have... Have I satisfied my contract?
+
+1055
+00:58:50,400 --> 00:58:51,504
+答案是是的
+And the answer is yes.
+
+1056
+00:58:51,770 --> 00:58:55,120
+N现在存储的是N-1 这是我需要的
+N contains N minus 1, which is what I need.
+
+1057
+00:58:56,432 --> 00:59:00,096
+而CONTINUE包含的是计算完成后 返回的目的地
+OK? Continue contains a place I want to go to when I'm done
+
+1058
+00:59:01,280 --> 00:59:03,072
+也就是计算(FIB (- N 1))完成之后
+with calculating FIB N minus 1.
+
+1059
+00:59:04,100 --> 00:59:05,440
+因此我满足了这些约定
+So I've satisfied the contract.
+
+1060
+00:59:05,440 --> 00:59:09,024
+因此 我就可以在这里写下一个标签
+And therefore, I can write down here a tag, after, a label,
+
+1061
+00:59:11,472 --> 00:59:17,568
+AFTER-FIB-N-1
+after-Fib-N-minus-1.
+
+1062
+00:59:20,490 --> 00:59:21,632
+在这里 我又该做些什么呢？
+Now what am I going to do here?
+
+1063
+00:59:22,690 --> 00:59:23,616
+在这里
+Here's a place
+
+1064
+00:59:23,952 --> 00:59:26,750
+我已经准备好去计算(FIB (- N 2))了
+where I now have to get ready to do Fib of N minus 2.
+
+1065
+00:59:29,270 --> 00:59:30,720
+但是为了计算(FIB (- N 2))
+But in order to do a Fib of N minus 2,
+
+1066
+00:59:30,752 --> 00:59:31,630
+首先 我不知道
+look, I don't know.
+
+1067
+00:59:31,780 --> 00:59:33,408
+这里 我已经改变了N
+I've clobbered my N over here.
+
+1068
+00:59:33,810 --> 00:59:35,472
+或者在这个时候 我的N总是不断地
+And presumably my N is counted down
+
+1069
+00:59:37,856 --> 00:59:38,800
+向1或者0递减
+all the way to 1 or 0 or something at this point.
+
+1070
+00:59:39,780 --> 00:59:42,512
+所以我不知道N寄存器中存储的到底是什么
+So I don't know what the value of N in the N register is.
+
+1071
+00:59:43,030 --> 00:59:44,752
+我想要保存在栈中的N的值
+I want the value of N that was on the stack
+
+1072
+00:59:44,800 --> 00:59:46,000
+也就是我在这里保存的值
+that I saved over here
+
+1073
+00:59:46,176 --> 00:59:47,888
+这样我就可以在这里恢复它
+so that could restore it over here.
+
+1074
+00:59:49,520 --> 00:59:51,024
+我在这里存储的N
+I saved up the value of N,
+
+1075
+00:59:51,150 --> 00:59:54,496
+是这个时间点N的值
+which is this value of N at this point,
+
+1076
+00:59:54,896 --> 00:59:57,376
+因此计算完(FIB (- N 1))之后我可以恢复它
+so that I could restore it after computing Fib of N minus 1,
+
+1077
+00:59:57,530 --> 00:59:59,360
+这样的话 我就可以计算(- N 2)
+so that I could count that down to N minus 2
+
+1078
+00:59:59,392 --> 01:00:00,860
+然后就可以计算(FIB (- N 2))的值
+and then compute Fib of N minus 2.
+
+1079
+01:00:01,810 --> 01:00:02,752
+现在让我们来恢复它
+So let's restore that.
+
+1080
+01:00:08,830 --> 01:00:09,776
+(RESTORE N)
+Restore of N.
+
+1081
+01:00:11,130 --> 01:00:15,984
+现在我要做一件很教条的事
+Now I'm about to do something which is superstitious,
+
+1082
+01:00:16,000 --> 01:00:17,408
+我们会尽快将其删除
+and we will remove it shortly.
+
+1083
+01:00:18,520 --> 01:00:20,480
+如果你们愿意的话
+I am about to finish the sequence
+
+1084
+01:00:20,592 --> 01:00:23,440
+我将要结束子过程调用
+of doing the subroutine call, if you will.
+
+1085
+01:00:24,800 --> 01:00:25,952
+接下来我会说
+I'm going to say, well,
+
+1086
+01:00:26,064 --> 01:00:27,904
+因为我保存了CONTINUE
+I also saved up the continuation,
+
+1087
+01:00:28,480 --> 01:00:30,432
+现在就要去恢复它
+since I'm going to restore it now.
+
+1088
+01:00:31,600 --> 01:00:32,608
+但实际上 我并不需要这么做
+But actually, I don't have to,
+
+1089
+01:00:32,640 --> 01:00:33,550
+因为我并不需要用到它
+because I'm not going to need it.
+
+1090
+01:00:34,610 --> 01:00:35,728
+我们稍后会修正它
+We'll fix that in a second.
+
+1091
+01:00:36,260 --> 01:00:37,952
+现在我们来恢复CONTINUE
+So we'll do a restore of continue,
+
+1092
+01:00:46,048 --> 01:00:48,020
+通常来说 我都会这么做
+which is what I would in general need to do.
+
+1093
+01:00:48,020 --> 01:00:49,232
+我们将要看到
+And we're just going to see whats called
+
+1094
+01:00:49,312 --> 01:00:52,144
+编译器领域中的“窥孔优化”
+what you would call in the compiler world a peephole optimization,
+
+1095
+01:00:52,272 --> 01:00:53,728
+来帮我们消除这个不必要的步骤
+which says, whoops, you didn't have to do that.
+
+1096
+01:00:55,420 --> 01:00:57,104
+因此 我即将要做的就是
+OK, so the next thing I see here
+
+1097
+01:00:58,464 --> 01:01:02,288
+准备好计算(FIB (- N 2))
+is that I have to get ready now to do Fibonacci of N minus 2.
+
+1098
+01:01:02,770 --> 01:01:04,496
+但是我不再需要保存N了
+But I don't have to save N anymore.
+
+1099
+01:01:05,050 --> 01:01:06,720
+原因就是
+The reason why I don't have to save N anymore
+
+1100
+01:01:06,800 --> 01:01:09,344
+计算完(FIB (- N 2))之后 我就不需要N了
+is because I don't need N after I've done Fib of N minus 2,
+
+1101
+01:01:09,360 --> 01:01:10,720
+因为 我接下来要做的就是ADD
+because the next thing I do is add.
+
+1102
+01:01:13,540 --> 01:01:15,856
+因此 我会这么来设置N
+So I'm just going to set up my N that way.
+
+1103
+01:01:16,608 --> 01:01:28,990
+(ASSIGN N (- (FETCH N) 2))
+Assign N minus difference of fetch N and 2.
+
+1104
+01:01:31,850 --> 01:01:34,016
+现在我需要结束
+Now I have to finish the setup
+
+1105
+01:01:34,272 --> 01:01:36,730
+调用(FIB (- N 2))的设置过程了
+for calling Fibonacci of N minus 2.
+
+1106
+01:01:36,950 --> 01:01:38,336
+我需要保存CONTINUE
+Well, I have to save up continue
+
+1107
+01:01:44,224 --> 01:01:49,024
+然后把CONTINUE赋值为
+and assign continue, continue,
+
+1108
+01:01:52,304 --> 01:01:59,952
+AFTER-FIB-N-2
+to the place which is after Fib N 2,
+
+1109
+01:02:02,576 --> 01:02:04,032
+对应了那边代码的某处
+that place over here somewhere.
+
+1110
+01:02:05,320 --> 01:02:07,232
+然而 我需要非常小心
+However, I've got to be very careful.
+
+1111
+01:02:08,650 --> 01:02:11,424
+而(FIB (- N 1))的值
+The old value, the value of Fib of N minus 1,
+
+1112
+01:02:12,064 --> 01:02:13,120
+我稍后会用到
+I'm going to need later.
+
+1113
+01:02:15,300 --> 01:02:17,376
+(FIB (- N 1))的值
+The value of Fibonacci of N minus 1,
+
+1114
+01:02:17,616 --> 01:02:18,480
+我需要它的值
+I'm going to need.
+
+1115
+01:02:18,784 --> 01:02:19,808
+我不能去改变它
+And I can't clobber it,
+
+1116
+01:02:21,072 --> 01:02:23,600
+因为我需要用它来加上(FIB (- N 2))
+because I'm going to have to add it to the value of Fib of N minus 2.
+
+1117
+01:02:24,150 --> 01:02:25,888
+它是存放在寄存器中的 因此我需要保存它
+That's in the value register, so I'm going to save it.
+
+1118
+01:02:27,792 --> 01:02:32,608
+所以现在我要用(SAVE VAL)来保存它
+So I have to save this right now, save up VAL.
+
+1119
+01:02:33,780 --> 01:02:35,440
+现在我就可以调用子过程了
+And now I can go off to my subroutine,
+
+1120
+01:02:36,672 --> 01:02:39,540
+(GOTO FIB-LOOP)
+go to Fib loop.
+
+1121
+01:02:44,220 --> 01:02:46,576
+现在 在进行更进一步计算之前
+Now before I go any further
+
+1122
+01:02:46,800 --> 01:02:49,360
+在结束这个程序之前
+and finish this program,
+
+1123
+01:02:49,392 --> 01:02:51,050
+我想审视一下目前的代码片段
+I just want to look at this segment so far
+
+1124
+01:02:51,232 --> 01:02:56,000
+这里有一系列的指令
+and see, oh yes, there's a sequence of instructions here, if you will
+
+1125
+01:02:57,840 --> 01:02:59,088
+我可以对它们进行某些操作
+that I can do something about.
+
+1126
+01:03:01,580 --> 01:03:03,200
+这里 我有一个操作用来恢复CONTINUE
+Here I have a restore of continue,
+
+1127
+01:03:04,256 --> 01:03:05,488
+一个操作用来保存CONTINUE
+a save of continue,
+
+1128
+01:03:06,016 --> 01:03:07,408
+然后给CONTINUE赋值
+and then an assign of continue,
+
+1129
+01:03:08,704 --> 01:03:10,640
+但这之中没有CONTINUE的其它引用
+with no other references to continue in between.
+
+1130
+01:03:13,840 --> 01:03:15,488
+恢复之后又保存
+The restore followed by the save
+
+1131
+01:03:15,504 --> 01:03:16,670
+使得栈没有被修改
+leaves the stack unchanged.
+
+1132
+01:03:19,090 --> 01:03:21,728
+唯一的区别就是 我给CONTINUE寄存器赋了值
+The only difference is that I set the continue register to a value,
+
+1133
+01:03:21,968 --> 01:03:23,280
+一个存放在栈上的值
+which is the value that was on the stack.
+
+1134
+01:03:24,330 --> 01:03:25,792
+由于我现在改变了这个值
+Since I now clobber that value,
+
+1135
+01:03:26,448 --> 01:03:27,936
+但这之间并没有引用这个值
+as in it was never referenced,
+
+1136
+01:03:28,592 --> 01:03:30,096
+这些指令就是不必要的
+these instructions are unnecessary.
+
+1137
+01:03:31,760 --> 01:03:35,390
+因此我们会移除它们
+So we will remove these.
+
+1138
+01:03:38,880 --> 01:03:40,784
+但我只有先把它们写出来 才会发现这个情况
+But I couldn't have seen that unless I had written them down.
+
+1139
+01:03:43,780 --> 01:03:44,720
+真是这样吗？
+Was that really true?
+
+1140
+01:03:45,776 --> 01:03:46,608
+我并不知道
+Well, I don't know.
+
+1141
+01:03:48,610 --> 01:03:52,912
+现在 我们要开始计算(FIB (- N 2))了
+OK, so we've now gone off to compute Fibonacci of N minus 2.
+
+1142
+01:03:53,660 --> 01:03:54,592
+计算完毕后
+So after that,
+
+1143
+01:04:02,960 --> 01:04:03,856
+我们又要做什么呢？
+what are we going to do?
+
+1144
+01:04:05,070 --> 01:04:06,768
+我想 我们首先要做的就是
+Well, I suppose the first thing we have to do--
+
+1145
+01:04:06,992 --> 01:04:07,888
+我们有两件事要做
+we've got two things.
+
+1146
+01:04:07,960 --> 01:04:10,496
+目前VAL寄存器中的值 是有意义的
+We've got a thing in the value register which is now valuable.
+
+1147
+01:04:10,920 --> 01:04:11,984
+然而 栈上也有一个数据
+We also have a thing on the stack
+
+1148
+01:04:12,048 --> 01:04:13,632
+需要恢复到VAL寄存器中
+can be restored into the value register.
+
+1149
+01:04:14,810 --> 01:04:16,576
+现在我需要非常小心的是
+And what I have to be careful with now
+
+1150
+01:04:16,880 --> 01:04:18,992
+正确地给它们排序 以便计算乘法
+is I want to shuffle this right so I can do the multiply.
+
+1151
+01:04:19,470 --> 01:04:21,248
+现在 我可能会使用不同的约定
+Now there are various conventions I might use,
+
+1152
+01:04:21,472 --> 01:04:23,520
+但我现在会采用非常挑剔的一种
+but I'm going to be very picky and say,
+
+1153
+01:04:23,552 --> 01:04:25,888
+栈上数据来自于哪个寄存器 就恢复到那个寄存器中
+I'm only going to restore into a register I've saved from.
+
+1154
+01:04:26,740 --> 01:04:28,288
+如果是这样的话 在这里我就要进行洗牌
+If that's the case, I have to do a shuffle here.
+
+1155
+01:04:29,248 --> 01:04:31,840
+这跟我有多少只手是同样的问题
+It's the same problem with how many hands I have.
+
+1156
+01:04:32,688 --> 01:04:37,136
+现在我要给N赋值
+So I'm going to assign to N,
+
+1157
+01:04:37,168 --> 01:04:39,376
+因为我现在不再需要N了 N是无用的
+because I'm not going to need N anymore, N is useless,
+
+1158
+01:04:39,920 --> 01:04:41,216
+获取当前VAL寄存器的值
+the current value of VAL,
+
+1159
+01:04:45,216 --> 01:04:47,340
+也就是(FIB (- N 2))的值
+which was the value of Fib of N minus 2.
+
+1160
+01:04:52,950 --> 01:04:56,352
+现在 我就要恢复VAL寄存器了
+And I'm going to restore the value register now.
+
+1161
+01:05:01,850 --> 01:05:03,920
+这个RESTORE匹配这里的SAVE
+This restore matches this save.
+
+1162
+01:05:05,584 --> 01:05:08,832
+如果你非常仔细地研究发生了什么
+And if you're very careful and examine very carefully what goes on,
+
+1163
+01:05:09,216 --> 01:05:11,968
+会发现 RESTORE和SAVE总是成对的
+OK? restores and saves are always matched.
+
+1164
+01:05:13,840 --> 01:05:15,152
+现在 这里有个额外的SAVE
+Now there's an outstanding save,
+
+1165
+01:05:15,184 --> 01:05:16,384
+当然 我们很快就会消灭它
+of course, that we have to get rid of soon.
+
+1166
+01:05:19,000 --> 01:05:20,590
+恢复完VAL寄存器后
+And so I restored the value register.
+
+1167
+01:05:20,944 --> 01:05:22,576
+我就要恢复CONTINUE寄存器了
+Now I restore the continue one,
+
+1168
+01:05:31,152 --> 01:05:32,400
+它匹配了这个
+which matches this one,
+
+1169
+01:05:34,800 --> 01:05:37,856
+从这里到这里
+dot, dot, dot, dot, dot, dot, dot, down to here,
+
+1170
+01:05:40,592 --> 01:05:42,464
+这样就恢复了继续
+Now restoring that continuation.
+
+1171
+01:05:42,860 --> 01:05:45,712
+这个表达式继续是由(FIB N)产生的
+That continuation is a continuation of Fib of N,
+
+1172
+01:05:46,460 --> 01:05:47,840
+也就是我正尝试求解的
+which is the problem I was trying to solve,
+
+1173
+01:05:47,856 --> 01:05:49,320
+最主要的问题
+a major problem I'm trying to solve.
+
+1174
+01:05:49,984 --> 01:05:52,352
+我需要把(FIB N)的答案返回给这个继续
+So that's the guy I have to go back to who wants Fib of N.
+
+1175
+01:05:52,544 --> 01:05:54,032
+在我意识到N并不小于2之前
+I saved them all the way up here
+
+1176
+01:05:54,160 --> 01:05:56,608
+我一直保存着它们
+when I realized N was not less than 2.
+
+1177
+01:05:57,360 --> 01:05:59,072
+因此 我需要进行一个复杂的运算
+And so I had to do a complicated operation.
+
+1178
+01:06:00,840 --> 01:06:02,576
+现在万事俱备
+Now I've got everything I need to do it.
+
+1179
+01:06:03,240 --> 01:06:04,368
+因此我要恢复它们
+So I'm going to restore that,
+
+1180
+01:06:05,420 --> 01:06:21,088
+(ASSIGN VAL (+ (FETCH VAL) (FETCH N)))
+assign to VAL the sum of fetch VAL and fetch of N
+
+1181
+01:06:27,440 --> 01:06:28,608
+然后跳转到CONTINUE
+and go to continue.
+
+1182
+01:06:38,260 --> 01:06:44,784
+然后我就从(FIB N)中返回了出来
+So now I've returned from computing Fibonacci of N,
+
+1183
+01:06:45,392 --> 01:06:46,576
+也就是FIB的一般情况
+the general case.
+
+1184
+01:06:47,110 --> 01:06:50,608
+现在还有一些细节 需要我们填充
+Now what's left is we have to fix up a few details,
+
+1185
+01:06:50,992 --> 01:06:55,536
+比如归纳的基本情况：可以立即得到答案
+like there's the base case of this induction, immediate answer,
+
+1186
+01:07:02,540 --> 01:07:06,592
+这不过就是
+as, which is nothing more than
+
+1187
+01:07:06,608 --> 01:07:11,850
+(ASSIGN VAL (FETCH N)
+assign to VAL fetch of N,
+
+1188
+01:07:13,640 --> 01:07:15,472
+因为N小于2
+because N was less than 2,
+
+1189
+01:07:15,504 --> 01:07:16,890
+因此答案就是N
+and therefore, the answer is N
+
+1190
+01:07:16,990 --> 01:07:18,192
+跟源程序是一致的
+in our original program,
+
+1191
+01:07:19,230 --> 01:07:26,480
+(GOTO (FETCH CONTINUE))
+and return continue--
+
+1192
+01:07:31,248 --> 01:07:36,130
+最后就结束了
+bobble, bobble almost-- and finally Fib done.
+
+1193
+01:07:43,460 --> 01:07:45,640
+这是个相当复杂的程序
+So that's a fairly complicated program.
+
+1194
+01:07:45,640 --> 01:07:47,344
+我之所以给你们演示这个程序
+And the reason I wanted you see to that
+
+1195
+01:07:47,500 --> 01:07:49,216
+是因为我想让你们见识
+is because I want you to see the particular
+
+1196
+01:07:49,456 --> 01:07:52,672
+我所遵守的栈使用准则
+flavors of stack discipline that I was obeying.
+
+1197
+01:07:53,328 --> 01:07:55,216
+第一点就是 我不想保存那些
+It was first of all, I don't want to save anything
+
+1198
+01:07:56,928 --> 01:07:58,128
+稍后不需要的值
+that I'm not going to need later.
+
+1199
+01:08:00,576 --> 01:08:01,850
+我非常地小心
+I was being very careful.
+
+1200
+01:08:01,850 --> 01:08:02,912
+这非常重要
+And it's very important.
+
+1201
+01:08:03,940 --> 01:08:06,528
+当然 人们还制定了其它的准则
+And there are all sorts of other disciplines people make
+
+1202
+01:08:07,376 --> 01:08:09,616
+来操作栈帧之类的东西
+with frames and things like that of some sort,
+
+1203
+01:08:10,190 --> 01:08:11,392
+这些准则中 那些不再需要的东西
+where you save all sorts of junk
+
+1204
+01:08:11,408 --> 01:08:12,640
+也需要保存并恢复
+you're not going to need later and restore it
+
+1205
+01:08:12,672 --> 01:08:15,260
+因为从某种意义上来说 这样做更容易些
+because, in some sense, it's easier to do that.
+
+1206
+01:08:15,830 --> 01:08:17,408
+但这会带来各种灾难
+That's going to lead to various disasters,
+
+1207
+01:08:18,592 --> 01:08:20,256
+我们稍后就会见识一些
+which we'll see a little later.
+
+1208
+01:08:21,440 --> 01:08:24,240
+只保存那些你稍后需要的值 这很关键
+It's crucial to save exactly what you're going to need later.
+
+1209
+01:08:26,890 --> 01:08:28,016
+这是非常重要的理念
+It's an important idea.
+
+1210
+01:08:29,872 --> 01:08:33,360
+无论谁保存了一个值 都应该由他来恢复
+And the responsibility of that is whoever saves something
+
+1211
+01:08:33,760 --> 01:08:35,328
+因为他需要这个值
+is the guy who restores it, because he needs it.
+
+1212
+01:08:36,930 --> 01:08:38,544
+在这样的准则中
+And in such discipline,
+
+1213
+01:08:38,864 --> 01:08:40,768
+你可以发现哪些数据是不必要的
+you can see what things are unnecessary,
+
+1214
+01:08:43,456 --> 01:08:44,736
+哪些操作又是不重要的
+operations that are unimportant.
+
+1215
+01:08:47,150 --> 01:08:50,400
+我还想告诉你们
+Now, one other thing I want to tell you about is very simple
+
+1216
+01:08:51,664 --> 01:08:54,672
+当然 你们看到的并不是全部的图景
+is that, of course, the picture you see is not the whole picture.
+
+1217
+01:08:55,350 --> 01:08:56,688
+假设我的系统中
+Supposing I had systems
+
+1218
+01:08:56,800 --> 01:09:01,520
+具有像CAR、CDR、CONS这样的运算
+had things like other operations, CAR, CDR, CONS,
+
+1219
+01:09:03,536 --> 01:09:05,600
+或者创建一个向量
+building a vector
+
+1220
+01:09:05,888 --> 01:09:07,328
+并引用它的第N个元素
+and referencing the nth element of it,
+
+1221
+01:09:08,304 --> 01:09:09,216
+等等运算
+or things like that.
+
+1222
+01:09:10,400 --> 01:09:13,600
+然而 就在这个层次的细节来说
+Well, at this level of detail, whatever it is,
+
+1223
+01:09:13,872 --> 01:09:17,856
+我们可以在数据通路中把它们视为基本运算
+we can conceptualize those as primitive operations in the datapath.
+
+1224
+01:09:18,752 --> 01:09:21,952
+换句话说 我们可以认为 有一台机器
+In other words, we could say that some machine that, for example, has
+
+1225
+01:09:22,320 --> 01:09:24,112
+包含了APPEND机器
+has the append machine,
+
+1226
+01:09:24,208 --> 01:09:26,464
+它通过(CONS (CAR X)
+which has to do cons of the CAR of x
+
+1227
+01:09:26,640 --> 01:09:29,808
+(APPEND (CDR X) Y)来实现
+with the append of the CDR of x and y,
+
+1228
+01:09:29,888 --> 01:09:33,184
+哦 天啊 这就跟阶乘机器有相同的结构
+well, gee, that's exactly the same as the factorial structure.
+
+1229
+01:09:33,630 --> 01:09:35,296
+当然 它有相同的结构
+Well, it's got about the same structure.
+
+1230
+01:09:36,544 --> 01:09:37,270
+我们有什么呢？
+And what do we have?
+
+1231
+01:09:37,270 --> 01:09:39,392
+我们有某种东西 其中有
+We have some sort of things in it
+
+1232
+01:09:39,760 --> 01:09:42,480
+诸如X、Y之类的寄存器
+which may be registers, x and y,
+
+1233
+01:09:42,510 --> 01:09:45,120
+有时X会移动到Y中
+and then x has to somehow move to y sometimes,
+
+1234
+01:09:45,280 --> 01:09:46,750
+或者X会取得Y的值
+x has to get the value of y.
+
+1235
+01:09:46,930 --> 01:09:50,112
+我们或许要需要能够进行CONS运算
+And then we may have to be able to do something which is a cons.
+
+1236
+01:09:51,700 --> 01:09:57,744
+我记不清这个系统中是否需要这样的东西
+I don't remember if I need to like this is in this system,
+
+1237
+01:09:57,760 --> 01:10:01,100
+但CONS有点类似于减法器或加法器之类的东西
+but cons is sort of like subtract or add or something.
+
+1238
+01:10:01,420 --> 01:10:02,704
+它把两个东西结合起来
+It combines two things,
+
+1239
+01:10:02,736 --> 01:10:04,272
+然后产生一个序对
+producing a thing which is the cons,
+
+1240
+01:10:04,512 --> 01:10:06,496
+然后会把输出结果送入到这里
+which we may then think goes into there.
+
+1241
+01:10:07,600 --> 01:10:09,728
+可能还有一个叫做CAR的组件
+And then maybe a thing called the CAR,
+
+1242
+01:10:12,880 --> 01:10:16,224
+它的结果是 -- 某个东西的CAR部分
+which will produce-- I can get the CAR or something.
+
+1243
+01:10:16,920 --> 01:10:19,552
+我还可以取得某物的CDR部分 等等
+And maybe I can get the CDR of something, and so on.
+
+1244
+01:10:20,150 --> 01:10:22,304
+但我们不应该害怕这么说
+But we shouldn't be too afraid of saying things this way,
+
+1245
+01:10:22,928 --> 01:10:24,240
+因为最坏的情况不过
+because the worst that could happen
+
+1246
+01:10:24,944 --> 01:10:26,416
+当我们打开CONS后
+is if we open up cons,
+
+1247
+01:10:27,312 --> 01:10:29,824
+会发现其中存在某台机器
+what we're going to find is some machine.
+
+1248
+01:10:31,888 --> 01:10:34,448
+CONS可能会与CAR和CDR有所重叠
+And cons may in fact overlap with CAR and CDR, and it always does,
+
+1249
+01:10:35,504 --> 01:10:38,128
+就像加法和减法有所重叠一样
+in the same way that plus and minus overlap,
+
+1250
+01:10:38,576 --> 01:10:39,856
+它们本质上都是一样的
+and really the same business.
+
+1251
+01:10:41,210 --> 01:10:42,608
+CONS、CAR和CDR将会有所重叠
+CONS, CAR, and CDR are going to overlap,
+
+1252
+01:10:42,624 --> 01:10:44,528
+我们会发现其中有小型控制器
+and we're going to find a little controller,
+
+1253
+01:10:45,504 --> 01:10:46,544
+小型的数据通路
+a little datapath,
+
+1254
+01:10:48,032 --> 01:10:49,648
+其中还有一些寄存器
+which may have some registers in it,
+
+1255
+01:10:50,000 --> 01:10:52,864
+一些其它的像这样的东西
+some stuff like that.
+
+1256
+01:10:53,300 --> 01:10:54,416
+并且 也许在这之中
+And maybe inside it,
+
+1257
+01:10:54,432 --> 01:10:56,160
+可能也有无穷的部分
+there may also be an infinite part,
+
+1258
+01:10:56,464 --> 01:10:58,704
+又或者是半无穷的 之类的
+a part that's semi-infinite or something,
+
+1259
+01:10:58,816 --> 01:11:00,656
+这些都是统一的东西
+which is a lot of very uniform stuff,
+
+1260
+01:11:00,960 --> 01:11:02,030
+也就是我们所谓的“内存”
+which we'll call memory.
+
+1261
+01:11:06,570 --> 01:11:08,832
+有限的内存也能无穷地存储 对此我一点也不吃惊
+And I wouldn't be so horrified if that were the way it works.
+
+1262
+01:11:09,330 --> 01:11:11,072
+实际上它就是这样的 我们之后就会了解
+In fact, it does, and we'll talk about that later.
+
+1263
+01:11:13,320 --> 01:11:14,570
+那么 有什么疑问么？
+So are there any questions?
+
+1264
+01:11:24,340 --> 01:11:25,808
+天啊！你们都一言不发
+Gee, what an unquestioning audience.
+
+1265
+01:11:28,670 --> 01:11:30,330
+假设我说得都是谎言吧！
+Suppose I tell you a horrible pile of lies.
+
+1266
+01:11:39,690 --> 01:11:40,384
+好吧
+OK.
+
+1267
+01:11:41,990 --> 01:11:42,520
+谢谢大家
+Well, thank you.
+
+1268
+01:11:42,520 --> 01:11:43,280
+我们下课吧！
+Let's take our break.
+
+1269
+01:11:44,230 --> 01:11:48,780
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+1270
+01:11:48,780 --> 01:11:55,152
+本项目主页
+https://github.com/DeathKing/Learning-SICP
+
