@@ -1,6384 +1,6427 @@
 ﻿1
-00:00:04,725 --> 00:00:17,875
-[音乐]
-[JESU, JOY OF MAN'S DESIRING]
+00:00:00,000 --> 00:00:00,720
+Learning-SICP学习小组
+倾情制作
 
 2
+00:00:00,720 --> 00:00:02,720
+翻译&&时间轴：杨启钊（windfarer）
+压制&&特效：邓雄飞（Dysprosium）
+校对：邓雄飞（Dysprosium）
+
+3
+00:00:02,720 --> 00:00:04,725
+特别感谢：裘宗燕教授
+
+4
+00:00:04,720 --> 00:00:11,808
+计算机程序的构造和解释
+
+5
+00:00:11,888 --> 00:00:18,112
+存储分配与垃圾回收
+
+6
 00:00:18,910 --> 00:00:20,612
 教授: 接下来我要解开
 PROFESSOR: Well, there's one bit of mystery left,
 
-3
+7
 00:00:21,168 --> 00:00:23,360
 目前仅剩的谜团
 which I'd like to get rid of right now.
 
-4
+8
 00:00:24,440 --> 00:00:28,804
-我们能毫无顾虑地用CONS
+我们能毫无顾虑地进行CONS
 And that's that we've been blithely doing things like cons
 
-5
+9
 00:00:30,000 --> 00:00:31,620
 就好像空间足够多一样
 assuming there's always another one.
 
-6
+10
 00:00:32,800 --> 00:00:36,320
 我们总是在使用
 That we've been doing these things like
 
-7
+11
 00:00:36,510 --> 00:00:37,440
 CAR和CDR
 car-ing and cdr-ing
 
-8
-00:00:37,472 --> 00:00:39,744
-并假设知道它们是如何实现的
-and assuming that we had some idea how this can be done.
+12
+00:00:37,470 --> 00:00:38,720
+并假设知道我们知道
+and assuming that we had some idea
 
-9
+13
+00:00:38,752 --> 00:00:39,740
+它们是如何实现的
+how this can be done.
+
+14
 00:00:40,020 --> 00:00:40,675
 事实上
 Now indeed
 
-10
+15
 00:00:41,075 --> 00:00:44,403
-我们认为它等同于过程
+我们认为它们是基本过程
 we said that that's equivalent to having procedures.
 
-11
+16
 00:00:45,376 --> 00:00:47,570
 但这没有真正解决问题
 OK? But that doesn't really solve the problem,
 
-12
+17
 00:00:47,730 --> 00:00:50,256
 因为过程依赖各种复杂的机制
 because the procedure need all sorts of complicated mechanisms
 
-13
+18
 00:00:50,272 --> 00:00:51,376
 需要诸如环境结构之类的东西
 like environment structures
 
-14
+19
 00:00:51,640 --> 00:00:52,768
 才能运行起来
 and things like that to work.
 
-15
+20
 00:00:53,010 --> 00:00:54,890
 而归根结底它们也是
 And those were ultimately made out of conses
 
-16
+21
 00:00:54,890 --> 00:00:56,425
 由CONS之类的东西构成的
 in the model that we had,
 
-17
+22
 00:00:56,700 --> 00:00:58,473
 这的确没有解决问题
 so that really doesn't solve the problem.
 
-18
+23
 00:00:59,380 --> 00:01:01,136
 目前的问题是
 Now the problem here is
 
-19
+24
 00:01:01,312 --> 00:01:03,970
 粘合这些数据结构的是什么东西？
 is the glue the data structure's made out of.
 
-20
+25
 00:01:04,760 --> 00:01:06,409
 它可能是怎样的一个东西?
 What kind of possible thing could it be?
 
-21
+26
 00:01:07,040 --> 00:01:10,460
 我们已经见过了一台机器
 OK? We've been showing you things like a machine,
 
-22
+27
 00:01:10,460 --> 00:01:13,968
 一台计算机具有一个控制器
 a computer that has a controller,
 
-23
+28
 00:01:14,275 --> 00:01:15,450
 和一些寄存器
 and some registers,
 
-24
+29
 00:01:15,450 --> 00:01:16,475
 还可能有一个栈
 and maybe a stack.
 
-25
+30
 00:01:16,980 --> 00:01:18,128
 但是我们还没提到一些东西
 And we haven't said anything about,
 
-26
+31
 00:01:18,160 --> 00:01:19,950
 例如 大内存
 for example, larger memory.
 
-27
+32
 00:01:20,570 --> 00:01:22,382
-我先 现在是时候讨论它们了
+我想 现在是时候讨论它们了
 And I think that's what we have to worry about right now.
 
-28
-00:01:23,740 --> 00:01:27,886
-#TBD
-But just to make it perfectly clear that this is an inessential,
+33
+00:01:23,740 --> 00:01:26,560
+但是先要说清楚
+But just to make it perfectly clear
 
-29
+34
+00:01:26,592 --> 00:01:27,888
+这个并不是必须的
+that this is an inessential,
+
+35
 00:01:28,825 --> 00:01:30,791
-#TBD
+只是一些实现上的细节
 purely implementational thing,
 
-30
+36
 00:01:31,100 --> 00:01:32,600
 让我举个例子
 I'd like to show you, for example,
 
-31
+37
 00:01:32,600 --> 00:01:34,208
 如何用数字来表示这些东西
 how you can do it all with the numbers.
 
-32
+38
 00:01:35,232 --> 00:01:36,820
 有个比较简单的方法
 That's an easy one.
 
-33
+39
 00:01:37,590 --> 00:01:39,000
 一位著名的逻辑学家 哥德尔
 Famous fellow by the name of Godel,
 
-34
+40
 00:01:44,096 --> 00:01:46,016
 在20世纪30年代末
 a logician at the end of the 1930s,
 
-35
+41
 00:01:46,384 --> 00:01:48,700
 发明了一个很巧妙的方法
 invented a very clever way
 
-36
+42
 00:01:48,700 --> 00:01:52,275
 能够把复杂的表达式
 of encoding the complicated expressions
 
-37
+43
 00:01:52,816 --> 00:01:53,520
 表示成数字
 as numbers.
 
-38
+44
 00:01:54,320 --> 00:01:55,050
 例如
 For example--
 
-39
+45
 00:01:55,050 --> 00:01:58,000
 我不会精确描述哥德尔的方法是怎样的
 I'm not saying exactly what Godel's scheme is,
 
-40
+46
 00:01:58,000 --> 00:01:59,488
 因为他没有使用CONS之类的术语
 because he didn't use words like cons.
 
-41
+47
 00:01:59,660 --> 00:02:00,608
 他使用了其它的组合手段
 He had other kinds of
 
-42
+48
 00:02:00,912 --> 00:02:02,600
 来编码表达式
 of ways of combining to make expressions.
 
-43
+49
 00:02:03,090 --> 00:02:03,888
 他的思路是
 But he said,
 
-44
+50
 00:02:03,920 --> 00:02:06,816
 用不同数字分别代表每个代数式
 I'm going to assign a number to every algebraic expression.
 
-45
+51
 00:02:07,920 --> 00:02:09,725
-通过用这些数字进行一些数学运算 #TBD
+通过组合各个部分的数字
 And the way I'm going to manufacture these numbers
 
-46
+52
 00:02:09,725 --> 00:02:11,650
-来把这些部分组合起来
+来形成新的表达式
 is by combining the numbers of the parts.
 
-47
+53
 00:02:12,470 --> 00:02:13,456
 举例来说
 So for example,
 
-48
+54
 00:02:13,625 --> 00:02:15,350
 我们在创造世界的时候
 what we were doing our world,
 
-49
+55
 00:02:15,350 --> 00:02:18,016
 如果用数字
 we could say that if objects
 
-50
+56
 00:02:20,784 --> 00:02:22,220
 来表示对象
 are represented by numbers,
 
-51
+57
 00:02:30,670 --> 00:02:37,936
 那么(CONS X Y)
 then cons of x and y
 
-52
+58
 00:02:38,040 --> 00:02:41,072
 就可以表示为
-could be represented by, could be represented by
+could be represented by,
 
-53
+59
 00:02:41,552 --> 00:02:43,770
-2的X次幂乘3的Y次幂
-2 to the x times 2 to the y.
+2^X * 3^Y
+2 to the x times 3 to the y.
 
-54
+60
 00:02:46,130 --> 00:02:48,032
 因为这样我们还能取出它的每一部分
 Because then we could extract the parts.
 
-55
+61
 00:02:49,560 --> 00:02:50,976
 举例来说
 We could say, for example,
 
-56
+62
 00:02:51,184 --> 00:02:55,888
 (CAR X)
 that then car of, say, x
 
-57
+63
 00:02:56,550 --> 00:03:05,184
 就是X中因数2的个数
 is the number of factors of 2 in x.
 
-58
+64
 00:03:06,690 --> 00:03:08,784
 当然(CDR X)是一样的
 OK? And of course cdr is the same thing.
 
-59
+65
 00:03:10,690 --> 00:03:15,579
 它就X中因数3的个数
 It's the number of factors of 3 in x.
 
-60
+66
 00:03:16,510 --> 00:03:18,651
 这是个非常合理的方案
 Now this is a perfectly reasonable scheme,
 
-61
+67
 00:03:19,100 --> 00:03:20,112
 只不过就是
 except for the fact that
 
-62
-00:03:20,128 --> 00:03:23,984
-数字的位数会急剧地增大
-the numbers rapidly get to be much larger in number of digits
+68
+00:03:20,120 --> 00:03:22,528
+数字的位数
+the numbers rapidly get to be much larger
 
-63
+69
+00:03:22,832 --> 00:03:23,980
+会急剧地增大
+in number of digits
+
+70
 00:03:24,320 --> 00:03:26,550
 甚至比宇宙中的粒子还多
 than the number of protons in the universe.
 
-64
+71
 00:03:27,950 --> 00:03:29,888
 所以除了在理论中
 So there's no easy way to use this scheme
 
-65
+72
 00:03:29,904 --> 00:03:31,216
 没有实现这种方案的好办法
 other than the theoretical one.
 
-66
+73
 00:03:33,430 --> 00:03:34,486
 另一方面
 On the other hand,
 
-67
+74
 00:03:35,125 --> 00:03:37,558
 也有其它的表示方式
 there are other ways of representing these things.
 
-68
+75
 00:03:38,450 --> 00:03:40,016
 我们把它们表示为
 We have been thinking in terms
 
-69
+76
 00:03:40,256 --> 00:03:42,420
 一些小盒子
 of little boxes, boxes.
 
-70
+77
 00:03:43,320 --> 00:03:46,432
 我们把CONS结构
 We've been thinking about our cons structures
 
-71
+78
 00:03:46,500 --> 00:03:48,054
 想象为这样的东西
 as looking sort of like this.
 
-72
+79
 00:03:50,280 --> 00:03:52,576
-它们是里面装着东西的小隔间
+它们是里面装着东西的“鸽子洞”
 They're little pigeon holes with things in them.
 
-73
+80
 00:03:53,568 --> 00:03:55,470
 这些格子组成一个树
 And of course we arrange them in little trees.
 
-74
+81
 00:03:57,210 --> 00:03:59,975
 我希望半导体制造商
 I wish that the semiconductor manufacturers
 
-75
+82
 00:03:59,975 --> 00:04:02,075
 能够提供适配这样需求的芯片
 would supply me with something appropriate for this,
 
-76
+83
 00:04:02,700 --> 00:04:03,760
 但事实上
 but actually
 
-77
+84
 00:04:03,850 --> 00:04:05,312
 他们提供给我的却是
 what they do supply me with
 
-78
+85
 00:04:06,208 --> 00:04:07,960
 线性的内存
 is a linear memory.
 
-79
+86
 00:04:09,380 --> 00:04:13,467
-内存是一串小隔间
+内存是一串小格子
 Memory is sort of a big pile of pigeonholes,
 
-80
+87
 00:04:15,120 --> 00:04:16,340
-像这样的小隔间
+像这样的小格子
 pigeonholes like this.
 
-81
+88
 00:04:17,720 --> 00:04:20,251
-每个小隔间里可以保存确定大小的对象
+每个小格子里可以保存确定大小的对象
 Each of which can hold a certain sized object,
 
-82
+89
 00:04:20,944 --> 00:04:22,200
 一个尺寸固定的对象
 a fixed size object.
 
-83
+90
 00:04:23,390 --> 00:04:24,075
 例如
 So, for example,
 
-84
+91
 00:04:24,070 --> 00:04:25,664
 一个含25个元素的表
 a complicated list with 25 elements
 
-85
+92
 00:04:25,664 --> 00:04:26,640
 就放不进这里
 won't fit in one of these.
 
-86
-00:04:28,550 --> 00:04:30,900
-然而 它们每一个都是由地址索引的
-However, each of these is indexed by an address.
+93
+00:04:28,550 --> 00:04:29,264
+然而 它们中的每一个
+However, each of these
 
-87
+94
+00:04:29,296 --> 00:04:30,880
+都是由地址索引的
+is indexed by an address.
+
+95
 00:04:33,970 --> 00:04:34,992
 因此它们的地址可能是
 So the address might be
 
-88
+96
 00:04:35,024 --> 00:04:35,500
 这里是0
 zero here,
 
-89
+97
 00:04:35,500 --> 00:04:36,225
 这里是1
 one here,
 
-90
+98
 00:04:36,225 --> 00:04:36,700
 这里是2
 two here,
 
-91
+99
 00:04:36,700 --> 00:04:37,250
 这里是3
 three here,
 
-92
+100
 00:04:37,250 --> 00:04:37,944
 以此类推
 and so on.
 
-93
+101
 00:04:38,060 --> 00:04:40,400
 这里写的数字并不重要
 That we write these down as numbers is unimportant.
 
-94
+102
 00:04:40,400 --> 00:04:41,680
 重要的是 它们不重复
 What matters is that they're distinct
 
-95
+103
 00:04:41,950 --> 00:04:43,425
 有了它们就能找到下一个在哪
 as a way to get to the next one.
 
-96
+104
 00:04:44,970 --> 00:04:46,144
-在其中每一个小隔间里面
+在其中每一个小格子里面
 And inside of each of these,
 
-97
+105
 00:04:46,366 --> 00:04:49,110
 我们可以把东西放进去
 we can stuff something into these pigeonholes.
 
-98
+106
 00:04:49,530 --> 00:04:50,774
 对于没有造过计算机的我们来说
 That's what memory is like,
 
-99
+107
 00:04:51,020 --> 00:04:53,664
 内存就是这样子的
 for those of you who haven't built a computer.
 
-100
+108
 00:04:54,150 --> 00:04:54,650
 现在
 Now.
 
-101
+109
 00:04:56,690 --> 00:04:57,536
 现在的问题是
 Now the problem is
 
-102
+110
 00:04:57,536 --> 00:04:59,970
 如何用这样的结构
 how are we going to impose on this type of structure,
 
-103
+111
 00:05:00,425 --> 00:05:01,725
 来实现这个树形结构
 this nice tree structure.
 
-104
+112
 00:05:03,290 --> 00:05:04,575
 其实并不难
 Well it's not very hard,
 
-105
+113
 00:05:04,575 --> 00:05:06,350
 已经有大量的方案来做这个了
 and there have been numerous schemes involved in this.
 
-106
+114
 00:05:06,875 --> 00:05:08,800
 最重要的一个方案是
 The most important one is to say,
 
-107
+115
 00:05:08,800 --> 00:05:11,184
 假设半导体制造商
 well assuming that the semiconductor manufacturer
 
-108
+116
 00:05:11,200 --> 00:05:13,904
 允许我安排自己的内存
 allows me to arrange my memory
 
-109
+117
 00:05:13,984 --> 00:05:15,770
-使得其中一个小隔间足够大
+使得其中每个小格子都足够大
 so that one of these pigeonholes is big enough
 
-110
+118
 00:05:16,280 --> 00:05:18,208
 能够装得下另一个的地址
 to hold the address of another
 
-111
+119
 00:05:19,350 --> 00:05:20,831
-另一个未使用的小隔间的地址#TBD
-I haven't made.
+#TBD
+OK. I haven't made.
 
-112
+120
 00:05:22,050 --> 00:05:23,456
 事实上它需要更大一点
 Now it actually has to be a little bit bigger
 
-113
+121
 00:05:23,480 --> 00:05:27,520
-因为我还要存一些信息在里面
+因为我还要在里面存放一些信息
 because I have to also install or store some information
 
-114
+122
 00:05:27,568 --> 00:05:30,096
 它标示了这里面是什么东西
 as to a tag which describes the kind of thing that's there.
 
-115
+123
 00:05:30,390 --> 00:05:31,647
 我们过一会就能看到
 And we'll see that in a second.
 
-116
+124
 00:05:32,620 --> 00:05:34,400
 当然 如果半导体制造商
 And of course if the semiconductor manufacturer
 
-117
+125
 00:05:34,432 --> 00:05:35,888
-没有这么安排每个小隔间
+没有这么来制造
 doesn't arrange it so I can do that,
 
-118
+126
 00:05:36,080 --> 00:05:38,448
 我就需要用一些机智的方式
 then of course I can, with some cleverness,
 
-119
+127
 00:05:38,575 --> 00:05:41,823
 把它们组合起来以供使用
 arrange combinations of these to fit together in that way.
 
-120
+128
 00:05:43,770 --> 00:05:47,050
 我们想象一下
 So we're going to have to imagine
 
-121
+129
 00:05:47,050 --> 00:05:49,546
 把这个复杂的树形结构
 imposing this complicated tree structure
 
-122
+130
 00:05:49,546 --> 00:05:51,200
 塞进线性内存里
 on our nice linear memory.
 
-123
+131
 00:05:51,740 --> 00:05:54,475
 我们来看第一张幻灯片
 If we look at the first still store,
 
-124
+132
 00:05:54,475 --> 00:05:58,304
 可以看到一个传统的实现方案
 we see a classic scheme for doing that.
 
-125
+133
 00:05:59,490 --> 00:06:02,625
-它是把Lisp结构
-It's a standard way of representing Lisp structures
+它是把表结构放入线性内存
+It's a standard way of representing list structures
 
-126
+134
 00:06:03,225 --> 00:06:05,875
-放入线性内存的标准方式
+的标准方式
 in a linear memory.
 
-127
+135
 00:06:06,275 --> 00:06:08,325
 我们把这块内存
 What we do is we divide this memory
 
-128
+136
 00:06:08,880 --> 00:06:11,120
 分为两部分
 into two parts.
 
-129
+137
 00:06:12,030 --> 00:06:13,427
 一个叫THE-CARS的数组
 An array called the cars,
 
-130
+138
 00:06:14,450 --> 00:06:15,888
 一个叫THE-CDRS的数组
 and an array called the cdrs.
 
-131
+139
 00:06:17,580 --> 00:06:18,864
 无论它们是
 Now whether those happen to be
 
-132
+140
 00:06:18,880 --> 00:06:21,040
 顺序的地址或是其它的
 sequential addresses or whatever,
 
-133
+141
 00:06:21,120 --> 00:06:22,000
 其实并不重要
 it's not important.
 
-134
+142
 00:06:22,875 --> 00:06:25,203
 这是实现细节了
 That's somebody's implementation details.
 
-135
+143
 00:06:25,800 --> 00:06:28,403
 但有两个数组
 But there are two arrays here.
 
-136
+144
 00:06:28,960 --> 00:06:30,368
 线性数组是由
 Linear arrays indexed
 
-137
+145
 00:06:30,464 --> 00:06:32,590
 顺序的下标索引的
 by sequential indices like this.
 
-138
+146
 00:06:34,840 --> 00:06:36,851
-每个小隔间里存的
+每个小格子里存的
 What is stored in each of these pigeonholes
 
-139
+147
 00:06:37,467 --> 00:06:39,859
 是一个带类型的对象
 is a typed object.
 
-140
+148
 00:06:41,430 --> 00:06:42,575
 这里的类型
 And what we have here
 
-141
+149
 00:06:42,570 --> 00:06:45,712
 以字母P开头
 are types which begin with letters like p,
 
-142
+150
 00:06:45,712 --> 00:06:46,576
 表示序对
 standing for a pair.
 
-143
+151
 00:06:47,790 --> 00:06:49,375
 以N开头 表示数字
 Or n, standing for a number.
 
-144
+152
 00:06:50,040 --> 00:06:52,255
-E开头 表示空列表
+E开头 表示空表
 Or e, standing for an empty list.
 
-145
+153
 00:06:54,813 --> 00:06:55,839
 也就是表尾标志
 The end of the list.
 
-146
+154
 00:06:57,020 --> 00:06:58,592
 如果我们想表示
 And so if we wish to represent
 
-147
+155
 00:06:58,992 --> 00:06:59,970
 这样一个对象
 an object like this,
 
-148
+156
 00:07:00,016 --> 00:07:02,160
 首元素为(1 2)
 the list beginning with 1, 2
 
-149
+157
 00:07:02,650 --> 00:07:04,016
 然后3、4分别作为
 and then having a 3 and a 4
 
-150
+158
 00:07:04,016 --> 00:07:05,500
 它的第二和第三个元素
 and then having a 3 and a 4 as its second and third elements.
 
-151
+159
 00:07:06,430 --> 00:07:08,831
 这个表的第一部分也是一个表
 A list containing a list as its first part
 
-152
+160
 00:07:09,350 --> 00:07:10,650
 后面接着是两个数字
 and then two numbers
 
-153
+161
 00:07:10,650 --> 00:07:12,000
 分别为第二和第三部分
 as a second and third parts.
 
-154
+162
 00:07:12,870 --> 00:07:14,816
 现在我们用盒子-指针表示法
 Then of course we draw it sort of like this these days,
 
-155
+163
 00:07:14,848 --> 00:07:16,670
 来描绘它
 in box-and-pointer notation.
 
-156
+164
 00:07:17,320 --> 00:07:18,000
 你能发现
 And you see,
 
-157
+165
 00:07:18,000 --> 00:07:20,048
 这里有三个单元
 these are the three cells
 
-158
+166
 00:07:20,256 --> 00:07:22,016
 它们的CAR指针
 that have as their car pointer
 
-159
+167
 00:07:22,275 --> 00:07:27,104
 分别指向对象(1 2)、3以及4
 the object which is either 1, 2 or 3 or 4.
 
-160
+168
 00:07:28,390 --> 00:07:29,750
 当然这个(1 2)
 And then of course the 1, 2,
 
-161
+169
 00:07:29,750 --> 00:07:31,325
 即整个结构的CAR
 the car of this entire structure,
 
-162
+170
 00:07:31,320 --> 00:07:32,656
 本身就是一个子结构
 is itself a substructure
 
-163
+171
 00:07:32,880 --> 00:07:34,752
 包含一个像这样的子表
 which contains a sublist like that.
 
-164
+172
 00:07:35,940 --> 00:07:37,072
 我要做的是
 What I'm about to do
 
-165
-00:07:37,200 --> 00:07:41,467
-就是按照下标把它们放进去
-is put down places which are-- I'm going to assign indices.
+173
+00:07:37,200 --> 00:07:39,920
+就是按照下标
+is put down places which are--
 
-166
+174
+00:07:39,952 --> 00:07:41,460
+把它们放进去
+I'm going to assign indices.
+
+175
 00:07:41,840 --> 00:07:43,408
 像这里的1
 Like this 1, over here,
 
-167
+176
 00:07:43,560 --> 00:07:47,056
 代表了这个格子的下标
 represents the index of this cell.
 
-168
+177
 00:07:49,850 --> 00:07:51,475
 这里的指针
 But that pointer that we see here
 
-169
+178
 00:07:52,370 --> 00:07:54,864
 是对THE-CARS
 is a reference to the
 
-170
+179
 00:07:55,072 --> 00:07:57,296
-和THE-CDRS里的小隔间的引用
+和THE-CDRS里的小格子的引用
 pair of pigeonholes in the cars and the cdrs
 
-171
+180
 00:07:57,400 --> 00:07:58,675
 它在我的线性内存中
 that are labeled by 1
 
-172
+181
 00:07:58,768 --> 00:08:00,336
-被标记为1
+被标记为1的地方
 in my linear memory down here.
 
-173
+182
 00:08:02,000 --> 00:08:04,064
 如果我想把这个结构
 So if I wish to impose this structure
 
-174
+183
 00:08:04,160 --> 00:08:05,264
 塞进线性内存中
 on my linear memory,
 
-175
+184
 00:08:05,850 --> 00:08:07,525
 要做的是
 what I do is I say, oh yes,
 
-176
+185
 00:08:07,520 --> 00:08:11,888
 把它放进格子1中
 why don't we drop this into cell 1?
 
-177
+186
 00:08:11,952 --> 00:08:12,660
 我要选取1号格子
 Well I said, I pick 1.
 
-178
+187
 00:08:12,660 --> 00:08:13,856
 这个就是1号格子
 There's 1. OK?
 
-179
+188
 00:08:14,270 --> 00:08:16,225
 这是它的CAR
 And that says that its car,
 
-180
+189
 00:08:16,220 --> 00:08:17,744
 我要把它赋值给一个序对
 I'm going to assign it to be a pair.
 
-181
+190
 00:08:17,950 --> 00:08:18,725
 这个序对
 It's a pair,
 
-182
+191
 00:08:20,025 --> 00:08:21,555
 序号是5
 which is in index 5.
 
-183
+192
 00:08:22,590 --> 00:08:23,900
 它的CDR
 And the cdr,
 
-184
+193
 00:08:23,900 --> 00:08:25,139
 就是这个
 which is this one over here,
 
-185
+194
 00:08:25,390 --> 00:08:26,135
 它是个序对
 is a pair
 
-186
+195
 00:08:26,135 --> 00:08:27,700
 我会把它放到2的位置
 which I'm going to stick into place 2.
 
-187
+196
 00:08:28,340 --> 00:08:28,980
 即P2
 p2.
 
-188
+197
 00:08:30,890 --> 00:08:32,950
 我们看P2
 And take a look at p2.
 
-189
+198
 00:08:32,950 --> 00:08:34,725
 P2的CAR
 Oh yes, well p2 is a thing
 
-190
+199
 00:08:34,900 --> 00:08:37,225
 是数字3
 whose car is the number 3,
 
-191
+200
 00:08:37,344 --> 00:08:38,640
 如你所见N3
 so as you see, an n3.
 
-192
+201
 00:08:39,520 --> 00:08:41,524
 这里 它的CDR
 And whose cdr, over here,
 
-193
+202
 00:08:41,727 --> 00:08:43,400
 是一个序对
 is a pair,
 
-194
+203
 00:08:43,975 --> 00:08:45,812
 在位置4
 which lives in place 4.
 
-195
+204
 00:08:46,640 --> 00:08:47,796
 这就是P4
 So that's what this p4 is.
 
-196
+205
 00:08:48,650 --> 00:08:51,167
 P4是一个数字
 p4 is a number
 
-197
+206
 00:08:51,850 --> 00:08:53,876
 它的CAR部分是数字4
 whose value is 4 in its car
 
-198
+207
 00:08:54,608 --> 00:08:55,650
 它的CDR
 and whose cdr
 
-199
+208
 00:08:55,840 --> 00:08:58,480
 是个空表 就在这儿
 is an empty list right there.
 
-200
+209
 00:08:59,170 --> 00:08:59,904
 这个表就结束了
 And that ends it.
 
-201
+210
 00:09:00,690 --> 00:09:04,576
 这就是在线性内存中
 So this is the traditional way of representing
 
-202
+211
 00:09:04,900 --> 00:09:09,552
 表示二叉树的传统方式
 this kind of binary tree in a linear memory.
 
-203
+212
 00:09:11,620 --> 00:09:15,100
 那么 下一个问题是
 Now the next question, of course,
 
-204
+213
 00:09:15,100 --> 00:09:16,368
 我们需要关心
 that we might want to worry about
 
-205
+214
 00:09:16,608 --> 00:09:18,192
 如何去实现
 is just a little bit of implementation.
 
-206
+215
 00:09:18,440 --> 00:09:20,336
 这意味着当我写下一个过程
 That means that when I write procedures
 
-207
+216
 00:09:20,368 --> 00:09:23,620
 用来给A赋值时
 of the form assigned a,
 
-208
+217
 00:09:24,544 --> 00:09:27,104
 这个过程用寄存机器的代码来编写
 lines of register machine code
 
-209
+218
 00:09:27,216 --> 00:09:30,140
 (ASSIGN A (FETCH B))
 of the form assigned a, the car of fetch of b,
 
-210
+219
 00:09:30,848 --> 00:09:31,856
 我实际上想做的是
 what I really mean
 
-211
+220
 00:09:31,975 --> 00:09:37,100
 定位这些元素
 is addressing these elements.
 
-212
+221
 00:09:38,740 --> 00:09:43,000
 我们会把它当作一个缩写
 And so we're going to think of that as a abbreviation for it.
 
-213
+222
 00:09:44,470 --> 00:09:46,336
 当然 为了把它们写下来
 Now of course in order to write that down
 
-214
+223
 00:09:46,350 --> 00:09:48,592
 我要引入一种
 I'm going to introduce some sort of a structure
 
-215
+224
 00:09:48,624 --> 00:09:49,424
 叫作向量的结构
 called a vector.
 
-216
+225
 00:09:52,120 --> 00:09:54,750
 我们得有一种东西用来引用向量
 And we're going to have something which will reference a vector,
 
-217
+226
 00:09:56,840 --> 00:09:58,512
 这样我们就能把它写下来
 just so we can write it down.
 
-218
+227
 00:09:58,710 --> 00:10:00,224
 它的参数之一是向量的名字
 Which takes the name of the vector,
 
-219
+228
 00:10:01,025 --> 00:10:03,970
 我觉得这个名字起得不太靠谱
 or the-- I don't think that name is the right word.
 
-220
+229
 00:10:03,970 --> 00:10:09,400
 它接受VECTOR和INDEX两个参数
 Which takes the vector and the index,
 
-221
+230
 00:10:11,200 --> 00:10:13,056
 我可以用VECTOR-SET!
 and I have to have a way of setting one of those
 
-222
+231
 00:10:13,104 --> 00:10:14,272
 来为其中的分量赋值
 with something called a vector set,
 
-223
+232
 00:10:14,657 --> 00:10:15,608
 我不太在意
 I don't really care.
 
-224
+233
 00:10:16,280 --> 00:10:17,550
 我们来看一看
 But let's look, for example,
 
-225
+234
 00:10:18,113 --> 00:10:20,425
 在这种实现中
 at then that kind of implementation
 
-226
+235
 00:10:21,250 --> 00:10:23,182
 CAR和CDR是什么样子的
 of car and cdr.
 
-227
+236
 00:10:26,470 --> 00:10:28,416
 比如说 如果我刚好有
 So for example if I happen to have
 
-228
+237
 00:10:28,880 --> 00:10:30,800
 一个寄存器B
 a register b,
 
-229
+238
 00:10:31,150 --> 00:10:34,640
 它存了一个序对的下标
 which contains the type index of a pair,
 
-230
+239
 00:10:35,950 --> 00:10:38,800
 即它是指向一个序对的指针
 and therefore it is the pointer to a pair,
 
-231
+240
 00:10:39,350 --> 00:10:40,850
 我可以取它的CAR
 then I could take the car of that and
 
-232
+241
 00:10:41,552 --> 00:10:44,110
 存到寄存器A里面
 OK if I-- write this down-- I might put that in register a.
 
-233
+242
 00:10:44,490 --> 00:10:46,864
 事实上它是
 What that really is is a representation of
 
-234
+243
 00:10:47,375 --> 00:10:50,191
 把A赋值为--
 the assign to a,
 
-235
+244
 00:10:50,190 --> 00:10:51,920
 引用向量的一个分量--
 the value of vector reffing--
 
-236
+245
 00:10:52,800 --> 00:10:55,248
 或者你可以把它叫做索引一个数组
 or array indexing, if you will-- or something,
 
-237
+246
 00:10:55,420 --> 00:10:57,632
 目标向量为THE-CARS
 the cars object--
 
-238
+247
 00:10:58,400 --> 00:11:00,928
 而目标分量是B
 whatever that is-- with the index, b.
 
-239
+248
 00:11:02,650 --> 00:11:03,632
 CDR的操作也类似
 And similarly for cdr.
 
-240
+249
 00:11:04,100 --> 00:11:05,725
 我们可以用同样的方式
 And we can do the same thing
 
-241
+250
 00:11:05,904 --> 00:11:08,320
 来对数据结构赋值
 for assignment to data structures,
 
-242
+251
 00:11:08,925 --> 00:11:10,925
 如果我们需要这么做的话
 If we need to do that sort of things at all.
 
-243
+252
 00:11:11,840 --> 00:11:13,808
 构建这个并不太难
 It's not too hard to build that.
 
-244
+253
 00:11:14,580 --> 00:11:15,728
 下一个问题是
 Well now the next question is
 
-245
+254
 00:11:15,728 --> 00:11:17,000
 我们如何分配它们
 how are we going to do allocation.
 
-246
+255
 00:11:18,010 --> 00:11:20,138
 我们经常需要一个新的序对
 And every so often I say I want a cons.
 
-247
+256
 00:11:21,400 --> 00:11:23,424
 当然 CONS并没有长在树上
 Now conses don't grow on trees.
 
-248
+257
 00:11:23,790 --> 00:11:24,816
 或许它们应该那样
 Or maybe they should.
 
-249
+258
 00:11:25,340 --> 00:11:26,560
 我必须得有某种方法
 But I have to have some way
 
-250
+259
 00:11:26,704 --> 00:11:28,970
 来获得一个可用的序对
 I have to have some way of getting the next one.
 
-251
+260
 00:11:29,980 --> 00:11:31,475
 我需要某种方案
 I have to have some idea of
 
-252
+261
 00:11:31,470 --> 00:11:33,040
 当内存不再使用的时候
 if their memory is unused
 
-253
+262
 00:11:33,690 --> 00:11:35,056
 我可以重新分配它们
 that I might want to allocate from.
 
-254
+263
 00:11:35,630 --> 00:11:37,380
 有很多方案可以实现这一点
 And there are many schemes for doing this.
 
-255
+264
 00:11:37,380 --> 00:11:39,072
 现在我给你们展示的这个东西
 And the particular thing I'm showing you right now
 
-256
+265
 00:11:39,232 --> 00:11:40,450
 并是不必要的
 is not essential.
 
-257
+266
 00:11:42,100 --> 00:11:43,184
 然而它很方便
 However it's convenient
 
-258
+267
 00:11:43,200 --> 00:11:44,448
 并且被实现很多次了
 and has been done many times.
 
-259
+268
 00:11:44,608 --> 00:11:47,200
 其中一种基于“空闲表”的分配方案
 It's one schemes called the free list allocation scheme.
 
-260
+269
 00:11:47,660 --> 00:11:48,684
 它的意思就是
 What that means is
 
-261
+270
 00:11:48,680 --> 00:11:51,120
 世界上所有的空闲内存
 that all of the free memory that there is in the world
 
-262
+271
 00:11:51,550 --> 00:11:53,088
 都连在一个链表中
 is linked together in a linked list,
 
-263
+272
 00:11:54,550 --> 00:11:56,224
 就像其它东西一样
 just like all the other stuff.
 
-264
+273
 00:11:56,960 --> 00:11:59,075
 每当你需要一个新的格子
 And whenever you need a free cell
 
-265
+274
 00:11:59,070 --> 00:12:00,128
 来进行CONS的时候
 to make a new cons,
 
-266
+275
 00:12:00,950 --> 00:12:02,264
 你选择第一个格子
 you grab the first one
 
-267
+276
 00:12:02,264 --> 00:12:03,825
 将它的CDR指向空闲表
 make the free list be the cdr of it,
 
-268
+277
 00:12:04,325 --> 00:12:05,553
 然后分配它
 and then allocate that.
 
-269
+278
 00:12:06,030 --> 00:12:08,325
 就像这样
 And so what that looks like is something like this.
 
-270
+279
 00:12:09,530 --> 00:12:13,328
 这里 我们的空闲表
 Here we have the free list
 
-271
+280
 00:12:13,952 --> 00:12:16,810
 就是从6开始
 starting in 6.
 
-272
+281
 00:12:18,510 --> 00:12:23,472
 它是一个指向8的指针
 And what that is is a pointer-off to say 8.
 
-273
+282
 00:12:24,860 --> 00:12:25,628
 它表示
 So what it says is,
 
-274
+283
 00:12:25,628 --> 00:12:26,553
 当前这个是空闲的
 this one is free
 
-275
+284
 00:12:26,553 --> 00:12:27,953
 下一个在位置8
 and the next one is an 8.
 
-276
+285
 00:12:28,870 --> 00:12:29,881
 这个是空闲的
 This one is free
 
-277
+286
 00:12:30,048 --> 00:12:32,080
 下一个在位置3
 and the next one is in 3,
 
-278
+287
 00:12:32,320 --> 00:12:33,450
 下一个是空闲的
 the next one that's free.
 
-279
+288
 00:12:33,930 --> 00:12:34,950
 这个是空闲的
 That one's free
 
-280
+289
 00:12:35,040 --> 00:12:37,680
 下一个在位置0
 and the next one is in 0.
 
-281
+290
 00:12:37,872 --> 00:12:38,496
 这个是空闲的
 That one's free
 
-282
+291
 00:12:38,528 --> 00:12:39,824
 下一个在位置15
 and the next one's in 15.
 
-283
+292
 00:12:40,940 --> 00:12:41,840
 以此类推
 Something like that.
 
-284
+293
 00:12:42,780 --> 00:12:44,640
 我们可以想象有这样的结构
 We can imagine having such a structure.
 
-285
+294
 00:12:46,400 --> 00:12:48,032
 一旦我们有了这样的机制
 Given that we have something like that,
 
-286
+295
 00:12:49,456 --> 00:12:50,920
 那么当你需要空间的时候
 then it's possible to
 
-287
+296
 00:12:50,920 --> 00:12:52,224
 就能获取一个
 just get one when you need it.
 
-288
+297
 00:12:53,825 --> 00:12:56,466
 那些使用了CONS的程序
 And so a program for doing cons,
 
-289
+298
 00:12:57,450 --> 00:12:59,136
 内存可能就是像这样的
 this is what cons might turn into.
 
-290
+299
 00:12:59,320 --> 00:13:02,573
 把B和C进行CONS之后的值
 To assign to a register A the result of cons-ing,
 
-291
+300
 00:13:02,950 --> 00:13:05,825
 赋值给A寄存器
 a B onto C,
 
-292
+301
 00:13:06,200 --> 00:13:09,040
 结果包括B和C
 the value in this containing B and the value containing C,
 
-293
+302
 00:13:09,270 --> 00:13:10,528
 我们要做的是
 what we have to do is
 
-294
+303
 00:13:10,560 --> 00:13:12,240
 把当前的尾部单元--也就是空闲表的前个单元
 get the current tail ahead of the freelist,
 
-295
+304
 00:13:12,475 --> 00:13:14,300
 让它的CDR指向空闲表
 make the free list be its cdr.
 
-296
+305
 00:13:15,640 --> 00:13:18,336
 我们要把CAR修改为
 Then we have to change the cars
 
-297
+306
 00:13:18,416 --> 00:13:20,336
 #TBD
 to be the thing we're
 
-298
+307
 00:13:20,475 --> 00:13:25,450
 #TBD
 making up to be in A to be the B, the thing in B.
 
-299
+308
 00:13:25,900 --> 00:13:28,656
 我们还要把A的CDR部分
 And we have to make change the cdrs of
 
-300
+309
 00:13:29,200 --> 00:13:31,720
 修改为C的值
 the thing that's in A to be C.
 
-301
+310
 00:13:33,200 --> 00:13:34,768
 现在A单元里面
 And then what we have in A
 
-302
+311
 00:13:34,784 --> 00:13:36,650
 #TBD
 is the right new frob, whatever it is.
 
-303
+312
 00:13:36,816 --> 00:13:37,920
 这就是我们要的对象
 The object that we want.
 
-304
+313
 00:13:40,470 --> 00:13:42,500
 我之前告诉过你们
 Now there's a little bit of
 
-305
+314
 00:13:42,500 --> 00:13:43,975
 这里撒了个谎
 a cheat here that I haven't told you about,
 
-306
+315
 00:13:43,970 --> 00:13:45,328
 也就是在这里的某处
 which is somewhere around here
 
-307
+316
 00:13:45,536 --> 00:13:47,320
 我本来应该
 I haven't set the type of the thing that I've
 
-308
+317
 00:13:48,450 --> 00:13:50,480
 把我CONS起来的对象
 the type of the thing
 
-309
+318
 00:13:50,510 --> 00:13:51,872
 设置为序对类型
 that I'm cons-ing up to be a pair,
 
-310
+319
 00:13:52,304 --> 00:13:53,050
 但我没有
 and I ought to.
 
-311
+320
 00:13:53,510 --> 00:13:56,576
 因此这里应该需要设置一些比特位
 So there should be some sort of bits here are being set,
 
-312
+321
 00:13:56,608 --> 00:13:57,760
 我只是还没把它写下来
 and I just haven't written that down.
 
-313
+322
 00:13:59,810 --> 00:14:00,864
 #TBD
 We could have arranged it, of course,
 
-314
+323
 00:14:00,896 --> 00:14:02,450
 #TBD
 for the free lift to be made out of pairs.
 
-315
+324
 00:14:03,100 --> 00:14:04,882
 因此这是没问题的
 And so then there's no problem with that.
 
-316
+325
 00:14:06,430 --> 00:14:07,744
 但这也就是--
 But that sort of--
 
-317
+326
 00:14:07,824 --> 00:14:09,920
 #TBD
 again, an inessential detail in a way
 
-318
+327
 00:14:10,220 --> 00:14:12,880
 #TBD
 some particular programmer or architect
 
-319
+328
 00:14:12,928 --> 00:14:16,688
 #TBD
 or whatever might manufacture his machine or Lisp system.
 
-320
+329
 00:14:17,540 --> 00:14:18,711
 例如
 So for example,
 
-321
+330
 00:14:19,075 --> 00:14:20,247
 看这个
 just looking at this,
 
-322
+331
 00:14:20,650 --> 00:14:23,456
 假设我们要为
 to allocate
 
-323
+332
 00:14:23,550 --> 00:14:26,834
 这个之前见过的数据结构分配空间
 given that I had already the structure that you saw before,
 
-324
+333
 00:14:27,216 --> 00:14:30,260
 假设我要分配一个新单元
 supposing I wanted to allocate a new cell,
 
-325
+334
 00:14:30,550 --> 00:14:36,617
 来表示表(1 1 2)
 which is going to be representation of list one, one, two,
 
-326
+335
 00:14:37,240 --> 00:14:39,872
 其中(1 2)又是
 where already one two was the car
 
-327
+336
 00:14:40,288 --> 00:14:42,160
 之前一个表的CAR元素
 of the list we were playing with before.
 
-328
+337
 00:14:43,430 --> 00:14:44,450
 这不怎么难
 Well that's not so hard.
 
-329
+338
 00:14:44,780 --> 00:14:46,200
 我用1号单元来存放数字“1”
 I stored that one in one,
 
-330
+339
 00:14:46,200 --> 00:14:49,175
 那么P1表示的就是这个单元
 so p1 one is the representation of this.
 
-331
+340
 00:14:49,530 --> 00:14:50,839
 这个是P5
 This is p5.
 
-332
+341
 00:14:51,675 --> 00:14:53,512
 它是应该是这个的CDR
 That's going to be the cdr of this.
 
-333
+342
 00:14:54,070 --> 00:14:55,525
 现在我们要从空闲表中取出一些东西
 Now we're going to pull something off the free list,
 
-334
+343
 00:14:55,525 --> 00:14:57,303
 空闲表现在是从6开始的
 but remember the free list started at six.
 
-335
+344
 00:14:57,780 --> 00:15:00,183
 而在分配之后 空闲表将从8开始
 The new free list after this allocation is eight,
 
-336
+345
 00:15:00,600 --> 00:15:02,551
 一个从8开始的空闲表
 a free list beginning at eight.
 
-337
+346
 00:15:02,890 --> 00:15:03,520
 当然
 And of course
 
-338
+347
 00:15:03,720 --> 00:15:06,048
 现在6里面是数字1
 in six now we have a number one,
 
-339
+348
 00:15:06,150 --> 00:15:07,104
 就是我们想要的
 which is what we wanted,
 
-340
+349
 00:15:07,392 --> 00:15:11,560
 它的CDR是在位置5的序对
 with its cdr being the pair starting in location five.
 
-341
+350
 00:15:13,330 --> 00:15:14,506
 没费多少力气
 And that's no big deal.
 
-342
+351
 00:15:16,810 --> 00:15:20,450
 这里依然存在的一个问题是
 So the only problem really remaining here is,
 
-343
+352
 00:15:21,000 --> 00:15:23,402
 我们没有无限大的内存
 well, I don't have an infinitely large memory.
 
-344
+353
 00:15:25,080 --> 00:15:26,666
 如果我像这么操作了一会儿
 If I do this for a little while,
 
-345
+354
 00:15:27,250 --> 00:15:28,000
 比如说
 say, for example,
 
-346
+355
 00:15:28,016 --> 00:15:30,144
 假设进行一次CONS花费1微秒
 supposing it takes me a microsecond to do a cons,
 
-347
+356
 00:15:30,600 --> 00:15:32,975
 如果要进行一百万次CONS
 and I have a million cons memory
 
-348
+357
 00:15:33,600 --> 00:15:35,279
 那么我就要消耗1秒钟的时间
 then I'm only going to run out in a second,
 
-349
+358
 00:15:35,950 --> 00:15:37,007
 这就很糟糕了
 and that's pretty bad.
 
-350
+359
 00:15:38,000 --> 00:15:40,625
 如何预防这样的灾难
 So what we do to prevent that disaster,
 
-351
+360
 00:15:40,625 --> 00:15:42,191
 这种生态灾难
 that ecological disaster,
 
-352
+361
 00:15:42,600 --> 00:15:44,300
 在提问环节之后我们再继续讨论
 talk about right after questions.
 
-353
+362
 00:15:44,300 --> 00:15:45,263
 有人要提问吗?
 Are there any questions?
 
-354
+363
 00:15:51,500 --> 00:15:51,696
 请讲
 Yes.
 
-355
+364
 00:15:52,030 --> 00:15:54,675
 学生: 在环境图表中
 AUDIENCE: In the environment diagrams that we were drawing
 
-356
+365
 00:15:54,675 --> 00:15:58,250
 我们画了过程体
 we would use the body of procedures,
 
-357
+366
 00:15:58,250 --> 00:16:00,672
 #TBD
 and you would eventually wind up with
 
-358
+367
 00:16:00,800 --> 00:16:03,600
 #TBD
 things that were no longer useful in that structure.
 
-359
+368
 00:16:04,930 --> 00:16:06,672
 它是如何表示的
 How is that represented?
 
-360
+369
 00:16:06,768 --> 00:16:08,750
 教授: 这其实是两个问题
 PROFESSOR: There's two problems here. OK?
 
-361
+370
 00:16:09,180 --> 00:16:10,250
 第一个问题是
 One you were asking
 
-362
+371
 00:16:10,250 --> 00:16:13,438
 材料没用了
 is that material becomes useless.
 
-363
+372
 00:16:13,870 --> 00:16:14,920
 我们稍后就会讲
 We'll talk about that in a second.
 
-364
+373
 00:16:14,920 --> 00:16:17,008
 如何预防生态灾难
 That has to do with how to prevent ecological disasters.
 
-365
+374
 00:16:17,632 --> 00:16:19,200
 如果我制造了一堆垃圾
 Right? If I make a lot of garbage
 
-366
+375
 00:16:19,200 --> 00:16:21,399
 我需要自己清理掉
 I have to somehow be able to clean up after myself.
 
-367
+376
 00:16:21,820 --> 00:16:22,976
 我们一会儿就要讲
 And we'll talk about that in a second.
 
-368
+377
 00:16:23,430 --> 00:16:24,575
 第二个问题
 The other question you're asking
 
-369
+378
 00:16:24,575 --> 00:16:27,210
 你问的是如何表示环境
 is how you represent the environments, I think.
 
-370
+379
 00:16:27,280 --> 00:16:27,600
 学生: 对
 AUDIENCE: Yes.
 
-371
+380
 00:16:27,600 --> 00:16:28,190
 教授: 好
 PROFESSOR: OK.
 
-372
+381
 00:16:28,190 --> 00:16:30,624
 环境结构能够以任意的方式表示
 And the environment structures can be represented in arbitrary ways.
 
-373
+382
 00:16:30,928 --> 00:16:31,780
 有很多种表示方式
 There are lots of them.
 
-374
+383
 00:16:31,780 --> 00:16:33,344
 这里 我只讲了基于表结构的内存
 I mean, here I'm just telling you about list cells.
 
-375
+384
 00:16:33,630 --> 00:16:34,925
 当然 每个真实的系统
 Of course every real system
 
-376
+385
 00:16:34,925 --> 00:16:36,725
 都有任意长度的向量
 has vectors of arbitrary length
 
-377
+386
 00:16:36,720 --> 00:16:39,152
 也有固定长度的向量
 as well as the vectors of length, too,
 
-378
+387
 00:16:39,312 --> 00:16:40,512
 它们都可以作为内存的表示方法
 which represent list cells.
 
-379
+388
 00:16:41,080 --> 00:16:44,909
 在一个专业的Lisp系统中
 And the environment structures that one uses in a
 
-380
+389
 00:16:44,900 --> 00:16:46,992
 环境结构是用
 professionally written Lisp system
 
-381
+390
 00:16:47,300 --> 00:16:49,699
 向量表示的
 tend to be vectors
 
-382
+391
 00:16:49,699 --> 00:16:51,925
 它所包含的元素的数量
 which contain a number of elements approximately
 
-383
+392
 00:16:51,925 --> 00:16:54,601
 比参数的个数稍微多一点
 equal to the number of arguments-- a little bit more
 
-384
+393
 00:16:55,350 --> 00:16:56,864
 因为你需要某种“粘合剂”
 because you need sort of glue.
 
-385
+394
 00:16:57,408 --> 00:17:00,740
 记住环境是在框架里的
 OK? So remember, the environment is in a frame.
 
-386
+395
 00:17:00,740 --> 00:17:03,980
 框架是应用过程时被构建出来的
 The frames are constructed by applying a procedure.
 
-387
+396
 00:17:03,980 --> 00:17:06,825
 #TBD
 In doing so, an allocation is made of
 
-388
+397
 00:17:06,825 --> 00:17:11,270
 #TBD
 a place which is the number of arguments long plus [? unglue ?]
 
-389
+398
 00:17:11,270 --> 00:17:12,713
 #TBD
 that gets linked into a chain.
 
-390
+399
 00:17:13,325 --> 00:17:15,660
 在这个层次上 和ALGOL差不多
 It's just like algol at that level.
 
-391
+400
 00:17:19,810 --> 00:17:20,725
 还有其他问题吗?
 There any other questions?
 
-392
+401
 00:17:23,700 --> 00:17:23,920
 好
 OK.
 
-393
+402
 00:17:23,920 --> 00:17:25,552
 谢谢 我们休息一下
 Thank you, and let's take a short break.
 
-394
+403
 00:17:26,350 --> 00:17:45,488
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-395
+404
 00:17:45,530 --> 00:17:50,016
 《计算机程序的构造和解释》
 The Structure And Interpretation of Computer Programs
 
-396
+405
 00:17:55,740 --> 00:17:59,040
 讲师： 哈罗德·艾伯森教授 及 格兰德·杰·萨斯曼教授
 By: Prof. Harold Abelson && Sussman Jay Sussman
 
-397
+406
 00:17:59,130 --> 00:18:04,224
 《计算机程序的构造和解释》
 The Structure And Interpretation of Computer Programs
 
-398
+407
 00:18:04,320 --> 00:18:09,870
 存储分配与废料收集
 Storage Allocation & Garbage Collection
 
-399
+408
 00:18:12,270 --> 00:18:14,240
 教授: 就像我刚才提到过的
 PROFESSOR: Well, as I just said,
 
-400
+409
 00:18:14,550 --> 00:18:17,975
 半导体厂商生产的计算机内存
 computer memories supplied by the semiconductor manufacturers
 
-401
+410
 00:18:18,160 --> 00:18:19,000
 容量是有限的
 are finite.
 
-402
+411
 00:18:19,420 --> 00:18:20,408
 这的确很可惜
 And that's quite a pity.
 
-403
+412
 00:18:21,620 --> 00:18:23,352
 但它也可能不总是这样
 It might not always be that way.
 
-404
+413
 00:18:24,030 --> 00:18:25,408
 简单算一下
 Just for a quick calculation,
 
-405
+414
 00:18:25,440 --> 00:18:28,860
 你可以看到 如果内存的价格
 you can see that it's possible that if memory's
 
-406
+415
 00:18:28,860 --> 00:18:30,800
 继续保持当前的趋势的话
 prices keep going at the rate they're going
 
-407
+416
 00:18:31,220 --> 00:18:33,680
 如果你执行CONS的时候也只需要1微秒
 that if you still took a microsecond second to do a cons,
 
-408
+417
 00:18:34,425 --> 00:18:35,900
 那么 首先大家知道
 then-- first of all, everybody
 
-409
+418
 00:18:35,900 --> 00:18:37,072
 一年大约有
 should know that there's about pi
 
-410
+419
 00:18:37,104 --> 00:18:38,860
 PI*10^7秒
 times ten to the seventh seconds in a year.
 
-411
+420
 00:18:39,450 --> 00:18:41,120
 那么就有
 And so that would be
 
-412
+421
 00:18:41,504 --> 00:18:42,730
 10^6乘以10^7
 ten to the seventh plus ten to the sixth
 
-413
+422
 00:18:42,733 --> 00:18:43,940
 也就是10^13
 is ten to the thirteenth.
 
-414
+423
 00:18:43,940 --> 00:18:45,506
 那么在机器的一生中
 So there's maybe ten to the fourteenth conses
 
-415
+424
 00:18:45,506 --> 00:18:46,800
 就能有10^14个CONS
 in the life of a machine.
 
-416
+425
 00:18:47,520 --> 00:18:50,576
 如果你的机器上有10^14个字的内存
 If there was ten to the fourteenth words of memory on your machine,
 
-417
+426
 00:18:51,200 --> 00:18:52,160
 你就永远不会用完
 you'd never run out.
 
-418
+427
 00:18:53,040 --> 00:18:55,760
 这并不是完全没有道理
 OK so that will be, And that's not completely unreasonable.
 
-419
+428
 00:18:56,310 --> 00:18:58,460
 10^14次方不是个非常大的数字
 Ten to the fourteenth is not a very large number.
 
-420
+429
 00:19:01,450 --> 00:19:04,704
 我不觉得它是个很大的数字
 Even for... I don't think it is.
 
-421
+430
 00:19:05,180 --> 00:19:07,392
 但我喜欢在天文学领域进行比较
 But then again I like to play with astronomy.
 
-422
+431
 00:19:07,930 --> 00:19:11,040
 距离我们最近的星星
 It's at least ten to the eighteenth centimeters
 
-423
+432
 00:19:11,104 --> 00:19:12,450
 至少有10^18次方厘米远
 between us and the nearest star.
 
-424
+433
 00:19:12,930 --> 00:19:18,850
 我担心的是
 But the thing I'm about to worry about is,
 
-425
+434
 00:19:19,150 --> 00:19:21,275
 至少以现在的经济状况
 at least in the current economic state of affairs,
 
-426
+435
 00:19:21,275 --> 00:19:23,575
 10^14大小的内存很贵
 ten to the fourteenth pieces of memory is expensive.
 
-427
+436
 00:19:24,200 --> 00:19:26,624
 因此我认为我们需要
 And so I suppose what we have to do
 
-428
+437
 00:19:26,816 --> 00:19:28,512
 适应更小的内存
 is make do with much smaller memories.
 
-429
+438
 00:19:30,020 --> 00:19:30,592
 现在
 Now
 
-430
+439
 00:19:32,848 --> 00:19:35,072
 广义地说 我们营造一种无限内存的假象
 in general we want to have an illusion of infinity.
 
-431
+440
 00:19:35,800 --> 00:19:37,225
 我们需要整理它
 All we need to do is arrange it
 
-432
+441
 00:19:37,825 --> 00:19:39,689
 以便在我们需要内存的时候就能获得它
 so that whenever you look, the thing is there.
 
-433
+442
 00:19:41,920 --> 00:19:45,550
 这个想法非常重要
 That's, that's really an important idea.
 
-434
+443
 00:19:49,540 --> 00:19:51,975
 人或者计算机只能存在有限的时间
 A person or a computer lives only a finite amount of time
 
-435
+444
 00:19:52,325 --> 00:19:54,599
 只能看有限的东西
 and can only take a finite number of looks at something.
 
-436
+445
 00:19:55,280 --> 00:19:57,375
 因此你只需要有限的东西
 And so you really only need a finite amount of stuff.
 
-437
+446
 00:19:58,190 --> 00:19:59,000
 只要你去整理它
 But you have to arrange it
 
-438
+447
 00:19:59,000 --> 00:20:00,383
 那么不管实际有多少
 so no matter how much there is,
 
-439
+448
 00:20:00,773 --> 00:20:03,461
 你要求这里有多少
 how much you really claim there is,
 
-440
+449
 00:20:03,461 --> 00:20:04,749
 当你去看的时候
 there's always enough stuff
 
-441
+450
 00:20:04,749 --> 00:20:06,900
 总有足够的东西
 so that when you take a look, it's there.
 
-442
+451
 00:20:06,900 --> 00:20:08,157
 因此你只需要有限的数量
 And so you only need a finite amount.
 
-443
+452
 00:20:08,750 --> 00:20:09,949
 我们来看看
 But let's see.
 
-444
+453
 00:20:11,630 --> 00:20:13,328
 我们之前提过一个问题
 One problem is, as was brought up,
 
-445
+454
 00:20:13,925 --> 00:20:15,450
 在很多情况下
 that there are possible ways
 
-446
+455
 00:20:15,720 --> 00:20:17,840
 我们制造了大量
 that there is lots of stuff
 
-447
+456
 00:20:17,888 --> 00:20:19,168
 不需要的东西
 that we make that we don't need.
 
-448
+457
 00:20:19,410 --> 00:20:21,813
 我们可以进行回收再利用
 And we could recycle the material out of which its made.
 
-449
+458
 00:20:22,625 --> 00:20:23,533
 举个例子
 An example
 
-450
+459
 00:20:24,150 --> 00:20:25,792
 事实上
 for is, is the fact
 
-451
+460
 00:20:25,792 --> 00:20:28,400
 当我们调用一个过程的时候
 when we're building environment structures,
 
-452
+461
 00:20:28,400 --> 00:20:30,470
 都会构建环境结构
 and we do so every time we call a procedure.
 
-453
+462
 00:20:30,470 --> 00:20:32,565
 我们把它构建在一个环境框架中
 We have built in it a environment frame.
 
-454
+463
 00:20:33,141 --> 00:20:36,075
 环境框架不用存在很长时间
 That environment frame doesn't necessarily have a very long lifetime.
 
-455
+464
 00:20:36,730 --> 00:20:38,699
 只有在进行过程调用的时候
 Its lifetime, meaning its usefulness,
 
-456
+465
 00:20:39,425 --> 00:20:42,603
 它的存在才是有用的
 may exist only over the invocation of the procedure.
 
-457
+466
 00:20:42,850 --> 00:20:45,275
 如果过程把另一个过程
 Or if the procedure exports another procedure
 
-458
+467
 00:20:45,270 --> 00:20:46,672
 作为返回值返回
 by returning it as a value
 
-459
+468
 00:20:46,875 --> 00:20:48,525
 并且这个过程是在它的内部定义的
 and that procedure is defined inside of it,
 
-460
+469
 00:20:48,525 --> 00:20:53,500
 那么外层过程的框架的存活时间
 well then the lifetime of the frame of the outer procedure still is
 
-461
+470
 00:20:53,500 --> 00:20:57,900
 就是被返回的过程的存活时间
 only the lifetime of the procedure which was exported.
 
-462
+471
 00:20:58,530 --> 00:20:59,575
 最终
 And so ultimately,
 
-463
+472
 00:20:59,575 --> 00:21:00,972
 就会产生很多废料
 a lot of that is garbage.
 
-464
+473
 00:21:01,960 --> 00:21:04,108
 废料的产生还有其它的方式
 There are other ways of producing garbage as well.
 
-465
+474
 00:21:05,370 --> 00:21:06,675
 用户也会产生废料
 Users produce garbage.
 
-466
+475
 00:21:07,240 --> 00:21:08,075
 举例来说
 An example of
 
-467
+476
 00:21:08,075 --> 00:21:10,225
 用户产生的废料像是这样
 user garbage is something like this.
 
-468
+477
 00:21:10,930 --> 00:21:14,000
 如果我们写个程序
 If we write a program to, for example,
 
-469
+478
 00:21:14,000 --> 00:21:15,800
 把两个表连接到一起
 append two lists together,
 
-470
+479
 00:21:16,050 --> 00:21:18,144
 唯一的办法是
 well one way to do it is to
 
-471
+480
 00:21:18,325 --> 00:21:21,375
 把第一个表逆序塞到空表中
 reverse the first list onto the empty list
 
-472
+481
 00:21:21,375 --> 00:21:23,725
 再把新表逆序塞到第二个表中
 and reverse that onto the second list.
 
-473
+482
 00:21:24,703 --> 00:21:26,925
 这种解法并不是很糟糕
 Now that's not terribly bad way of doing it.
 
-474
+483
 00:21:28,160 --> 00:21:28,850
 然而
 And however,
 
-475
+484
 00:21:28,850 --> 00:21:30,096
 程序所生成的
 the intermediate result,
 
-476
+485
 00:21:30,112 --> 00:21:32,020
 中间结果
 which is the reversal of the first list
 
-477
+486
 00:21:33,875 --> 00:21:35,576
 即第一个表的逆序表
 as done by this program,
 
-478
+487
 00:21:36,700 --> 00:21:38,525
 在它被复制到第二个表之后
 is never going to be accessed ever again
 
-479
+488
 00:21:38,525 --> 00:21:40,568
 就再也不会被用到了
 after it's copied back on to the second.
 
-480
+489
 00:21:41,010 --> 00:21:42,232
 它是个中间结果
 It's an intermediate result.
 
-481
+490
 00:21:43,580 --> 00:21:45,432
 它很难被找到
 It's going to be hard to ever see
 
-482
+491
 00:21:46,075 --> 00:21:48,056
 没有人能访问到它
 how anybody would ever be able to access it.
 
-483
+492
 00:21:48,600 --> 00:21:49,848
 事实上 它会消失掉
 In fact, it will go away.
 
-484
+493
 00:21:51,050 --> 00:21:52,900
 如果我们制造了大量这样的废料
 Now if we make a lot of garbage like that,
 
-485
+494
 00:21:52,900 --> 00:21:54,200
 系统也应该允许我们这么干
 and we should be allowed to,
 
-486
+495
 00:21:54,800 --> 00:21:57,296
 但应该有某些方法去回收这些废料
 then there's got to be some way to reclaim that garbage.
 
-487
+496
 00:21:58,800 --> 00:22:00,900
 现在 我要告诉你
 Well, what I'd like to tell you about now
 
-488
+497
 00:22:01,700 --> 00:22:03,775
 一个非常聪明的技巧
 is a very clever technique
 
-489
+498
 00:22:04,320 --> 00:22:07,584
 Lisp系统可以证明一个小定理#TBD
 whereby a Lisp system
 
-490
+499
 00:22:07,952 --> 00:22:11,216
 Lisp系统可以证明一个小定理#TBD
 can prove a small theorem every so often
 
-491
+500
 00:22:11,296 --> 00:22:13,504
 Lisp系统可以证明一个小定理#TBD
 on the form the following piece of junk will never be accessed again.
 
-492
+501
 00:22:14,720 --> 00:22:16,096
 Lisp系统可以证明一个小定理#TBD
 will never be accessed again.
 
-493
+502
 00:22:17,410 --> 00:22:19,809
 它对将来的计算没有任何影响
 It can have no affect on the future of the computation.
 
-494
+503
 00:22:21,400 --> 00:22:23,616
 事实上 这基于一个很简单的想法
 It's actually based on a very simple idea.
 
-495
+504
 00:22:24,725 --> 00:22:28,065
 我们已经把计算机设计成这个样子
 We've designed our computers to look sort of like this.
 
-496
+505
 00:22:28,950 --> 00:22:30,672
 有一些数据路径
 There's some data path,
 
-497
+506
 00:22:31,872 --> 00:22:33,408
 其中有寄存器
 which contains the registers.
 
-498
+507
 00:22:34,928 --> 00:22:42,270
 有EXP、ENV和VAL之类的寄存器
 You know, there are things like exp, and env, and val, and so on.
 
-499
+508
 00:22:42,610 --> 00:22:44,025
 这里有个叫STACK的东西
 And there's one here called stack,
 
-500
+509
 00:22:46,020 --> 00:22:49,456
 某种指向一个结构的东西
 some sort which points off to a structure somewhere,
 
-501
+510
 00:22:49,504 --> 00:22:50,224
 它是个栈
 which is the stack.
 
-502
+511
 00:22:50,240 --> 00:22:51,488
 我们过一会再研究它
 And we'll worry about that in a second.
 
-503
+512
 00:22:51,648 --> 00:22:53,620
 这里有一些
 There's some finite controller,
 
-504
+513
 00:22:54,380 --> 00:22:56,576
 有穷状态控制器
 finite state machine controller.
 
-505
+514
 00:22:56,730 --> 00:22:59,513
 控制信号在这之间流通
 And there's some control signals that go this way and
 
-506
+515
 00:22:59,800 --> 00:23:01,440
 比如谓词的返回结果
 predicate results that come this way,
 
-507
+516
 00:23:01,872 --> 00:23:03,136
 这部分并不太有趣
 not the interesting part.
 
-508
+517
 00:23:03,350 --> 00:23:06,512
 这里有某种结构化的内存
 There's some sort of structured memory,
 
-509
+518
 00:23:06,806 --> 00:23:08,271
 我刚才给你讲过如何构建它
 which I just told you how to make,
 
-510
+519
 00:23:08,271 --> 00:23:10,460
 它可能包括一个栈
 which may contain a stack.
 
-511
+520
 00:23:10,460 --> 00:23:12,431
 我没有告诉你如何把东西构建成任意形状
 I didn't tell you how to make things of arbitrary shape,
 
-512
+521
 00:23:12,431 --> 00:23:13,450
 只有序对
 only pairs.
 
-513
+522
 00:23:13,450 --> 00:23:14,350
 但事实上
 But in fact
 
-514
+523
 00:23:14,350 --> 00:23:15,440
 我告诉过你
 with what I've told you can
 
-515
+524
 00:23:15,472 --> 00:23:16,960
 可以用一张大表来模拟栈
 with what I've told you can simulate a stack by a big list.
 
-516
+525
 00:23:17,775 --> 00:23:18,850
 我没准备干这个
 I don't plan to do that,
 
-517
+526
 00:23:18,850 --> 00:23:20,016
 这不是个好办法
 it's not a nice way to do it.
 
-518
+527
 00:23:20,360 --> 00:23:22,608
 但是我们可以有这样一个东西
 But we could have something like that.
 
-519
+528
 00:23:22,990 --> 00:23:25,280
 这里有各种数据结构
 We have all sorts of little data structures in here
 
-520
+529
 00:23:25,647 --> 00:23:27,750
 它们通过有趣的方式互相连接
 that are hooked together in funny ways.
 
-521
+530
 00:23:30,115 --> 00:23:32,025
 它们和其它东西连接到一起
 They connect to other things.
 
-522
+531
 00:23:32,560 --> 00:23:33,250
 以此类推
 And so on.
 
-523
+532
 00:23:33,250 --> 00:23:34,225
 归根结底
 And ultimately
 
-524
+533
 00:23:34,455 --> 00:23:37,190
 这里的东西是指向这里的指针
 things up there are pointers to these.
 
-525
+534
 00:23:37,190 --> 00:23:38,873
 寄存器里的指针
 The things that are in the registers
 
-526
+535
 00:23:39,400 --> 00:23:41,408
 指向的是表结构内存中
 are pointers off to the data structures
 
-527
+536
 00:23:41,440 --> 00:23:43,088
 数据结构
 that live in this list structure memory.
 
-528
+537
 00:23:44,910 --> 00:23:49,808
 现在 我们的问题是
 Now the truth of the matter is
 
-529
+538
 00:23:51,050 --> 00:23:53,920
 机器的整个意识是在寄存器里的
 that the entire consciousness of this machine is in these registers.
 
-530
+539
 00:23:55,760 --> 00:23:58,512
 如果这个机器
 There is no possible way that the machine,
 
-531
+540
 00:23:58,750 --> 00:24:01,072
 构建得正确的话
 if done correctly, if built correctly,
 
-532
+541
 00:24:01,374 --> 00:24:03,418
 它无法访问表结构内存中任何的东西
 can access anything in this list structure memory
 
-533
+542
 00:24:04,570 --> 00:24:07,056
 除非这个表结构内存中的数据
 unless the thing in that list structure memory is
 
-534
+543
 00:24:08,090 --> 00:24:10,880
 通过一系列的数据结构
 is connected by a sequence of data structures
 
-535
+544
 00:24:11,648 --> 00:24:13,060
 与寄存器相连接
 to the registers.
 
-536
+545
 00:24:15,070 --> 00:24:15,984
 如果它能够
 If it's accessible
 
-537
+546
 00:24:16,224 --> 00:24:18,310
 被合法的数据结构选择函数访问到
 by legitimate data structure selectors
 
-538
+547
 00:24:19,080 --> 00:24:21,120
 通过寄存器里保存的指针能够访问它
 from the pointers that are stored in these registers.
 
-539
+548
 00:24:22,280 --> 00:24:24,464
 比如说 数组引用
 Things like array references, perhaps.
 
-540
+549
 00:24:24,940 --> 00:24:27,920
 或者针对序对的引用--CAR或者CDR
 Or cons cell references, cars and cdrs.
 
-541
+550
 00:24:29,088 --> 00:24:30,950
 但我不能只讨论内存中的随机位置
 But I can't just talk about a random place in this memory,
 
-542
+551
 00:24:30,950 --> 00:24:31,950
 因为我找不到它
 because I can't get to it.
 
-543
+552
 00:24:32,740 --> 00:24:34,904
 至少在我求值某条表达式的时候
 These are being arbitrary names I'm not allowed to count,
 
-544
+553
 00:24:37,000 --> 00:24:39,168
 我是不允许去访问那个任意名字的
 at least as I'm evaluating expressions.
 
-545
+554
 00:24:41,620 --> 00:24:42,576
 如果是这样的话
 If that's the case
 
-546
+555
 00:24:43,270 --> 00:24:45,072
 就可以证明一个简单的理论
 then there's a very simple theorem to be proved.
 
-547
+556
 00:24:47,160 --> 00:24:47,696
 就是说
 Which is,
 
-548
+557
 00:24:47,900 --> 00:24:50,520
 如果我从这些寄存器指向的地方开始
 if I start with all lead pointers that are in all these registers
 
-549
+558
 00:24:51,164 --> 00:24:52,550
 递归地遍历
 and recursively chase out,
 
-550
+559
 00:24:52,825 --> 00:24:56,150
 标记选择函数所有能访问到内存
 marking all the places I can get to by selectors,
 
-551
+560
 00:24:56,900 --> 00:24:59,400
 最终就能标记所有能访问的东西
 then eventually I mark everything they can be gotten to.
 
-552
+561
 00:25:00,650 --> 00:25:02,699
 任何未标记的都是垃圾
 Anything which is not so marked is garbage
 
-553
+562
 00:25:02,699 --> 00:25:03,750
 它们可以被回收
 and can be recycled.
 
-554
+563
 00:25:05,560 --> 00:25:06,208
 非常简单
 Very simple.
 
-555
+564
 00:25:07,200 --> 00:25:09,100
 不会影响未来的计算
 Cannot affect the future of the computation.
 
-556
+565
 00:25:11,180 --> 00:25:15,750
 让我来给你们举一个具体的例子
 So let me show you that in a particular example.
 
-557
+566
 00:25:17,120 --> 00:25:19,376
 再次之前 需要给我的表结构内存
 Now that means I'm going to have to append to my
 
-558
+567
 00:25:19,696 --> 00:25:22,080
 添加一个叫MARK的标志位
 description of the list structure a mark.
 
-559
+568
 00:25:23,640 --> 00:25:24,896
 因此 在这里
 And so here, for example,
 
-560
+569
 00:25:25,376 --> 00:25:27,280
 就有一个表结构内存
 is a list structured memory.
 
-561
+570
 00:25:29,080 --> 00:25:30,320
 这块表内存中
 And in this list structured memory
 
-562
+571
 00:25:30,336 --> 00:25:31,330
 存放了一个表数据结构
 is a list structure
 
-563
+572
 00:25:31,330 --> 00:25:33,952
 我们把这个起始位置
 beginning in a place I'm going to call--
 
-564
+573
 00:25:35,870 --> 00:25:36,624
 称为“根”
 this is the root.
 
-565
+574
 00:25:38,590 --> 00:25:40,120
 不一定只有一个根
 Now it doesn't really have to have a root.
 
-566
+575
 00:25:40,120 --> 00:25:41,950
 与寄存器类似 可以有很多这种东西
 It could be a bunch of them, like all the registers.
 
-567
+576
 00:25:42,670 --> 00:25:43,984
 但我可以巧妙地安排它们
 But I could cleverly arrange it
 
-568
+577
 00:25:44,138 --> 00:25:46,300
 把所有在旧寄存器里的东西
 so all the registers, all the things that are in old registers
 
-569
+578
 00:25:46,300 --> 00:25:47,776
 在何时的时间点
 are also at the right moment
 
-570
+579
 00:25:48,288 --> 00:25:50,460
 放入到这个根结构中
 put into this root structure,
 
-571
+580
 00:25:50,460 --> 00:25:51,850
 然后用一个指针指向它
 and then we've got one pointer to it.
 
-572
+581
 00:25:51,850 --> 00:25:52,675
 这不是重点
 I don't really care.
 
-573
+582
 00:25:54,570 --> 00:25:55,632
 思路就是
 So the idea is
 
-574
+583
 00:25:55,648 --> 00:25:56,656
 我们要不断地进行CONS
 we're going to cons up stuff
 
-575
+584
 00:25:56,672 --> 00:25:58,016
 直到空闲表为空
 until our free list is empty.
 
-576
+585
 00:25:58,720 --> 00:25:59,675
 这样就用尽了所有空间
 We've run out of things.
 
-577
+586
 00:26:00,950 --> 00:26:04,475
 现在我们要证明这个理论
 Now we're going to do this process of proving the theorem
 
-578
+587
 00:26:04,470 --> 00:26:05,904
 也就是一部分的内存
 that a certain percentage of the memory
 
-579
+588
 00:26:05,952 --> 00:26:06,900
 已经没有用了
 is got crap in it.
 
-580
+589
 00:26:07,850 --> 00:26:09,152
 然后我们要回收它
 And then we're going to recycle that
 
-581
+590
 00:26:09,787 --> 00:26:10,875
 构建一个新的树
 to grow new trees,
 
-582
+591
 00:26:12,192 --> 00:26:14,570
 这是这些垃圾的标准使用方式
 a standard use of such garbage.
 
-583
+592
 00:26:17,090 --> 00:26:18,640
 那么我们要做什么呢?
 So in any case, what do we have here?
 
-584
+593
 00:26:18,840 --> 00:26:20,784
 从P5这个位置开始
 Well we have some data structure
 
-585
+594
 00:26:20,896 --> 00:26:24,270
 存了一些数据结构
 which starts out over here in p5.
 
-586
+595
 00:26:25,150 --> 00:26:26,750
 说错了--是从1开始
 Sorry, and it will start at one
 
-587
+596
 00:26:27,270 --> 00:26:28,512
 事实上
 And in fact
 
-588
+597
 00:26:28,896 --> 00:26:32,200
 它的CAR部分存放在P5这个位置
 it has a car in p5,
 
-589
+598
 00:26:32,272 --> 00:26:33,584
 而CDR部分存在在P2这个位置
 and its cdr is in two.
 
-590
+599
 00:26:33,980 --> 00:26:35,648
 最开始 所有的标记都是0
 And all the marks start out at zero.
 
-591
+600
 00:26:36,700 --> 00:26:39,000
 我们要开始标记了
 Well let's start marking, just to play this game.
 
-592
+601
 00:26:39,920 --> 00:26:40,525
 好
 OK.
 
-593
+602
 00:26:42,540 --> 00:26:44,272
 例如
 So for example,
 
-594
+603
 00:26:44,475 --> 00:26:46,950
 因为我可以从根访问到位置P1
 since I can access one from the root
 
-595
+604
 00:26:46,950 --> 00:26:47,824
 我就标记一下
 I will mark that.
 
-596
+605
 00:26:48,390 --> 00:26:49,175
 我来标一下
 Let me mark it.
 
-597
+606
 00:26:50,960 --> 00:26:51,450
 好了
 Bang.
 
-598
+607
 00:26:52,224 --> 00:26:52,944
 这个被标记了
 That's marked.
 
-599
+608
 00:26:54,416 --> 00:26:57,510
 因为它指向位置P5
 OK. Now since I have a five here
 
-600
+609
 00:26:57,648 --> 00:26:58,640
 所以我跑到了5号单元
 I can go to five
 
-601
+610
 00:26:59,025 --> 00:27:00,725
 然后 我要标记这个
 and see, well I'll mark that.
 
-602
+611
 00:27:01,450 --> 00:27:01,760
 标好了
 Bang.
 
-603
+612
 00:27:01,760 --> 00:27:02,600
 这个笔真好用
 That's useful stuff.
 
-604
+613
 00:27:02,900 --> 00:27:05,104
 但是5号位置的CAR部分是一个数字
 But five references as a number in its car,
 
-605
+614
 00:27:05,270 --> 00:27:06,656
 我对标记数字不感兴趣
 I'm not interested in marking numbers
 
-606
+615
 00:27:06,912 --> 00:27:08,170
 但它的CDR部分是P7
 but its cdr is seven.
 
-607
+616
 00:27:08,700 --> 00:27:09,750
 所以我可以标记它
 So I can mark that.
 
-608
+617
 00:27:10,450 --> 00:27:10,816
 又标好了
 Bang.
 
-609
+618
 00:27:11,808 --> 00:27:13,400
 P7的CDR部分是空表
 OK? Seven is the empty list,
 
-610
+619
 00:27:13,675 --> 00:27:15,100
 而它唯一所引用的元素则是
 the only thing that references,
 
-611
+620
 00:27:15,595 --> 00:27:17,120
 它的CAR部分是个数字
 and it's got a number in its car.
 
-612
+621
 00:27:17,120 --> 00:27:17,850
 我对它不感兴趣
 Not interesting.
 
-613
+622
 00:27:19,490 --> 00:27:20,500
 让我们回到这里
 Well now let's go back here.
 
-614
+623
 00:27:20,500 --> 00:27:21,650
 我忘记了一些事情
 I forgot about something.
 
-615
+624
 00:27:21,650 --> 00:27:22,175
 P2
 Two.
 
-616
+625
 00:27:22,840 --> 00:27:24,850
 换句话说 如果我看1号单元
 See in other words, if I'm looking at cell one,
 
-617
+626
 00:27:25,425 --> 00:27:29,450
 1号单元的CDR部分指向P2
 cell one contains a two right over here.
 
-618
+627
 00:27:30,370 --> 00:27:31,300
 一个指向P2的引用
 A reference to two.
 
-619
+628
 00:27:32,016 --> 00:27:34,970
 这意味着我应该标记P2
 That means I should go mark two.
 
-620
+629
 00:27:35,700 --> 00:27:36,275
 好了
 Bang.
 
-621
+630
 00:27:37,140 --> 00:27:38,896
 P2包含了了一个到P4的引用
 Two contains a reference to four.
 
-622
+631
 00:27:39,136 --> 00:27:40,270
 而P2的CAR部分是个数字
 It's got a number in its car,
 
-623
+632
 00:27:40,279 --> 00:27:41,200
 我对它不感兴趣
 I'm not interested in that
 
-624
+633
 00:27:41,475 --> 00:27:42,600
 所以我要标记P4
 so I'm going to go mark that.
 
-625
+634
 00:27:43,780 --> 00:27:46,100
 P4的CAR部分引用了P7
 Four refers to seven through its car,
 
-626
+635
 00:27:46,750 --> 00:27:48,176
 它的CDR是空的
 and is empty in its cdr,
 
-627
+636
 00:27:48,475 --> 00:27:49,576
 但由于我已经标记过P7了
 but I've already marked that one
 
-628
+637
 00:27:49,576 --> 00:27:50,750
 就不再次标记它了
 so I don't have to mark it again.
 
-629
+638
 00:27:51,400 --> 00:27:53,056
 这就是这个地方
 This is all the accessible structure
 
-630
+639
 00:27:53,072 --> 00:27:53,870
 所能访问的所有单元
 from that place.
 
-631
+640
 00:27:55,000 --> 00:27:56,575
 很简单的递归标记算法
 Simple recursive mark algorithm.
 
-632
+641
 00:27:58,710 --> 00:28:01,792
 这个算法有一些不足的地方
 Now there are some unhappinesses about that algorithm,
 
-633
+642
 00:28:01,900 --> 00:28:04,025
 我们稍后会说
 and we can worry about that a second.
 
-634
+643
 00:28:04,920 --> 00:28:06,160
 但基本上你能看到
 But basically you'll see
 
-635
+644
 00:28:06,192 --> 00:28:07,850
 所有没被标记的地方
 that all the things that have not been marked
 
-636
+645
 00:28:09,625 --> 00:28:11,504
 都是无用的
 are places that are free,
 
-637
+646
 00:28:11,500 --> 00:28:12,416
 可以回收
 and I could recycle.
 
-638
+647
 00:28:14,250 --> 00:28:15,750
 所以下一步就是
 So the next stage after that is going to be
 
-639
+648
 00:28:15,750 --> 00:28:17,050
 扫描整个内存
 to scan through all of my memory,
 
-640
+649
 00:28:17,945 --> 00:28:20,350
 寻找未被标记的单元
 looking for things that are not marked.
 
-641
+650
 00:28:21,180 --> 00:28:22,450
 每当遇到一个已标记的单元
 Every time I come across a marked thing
 
-642
+651
 00:28:22,450 --> 00:28:23,225
 就把标记去掉
 I unmark it,
 
-643
+652
 00:28:23,220 --> 00:28:24,864
 每当遇到未标记的单元时
 and every time I come across an unmarked thing
 
-644
+653
 00:28:25,072 --> 00:28:27,820
 我就把它连接到我的空闲表中
 I'm going to link it together in my free list.
 
-645
+654
 00:28:28,770 --> 00:28:30,300
 传统而且非常简单的算法
 Classic, very simple algorithm.
 
-646
+655
 00:28:32,120 --> 00:28:33,100
 我们来看看
 So let's see.
 
-647
+656
 00:28:33,840 --> 00:28:34,770
 它很简单吗?
 Is that very simple?
 
-648
+657
 00:28:34,770 --> 00:28:35,424
 是的
 Yes it is.
 
-649
+658
 00:28:35,570 --> 00:28:37,792
 我不会深入代码细节
 I'm not going to go through the code in any detail,
 
-650
+659
 00:28:38,009 --> 00:28:39,650
 只是想给你看看它有多长
 but I just want to show you about how long it is.
 
-651
+660
 00:28:40,090 --> 00:28:41,100
 看这个标记阶段
 Let's look at the mark phase.
 
-652
+661
 00:28:41,728 --> 00:28:43,984
 这是标记阶段的第一部分
 Here's the first part of the mark phase.
 
-653
+662
 00:28:45,060 --> 00:28:46,000
 我们找到根
 We pick up the root.
 
-654
+663
 00:28:46,320 --> 00:28:47,520
 我们要
 We're going to do some
 
-655
+664
 00:28:47,675 --> 00:28:51,050
 我们要对它进行递归过程调用
 We're going to use that as a recursive procedure call.
 
-656
+665
 00:28:52,380 --> 00:28:54,475
 当我们完成标记之后
 We're going to sweep from there,
 
-657
+666
 00:28:54,775 --> 00:28:56,950
 就从这里开始清除
 after when we're done with marking.
 
-658
+667
 00:28:57,380 --> 00:28:59,792
 #TBD
 And then we're going to do a little couple of instructions that do this checking out on the marks and changing the marks and things like that,
 
-659
+668
 00:28:59,808 --> 00:29:01,360
 #TBD
 And then we're going to do a little couple of instructions that do this checking out on the marks and changing the marks and things like that,
 
-660
+669
 00:29:01,392 --> 00:29:03,070
 #TBD
 And then we're going to do a little couple of instructions that do this checking out on the marks and changing the marks and things like that,
 
-661
+670
 00:29:03,075 --> 00:29:04,900
 按照我刚才讲的那个算法进行
 according to the algorithm I've just shown you.
 
-662
+671
 00:29:05,232 --> 00:29:06,470
 #TBD
 OK? It comes out here.
 
-663
+672
 00:29:06,470 --> 00:29:07,650
 你需要标记它们的CAR
 You have to mark the cars of things
 
-664
+673
 00:29:07,875 --> 00:29:10,212
 也需要标记它们的CDR
 and you also have to be able to mark the cdrs of things.
 
-665
+674
 00:29:10,660 --> 00:29:12,100
 这就是整个标记阶段
 That's the entire mark phase.
 
-666
+675
 00:29:14,370 --> 00:29:16,164
 我给你讲个关于它的小故事
 I'll just tell you a little story about this.
 
-667
+676
 00:29:16,590 --> 00:29:19,375
 古董货DEC PDP-6计算机
 The old DEC PDP-6 computer,
 
-668
+677
 00:29:20,930 --> 00:29:22,096
 它上面的
 this was the way that
 
-669
+678
 00:29:22,352 --> 00:29:24,850
 标记-清除垃圾回收系统就是这么写的
 the mark-sweep garbage collection, as it was, was written.
 
-670
+679
 00:29:26,912 --> 00:29:28,400
 程序很短
 The program was so small
 
-671
+680
 00:29:29,257 --> 00:29:31,600
 以至于它需要的数据
 that with the data that it needed,
 
-672
+681
 00:29:32,201 --> 00:29:34,875
 以及用来操作内存的所需的寄存器
 with the registers that it needed to manipulate the memory,
 
-673
+682
 00:29:36,160 --> 00:29:38,144
 都能够放入到计算机的
 it fit into the fast registers of the machine,
 
-674
+683
 00:29:38,160 --> 00:29:38,970
 16个快速寄存器中
 which were 16.
 
-675
+684
 00:29:39,280 --> 00:29:39,800
 整个程序
 The whole program.
 
-676
+685
 00:29:40,016 --> 00:29:42,016
 你可以在快速寄存器里执行指令
 And you could execute instructions in the fast registers.
 
-677
+686
 00:29:43,170 --> 00:29:44,832
 所以这是个非常小的程序
 So it's an extremely small program,
 
-678
+687
 00:29:45,850 --> 00:29:46,880
 它跑得飞快
 and it could run very fast.
 
-679
+688
 00:29:48,870 --> 00:29:51,300
 然而很不幸
 Now unfortunately, of course,
 
-680
+689
 00:29:51,610 --> 00:29:54,025
 因为这个程序是递归的
 this program, because the fact that it's recursive
 
-681
+690
 00:29:54,800 --> 00:29:57,552
 因为你需要先做某件事儿
 in the way that you do something first
 
-682
+691
 00:29:57,552 --> 00:29:58,992
 然后再去做另外一件事儿
 and then you do something after that,
 
-683
+692
 00:29:59,210 --> 00:30:00,880
 你得先处理CAR 再处理CDR
 you have to work on the cars and then the cdrs,
 
-684
+693
 00:30:01,150 --> 00:30:02,750
 这就需要辅助内存
 it requires auxiliary memory.
 
-685
+694
 00:30:03,410 --> 00:30:07,425
 所以Lisp系统需要一个栈来进行标记
 So Lisp systems-- those requires a stack for marking.
 
-686
+695
 00:30:08,260 --> 00:30:11,050
 Lisp系统通过这样的方式
 Lisp systems that are built this way
 
-687
+696
 00:30:11,570 --> 00:30:14,160
 限制了你在数据结构上
 have a limit to the depth of recursion you can have
 
-688
+697
 00:30:14,425 --> 00:30:17,375
 进行CAR或者CDR递归的深度
 in data structures in either the car or the cdr,
 
-689
+698
 00:30:17,817 --> 00:30:19,350
 这并不太靠谱
 and that doesn't work very nicely.
 
-690
+699
 00:30:19,930 --> 00:30:22,175
 另一方面 当它足够大的时候你不会发现
 On the other hand, you never notice it if it's big enough.
 
-691
+700
 00:30:23,180 --> 00:30:28,240
 例如对于Maclisp#TBD
 And that's certainly been the case for most Maclisp, for example,
 
-692
+701
 00:30:28,697 --> 00:30:32,725
 #TBD
 which ran Macsyma where you could deal with expressions of thousands of elements long.
 
-693
+702
 00:30:33,560 --> 00:30:36,025
 #TBD
 These are algebraic expressions with thousand of terms.
 
-694
+703
 00:30:36,825 --> 00:30:38,100
 这没什么问题
 And there's no problem with that.
 
-695
+704
 00:30:39,490 --> 00:30:40,825
 垃圾回收器能正常工作
 Such, the garbage collector does work.
 
-696
+705
 00:30:42,190 --> 00:30:42,925
 另一方面
 On the other hand,
 
-697
+706
 00:30:42,925 --> 00:30:45,375
 这个算法有个很精妙的修改版
 there's a very clever modification to this algorithm,
 
-698
+707
 00:30:45,375 --> 00:30:46,475
 但我不会去讲
 which I will not describe,
 
-699
+708
 00:30:46,800 --> 00:30:50,768
 它是由IBM的Peter Deutsch
 by Peter Deutsch and Schorr and Waite--
 
-700
+709
 00:30:50,768 --> 00:30:52,725
 和Waite两个人提出的
 Herb Schorr from IBM and Waite,
 
-701
+710
 00:30:52,725 --> 00:30:54,750
 后者我不认识
 who I don't know. where--
 
-702
+711
 00:30:55,380 --> 00:30:56,544
 这个算法
 That algorithm
 
-703
+712
 00:30:56,675 --> 00:30:59,550
 可以不适用额外的辅助内存
 allows you build you do can do this without auxiliary memory,
 
-704
+713
 00:31:00,500 --> 00:31:02,800
 只需要在遍历整个数据结构的时候
 by remembering as you walk the data structures
 
-705
+714
 00:31:02,975 --> 00:31:05,525
 记住你是从哪里来的并反转指针
 where you came from by reversing the pointers as you go down
 
-706
+715
 00:31:05,525 --> 00:31:07,520
 通过反转的指针再回去#TBD
 and crawling up the reverse pointers as you go up.
 
-707
+716
 00:31:07,792 --> 00:31:08,992
 这是个很取巧的算法
 It's a rather tricky algorithm.
 
-708
+717
 00:31:09,130 --> 00:31:10,240
 你第一次写它的时候
 The first time you write it--
 
-709
+718
 00:31:10,256 --> 00:31:11,712
 事实上 你前三次写它的时候
 or in fact, the first three times you write it it
 
-710
+719
 00:31:11,712 --> 00:31:12,720
 都会遇到严重的BUG
 it has a terrible bug in it.
 
-711
+720
 00:31:14,350 --> 00:31:16,725
 也可能奇慢无比
 And it's also about, it's quite rather slow,
 
-712
+721
 00:31:16,725 --> 00:31:17,675
 因为这个算法太复杂了
 because it's complicated.
 
-713
+722
 00:31:18,110 --> 00:31:20,304
 它用了大概六倍的内存引用
 It takes about six times as many memory references
 
-714
+723
 00:31:20,850 --> 00:31:23,225
 来完成我们刚才讨论的任务
 to do the sorts of things that we're talking about.
 
-715
+724
 00:31:24,580 --> 00:31:27,075
 一旦我完成了标记阶段
 Well now once I've done this marking phase,
 
-716
+725
 00:31:27,500 --> 00:31:30,128
 我们就面临着这样的状况
 and I get into a position where things look like this,
 
-717
+726
 00:31:30,176 --> 00:31:31,264
 请看
 let's look-- yes.
 
-718
+727
 00:31:31,510 --> 00:31:34,032
 这里完成了标记工作
 Here we have the mark done,
 
-719
+728
 00:31:34,080 --> 00:31:35,008
 和我刚才描述的一样
 just as I did it.
 
-720
+729
 00:31:35,590 --> 00:31:37,330
 现在我们要进行清除阶段
 Now we have to perform the sweep phase.
 
-721
+730
 00:31:37,600 --> 00:31:39,320
 我刚才已经讲过如何清除了
 And I described to you what this sweep is like.
 
-722
+731
 00:31:39,820 --> 00:31:42,348
 我要从内存的一端开始
 I'm going to walk down from one end of memory or the other,
 
-723
+732
 00:31:42,340 --> 00:31:43,344
 哪一端都可以
 I don't care where,
 
-724
+733
 00:31:43,628 --> 00:31:46,175
 扫描内存中的每个格子
 scanning every cell that's in the memory.
 
-725
+734
 00:31:47,175 --> 00:31:48,675
 在扫描的同时
 And as I scan these cells,
 
-726
+735
 00:31:49,207 --> 00:31:51,950
 如果是空闲内存
 I'm going to link them together, if they are free,
 
-727
+736
 00:31:51,950 --> 00:31:52,848
 就把它们连接到空闲表中
 into the free list.
 
-728
+737
 00:31:53,150 --> 00:31:54,050
 如果它们不是空闲内存
 And if they're not free,
 
-729
+738
 00:31:54,050 --> 00:31:56,075
 我就把它们的标记清除掉
 I'm going to unmark them so the marks become zero.
 
-730
+739
 00:31:57,500 --> 00:31:58,576
 事实上
 And in fact what I get--
 
-731
+740
 00:31:58,700 --> 00:32:00,460
 最终的程序并不很复杂
 well the program is not very complicated.
 
-732
+741
 00:32:00,460 --> 00:32:02,225
 它只是变长了一些
 It looks sort of like this-- it's a little longer.
 
-733
+742
 00:32:02,780 --> 00:32:04,175
 这是第一部分
 Here's the first piece of it.
 
-734
+743
 00:32:04,820 --> 00:32:06,710
 它从内存的顶端下降下来
 This one's coming down from the top of memory.
 
-735
+744
 00:32:06,710 --> 00:32:09,580
 我不期望你现在就搞懂它
 I don't want you to try to understand this at this point.
 
-736
+745
 00:32:09,580 --> 00:32:10,550
 它挺简单的
 It's rather simple.
 
-737
+746
 00:32:11,030 --> 00:32:12,525
 这是个非常简单的算法
 It's a very simple algorithm,
 
-738
+747
 00:32:13,075 --> 00:32:15,970
 其中的一段代码像是这样
 but there's pieces of it that just sort of look like this.
 
-739
+748
 00:32:15,970 --> 00:32:17,375
 非常显而易见
 They're all sort of obvious.
 
-740
+749
 00:32:18,600 --> 00:32:20,080
 在清理结束后
 And after we've done the sweep,
 
-741
+750
 00:32:20,300 --> 00:32:21,776
 我们就得到了像这样的结果
 we get an answer that looks like that.
 
-742
+751
 00:32:25,330 --> 00:32:26,544
 这种标记-清除算法
 Now there are some disadvantages
 
-743
+752
 00:32:26,560 --> 00:32:28,208
 有一些缺点
 with mark-sweep algorithms of this sort.
 
-744
+753
 00:32:29,590 --> 00:32:30,350
 最严重的一个是
 Serious ones.
 
-745
+754
 00:32:31,450 --> 00:32:33,203
 最严重的缺点是
 One important disadvantage is
 
-746
+755
 00:32:33,203 --> 00:32:34,975
 当你的内存越来越大
 that your memories get larger and larger.
 
-747
+756
 00:32:36,826 --> 00:32:38,875
 地址空间也就会越来越大
 As you say, address spaces get larger and larger,
 
-748
+757
 00:32:38,875 --> 00:32:40,800
 你想用它存更多东西
 you're willing to represent more and more stuff,
 
-749
+758
 00:32:41,370 --> 00:32:44,528
 那么扫描整个内存就会非常耗时
 then it gets very costly to scan all of memory.
 
-750
+759
 00:32:46,360 --> 00:32:47,392
 你真正想做的是
 What you'd really like to do
 
-751
+760
 00:32:47,408 --> 00:32:48,688
 只扫描有用的东西
 is only scan useful stuff.
 
-752
+761
 00:32:50,490 --> 00:32:51,550
 这样就会好一点
 It would even be better
 
-753
+762
 00:32:52,070 --> 00:32:53,904
 如果你意识到
 if you realized that some stuff
 
-754
+763
 00:32:54,480 --> 00:32:57,720
 哪些东西已知是有用的
 was known to be good and useful,
 
-755
+764
 00:32:58,283 --> 00:33:00,370
 你就没必要去多次检查它
 and you don't have to look at it more than once or twice.
 
-756
+765
 00:33:00,370 --> 00:33:01,200
 或者不用经常去检查它
 Or very rarely.
 
-757
+766
 00:33:01,550 --> 00:33:04,325
 对于那些你不太确定的
 Whereas other stuff that you're not so sure about,
 
-758
+767
 00:33:05,000 --> 00:33:06,224
 你可以在每次需要的时候
 you can look at more detail
 
-759
+768
 00:33:07,100 --> 00:33:08,750
 进行仔细检查
 every time you want to do this,
 
-760
+769
 00:33:09,931 --> 00:33:10,850
 也就是垃圾回收的时候
 want to garbage collect.
 
-761
+770
 00:33:11,910 --> 00:33:13,744
 这些算法
 Well there are algorithms
 
-762
+771
 00:33:13,760 --> 00:33:15,100
 就是用了这样的方法
 that are organized in this way.
 
-763
+772
 00:33:15,660 --> 00:33:18,160
 我要介绍一个著名的古老算法
 Let me tell you about a famous old algorithm
 
-764
+773
 00:33:18,280 --> 00:33:19,472
 这种算法允许你
 which allows you only look at
 
-765
+774
 00:33:19,504 --> 00:33:21,370
 只检查内存中已知是有用的部分
 the part of memory which is known to be useful.
 
-766
+775
 00:33:23,120 --> 00:33:23,856
 这让它成为了
 And which happens to be
 
-767
+776
 00:33:23,872 --> 00:33:25,290
 目前已知最快的垃圾回收算法
 the fastest known garbage collector algorithm.
 
-768
+777
 00:33:26,310 --> 00:33:29,450
 它就是 Minsky-Fenichel-Yochelson 垃圾回收算法
 This is the Minsky-Fenichel-Yochelson garbage collector algorithm.
 
-769
+778
 00:33:30,400 --> 00:33:33,184
 它是由Minsky
 It was invented by Minsky
 
-770
+779
 00:33:33,200 --> 00:33:36,064
 在1960、61年左右发明的
 in 1961 or '60 or something,
 
-771
+780
 00:33:36,520 --> 00:33:40,480
 当时是给RLE PDP-1 Lisp用的
 for the RLE PDP-1 Lisp,
 
-772
+781
 00:33:40,512 --> 00:33:43,440
 这个机器只有4096个字的线性内存
 which had 4,096 words of list memory,
 
-773
+782
 00:33:45,792 --> 00:33:46,768
 还有个磁鼓
 and a drum.
 
-774
+783
 00:33:48,480 --> 00:33:51,875
 为了在这种恶劣的条件下进行垃圾回收 #TBD
 And the whole idea was to garbage collect this terrible memory.
 
-775
+784
 00:33:53,050 --> 00:33:54,352
 Minsky意识到
 What Minsky realized
 
-776
+785
 00:33:54,384 --> 00:33:55,620
 达成目的最容易的方法是
 was the easiest way to do this
 
-777
+786
 00:33:56,200 --> 00:33:58,475
 在扫描内存的同时
 is to scan the memory in the same sense,
 
-778
+787
 00:33:58,475 --> 00:34:00,600
 遍历好的结构
 walking the good structure,
 
-779
+788
 00:34:01,575 --> 00:34:03,525
 把它复制到磁鼓中
 copying it out into the drum,
 
-780
+789
 00:34:04,700 --> 00:34:05,475
 压缩一下
 compacted.
 
-781
+790
 00:34:06,350 --> 00:34:08,864
 之后把它们复制出来
 And then when we were done copying it all out,
 
-782
+791
 00:34:09,127 --> 00:34:10,900
 并把它们交换回内存里
 then you swap that back into your memory.
 
-783
+792
 00:34:12,300 --> 00:34:13,680
 不管是使用的是磁鼓
 Now whether or you not use a drum,
 
-784
+793
 00:34:13,728 --> 00:34:14,710
 或者其它的内存
 or another piece of memory,
 
-785
+794
 00:34:14,710 --> 00:34:16,425
 这都不重要
 or something like that isn't important.
 
-786
+795
 00:34:17,030 --> 00:34:17,424
 事实上
 In fact,
 
-787
+796
 00:34:17,440 --> 00:34:19,600
 我觉得现在应该没人用磁鼓了吧
 I don't think people use drums anymore for anything.
 
-788
+797
 00:34:20,350 --> 00:34:23,776
 但这个算法基本上
 But this algorithm basically
 
-789
+798
 00:34:24,032 --> 00:34:25,420
 要依赖于
 depends upon having
 
-790
+799
 00:34:25,425 --> 00:34:28,575
 大约两倍于你实际使用的内存
 about twice as much address space as you're actually using.
 
-791
+800
 00:34:30,270 --> 00:34:32,960
 最开始的情况是
 And so what you have is some, initially,
 
-792
+801
 00:34:33,125 --> 00:34:36,600
 有用的数据和垃圾混在了一起
 some mixture of useful data and garbage.
 
-793
+802
 00:34:37,110 --> 00:34:38,975
 它被称为FROMSPACE
 So this is called fromspace.
 
-794
+803
 00:34:45,179 --> 00:34:47,050
 这是CRUD的混合
 And this is a mixture of crud.
 
-795
+804
 00:34:47,872 --> 00:34:49,792
 有些是有用的 有些没有用
 Some of it's important and some of it isn't.
 
-796
+805
 00:34:52,000 --> 00:34:53,856
 现在还有另外一块空间
 Now there's another place
 
-797
+806
 00:34:54,176 --> 00:34:55,616
 它需要足够大
 which is hopefully big enough,
 
-798
+807
 00:34:55,770 --> 00:34:57,008
 这个地方叫TOSPACE
 if we recall, tospace,
 
-799
+808
 00:34:57,123 --> 00:34:58,240
 要把东西复制进去
 which is where we're copying to.
 
-800
+809
 00:35:01,590 --> 00:35:02,600
 接下来会发生的是
 And what happens is--
 
-801
+810
 00:35:02,600 --> 00:35:04,064
 我不会深入细节
 and I'm not going to go through this detail.
 
-802
+811
 00:35:04,160 --> 00:35:07,070
 书上写得很清楚了
 It's in our book quite explicitly.
 
-803
+812
 00:35:07,590 --> 00:35:10,400
 这里有一个根节点
 There's a root point where you start from.
 
-804
+813
 00:35:11,030 --> 00:35:14,300
 你从根节点开始
 And the idea is that you start with the root.
 
-805
+814
 00:35:14,600 --> 00:35:16,425
 复制你看到的第一个东西
 You copy the first thing you see,
 
-806
+815
 00:35:17,830 --> 00:35:19,376
 根指针指向的第一个东西
 the first thing that the root points at,
 
-807
+816
 00:35:19,750 --> 00:35:21,312
 复制到TOSPACE的头部
 to the beginning of tospace.
 
-808
+817
 00:35:22,810 --> 00:35:24,128
 这些东西一般是一个序对
 The first thing is a pair
 
-809
+818
 00:35:24,160 --> 00:35:25,600
 或者是类似的数据结构
 or something like, a data structure.
 
-810
+819
 00:35:27,560 --> 00:35:30,192
 然后在那里留下
 You then also leave behind
 
-811
+820
 00:35:30,384 --> 00:35:31,568
 一颗“破碎的心”
 a broken heart saying,
 
-812
+821
 00:35:31,775 --> 00:35:35,743
 表示我把东西从这里移动到了这里
 I moved this object from here to here,
 
-813
+822
 00:35:35,743 --> 00:35:37,050
 在它要去的地方分配空间
 giving the place where it moved to.
 
-814
+823
 00:35:37,800 --> 00:35:39,650
 叫作破碎的心是因为
 This is called a broken heart because
 
-815
+824
 00:35:39,650 --> 00:35:40,784
 我的一个朋友
 a friend of mine who implemented
 
-816
+825
 00:35:40,784 --> 00:35:43,392
 在1966年实现了这个算法
 one of these in 1966
 
-817
+826
 00:35:43,825 --> 00:35:45,262
 而他是个文艺青年
 was a very romantic character
 
-818
+827
 00:35:45,262 --> 00:35:46,760
 就取名叫“破碎的心”
 and called it a broken heart.
 
-819
+828
 00:35:49,580 --> 00:35:50,544
 不论如何
 But in any case,
 
-820
+829
 00:35:51,150 --> 00:35:52,720
 接下来要做的是
 the next thing you do
 
-821
+830
 00:35:52,940 --> 00:35:55,008
 FREE指针现在指向这里
 is now you have a new free pointer which is here,
 
-822
+831
 00:35:55,170 --> 00:35:56,384
 然后开始扫描
 and you start scanning.
 
-823
+832
 00:35:56,880 --> 00:35:59,680
 扫描这个刚复制过来的数据结构
 You scan this data structure you just copied.
 
-824
+833
 00:36:00,551 --> 00:36:02,195
 每当你遇到其中的指针
 And every time you encounter a pointer in it,
 
-825
+834
 00:36:02,190 --> 00:36:03,920
 你把它当作是这里的根指针
 you treat it as if it was the root pointer here.
 
-826
+835
 00:36:04,000 --> 00:36:04,592
 哦 不好意思
 Oh, I'm sorry.
 
-827
+836
 00:36:04,600 --> 00:36:05,696
 我们还需要做的是
 The other thing you do
 
-828
+837
 00:36:05,712 --> 00:36:07,088
 你将根指针移动到这里
 is you now move the root pointer to there.
 
-829
+838
 00:36:09,220 --> 00:36:10,175
 因此在扫描的过程中
 So now you scan this,
 
-830
+839
 00:36:10,170 --> 00:36:10,992
 把遇到的每个指针
 and everything you see
 
-831
+840
 00:36:11,008 --> 00:36:12,416
 都可以当作是ROOT指针
 you treat as it were the root pointer.
 
-832
+841
 00:36:14,110 --> 00:36:15,450
 如果你遇到了某个指针
 So if you see something,
 
-833
+842
 00:36:15,450 --> 00:36:17,400
 指向了这里的某个地方
 well it points up into there somewhere.
 
-834
+843
 00:36:18,510 --> 00:36:19,920
 它指向的东西
 Is it pointing at a thing
 
-835
+844
 00:36:19,936 --> 00:36:20,992
 你复制过了吗？
 which you've not copied yet?
 
-836
+845
 00:36:21,780 --> 00:36:22,875
 这里是“破碎的心”吗
 Is there a broken heart there?
 
-837
+846
 00:36:23,880 --> 00:36:24,844
 如果那里是破碎的心
 If there's a broken heart there
 
-838
+847
 00:36:24,840 --> 00:36:26,112
 就说明那里的东西复制过了
 and it's something you have copied,
 
-839
+848
 00:36:26,200 --> 00:36:27,344
 只需要用破碎的心所指向的地址
 you've just replaced this pointer
 
-840
+849
 00:36:27,360 --> 00:36:28,750
 来替换它指针即可
 with the thing a broken heart points at.
 
-841
+850
 00:36:29,820 --> 00:36:32,032
 如果它还没被复制
 If this thing has not been copied,
 
-842
+851
 00:36:32,120 --> 00:36:34,080
 你把它复制到这里
 you copy it to the next place over here.
 
-843
+852
 00:36:34,430 --> 00:36:35,950
 把FREE指针移到这里
 Move your free pointer over here,
 
-844
+853
 00:36:37,050 --> 00:36:40,608
 然后在那里放置一颗破碎的心
 and then leave a broken heart behind
 
-845
+854
 00:36:41,050 --> 00:36:41,800
 继续扫描
 and scan.
 
-846
+855
 00:36:43,670 --> 00:36:46,400
 最终SCAN指针追上了FREE指针
 And eventually when the scant pointer hits the free pointer,
 
-847
+856
 00:36:46,825 --> 00:36:48,525
 内存里的所有东西都被复制了
 everything in memory has been copied.
 
-848
+857
 00:36:50,140 --> 00:36:51,040
 这样这里就剩下了
 And then there's a whole bunch
 
-849
+858
 00:36:51,056 --> 00:36:51,950
 大量的空闲空间
 of empty space up here,
 
-850
+859
 00:36:51,960 --> 00:36:53,280
 如果你需要的话
 which you could either make into a free list,
 
-851
+860
 00:36:53,312 --> 00:36:54,470
 你可以把它组织为空闲表
 if that's what you want to do.
 
-852
+861
 00:36:54,470 --> 00:36:56,270
 但这种系统通常不这么来做
 But generally you don't in this kind of system.
 
-853
+862
 00:36:56,270 --> 00:36:59,150
 这类系统中 内存是顺序分配的
 In this system you sequentially allocate your memory.
 
-854
+863
 00:37:00,910 --> 00:37:02,480
 这是个非常 非常好的算法
 That is a very, very nice algorithm,
 
-855
+864
 00:37:02,970 --> 00:37:04,576
 你们现在使用的Scheme系统中
 and sort of the one we use in the
 
-856
+865
 00:37:04,672 --> 00:37:05,970
 就使用了这种算法
 the scheme that you've been using.
 
-857
+866
 00:37:06,790 --> 00:37:09,475
 它应该是--
 And it's known to be... it's expected--
 
-858
+867
 00:37:09,470 --> 00:37:10,864
 我相信还没有人发现
 I believe no one has found
 
-859
+868
 00:37:10,896 --> 00:37:12,120
 比它跑得更快的算法
 a faster algorithm than that.
 
-860
+869
 00:37:12,400 --> 00:37:14,850
 有一些对这个算法的简单修改
 There are very simple modifications to this algorithm
 
-861
+870
 00:37:14,850 --> 00:37:16,775
 由Henry Baker发明
 invented by Henry Baker
 
-862
+871
 00:37:17,175 --> 00:37:20,311
 它让你能实时运行这个算法
 which allow one to run this algorithm in real time,
 
-863
+872
 00:37:20,310 --> 00:37:21,920
 也就是说进行回收时不需要暂停程序
 meaning you don't have to stop to garbage collect.
 
-864
+873
 00:37:22,144 --> 00:37:24,336
 你能够让机器运行时
 But you could interleave the consing
 
-865
+874
 00:37:24,368 --> 00:37:26,176
 进行的各种CONS操作
 that the machine does when its running
 
-866
+875
 00:37:26,327 --> 00:37:28,400
 与垃圾回收过程交错进行
 with steps of the garbage collection process,
 
-867
+876
 00:37:28,850 --> 00:37:31,200
 垃圾回收器是分散的
 so that the thing, the garbage collector's distributed
 
-868
+877
 00:37:31,200 --> 00:37:32,192
 机器不需要停下来
 and the machine doesn't have to stop,
 
-869
+878
 00:37:32,416 --> 00:37:33,475
 再让垃圾回收开始运作
 and garbage collecting can start.
 
-870
+879
 00:37:34,640 --> 00:37:37,872
 当然 在使用虚拟内存的机器中
 Of course in the case of machines with virtual memory
 
-871
+880
 00:37:38,900 --> 00:37:41,200
 有很多内存无法访问
 where a lot of it is in inaccessible places,
 
-872
+881
 00:37:41,509 --> 00:37:43,600
 这会让整个过程变得耗时
 this becomes a very expensive process.
 
-873
+882
 00:37:44,280 --> 00:37:46,432
 有很多人尝试
 And there have been numerous
 
-874
+883
 00:37:47,168 --> 00:37:48,650
 将它改进得更好
 attempts to make this much better.
 
-875
+884
 00:37:49,190 --> 00:37:51,152
 对于感兴趣的同学
 There is a nice paper,
 
-876
+885
 00:37:51,168 --> 00:37:52,416
 这有一篇论文
  for those of you who are interested,
 
-877
+886
 00:37:52,640 --> 00:37:54,272
 作者是Moon等人
 by Moon and other people
 
-878
+887
 00:37:54,650 --> 00:37:56,896
 这篇论文描述了
 which describes a modification to
 
-879
+888
 00:37:56,928 --> 00:37:59,440
 增量式Minsky-Fenichel-Yochelson算法
 the incremental Minsky-Fenichel-Yochelson algorithm,
 
-880
+889
 00:37:59,510 --> 00:38:01,200
 和Baker算法的修改
 and modification the Baker algorithm
 
-881
+890
 00:38:01,420 --> 00:38:06,544
 让使用虚拟内存的系统更加高效
 which is more efficient for virtual memory systems.
 
-882
+891
 00:38:08,272 --> 00:38:12,320
 现在最后一个谜团也解开了
 Well I think now the mystery to this is sort of gone.
 
-883
+892
 00:38:12,840 --> 00:38:14,090
 有什么疑惑吗？
 And I'd like to see if there are any questions.
 
-884
+893
 00:38:19,780 --> 00:38:19,952
 请讲
 Yes.
 
-885
+894
 00:38:20,600 --> 00:38:23,584
 学生: 我在楼上的系统上
 AUDIENCE: I saw one of you run the garbage collector
 
-886
+895
 00:38:23,648 --> 00:38:25,050
 看Abelson教授运行垃圾回收器的时候
  on the systems upstairs,
 
-887
+896
 00:38:25,930 --> 00:38:27,880
 它看起来跑得飞快
 and it seemed to me to run extremely fast.
 
-888
+897
 00:38:27,968 --> 00:38:28,400
 教授：是的
 PROFESSOR: Yes
 
-889
+898
 00:38:28,490 --> 00:38:29,520
 学生：整个过程花费了--
 AUDIENCE: Did the whole thing take--
 
-890
+899
 00:38:30,112 --> 00:38:31,880
 它真的清除了整个内存吗？
 does it sweep through all of memory?
 
-891
+900
 00:38:31,880 --> 00:38:32,224
 教授: 没有
 PROFESSOR: No.
 
-892
+901
 00:38:32,250 --> 00:38:34,112
 它只清理了那些
 It swept through exactly what was needed
 
-893
+902
 00:38:34,336 --> 00:38:35,632
 #TBD
 to copy the useful structure.
 
-894
+903
 00:38:37,320 --> 00:38:38,360
 它是个复制收集器
 It's a copying collector.
 
-895
+904
 00:38:38,448 --> 00:38:38,912
 学生：好吧
 AUDIENCE: OK.
 
-896
+905
 00:38:39,300 --> 00:38:40,880
 教授：但它确实很快
 PROFESSOR: And it's rather... it is very fast.
 
-897
+906
 00:38:41,850 --> 00:38:45,888
 整体来说 我想如果要复制
 On the whole, I suppose to copy in a Bobcat
 
-898
+907
 00:38:47,120 --> 00:38:51,568
 一个大约3MB的东西
 to copy, I think, a three megabyte thing or something
 
-899
+908
 00:38:52,430 --> 00:38:53,240
 将在一秒内完成
 is less than a second,
 
-900
+909
 00:38:55,008 --> 00:38:55,696
 而且是实时的
 real time
 
-901
+910
 00:38:56,544 --> 00:38:58,464
 它们是非常小的程序
 Really, these are very small programs.
 
-902
+911
 00:38:58,620 --> 00:39:01,504
 你需要注意到的一件事是
 One thing you should realise is that
 
-903
+912
 00:39:02,913 --> 00:39:04,400
 垃圾回收器必须要小
 garbage collectors have to be small.
 
-904
+913
 00:39:05,400 --> 00:39:07,100
 不是因为它们需要运行得快
 Not because they have to be fast,
 
-905
+914
 00:39:07,900 --> 00:39:09,232
 因为没有人能够调试
 but because no one can debug
 
-906
+915
 00:39:09,264 --> 00:39:10,480
 复杂的垃圾回收器
 a complicated garbage collector.
 
-907
+916
 00:39:11,340 --> 00:39:12,912
 如果一个垃圾回收器不能正常工作
 A garbage collector, if it doesn't work,
 
-908
+917
 00:39:14,049 --> 00:39:15,933
 它会把你的内存搞得一团糟
 will trash your memory in such a way
 
-909
+918
 00:39:15,930 --> 00:39:17,392
 而你却束手无策
 that you cannot figure out what the hell happened.
 
-910
+919
 00:39:18,350 --> 00:39:19,675
 你需要跟踪审计
 You need an audit trail.
 
-911
+920
 00:39:20,660 --> 00:39:22,016
 因为它把所有东西都换了位置
 Because it rearranges everything,
 
-912
+921
 00:39:22,048 --> 00:39:23,248
 你需要知道那里发生了什么
 and how do you know what happened there?
 
-913
+922
 00:39:23,740 --> 00:39:26,587
 所以这是唯一一种
 So this is the only kind of program that
 
-914
+923
 00:39:26,920 --> 00:39:28,400
 真正非常重要的程序
 it really, seriously matters
 
-915
+924
 00:39:28,540 --> 00:39:29,792
 如果你盯着它看足够久
 if you stare at it long enough
 
-916
+925
 00:39:29,824 --> 00:39:31,070
 那么你就相信它有效
 so you believe that it works.
 
-917
+926
 00:39:31,344 --> 00:39:33,360
 #TBD
 That means and sort of prove it to yourself.
 
-918
+927
 00:39:33,920 --> 00:39:36,112
 因此我们无法对它进行查错
 And that, that... So there's no way to debug it.
 
-919
+928
 00:39:36,940 --> 00:39:38,960
 这意味着它需要足够小
 And that takes it being small enough
 
-920
+929
 00:39:38,960 --> 00:39:39,975
 你的大脑能够思考它的工作情况
 so you can hold it in your head.
 
-921
+930
 00:39:41,456 --> 00:39:43,904
 正因如此 垃圾回收器十分特殊
 So garbage collectors are special in this way.
 
-922
+931
 00:39:45,020 --> 00:39:47,120
 所以实用的垃圾回收器一定要短小
 So every reasonable garbage collector has gotten small,
 
-923
+932
 00:39:47,136 --> 00:39:48,450
 而通常短小的程序运行得就快
 and generally small programs are fast.
 
-924
+933
 00:39:52,050 --> 00:39:52,430
 请讲
 Yes.
 
-925
+934
 00:39:52,430 --> 00:39:54,510
 学生：您能再重复一遍这个技术的名字吗?
 AUDIENCE: Can you repeat the name of this technique once again?
 
-926
+935
 00:39:54,688 --> 00:39:56,920
 教授：Minsky-Fenichel-Yochelson垃圾回收器
 PROFESSOR: That's the Minsky-Fenichel-Yochelson garbage collector.
 
-927
+936
 00:39:57,888 --> 00:39:58,432
 学生：什么?
 AUDIENCE: You got that?
 
-928
+937
 00:39:59,000 --> 00:40:00,784
 教授：Minsky在1961年
 PROFESSOR: Minsky invented it in '61
 
-929
+938
 00:40:00,816 --> 00:40:02,210
 为RLE PDP-1设计了这个算法
 for the RLE PDP-1.
 
-930
+939
 00:40:02,210 --> 00:40:06,176
 Fenichel和Yochelson改进并精化了算法
 A version of it was developed and elaborated
 
-931
+940
 00:40:06,450 --> 00:40:10,275
 将它用在了Multics平台的Maclisp中
 to be used in Multics Maclisp by Fenichel and Yochelson
 
-932
+941
 00:40:11,378 --> 00:40:14,750
 那时大约是1968或者1969年
 in somewhere around 1968 or '69.
 
-933
+942
 00:40:19,570 --> 00:40:21,360
 好吧 我们休息一下
 OK. Let's take a break.
 
-934
+943
 00:40:22,640 --> 00:41:16,675
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
 
-935
+944
 00:41:17,310 --> 00:41:19,675
 教授：我们已经到课程的最后一部分了
 PROFESSOR: Well we've come to the end of this subject,
 
-936
+945
 00:41:20,080 --> 00:41:23,850
 我已经给你们展示了一台通用机器
 and we've already shown you a universal machine
 
-937
+946
 00:41:24,475 --> 00:41:26,740
 它被简化为求值器
 which is down to evaluator.
 
-938
+947
 00:41:27,025 --> 00:41:28,388
 它被简化到
 It's down to the level of detail
 
-939
+948
 00:41:28,388 --> 00:41:29,675
 你自己也能构造出来
 you could imagine you could make one.
 
-940
+949
 00:41:30,192 --> 00:41:33,320
 这是一个特定的Lisp实现
 This is a particular implementation of Lisp,
 
-941
+950
 00:41:33,900 --> 00:41:36,016
 它是用
 built on one of those
 
-942
+951
 00:41:36,160 --> 00:41:38,050
 昨天讲过的Scheme芯片制作的
 scheme chips that was talked about yesterday,
 
-943
+952
 00:41:38,208 --> 00:41:38,912
 就是这个
 sitting over here.
 
-944
+953
 00:41:39,350 --> 00:41:42,000
 #TBD
 This is mostly interface to somebody's memory
 
-945
+954
 00:41:42,600 --> 00:41:44,750
 #TBD
 with a little bit of timing and other such stuff.
 
-946
+955
 00:41:45,225 --> 00:41:47,250
 尽管是解释执行
 But this fellow actually ran Lisp
 
-947
+956
 00:41:47,775 --> 00:41:50,175
 但它们运行Lisp的速度还算不错
 at a fairly reasonable rate, as interpretive.
 
-948
+957
 00:41:50,610 --> 00:41:53,825
 它跑得像1979年的
 It ran Lisp as fast as a DEC PDP-10
 
-949
+958
 00:41:54,225 --> 00:41:55,650
 DEC PDP-10一样快
 back in 1979.
 
-950
+959
 00:41:56,500 --> 00:41:59,675
 这是一个硬件#TBD
 And so it's gotten pretty hardware.
 
-951
+960
 00:42:00,020 --> 00:42:00,896
 是个实物
 Pretty concrete.
 
-952
+961
 00:42:02,470 --> 00:42:06,075
 #TBD
 We've also downed you a bit with the things you can compute.
 
-953
+962
 00:42:07,370 --> 00:42:08,768
 但我们是否可能遇到
 But is it the case that
 
-954
+963
 00:42:09,328 --> 00:42:10,550
 我们无法计算的情况？
 there are things we can't compute?
 
-955
+964
 00:42:11,850 --> 00:42:13,500
 课程的最后
 And so I'd like to end this with
 
-956
+965
 00:42:13,750 --> 00:42:15,872
 我想展示一些你认为可以被计算
 showing you some things that you'd like be able to compute
 
-957
+966
 00:42:16,608 --> 00:42:17,220
 但实际上不能的东西
 that you can't.
 
-958
+967
 00:42:18,190 --> 00:42:19,456
 实际上
 The answer is yes,
 
-959
+968
 00:42:19,456 --> 00:42:20,820
 确实有我们无法计算的东西
 there are things you can't compute.
 
-960
+969
 00:42:22,720 --> 00:42:23,471
 例如
 For example,
 
-961
+970
 00:42:24,450 --> 00:42:25,825
 我们想要这样的一种东西
 something you'd really like is--
 
-962
+971
 00:42:27,800 --> 00:42:29,360
 当我们在编写编译器时
 if you're writing a compiler
 
-963
+972
 00:42:29,775 --> 00:42:31,425
 你想用一个程序检查
 you'd like a program that would check
 
-964
+973
 00:42:32,000 --> 00:42:33,975
 你的代码能否正常运行
 that the thing you're going to do will work.
 
-965
+974
 00:42:34,630 --> 00:42:35,400
 这不是很棒吗?
 Wouldn't that be nice?
 
-966
+975
 00:42:36,080 --> 00:42:37,875
 你希望能够捕获死循环
 You'd like something that would catch infinite loops,
 
-967
+976
 00:42:37,870 --> 00:42:38,544
 例如
 for example,
 
-968
+977
 00:42:39,450 --> 00:42:42,425
 用户编写的程序里的死循环
 in programs that were written by users.
 
-969
+978
 00:42:43,190 --> 00:42:45,125
 但通常来说 你写不出这样的程序
 But in general you can't write such a program
 
-970
+979
 00:42:45,350 --> 00:42:47,575
 它读取并检测某个程序
 that will read any program and determine whether or not
 
-971
+980
 00:42:48,350 --> 00:42:49,300
 是不是死循环
 it's an infinite loop.
 
-972
+981
 00:42:50,990 --> 00:42:51,712
 我来展示一下
 Let me show you that.
 
-973
+982
 00:42:51,760 --> 00:42:53,808
 这个需要涉及到数学知识
 It's a little bit of a minor mathematics.
 
-974
+983
 00:42:58,780 --> 00:42:59,650
 设想
 Let's imagine
 
-975
+984
 00:43:00,050 --> 00:43:01,781
 在我们开始之前
 that we just had a mathematical function
 
-976
+985
 00:43:01,781 --> 00:43:02,620
 有一个数学函数
 before we start.
 
-977
+986
 00:43:02,620 --> 00:43:03,425
 这里就有一个
 And there is one,
 
-978
+987
 00:43:03,840 --> 00:43:04,672
 记作S
 called s,
 
-979
+988
 00:43:05,475 --> 00:43:07,546
 它接受一个过程
 which takes a procedure
 
-980
+989
 00:43:12,640 --> 00:43:14,230
 和它的参数A
 and its argument, a.
 
-981
+990
 00:43:19,175 --> 00:43:20,525
 S所做的是
 And what s does
 
-982
+991
 00:43:21,650 --> 00:43:24,014
 检测以A为参数运行P时
 is it determines whether or not
 
-983
+992
 00:43:24,014 --> 00:43:25,975
 是否安全
 it's safe to run p on a.
 
-984
+993
 00:43:26,900 --> 00:43:28,175
 换句话说就是
 And what I mean by that is this:
 
-985
+994
 00:43:28,768 --> 00:43:35,120
 如果(P A)
 it's true if p applied to a
 
-986
+995
 00:43:35,625 --> 00:43:36,740
 在没有出错的情况下
 will converge
 
-987
+996
 00:43:41,400 --> 00:43:42,450
 能够返回一个值
 to a value
 
-988
+997
 00:43:44,350 --> 00:43:45,330
 那么S就为TRUE
 without an error.
 
-989
+998
 00:43:52,700 --> 00:43:53,680
 但如果(P A)
 And it's false
 
-990
+999
 00:43:56,100 --> 00:43:57,040
 是死循环
 if p of a
 
-991
+1000
 00:43:59,675 --> 00:44:00,765
 或者抛出错误
 loops forever
 
-992
+1001
 00:44:05,875 --> 00:44:06,950
 那么S就为FALSE
 or makes an error.
 
-993
+1002
 00:44:15,232 --> 00:44:17,220
 这确实是个函数
 Now that's surely a function.
 
-994
+1003
 00:44:18,780 --> 00:44:20,725
 对于你输入的任何过程
 There is some for every procedure
 
-995
+1004
 00:44:21,200 --> 00:44:22,850
 或者任何参数
 and for every argument you could give it
 
-996
+1005
 00:44:23,920 --> 00:44:25,456
 它只能返回TRUE或FALSE
 that is either true or false
 
-997
+1006
 00:44:25,925 --> 00:44:27,850
 它会返回一个值而且不会报错
 that it converges without making an error.
 
-998
+1007
 00:44:28,440 --> 00:44:30,150
 你可以为它们画一张巨大的表格
 And you could make a giant table of them.
 
-999
+1008
 00:44:32,225 --> 00:44:32,925
 但问题是
 But the question is,
 
-1000
+1009
 00:44:32,925 --> 00:44:34,093
 你能写一个过程
 can you write a procedure
 
-1001
+1010
 00:44:34,093 --> 00:44:35,925
 来计算这个函数的值吗?
 that compute the values of this function?
 
-1002
+1011
 00:44:37,430 --> 00:44:38,928
 假设我们能做到
 Well let's assume that we can.
 
-1003
+1012
 00:44:39,720 --> 00:44:40,550
 假设
 Suppose
 
-1004
+1013
 00:44:44,336 --> 00:44:45,584
 我们有个过程
 that we have a procedure
 
-1005
+1014
 00:44:48,550 --> 00:44:52,736
 一个叫作SAFE?的过程
 procedure called "safe"
 
-1006
+1015
 00:44:56,544 --> 00:44:59,900
 它能计算S的值
 that computes the value of s.
 
-1007
+1016
 00:45:12,656 --> 00:45:14,896
 现在我要用几种方法
 Now I'm going to show you by several methods
 
-1008
+1017
 00:45:15,900 --> 00:45:18,512
 证明你做不到
 that you can't do this.
 
-1009
+1018
 00:45:19,760 --> 00:45:20,626
 最简单的一个
 The easiest one,
 
-1010
+1019
 00:45:20,620 --> 00:45:21,280
 或者说第一个
 or the first one,
 
-1011
+1020
 00:45:21,312 --> 00:45:23,450
 我们定义一个叫DIAG1的过程
 let's define a procedure called diag1.
 
-1012
+1021
 00:45:23,760 --> 00:45:24,864
 给定了SAFE?过程
 Given that we have safe,
 
-1013
+1022
 00:45:25,200 --> 00:45:26,993
 我们可以把DIAG1定义为
 we can define diag1
 
-1014
+1023
 00:45:34,425 --> 00:45:35,550
 把DIAG1定义为
 diag1
 
-1015
+1024
 00:45:37,824 --> 00:45:41,600
 只含有参数P的过程
 to be the procedure of one argument, p,
 
-1016
+1025
 00:45:42,450 --> 00:45:44,050
 它有着这样的属性
 which has the following properties.
 
-1017
+1026
 00:45:44,780 --> 00:45:50,675
 如果(SAFE? P P)为真
 If it's safe to apply p to itself,
 
-1018
+1027
 00:45:53,325 --> 00:45:55,325
 那么我就主动陷入死循环
 then I wish to have an infinite loop.
 
-1019
+1028
 00:45:59,225 --> 00:46:00,925
 否则我会返回3
 Otherwise I'm going to return 3.
 
-1020
+1029
 00:46:03,680 --> 00:46:04,470
 它也可能是42
 Maybe it was 42.
 
-1021
+1030
 00:46:04,470 --> 00:46:06,425
 宇宙的终极答案是什么?
 What's the answer to the big question?
 
-1022
+1031
 00:46:07,060 --> 00:46:08,875
 我们当然知道死循环是什么
 Where of course we know what an infinite loop is.
 
-1023
+1032
 00:46:12,050 --> 00:46:12,964
 死循环INF是
 Infinite loop,
 
-1024
+1033
 00:46:13,825 --> 00:46:16,025
 一个无参过程
 to be a procedure of no arguments,
 
-1025
+1034
 00:46:16,025 --> 00:46:18,075
 这是一个极好的LAMBADA演算循环
 which is that nice lambda calculus loop.
 
-1026
+1035
 00:46:18,352 --> 00:46:20,448
 (LAMBDA (X) (X X))
 Lambda of x,
 
-1027
+1036
 00:46:21,300 --> 00:46:24,680
 应用到(LAMBDA (X) (X X))
 applied to lambda of x, x of x.
 
-1028
+1037
 00:46:24,680 --> 00:46:26,550
 没什么想象的余地了
 So there's nothing left to the imagination here.
 
-1029
+1038
 00:46:29,830 --> 00:46:31,175
 我们来看下会发生什么
 Well let's see what the story is.
 
-1030
+1039
 00:46:32,500 --> 00:46:33,908
 我假设
 I'm supposing it's the case
 
-1031
+1040
 00:46:35,450 --> 00:46:38,772
 我们考虑
 that we worry about the procedure
 
-1032
+1041
 00:46:39,000 --> 00:46:43,450
 把DIAG1应用到DIAG1上
 called diag1 applied to diag1.
 
-1033
+1042
 00:46:46,275 --> 00:46:47,775
 那会发生什么呢?
 Well what could it possibly be?
 
-1034
+1043
 00:46:49,970 --> 00:46:51,390
 我不知道
 Well I don't know.
 
-1035
+1044
 00:46:51,390 --> 00:46:53,213
 将DIAG1代换为
 We're going to substitute diag1
 
-1036
+1045
 00:46:53,550 --> 00:46:55,500
 P的过程体
 for p in the body here.
 
-1037
+1046
 00:46:57,310 --> 00:47:00,220
 (SAFE? DIAG1 DIAG1)会返回什么呢？
 Well is it safe to compute diag1 of diag1?
 
-1038
+1047
 00:47:00,220 --> 00:47:00,780
 我不知道
 I don't know.
 
-1039
+1048
 00:47:00,780 --> 00:47:01,825
 有两种可能
 There are two possibilities.
 
-1040
+1049
 00:47:03,400 --> 00:47:05,501
 如果计算(DIAG1 DIAG1)是安全的
 If it's safe to compute diag1 of diag1
 
-1041
+1050
 00:47:05,920 --> 00:47:06,896
 这意味着没有死循环
 that means it shouldn't loop.
 
-1042
+1051
 00:47:08,490 --> 00:47:09,225
 那么我就要来到这里
 That means I go to here,
 
-1043
+1052
 00:47:09,225 --> 00:47:10,350
 但是随即我就陷入了死循环
 but then I produce an infinite loop.
 
-1044
+1053
 00:47:10,560 --> 00:47:11,575
 所以它不是安全的
 So it can't be safe.
 
-1045
+1054
 00:47:12,210 --> 00:47:14,781
 但如果计算(DIAG1 DIAG1)不安全
 But if it's not safe to compute diag1 of diag1
 
-1046
+1055
 00:47:14,900 --> 00:47:16,020
 那么它的结果是3
 then the answer to this is 3.
 
-1047
+1056
 00:47:16,020 --> 00:47:17,267
 但是调用(DIAG1 DIAG1)又必须能够返回
 But that's diag1 of diag1,
 
-1048
+1057
 00:47:17,260 --> 00:47:17,936
 所以它必须安全才行
 so it had to be safe.
 
-1049
+1058
 00:47:20,530 --> 00:47:23,600
 因此 通过归纳出这个矛盾
 So therefore by contradiction
 
-1050
+1059
 00:47:24,325 --> 00:47:26,300
 我们无法写出这个SAFE?过程
 you cannot produce safe.
 
-1051
+1060
 00:47:27,400 --> 00:47:29,805
 如果大家没有听明白这种表述
 For those of you who were boggled by that one
 
-1052
+1061
 00:47:30,250 --> 00:47:32,150
 我换个方式再讲一遍
 I'm going to say it again, in a different way.
 
-1053
+1062
 00:47:32,820 --> 00:47:34,000
 请听另一个版本
 Listen to one more alternative.
 
-1054
+1063
 00:47:35,530 --> 00:47:36,950
 我们定义DIAG2
 Let's define diag2.
 
-1055
+1064
 00:47:39,840 --> 00:47:41,600
 取名叫DIAG是因为
 These are named diag because
 
-1056
+1065
 00:47:42,650 --> 00:47:44,725
 它来源于康托尔的对角论证法
 of Cantor's diagonal argument.
 
-1057
+1066
 00:47:45,000 --> 00:47:47,050
 这些事例最初都来自于
 These are instances of
 
-1058
+1067
 00:47:47,050 --> 00:47:49,056
 一个著名的论证
 a famous argument which was originally used by
 
-1059
+1068
 00:47:49,450 --> 00:47:52,650
 也就是康托尔在19世纪末
 Cantor in the late part of the last century
 
-1060
+1069
 00:47:52,775 --> 00:47:56,106
 证明了实数是不可数的
 to prove that the real numbers were not countable,
 
-1061
+1070
 00:47:56,670 --> 00:47:58,000
 整数与实数
 that there are too many real numbers
 
-1062
+1071
 00:47:58,064 --> 00:47:59,420
 无法形成一一映射
 to be counted by integers.
 
-1063
+1072
 00:48:00,190 --> 00:48:01,741
 数轴上的点
 That there are more points on a line,
 
-1064
+1073
 00:48:01,741 --> 00:48:02,500
 举例来说
 for example,
 
-1065
+1074
 00:48:02,506 --> 00:48:04,425
 比数轴上的刻度还要多
 than there are counting numbers.
 
-1066
+1075
 00:48:05,260 --> 00:48:06,858
 这或许不是个显而易见的结论
 It may or may not be obvious,
 
-1067
+1076
 00:48:06,858 --> 00:48:08,175
 但我不想深入讨论这个
 and I don't want to get into that now.
 
-1068
+1077
 00:48:10,900 --> 00:48:12,450
 但是DIAG2
 But diag2
 
-1069
+1078
 00:48:13,300 --> 00:48:15,820
 也是一个参数为P的单参过程
 is again a procedure of one argument p.
 
-1070
+1079
 00:48:15,820 --> 00:48:17,475
 这几乎与之前的例子相同
 It's almost the same as the previous one,
 
-1071
+1080
 00:48:17,725 --> 00:48:24,323
 如果计算(P P)是安全的
 which is, if it's safe to compute p on p,
 
-1072
+1081
 00:48:25,175 --> 00:48:26,675
 那么我就要
 then I'm going to produce--
 
-1073
+1082
 00:48:27,260 --> 00:48:28,144
 哦 漏了一个IF
 Oops, if
 
-1074
+1083
 00:48:29,312 --> 00:48:31,020
 那么我就去计算
 then I want to compute
 
-1075
+1084
 00:48:31,570 --> 00:48:37,584
 一些(P P)之外的东西
 some other things
 
-1076
+1085
 00:48:38,960 --> 00:48:40,210
 否则我就返回FALSE
 Otherwise I'm going to put out false.
 
-1077
+1086
 00:48:43,600 --> 00:48:45,300
 这里的OTHER-THAN意思是
 Where other then it says,
 
-1078
+1087
 00:48:45,472 --> 00:48:46,350
 不管这个(P P)是什么
 whatever p of p,
 
-1079
+1088
 00:48:46,352 --> 00:48:47,475
 我都返回一些别的东西
 I'm going to put out something else.
 
-1080
+1089
 00:48:48,880 --> 00:48:50,032
 我来给出一个
 I can give you an example of
 
-1081
+1090
 00:48:50,075 --> 00:48:51,525
 OTHER-THAN的一个定义
 a definition of other than
 
-1082
+1091
 00:48:51,600 --> 00:48:52,570
 我觉得它是可用的
 which I think works.
 
-1083
+1092
 00:48:53,890 --> 00:48:54,512
 来看看
 Let's see.
 
-1084
+1093
 00:48:55,640 --> 00:48:56,080
 好
 Yes.
 
-1085
+1094
 00:48:56,330 --> 00:48:57,266
 定义OTHER-THAN
 Where other than
 
-1086
+1095
 00:49:04,030 --> 00:49:06,112
 参数为X的单参过程
 be a procedure of one argument x
 
-1087
+1096
 00:49:06,576 --> 00:49:07,260
 过程体是
 which says,
 
-1088
+1097
 00:49:08,050 --> 00:49:12,961
 如果(EQ? X 'A)
 if its eq x to, say, quote a,
 
-1089
+1098
 00:49:13,472 --> 00:49:15,070
 那么结果是'B
 then the answer is quote b.
 
-1090
+1099
 00:49:15,720 --> 00:49:16,800
 否则结果是'A
 Otherwise it's quote a.
 
-1091
+1100
 00:49:20,272 --> 00:49:21,900
 这样无论参数是什么
 That always produces something
 
-1092
+1101
 00:49:22,075 --> 00:49:23,450
 返回值跟参数总是不相同的
 which is not what its argument is.
 
-1093
+1102
 00:49:25,200 --> 00:49:26,120
 就是这样了
 That's all it is.
 
-1094
+1103
 00:49:26,540 --> 00:49:27,375
 这就是我要的
 That's all I wanted.
 
-1095
+1104
 00:49:28,250 --> 00:49:29,587
 我们考虑一下这个
 Well now let's consider this one,
 
-1096
+1105
 00:49:29,587 --> 00:49:31,150
 (DIAG2 DIAG2)
 diag2 of diag2.
 
-1097
+1106
 00:49:38,288 --> 00:49:38,944
 看
 Well look.
 
-1098
+1107
 00:49:39,950 --> 00:49:41,725
 这个东西会做些危险的事情
 This only does something dangerous,
 
-1099
+1108
 00:49:42,000 --> 00:49:43,450
 比如求值(P P)
 like calling p of p,
 
-1100
+1109
 00:49:44,750 --> 00:49:45,950
 如果它是安全的
 if it's safe to do so.
 
-1101
+1110
 00:49:47,470 --> 00:49:49,168
 如果SAFE?能够被定义的话
 So if safe defined at all,
 
-1102
+1111
 00:49:50,300 --> 00:49:52,496
 如果你能定义SAFE?过程
 if you can define such a procedure, safe,
 
-1103
+1112
 00:49:52,975 --> 00:49:54,325
 那么这个过程
 then this procedure
 
-1104
+1113
 00:49:54,608 --> 00:49:56,400
 也就顺理成章地是安全的
 is always defined and therefore safe
 
-1105
+1114
 00:49:56,525 --> 00:49:57,225
 对于任意输入来说都是
 on any inputs.
 
-1106
+1115
 00:50:01,540 --> 00:50:03,504
 那么(DIAG2 DIAG2)
 So diag2 of diag2
 
-1107
+1116
 00:50:03,875 --> 00:50:12,200
 就会返回(OTHER-THAN (DIAG2 DIAG2))
 must reduce to other than diag2 of diag2.
 
-1108
+1117
 00:50:15,825 --> 00:50:16,975
 这说不通
 And that doesn't make sense,
 
-1109
+1118
 00:50:17,800 --> 00:50:19,024
 又产生了悖论
 so we have a contradiction,
 
-1110
+1119
 00:50:19,850 --> 00:50:21,575
 因此我们不能定义SAFE?
 and therefore we can't define safe.
 
-1111
+1120
 00:50:22,950 --> 00:50:24,237
 我只想这样证明两次
 I just waned to do that twice,
 
-1112
+1121
 00:50:24,784 --> 00:50:25,820
 有些许不同
 slightly differently,
 
-1113
+1122
 00:50:26,848 --> 00:50:27,900
 你不会感到
 so you wouldn't feel
 
-1114
+1123
 00:50:29,072 --> 00:50:30,864
 第一个证明是个把戏
 that the first one was a trick.
 
-1115
+1124
 00:50:32,544 --> 00:50:33,450
 它们可能都是把戏
 They may be both tricks,
 
-1116
+1125
 00:50:33,800 --> 00:50:35,152
 但它们稍微有些不同
 but they're at least slightly different.
 
-1117
+1126
 00:50:37,300 --> 00:50:39,200
 因此 我想这就基本上讲清楚了
 So I suppose that pretty much wraps it up.
 
-1118
+1127
 00:50:40,032 --> 00:50:41,970
 我们刚刚证明了所谓的“停机问题”
 I've just proved what we call the halting theorem,
 
-1119
+1128
 00:50:43,000 --> 00:50:44,704
 我想 本课程也即将画上句号
 and I suppose with that we're going to halt.
 
-1120
+1129
 00:50:46,720 --> 00:50:47,632
 希望你们有所收获
 I hope you have a good time.
 
-1121
+1130
 00:50:50,900 --> 00:50:51,765
 有什么问题吗?
 Are there any questions?
 
-1122
+1131
 00:50:53,300 --> 00:50:53,568
 请讲
 Yes.
 
-1123
+1132
 00:50:53,810 --> 00:50:56,275
 学生: (S DIAG1)的值是什么?
 AUDIENCE: What is the value of s of diag1?
 
-1124
+1133
 00:50:56,750 --> 00:50:57,232
 教授: 什么的值?
 PROFESSOR: Of what?
 
-1125
+1134
 00:50:57,504 --> 00:50:58,800
 学生: (S DIAG1)的值
 AUDIENCE: S of diag1.
 
-1126
+1135
 00:51:00,120 --> 00:51:02,208
 如果你说S是个函数 我们就可以--
 If you said s is a function, and then we can
 
-1127
+1136
 00:51:02,304 --> 00:51:03,632
 教授: 噢 我不知道啊
 PROFESSOR: Oh, I don't know.
 
-1128
+1137
 00:51:03,870 --> 00:51:04,350
 我不知道
 I don't know.
 
-1129
+1138
 00:51:04,350 --> 00:51:04,882
 它是一个函数
 It's a function,
 
-1130
+1139
 00:51:04,880 --> 00:51:05,856
 但我不知道如何计算它
 but I don't know how to compute it.
 
-1131
+1140
 00:51:06,800 --> 00:51:08,000
 我做不到
 I can't do it.
 
-1132
+1141
 00:51:08,610 --> 00:51:09,648
 我也只是个机器
 I'm just a machine, too.
 
-1133
+1142
 00:51:11,530 --> 00:51:11,888
 对吧?
 Right?
 
-1134
+1143
 00:51:11,904 --> 00:51:13,370
 原则上来说
 And there's no machine
 
-1135
+1144
 00:51:13,375 --> 00:51:14,050
 没有机器
 that in principle--
 
-1136
+1145
 00:51:14,475 --> 00:51:16,875
 会处在你刚才问的那个情况中
 it might be that in that particular case you just asked,
 
-1137
+1146
 00:51:16,870 --> 00:51:18,320
 #TBD
 with some thinking I could figure it out.
 
-1138
+1147
 00:51:18,580 --> 00:51:19,375
 但通常情况下
 But in general
 
-1139
+1148
 00:51:19,600 --> 00:51:21,050
 我无法计算S的值
 I can't compute the value of s
 
-1140
+1149
 00:51:21,050 --> 00:51:22,525
 别的机器也做不到
 any better than any other machine can.
 
-1141
+1150
 00:51:23,780 --> 00:51:24,925
 存在这样一个函数
 There is such a function,
 
-1142
+1151
 00:51:25,925 --> 00:51:28,000
 没有任何机器能够计算它
 it's just that no machine can be built to compute it.
 
-1143
+1152
 00:51:29,580 --> 00:51:30,050
 现在
 Now
 
-1144
+1153
 00:51:30,672 --> 00:51:33,675
 #TBD
 there's a way of saying that that should not be surprising.
 
-1145
+1154
 00:51:35,225 --> 00:51:36,250
 #TBD
 Going through this--
 
-1146
+1155
 00:51:36,250 --> 00:51:38,362
 现在我没有时间给你们展示
 I mean, I don't have time to do this here,
 
-1147
+1156
 00:51:38,450 --> 00:51:43,000
 但这样的函数非常多
 but the number of functions is very large.
 
-1148
+1157
 00:51:44,400 --> 00:51:47,584
 如果有一定量的可能输入
 If there's a certain number of answers possible
 
-1149
+1158
 00:51:47,754 --> 00:51:49,626
 和结果
 and a certain number of inputs possible,
 
-1150
+1159
 00:51:49,875 --> 00:51:51,800
 那么结果对应输入的数量
 then it's the number of answers raised to the number inputs
 
-1151
+1160
 00:51:51,800 --> 00:51:53,200
 就是可能函数的数量
 is the number of possible functions.
 
-1152
+1161
 00:51:54,500 --> 00:51:55,488
 对于同一个参数来说
 On one variable.
 
-1153
+1162
 00:51:56,510 --> 00:51:59,248
 #TBD
 Now that's always bigger than the thing you're raising to, the exponent.
 
-1154
+1163
 00:52:00,090 --> 00:52:03,216
 #TBD
 Now that's always bigger than the thing you're raising to, the exponent.
 
-1155
+1164
 00:52:03,584 --> 00:52:04,320
 #TBD
 Now that's always bigger than the thing you're raising to, the exponent.
 
-1156
+1165
 00:52:05,480 --> 00:52:09,800
 函数的数量
 The number of functions is larger
 
-1157
+1166
 00:52:09,950 --> 00:52:12,725
 比一个人能写出的
 than the number of programs
 
-1158
+1167
 00:52:13,306 --> 00:52:14,100
 程序的数量更多
 that one can write,
 
-1159
+1168
 00:52:14,825 --> 00:52:16,450
 因为有无穷多的参数
 by an infinity counting argument.
 
-1160
+1169
 00:52:17,575 --> 00:52:19,000
 可能会更多
 And it's much larger.
 
-1161
+1170
 00:52:19,475 --> 00:52:22,124
 所以不可计算的函数数量
 So there must be a lot of functions
 
-1162
+1171
 00:52:22,120 --> 00:52:23,488
 一定会非常多
 that can't be computed by programs.
 
-1163
+1172
 00:52:25,920 --> 00:52:26,592
 学生: 不久前
 AUDIENCE: A few moments ago
 
-1164
+1173
 00:52:26,640 --> 00:52:28,256
 你讲了规范
 you were talking about specifications
 
-1165
+1174
 00:52:28,304 --> 00:52:30,048
 和自动生成解决方案
 and automatic generation of solutions.
 
-1166
+1175
 00:52:30,640 --> 00:52:33,360
 你觉得在规范和解决方案之间存在#TBD吗?
 Do you see any steps between specifications and solutions?
 
-1167
+1176
 00:52:37,250 --> 00:52:38,225
 教授: 存在的
 PROFESSOR: Steps between.
 
-1168
+1177
 00:52:38,720 --> 00:52:39,375
 你是说
 You mean, you're saying,
 
-1169
+1178
 00:52:39,375 --> 00:52:42,603
 如何按照规范
 how you go about constructing
 
-1170
+1179
 00:52:42,600 --> 00:52:44,784
 构建相应的装置吗?
 devices given that have specifications for the device?
 
-1171
+1180
 00:52:45,056 --> 00:52:48,360
 学生: 软件工程中有很多
 AUDIENCE: There's a lot of software engineering
 
-1172
+1181
 00:52:48,361 --> 00:52:49,900
 层次化的设计
 that goes through specifications through
 
-1173
+1182
 00:52:49,900 --> 00:52:51,900
 并进行实现的规范
 many layers of design and then implementation.
 
-1174
+1183
 00:52:52,430 --> 00:52:52,850
 教授: 是的
 PROFESSOR: Yes?
 
-1175
+1184
 00:52:52,850 --> 00:52:53,700
 学生: 我很好奇
 AUDIENCE: I was curious
 
-1176
+1185
 00:52:53,700 --> 00:52:54,625
 你觉得这现实吗?
 if you think that's realistic.
 
-1177
+1186
 00:52:55,600 --> 00:52:57,175
 教授: 我觉得其中一些是现实的
 PROFESSOR: Well I think that some of it's realistic
 
-1178
+1187
 00:52:57,175 --> 00:52:58,100
 另一些不现实
 and some of it isn't.
 
-1179
+1188
 00:52:58,100 --> 00:53:00,320
 如果你想制造一个滤波器
 I mean, surely if I want to build an electrical filter
 
-1180
+1189
 00:53:01,175 --> 00:53:07,160
 我这有个挺有趣的例子
 and I have a rather interesting possibility.
 
-1181
+1190
 00:53:07,160 --> 00:53:10,615
 假设我想制造一个东西
 Supposing I want to build a thing that matches
 
-1182
+1191
 00:53:11,050 --> 00:53:14,071
 无线电广播发射机
 some power output to the radio transmitter,
 
-1183
+1192
 00:53:14,475 --> 00:53:18,750
 到某些天线
 to some antenna.
 
-1184
+1193
 00:53:19,900 --> 00:53:21,472
 #TBD
 And I'm really out of this power-- it's output tube out here.
 
-1185
+1194
 00:53:21,488 --> 00:53:23,040
 #TBD
 And I'm really out of this power-- it's output tube out here.
 
-1186
+1195
 00:53:23,230 --> 00:53:25,264
 问题是它们的阻抗不同
 And the problem is that they have different impedances.
 
-1187
+1196
 00:53:25,920 --> 00:53:27,550
 我希望能够匹配阻抗
 I want them to match the impedances.
 
-1188
+1197
 00:53:27,550 --> 00:53:28,976
 我也想制造一个滤波器
 I also want to make a filter
 
-1189
+1198
 00:53:29,150 --> 00:53:31,712
 用来过滤一些谐波辐射
 in there which is going to get rid of some harmonic radiation.
 
-1190
+1199
 00:53:32,780 --> 00:53:36,638
 一个老派的技术叫作
 Well one old-fashioned technique for doing this is called
 
-1191
+1200
 00:53:36,820 --> 00:53:38,672
 镜像阻抗或之类的东西
 image impedances, or something like that.
 
-1192
+1201
 00:53:38,860 --> 00:53:39,500
 你要做的是
 And what you do
 
-1193
+1202
 00:53:39,500 --> 00:53:40,850
 你有个基础的模块
 is you say you have a basic module
 
-1194
+1203
 00:53:40,850 --> 00:53:42,750
 称为L型滤波器
 called an L-section.
 
-1195
+1204
 00:53:43,300 --> 00:53:43,984
 就像这样
 Looks like this.
 
-1196
+1205
 00:53:47,080 --> 00:53:49,800
 如果把它连接到某些电阻R上
 If I happen to connect this to some resistance, r,
 
-1197
+1206
 00:53:50,050 --> 00:53:52,600
 #TBD
 and if I make this impedance x, xl,
 
-1198
+1207
 00:53:52,720 --> 00:53:55,200
 #TBD
 and if it happens to be q times r,
 
-1199
+1208
 00:53:55,264 --> 00:53:58,520
 这就成了一个低通滤波器
 then this produces a low pass filter
 
-1200
+1209
 00:53:58,520 --> 00:54:00,720
 有q^2+1的阻抗匹配
 with a q square plus one impedance match.
 
-1201
+1210
 00:54:02,110 --> 00:54:02,864
 这就是我想要的
 Just what I need.
 
-1202
+1211
 00:54:03,120 --> 00:54:04,288
 因为这样我就可以
 Because now I can take two of these,
 
-1203
+1212
 00:54:04,304 --> 00:54:05,088
 把它们匹配到一起了
 hook them together
 
-1204
+1213
 00:54:05,824 --> 00:54:06,384
 就像这样
 like this.
 
-1205
+1214
 00:54:11,660 --> 00:54:13,150
 我拿来另一个
 OK, and I take another one
 
-1206
+1215
 00:54:16,000 --> 00:54:17,456
 想这样把它们连到一起
 and I'll hook them together like that.
 
-1207
+1216
 00:54:18,290 --> 00:54:19,950
 有两个L型滤波器连接起来
 And I have two L-sections hooked together.
 
-1208
+1217
 00:54:20,320 --> 00:54:23,070
 这能让它的阻抗降到我知道的值
 And this will step the impedance down to one that I know,
 
-1209
+1218
 00:54:23,375 --> 00:54:25,225
 让它的阻抗升到我知道的值
 and this will step it up to one I know.
 
-1210
+1219
 00:54:25,530 --> 00:54:27,850
 这两个低通滤波器都过滤掉了一些谐波
 Each of these is a low pass filter getting rid of some harmonics.
 
-1211
+1220
 00:54:28,090 --> 00:54:29,072
 这是个不错的滤波器
 It's good filter,
 
-1212
+1221
 00:54:29,072 --> 00:54:30,270
 它成为π型滤波器
 it's called a pie-section filter.
 
-1213
+1222
 00:54:30,270 --> 00:54:30,624
 很好
 Great.
 
-1214
+1223
 00:54:31,700 --> 00:54:34,096
 除了实际上
 Except for the fact that in doing what I just did,
 
-1215
+1224
 00:54:34,128 --> 00:54:37,850
 我在系统里放了些无用的东西
 I've made a terrible inefficiency in this system.
 
-1216
+1225
 00:54:38,620 --> 00:54:39,600
 我在本该只用一个的地方
 I've made two coils
 
-1217
+1226
 00:54:39,616 --> 00:54:40,592
 用了两个线圈
 where I should have made one.
 
-1218
+1227
 00:54:41,620 --> 00:54:44,600
 在大多数软件工程技艺中
 And the problem with most software engineering art
 
-1219
+1228
 00:54:44,890 --> 00:54:46,880
 在人工优化和编译之外
 is that there's no mechanism,
 
-1220
+1229
 00:54:46,928 --> 00:54:48,656
 不存在一种机制
 other than people optimization and compilers,
 
-1221
+1230
 00:54:48,800 --> 00:54:51,344
 能在自顶向下的设计中
 for getting rid of the redundant parts
 
-1222
+1231
 00:54:51,344 --> 00:54:53,550
 去掉冗余的部分
 that are constructed when doing top down design.
 
-1223
+1232
 00:54:55,350 --> 00:54:56,076
 或许会更糟
 It's even worse,
 
-1224
+1233
 00:54:56,070 --> 00:54:57,584
 有很多重要的结构
 there are lots of very important structures
 
-1225
+1234
 00:54:57,600 --> 00:54:59,020
 你无法采用这种方式构建
 that you can't construct at all this way.
 
-1226
+1235
 00:55:01,110 --> 00:55:03,535
 我觉得标准的自上而下的设计方式
 So I think that the standard top down design
 
-1227
+1236
 00:55:03,535 --> 00:55:04,875
 是一种很短视的手段
 is a rather shallow business.
 
-1228
+1237
 00:55:05,710 --> 00:55:06,600
 它不会真的抓到
 Doesn't really capture
 
-1229
+1238
 00:55:06,600 --> 00:55:08,100
 设计者真正想要的结果
 what people want to do in design.
 
-1230
+1239
 00:55:08,315 --> 00:55:10,100
 我再举一个电子学的例子
 I'll give you another electrical example.
 
-1231
+1240
 00:55:10,100 --> 00:55:11,750
 电子学的例子
 Electrical examples are so much clearer
 
-1232
+1241
 00:55:11,900 --> 00:55:13,136
 要比计算的例子直观得多
 than computational examples,
 
-1233
+1242
 00:55:13,168 --> 00:55:14,784
 因为计算的例子
 because computation examples require
 
-1234
+1243
 00:55:14,800 --> 00:55:16,520
 解释起来比较复杂
 a certain degree of complexity to explain them.
 
-1235
+1244
 00:55:17,220 --> 00:55:20,040
 电子学世界中 我最喜欢的例子之一是
 But one of my favorite examples in the electrical world
 
-1236
+1245
 00:55:20,600 --> 00:55:24,195
 是如何设计中频放大器中
 is how would I ever come up with the output stage
 
-1237
+1246
 00:55:24,368 --> 00:55:26,550
 输入级和输出级的连接方式
 of this inter-stage connection in an IF amplifier.
 
-1238
+1247
 00:55:27,530 --> 00:55:29,440
 这是一个三极管
 It's a little transistor here, and let's see.
 
-1239
+1248
 00:55:29,520 --> 00:55:31,500
 这是一个三极管
 It's a little transistor here, and let's see.
 
-1240
+1249
 00:55:32,410 --> 00:55:33,400
 这有个LC震荡电路
 Well I'm going to have a tank,
 
-1241
+1250
 00:55:36,450 --> 00:55:39,175
 我要把它
 and I'm going to hook this up to, say,
 
-1242
+1251
 00:55:41,375 --> 00:55:43,975
 把它与下一级的输入线圈耦合在一起
 I'm going to link-couple that to the input of the next stage.
 
-1243
+1252
 00:55:44,368 --> 00:55:47,470
 这是个完美的可行方案
 Here's a perfectly plausible plan--
 
-1244
+1253
 00:55:48,225 --> 00:55:50,875
 除了我这个电流方向画错了
 well except for the fact that since I put that going up
 
-1245
+1254
 00:55:50,875 --> 00:55:52,925
 电流应该是这个方向
 I should make that going that way. OK?
 
-1246
+1255
 00:55:53,170 --> 00:55:55,456
 这是个完美的可行方案
 Here's a perfectly plausible plan for a--
 
-1247
+1256
 00:55:55,984 --> 00:55:56,576
 不对
 no I shouldn't.
 
-1248
+1257
 00:55:57,120 --> 00:55:57,792
 我犯蠢了
 I'm dumb.
 
-1249
+1258
 00:55:58,400 --> 00:55:59,075
 对不起
 Excuse me.
 
-1250
+1259
 00:55:59,690 --> 00:56:00,425
 这不重要
 Doesn't matter.
 
-1251
+1260
 00:56:00,730 --> 00:56:01,540
 关键在于这是一个
 The point is it's a perfect
 
-1252
+1261
 00:56:01,540 --> 00:56:03,425
 把两级耦合起来的完美方案
 plan for a couple two stages together.
 
-1253
+1262
 00:56:04,590 --> 00:56:05,440
 分层来看时会产生什么问题?
 Now what the problem is is what's this hierarchically?
 
-1254
+1263
 00:56:05,488 --> 00:56:06,920
 分层来看时会产生什么问题?
 Now what the problem is is what's this hierarchically?
 
-1255
+1264
 00:56:07,620 --> 00:56:08,800
 #TBD
 It's not one thing.
 
-1256
+1265
 00:56:09,480 --> 00:56:11,990
 当分层来看时它就没有任何意义了
 Hierarchically it doesn't make any sense at all.
 
-1257
+1266
 00:56:11,990 --> 00:56:14,325
 这是一个调谐电路的电感
 It's the inductance of a tuned circuit,
 
-1258
+1267
 00:56:15,550 --> 00:56:18,025
 这是变压器的初级线圈
 it's the primary of a transformer,
 
-1259
+1268
 00:56:19,100 --> 00:56:21,825
 这是直流的通路
 and it's also the DC path by
 
-1260
+1269
 00:56:21,825 --> 00:56:23,575
 它是三极管的集电极
 which bias conditions get to the
 
-1261
+1270
 00:56:23,575 --> 00:56:25,100
 的偏置条件
 collector of that transistor.
 
-1262
+1271
 00:56:26,460 --> 00:56:28,352
 没有任何简单的自顶向下设计
 And there's no simple top-down design
 
-1263
+1272
 00:56:28,384 --> 00:56:30,170
 能够得到这样的结构
 that's going to produce a structure like that
 
-1264
+1273
 00:56:30,225 --> 00:56:34,025
 对于同一个东西有大量的复用
 with so many overlapping uses for a particular thing.
 
-1265
+1274
 00:56:34,530 --> 00:56:36,729
 玩拼字游戏
 Playing Scrabble,
 
-1266
+1275
 00:56:36,960 --> 00:56:39,888
 当你要完成三倍分数的词时
 where you have to do triple word scores, or whatever,
 
-1267
+1276
 00:56:40,496 --> 00:56:43,600
 自顶向下的设计策略并不容易
 is not so easy in top-down design strategy.
 
-1268
+1277
 00:56:44,950 --> 00:56:47,088
 真正的工程基于努力成果的吸引力#TBD
 Yet most of real engineering is based on getting the most oomph for effort.
 
-1269
+1278
 00:56:47,360 --> 00:56:50,700
 真正的工程基于努力成果的吸引力#TBD
 Yet most of real engineering is based on getting the most oomph for effort.
 
-1270
+1279
 00:56:52,140 --> 00:56:53,525
 那就是你所看到的东西
 And that's what you're seeing here.
 
-1271
+1280
 00:56:54,860 --> 00:56:55,550
 嗯?
 Yeah?
 
-1272
+1281
 00:56:55,550 --> 00:56:56,810
 学生: 这是最后一个问题吗?
 AUDIENCE: Is this the last question?
 
-1273
+1282
 00:57:00,280 --> 00:57:02,032
 [笑声]
 [LAUGHTER]
 
-1274
+1283
 00:57:18,640 --> 00:57:19,632
 教授: 看起来是
 PROFESSOR: Apparently so.
 
-1275
+1284
 00:57:23,575 --> 00:57:24,125
 谢谢大家
 Thank you.
 
-1276
+1285
 00:57:25,300 --> 00:57:36,500
 [掌声]
 [APPLAUSE]
 
-1277
+1286
 00:57:39,040 --> 00:58:52,200
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
