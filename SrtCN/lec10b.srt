@@ -5022,1542 +5022,1567 @@ in programs that were written by users.
 But in general you can't write such a program
 
 1006
-00:42:45,350 --> 00:42:47,575
-它读取并检测某个程序
-that will read any program and determine whether or not
+00:42:45,350 --> 00:42:46,496
+它读取某个程序
+that will read any program
 
 1007
+00:42:46,512 --> 00:42:47,456
+并检测它
+and determine whether or not
+
+1008
 00:42:48,350 --> 00:42:49,300
 是不是死循环
 it's an infinite loop.
 
-1008
+1009
 00:42:50,990 --> 00:42:51,712
 我来展示一下
 Let me show you that.
 
-1009
+1010
 00:42:51,760 --> 00:42:53,808
 这个需要涉及到数学知识
 It's a little bit of a minor mathematics.
 
-1010
+1011
 00:42:58,780 --> 00:42:59,650
 设想
 Let's imagine
 
-1011
+1012
 00:43:00,050 --> 00:43:01,781
 在我们开始之前
 that we just had a mathematical function
 
-1012
+1013
 00:43:01,781 --> 00:43:02,620
 有一个数学函数
 before we start.
 
-1013
+1014
 00:43:02,620 --> 00:43:03,425
 这里就有一个
 And there is one,
 
-1014
+1015
 00:43:03,840 --> 00:43:04,672
 记作S
 called s,
 
-1015
+1016
 00:43:05,475 --> 00:43:07,546
 它接受一个过程
 which takes a procedure
 
-1016
+1017
 00:43:12,640 --> 00:43:14,230
 和它的参数A
 and its argument, a.
 
-1017
+1018
 00:43:19,175 --> 00:43:20,525
 S所做的是
 And what s does
 
-1018
+1019
 00:43:21,650 --> 00:43:24,014
 检测以A为参数运行P时
 is it determines whether or not
 
-1019
+1020
 00:43:24,014 --> 00:43:25,975
 是否安全
 it's safe to run p on a.
 
-1020
+1021
 00:43:26,900 --> 00:43:28,175
 换句话说就是
 And what I mean by that is this:
 
-1021
+1022
 00:43:28,768 --> 00:43:35,120
 如果(P A)
 it's true if p applied to a
 
-1022
+1023
 00:43:35,625 --> 00:43:36,740
 在没有出错的情况下
 will converge
 
-1023
+1024
 00:43:41,400 --> 00:43:42,450
 能够返回一个值
 to a value
 
-1024
+1025
 00:43:44,350 --> 00:43:45,330
 那么S就为TRUE
 without an error.
 
-1025
+1026
 00:43:52,700 --> 00:43:53,680
 但如果(P A)
 And it's false
 
-1026
+1027
 00:43:56,100 --> 00:43:57,040
 是死循环
 if p of a
 
-1027
+1028
 00:43:59,675 --> 00:44:00,765
 或者抛出错误
 loops forever
 
-1028
+1029
 00:44:05,875 --> 00:44:06,950
 那么S就为FALSE
 or makes an error.
 
-1029
+1030
 00:44:15,232 --> 00:44:17,220
 这确实是个函数
 Now that's surely a function.
 
-1030
+1031
 00:44:18,780 --> 00:44:20,725
 对于你输入的任何过程
 There is some for every procedure
 
-1031
+1032
 00:44:21,200 --> 00:44:22,850
 或者任何参数
 and for every argument you could give it
 
-1032
+1033
 00:44:23,920 --> 00:44:25,456
 它只能返回TRUE或FALSE
 that is either true or false
 
-1033
+1034
 00:44:25,925 --> 00:44:27,850
 它会返回一个值而且不会报错
 that it converges without making an error.
 
-1034
+1035
 00:44:28,440 --> 00:44:30,150
 你可以为它们画一张巨大的表格
 And you could make a giant table of them.
 
-1035
+1036
 00:44:32,225 --> 00:44:32,925
 但问题是
 But the question is,
 
-1036
+1037
 00:44:32,925 --> 00:44:34,093
 你能写一个过程
 can you write a procedure
 
-1037
+1038
 00:44:34,093 --> 00:44:35,925
 来计算这个函数的值吗?
 that compute the values of this function?
 
-1038
+1039
 00:44:37,430 --> 00:44:38,928
 假设我们能做到
 Well let's assume that we can.
 
-1039
+1040
 00:44:39,720 --> 00:44:40,550
 假设
 Suppose
 
-1040
+1041
 00:44:44,336 --> 00:44:45,584
 我们有个过程
 that we have a procedure
 
-1041
+1042
 00:44:48,550 --> 00:44:52,736
 一个叫作SAFE?的过程
 procedure called "safe"
 
-1042
+1043
 00:44:56,544 --> 00:44:59,900
 它能计算S的值
 that computes the value of s.
 
-1043
+1044
 00:45:12,656 --> 00:45:14,896
 现在我要用几种方法
 Now I'm going to show you by several methods
 
-1044
+1045
 00:45:15,900 --> 00:45:18,512
 证明你做不到
 that you can't do this.
 
-1045
+1046
 00:45:19,760 --> 00:45:20,626
 最简单的一个
 The easiest one,
 
-1046
+1047
 00:45:20,620 --> 00:45:21,280
 或者说第一个
 or the first one,
 
-1047
+1048
 00:45:21,312 --> 00:45:23,450
 我们定义一个叫DIAG1的过程
 let's define a procedure called diag1.
 
-1048
+1049
 00:45:23,760 --> 00:45:24,864
 给定了SAFE?过程
 Given that we have safe,
 
-1049
+1050
 00:45:25,200 --> 00:45:26,993
 我们可以把DIAG1定义为
 we can define diag1
 
-1050
+1051
 00:45:34,425 --> 00:45:35,550
 把DIAG1定义为
 diag1
 
-1051
+1052
 00:45:37,824 --> 00:45:41,600
 只含有参数P的过程
 to be the procedure of one argument, p,
 
-1052
+1053
 00:45:42,450 --> 00:45:44,050
 它有着这样的属性
 which has the following properties.
 
-1053
+1054
 00:45:44,780 --> 00:45:50,675
 如果(SAFE? P P)为真
 If it's safe to apply p to itself,
 
-1054
+1055
 00:45:53,325 --> 00:45:55,325
 那么我就主动陷入死循环
 then I wish to have an infinite loop.
 
-1055
+1056
 00:45:59,225 --> 00:46:00,925
 否则我会返回3
 Otherwise I'm going to return 3.
 
-1056
+1057
 00:46:03,680 --> 00:46:04,470
 它也可能是42
 Maybe it was 42.
 
-1057
+1058
 00:46:04,470 --> 00:46:06,425
 宇宙的终极答案是什么?
 What's the answer to the big question?
 
-1058
+1059
 00:46:07,060 --> 00:46:08,875
 我们当然知道死循环是什么
 Where of course we know what an infinite loop is.
 
-1059
+1060
 00:46:12,050 --> 00:46:12,964
 死循环INF是
 Infinite loop,
 
-1060
+1061
 00:46:13,825 --> 00:46:16,025
 一个无参过程
 to be a procedure of no arguments,
 
-1061
+1062
 00:46:16,025 --> 00:46:18,075
 这是一个极好的LAMBADA演算循环
 which is that nice lambda calculus loop.
 
-1062
+1063
 00:46:18,352 --> 00:46:20,448
 (LAMBDA (X) (X X))
 Lambda of x,
 
-1063
+1064
 00:46:21,300 --> 00:46:24,680
 应用到(LAMBDA (X) (X X))
 applied to lambda of x, x of x.
 
-1064
+1065
 00:46:24,680 --> 00:46:26,550
 没什么想象的余地了
 So there's nothing left to the imagination here.
 
-1065
+1066
 00:46:29,830 --> 00:46:31,175
 我们来看下会发生什么
 Well let's see what the story is.
 
-1066
+1067
 00:46:32,500 --> 00:46:33,908
 我假设
 I'm supposing it's the case
 
-1067
+1068
 00:46:35,450 --> 00:46:38,772
 我们考虑
 that we worry about the procedure
 
-1068
+1069
 00:46:39,000 --> 00:46:43,450
 把DIAG1应用到DIAG1上
 called diag1 applied to diag1.
 
-1069
+1070
 00:46:46,275 --> 00:46:47,775
 那会发生什么呢?
 Well what could it possibly be?
 
-1070
+1071
 00:46:49,970 --> 00:46:51,390
 我不知道
 Well I don't know.
 
-1071
+1072
 00:46:51,390 --> 00:46:53,213
 将DIAG1代换为
 We're going to substitute diag1
 
-1072
+1073
 00:46:53,550 --> 00:46:55,500
 P的过程体
 for p in the body here.
 
-1073
+1074
 00:46:57,310 --> 00:47:00,220
 (SAFE? DIAG1 DIAG1)会返回什么呢？
 Well is it safe to compute diag1 of diag1?
 
-1074
+1075
 00:47:00,220 --> 00:47:00,780
 我不知道
 I don't know.
 
-1075
+1076
 00:47:00,780 --> 00:47:01,825
 有两种可能
 There are two possibilities.
 
-1076
+1077
 00:47:03,400 --> 00:47:05,501
 如果计算(DIAG1 DIAG1)是安全的
 If it's safe to compute diag1 of diag1
 
-1077
+1078
 00:47:05,920 --> 00:47:06,896
 这意味着没有死循环
 that means it shouldn't loop.
 
-1078
+1079
 00:47:08,490 --> 00:47:09,225
 那么我就要来到这里
 That means I go to here,
 
-1079
+1080
 00:47:09,225 --> 00:47:10,350
 但是随即我就陷入了死循环
 but then I produce an infinite loop.
 
-1080
+1081
 00:47:10,560 --> 00:47:11,575
 所以它不是安全的
 So it can't be safe.
 
-1081
+1082
 00:47:12,210 --> 00:47:14,781
 但如果计算(DIAG1 DIAG1)不安全
 But if it's not safe to compute diag1 of diag1
 
-1082
+1083
 00:47:14,900 --> 00:47:16,020
 那么它的结果是3
 then the answer to this is 3.
 
-1083
+1084
 00:47:16,020 --> 00:47:17,267
 但是调用(DIAG1 DIAG1)又必须能够返回
 But that's diag1 of diag1,
 
-1084
+1085
 00:47:17,260 --> 00:47:17,936
 所以它必须安全才行
 so it had to be safe.
 
-1085
+1086
 00:47:20,530 --> 00:47:23,600
 因此 通过归纳出这个矛盾
 So therefore by contradiction
 
-1086
+1087
 00:47:24,325 --> 00:47:26,300
 我们无法写出这个SAFE?过程
 you cannot produce safe.
 
-1087
+1088
 00:47:27,400 --> 00:47:29,805
 如果大家没有听明白这种表述
 For those of you who were boggled by that one
 
-1088
+1089
 00:47:30,250 --> 00:47:32,150
 我换个方式再讲一遍
 I'm going to say it again, in a different way.
 
-1089
+1090
 00:47:32,820 --> 00:47:34,000
 请听另一个版本
 Listen to one more alternative.
 
-1090
+1091
 00:47:35,530 --> 00:47:36,950
 我们定义DIAG2
 Let's define diag2.
 
-1091
+1092
 00:47:39,840 --> 00:47:41,600
 取名叫DIAG是因为
 These are named diag because
 
-1092
+1093
 00:47:42,650 --> 00:47:44,725
 它来源于康托尔的对角论证法
 of Cantor's diagonal argument.
 
-1093
+1094
 00:47:45,000 --> 00:47:47,050
 这些事例最初都来自于
 These are instances of
 
-1094
+1095
 00:47:47,050 --> 00:47:49,056
 一个著名的论证
 a famous argument which was originally used by
 
-1095
+1096
 00:47:49,450 --> 00:47:52,650
 也就是康托尔在19世纪末
 Cantor in the late part of the last century
 
-1096
+1097
 00:47:52,775 --> 00:47:56,106
 证明了实数是不可数的
 to prove that the real numbers were not countable,
 
-1097
+1098
 00:47:56,670 --> 00:47:58,000
 整数与实数
 that there are too many real numbers
 
-1098
+1099
 00:47:58,064 --> 00:47:59,420
 无法形成一一映射
 to be counted by integers.
 
-1099
+1100
 00:48:00,190 --> 00:48:01,741
 数轴上的点
 That there are more points on a line,
 
-1100
+1101
 00:48:01,741 --> 00:48:02,500
 举例来说
 for example,
 
-1101
+1102
 00:48:02,506 --> 00:48:04,425
 比数轴上的刻度还要多
 than there are counting numbers.
 
-1102
+1103
 00:48:05,260 --> 00:48:06,858
 这或许不是个显而易见的结论
 It may or may not be obvious,
 
-1103
+1104
 00:48:06,858 --> 00:48:08,175
 但我不想深入讨论这个
 and I don't want to get into that now.
 
-1104
+1105
 00:48:10,900 --> 00:48:12,450
 但是DIAG2
 But diag2
 
-1105
+1106
 00:48:13,300 --> 00:48:15,820
 也是一个参数为P的单参过程
 is again a procedure of one argument p.
 
-1106
+1107
 00:48:15,820 --> 00:48:17,475
 这几乎与之前的例子相同
 It's almost the same as the previous one,
 
-1107
+1108
 00:48:17,725 --> 00:48:24,323
 如果计算(P P)是安全的
 which is, if it's safe to compute p on p,
 
-1108
+1109
 00:48:25,175 --> 00:48:26,675
 那么我就要
 then I'm going to produce--
 
-1109
+1110
 00:48:27,260 --> 00:48:28,144
 哦 漏了一个IF
 Oops, if
 
-1110
+1111
 00:48:29,312 --> 00:48:31,020
 那么我就去计算
 then I want to compute
 
-1111
+1112
 00:48:31,570 --> 00:48:37,584
 一些(P P)之外的东西
 some other things
 
-1112
+1113
 00:48:38,960 --> 00:48:40,210
 否则我就返回FALSE
 Otherwise I'm going to put out false.
 
-1113
+1114
 00:48:43,600 --> 00:48:45,300
 这里的OTHER-THAN意思是
 Where other then it says,
 
-1114
+1115
 00:48:45,472 --> 00:48:46,350
 不管这个(P P)是什么
 whatever p of p,
 
-1115
+1116
 00:48:46,352 --> 00:48:47,475
 我都返回一些别的东西
 I'm going to put out something else.
 
-1116
+1117
 00:48:48,880 --> 00:48:50,032
 我来给出一个
 I can give you an example of
 
-1117
+1118
 00:48:50,075 --> 00:48:51,525
 OTHER-THAN的一个定义
 a definition of other than
 
-1118
+1119
 00:48:51,600 --> 00:48:52,570
 我觉得它是可用的
 which I think works.
 
-1119
+1120
 00:48:53,890 --> 00:48:54,512
 来看看
 Let's see.
 
-1120
+1121
 00:48:55,640 --> 00:48:56,080
 好
 Yes.
 
-1121
+1122
 00:48:56,330 --> 00:48:57,266
 定义OTHER-THAN
 Where other than
 
-1122
+1123
 00:49:04,030 --> 00:49:06,112
 参数为X的单参过程
 be a procedure of one argument x
 
-1123
+1124
 00:49:06,576 --> 00:49:07,260
 过程体是
 which says,
 
-1124
+1125
 00:49:08,050 --> 00:49:12,961
 如果(EQ? X 'A)
 if its eq x to, say, quote a,
 
-1125
+1126
 00:49:13,472 --> 00:49:15,070
 那么结果是'B
 then the answer is quote b.
 
-1126
+1127
 00:49:15,720 --> 00:49:16,800
 否则结果是'A
 Otherwise it's quote a.
 
-1127
+1128
 00:49:20,272 --> 00:49:21,900
 这样无论参数是什么
 That always produces something
 
-1128
+1129
 00:49:22,075 --> 00:49:23,450
 返回值跟参数总是不相同的
 which is not what its argument is.
 
-1129
+1130
 00:49:25,200 --> 00:49:26,120
 就是这样了
 That's all it is.
 
-1130
+1131
 00:49:26,540 --> 00:49:27,375
 这就是我要的
 That's all I wanted.
 
-1131
+1132
 00:49:28,250 --> 00:49:29,587
 我们考虑一下这个
 Well now let's consider this one,
 
-1132
+1133
 00:49:29,587 --> 00:49:31,150
 (DIAG2 DIAG2)
 diag2 of diag2.
 
-1133
+1134
 00:49:38,288 --> 00:49:38,944
 看
 Well look.
 
-1134
+1135
 00:49:39,950 --> 00:49:41,725
 这个东西会做些危险的事情
 This only does something dangerous,
 
-1135
+1136
 00:49:42,000 --> 00:49:43,450
 比如求值(P P)
 like calling p of p,
 
-1136
+1137
 00:49:44,750 --> 00:49:45,950
 如果它是安全的
 if it's safe to do so.
 
-1137
+1138
 00:49:47,470 --> 00:49:49,168
 如果SAFE?能够被定义的话
 So if safe defined at all,
 
-1138
+1139
 00:49:50,300 --> 00:49:52,496
 如果你能定义SAFE?过程
 if you can define such a procedure, safe,
 
-1139
+1140
 00:49:52,975 --> 00:49:54,325
 那么这个过程
 then this procedure
 
-1140
+1141
 00:49:54,608 --> 00:49:56,400
 也就顺理成章地是安全的
 is always defined and therefore safe
 
-1141
+1142
 00:49:56,525 --> 00:49:57,225
 对于任意输入来说都是
 on any inputs.
 
-1142
+1143
 00:50:01,540 --> 00:50:03,504
 那么(DIAG2 DIAG2)
 So diag2 of diag2
 
-1143
+1144
 00:50:03,875 --> 00:50:12,200
 就会返回(OTHER-THAN (DIAG2 DIAG2))
 must reduce to other than diag2 of diag2.
 
-1144
+1145
 00:50:15,825 --> 00:50:16,975
 这说不通
 And that doesn't make sense,
 
-1145
+1146
 00:50:17,800 --> 00:50:19,024
 又产生了悖论
 so we have a contradiction,
 
-1146
+1147
 00:50:19,850 --> 00:50:21,575
 因此我们不能定义SAFE?
 and therefore we can't define safe.
 
-1147
+1148
 00:50:22,950 --> 00:50:24,237
 我只想这样证明两次
 I just waned to do that twice,
 
-1148
+1149
 00:50:24,784 --> 00:50:25,820
 有些许不同
 slightly differently,
 
-1149
+1150
 00:50:26,848 --> 00:50:27,900
 你不会感到
 so you wouldn't feel
 
-1150
+1151
 00:50:29,072 --> 00:50:30,864
 第一个证明是个把戏
 that the first one was a trick.
 
-1151
+1152
 00:50:32,544 --> 00:50:33,450
 它们可能都是把戏
 They may be both tricks,
 
-1152
+1153
 00:50:33,800 --> 00:50:35,152
 但它们稍微有些不同
 but they're at least slightly different.
 
-1153
+1154
 00:50:37,300 --> 00:50:39,200
 因此 我想这就基本上讲清楚了
 So I suppose that pretty much wraps it up.
 
-1154
+1155
 00:50:40,032 --> 00:50:41,970
 我们刚刚证明了所谓的“停机问题”
 I've just proved what we call the halting theorem,
 
-1155
+1156
 00:50:43,000 --> 00:50:44,704
 我想 本课程也即将画上句号
 and I suppose with that we're going to halt.
 
-1156
+1157
 00:50:46,720 --> 00:50:47,632
 希望你们有所收获
 I hope you have a good time.
 
-1157
+1158
 00:50:50,900 --> 00:50:51,765
 有什么问题吗?
 Are there any questions?
 
-1158
+1159
 00:50:53,300 --> 00:50:53,568
 请讲
 Yes.
 
-1159
+1160
 00:50:53,810 --> 00:50:56,275
 学生: (S DIAG1)的值是什么?
 AUDIENCE: What is the value of s of diag1?
 
-1160
+1161
 00:50:56,750 --> 00:50:57,232
 教授: 什么的值?
 PROFESSOR: Of what?
 
-1161
+1162
 00:50:57,504 --> 00:50:58,800
 学生: (S DIAG1)的值
 AUDIENCE: S of diag1.
 
-1162
+1163
 00:51:00,120 --> 00:51:02,208
 如果你说S是个函数 我们就可以--
 If you said s is a function, and then we can
 
-1163
+1164
 00:51:02,304 --> 00:51:03,632
 教授: 噢 我不知道啊
 PROFESSOR: Oh, I don't know.
 
-1164
+1165
 00:51:03,870 --> 00:51:04,350
 我不知道
 I don't know.
 
-1165
+1166
 00:51:04,350 --> 00:51:04,882
 它是一个函数
 It's a function,
 
-1166
+1167
 00:51:04,880 --> 00:51:05,856
 但我不知道如何计算它
 but I don't know how to compute it.
 
-1167
+1168
 00:51:06,800 --> 00:51:08,000
 我做不到
 I can't do it.
 
-1168
+1169
 00:51:08,610 --> 00:51:09,648
 我也只是个机器
 I'm just a machine, too.
 
-1169
+1170
 00:51:11,530 --> 00:51:11,888
 对吧?
 Right?
 
-1170
+1171
 00:51:11,904 --> 00:51:13,370
 原则上来说
 And there's no machine
 
-1171
+1172
 00:51:13,375 --> 00:51:14,050
 没有机器
 that in principle--
 
-1172
+1173
 00:51:14,475 --> 00:51:16,875
-会处在你刚才问的那个情况中
+当然 也有可能会处在你刚才问的那个情况中
 it might be that in that particular case you just asked,
 
-1173
+1174
 00:51:16,870 --> 00:51:18,320
-#TBD
+花点时间还是可以计算出来
 with some thinking I could figure it out.
 
-1174
+1175
 00:51:18,580 --> 00:51:19,375
 但通常情况下
 But in general
 
-1175
+1176
 00:51:19,600 --> 00:51:21,050
 我无法计算S的值
 I can't compute the value of s
 
-1176
+1177
 00:51:21,050 --> 00:51:22,525
 别的机器也做不到
 any better than any other machine can.
 
-1177
+1178
 00:51:23,780 --> 00:51:24,925
 存在这样一个函数
 There is such a function,
 
-1178
+1179
 00:51:25,925 --> 00:51:28,000
 没有任何机器能够计算它
 it's just that no machine can be built to compute it.
 
-1179
+1180
 00:51:29,580 --> 00:51:30,050
 现在
 Now
 
-1180
+1181
 00:51:30,672 --> 00:51:33,675
-#TBD
+我这么来说也不会让你们吃惊
 there's a way of saying that that should not be surprising.
 
-1181
+1182
 00:51:35,225 --> 00:51:36,250
-#TBD
+来想一想
 Going through this--
 
-1182
+1183
 00:51:36,250 --> 00:51:38,362
 现在我没有时间给你们展示
 I mean, I don't have time to do this here,
 
-1183
+1184
 00:51:38,450 --> 00:51:43,000
 但这样的函数非常多
 but the number of functions is very large.
 
-1184
+1185
 00:51:44,400 --> 00:51:47,584
 如果有一定量的可能输入
 If there's a certain number of answers possible
 
-1185
+1186
 00:51:47,754 --> 00:51:49,626
-和结果
+和一定量可能的结果
 and a certain number of inputs possible,
 
-1186
+1187
 00:51:49,875 --> 00:51:51,800
-那么结果对应输入的数量
+那么结果数量的输入数量次幂
 then it's the number of answers raised to the number inputs
 
-1187
+1188
 00:51:51,800 --> 00:51:53,200
-就是可能函数的数量
+就是可能的函数的数量
 is the number of possible functions.
 
-1188
+1189
 00:51:54,500 --> 00:51:55,488
-对于同一个参数来说
+这还是单参的函数
 On one variable.
 
-1189
-00:51:56,510 --> 00:51:59,248
-#TBD
-Now that's always bigger than the thing you're raising to, the exponent.
-
 1190
-00:52:00,090 --> 00:52:03,216
-#TBD
-Now that's always bigger than the thing you're raising to, the exponent.
+00:51:56,510 --> 00:51:59,248
+而多参函数的个数
+Now that's always bigger
 
 1191
-00:52:03,584 --> 00:52:04,320
-#TBD
-Now that's always bigger than the thing you're raising to, the exponent.
+00:52:00,090 --> 00:52:03,216
+又比这个幂次方
+than the thing you're raising to,
 
 1192
+00:52:03,584 --> 00:52:04,320
+这个指数还要大
+the exponent.
+
+1193
 00:52:05,480 --> 00:52:09,800
 函数的数量
 The number of functions is larger
 
-1193
+1194
 00:52:09,950 --> 00:52:12,725
 比一个人能写出的
 than the number of programs
 
-1194
+1195
 00:52:13,306 --> 00:52:14,100
 程序的数量更多
 that one can write,
 
-1195
+1196
 00:52:14,825 --> 00:52:16,450
 因为有无穷多的参数
 by an infinity counting argument.
 
-1196
+1197
 00:52:17,575 --> 00:52:19,000
 可能会更多
 And it's much larger.
 
-1197
+1198
 00:52:19,475 --> 00:52:22,124
 所以不可计算的函数数量
 So there must be a lot of functions
 
-1198
+1199
 00:52:22,120 --> 00:52:23,488
 一定会非常多
 that can't be computed by programs.
 
-1199
+1200
 00:52:25,920 --> 00:52:26,592
-学生: 不久前
+学生：不久前
 AUDIENCE: A few moments ago
 
-1200
+1201
 00:52:26,640 --> 00:52:28,256
 你讲了规范
 you were talking about specifications
 
-1201
+1202
 00:52:28,304 --> 00:52:30,048
 和自动生成解决方案
 and automatic generation of solutions.
 
-1202
-00:52:30,640 --> 00:52:33,360
-你觉得在规范和解决方案之间存在#TBD吗?
-Do you see any steps between specifications and solutions?
-
 1203
-00:52:37,250 --> 00:52:38,225
-教授: 存在的
-PROFESSOR: Steps between.
+00:52:30,640 --> 00:52:31,616
+您觉得通过规范
+Do you see any steps
 
 1204
+00:52:31,824 --> 00:52:33,360
+能够生成解决方案么？
+between specifications and solutions?
+
+1205
+00:52:37,250 --> 00:52:38,225
+教授：“生成”
+PROFESSOR: Steps between.
+
+1206
 00:52:38,720 --> 00:52:39,375
 你是说
 You mean, you're saying,
 
-1205
+1207
 00:52:39,375 --> 00:52:42,603
 如何按照规范
 how you go about constructing
 
-1206
+1208
 00:52:42,600 --> 00:52:44,784
 构建相应的装置吗?
 devices given that have specifications for the device?
 
-1207
+1209
 00:52:45,056 --> 00:52:48,360
-学生: 软件工程中有很多
+学生：软件工程中有很多
 AUDIENCE: There's a lot of software engineering
 
-1208
+1210
 00:52:48,361 --> 00:52:49,900
 层次化的设计
 that goes through specifications through
 
-1209
+1211
 00:52:49,900 --> 00:52:51,900
 并进行实现的规范
 many layers of design and then implementation.
 
-1210
+1212
 00:52:52,430 --> 00:52:52,850
-教授: 是的
+教授：是的
 PROFESSOR: Yes?
 
-1211
+1213
 00:52:52,850 --> 00:52:53,700
-学生: 我很好奇
+学生：我很好奇
 AUDIENCE: I was curious
 
-1212
+1214
 00:52:53,700 --> 00:52:54,625
-你觉得这现实吗?
+您觉得这现实吗?
 if you think that's realistic.
 
-1213
+1215
 00:52:55,600 --> 00:52:57,175
-教授: 我觉得其中一些是现实的
+教授：我觉得其中一些是现实的
 PROFESSOR: Well I think that some of it's realistic
 
-1214
+1216
 00:52:57,175 --> 00:52:58,100
 另一些不现实
 and some of it isn't.
 
-1215
+1217
 00:52:58,100 --> 00:53:00,320
 如果你想制造一个滤波器
 I mean, surely if I want to build an electrical filter
 
-1216
+1218
 00:53:01,175 --> 00:53:07,160
 我这有个挺有趣的例子
 and I have a rather interesting possibility.
 
-1217
-00:53:07,160 --> 00:53:10,615
-假设我想制造一个东西
-Supposing I want to build a thing that matches
-
-1218
-00:53:11,050 --> 00:53:14,071
-无线电广播发射机
-some power output to the radio transmitter,
-
 1219
-00:53:14,475 --> 00:53:18,750
-到某些天线
-to some antenna.
+00:53:07,160 --> 00:53:09,424
+假设我想制造一个东西
+Supposing I want to build a thing that matches 
 
 1220
-00:53:19,900 --> 00:53:21,472
-#TBD
-And I'm really out of this power-- it's output tube out here.
+00:53:09,648 --> 00:53:14,070
+把无线电发射器的输出
+that matches some power output to the radio transmitter,
 
 1221
-00:53:21,488 --> 00:53:23,040
-#TBD
-And I'm really out of this power-- it's output tube out here.
+00:53:14,475 --> 00:53:18,750
+连接到某条天线上
+to some antenna.
 
 1222
+00:53:19,900 --> 00:53:21,472
+我先把它引出来
+And I'm really out of this power--
+
+1223
+00:53:21,488 --> 00:53:23,040
+这里是输出管线
+it's output tube out here.
+
+1224
 00:53:23,230 --> 00:53:25,264
 问题是它们的阻抗不同
 And the problem is that they have different impedances.
 
-1223
+1225
 00:53:25,920 --> 00:53:27,550
 我希望能够匹配阻抗
 I want them to match the impedances.
 
-1224
-00:53:27,550 --> 00:53:28,976
-我也想制造一个滤波器
-I also want to make a filter
-
-1225
-00:53:29,150 --> 00:53:31,712
-用来过滤一些谐波辐射
-in there which is going to get rid of some harmonic radiation.
-
 1226
-00:53:32,780 --> 00:53:36,638
-一个老派的技术叫作
-Well one old-fashioned technique for doing this is called
+00:53:27,550 --> 00:53:28,976
+我也想在其中加入一个滤波器
+I also want to make a filter in there
 
 1227
-00:53:36,820 --> 00:53:38,672
-镜像阻抗或之类的东西
-image impedances, or something like that.
+00:53:29,150 --> 00:53:31,712
+用来过滤一些谐波辐射
+which is going to get rid of some harmonic radiation.
 
 1228
+00:53:32,780 --> 00:53:36,638
+一种老派的技术叫作
+Well one old-fashioned technique for doing this is called
+
+1229
+00:53:36,820 --> 00:53:38,672
+“影像阻抗”之类的东西
+image impedances, or something like that.
+
+1230
 00:53:38,860 --> 00:53:39,500
 你要做的是
 And what you do
 
-1229
+1231
 00:53:39,500 --> 00:53:40,850
 你有个基础的模块
 is you say you have a basic module
 
-1230
+1232
 00:53:40,850 --> 00:53:42,750
 称为L型滤波器
 called an L-section.
 
-1231
+1233
 00:53:43,300 --> 00:53:43,984
 就像这样
 Looks like this.
 
-1232
+1234
 00:53:47,080 --> 00:53:49,800
 如果把它连接到某些电阻R上
 If I happen to connect this to some resistance, r,
 
-1233
+1235
 00:53:50,050 --> 00:53:52,600
-#TBD
+如果我把它的阻抗记作X_L
 and if I make this impedance x, xl,
 
-1234
+1236
 00:53:52,720 --> 00:53:55,200
-#TBD
+而它的值刚好又等于Q*R
 and if it happens to be q times r,
 
-1235
+1237
 00:53:55,264 --> 00:53:58,520
 这就成了一个低通滤波器
 then this produces a low pass filter
 
-1236
+1238
 00:53:58,520 --> 00:54:00,720
-有q^2+1的阻抗匹配
+有Q^2+1的等效阻抗
 with a q square plus one impedance match.
 
-1237
+1239
 00:54:02,110 --> 00:54:02,864
 这就是我想要的
 Just what I need.
 
-1238
+1240
 00:54:03,120 --> 00:54:04,288
 因为这样我就可以
 Because now I can take two of these,
 
-1239
+1241
 00:54:04,304 --> 00:54:05,088
 把它们匹配到一起了
 hook them together
 
-1240
+1242
 00:54:05,824 --> 00:54:06,384
 就像这样
 like this.
 
-1241
+1243
 00:54:11,660 --> 00:54:13,150
 我拿来另一个
 OK, and I take another one
 
-1242
+1244
 00:54:16,000 --> 00:54:17,456
 想这样把它们连到一起
 and I'll hook them together like that.
 
-1243
+1245
 00:54:18,290 --> 00:54:19,950
 有两个L型滤波器连接起来
 And I have two L-sections hooked together.
 
-1244
+1246
 00:54:20,320 --> 00:54:23,070
 这能让它的阻抗降到我知道的值
 And this will step the impedance down to one that I know,
 
-1245
+1247
 00:54:23,375 --> 00:54:25,225
 让它的阻抗升到我知道的值
 and this will step it up to one I know.
 
-1246
-00:54:25,530 --> 00:54:27,850
-这两个低通滤波器都过滤掉了一些谐波
-Each of these is a low pass filter getting rid of some harmonics.
+1248
+00:54:25,530 --> 00:54:26,640
+这两个低通滤波器
+Each of these is a low pass filter
 
-1247
+1249
+00:54:26,672 --> 00:54:27,824
+都过滤掉了一些谐波
+getting rid of some harmonics.
+
+1250
 00:54:28,090 --> 00:54:29,072
 这是个不错的滤波器
 It's good filter,
 
-1248
+1251
 00:54:29,072 --> 00:54:30,270
-它成为π型滤波器
+这就是π型滤波器
 it's called a pie-section filter.
 
-1249
+1252
 00:54:30,270 --> 00:54:30,624
 很好
 Great.
 
-1250
+1253
 00:54:31,700 --> 00:54:34,096
 除了实际上
 Except for the fact that in doing what I just did,
 
-1251
+1254
 00:54:34,128 --> 00:54:37,850
 我在系统里放了些无用的东西
 I've made a terrible inefficiency in this system.
 
-1252
+1255
 00:54:38,620 --> 00:54:39,600
 我在本该只用一个的地方
 I've made two coils
 
-1253
+1256
 00:54:39,616 --> 00:54:40,592
 用了两个线圈
 where I should have made one.
 
-1254
+1257
 00:54:41,620 --> 00:54:44,600
 在大多数软件工程技艺中
 And the problem with most software engineering art
 
-1255
+1258
 00:54:44,890 --> 00:54:46,880
 在人工优化和编译之外
 is that there's no mechanism,
 
-1256
+1259
 00:54:46,928 --> 00:54:48,656
 不存在一种机制
 other than people optimization and compilers,
 
-1257
+1260
 00:54:48,800 --> 00:54:51,344
 能在自顶向下的设计中
 for getting rid of the redundant parts
 
-1258
+1261
 00:54:51,344 --> 00:54:53,550
 去掉冗余的部分
 that are constructed when doing top down design.
 
-1259
+1262
 00:54:55,350 --> 00:54:56,076
 或许会更糟
 It's even worse,
 
-1260
+1263
 00:54:56,070 --> 00:54:57,584
 有很多重要的结构
 there are lots of very important structures
 
-1261
+1264
 00:54:57,600 --> 00:54:59,020
 你无法采用这种方式构建
 that you can't construct at all this way.
 
-1262
+1265
 00:55:01,110 --> 00:55:03,535
 我觉得标准的自上而下的设计方式
 So I think that the standard top down design
 
-1263
+1266
 00:55:03,535 --> 00:55:04,875
 是一种很短视的手段
 is a rather shallow business.
 
-1264
+1267
 00:55:05,710 --> 00:55:06,600
 它不会真的抓到
 Doesn't really capture
 
-1265
+1268
 00:55:06,600 --> 00:55:08,100
 设计者真正想要的结果
 what people want to do in design.
 
-1266
+1269
 00:55:08,315 --> 00:55:10,100
 我再举一个电子学的例子
 I'll give you another electrical example.
 
-1267
+1270
 00:55:10,100 --> 00:55:11,750
 电子学的例子
 Electrical examples are so much clearer
 
-1268
+1271
 00:55:11,900 --> 00:55:13,136
 要比计算的例子直观得多
 than computational examples,
 
-1269
+1272
 00:55:13,168 --> 00:55:14,784
 因为计算的例子
 because computation examples require
 
-1270
+1273
 00:55:14,800 --> 00:55:16,520
 解释起来比较复杂
 a certain degree of complexity to explain them.
 
-1271
-00:55:17,220 --> 00:55:20,040
-电子学世界中 我最喜欢的例子之一是
-But one of my favorite examples in the electrical world
+1274
+00:55:17,220 --> 00:55:19,168
+在电子学世界中
+But one of my favorite examples
 
-1272
-00:55:20,600 --> 00:55:24,195
+1275
+00:55:19,168 --> 00:55:20,040
+我最喜欢的例子之一是
+in the electrical world
+
+1276
+00:55:20,600 --> 00:55:22,800
 是如何设计中频放大器中
 is how would I ever come up with the output stage
 
-1273
-00:55:24,368 --> 00:55:26,550
+1277
+00:55:23,280 --> 00:55:26,550
 输入级和输出级的连接方式
 of this inter-stage connection in an IF amplifier.
 
-1274
+1278
 00:55:27,530 --> 00:55:29,440
 这是一个三极管
-It's a little transistor here, and let's see.
+It's a little transistor here,
 
-1275
+1279
 00:55:29,520 --> 00:55:31,500
-这是一个三极管
-It's a little transistor here, and let's see.
+我们来看看
+and let's see.
 
-1276
+1280
 00:55:32,410 --> 00:55:33,400
 这有个LC震荡电路
 Well I'm going to have a tank,
 
-1277
+1281
 00:55:36,450 --> 00:55:39,175
 我要把它
 and I'm going to hook this up to, say,
 
-1278
+1282
 00:55:41,375 --> 00:55:43,975
 把它与下一级的输入线圈耦合在一起
 I'm going to link-couple that to the input of the next stage.
 
-1279
+1283
 00:55:44,368 --> 00:55:47,470
 这是个完美的可行方案
 Here's a perfectly plausible plan--
 
-1280
+1284
 00:55:48,225 --> 00:55:50,875
 除了我这个电流方向画错了
 well except for the fact that since I put that going up
 
-1281
+1285
 00:55:50,875 --> 00:55:52,925
 电流应该是这个方向
 I should make that going that way. OK?
 
-1282
+1286
 00:55:53,170 --> 00:55:55,456
 这是个完美的可行方案
 Here's a perfectly plausible plan for a--
 
-1283
+1287
 00:55:55,984 --> 00:55:56,576
 不对
 no I shouldn't.
 
-1284
+1288
 00:55:57,120 --> 00:55:57,792
 我犯蠢了
 I'm dumb.
 
-1285
+1289
 00:55:58,400 --> 00:55:59,075
 对不起
 Excuse me.
 
-1286
+1290
 00:55:59,690 --> 00:56:00,425
 这不重要
 Doesn't matter.
 
-1287
+1291
 00:56:00,730 --> 00:56:01,540
 关键在于这是一个
 The point is it's a perfect
 
-1288
+1292
 00:56:01,540 --> 00:56:03,425
 把两级耦合起来的完美方案
 plan for a couple two stages together.
 
-1289
-00:56:04,590 --> 00:56:05,440
+1293
+00:56:04,544 --> 00:56:06,920
 分层来看时会产生什么问题?
-Now what the problem is is what's this hierarchically?
+Now what the problem is what's this hierarchically?
 
-1290
-00:56:05,488 --> 00:56:06,920
-分层来看时会产生什么问题?
-Now what the problem is is what's this hierarchically?
-
-1291
+1294
 00:56:07,620 --> 00:56:08,800
-#TBD
+它就不是同一个东西了
 It's not one thing.
 
-1292
+1295
 00:56:09,480 --> 00:56:11,990
 当分层来看时它就没有任何意义了
 Hierarchically it doesn't make any sense at all.
 
-1293
+1296
 00:56:11,990 --> 00:56:14,325
 这是一个调谐电路的电感
 It's the inductance of a tuned circuit,
 
-1294
+1297
 00:56:15,550 --> 00:56:18,025
 这是变压器的初级线圈
 it's the primary of a transformer,
 
-1295
+1298
 00:56:19,100 --> 00:56:21,825
 这是直流的通路
 and it's also the DC path by
 
-1296
+1299
 00:56:21,825 --> 00:56:23,575
 它是三极管的集电极
 which bias conditions get to the
 
-1297
+1300
 00:56:23,575 --> 00:56:25,100
 的偏置条件
 collector of that transistor.
 
-1298
+1301
 00:56:26,460 --> 00:56:28,352
 没有任何简单的自顶向下设计
 And there's no simple top-down design
 
-1299
+1302
 00:56:28,384 --> 00:56:30,170
 能够得到这样的结构
 that's going to produce a structure like that
 
-1300
+1303
 00:56:30,225 --> 00:56:34,025
 对于同一个东西有大量的复用
 with so many overlapping uses for a particular thing.
 
-1301
+1304
 00:56:34,530 --> 00:56:36,729
 玩拼字游戏
 Playing Scrabble,
 
-1302
+1305
 00:56:36,960 --> 00:56:39,888
 当你要完成三倍分数的词时
 where you have to do triple word scores, or whatever,
 
-1303
+1306
 00:56:40,496 --> 00:56:43,600
 自顶向下的设计策略并不容易
 is not so easy in top-down design strategy.
 
-1304
+1307
 00:56:44,950 --> 00:56:47,088
-真正的工程基于努力成果的吸引力#TBD
-Yet most of real engineering is based on getting the most oomph for effort.
+然而 大多数实际的工程学都是
+Yet most of real engineering is based on
 
-1305
+1308
 00:56:47,360 --> 00:56:50,700
-真正的工程基于努力成果的吸引力#TBD
-Yet most of real engineering is based on getting the most oomph for effort.
+秉承着“尽其力而为之”
+on getting the most oomph for effort.
 
-1306
+1309
 00:56:52,140 --> 00:56:53,525
 那就是你所看到的东西
 And that's what you're seeing here.
 
-1307
+1310
 00:56:54,860 --> 00:56:55,550
-嗯?
+嗯？
 Yeah?
 
-1308
+1311
 00:56:55,550 --> 00:56:56,810
-学生: 这是最后一个问题吗?
+学生：这是最后一个问题吗?
 AUDIENCE: Is this the last question?
 
-1309
+1312
 00:57:00,280 --> 00:57:02,032
 [笑声]
 [LAUGHTER]
 
-1310
+1313
 00:57:18,640 --> 00:57:19,632
-教授: 看起来是
+教授：看起来是
 PROFESSOR: Apparently so.
 
-1311
+1314
 00:57:23,575 --> 00:57:24,125
 谢谢大家
 Thank you.
 
-1312
+1315
 00:57:25,300 --> 00:57:36,500
 [掌声]
 [APPLAUSE]
 
-1313
+1316
 00:57:39,040 --> 00:58:52,200
 [音乐]
 [JESU, JOY OF MAN'S DESIRING]
+
+1317
+00:58:52,200 --> 00:58:54,200
+MIT OpenCourseWare
+http://ocw.mit.edu
+
+1318
+00:58:54,200 --> 00:58:56,200
+本项目主页
+https://github.com/DeathKing/Learning-SICP
 
