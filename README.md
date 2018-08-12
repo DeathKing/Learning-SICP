@@ -53,13 +53,6 @@
 | Lec10a | 《编译》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_19.html) [ [MP4] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
 | Lec10b | 《存储分配与垃圾收集》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzc3NjI4MzQ4NA==.html) [ [YouTube] ](https://youtu.be/HNjPAzmSho8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_20.html) [ [MP4] ](https://pan.baidu.com/s/1LKoXNWFD9lFclgNKeCBxsg) | [Windfarer](https://github.com/Windfarer) |
 
-## 贡献者列表
-
-| ![](https://avatars0.githubusercontent.com/u/895809?s=120) | ![](https://avatars1.githubusercontent.com/u/2025499?s=120) | ![](https://avatars2.githubusercontent.com/u/1056031?s=120) | ![](https://avatars0.githubusercontent.com/u/1238353?s=120) | ![](https://avatars1.githubusercontent.com/u/5028822?s=120) |
-| [DeathKing](https://github.com/DeathKing) | [ChingfanTsou](https://github.com/ChingfanTsou) | [endyul](https://github.com/endyul) | [mut0u](https://github.com/mut0u) | [DreamAndDead](https://github.com/DreamAndDead) |
-| ![](https://avatars2.githubusercontent.com/u/13829499?s=120) | ![](https://avatars2.githubusercontent.com/u/7036121?s=120) |![](https://avatars1.githubusercontent.com/u/30205820?s=120) | ![](https://avatars3.githubusercontent.com/u/2822054?s=120) | |
-| [rtmagic](https://github.com/rtmagic) | [Windfarer](https://github.com/Windfarer) | [Rezhe](https://github.com/Rezhe) | [ustcscgy](https://github.com/ustcscgy) | |
-
 ## 捐助本项目
 
 本项目不以盈利为目的，旨在为广大程序员、函数式编爱好者以及计算机专业学生提供相关学习资源。
@@ -68,7 +61,6 @@
 
 ![deathking_alipay](https://cloud.githubusercontent.com/assets/895809/6343830/b3840a8c-bc2a-11e4-931e-dbed22ffca99.png)  
 账号：death0622@qq.com
-
 
 ## 加入我们
 
