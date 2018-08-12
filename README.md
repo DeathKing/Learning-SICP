@@ -55,10 +55,10 @@
 
 ## 贡献者列表
 
-|![](https://avatars0.githubusercontent.com/u/895809?s=120)|![](https://avatars1.githubusercontent.com/u/2025499?s=120)|![](https://avatars2.githubusercontent.com/u/1056031?s=120)|![](https://avatars0.githubusercontent.com/u/1238353?s=120)|![](https://avatars1.githubusercontent.com/u/5028822?s=120)|
-|[DeathKing](https://github.com/DeathKing)|[ChingfanTsou](https://github.com/ChingfanTsou)|[endyul](https://github.com/endyul)|[mut0u](https://github.com/mut0u)|[DreamAndDead](https://github.com/DreamAndDead)|
-|![](https://avatars2.githubusercontent.com/u/13829499?s=120)|![](https://avatars2.githubusercontent.com/u/7036121?s=120)|![](https://avatars1.githubusercontent.com/u/30205820?s=120)|![](https://avatars3.githubusercontent.com/u/2822054?s=120)|
-|[rtmagic](https://github.com/rtmagic)|[Windfarer](https://github.com/Windfarer)|[Rezhe](https://github.com/Rezhe)|[ustcscgy](https://github.com/ustcscgy)|
+| ![](https://avatars0.githubusercontent.com/u/895809?s=120) | ![](https://avatars1.githubusercontent.com/u/2025499?s=120) | ![](https://avatars2.githubusercontent.com/u/1056031?s=120) | ![](https://avatars0.githubusercontent.com/u/1238353?s=120) | ![](https://avatars1.githubusercontent.com/u/5028822?s=120) |
+| [DeathKing](https://github.com/DeathKing) | [ChingfanTsou](https://github.com/ChingfanTsou) | [endyul](https://github.com/endyul) | [mut0u](https://github.com/mut0u) | [DreamAndDead](https://github.com/DreamAndDead) |
+| ![](https://avatars2.githubusercontent.com/u/13829499?s=120) | ![](https://avatars2.githubusercontent.com/u/7036121?s=120) |![](https://avatars1.githubusercontent.com/u/30205820?s=120) | ![](https://avatars3.githubusercontent.com/u/2822054?s=120) | |
+| [rtmagic](https://github.com/rtmagic) | [Windfarer](https://github.com/Windfarer) | [Rezhe](https://github.com/Rezhe) | [ustcscgy](https://github.com/ustcscgy) | |
 
 ## 捐助本项目
 
