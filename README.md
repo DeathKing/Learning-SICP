@@ -21,10 +21,11 @@
 
 ## 视频地址
 
++ [主页](https://learningsicp.github.io/) (由[@Rezhe](https://github.com/rezhe)制作)
 + [中译版视频专辑列表（优酷）](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522)
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
-+ [百度网盘SICP文件夹（请注意安装目录中的字体文件）](https://pan.baidu.com/s/1o78bsYA)
++ [百度网盘SICP文件夹](https://pan.baidu.com/s/1o78bsYA)
 
 > **注意**  
 > 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
@@ -50,12 +51,14 @@
 | Lec9a | 《寄存机器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzU3MzA5Mzg0OA==.html) [ [YouTube] ](https://youtu.be/oR2PwG0xh_g) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_17.html) [ [MP4] ](https://pan.baidu.com/s/1AFM6__x4oGq3XtI_fa3ZGQ) | [DeathKing](https://github.com/DeathKing) |
 | Lec9b | 《显式控制求值器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzcxMDAzMTA1Mg==.html) [ [YouTube] ](https://youtu.be/mrRcB4uY75M) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_18.html) [ [MP4] ](https://pan.baidu.com/s/1bHhuJdEQyE9Fyw06Y6tOZw) | [DeathKing](https://github.com/DeathKing), [rtmagic](https://github.com/rtmagic) |
 | Lec10a | 《编译》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_19.html) [ [MP4] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
+| Lec10b | 《存储分配与垃圾收集》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzc3NjI4MzQ4NA==.html) [ [YouTube] ](https://youtu.be/HNjPAzmSho8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_20.html) [ [MP4] ](https://pan.baidu.com/s/1LKoXNWFD9lFclgNKeCBxsg) | [Windfarer](https://github.com/Windfarer) |
 
-## 任务队列
+## 贡献者列表
 
-|  编号  | 责任人     | 状态 | 进度 |
-|:-----:|:---------:|:----:|:-------:|
-| lec10b | Windfarer | 待校订 | 0% |
+|![](https://avatars0.githubusercontent.com/u/895809?s=120)|![](https://avatars1.githubusercontent.com/u/2025499?s=120)|![](https://avatars2.githubusercontent.com/u/1056031?s=120)|![](https://avatars0.githubusercontent.com/u/1238353?s=120)|![](https://avatars1.githubusercontent.com/u/5028822?s=120)|
+|[DeathKing](https://github.com/DeathKing)|[ChingfanTsou](https://github.com/ChingfanTsou)|[endyul](https://github.com/endyul)|[mut0u](https://github.com/mut0u)|[DreamAndDead](https://github.com/DreamAndDead)|
+|![](https://avatars2.githubusercontent.com/u/13829499?s=120)|![](https://avatars2.githubusercontent.com/u/7036121?s=120)|![](https://avatars1.githubusercontent.com/u/30205820?s=120)|![](https://avatars3.githubusercontent.com/u/2822054?s=120)|
+|[rtmagic](https://github.com/rtmagic)|[Windfarer](https://github.com/Windfarer)|[Rezhe](https://github.com/Rezhe)|[ustcscgy](https://github.com/ustcscgy)|
 
 ## 捐助本项目
 
