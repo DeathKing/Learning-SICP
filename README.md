@@ -19,6 +19,8 @@
 | [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn) | [DrRacket 的安装与配置](https://zhuanlan.zhihu.com/p/37056659) | [Resources for Programming Language Research](http://www.cs.cmu.edu/afs/cs.cmu.edu/user/mleone/web/language-research.html) |
 | [MIT 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Racket 常见问题](https://syntacticlosure.github.io/) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
 
+如果您在学习过程中遇到任何疑问，欢迎使用 [Issues](https://github.com/DeathKing/Learning-SICP/issues) 功能提问。
+
 ## 视频地址
 
 + [主页](https://learningsicp.github.io/) (由[@Rezhe](https://github.com/rezhe)制作)
@@ -64,7 +66,10 @@
 
 ## 加入我们
 
-SICP学习交流群：97747648。加群请注明理由，否则一概拒绝。
++ Learning-SICP 主群：97747648
++ Learning-SICP 2 群：573877085
+
+（加群请注明理由，否则一概拒绝）
 
 ## 声明与致谢
 
