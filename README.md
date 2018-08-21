@@ -19,12 +19,15 @@
 | [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn) | [DrRacket 的安装与配置](https://zhuanlan.zhihu.com/p/37056659) | [Resources for Programming Language Research](http://www.cs.cmu.edu/afs/cs.cmu.edu/user/mleone/web/language-research.html) |
 | [MIT 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Racket 常见问题](https://syntacticlosure.github.io/) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
 
+如果您在学习过程中遇到任何疑问，欢迎使用 [Issues](https://github.com/DeathKing/Learning-SICP/issues) 功能提问。
+
 ## 视频地址
 
++ [主页](https://learningsicp.github.io/) (由[@Rezhe](https://github.com/rezhe)制作)
 + [中译版视频专辑列表（优酷）](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522)
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
-+ [百度网盘SICP文件夹（请注意安装目录中的字体文件）](https://pan.baidu.com/s/1o78bsYA)
++ [百度网盘SICP文件夹](https://pan.baidu.com/s/1o78bsYA)
 
 > **注意**  
 > 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
@@ -50,12 +53,7 @@
 | Lec9a | 《寄存机器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzU3MzA5Mzg0OA==.html) [ [YouTube] ](https://youtu.be/oR2PwG0xh_g) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_17.html) [ [MP4] ](https://pan.baidu.com/s/1AFM6__x4oGq3XtI_fa3ZGQ) | [DeathKing](https://github.com/DeathKing) |
 | Lec9b | 《显式控制求值器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzcxMDAzMTA1Mg==.html) [ [YouTube] ](https://youtu.be/mrRcB4uY75M) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_18.html) [ [MP4] ](https://pan.baidu.com/s/1bHhuJdEQyE9Fyw06Y6tOZw) | [DeathKing](https://github.com/DeathKing), [rtmagic](https://github.com/rtmagic) |
 | Lec10a | 《编译》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_19.html) [ [MP4] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
-
-## 任务队列
-
-|  编号  | 责任人     | 状态 | 进度 |
-|:-----:|:---------:|:----:|:-------:|
-| lec10b | Windfarer | 待校订 | 0% |
+| Lec10b | 《存储分配与垃圾收集》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzc3NjI4MzQ4NA==.html) [ [YouTube] ](https://youtu.be/HNjPAzmSho8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_20.html) [ [MP4] ](https://pan.baidu.com/s/1LKoXNWFD9lFclgNKeCBxsg) | [Windfarer](https://github.com/Windfarer) |
 
 ## 捐助本项目
 
@@ -66,10 +64,12 @@
 ![deathking_alipay](https://cloud.githubusercontent.com/assets/895809/6343830/b3840a8c-bc2a-11e4-931e-dbed22ffca99.png)  
 账号：death0622@qq.com
 
-
 ## 加入我们
 
-SICP学习交流群：97747648。加群请注明理由，否则一概拒绝。
++ Learning-SICP 主群：97747648
++ Learning-SICP 2 群：573877085
+
+（加群请注明理由，否则一概拒绝）
 
 ## 声明与致谢
 
