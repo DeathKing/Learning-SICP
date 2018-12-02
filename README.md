@@ -33,7 +33,9 @@
 + [Google Drive SICP 文件夹](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing) (由热心网友维护)
 
 > **注意**
+>
 > 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
+>
 > 海外用户可尝试用Google Drive下载以获得更高的下载速度
 
 | 编号 | 标题 | 下载地址 | 译者 |
