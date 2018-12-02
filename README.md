@@ -30,32 +30,34 @@
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
 + [百度网盘SICP文件夹](https://pan.baidu.com/s/1o78bsYA)
++ [Google Drive SICP 文件夹](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing) (由热心网友维护)
 
-> **注意**  
+> **注意**
 > 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
+> 海外用户可尝试用Google Drive下载以获得更高的下载速度
 
 | 编号 | 标题 | 下载地址 | 译者 |
 | ---- | ---- |:-----------------------:| ---- |
-| Lec1a | 《Lisp概览》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) [ [YouTube] ](https://youtu.be/IcZSFewqr9k) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_1.html) [ [MP4] ](https://pan.baidu.com/s/109WuY4ONSZddFXyE2hQGwg) | [DeathKing](https://github.com/DeathKing) |
-| Lec1b | 《计算过程》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTMxODY1NTg4.html) [ [YouTube] ](https://youtu.be/WuK9NmA3aq0) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_2.html) [ [MP4] ](https://pan.baidu.com/s/1C3muRwhMdK8yioHWw5P-1Q) | [ChingfanTsou](https://github.com/ChingfanTsou) |
-| Lec2a | 《高阶过程》 | [ [优酷] ](https://v.youku.com/v_show/id_XNzAzNjI1NjU2.html) [ [YouTube] ](https://youtu.be/mrgcGvOI1bs) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_3.html) [ [MP4] ](https://pan.baidu.com/s/1MHiHVHfwq6x8rylBVDGV0A) | [endyul](https://github.com/endyul) |
-| Lec2b | 《复合数据》 | [ [优酷] ](https://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html) [ [YouTube] ](https://youtu.be/ufTdeiz9dMw) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_4.html) [ [MP4] ](https://pan.baidu.com/s/1DfX7DJ_pMd7AtMlJwqyoRg) | [DeathKing](https://github.com/DeathKing) |
-| Lec3a | 《Henderson-Escher的例子》 | [ [优酷] ](https://v.youku.com/v_show/id_XODk4NjUwODMy.html) [ [YouTube] ](https://youtu.be/YCR03O5EUdI) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_5.html) [ [MP4] ](https://pan.baidu.com/s/1bOJvDO) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
-| Lec3b | 《符号化求导系统：引用》 | [ [优酷] ](https://v.youku.com/v_show/id_XODk4NjUwODA0.html) [ [YouTube] ](https://youtu.be/cgGbiMptQM0) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_6.html) [ [MP4] ](https://pan.baidu.com/s/1mhS2EV2) | [DeathKing](https://github.com/DeathKing) |
-| Lec4a | 《模式匹配：基于规则的代换》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTM4NTY5NzE3Ng.html) [ [YouTube] ](https://youtu.be/zSxepaPtNQY) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_7.html) [ [MP4] ](https://pan.baidu.com/s/1U9E33yRr5mIqrdTOjnJeGA) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
-| Lec4b | 《通用运算符》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTQ3NDEwODUyNA==.html) [ [YouTube] ](https://youtu.be/RlfZridRcw0) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_8.html) [ [MP4] ](https://pan.baidu.com/s/1vAv8Hi46f9ku2y7LHPpzzw) | [rtmagic](https://github.com/rtmagic) |
-| Lec5a | 《赋值，状态和副作用》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTczMjIxNTM2NA==.html) [ [YouTube] ](https://youtu.be/ozss6dvq7ZU) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_9.html) [ [MP4] ](https://pan.baidu.com/s/1boWiMWB) | [Windfarer](https://github.com/Windfarer) |
-| Lec5b | 《计算对象》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjY0NzE3NzQ2MA==.html) [ [YouTube] ](https://youtu.be/2Iz7agtk614) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_10.html) [ [MP4] ](https://pan.baidu.com/s/1c1FRLIg) | [DreamAndDead](https://github.com/DreamAndDead) |
-| Lec6a | 《流 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjg4NTkwNzU3Ng==.html) [ [YouTube] ](https://youtu.be/z7jvvATswFE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_11.html) [ [MP4] ](https://pan.baidu.com/s/1pLlvcLH) | [DreamAndDead](https://github.com/DreamAndDead) |
-| Lec6b | 《流 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAyMjI0MjAzNg==.html) [ [YouTube] ](https://youtu.be/0lQ6fThLhYw) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_12.html) [ [MP4] ](https://pan.baidu.com/s/1b3kbWq) | [DreamAndDead](https://github.com/DreamAndDead) |
-| Lec7a | 《元循环求值器 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAzODg2ODczNg==.html) [ [YouTube] ](https://youtu.be/RXUqgWJES0w) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_13.html) [ [MP4] ](https://pan.baidu.com/s/1kV1M0ab) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
-| Lec7b | 《元循环求值器 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzA2NDQ5MjkxMg==.html) [ [YouTube] ](https://youtu.be/HNaAEv8Xjx8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_14.html) [ [MP4] ](https://pan.baidu.com/s/1qYBgrIO) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
-| Lec8a | 《逻辑式程序设计 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzIyODg0NTEwNA==.html) [ [YouTube] ](https://youtu.be/VNH95lmCHdE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_15.html) [ [MP4] ](https://pan.baidu.com/s/1dFlOqrB) | [DeathKing](https://github.com/DeathKing) |
-| Lec8b | 《逻辑式程序设计 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzQ4MDA1OTE3Mg==.html) [ [YouTube] ](https://youtu.be/mcik1gEEyqA) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_16.html) [ [MP4] ](https://pan.baidu.com/s/1MN5ZDrnnKeE0XeMqAY6x0Q) | [DeathKing](https://github.com/DeathKing) |
-| Lec9a | 《寄存机器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzU3MzA5Mzg0OA==.html) [ [YouTube] ](https://youtu.be/oR2PwG0xh_g) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_17.html) [ [MP4] ](https://pan.baidu.com/s/1AFM6__x4oGq3XtI_fa3ZGQ) | [DeathKing](https://github.com/DeathKing) |
-| Lec9b | 《显式控制求值器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzcxMDAzMTA1Mg==.html) [ [YouTube] ](https://youtu.be/mrRcB4uY75M) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_18.html) [ [MP4] ](https://pan.baidu.com/s/1bHhuJdEQyE9Fyw06Y6tOZw) | [DeathKing](https://github.com/DeathKing), [rtmagic](https://github.com/rtmagic) |
-| Lec10a | 《编译》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_19.html) [ [MP4] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
-| Lec10b | 《存储分配与垃圾收集》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzc3NjI4MzQ4NA==.html) [ [YouTube] ](https://youtu.be/HNjPAzmSho8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_20.html) [ [MP4] ](https://pan.baidu.com/s/1LKoXNWFD9lFclgNKeCBxsg) | [Windfarer](https://github.com/Windfarer) |
+| Lec1a | 《Lisp概览》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html) [ [YouTube] ](https://youtu.be/IcZSFewqr9k) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_1.html) [ [百度网盘] ](https://pan.baidu.com/s/109WuY4ONSZddFXyE2hQGwg) | [DeathKing](https://github.com/DeathKing) |
+| Lec1b | 《计算过程》 | [ [优酷] ](https://v.youku.com/v_show/id_XNTMxODY1NTg4.html) [ [YouTube] ](https://youtu.be/WuK9NmA3aq0) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_2.html) [ [百度网盘] ](https://pan.baidu.com/s/1C3muRwhMdK8yioHWw5P-1Q) | [ChingfanTsou](https://github.com/ChingfanTsou) |
+| Lec2a | 《高阶过程》 | [ [优酷] ](https://v.youku.com/v_show/id_XNzAzNjI1NjU2.html) [ [YouTube] ](https://youtu.be/mrgcGvOI1bs) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_3.html) [ [百度网盘] ](https://pan.baidu.com/s/1MHiHVHfwq6x8rylBVDGV0A) | [endyul](https://github.com/endyul) |
+| Lec2b | 《复合数据》 | [ [优酷] ](https://v.youku.com/v_show/id_XNzAzNjg4Mjk2.html) [ [YouTube] ](https://youtu.be/ufTdeiz9dMw) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_4.html) [ [百度网盘] ](https://pan.baidu.com/s/1DfX7DJ_pMd7AtMlJwqyoRg) | [DeathKing](https://github.com/DeathKing) |
+| Lec3a | 《Henderson-Escher的例子》 | [ [优酷] ](https://v.youku.com/v_show/id_XODk4NjUwODMy.html) [ [YouTube] ](https://youtu.be/YCR03O5EUdI) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_5.html) [ [百度网盘] ](https://pan.baidu.com/s/1bOJvDO) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
+| Lec3b | 《符号化求导系统：引用》 | [ [优酷] ](https://v.youku.com/v_show/id_XODk4NjUwODA0.html) [ [YouTube] ](https://youtu.be/cgGbiMptQM0) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_6.html) [ [百度网盘] ](https://pan.baidu.com/s/1mhS2EV2) | [DeathKing](https://github.com/DeathKing) |
+| Lec4a | 《模式匹配：基于规则的代换》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTM4NTY5NzE3Ng.html) [ [YouTube] ](https://youtu.be/zSxepaPtNQY) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_7.html) [ [百度网盘] ](https://pan.baidu.com/s/1U9E33yRr5mIqrdTOjnJeGA) | [DeathKing](https://github.com/DeathKing), [Michael Savior](https://github.com/mut0u) |
+| Lec4b | 《通用运算符》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTQ3NDEwODUyNA==.html) [ [YouTube] ](https://youtu.be/RlfZridRcw0) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_8.html) [ [百度网盘] ](https://pan.baidu.com/s/1vAv8Hi46f9ku2y7LHPpzzw) | [rtmagic](https://github.com/rtmagic) |
+| Lec5a | 《赋值，状态和副作用》 | [ [优酷] ](https://v.youku.com/v_show/id_XMTczMjIxNTM2NA==.html) [ [YouTube] ](https://youtu.be/ozss6dvq7ZU) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_9.html) [ [百度网盘] ](https://pan.baidu.com/s/1boWiMWB) | [Windfarer](https://github.com/Windfarer) |
+| Lec5b | 《计算对象》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjY0NzE3NzQ2MA==.html) [ [YouTube] ](https://youtu.be/2Iz7agtk614) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_10.html) [ [百度网盘] ](https://pan.baidu.com/s/1c1FRLIg) | [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec6a | 《流 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMjg4NTkwNzU3Ng==.html) [ [YouTube] ](https://youtu.be/z7jvvATswFE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_11.html) [ [百度网盘] ](https://pan.baidu.com/s/1pLlvcLH) | [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec6b | 《流 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAyMjI0MjAzNg==.html) [ [YouTube] ](https://youtu.be/0lQ6fThLhYw) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_12.html) [ [百度网盘] ](https://pan.baidu.com/s/1b3kbWq) | [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec7a | 《元循环求值器 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzAzODg2ODczNg==.html) [ [YouTube] ](https://youtu.be/RXUqgWJES0w) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_13.html) [ [百度网盘] ](https://pan.baidu.com/s/1kV1M0ab) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec7b | 《元循环求值器 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzA2NDQ5MjkxMg==.html) [ [YouTube] ](https://youtu.be/HNaAEv8Xjx8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_14.html) [ [百度网盘] ](https://pan.baidu.com/s/1qYBgrIO) | [DeathKing](https://github.com/DeathKing), [DreamAndDead](https://github.com/DreamAndDead) |
+| Lec8a | 《逻辑式程序设计 I》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzIyODg0NTEwNA==.html) [ [YouTube] ](https://youtu.be/VNH95lmCHdE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_15.html) [ [百度网盘] ](https://pan.baidu.com/s/1dFlOqrB) | [DeathKing](https://github.com/DeathKing) |
+| Lec8b | 《逻辑式程序设计 II》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzQ4MDA1OTE3Mg==.html) [ [YouTube] ](https://youtu.be/mcik1gEEyqA) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_16.html) [ [百度网盘] ](https://pan.baidu.com/s/1MN5ZDrnnKeE0XeMqAY6x0Q) | [DeathKing](https://github.com/DeathKing) |
+| Lec9a | 《寄存机器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzU3MzA5Mzg0OA==.html) [ [YouTube] ](https://youtu.be/oR2PwG0xh_g) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_17.html) [ [百度网盘] ](https://pan.baidu.com/s/1AFM6__x4oGq3XtI_fa3ZGQ) | [DeathKing](https://github.com/DeathKing) |
+| Lec9b | 《显式控制求值器》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzcxMDAzMTA1Mg==.html) [ [YouTube] ](https://youtu.be/mrRcB4uY75M) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_18.html) [ [百度网盘] ](https://pan.baidu.com/s/1bHhuJdEQyE9Fyw06Y6tOZw) | [DeathKing](https://github.com/DeathKing), [rtmagic](https://github.com/rtmagic) |
+| Lec10a | 《编译》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_19.html) [ [百度网盘] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
+| Lec10b | 《存储分配与垃圾收集》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzc3NjI4MzQ4NA==.html) [ [YouTube] ](https://youtu.be/HNjPAzmSho8) [ [bilibili] ](https://www.bilibili.com/video/av8515129/index_20.html) [ [百度网盘] ](https://pan.baidu.com/s/1LKoXNWFD9lFclgNKeCBxsg) | [Windfarer](https://github.com/Windfarer) |
 
 ## 捐助本项目
 
@@ -63,7 +65,7 @@
 
 字幕制作之苦，如人饮水冷暖自知，期间又经历各种变故，如今也主要只有我一人坚守在这个岗位上为大家继续献上这门经典公开课。虽然拖拖拉拉断断续续，能坚持到今天实属不易。如果您愿意支持本项目，不妨向以下支付宝账户捐款。
 
-![deathking_alipay](https://cloud.githubusercontent.com/assets/895809/6343830/b3840a8c-bc2a-11e4-931e-dbed22ffca99.png)  
+![deathking_alipay](https://cloud.githubusercontent.com/assets/895809/6343830/b3840a8c-bc2a-11e4-931e-dbed22ffca99.png)
 账号：death0622@qq.com
 
 ## 加入我们
@@ -77,8 +79,8 @@
 
 我们由衷感谢 Harold Abelson 及 Gerald Jay Sussman 教授为我们讲授这一门公开课，感谢 [MIT OCW](http://ocw.mit.edu ) 项目允许我们以 Creative Commons 的方式分发本课的中译版本，以下是原课中的许可与声明。
 
-> http://ocw.mit.edu  
-> License: Creative Commons Attribution-Noncommercial-Share Alike.  
-> `Eric Grimson`, `Peter Szolovits`, and `Trevor Darrell`,   
-> 6.001 Structure and Interpretation of Computer Programs, Spring 2005.  
-> (Massachusetts Institute of Technology: MIT OpenCourseWare).  
+> http://ocw.mit.edu
+> License: Creative Commons Attribution-Noncommercial-Share Alike.
+> `Eric Grimson`, `Peter Szolovits`, and `Trevor Darrell`,
+> 6.001 Structure and Interpretation of Computer Programs, Spring 2005.
+> (Massachusetts Institute of Technology: MIT OpenCourseWare).
