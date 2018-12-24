@@ -30,9 +30,11 @@
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
 + [百度网盘SICP文件夹](https://pan.baidu.com/s/1o78bsYA)
++ [Google Drive SICP 文件夹](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing) (由[Terence](https://github.com/TerenceFeng)维护)
 
 > **注意**  
 > 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
+> 国外用户可尝试通过Google Drive下载以获得更高的下载速度。
 
 | 编号 | 标题 | 下载地址 | 译者 |
 | ---- | ---- |:-----------------------:| ---- |
