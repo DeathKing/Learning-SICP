@@ -21,7 +21,7 @@
 | [Scheme入门教程·中文](https://github.com/DeathKing/yast-cn) | [DrRacket 的安装与配置](https://zhuanlan.zhihu.com/p/37056659) | [Resources for Programming Language Research](http://www.cs.cmu.edu/afs/cs.cmu.edu/user/mleone/web/language-research.html) |
 | [MIT 6.945/6.905 课程作业](http://groups.csail.mit.edu/mac/users/gjs/6.945/assignments.html) | [Racket 常见问题](https://syntacticlosure.github.io/) | [Classic Papers in Programming Languages and Logic](http://www.cs.cmu.edu/~crary/819-f09/) |
 
-如果您在学习过程中遇到任何疑问，欢迎使用 [Issues](https://github.com/DeathKing/Learning-SICP/issues) 功能提问。
+SICP的习题解答可参考 SchemeWiki 的 [SICP Solutions](http://community.schemewiki.org/?SICP-Solutions) 页面。如果您在学习过程中遇到任何疑问，欢迎使用 [Issues](https://github.com/DeathKing/Learning-SICP/issues) 功能提问。
 
 ## 视频地址
 
@@ -30,11 +30,11 @@
 + [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
 + [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
 + [百度网盘SICP文件夹](https://pan.baidu.com/s/1o78bsYA)
-+ [Google Drive SICP 文件夹](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing) (由[Terence](https://github.com/TerenceFeng)维护)
++ [Google Drive SICP 文件夹](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing)（由[@Terence](https://github.com/TerenceFeng)维护）
 
 > **注意**  
-> 由于 MKV 格式的视频文件需要额外安装字幕，从 lec9a 开始，不再提供 MKV 格式视频下载。当所有课程 MP4 格式制作完毕后，我们将撤下所有 MKV 视频的下载链接。
-> 国外用户可尝试通过Google Drive下载以获得更高的下载速度。
+> * 由于 MKV 格式的视频文件需要额外安装字幕，我们不再提供 MKV 格式的视频；
+> * 中国大陆以外的用户，可尝试通过Google Drive下载以获得更高的下载速度。
 
 | 编号 | 标题 | 下载地址 | 译者 |
 | ---- | ---- |:-----------------------:| ---- |
