@@ -25,12 +25,13 @@ SICP的习题解答可参考 SchemeWiki 的 [SICP Solutions](http://community.sc
 
 ## 视频地址
 
-+ [主页](https://learningsicp.github.io/) (由[@Rezhe](https://github.com/rezhe)制作)
-+ [中译版视频专辑列表（优酷）](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522)
-+ [中译版视频专辑列表（YouTube）](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
-+ [中译版视频专辑列表（bilibili）](https://www.bilibili.com/video/av8515129/) （由热心网友维护）
-+ [百度网盘SICP文件夹](https://pan.baidu.com/s/1o78bsYA)
-+ [Google Drive SICP 文件夹](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing)（由[@Terence](https://github.com/TerenceFeng)维护）
++ 🏠[主页](https://learningsicp.github.io/) (由[@Rezhe](https://github.com/rezhe)制作)
++ 🎥[播放列表·优酷](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522)
++ 🎥[播放列表·YouTube](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
++ 🎥[播放列表·BiliBili](https://www.bilibili.com/video/av8515129/)（由[@tyfulcrum](https://github.com/tyfulcrum)搬运）
++ 🎥[播放列表·AcFun](https://www.acfun.cn/v/ac10517890)（由[@tyfulcrum](https://github.com/tyfulcrum)搬运）
++ 📂[网盘·百度网盘](https://pan.baidu.com/s/1o78bsYA)
++ 📂[网盘·Google Drive](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing)（由[@Terence](https://github.com/TerenceFeng)搬运）
 
 > **注意**  
 > * 由于 MKV 格式的视频文件需要额外安装字幕，我们不再提供 MKV 格式的视频；
