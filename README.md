@@ -25,13 +25,23 @@ SICP的习题解答可参考 SchemeWiki 的 [SICP Solutions](http://community.sc
 
 ## 视频地址
 
-+ 🏠[主页](https://learningsicp.github.io/) (由[@Rezhe](https://github.com/rezhe)制作)
-+ 🎥[播放列表·优酷](https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522)
-+ 🎥[播放列表·YouTube](https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_)
-+ 🎥[播放列表·BiliBili](https://www.bilibili.com/video/av8515129/)（由[@tyfulcrum](https://github.com/tyfulcrum)搬运）
-+ 🎥[播放列表·AcFun](https://www.acfun.cn/v/ac10517890)（由[@tyfulcrum](https://github.com/tyfulcrum)搬运）
-+ 📂[网盘·百度网盘](https://pan.baidu.com/s/1o78bsYA)
-+ 📂[网盘·Google Drive](https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing)（由[@Terence](https://github.com/TerenceFeng)搬运）
+<table>
+  <tr>
+    <th  colspan="5"><a href="https://learningsicp.github.io/">🏠 主页</a></th>
+  </tr>
+  <tr>
+    <td>🎥 播放列表</td>
+    <td><a href="https://v.youku.com/v_show/id_XNTEzMDAyMTU2.html?f=18958522">优酷</a></td>
+    <td><a href="https://www.youtube.com/playlist?list=PLkEwH_Z2WOlppy8oUfrGwFVlOuKyo3RO_">YouTube</a></td>
+    <td><a href="https://www.bilibili.com/video/av8515129/">BiliBili</a></td>
+    <td><a href="https://www.acfun.cn/v/ac10517890">AcFun</a></td>
+  </tr>
+  <tr>
+    <td >📂 网盘</td>
+    <td colspan="2"><a href="https://pan.baidu.com/s/1o78bsYA">百度网盘</a></td>
+    <td colspan="2"><a href="https://drive.google.com/drive/folders/12yryTD9HPpa5zjIpTmYawl6-8VrISxIE?usp=sharing">Google Drive</a></td>
+  </tr>
+</table>
 
 > **注意**  
 > * 由于 MKV 格式的视频文件需要额外安装字幕，我们不再提供 MKV 格式的视频；
