@@ -1,6 +1,6 @@
 # 《计算机程序的结构和解释》公开课 翻译项目
 
-<img height="20px" src="https://user-images.githubusercontent.com/895809/47278305-6d793380-d5fa-11e8-89f2-7c8862027997.png" alt="MIT OCW"> [MIT OpenCourseWare](https://ocw.mit.edu/index.htm)　　　　　　<img height="20px" src="https://avatars2.githubusercontent.com/u/36149682?s=200&v=4" alt="HIT FoOTOo"> [哈尔滨工业大学 FoOTOo实验室](https://github.com/FoOTOo)　　　　　　<img height="20px" src="https://user-images.githubusercontent.com/895809/47278313-7cf87c80-d5fa-11e8-9ca8-0f5f19c1d31e.jpg" alt="HIT PT"> 哈尔滨工业大学 清影PT
+<img height="20px" src="https://user-images.githubusercontent.com/895809/47278305-6d793380-d5fa-11e8-89f2-7c8862027997.png" alt="MIT OCW"> [MIT OpenCourseWare](https://ocw.mit.edu/index.htm)　　　　　　<img height="20px" src="https://avatars2.githubusercontent.com/u/36149682?s=200&v=4" alt="HIT FoOTOo"> [哈尔滨工业大学 FoOTOo实验室](https://github.com/FoOTOo)　　　　　　<img height="20px" src="https://user-images.githubusercontent.com/895809/47278313-7cf87c80-d5fa-11e8-9ca8-0f5f19c1d31e.jpg" alt="HIT PT"> [哈尔滨工业大学 清影PT](https://hitpt.org/index.php)
 
 <p align="center">
   <img src="http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/wizard.jpg" alt="SICP"/>
