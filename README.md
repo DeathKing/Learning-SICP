@@ -70,15 +70,6 @@ SICP的习题解答可参考 SchemeWiki 的 [SICP Solutions](http://community.sc
 | Lec10a | 《编译》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzYyNTcxNDYwOA==.html) [ [YouTube] ](https://youtu.be/vBEkYVrtfBE) [ [bilibili] ](https://www.bilibili.com/video/av8515129?p=19) [ [MP4] ](https://pan.baidu.com/s/1IWkeR7gM5jiVFPMVhdZ4fg) | [Windfarer](https://github.com/Windfarer) |
 | Lec10b | 《存储分配与垃圾收集》 | [ [优酷] ](https://v.youku.com/v_show/id_XMzc3NjI4MzQ4NA==.html) [ [YouTube] ](https://youtu.be/HNjPAzmSho8) [ [bilibili] ](https://www.bilibili.com/video/av8515129?p=20) [ [MP4] ](https://pan.baidu.com/s/1LKoXNWFD9lFclgNKeCBxsg) | [Windfarer](https://github.com/Windfarer) |
 
-## 捐助本项目
-
-本项目不以盈利为目的，旨在为广大程序员、函数式编爱好者以及计算机专业学生提供相关学习资源。
-
-字幕制作之苦，如人饮水冷暖自知，期间又经历各种变故，如今也主要只有我一人坚守在这个岗位上为大家继续献上这门经典公开课。虽然拖拖拉拉断断续续，能坚持到今天实属不易。如果您愿意支持本项目，不妨向以下支付宝账户捐款。
-
-![deathking_alipay](https://cloud.githubusercontent.com/assets/895809/6343830/b3840a8c-bc2a-11e4-931e-dbed22ffca99.png)  
-账号：death0622@qq.com
-
 ## 加入我们
 
 + Learning-SICP 主群：97747648
